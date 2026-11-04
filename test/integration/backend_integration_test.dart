@@ -39,6 +39,19 @@ void main() {
   late String socialAnonKey;
   final created = <RendezvousCommunity>[];
 
+  Future<void> withFreshAuthor(String tag, Future<void> Function(RendezvousCommunity author) body) async {
+    final stamp = DateTime.now().microsecondsSinceEpoch;
+    final author = user('mock:it$stamp:it_${tag}_${stamp % 1000000000}');
+    await author.ensureSignedIn();
+    try {
+      final pending = await author.pendingLegalDocuments(refresh: true);
+      if (pending.isNotEmpty) await author.acceptLegalDocuments([for (final d in pending) d.id]);
+      await body(author);
+    } finally {
+      await author.deleteMyAccount();
+    }
+  }
+
   setUpAll(() async {
     if (!_enabled) return;
     final env = _dockerEnv();
@@ -94,25 +107,26 @@ void main() {
   }, skip: skip);
 
   test('the post owner receives new comments in realtime', () async {
-    final stamp = DateTime.now().microsecondsSinceEpoch;
-    final post = await budi.feed.createPost(body: 'Integration test \$BBCA $stamp');
-    final seen = <String>{};
-    final sub = budi.comments.watchComments(post.id).listen(seen.add);
-    try {
-      String? received;
-      for (var attempt = 0; attempt < 5 && received == null; attempt++) {
-        final comment = await sari.comments.createComment(postId: post.id, body: 'Komentar realtime $stamp-$attempt');
-        final deadline = DateTime.now().add(const Duration(seconds: 3));
-        while (DateTime.now().isBefore(deadline) && !seen.contains(comment.id)) {
-          await Future<void>.delayed(const Duration(milliseconds: 100));
+    await withFreshAuthor('cmt', (author) async {
+      final stamp = DateTime.now().microsecondsSinceEpoch;
+      final post = await author.feed.createPost(body: 'Integration test \$BBCA $stamp');
+      final seen = <String>{};
+      final sub = author.comments.watchComments(post.id).listen(seen.add);
+      try {
+        String? received;
+        for (var attempt = 0; attempt < 5 && received == null; attempt++) {
+          final comment = await sari.comments.createComment(postId: post.id, body: 'Komentar realtime $stamp-$attempt');
+          final deadline = DateTime.now().add(const Duration(seconds: 3));
+          while (DateTime.now().isBefore(deadline) && !seen.contains(comment.id)) {
+            await Future<void>.delayed(const Duration(milliseconds: 100));
+          }
+          if (seen.contains(comment.id)) received = comment.id;
         }
-        if (seen.contains(comment.id)) received = comment.id;
+        expect(received, isNotNull, reason: 'the realtime comment event was never received');
+      } finally {
+        await sub.cancel();
       }
-      expect(received, isNotNull, reason: 'the realtime comment event was never received');
-    } finally {
-      await sub.cancel();
-      await budi.feed.deletePost(post.id);
-    }
+    });
   }, skip: skip);
 
   test('realtime chat: messages, typing (private channel), notifications', () async {
@@ -244,12 +258,12 @@ void main() {
   }, skip: skip);
 
   test('polls: create, vote, and see results after voting', () async {
-    final stamp = DateTime.now().microsecondsSinceEpoch;
-    final post = await budi.feed.createPost(
-      body: 'Polling integration $stamp: IHSG minggu depan?',
-      poll: const PollDraft(options: ['Naik', 'Turun', 'Sideways'], duration: PollDuration.oneHour),
-    );
-    try {
+    await withFreshAuthor('poll', (author) async {
+      final stamp = DateTime.now().microsecondsSinceEpoch;
+      final post = await author.feed.createPost(
+        body: 'Polling integration $stamp: IHSG minggu depan?',
+        poll: const PollDraft(options: ['Naik', 'Turun', 'Sideways'], duration: PollDuration.oneHour),
+      );
       final created = post.poll!;
       expect(created.options.map((o) => o.label), ['Naik', 'Turun', 'Sideways']);
       expect(created.resultsVisible, isTrue);
@@ -268,12 +282,10 @@ void main() {
         throwsA(isA<CommunityException>().having((e) => e.code, 'code', 'already_voted')),
       );
       await expectLater(
-        budi.polls.vote(post.id, beforeVote.options.first.id),
+        author.polls.vote(post.id, beforeVote.options.first.id),
         throwsA(isA<CommunityException>().having((e) => e.code, 'code', 'own_poll')),
       );
-    } finally {
-      await budi.feed.deletePost(post.id);
-    }
+    });
   }, skip: skip);
 
   test('legal documents come from get_legal_documents', () async {
@@ -337,10 +349,10 @@ void main() {
   }, skip: skip);
 
   test('search, hashtag feed, trending and sentiment', () async {
-    final stamp = DateTime.now().microsecondsSinceEpoch;
-    final tag = 'ittag$stamp';
-    final post = await sari.feed.createPost(body: 'Integration zorvexit$stamp \$BBCA #$tag');
-    try {
+    await withFreshAuthor('search', (author) async {
+      final stamp = DateTime.now().microsecondsSinceEpoch;
+      final tag = 'ittag$stamp';
+      final post = await author.feed.createPost(body: 'Integration zorvexit$stamp \$BBCA #$tag');
       expect(post.hashtags, [tag]);
       expect(extractHashtags(post.body), [tag]);
       expect(post.moderationStatus, ModerationStatus.visible);
@@ -377,16 +389,12 @@ void main() {
       expect(snapshot.window, TrendWindow.week);
       final sentiment = await sari.trending.stockSentiment('bbca');
       expect(sentiment.code, 'BBCA');
-    } finally {
-      await sari.feed.deletePost(post.id);
-    }
+    });
   }, skip: skip);
 
   test('bookmarks: set, list, and unset', () async {
-    final rina = user('mock:1004:rina_saham');
-    await rina.ensureSignedIn();
-    final post = await rina.feed.createPost(body: 'Bookmark integration ${DateTime.now().microsecondsSinceEpoch}');
-    try {
+    await withFreshAuthor('bookmark', (author) async {
+      final post = await author.feed.createPost(body: 'Bookmark integration ${DateTime.now().microsecondsSinceEpoch}');
       expect(await sari.bookmarks.setBookmarked(post.id, bookmarked: true), isTrue);
       expect(await sari.bookmarks.setBookmarked(post.id, bookmarked: true), isTrue);
       final saved = await sari.bookmarks.getBookmarks(limit: 50);
@@ -397,27 +405,23 @@ void main() {
       expect(await sari.bookmarks.setBookmarked(post.id), isFalse);
       final after = await sari.bookmarks.getBookmarks(limit: 50);
       expect(after.items.map((p) => p.id), isNot(contains(post.id)));
-    } finally {
-      await rina.feed.deletePost(post.id);
-    }
+    });
   }, skip: skip);
 
   test('edit window: fresh posts and comments are editable, polls and old posts are not', () async {
-    final stamp = DateTime.now().microsecondsSinceEpoch;
-    final dewi = user('mock:1005:dewi_cuan');
-    await dewi.ensureSignedIn();
-    final post = await dewi.feed.createPost(body: 'Edit integration $stamp');
-    final poll = await dewi.feed.createPost(
-      body: 'Edit poll $stamp',
-      poll: const PollDraft(options: ['Ya', 'Tidak'], duration: PollDuration.oneHour),
-    );
-    try {
-      final edited = await dewi.edits.editPost(post.id, 'Edit integration $stamp (diperbarui)');
+    await withFreshAuthor('edit', (author) async {
+      final stamp = DateTime.now().microsecondsSinceEpoch;
+      final post = await author.feed.createPost(body: 'Edit integration $stamp');
+      final poll = await author.feed.createPost(
+        body: 'Edit poll $stamp',
+        poll: const PollDraft(options: ['Ya', 'Tidak'], duration: PollDuration.oneHour),
+      );
+      final edited = await author.edits.editPost(post.id, 'Edit integration $stamp (diperbarui)');
       expect(edited.body, endsWith('(diperbarui)'));
       expect(edited.editedAt, isNotNull);
 
-      final comment = await dewi.comments.createComment(postId: post.id, body: 'Komentar $stamp');
-      final editedComment = await dewi.edits.editComment(comment.id, 'Komentar $stamp diedit');
+      final comment = await author.comments.createComment(postId: post.id, body: 'Komentar $stamp');
+      final editedComment = await author.edits.editComment(comment.id, 'Komentar $stamp diedit');
       expect(editedComment.body, 'Komentar $stamp diedit');
       expect(editedComment.editedAt, isNotNull);
 
@@ -426,7 +430,7 @@ void main() {
         throwsA(isA<CommunityException>().having((e) => e.kind, 'kind', CommunityErrorKind.forbidden)),
       );
       await expectLater(
-        dewi.edits.editPost(poll.id, 'ubah polling'),
+        author.edits.editPost(poll.id, 'ubah polling'),
         throwsA(isA<CommunityException>().having((e) => e.code, 'code', 'poll_not_editable')),
       );
 
@@ -440,10 +444,7 @@ void main() {
           throwsA(isA<CommunityException>().having((e) => e.code, 'code', 'edit_window_expired')),
         );
       }
-    } finally {
-      await dewi.feed.deletePost(post.id);
-      await dewi.feed.deletePost(poll.id);
-    }
+    });
   }, skip: skip);
 
   test('DM message requests: a new account writes to budi, hits the limit, and is accepted', () async {
@@ -512,34 +513,37 @@ void main() {
   }, skip: skip);
 
   test('moderated content lists hidden posts and their appeal', () async {
-    final dewi = user('mock:1005:dewi_cuan');
-    await dewi.ensureSignedIn();
-    final post = await dewi.feed.createPost(body: 'Moderasi integration ${DateTime.now().microsecondsSinceEpoch}');
-    String? appealId;
-    try {
-      final hidden = await _psql(
-        "update public.posts set moderation_status = 'hidden', moderated_at = now() where id = '${post.id}'",
-      );
-      if (!hidden) {
-        markTestSkipped('docker exec psql is not available to hide a post');
-        return;
-      }
-      final before = await dewi.appeals.myModeratedContent();
-      final item = before.firstWhere((c) => c.id == post.id);
-      expect(item.type, AppealTargetType.post);
-      expect(item.state, ModeratedState.hidden);
-      expect(item.appeal, isNull);
-      expect((await dewi.feed.getPost(post.id))!.isHidden, isTrue);
+    await withFreshAuthor('appeal', (author) async {
+      final post = await author.feed.createPost(body: 'Moderasi integration ${DateTime.now().microsecondsSinceEpoch}');
+      String? appealId;
+      try {
+        final hidden = await _psql(
+          "update public.posts set moderation_status = 'hidden', moderated_at = now() where id = '${post.id}'",
+        );
+        if (!hidden) {
+          markTestSkipped('docker exec psql is not available to hide a post');
+          return;
+        }
+        final before = await author.appeals.myModeratedContent();
+        final item = before.firstWhere((c) => c.id == post.id);
+        expect(item.type, AppealTargetType.post);
+        expect(item.state, ModeratedState.hidden);
+        expect(item.appeal, isNull);
+        expect((await author.feed.getPost(post.id))!.isHidden, isTrue);
 
-      final appeal = await dewi.appeals.createAppeal(AppealTargetType.post, post.id, 'Integration: analisis biasa.');
-      appealId = appeal.id;
-      final after = await dewi.appeals.myModeratedContent();
-      expect(after.firstWhere((c) => c.id == post.id).appeal!.status, AppealStatus.pending);
-      expect((await dewi.appeals.myAppeals()).map((a) => a.id), contains(appeal.id));
-    } finally {
-      if (appealId != null) await _psql("delete from public.appeals where id = '$appealId'");
-      await dewi.feed.deletePost(post.id);
-    }
+        final appeal = await author.appeals.createAppeal(
+          AppealTargetType.post,
+          post.id,
+          'Integration: analisis biasa.',
+        );
+        appealId = appeal.id;
+        final after = await author.appeals.myModeratedContent();
+        expect(after.firstWhere((c) => c.id == post.id).appeal!.status, AppealStatus.pending);
+        expect((await author.appeals.myAppeals()).map((a) => a.id), contains(appeal.id));
+      } finally {
+        if (appealId != null) await _psql("delete from public.appeals where id = '$appealId'");
+      }
+    });
   }, skip: skip);
 
   test('DM policy round trip', () async {
@@ -702,55 +706,54 @@ void main() {
   }, skip: skip);
 
   test('message reactions with realtime and sharing a post to a DM', () async {
-    final roomId = await budi.chat.getOrCreateDirectRoom(sari.currentUser!.id);
-    final post = await budi.feed.createPost(body: 'Share integration ${DateTime.now().microsecondsSinceEpoch}');
-    final budiRoom = budi.chat.connectRoom(roomId, me: budi.currentUser!);
-    final budiEvents = budiRoom.events.asBroadcastStream();
-    final sub = budiEvents.listen((_) {});
-    final sentIds = <String>[];
-    try {
-      await _waitFor(budiEvents, (e) => e is SignalsConnectionChanged && e.status == RealtimeStatus.connected);
-      final message = await budi.chat.sendMessage(
-        roomId,
-        body: 'Reaksi ${const Uuid().v4()}',
-        clientId: const Uuid().v4(),
-      );
-      sentIds.add(message.id);
-
-      final event = _waitFor(budiEvents, (e) => e is ReactionChanged && e.messageId == message.id);
-      final reactions = await sari.chatExtras.react(message.id, '👍');
-      expect(reactions.single.emoji, '👍');
-      expect(reactions.single.count, 1);
-      expect(reactions.single.mine, isTrue);
-      final changed = await event as ReactionChanged;
-      expect(changed.userId, sari.currentUser!.id);
-      expect(changed.counts.single.count, 1);
-
-      final page = await budi.chat.getMessages(roomId, limit: 5);
-      final seen = page.items.firstWhere((m) => m.id == message.id);
-      expect(seen.reactions.single.mine, isFalse);
-      expect(await sari.chatExtras.react(message.id, '👍'), isEmpty);
-
-      final shared = await budi.chatExtras.sharePost(roomId, post.id, body: 'Lihat ini');
-      sentIds.add(shared.id);
-      expect(shared.sharedPostId, post.id);
-      expect(shared.sharedPost!.available, isTrue);
-      final forSari = (await sari.chat.getMessages(roomId, limit: 5)).items.firstWhere((m) => m.id == shared.id);
-      expect(forSari.sharedPost!.author!.username, 'budi_santoso');
-
-      await budi.feed.deletePost(post.id);
-      final gone = (await sari.chat.getMessages(roomId, limit: 5)).items.firstWhere((m) => m.id == shared.id);
-      expect(gone.sharedPost!.available, isFalse);
-    } finally {
-      await sub.cancel();
-      await budiRoom.close();
-      for (final id in sentIds) {
-        await budi.chat.deleteMessage(id);
-      }
+    await withFreshAuthor('share', (author) async {
+      final roomId = await budi.chat.getOrCreateDirectRoom(sari.currentUser!.id);
+      final post = await author.feed.createPost(body: 'Share integration ${DateTime.now().microsecondsSinceEpoch}');
+      final budiRoom = budi.chat.connectRoom(roomId, me: budi.currentUser!);
+      final budiEvents = budiRoom.events.asBroadcastStream();
+      final sub = budiEvents.listen((_) {});
+      final sentIds = <String>[];
       try {
-        await budi.feed.deletePost(post.id);
-      } on CommunityException catch (_) {}
-    }
+        await _waitFor(budiEvents, (e) => e is SignalsConnectionChanged && e.status == RealtimeStatus.connected);
+        final message = await budi.chat.sendMessage(
+          roomId,
+          body: 'Reaksi ${const Uuid().v4()}',
+          clientId: const Uuid().v4(),
+        );
+        sentIds.add(message.id);
+
+        final event = _waitFor(budiEvents, (e) => e is ReactionChanged && e.messageId == message.id);
+        final reactions = await sari.chatExtras.react(message.id, '👍');
+        expect(reactions.single.emoji, '👍');
+        expect(reactions.single.count, 1);
+        expect(reactions.single.mine, isTrue);
+        final changed = await event as ReactionChanged;
+        expect(changed.userId, sari.currentUser!.id);
+        expect(changed.counts.single.count, 1);
+
+        final page = await budi.chat.getMessages(roomId, limit: 5);
+        final seen = page.items.firstWhere((m) => m.id == message.id);
+        expect(seen.reactions.single.mine, isFalse);
+        expect(await sari.chatExtras.react(message.id, '👍'), isEmpty);
+
+        final shared = await budi.chatExtras.sharePost(roomId, post.id, body: 'Lihat ini');
+        sentIds.add(shared.id);
+        expect(shared.sharedPostId, post.id);
+        expect(shared.sharedPost!.available, isTrue);
+        final forSari = (await sari.chat.getMessages(roomId, limit: 5)).items.firstWhere((m) => m.id == shared.id);
+        expect(forSari.sharedPost!.author!.username, author.currentUser!.username);
+
+        await author.feed.deletePost(post.id);
+        final gone = (await sari.chat.getMessages(roomId, limit: 5)).items.firstWhere((m) => m.id == shared.id);
+        expect(gone.sharedPost!.available, isFalse);
+      } finally {
+        await sub.cancel();
+        await budiRoom.close();
+        for (final id in sentIds) {
+          await budi.chat.deleteMessage(id);
+        }
+      }
+    });
   }, skip: skip);
 
   test('banners from get_client_config are visible to signed-in clients', () async {
@@ -774,18 +777,18 @@ void main() {
   }, skip: skip);
 
   test('report_notification_event records opened and tapped for an inbox item', () async {
-    final post = await budi.feed.createPost(body: 'Event integration ${DateTime.now().microsecondsSinceEpoch}');
-    try {
+    await withFreshAuthor('notif', (author) async {
+      final post = await author.feed.createPost(body: 'Event integration ${DateTime.now().microsecondsSinceEpoch}');
       await sari.feed.likePost(post.id);
       AppNotification? notification;
       for (var i = 0; i < 20 && notification == null; i++) {
-        final page = await budi.notifications.getNotifications(limit: 30);
+        final page = await author.notifications.getNotifications(limit: 30);
         notification = page.items.where((n) => n.postId == post.id).firstOrNull;
         if (notification == null) await Future<void>.delayed(const Duration(milliseconds: 250));
       }
       expect(notification, isNotNull);
-      await budi.reportNotificationTapped({'notification_id': notification!.id});
-      expect(budi.notificationReporter.queuedCount, 0);
+      await author.reportNotificationTapped({'notification_id': notification!.id});
+      expect(author.notificationReporter.queuedCount, 0);
       expect(
         await _psql(
           'do \$\$ begin if (select count(*) from private.notification_events '
@@ -793,34 +796,30 @@ void main() {
         ),
         isTrue,
       );
-    } finally {
-      await budi.feed.deletePost(post.id);
-    }
+    });
   }, skip: skip);
 
   test('drafts: save, list, update, delete and publishing removes the draft', () async {
-    final id = const Uuid().v4();
-    final first = await budi.drafts.save(
-      PostDraft(clientDraftId: id, body: r'Draf integrasi $BBCA', stocks: const ['bbca'], updatedAt: DateTime.now()),
-    );
-    expect(first.status, DraftSyncStatus.synced);
-    final listed = (await budi.drafts.list()).firstWhere((d) => d.clientDraftId == id);
-    expect(listed.stocks, ['BBCA']);
+    await withFreshAuthor('draft', (author) async {
+      final id = const Uuid().v4();
+      final first = await author.drafts.save(
+        PostDraft(clientDraftId: id, body: r'Draf integrasi $BBCA', stocks: const ['bbca'], updatedAt: DateTime.now()),
+      );
+      expect(first.status, DraftSyncStatus.synced);
+      final listed = (await author.drafts.list()).firstWhere((d) => d.clientDraftId == id);
+      expect(listed.stocks, ['BBCA']);
 
-    final second = await budi.drafts.save(listed.copyWith(body: r'Draf integrasi $BBCA diubah'));
-    expect(second.status, DraftSyncStatus.synced);
+      final second = await author.drafts.save(listed.copyWith(body: r'Draf integrasi $BBCA diubah'));
+      expect(second.status, DraftSyncStatus.synced);
 
-    final post = await budi.feed.createPost(body: r'Terbit dari draf $BBCA', clientId: id);
-    try {
-      expect((await budi.drafts.list()).where((d) => d.clientDraftId == id), isEmpty);
-    } finally {
-      await budi.feed.deletePost(post.id);
-    }
+      await author.feed.createPost(body: r'Terbit dari draf $BBCA', clientId: id);
+      expect((await author.drafts.list()).where((d) => d.clientDraftId == id), isEmpty);
 
-    final other = const Uuid().v4();
-    await budi.drafts.save(PostDraft(clientDraftId: other, body: 'Hapus saya', updatedAt: DateTime.now()));
-    await budi.drafts.delete(other);
-    expect((await budi.drafts.list()).where((d) => d.clientDraftId == other), isEmpty);
+      final other = const Uuid().v4();
+      await author.drafts.save(PostDraft(clientDraftId: other, body: 'Hapus saya', updatedAt: DateTime.now()));
+      await author.drafts.delete(other);
+      expect((await author.drafts.list()).where((d) => d.clientDraftId == other), isEmpty);
+    });
   }, skip: skip);
 
   test('stock cards round trip through send_message and get_messages', () async {

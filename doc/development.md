@@ -34,6 +34,25 @@ dart run tool/check_logging.dart  # gagal bila library memakai print/debugPrint 
 | `test/support` | Fake dependensi & mock data source bersama |
 | `example/integration_test` | E2E app di Windows: login → feed → thread → komentar (Enter) → chat (Enter) → notifikasi |
 
+### Mode auth-bridge per tes backend
+
+Mode auth-bridge menentukan token yang diterima: `mock` menerima `mock:<id>:<username>`, `jwt` hanya menerima token sosial bertanda tangan dari OLT dummy. Cek dengan `GET /bridge/v1/health` (header `apikey`), field `olt_mode`. Anon key ada di `docker/secrets/anon_key` repo backend dan diteruskan lewat `OLT_SOCIAL_ANON_KEY`.
+
+| Tes | Mode | Cara menjalankan |
+|---|---|---|
+| `test/integration/backend_integration_test.dart` | `mock` | `OLT_SOCIAL_IT=1 OLT_SOCIAL_ANON_KEY=<anon> flutter test test/integration` |
+| `test/integration/dummy_olt_integration_test.dart` | `jwt` + OLT dummy | `OLT_SOCIAL_IT_DUMMY=1 OLT_SOCIAL_ANON_KEY=<anon> flutter test test/integration` |
+| `example/integration_test/app_test.dart`, `support_test.dart` | `jwt` + OLT dummy | dari `example/`: `flutter test integration_test/<file> -d windows --dart-define=OLT_SOCIAL_ANON_KEY=<anon>` |
+| `example/integration_test/dummy_olt_login_test.dart` | `jwt` + OLT dummy | seperti di atas, tambah `--dart-define=OLT_DUMMY_E2E=true` |
+
+Dari repo backend, mode `mock`: `docker compose -f docker/compose.yml -f docker/compose.dev.yml --profile cs up -d --no-deps auth-bridge`. Kembali ke `jwt`: tambahkan `-f docker/compose.dummy-olt.yml` ke perintah yang sama. Di Git Bash, awali dengan `MSYS_NO_PATHCONV=1`. Tutup dulu app example Windows yang sedang berjalan dari clone ini sebelum menjalankan E2E, karena app itu mengunci folder `build`.
+
+Tes ini tidak bergantung pada sisa data dev:
+
+- Tes integrasi yang membuat postingan memakai akun baru per tes (`withFreshAuthor`, token `mock:it<waktu>:it_<tag>_<angka>`), lalu menghapusnya lewat `deleteMyAccount`. Batas 50 post/24 jam juga menghitung postingan yang sudah dihapus, jadi akun seed seperti `budi_santoso` tidak dipakai untuk membuat postingan.
+- `support_test` membuat tiket baru bila tiket terakhir `rina_saham` sudah selesai atau ditutup (menu **Buat tiket baru** → pilih topik), memakai tiket aktif bila ada, dan mengakhiri tiket yang dibuatnya sendiri di akhir tes.
+- `dummy_olt_login_test` menggulir daftar login sampai form OLT dummy terlihat sebelum mengisi dan menekan tombol.
+
 ### Tes performa scroll (1.4.0)
 
 Tes di `example/integration_test/perf_scroll_test.dart` memakai repository palsu (tanpa backend): 200 post (gambar 1600×1200, link preview, polling, sentimen) dan 500 pesan grup (gambar, kartu saham, reaksi, pembatas hari). Feed dan chat di-scroll dari atas sampai item terakhir lalu kembali, dengan `traceAction`; driver (`example/test_driver/perf_driver.dart`) menghitung rata-rata/p90/p99/terburuk waktu build dan raster, frame yang melewati budget, serta RSS proses, lalu menulis `example/build/perf_scroll_report.json` dan timeline `example/build/{feed,chat}_scroll.timeline*.json`.

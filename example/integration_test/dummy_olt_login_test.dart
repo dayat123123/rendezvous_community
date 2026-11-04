@@ -19,26 +19,37 @@ Future<void> pumpUntilFound(
   throw TestFailure('Tidak menemukan $finder dalam $timeout');
 }
 
+Future<void> revealOnLoginList(WidgetTester tester, Finder finder) async {
+  await tester.scrollUntilVisible(finder, 200, scrollable: find.byType(Scrollable).first);
+  await tester.ensureVisible(finder);
+  await tester.pump(const Duration(milliseconds: 200));
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('dummy OLT login form: a wrong password is rejected and email + password signs in', (tester) async {
     await tester.pumpWidget(const ExampleApp());
-    final button = find.text('Masuk via OLT dummy');
-    await pumpUntilFound(tester, button);
-    await tester.ensureVisible(button);
+    await pumpUntilFound(tester, find.text('Rendezvous OLT (demo)'));
 
+    final button = find.text('Masuk via OLT dummy');
     final identifier = find.widgetWithText(TextField, 'Username / email');
     final password = find.widgetWithText(TextField, 'Password');
 
+    await revealOnLoginList(tester, password);
     await tester.enterText(password, 'salah');
+    await revealOnLoginList(tester, button);
     await tester.tap(button);
     await pumpUntilFound(tester, find.textContaining('password salah'));
     expect(button, findsOneWidget);
+    ScaffoldMessenger.of(tester.element(button)).removeCurrentSnackBar();
+    await tester.pump(const Duration(milliseconds: 300));
 
+    await revealOnLoginList(tester, identifier);
     await tester.enterText(identifier, 'sari@olt.test');
+    await revealOnLoginList(tester, password);
     await tester.enterText(password, 'olt12345');
-    await tester.ensureVisible(button);
+    await revealOnLoginList(tester, button);
     await tester.tap(button);
     await pumpUntilFound(tester, find.byType(CommunityStreamFeed));
 
