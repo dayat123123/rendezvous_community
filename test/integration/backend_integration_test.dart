@@ -14,7 +14,7 @@ import 'package:uuid/uuid.dart';
 final _enabled = Platform.environment['OLT_SOCIAL_IT'] == '1';
 
 Map<String, String> _dockerEnv() {
-  final file = File('../../docker/.env');
+  final file = File('../chat_service_supabase/docker/.env');
   if (!file.existsSync()) return const {};
   return {
     for (final line in file.readAsLinesSync())
@@ -24,7 +24,7 @@ Map<String, String> _dockerEnv() {
 }
 
 String? _dockerSecret(String name) {
-  final file = File('../../docker/secrets/$name');
+  final file = File('../chat_service_supabase/docker/secrets/$name');
   return file.existsSync() ? file.readAsStringSync().trim() : null;
 }
 

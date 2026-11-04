@@ -36,7 +36,7 @@ dart run tool/check_logging.dart  # gagal bila library memakai print/debugPrint 
 
 ### Mode auth-bridge per tes backend
 
-Mode auth-bridge menentukan token yang diterima: `mock` menerima `mock:<id>:<username>`, `jwt` hanya menerima token sosial bertanda tangan dari OLT dummy. Cek dengan `GET /bridge/v1/health` (header `apikey`), field `olt_mode`. Anon key ada di `docker/secrets/anon_key` repo backend dan diteruskan lewat `OLT_SOCIAL_ANON_KEY`.
+Mode auth-bridge menentukan token yang diterima: `mock` menerima `mock:<id>:<username>`, `jwt` hanya menerima token sosial bertanda tangan dari OLT dummy. Cek dengan `GET /bridge/v1/health` (header `apikey`), field `olt_mode`. Anon key ada di `docker/secrets/anon_key` repo backend dan diteruskan lewat `OLT_SOCIAL_ANON_KEY`. Tanpa env itu, tes di `test/integration` membaca `../chat_service_supabase/docker/secrets/anon_key` (repo backend di folder sebelah library).
 
 | Tes | Mode | Cara menjalankan |
 |---|---|---|

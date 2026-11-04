@@ -134,7 +134,7 @@ config.feature(CommunityFlags.search);                               // social_e
 
 | Bagian | Perilaku |
 |---|---|
-| Kill switch | `social_enabled = false` atau error `social_disabled` → feed, composer, detail post, pencarian, trending, bookmark, room non-CS menampilkan `CommunityUnavailableView`; daftar chat hanya menampilkan room CS. Chat CS tetap jalan |
+| Kill switch | `social_enabled = false` atau error `social_disabled` → feed, composer, detail post, pencarian, trending, bookmark, room non-CS menampilkan `CommunityUnavailableView`; daftar chat hanya menampilkan room CS. Chat CS tetap jalan. `social_disabled` dikenali dari kodenya, bukan status HTTP: backend `0109` ke atas mengirim `403` (`PT403`), backend lama `503` (`PT503`); keduanya ditangani sejak 1.3.0. Dengan `403`, pesan chat yang ditolak langsung gagal (tidak dicoba ulang otomatis oleh outbox) |
 | Placeholder kustom | `CommunityAvailabilityScope(builder: (context, reason, fallback) => ...)` di `MaterialApp.builder`, atau `CommunitySocialGate(unavailableBuilder: ...)` per widget. `reason`: `socialDisabled` / `featureDisabled` |
 | Versi minimum | `update_required` → `initialize(onUpdateRequired:)` dan `CommunityUpdateListener(onUpdateRequired: (context, config) => ...)` dipanggil sekali per transisi |
 | Flag yang dibaca | `search` (pencarian, hashtag), `trending` (trending, sentimen), `bookmarks`, `post_edit`, `message_reactions`, `share_post_to_chat`, `notification_prefs`, `analytics`. Sebelum konfigurasi termuat semua flag dianggap aktif; setelah termuat, flag yang tidak dikenal server dianggap mati |

@@ -1,3 +1,14 @@
+## Unreleased
+
+* **Kill switch `social_disabled` kini `403` (backend `0109`, T24).** Backend tidak lagi menjawab `503` (`PT503`) untuk
+  penolakan kill switch karena PostgREST menganggap setiap `503` sebagai database putus (flush pool dan muat ulang
+  schema cache per request). Klien 1.3.0 ke atas, termasuk 1.6.0, mengenali `social_disabled` dari kodenya, jadi
+  `403` (`PT403`) tetap menyembunyikan fitur komunitas dan menampilkan pesan kill switch; `503` dari backend lama tetap
+  ditangani. Bedanya hanya `CommunityException.kind`: `forbidden` (sebelumnya `unavailable`), sehingga pesan chat yang
+  ditolak langsung gagal alih-alih dicoba ulang otomatis oleh outbox. Tidak perlu rilis baru.
+* Tes integrasi membaca anon key cadangan dari `../chat_service_supabase/docker/secrets/anon_key` (repo backend di folder
+  sebelah); `OLT_SOCIAL_ANON_KEY` tetap diutamakan.
+
 ## 1.6.0
 
 * **Typing di room besar (backend `0106`).** Room saham dan grup dengan anggota ≥ `rooms.typing_aggregate_members`
