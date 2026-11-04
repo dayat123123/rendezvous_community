@@ -49,8 +49,6 @@ void main(List<String> args) {
     return;
   }
   violations.forEach(stderr.writeln);
-  stderr.writeln(
-    'check_comments: ${violations.length} comment(s) found; move explanations to doc/',
-  );
+  stderr.writeln('check_comments: ${violations.length} comment(s) found; move explanations to doc/');
   exitCode = 1;
 }
