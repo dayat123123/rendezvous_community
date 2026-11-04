@@ -1,6 +1,6 @@
 # Arsitektur `rendezvous_community`
 
-> Dipindahkan dari README package (1.0.0). Cara pakai ada di [README package](../README.md) dan [docs/INTEGRATION.md](https://github.com/dayat123123/chat_service_supabase/blob/main/docs/INTEGRATION.md).
+> Dipindahkan dari README package (1.0.0). Cara pakai ada di [README package](../README.md) dan [doc/integration.md](integration.md).
 
 Clean Architecture **per fitur**. Setiap fitur berdiri sendiri dengan tiga lapisan:
 

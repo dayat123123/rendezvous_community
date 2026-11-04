@@ -85,6 +85,8 @@ dependencies:
 - **CI / build server:** pakai URL SSH `git@github.com:dayat123123/rendezvous_community.git` dengan *deploy key* read-only yang disimpan sebagai secret CI.
 - **Jangan** menaruh token GitHub di URL `pubspec.yaml`, karena akan ikut ter-commit.
 
+Panduan lengkap memasang library ke aplikasi OLT (konfigurasi platform, versi minimum, push, chat CS, error, test di proyek host) ada di [doc/integration.md](doc/integration.md).
+
 ## Mulai cepat
 
 ### 1. Inisialisasi setelah login OLT
@@ -186,6 +188,7 @@ Setiap builder menerima `details` (data siap tampil + handler yang sudah tersamb
 
 | Dokumen | Isi |
 |---|---|
+| [doc/integration.md](doc/integration.md) | Langkah lengkap memasang library ke aplikasi OLT |
 | [doc/features.md](doc/features.md) | Perilaku fitur: chat, feed, dokumen hukum, privasi & akun, unggahan, kill switch, DM, analitik, offline, push |
 | [doc/customization.md](doc/customization.md) | Tema, builder chat/feed/notifikasi/profil/badge, cache gambar |
 | [doc/architecture.md](doc/architecture.md) | Struktur folder, aturan dependensi, alur auth, realtime, centang, error |
