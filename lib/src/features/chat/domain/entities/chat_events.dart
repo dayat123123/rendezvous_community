@@ -18,6 +18,13 @@ class RoomTyping extends RoomSignal {
   final bool isTyping;
 }
 
+class RoomTypingSummary extends RoomSignal {
+  const RoomTypingSummary(super.roomId, {required this.count, required this.ttl});
+
+  final int count;
+  final Duration ttl;
+}
+
 class RoomReceipt extends RoomSignal {
   const RoomReceipt(super.roomId, this.receipt);
 
@@ -73,6 +80,13 @@ class TypingChanged extends ChatRoomEvent {
 
   final UserSummary user;
   final bool isTyping;
+}
+
+class TypingSummaryChanged extends ChatRoomEvent {
+  const TypingSummaryChanged({required this.count, required this.ttl});
+
+  final int count;
+  final Duration ttl;
 }
 
 class ReceiptChanged extends ChatRoomEvent {

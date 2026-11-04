@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
@@ -41,10 +43,59 @@ class CommunityChatList extends StatelessWidget {
           cache: offline?.chatCache,
           connectivity: offline?.connectivity,
         )..load(),
-        child: _ChatListLayout(initialRoomId: initialRoomId),
+        child: _ListVisibility(child: _ChatListLayout(initialRoomId: initialRoomId)),
       ),
     );
   }
+}
+
+class _ListVisibility extends StatefulWidget {
+  const _ListVisibility({required this.child});
+
+  final Widget child;
+
+  @override
+  State<_ListVisibility> createState() => _ListVisibilityState();
+}
+
+class _ListVisibilityState extends State<_ListVisibility> {
+  ValueListenable<TickerModeData>? _ticker;
+  late final AppLifecycleListener _lifecycle;
+
+  @override
+  void initState() {
+    super.initState();
+    _lifecycle = AppLifecycleListener(onShow: _update, onHide: _update);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final ticker = TickerMode.getValuesNotifier(context);
+    if (identical(ticker, _ticker)) return;
+    _ticker?.removeListener(_update);
+    _ticker = ticker..addListener(_update);
+    _update();
+  }
+
+  void _update() {
+    if (!mounted) return;
+    final shown = switch (SchedulerBinding.instance.lifecycleState) {
+      AppLifecycleState.hidden || AppLifecycleState.paused || AppLifecycleState.detached => false,
+      _ => true,
+    };
+    context.read<ChatListCubit>().setVisible(shown && (_ticker?.value.enabled ?? true));
+  }
+
+  @override
+  void dispose() {
+    _ticker?.removeListener(_update);
+    _lifecycle.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) => widget.child;
 }
 
 class _ChatListLayout extends StatefulWidget {

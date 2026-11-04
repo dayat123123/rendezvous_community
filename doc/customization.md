@@ -111,7 +111,7 @@ Builder juga bisa dipasang per widget: `CommunityChatList(builders: ...)` atau `
 | `message` | `CommunityMessageDetails` | `message`, `isMine`, `receipt`, `showSender`, `startsGroup`, `timeLabel`; `onReply`, `onDelete` (dengan konfirmasi bawaan), `onReport`, `onRetry`, `onSenderTap`, `onShowActions` (menu aksi bawaan) |
 | `composer` | `CommunityComposerDetails` | `controller`, `focusNode`, `hintText`, `maxLength`, `uploading`, `replyTo`, `replyPreview`, `allowsDocuments`, `extraActions`; `onSend`, `onPickImage` (di chat CS juga memilih PDF), `onCancelReply` |
 | `roomHeader` | `CommunityRoomHeaderDetails` | `room`, `title`, `subtitle`, `highlightSubtitle`, `online`, `typing`, `memberCount`; `onTap`, `onToggleMute`, `onLeave` |
-| `typingIndicator` | `CommunityTypingDetails` | `users`, `text` (dipanggil hanya saat ada yang mengetik) |
+| `typingIndicator` | `CommunityTypingDetails` | `users`, `text`, `count` (jumlah yang mengetik dari ringkasan room besar; `users` kosong) — dipanggil hanya saat ada yang mengetik |
 | `connectionBanner` | `CommunityConnectionDetails` | `status`, `label` (dipanggil hanya saat menyambung ulang) |
 | `dayDivider` | `CommunityDayDetails` | `day`, `label` |
 | `roomTile` | `CommunityRoomTileDetails` | `room`, `title`, `preview`, `typingText`, `timeLabel`, `online`, `selected`, `lastMessageReceipt`; `onTap` |

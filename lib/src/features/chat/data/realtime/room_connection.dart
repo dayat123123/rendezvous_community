@@ -59,6 +59,8 @@ class SupabaseRoomConnection implements ChatRoomConnection {
       switch (signal) {
         case RoomTyping(:final user, :final isTyping):
           _emit(TypingChanged(user, isTyping: isTyping));
+        case RoomTypingSummary(:final count, :final ttl):
+          _emit(TypingSummaryChanged(count: count, ttl: ttl));
         case RoomReceipt(:final receipt):
           _emit(ReceiptChanged(receipt));
         case RoomPresence(:final userIds):

@@ -59,6 +59,7 @@ abstract class ChatRoomState with _$ChatRoomState {
     @Default(false) bool loadingOlder,
     @Default(<String, RoomMember>{}) Map<String, RoomMember> members,
     @Default(<String, UserSummary>{}) Map<String, UserSummary> typing,
+    @Default(0) int typingOthers,
     @Default(<String>{}) Set<String> online,
     @Default(RealtimeStatus.connecting) RealtimeStatus connection,
     ChatMessage? replyTo,
@@ -82,6 +83,8 @@ abstract class ChatRoomState with _$ChatRoomState {
   bool get supportsDmRequests => room?.type == RoomType.direct;
 
   bool get isStockRoom => room?.type == RoomType.stock;
+
+  bool get anyoneTyping => typing.isNotEmpty || typingOthers > 0;
 
   bool get isRoomModerator => isStockRoom && (stockRoom?.isModerator(me?.id) ?? false);
 
@@ -202,6 +205,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
   ChatRoomConnection? _connection;
   StreamSubscription<ChatRoomEvent>? _events;
   final _typingTimers = <String, Timer>{};
+  Timer? _typingOthersTimer;
   Timer? _typingIdle;
   Timer? _readDebounce;
   bool _typingSent = false;
@@ -529,6 +533,8 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
         }
       case TypingChanged(:final user, :final isTyping):
         isTyping ? _addTyping(user) : _removeTyping(user.id);
+      case TypingSummaryChanged(:final count, :final ttl):
+        _setTypingOthers(count, ttl);
       case ReceiptChanged(:final receipt):
         _applyReceipt(receipt);
       case PresenceChanged(:final userIds):
@@ -1001,6 +1007,14 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     emit(state.copyWith(typing: {...state.typing, user.id: known}));
   }
 
+  void _setTypingOthers(int count, Duration ttl) {
+    _typingOthersTimer?.cancel();
+    _typingOthersTimer = Timer(ttl, () {
+      if (!isClosed) emit(state.copyWith(typingOthers: 0));
+    });
+    if (count != state.typingOthers) emit(state.copyWith(typingOthers: count));
+  }
+
   void _removeTyping(String? userId) {
     if (userId == null || isClosed || !state.typing.containsKey(userId)) return;
     _typingTimers.remove(userId)?.cancel();
@@ -1046,6 +1060,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
   Future<void> close() async {
     _readDebounce?.cancel();
     _typingIdle?.cancel();
+    _typingOthersTimer?.cancel();
     _muteExpiry?.cancel();
     _gapSchedule.dispose();
     await _resumes?.cancel();

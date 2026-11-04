@@ -18,10 +18,14 @@ class RoomMessagePayload {
 }
 
 class RoomChannelHub {
-  RoomChannelHub(this._realtime, {this._typing});
+  RoomChannelHub(this._realtime, {this._typing, bool Function(String roomId)? presenceFor})
+    : _presenceFor = presenceFor ?? _always;
 
   final RealtimeGateway _realtime;
   final TypingSender? _typing;
+  final bool Function(String roomId) _presenceFor;
+
+  static bool _always(String _) => true;
   final _rooms = <String, _RoomChannel>{};
 
   Stream<RoomSignal> watch(String roomId, UserSummary me) => _room(roomId, me).watch();
@@ -44,18 +48,21 @@ class RoomChannelHub {
     } catch (_) {}
   }
 
-  _RoomChannel _room(String roomId, UserSummary me) =>
-      _rooms.putIfAbsent(roomId, () => _RoomChannel(_realtime, roomId, me, onIdle: () => _rooms.remove(roomId)));
+  _RoomChannel _room(String roomId, UserSummary me) => _rooms.putIfAbsent(
+    roomId,
+    () => _RoomChannel(_realtime, roomId, me, presence: _presenceFor(roomId), onIdle: () => _rooms.remove(roomId)),
+  );
 }
 
 class _RoomChannel {
-  _RoomChannel(this._realtime, this.roomId, this.me, {required this.onIdle}) {
+  _RoomChannel(this._realtime, this.roomId, this.me, {required this.presence, required this.onIdle}) {
     _controller = StreamController<Object>.broadcast(onListen: _open, onCancel: _close);
   }
 
   final RealtimeGateway _realtime;
   final String roomId;
   final UserSummary me;
+  final bool presence;
   final void Function() onIdle;
   late final StreamController<Object> _controller;
   RealtimeChannel? _channel;
@@ -83,22 +90,25 @@ class _RoomChannel {
   }
 
   void _open() {
-    final channel = _realtime.privateChannel('room:$roomId', presenceKey: me.id);
+    final channel = _realtime.privateChannel('room:$roomId', presenceKey: presence ? me.id : null);
     _channel = channel;
     channel
       ..onBroadcast(event: 'message', callback: _onMessage)
       ..onBroadcast(event: 'typing', callback: _onTyping)
+      ..onBroadcast(event: 'typing_summary', callback: _onTypingSummary)
       ..onBroadcast(event: 'receipt', callback: _onReceipt)
       ..onBroadcast(event: 'reaction', callback: _onReaction)
       ..onBroadcast(event: 'room_state', callback: _onRoomState)
-      ..onBroadcast(event: 'message_hidden', callback: _onMessageHidden)
-      ..onPresenceSync((_) => _emit(RoomPresence(roomId, {for (final s in channel.presenceState()) s.key})))
-      ..subscribe((status, _) async {
-        _emit(RoomConnection(roomId, mapSubscribeStatus(status)));
-        if (status == RealtimeSubscribeStatus.subscribed) {
-          await channel.track({'user_id': me.id});
-        }
-      });
+      ..onBroadcast(event: 'message_hidden', callback: _onMessageHidden);
+    if (presence) {
+      channel.onPresenceSync((_) => _emit(RoomPresence(roomId, {for (final s in channel.presenceState()) s.key})));
+    }
+    channel.subscribe((status, _) async {
+      _emit(RoomConnection(roomId, mapSubscribeStatus(status)));
+      if (presence && status == RealtimeSubscribeStatus.subscribed) {
+        await channel.track({'user_id': me.id});
+      }
+    });
   }
 
   Future<void> _close() async {
@@ -134,6 +144,11 @@ class _RoomChannel {
         isTyping: data['typing'] == true,
       ),
     );
+  }
+
+  void _onTypingSummary(Map<String, dynamic> payload) {
+    final summary = parseTypingSummary(roomId, broadcastPayload(payload));
+    if (summary != null) _emit(summary);
   }
 
   void _onReceipt(Map<String, dynamic> payload) {

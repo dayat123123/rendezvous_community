@@ -6,7 +6,7 @@
 
 Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · moderasi
 
-![Versi](https://img.shields.io/badge/versi-1.5.0-0f766e)
+![Versi](https://img.shields.io/badge/versi-1.6.0-0f766e)
 ![Flutter](https://img.shields.io/badge/Flutter-%E2%89%A5%203.44-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-%E2%89%A5%203.12-0175C2?logo=dart&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android-555)
@@ -62,6 +62,7 @@ Rincian perilaku setiap fitur ada di [doc/features.md](doc/features.md).
 
 | Package | Server minimal | Catatan |
 |---|---|---|
+| **1.6.x** | migrasi `0107` | Ringkasan mengetik di room besar, presence hanya DM, pratinjau room saham live. Di server lama otomatis kembali ke perilaku 1.5 |
 | **1.5.x** | migrasi `0098` | Pesan realtime lewat Broadcast. **Wajib** untuk server dengan `0098`: klien 1.4.x tidak lagi menerima pesan realtime |
 | 1.2 – 1.4 | — | Butuh layanan `media` untuk unggahan |
 
@@ -77,7 +78,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.5.0          # selalu pin ke tag rilis
+      ref: v1.6.0          # selalu pin ke tag rilis
 ```
 
 - **Laptop developer:** login GitHub sekali lewat Git Credential Manager (ikut terpasang bersama Git for Windows).
@@ -178,6 +179,7 @@ Setiap builder menerima `details` (data siap tampil + handler yang sudah tersamb
 - **Offline & privasi.** Cache lokal satu database per user dan dihapus saat `signOut()`, `deleteMyAccount()`, `clearLocalCache()`, atau ganti user. Chat CS tidak pernah di-cache. [Detail](doc/features.md#offline-cache--outbox-130)
 - **Kill switch & versi minimum.** Server bisa mematikan fitur sosial atau memaksa update. Widget lalu menampilkan placeholder, sedangkan chat CS tetap jalan. [Detail](doc/features.md#konfigurasi-klien--kill-switch-130)
 - **Dokumen hukum.** Post/komentar/pesan sebelum menyetujui S&K memunculkan dialog persetujuan, lalu aksinya diulang otomatis. [Detail](doc/features.md#dokumen-hukum--persetujuan)
+- **Exhaustive `switch` atas event chat** perlu cabang `TypingSummaryChanged` sejak 1.6.0 (lihat [CHANGELOG](CHANGELOG.md)).
 - **Log.** Library tidak mencetak ke konsol; teruskan ke logger OLT lewat `initialize(logHandler: ...)`. Data sensitif disamarkan. [Detail](doc/logging.md)
 
 ## Dokumentasi

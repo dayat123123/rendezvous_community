@@ -401,6 +401,9 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get typingMany => 'Several people are typing…';
 
   @override
+  String get typingSomeone => 'Someone is typing…';
+
+  @override
   String get messageHint => 'Write a message…';
 
   @override

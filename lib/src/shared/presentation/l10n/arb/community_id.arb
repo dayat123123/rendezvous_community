@@ -141,6 +141,7 @@
   "typing": "{name} sedang mengetik…",
   "@typing": { "placeholders": { "name": { "type": "String" } } },
   "typingMany": "Beberapa orang sedang mengetik…",
+  "typingSomeone": "Seseorang sedang mengetik…",
   "messageHint": "Tulis pesan…",
   "messageDeleted": "[pesan dihapus]",
   "messageFailed": "Gagal terkirim. Ketuk untuk kirim ulang.",

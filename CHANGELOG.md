@@ -1,3 +1,27 @@
+## 1.6.0
+
+* **Typing di room besar (backend `0106`).** Room saham dan grup dengan anggota ≥ `rooms.typing_aggregate_members`
+  (bawaan 50) tidak lagi menyiarkan typing per orang. Server mengirim event `typing_summary` (`count`, `ttl_ms`, tanpa
+  identitas) paling sering sekali per `rooms.typing_summary_seconds` (3 dtk) per room. Mulai
+  `rooms.typing_off_members` (2.000) typing mati. Room tampil "Seseorang sedang mengetik…" atau
+  "Beberapa orang sedang mengetik…" dan hilang sendiri setelah `ttl_ms`. DM, grup kecil, dan chat CS tidak berubah.
+  * Baru: `RoomTypingSummary` (subtipe `RoomSignal`), `TypingSummaryChanged` (subtipe `ChatRoomEvent`),
+    `ChatRoomState.typingOthers`/`anyoneTyping`, `CommunityTypingDetails.count`, string `typingSomeone`.
+    `switch` exhaustif milik host atas `RoomSignal`/`ChatRoomEvent` perlu cabang baru.
+* **Presence hanya di DM.** Channel `room:<id>` room saham dan grup bergabung tanpa presence (tidak `track`, tidak
+  `onPresenceSync`). Presence memang hanya dipakai untuk titik online DM. Server menolak `track` di room saham dan room
+  non-CS dengan anggota ≥ `rooms.presence_max_members` (50; room saham: `rooms.presence_stock_members`, bawaan selalu); channel tetap tersambung. Chat CS tetap memakai presence.
+* **Daftar chat: room saham ikut terbarui (backend `0107`).** Selama `CommunityChatList` terlihat (`TickerMode` aktif,
+  aplikasi di depan, online), pratinjau, waktu, dan jumlah belum dibaca room saham diambil lewat RPC ringan
+  `get_room_previews` (≤ 50 room per panggilan, tanpa hitungan anggota) tiap `rooms.preview_poll_seconds`
+  (bawaan 15 dtk, dijepit 5 dtk–5 mnt) × 0,75–1,25 acak, dan langsung saat aplikasi kembali ke depan bila poll terakhir
+  > 5 dtk. Room yang lebih baru naik ke atas; pratinjau tidak pernah mundur. Tanpa room saham di daftar tidak ada poll.
+  * Baru: `RoomPreviewRepository` (opsional, seperti `MessageIndexRepository`), `RoomPreview`, `RoomPreviewPage`.
+    Repository buatan host tanpa interface ini tidak memoll.
+  * Backend tanpa `0107` (`PGRST202`): polling berhenti untuk sesi itu, perilaku sama dengan 1.5.0.
+* Klien 1.5.0 pada backend `0106`/`0107`: indikator typing tidak muncul di room besar, `track` presence di room saham
+  ditolak tanpa error yang terlihat (channel dan pesan tetap jalan), daftar room saham tetap terbarui saat dimuat ulang.
+
 ## 1.5.0
 
 * **Realtime pesan lewat Broadcast dari server (backend `0098`).** Pesan baru, diubah, dihapus, dan disembunyikan

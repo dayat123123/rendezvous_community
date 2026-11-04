@@ -3,13 +3,17 @@ import 'dart:math';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/network/community_connectivity.dart';
 import 'package:rendezvous_community/src/core/network/realtime_status.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_events.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/room_preview.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_cache_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
+import 'package:rendezvous_community/src/features/chat/domain/repositories/room_preview_repository.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/cubit/stock_preview_schedule.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 
@@ -46,8 +50,11 @@ class ChatListCubit extends Cubit<ChatListState> {
     this.pageSize = 30,
     this.maxWatchedRooms = 30,
     this.typingTimeout = const Duration(seconds: 6),
+    this.previewPollInterval = const Duration(seconds: 15),
     this._cache,
     this._connectivity,
+    this._random,
+    this._clock,
   }) : super(const ChatListState());
 
   final ChatRepository _chat;
@@ -58,6 +65,18 @@ class ChatListCubit extends Cubit<ChatListState> {
   final int pageSize;
   final int maxWatchedRooms;
   final Duration typingTimeout;
+  final Duration previewPollInterval;
+  final Random? _random;
+  final DateTime Function()? _clock;
+  late final StockPreviewSchedule _previewSchedule = StockPreviewSchedule(
+    _pollPreviews,
+    interval: previewPollInterval,
+    random: _random,
+    clock: _clock,
+  );
+  StreamSubscription<void>? _resumes;
+  bool _visible = false;
+  bool _previewsUnsupported = false;
   StreamSubscription<RoomActivity>? _activity;
   StreamSubscription<RoomSignal>? _signals;
   Set<String> _watched = const {};
@@ -69,8 +88,11 @@ class ChatListCubit extends Cubit<ChatListState> {
     if (!(state.status == LoadStatus.ready && state.stale)) {
       emit(state.copyWith(status: LoadStatus.loading, error: null));
       _onlineChanges ??= _connectivity?.changes.listen((online) {
-        if (online && state.stale && !isClosed) unawaited(load());
+        if (isClosed) return;
+        _updatePreviewPolling();
+        if (online && state.stale) unawaited(load());
       });
+      _resumes ??= _connectivity?.resumes.listen((_) => _previewSchedule.nudge());
       await _showCached();
     }
     try {
@@ -153,6 +175,7 @@ class ChatListCubit extends Cubit<ChatListState> {
   }
 
   void _watchRooms() {
+    _updatePreviewPolling();
     final me = state.me;
     if (me == null) return;
     final ids = {for (final r in state.rooms.where((r) => r.tracksReceipts).take(maxWatchedRooms)) r.id};
@@ -161,6 +184,72 @@ class ChatListCubit extends Cubit<ChatListState> {
     final previous = _signals;
     _signals = _chat.watchRoomSignals(ids, me: me).listen(_onSignal, onError: (Object _) {});
     unawaited(previous?.cancel());
+  }
+
+  RoomPreviewRepository? get _previews => switch (_chat) {
+    final RoomPreviewRepository previews => previews,
+    _ => null,
+  };
+
+  void setVisible(bool visible) {
+    if (isClosed || visible == _visible) return;
+    _visible = visible;
+    _updatePreviewPolling();
+  }
+
+  List<String> get _stockRoomIds => [for (final r in state.rooms.where((r) => r.type == RoomType.stock).take(50)) r.id];
+
+  void _updatePreviewPolling() {
+    final active =
+        _visible &&
+        !_previewsUnsupported &&
+        _previews != null &&
+        state.status == LoadStatus.ready &&
+        (_connectivity?.isOnline ?? true) &&
+        _stockRoomIds.isNotEmpty;
+    active ? _previewSchedule.resume() : _previewSchedule.pause();
+  }
+
+  Future<void> _pollPreviews() async {
+    final ids = _stockRoomIds;
+    final chat = _previews;
+    if (isClosed || chat == null || ids.isEmpty) return;
+    try {
+      final page = await chat.getRoomPreviews(ids);
+      if (isClosed) return;
+      _previewSchedule.serverInterval = page.pollInterval;
+      _applyPreviews(page.previews);
+    } on CommunityException catch (e) {
+      if (e.code != 'PGRST202' || isClosed) return;
+      _previewsUnsupported = true;
+      _previewSchedule.pause();
+    } catch (_) {}
+  }
+
+  void _applyPreviews(List<RoomPreview> previews) {
+    final byId = {for (final p in previews) p.roomId: p};
+    final rooms = [for (final room in state.rooms) _withPreview(room, byId[room.id])];
+    if (!rooms.indexed.any((e) => !identical(e.$2, state.rooms[e.$1]))) return;
+    rooms.sort((a, b) => a.compareListOrder(b));
+    emit(state.copyWith(rooms: rooms));
+  }
+
+  ChatRoom _withPreview(ChatRoom room, RoomPreview? preview) {
+    if (preview == null) return room;
+    final at = preview.lastMessageAt;
+    final previous = room.lastMessageAt;
+    if (at != null && previous != null && at.isBefore(previous)) return room;
+    final moved = at != null && (previous == null || at.isAfter(previous));
+    if (!moved && preview.unreadCount == room.unreadCount) return room;
+    if (!moved) return room.copyWith(unreadCount: preview.unreadCount);
+    final mine = preview.lastMessageSenderId != null && preview.lastMessageSenderId == state.me?.id;
+    return room.copyWith(
+      lastMessageAt: at,
+      lastMessagePreview: preview.lastMessagePreview,
+      lastMessageSenderId: preview.lastMessageSenderId,
+      lastMessageStatus: mine ? ReceiptStatus.sent : null,
+      unreadCount: preview.unreadCount,
+    );
   }
 
   void _onSignal(RoomSignal signal) {
@@ -176,7 +265,7 @@ class ChatListCubit extends Cubit<ChatListState> {
         final previous = _channels[roomId];
         _channels[roomId] = status;
         if (status == RealtimeStatus.connected && previous != null && previous != status) _scheduleRefresh();
-      case RoomReaction() || RoomStateSignal() || RoomMessageHidden():
+      case RoomReaction() || RoomStateSignal() || RoomMessageHidden() || RoomTypingSummary():
         return;
     }
   }
@@ -223,6 +312,8 @@ class ChatListCubit extends Cubit<ChatListState> {
   @override
   Future<void> close() async {
     _debounce?.cancel();
+    _previewSchedule.dispose();
+    await _resumes?.cancel();
     for (final timer in _typingTimers.values) {
       timer.cancel();
     }

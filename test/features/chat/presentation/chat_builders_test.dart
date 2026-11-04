@@ -181,6 +181,35 @@ void main() {
     await tester.pump(const Duration(seconds: 7));
   });
 
+  testWidgets('typing summary: the indicator and header show anonymous typists, then clear', (tester) async {
+    useScreen(tester, const Size(900, 1200));
+    final chat = repository();
+    await pumpChat(
+      tester,
+      chat,
+      CommunityChatRoom(
+        roomId: 'dm',
+        builders: CommunityChatBuilders(
+          typingIndicator: (context, d, fallback) => Text('ringkas ${d.count}: ${d.text}'),
+        ),
+      ),
+    );
+
+    chat.roomEvents.add(const TypingSummaryChanged(count: 1, ttl: Duration(seconds: 6)));
+    await tester.pump();
+    await tester.pump();
+    expect(find.text('ringkas 1: Seseorang sedang mengetik…'), findsOneWidget);
+
+    chat.roomEvents.add(const TypingSummaryChanged(count: 4, ttl: Duration(seconds: 6)));
+    await tester.pump();
+    await tester.pump();
+    expect(find.text('ringkas 4: Beberapa orang sedang mengetik…'), findsOneWidget);
+    expect(find.text('Beberapa orang sedang mengetik…'), findsOneWidget);
+
+    await tester.pump(const Duration(seconds: 7));
+    expect(find.textContaining('ringkas'), findsNothing);
+  });
+
   testWidgets('empty and error builders: the retry handler reloads the room', (tester) async {
     useScreen(tester, const Size(900, 1200));
     final chat = FakeChatRepository(rooms: [directRoom()], members: directMembers())..messagesError = Exception('down');

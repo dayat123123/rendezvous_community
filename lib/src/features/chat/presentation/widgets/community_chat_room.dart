@@ -198,13 +198,18 @@ class _TypingIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final state = context.select((ChatRoomCubit c) => c.state);
-    if (state.typing.isEmpty) return const SizedBox(height: 0);
+    if (!state.anyoneTyping) return const SizedBox(height: 0);
     final theme = Theme.of(context);
-    final text = typingText(context.communityL10n, state.typing.values, direct: state.room?.type == RoomType.direct);
+    final text = typingText(
+      context.communityL10n,
+      state.typing.values,
+      direct: state.room?.type == RoomType.direct,
+      others: state.typingOthers,
+    );
     return buildChatPart(
       CommunityChatBuilders.of(context).typingIndicator,
       context,
-      CommunityTypingDetails(users: state.typing.values.toList(), text: text),
+      CommunityTypingDetails(users: state.typing.values.toList(), text: text, count: state.typingOthers),
       Padding(
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
         child: Align(

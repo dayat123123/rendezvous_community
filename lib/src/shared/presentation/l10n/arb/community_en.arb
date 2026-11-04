@@ -123,6 +123,7 @@
   "online": "Online",
   "typing": "{name} is typing…",
   "typingMany": "Several people are typing…",
+  "typingSomeone": "Someone is typing…",
   "messageHint": "Write a message…",
   "messageDeleted": "[message deleted]",
   "messageFailed": "Failed to send. Tap to retry.",

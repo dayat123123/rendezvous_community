@@ -12,28 +12,31 @@ import 'package:rendezvous_community/src/features/chat/data/repositories/message
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_events.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/room_preview.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/message_index_repository.dart';
+import 'package:rendezvous_community/src/features/chat/domain/repositories/room_preview_repository.dart';
 import 'package:rendezvous_community/src/shared/data/models/attachment_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ChatRepositoryImpl implements ChatRepository, MessageIndexRepository {
-  ChatRepositoryImpl(this._api, [this._realtime, this._cache])
-    : _hub = _realtime == null
-          ? null
-          : RoomChannelHub(
-              _realtime,
-              typing: (roomId, {required isTyping}) async {
-                await _api.rpcValue('send_typing', {'p_room_id': roomId, 'p_typing': isTyping});
-              },
-            );
+class ChatRepositoryImpl implements ChatRepository, MessageIndexRepository, RoomPreviewRepository {
+  ChatRepositoryImpl(this._api, [this._realtime, this._cache]);
 
   final SocialRemoteDataSource _api;
   final RealtimeGateway? _realtime;
   final ChatLocalCache? _cache;
-  final RoomChannelHub? _hub;
+  final _roomTypes = <String, RoomType>{};
+  late final RoomChannelHub? _hub = _realtime == null
+      ? null
+      : RoomChannelHub(
+          _realtime,
+          typing: (roomId, {required isTyping}) async {
+            await _api.rpcValue('send_typing', {'p_room_id': roomId, 'p_typing': isTyping});
+          },
+          presenceFor: _tracksPresence,
+        );
   late final SharedStream<RoomActivity> _activity = SharedStream(_createActivityStream);
   late final SharedStream<RoomMuteNotice> _muteNotices = SharedStream(_createMuteNoticeStream);
   final _unreadChanges = StreamController<void>.broadcast();
@@ -44,14 +47,31 @@ class ChatRepositoryImpl implements ChatRepository, MessageIndexRepository {
     final models = [for (final row in rows) RoomSummaryModel.fromJson(row)];
     if (cursor == null) await _cache?.saveRooms(rows);
     return Paged([
-      for (final model in models) model.toEntity(),
+      for (final model in models) _remember(model.toEntity()),
     ], nextCursor: models.length < limit ? null : models.last.cursor);
   }
 
   @override
   Future<ChatRoom?> getRoom(String roomId) async {
     final rows = await _api.rpcRows('get_my_room', {'p_room_id': roomId});
-    return rows.isEmpty ? null : RoomSummaryModel.fromJson(rows.first).toEntity();
+    return rows.isEmpty ? null : _remember(RoomSummaryModel.fromJson(rows.first).toEntity());
+  }
+
+  @override
+  Future<RoomPreviewPage> getRoomPreviews(List<String> roomIds) async {
+    if (roomIds.isEmpty) return const RoomPreviewPage([]);
+    final value = await _api.rpcValue('get_room_previews', {'p_room_ids': roomIds.take(50).toList()});
+    return value is Map<String, dynamic> ? parseRoomPreviewPage(value) : const RoomPreviewPage([]);
+  }
+
+  ChatRoom _remember(ChatRoom room) {
+    _roomTypes[room.id] = room.type;
+    return room;
+  }
+
+  bool _tracksPresence(String roomId) {
+    final type = _roomTypes[roomId];
+    return type == null || type == RoomType.direct;
   }
 
   @override

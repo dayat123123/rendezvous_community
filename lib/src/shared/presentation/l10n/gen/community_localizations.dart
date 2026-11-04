@@ -776,6 +776,12 @@ abstract class CommunityLocalizations {
   /// **'Beberapa orang sedang mengetik…'**
   String get typingMany;
 
+  /// No description provided for @typingSomeone.
+  ///
+  /// In id, this message translates to:
+  /// **'Seseorang sedang mengetik…'**
+  String get typingSomeone;
+
   /// No description provided for @messageHint.
   ///
   /// In id, this message translates to:

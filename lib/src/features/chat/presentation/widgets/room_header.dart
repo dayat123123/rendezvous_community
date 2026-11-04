@@ -19,19 +19,23 @@ class RoomHeader extends StatelessWidget {
     final builder = CommunityChatBuilders.of(context).roomHeader;
     return BlocBuilder<ChatRoomCubit, ChatRoomState>(
       buildWhen: (a, b) =>
-          a.room != b.room || a.typing != b.typing || a.members.length != b.members.length || a.online != b.online,
+          a.room != b.room ||
+          a.typing != b.typing ||
+          a.typingOthers != b.typingOthers ||
+          a.members.length != b.members.length ||
+          a.online != b.online,
       builder: (context, state) {
         final room = state.room;
         if (room == null) return const SizedBox.shrink();
         final cubit = context.read<ChatRoomCubit>();
-        final typing = state.typing.isNotEmpty;
+        final typing = state.anyoneTyping;
         final otherUser = room.otherUser;
         final stockCode = room.stockCode;
         final details = CommunityRoomHeaderDetails(
           room: room,
           title: roomTitle(room),
           subtitle: typing
-              ? typingText(l10n, state.typing.values, direct: room.type == RoomType.direct)
+              ? typingText(l10n, state.typing.values, direct: room.type == RoomType.direct, others: state.typingOthers)
               : switch (room.type) {
                   RoomType.direct when state.otherOnline => l10n.online,
                   RoomType.direct => '@${otherUser?.username ?? ''}',

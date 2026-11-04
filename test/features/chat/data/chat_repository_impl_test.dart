@@ -210,4 +210,50 @@ void main() {
     expect(member.lastDeliveredAt, DateTime.utc(2026, 10, 29, 4));
     expect(member.receipt.lastReadAt, DateTime.utc(2026, 10, 29, 3));
   });
+
+  test('stock room previews come from get_room_previews with the server poll interval', () async {
+    when(() => api.rpcValue('get_room_previews', any())).thenAnswer(
+      (_) async => <String, dynamic>{
+        'poll_seconds': 20,
+        'rooms': [
+          {
+            'room_id': 'bbca',
+            'last_message_at': '2026-11-04T02:00:00+00:00',
+            'last_message_preview': 'Antre di bid',
+            'last_message_sender_id': 'u-2',
+            'unread_count': 12,
+            'cursor': 'x',
+          },
+          {'last_message_preview': 'tanpa id'},
+        ],
+      },
+    );
+
+    final page = await ChatRepositoryImpl(api).getRoomPreviews(['bbca', 'tlkm']);
+
+    final params =
+        verify(() => api.rpcValue('get_room_previews', captureAny())).captured.single as Map<String, Object?>;
+    expect(params['p_room_ids'], ['bbca', 'tlkm']);
+    expect(page.pollInterval, const Duration(seconds: 20));
+    final preview = page.previews.single;
+    expect(preview.roomId, 'bbca');
+    expect(preview.lastMessageAt, DateTime.utc(2026, 11, 4, 2));
+    expect(preview.lastMessagePreview, 'Antre di bid');
+    expect(preview.lastMessageSenderId, 'u-2');
+    expect(preview.unreadCount, 12);
+  });
+
+  test('stock room previews send at most 50 rooms and skip the call without rooms', () async {
+    when(() => api.rpcValue('get_room_previews', any())).thenAnswer((_) async => <String, dynamic>{'rooms': []});
+    final repository = ChatRepositoryImpl(api);
+
+    expect((await repository.getRoomPreviews(const [])).previews, isEmpty);
+    verifyNever(() => api.rpcValue('get_room_previews', any()));
+
+    final page = await repository.getRoomPreviews([for (var i = 0; i < 60; i++) 'r-$i']);
+    final params =
+        verify(() => api.rpcValue('get_room_previews', captureAny())).captured.single as Map<String, Object?>;
+    expect(params['p_room_ids'], hasLength(50));
+    expect(page.pollInterval, isNull);
+  });
 }

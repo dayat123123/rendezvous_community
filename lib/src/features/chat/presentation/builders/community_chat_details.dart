@@ -130,10 +130,11 @@ class CommunityRoomHeaderDetails {
 }
 
 class CommunityTypingDetails {
-  const CommunityTypingDetails({required this.users, required this.text});
+  const CommunityTypingDetails({required this.users, required this.text, this.count = 0});
 
   final List<UserSummary> users;
   final String text;
+  final int count;
 }
 
 class CommunityConnectionDetails {

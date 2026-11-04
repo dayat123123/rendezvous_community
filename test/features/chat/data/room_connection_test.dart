@@ -20,10 +20,12 @@ class _Gateway extends RealtimeGateway {
 
   final _MockChannel channel;
   final topics = <String>[];
+  final presenceKeys = <String?>[];
 
   @override
   RealtimeChannel privateChannel(String topic, {String? presenceKey}) {
     topics.add(topic);
+    presenceKeys.add(presenceKey);
     return channel;
   }
 
@@ -88,10 +90,11 @@ void main() {
     when(() => channel.presenceState()).thenReturn(const []);
   });
 
-  SupabaseRoomConnection connect() {
+  SupabaseRoomConnection connect({bool presence = true}) {
     final hub = RoomChannelHub(
       gateway,
       typing: (roomId, {required isTyping}) async => typed.add((roomId: roomId, isTyping: isTyping)),
+      presenceFor: (_) => presence,
     );
     final connection = SupabaseRoomConnection(
       hub,
@@ -168,6 +171,38 @@ void main() {
     final typing = events.whereType<TypingChanged>().single;
     expect(typing.user.id, 'u-ani');
     expect(typing.isTyping, isTrue);
+  });
+
+  test('a typing summary from a large room arrives without identities and with a bounded lifetime', () async {
+    final connection = connect();
+    final events = await collect(connection, () {
+      handlers['typing_summary']!(_broadcast('typing_summary', {'room_id': 'r', 'count': 3, 'ttl_ms': 6000}));
+      handlers['typing_summary']!(_broadcast('typing_summary', {'room_id': 'r', 'count': 1, 'ttl_ms': 600000}));
+      handlers['typing_summary']!(_broadcast('typing_summary', {'room_id': 'other', 'count': 2}));
+      handlers['typing_summary']!(_broadcast('typing_summary', {'room_id': 'r', 'count': 0}));
+    });
+
+    final summaries = events.whereType<TypingSummaryChanged>().toList();
+    expect([for (final s in summaries) s.count], [3, 1]);
+    expect([for (final s in summaries) s.ttl], [const Duration(seconds: 6), const Duration(seconds: 15)]);
+  });
+
+  test('rooms without presence join without a presence key and never track', () async {
+    final connection = connect(presence: false);
+    await collect(connection, () => onStatus(RealtimeSubscribeStatus.subscribed, null));
+
+    expect(gateway.presenceKeys, [null]);
+    verifyNever(() => channel.onPresenceSync(any()));
+    verifyNever(() => channel.track(any()));
+  });
+
+  test('direct rooms keep presence so the online dot still works', () async {
+    final connection = connect();
+    await collect(connection, () => onStatus(RealtimeSubscribeStatus.subscribed, null));
+    await pumpEventQueue();
+
+    expect(gateway.presenceKeys, ['u-me']);
+    verify(() => channel.track({'user_id': 'u-me'})).called(1);
   });
 
   test('a message reference is fetched after its cursor and only the referenced message is shown', () async {

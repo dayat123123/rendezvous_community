@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_extras.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/room_preview.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/stock_room_state.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/shared/data/models/attachment_model.dart';
@@ -398,4 +399,33 @@ RoomActivity? parseRoomActivity(Map<String, dynamic> json) {
     preview: json['preview'] as String? ?? '',
     createdAt: createdAt.toUtc(),
   );
+}
+
+RoomTypingSummary? parseTypingSummary(String roomId, Map<String, dynamic> json) {
+  final room = json['room_id'];
+  final count = (json['count'] as num?)?.toInt() ?? 0;
+  if ((room != null && room != roomId) || count <= 0) return null;
+  final ttl = ((json['ttl_ms'] as num?)?.toInt() ?? 6000).clamp(2000, 15000);
+  return RoomTypingSummary(
+    roomId,
+    count: count,
+    ttl: Duration(milliseconds: ttl),
+  );
+}
+
+RoomPreviewPage parseRoomPreviewPage(Map<String, dynamic> json) {
+  final seconds = (json['poll_seconds'] as num?)?.toDouble();
+  final rows = json['rooms'];
+  return RoomPreviewPage([
+    if (rows is List)
+      for (final row in rows.whereType<Map<String, dynamic>>())
+        if (row['room_id'] is String)
+          RoomPreview(
+            roomId: row['room_id'] as String,
+            lastMessageAt: DateTime.tryParse(row['last_message_at'] as String? ?? '')?.toUtc(),
+            lastMessagePreview: row['last_message_preview'] as String?,
+            lastMessageSenderId: row['last_message_sender_id'] as String?,
+            unreadCount: (row['unread_count'] as num?)?.toInt() ?? 0,
+          ),
+  ], pollInterval: seconds == null || seconds <= 0 ? null : Duration(milliseconds: (seconds * 1000).round()));
 }

@@ -51,6 +51,21 @@ void main() {
 
   ReceiptStatus? receiptOfMine() => cubit.state.receiptOf(cubit.state.messages.first);
 
+  test('a typing summary shows anonymous typists and expires on its own', () async {
+    chat.roomEvents.add(const TypingSummaryChanged(count: 2, ttl: Duration(milliseconds: 40)));
+    await pumpEventQueue();
+    expect(cubit.state.typingOthers, 2);
+    expect(cubit.state.anyoneTyping, isTrue);
+    expect(cubit.state.typing, isEmpty);
+
+    chat.roomEvents.add(const TypingSummaryChanged(count: 1, ttl: Duration(milliseconds: 40)));
+    await Future<void>.delayed(const Duration(milliseconds: 25));
+    expect(cubit.state.typingOthers, 1);
+    await Future<void>.delayed(const Duration(milliseconds: 60));
+    expect(cubit.state.typingOthers, 0);
+    expect(cubit.state.anyoneTyping, isFalse);
+  });
+
   test('own undelivered message: one tick; messages from others: no ticks', () {
     expect(receiptOfMine(), ReceiptStatus.sent);
     expect(cubit.state.receiptOf(cubit.state.messages.last), isNull);

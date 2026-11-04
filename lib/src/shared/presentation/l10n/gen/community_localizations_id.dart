@@ -402,6 +402,9 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get typingMany => 'Beberapa orang sedang mengetik…';
 
   @override
+  String get typingSomeone => 'Seseorang sedang mengetik…';
+
+  @override
   String get messageHint => 'Tulis pesan…';
 
   @override
