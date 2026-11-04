@@ -1,0 +1,8 @@
+title = "rendezvous_community"
+
+[extend]
+useDefault = true
+
+[[allowlists]]
+description = "Token dan JWT palsu di data uji"
+paths = ['''(^|/)test/.*\.dart$''', '''(^|/)example/test/.*\.dart$''', '''(^|/)example/integration_test/.*\.dart$''']
