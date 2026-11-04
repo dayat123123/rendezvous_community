@@ -93,6 +93,43 @@ Future<void> endTicket(WidgetTester tester) async {
   await pumpUntilAny(tester, [find.text('Chat diakhiri.'), find.textContaining('sudah ditutup'), _picker]);
 }
 
+final _ticketHeader = find.byWidgetPredicate((w) => w is Text && RegExp(r'^#\S+ · ').hasMatch(w.data ?? ''));
+
+String ticketHeaderText(WidgetTester tester) => tester.widget<Text>(_ticketHeader.first).data!;
+
+Future<void> closeSupportPanel(WidgetTester tester) async {
+  await tester.tap(find.byTooltip('Tutup').last);
+  await tester.pump(const Duration(milliseconds: 500));
+}
+
+Future<void> expectActiveTicketResumed(WidgetTester tester) async {
+  await pumpUntilFound(tester, _ticketHeader);
+  final header = ticketHeaderText(tester);
+
+  await closeSupportPanel(tester);
+  expect(_ticketHeader, findsNothing);
+
+  await tester.tap(find.text('Bantuan').last);
+  await pumpUntilFound(tester, _ticketHeader);
+  expect(ticketHeaderText(tester), header);
+  expect(_picker, findsNothing);
+  await openSupportMenu(tester);
+  expect(_menuItem('Buat tiket baru'), findsNothing);
+  expect(_menuItem('Akhiri chat'), findsOneWidget);
+  await tester.sendKeyEvent(LogicalKeyboardKey.escape);
+  await tester.pump(const Duration(milliseconds: 500));
+  await closeSupportPanel(tester);
+
+  await tester.tap(find.text('Saham').last);
+  await pumpUntilFound(tester, find.text('Bantuan order'));
+  await tester.tap(find.text('Bantuan order'));
+  await pumpUntilFound(tester, _ticketHeader);
+  await tester.pump(const Duration(seconds: 2));
+  expect(ticketHeaderText(tester), header);
+  expect(_picker, findsNothing);
+  await capture(tester, 'windows-04-resumed');
+}
+
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
@@ -124,6 +161,8 @@ void main() {
     await capture(tester, 'windows-03-chat');
     await tester.enterText(composer, '');
     await tester.pump(const Duration(seconds: 1));
+
+    await expectActiveTicketResumed(tester);
 
     if (created) await endTicket(tester);
   });
