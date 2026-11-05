@@ -34,7 +34,7 @@ Future<Map<String, dynamic>> dummyRequest(String wsUrl, Map<String, Object?> mes
       final msg = jsonDecode(raw as String) as Map<String, dynamic>;
       if (msg['type'] == replyType && msg['request_id'] == requestId) return msg;
     }
-    throw StateError('Koneksi ditutup sebelum $replyType diterima');
+    throw StateError('Connection closed before $replyType was received');
   } finally {
     await socket.close();
   }

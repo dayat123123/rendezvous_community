@@ -286,9 +286,9 @@ Bungkus widget sosial dengan `CommunityScope` dan berikan implementasi palsu `Co
 |---|---|
 | Emulator Android tidak bisa terhubung | Gunakan `http://10.0.2.2:8000`, bukan `localhost`. Untuk HP fisik: `EDGE_HTTP_BIND=0.0.0.0` + IP PC |
 | `Cleartext HTTP traffic not permitted` | Build debug: tambahkan `usesCleartextTraffic` di manifest debug. Produksi: gunakan HTTPS |
-| Selalu "Sesi berakhir" | `tokenProvider` mengembalikan null, token sesi OLT (bukan token sosial), atau token sosial kedaluwarsa. Alasan pastinya ada di `docker compose logs auth-bridge` (`exchange ditolak`, field `reason`) |
-| Log auth-bridge: `kid tidak dikenal` / `tanda tangan tidak valid` | `docker/secrets/olt_jwks` belum berisi kunci publik OLT yang dipakai menandatangani. Tambahkan JWKS dari OLT, lalu restart auth-bridge |
-| Log auth-bridge: `masa berlaku token melebihi batas` / `token kedaluwarsa` | OLT menerbitkan token lebih dari `OLT_JWT_MAX_TTL` (15 menit), atau jam server OLT/sosial selisih lebih dari 30 detik (cek NTP) |
+| Selalu "Sesi berakhir" | `tokenProvider` mengembalikan null, token sesi OLT (bukan token sosial), atau token sosial kedaluwarsa. Alasan pastinya ada di `docker compose logs auth-bridge` (`exchange rejected`, field `reason`) |
+| Log auth-bridge: `unknown kid` / `invalid signature` | `docker/secrets/olt_jwks` belum berisi kunci publik OLT yang dipakai menandatangani. Tambahkan JWKS dari OLT, lalu restart auth-bridge |
+| Log auth-bridge: `token lifetime exceeds the limit` / `token expired` | OLT menerbitkan token lebih dari `OLT_JWT_MAX_TTL` (15 menit), atau jam server OLT/sosial selisih lebih dari 30 detik (cek NTP) |
 | Log auth-bridge: `audience` / `issuer` | Klaim `aud` harus memuat `olt-social` dan `iss` harus `olt` (atau sesuai `OLT_JWT_AUDIENCE` / `OLT_JWT_ISSUER`) |
 | Realtime tidak masuk | Pastikan port 443/8000 meneruskan WebSocket (Traefik sudah). Cek `docker compose logs realtime` |
 | Upload foto gagal "Jenis file tidak didukung" | Server memeriksa isi file, bukan ekstensinya. HEIC dari iPhone belum didukung; konversi ke JPEG di sisi OLT (mis. `image_picker` dengan `imageQuality`) |

@@ -15,7 +15,7 @@ Future<void> pumpUntilFound(
     await tester.pump(const Duration(milliseconds: 200));
     if (finder.evaluate().isNotEmpty) return;
   }
-  throw TestFailure('Tidak menemukan $finder dalam $timeout');
+  throw TestFailure('Could not find $finder within $timeout');
 }
 
 Future<void> pumpUntilGone(WidgetTester tester, Finder finder, {Duration timeout = const Duration(seconds: 20)}) async {
@@ -24,7 +24,7 @@ Future<void> pumpUntilGone(WidgetTester tester, Finder finder, {Duration timeout
     await tester.pump(const Duration(milliseconds: 200));
     if (finder.evaluate().isEmpty) return;
   }
-  throw TestFailure('$finder masih ada setelah $timeout');
+  throw TestFailure('$finder is still present after $timeout');
 }
 
 Future<void> pumpUntilFoundWhileScrolling(
@@ -39,7 +39,7 @@ Future<void> pumpUntilFoundWhileScrolling(
     if (finder.evaluate().isNotEmpty) return;
     await tester.drag(scrollable, const Offset(0, -300));
   }
-  throw TestFailure('Tidak menemukan $finder dalam $timeout');
+  throw TestFailure('Could not find $finder within $timeout');
 }
 
 Future<void> typeAndPressEnter(WidgetTester tester, Finder field, String text) async {

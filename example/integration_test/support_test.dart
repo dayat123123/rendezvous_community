@@ -20,7 +20,7 @@ Future<void> pumpUntilFound(
     await tester.pump(const Duration(milliseconds: 200));
     if (finder.evaluate().isNotEmpty) return;
   }
-  throw TestFailure('Tidak menemukan $finder dalam $timeout');
+  throw TestFailure('Could not find $finder within $timeout');
 }
 
 Future<void> pumpUntilAny(
@@ -33,7 +33,7 @@ Future<void> pumpUntilAny(
     await tester.pump(const Duration(milliseconds: 200));
     if (finders.any((f) => f.evaluate().isNotEmpty)) return;
   }
-  throw TestFailure('Tidak menemukan $finders dalam $timeout');
+  throw TestFailure('Could not find $finders within $timeout');
 }
 
 Future<void> capture(WidgetTester tester, String name) async {

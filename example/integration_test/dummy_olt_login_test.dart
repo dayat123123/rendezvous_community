@@ -16,7 +16,7 @@ Future<void> pumpUntilFound(
     await tester.pump(const Duration(milliseconds: 200));
     if (finder.evaluate().isNotEmpty) return;
   }
-  throw TestFailure('Tidak menemukan $finder dalam $timeout');
+  throw TestFailure('Could not find $finder within $timeout');
 }
 
 Future<void> revealOnLoginList(WidgetTester tester, Finder finder) async {

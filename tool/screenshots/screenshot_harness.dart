@@ -37,7 +37,7 @@ Directory _materialFonts() {
     final dir = Directory(path);
     if (File(p.join(dir.path, 'roboto-regular.ttf')).existsSync()) return dir;
   }
-  throw StateError('material_fonts tidak ditemukan; jalankan `flutter precache` atau set FLUTTER_ROOT');
+  throw StateError('material_fonts not found; run `flutter precache` or set FLUTTER_ROOT');
 }
 
 Future<ByteData> _font(Directory dir, String file) async =>
