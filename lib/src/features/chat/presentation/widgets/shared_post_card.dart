@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_extras.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 
 SharedPost sharedPostFromPost(Post post) => SharedPost(
@@ -56,34 +59,69 @@ class _SharedPostCardState extends State<SharedPostCard> {
   }
 
   Widget _card(BuildContext context, SharedPost? shared) {
-    final l10n = context.communityL10n;
-    final theme = Theme.of(context);
-    final fg = widget.color ?? theme.colorScheme.onSurface;
     final available = shared?.available ?? true;
+    final details = CommunitySharedPostDetails(
+      postId: widget.postId,
+      loading: shared == null,
+      available: available,
+      post: shared,
+      color: widget.color,
+      onOpen: available ? widget.onOpen : null,
+    );
+    return buildChatPart(
+      CommunityChatBuilders.of(context).sharedPost,
+      context,
+      details,
+      _DefaultSharedPost(details: details),
+    );
+  }
+}
+
+class _DefaultSharedPost extends StatelessWidget {
+  const _DefaultSharedPost({required this.details});
+
+  final CommunitySharedPostDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final fg = details.color ?? style.textPrimary;
+    final muted = fg.withValues(alpha: 0.72);
+    final shared = details.post;
     final author = shared?.author;
+    final body = shared?.body ?? '';
     return Container(
-      margin: const EdgeInsets.only(top: 4, bottom: 4),
+      margin: EdgeInsets.symmetric(vertical: spacing.xs),
       constraints: const BoxConstraints(maxWidth: 420),
       decoration: BoxDecoration(
-        color: fg.withValues(alpha: 0.06),
-        border: Border.all(color: fg.withValues(alpha: 0.18)),
-        borderRadius: BorderRadius.circular(10),
+        color: fg.withValues(alpha: 0.05),
+        border: Border.all(color: fg.withValues(alpha: 0.16), width: style.borderWidth),
+        borderRadius: BorderRadius.circular(12),
       ),
       child: InkWell(
-        borderRadius: BorderRadius.circular(10),
-        onTap: available ? widget.onOpen : null,
+        borderRadius: BorderRadius.circular(12),
+        onTap: details.onOpen,
         child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: shared == null
-              ? const SizedBox(height: 36, child: Center(child: LinearProgressIndicator()))
-              : !available
+          padding: EdgeInsets.all(spacing.sm + spacing.xxs),
+          child: details.loading
+              ? SizedBox(
+                  height: 36,
+                  child: Center(
+                    child: LinearProgressIndicator(color: style.accent, backgroundColor: style.skeleton),
+                  ),
+                )
+              : !details.available
               ? Row(
                   children: [
-                    Icon(Icons.hide_source_outlined, size: 18, color: fg.withValues(alpha: 0.7)),
-                    const SizedBox(width: 6),
-                    Text(
-                      l10n.sharedPostUnavailable,
-                      style: theme.textTheme.bodySmall?.copyWith(color: fg, fontStyle: FontStyle.italic),
+                    Icon(Icons.hide_source_outlined, size: 18, color: muted),
+                    SizedBox(width: spacing.xs + spacing.xxs),
+                    Flexible(
+                      child: Text(
+                        l10n.sharedPostUnavailable,
+                        style: style.typography.meta.copyWith(color: fg, fontStyle: FontStyle.italic),
+                      ),
                     ),
                   ],
                 )
@@ -93,40 +131,37 @@ class _SharedPostCardState extends State<SharedPostCard> {
                   children: [
                     Row(
                       children: [
-                        Icon(Icons.article_outlined, size: 14, color: fg.withValues(alpha: 0.7)),
-                        const SizedBox(width: 4),
-                        Text(
-                          l10n.sharedPostLabel,
-                          style: theme.textTheme.labelSmall?.copyWith(color: fg.withValues(alpha: 0.7)),
-                        ),
+                        Icon(Icons.article_outlined, size: 14, color: muted),
+                        SizedBox(width: spacing.xs),
+                        Text(l10n.sharedPostLabel, style: style.typography.badge.copyWith(color: muted)),
                         if (author != null) ...[
-                          const SizedBox(width: 6),
+                          SizedBox(width: spacing.sm),
                           CommunityAvatar(user: author, radius: 9),
-                          const SizedBox(width: 4),
+                          SizedBox(width: spacing.xs),
                           Flexible(
                             child: Text(
                               author.name,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.labelMedium?.copyWith(color: fg, fontWeight: FontWeight.w700),
+                              style: style.typography.author.copyWith(color: fg, fontSize: 13),
                             ),
                           ),
                         ],
                       ],
                     ),
-                    if ((shared.body ?? '').isNotEmpty)
+                    if (body.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.only(top: 4),
+                        padding: EdgeInsets.only(top: spacing.xs + spacing.xxs),
                         child: Text(
-                          shared.body!,
+                          body,
                           maxLines: 4,
                           overflow: TextOverflow.ellipsis,
-                          style: theme.textTheme.bodySmall?.copyWith(color: fg),
+                          style: style.typography.meta.copyWith(color: fg, height: 1.45),
                         ),
                       ),
-                    if (shared.attachments.isNotEmpty)
+                    if (shared != null && shared.attachments.isNotEmpty)
                       Padding(
-                        padding: const EdgeInsets.only(top: 6),
+                        padding: EdgeInsets.only(top: spacing.sm),
                         child: AttachmentGrid(attachments: shared.attachments.take(1).toList(), maxHeight: 120),
                       ),
                   ],

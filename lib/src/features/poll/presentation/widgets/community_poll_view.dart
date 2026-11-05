@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart
 import 'package:rendezvous_community/src/features/poll/presentation/cubit/poll_cubit.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 class CommunityPollView extends StatefulWidget {
@@ -83,116 +84,122 @@ class _PollBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
     final poll = details.poll;
     final showResults = details.showResults;
     final leading = poll.leadingOptionId;
-    final meta = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant);
+    final pending = details.pendingOptionId;
 
     return Padding(
-      padding: const EdgeInsets.only(top: 8, right: 8),
+      padding: EdgeInsets.only(top: spacing.md),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          for (final option in poll.options)
+          for (final (index, option) in poll.options.indexed)
             Padding(
-              padding: const EdgeInsets.only(bottom: 6),
-              child: showResults
-                  ? _ResultBar(
-                      option: option,
-                      share: poll.share(option),
-                      visible: poll.resultsVisible,
-                      mine: option.id == poll.myOptionId,
-                      leading: option.id == leading,
-                    )
-                  : _VoteButton(
-                      option: option,
-                      pending: details.pendingOptionId == option.id,
-                      enabled: details.pendingOptionId == null,
-                      onVote: () => context.read<PollCubit>().vote(option),
-                    ),
+              padding: EdgeInsets.only(bottom: spacing.sm),
+              child: _PollOption(
+                details: CommunityPollOptionDetails(
+                  option: option,
+                  index: index,
+                  share: poll.share(option),
+                  percentLabel: poll.resultsVisible ? '${(poll.share(option) * 100).round()}%' : null,
+                  showResults: showResults,
+                  resultsVisible: poll.resultsVisible,
+                  mine: option.id == poll.myOptionId,
+                  leading: option.id == leading,
+                  pending: pending == option.id,
+                  onVote: showResults || pending != null ? null : () => context.read<PollCubit>().vote(option),
+                ),
+              ),
             ),
-          Text(details.summary, style: meta),
+          Text(details.summary, style: style.typography.meta),
         ],
       ),
     );
   }
 }
 
-class _VoteButton extends StatelessWidget {
-  const _VoteButton({required this.option, required this.pending, required this.enabled, required this.onVote});
+class _PollOption extends StatelessWidget {
+  const _PollOption({required this.details});
 
-  final PollOption option;
-  final bool pending;
-  final bool enabled;
-  final VoidCallback onVote;
+  final CommunityPollOptionDetails details;
+
+  @override
+  Widget build(BuildContext context) => buildFeedPart(
+    (b) => b.pollOption,
+    context,
+    details,
+    details.showResults ? _ResultBar(details: details) : _VoteButton(details: details),
+  );
+}
+
+class _VoteButton extends StatelessWidget {
+  const _VoteButton({required this.details});
+
+  final CommunityPollOptionDetails details;
 
   @override
   Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
     return OutlinedButton(
-      onPressed: enabled ? onVote : null,
-      style: OutlinedButton.styleFrom(
-        minimumSize: const Size.fromHeight(40),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-      ),
-      child: pending
-          ? const SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2))
-          : Text(option.label, maxLines: 1, overflow: TextOverflow.ellipsis),
+      onPressed: details.onVote,
+      style: style.secondaryButtonStyle().copyWith(minimumSize: const WidgetStatePropertyAll(Size.fromHeight(40))),
+      child: details.pending
+          ? SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2, color: style.textSecondary))
+          : Text(details.option.label, maxLines: 1, overflow: TextOverflow.ellipsis),
     );
   }
 }
 
 class _ResultBar extends StatelessWidget {
-  const _ResultBar({
-    required this.option,
-    required this.share,
-    required this.visible,
-    required this.mine,
-    required this.leading,
-  });
+  const _ResultBar({required this.details});
 
-  final PollOption option;
-  final double share;
-  final bool visible;
-  final bool mine;
-  final bool leading;
+  final CommunityPollOptionDetails details;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
-    final weight = leading ? FontWeight.w700 : FontWeight.w500;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final option = details.option;
+    final mine = details.mine;
+    final leading = details.leading;
+    final percent = details.percentLabel;
+    final text = style.typography.body.copyWith(fontSize: 14, fontWeight: leading ? FontWeight.w700 : FontWeight.w500);
     return Semantics(
       label: '${option.label}${mine ? ', ${l10n.pollYourVote}' : ''}',
-      value: visible ? '${(share * 100).round()}%' : null,
+      value: percent,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
+        borderRadius: style.radii.pillRadius,
         child: Stack(
           children: [
-            Positioned.fill(child: ColoredBox(color: scheme.surfaceContainerHighest)),
+            Positioned.fill(child: ColoredBox(color: style.pill)),
             Positioned.fill(
               child: FractionallySizedBox(
-                alignment: Alignment.centerLeft,
-                widthFactor: visible ? share.clamp(0, 1) : 0,
-                child: ColoredBox(color: leading ? scheme.primaryContainer : scheme.secondaryContainer),
+                alignment: AlignmentDirectional.centerStart,
+                widthFactor: details.resultsVisible ? details.share.clamp(0, 1) : 0,
+                child: DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: leading ? Color.alphaBlend(style.accent.withValues(alpha: 0.22), style.pill) : style.border,
+                    borderRadius: style.radii.pillRadius,
+                  ),
+                ),
               ),
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+              padding: EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.sm + spacing.xxs),
               child: Row(
                 children: [
                   Expanded(
-                    child: Text(
-                      option.label,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyMedium?.copyWith(fontWeight: weight),
-                    ),
+                    child: Text(option.label, maxLines: 1, overflow: TextOverflow.ellipsis, style: text),
                   ),
-                  if (mine) ...[Icon(Icons.check_circle, size: 16, color: scheme.primary), const SizedBox(width: 6)],
-                  if (visible)
-                    Text('${(share * 100).round()}%', style: theme.textTheme.bodyMedium?.copyWith(fontWeight: weight)),
+                  if (mine) ...[
+                    Icon(Icons.check_circle, size: 16, color: style.accent),
+                    SizedBox(width: spacing.xs + spacing.xxs),
+                  ],
+                  if (percent != null) Text(percent, style: text),
                 ],
               ),
             ),

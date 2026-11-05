@@ -16,6 +16,24 @@ class CommunityChatBuilders {
     this.empty,
     this.error,
     this.stockCard,
+    this.deliveryNotice,
+    this.reactionPicker,
+    this.reactions,
+    this.receipt,
+    this.messageActions,
+    this.roomNotice,
+    this.moderationBanner,
+    this.moderationDialog,
+    this.roomAvatar,
+    this.newGroupDialog,
+    this.shareTarget,
+    this.sharedPost,
+    this.stockCardPicker,
+    this.requestsEntry,
+    this.requestTile,
+    this.requestIntro,
+    this.requestActions,
+    this.requestBubble,
   });
 
   final CommunityPartBuilder<CommunityMessageDetails>? message;
@@ -30,6 +48,24 @@ class CommunityChatBuilders {
   final CommunityPartBuilder<CommunityEmptyDetails>? empty;
   final CommunityPartBuilder<CommunityErrorDetails>? error;
   final CommunityPartBuilder<CommunityStockCardDetails>? stockCard;
+  final CommunityPartBuilder<CommunityDeliveryNoticeDetails>? deliveryNotice;
+  final CommunityPartBuilder<CommunityReactionPickerDetails>? reactionPicker;
+  final CommunityPartBuilder<CommunityReactionsDetails>? reactions;
+  final CommunityPartBuilder<CommunityReceiptDetails>? receipt;
+  final CommunityPartBuilder<CommunityMessageActionsDetails>? messageActions;
+  final CommunityPartBuilder<CommunityRoomNoticeDetails>? roomNotice;
+  final CommunityPartBuilder<CommunityRoomModerationDetails>? moderationBanner;
+  final CommunityPartBuilder<CommunityRoomModerationDialogDetails>? moderationDialog;
+  final CommunityPartBuilder<CommunityRoomAvatarDetails>? roomAvatar;
+  final CommunityPartBuilder<CommunityNewGroupDetails>? newGroupDialog;
+  final CommunityPartBuilder<CommunityShareTargetDetails>? shareTarget;
+  final CommunityPartBuilder<CommunitySharedPostDetails>? sharedPost;
+  final CommunityPartBuilder<CommunityStockCardPickerDetails>? stockCardPicker;
+  final CommunityPartBuilder<CommunityRequestsEntryDetails>? requestsEntry;
+  final CommunityPartBuilder<CommunityMessageRequestDetails>? requestTile;
+  final CommunityPartBuilder<CommunityRequestIntroDetails>? requestIntro;
+  final CommunityPartBuilder<CommunityRequestActionsDetails>? requestActions;
+  final CommunityPartBuilder<CommunityMessageDetails>? requestBubble;
 
   static CommunityChatBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -53,6 +89,24 @@ class CommunityChatBuilders {
       empty: other.empty ?? empty,
       error: other.error ?? error,
       stockCard: other.stockCard ?? stockCard,
+      deliveryNotice: other.deliveryNotice ?? deliveryNotice,
+      reactionPicker: other.reactionPicker ?? reactionPicker,
+      reactions: other.reactions ?? reactions,
+      receipt: other.receipt ?? receipt,
+      messageActions: other.messageActions ?? messageActions,
+      roomNotice: other.roomNotice ?? roomNotice,
+      moderationBanner: other.moderationBanner ?? moderationBanner,
+      moderationDialog: other.moderationDialog ?? moderationDialog,
+      roomAvatar: other.roomAvatar ?? roomAvatar,
+      newGroupDialog: other.newGroupDialog ?? newGroupDialog,
+      shareTarget: other.shareTarget ?? shareTarget,
+      sharedPost: other.sharedPost ?? sharedPost,
+      stockCardPicker: other.stockCardPicker ?? stockCardPicker,
+      requestsEntry: other.requestsEntry ?? requestsEntry,
+      requestTile: other.requestTile ?? requestTile,
+      requestIntro: other.requestIntro ?? requestIntro,
+      requestActions: other.requestActions ?? requestActions,
+      requestBubble: other.requestBubble ?? requestBubble,
     );
   }
 }

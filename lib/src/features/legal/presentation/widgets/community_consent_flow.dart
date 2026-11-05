@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_account_scope.dart';
+import 'package:rendezvous_community/src/app/community_builders.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
+import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
 import 'package:rendezvous_community/src/features/legal/domain/entities/legal_document.dart';
 import 'package:rendezvous_community/src/features/legal/domain/services/consent_gate.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/cubit/consent_cubit.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_legal_document_reader.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -24,21 +29,29 @@ ConsentGate? communityConsentGate(BuildContext context) {
 Future<bool> _presentConsent(BuildContext context, CommunityAccountDependencies account) async {
   if (!context.mounted) return false;
   final l10n = context.communityL10n;
-  Widget view(BuildContext routeContext, {required bool showTitle}) => CommunityAccountScope(
-    dependencies: account,
-    child: CommunityConsentView(showTitle: showTitle, onDone: (accepted) => Navigator.pop(routeContext, accepted)),
+  final carry = carryCommunityBuilders(context);
+  Widget view(BuildContext routeContext, {required bool showTitle}) => carry(
+    CommunityAccountScope(
+      dependencies: account,
+      child: CommunityConsentView(showTitle: showTitle, onDone: (accepted) => Navigator.pop(routeContext, accepted)),
+    ),
   );
   final bool? accepted;
   if (CommunityBreakpoints.isWide(context)) {
     accepted = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (dialogContext) => Dialog(
-        child: ConstrainedBox(
-          constraints: BoxConstraints(maxWidth: 560, maxHeight: MediaQuery.sizeOf(dialogContext).height * 0.85),
-          child: view(dialogContext, showTitle: true),
-        ),
-      ),
+      builder: (dialogContext) {
+        final style = CommunityStyle.of(dialogContext);
+        return Dialog(
+          backgroundColor: style.surface,
+          shape: communityDialogShape(style),
+          child: ConstrainedBox(
+            constraints: BoxConstraints(maxWidth: 560, maxHeight: MediaQuery.sizeOf(dialogContext).height * 0.85),
+            child: view(dialogContext, showTitle: true),
+          ),
+        );
+      },
     );
   } else {
     accepted = await Navigator.of(context).push<bool>(
@@ -71,12 +84,12 @@ class CommunityConsentView extends StatelessWidget {
         builder: (context, state) => PopScope(
           canPop: !state.submitting,
           child: switch (state.status) {
-            LoadStatus.initial || LoadStatus.loading => const Padding(
-              padding: EdgeInsets.all(48),
-              child: Center(child: CircularProgressIndicator()),
+            LoadStatus.initial || LoadStatus.loading => const CommunitySettingsLoading(
+              area: CommunitySettingsArea.consent,
+              fallback: Padding(padding: EdgeInsets.all(48), child: CommunityLoadingView()),
             ),
             LoadStatus.failure => _ConsentFailure(error: state.error!, onLater: () => onDone(false)),
-            LoadStatus.ready => _ConsentBody(state: state, showTitle: showTitle, onLater: () => onDone(false)),
+            LoadStatus.ready => _ConsentContent(state: state, showTitle: showTitle, onLater: () => onDone(false)),
           },
         ),
       ),
@@ -91,25 +104,38 @@ class _ConsentFailure extends StatelessWidget {
   final VoidCallback onLater;
 
   @override
-  Widget build(BuildContext context) => Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Flexible(
-        child: CommunityErrorView(error: error, onRetry: context.read<ConsentCubit>().load),
-      ),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: TextButton(onPressed: onLater, child: Text(context.communityL10n.consentLater)),
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final retry = context.read<ConsentCubit>().load;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(
+          child: CommunitySettingsError(
+            area: CommunitySettingsArea.consent,
+            error: error,
+            onRetry: retry,
+            fallback: CommunityErrorView(error: error, onRetry: retry),
+          ),
         ),
-      ),
-    ],
-  );
+        Padding(
+          padding: EdgeInsets.fromLTRB(style.spacing.xl, 0, style.spacing.xl, style.spacing.lg),
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              style: TextButton.styleFrom(foregroundColor: style.textSecondary, textStyle: style.typography.label),
+              onPressed: onLater,
+              child: Text(context.communityL10n.consentLater),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
-class _ConsentBody extends StatelessWidget {
-  const _ConsentBody({required this.state, required this.showTitle, required this.onLater});
+class _ConsentContent extends StatelessWidget {
+  const _ConsentContent({required this.state, required this.showTitle, required this.onLater});
 
   final ConsentState state;
   final bool showTitle;
@@ -118,58 +144,118 @@ class _ConsentBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
     final cubit = context.read<ConsentCubit>();
     final error = state.actionError;
+    final details = CommunityConsentDetails(
+      documents: state.documents,
+      title: showTitle ? l10n.consentTitle : null,
+      intro: l10n.consentIntro,
+      agreeLabel: l10n.consentAgree(l10n.legalTitles(state.documents)),
+      agreed: state.agreed,
+      submitting: state.submitting,
+      canAccept: state.canAccept,
+      acceptLabel: l10n.consentAccept,
+      laterLabel: l10n.consentLater,
+      error: error,
+      errorMessage: error == null ? null : l10n.errorMessage(error),
+      onAgreedChanged: state.submitting ? null : cubit.setAgreed,
+      onAccept: state.canAccept ? cubit.accept : null,
+      onLater: state.submitting ? null : onLater,
+      onOpenDocument: (document) => showCommunityLegalDocument(context, document),
+    );
+    return buildSettingsPart((b) => b.consent, context, details, _ConsentBody(details: details));
+  }
+}
+
+class _ConsentBody extends StatelessWidget {
+  const _ConsentBody({required this.details});
+
+  final CommunityConsentDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final d = details;
+    final title = d.title;
+    final errorMessage = d.errorMessage;
+    final onAgreedChanged = d.onAgreedChanged;
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(24, 20, 24, 8),
+          padding: EdgeInsets.fromLTRB(spacing.xl, spacing.lg, spacing.xl, spacing.md),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (showTitle) ...[Text(l10n.consentTitle, style: theme.textTheme.titleLarge), const SizedBox(height: 8)],
-              Text(l10n.consentIntro, style: theme.textTheme.bodyMedium),
+              if (title != null) ...[
+                Text(title, style: style.typography.title.copyWith(fontSize: 20)),
+                SizedBox(height: spacing.sm),
+              ],
+              Text(d.intro, style: style.typography.body.copyWith(color: style.textSecondary)),
             ],
           ),
         ),
         Flexible(
-          child: ListView(
+          child: ListView.separated(
             shrinkWrap: true,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            children: [for (final document in state.documents) _DocumentTile(document: document)],
+            addAutomaticKeepAlives: false,
+            itemCount: d.documents.length,
+            separatorBuilder: (_, _) => Divider(
+              height: style.borderWidth,
+              thickness: style.borderWidth,
+              color: style.divider,
+              indent: spacing.lg,
+            ),
+            itemBuilder: (context, i) {
+              final document = d.documents[i];
+              return CommunityLegalDocumentTile(
+                document: document,
+                placement: CommunityLegalDocumentPlacement.consent,
+                onOpen: () => d.onOpenDocument(document),
+              );
+            },
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: spacing.sm),
         CheckboxListTile(
-          value: state.agreed,
-          onChanged: state.submitting ? null : (value) => cubit.setAgreed(value ?? false),
+          value: d.agreed,
+          onChanged: onAgreedChanged == null ? null : (value) => onAgreedChanged(value ?? false),
           controlAffinity: ListTileControlAffinity.leading,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-          title: Text(l10n.consentAgree(l10n.legalTitles(state.documents))),
+          contentPadding: EdgeInsets.symmetric(horizontal: spacing.lg),
+          activeColor: style.accent,
+          checkColor: style.onAccent,
+          title: Text(d.agreeLabel, style: style.typography.body.copyWith(fontSize: 14)),
         ),
-        if (error != null)
+        if (errorMessage != null)
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: EdgeInsets.symmetric(horizontal: spacing.xl),
             child: Text(
-              l10n.errorMessage(error),
-              style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.error),
+              errorMessage,
+              style: style.typography.meta.copyWith(color: Theme.of(context).colorScheme.error),
             ),
           ),
         Padding(
-          padding: const EdgeInsets.fromLTRB(24, 8, 24, 16),
+          padding: EdgeInsets.fromLTRB(spacing.xl, spacing.sm, spacing.xl, spacing.lg),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              TextButton(onPressed: state.submitting ? null : onLater, child: Text(l10n.consentLater)),
-              const SizedBox(width: 8),
+              TextButton(
+                style: TextButton.styleFrom(foregroundColor: style.textSecondary, textStyle: style.typography.label),
+                onPressed: d.onLater,
+                child: Text(d.laterLabel),
+              ),
+              SizedBox(width: spacing.sm),
               FilledButton(
-                onPressed: state.canAccept ? cubit.accept : null,
-                child: state.submitting
-                    ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                    : Text(l10n.consentAccept),
+                style: style.primaryButtonStyle(),
+                onPressed: d.onAccept,
+                child: d.submitting
+                    ? SizedBox.square(
+                        dimension: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2, color: style.textSecondary),
+                      )
+                    : Text(d.acceptLabel),
               ),
             ],
           ),
@@ -179,47 +265,75 @@ class _ConsentBody extends StatelessWidget {
   }
 }
 
-class _DocumentTile extends StatelessWidget {
-  const _DocumentTile({required this.document});
+class CommunityLegalDocumentTile extends StatelessWidget {
+  const CommunityLegalDocumentTile({super.key, required this.document, required this.placement, required this.onOpen});
 
   final LegalDocument document;
+  final CommunityLegalDocumentPlacement placement;
+  final VoidCallback onOpen;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
-    final muted = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant);
+    final consent = placement == CommunityLegalDocumentPlacement.consent;
     final summary = document.changeSummary;
-    return Card(
-      margin: const EdgeInsets.symmetric(vertical: 4),
-      elevation: 0,
-      shape: RoundedRectangleBorder(
-        side: BorderSide(color: theme.colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(12),
-      ),
+    final details = CommunityLegalDocumentTileDetails(
+      document: document,
+      placement: placement,
+      icon: legalDocumentIcon(document.kind),
+      meta: l10n.legalMeta(document),
+      changes: consent && summary != null ? '${l10n.legalChanges}: $summary' : null,
+      actionLabel: consent ? l10n.consentRead : null,
+      onOpen: onOpen,
+    );
+    return buildSettingsPart((b) => b.legalDocumentTile, context, details, _DefaultLegalDocumentTile(details: details));
+  }
+}
+
+class _DefaultLegalDocumentTile extends StatelessWidget {
+  const _DefaultLegalDocumentTile({required this.details});
+
+  final CommunityLegalDocumentTileDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final d = details;
+    final changes = d.changes;
+    final actionLabel = d.actionLabel;
+    final tile = ListTileTheme(
+      data: communitySettingsTileTheme(style),
       child: ListTile(
-        leading: Icon(legalDocumentIcon(document.kind)),
-        title: Text(document.title),
+        leading: CommunityToneIcon(icon: d.icon),
+        title: Text(d.title),
         subtitle: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(l10n.legalMeta(document), style: muted),
-            if (summary != null)
-              Text(
-                '${l10n.legalChanges}: $summary',
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.bodySmall,
+            Text(d.meta),
+            if (changes != null)
+              Padding(
+                padding: EdgeInsets.only(top: style.spacing.xxs),
+                child: Text(
+                  changes,
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: style.typography.meta.copyWith(color: style.textPrimary),
+                ),
               ),
           ],
         ),
-        trailing: TextButton(
-          onPressed: () => showCommunityLegalDocument(context, document),
-          child: Text(l10n.consentRead),
-        ),
-        onTap: () => showCommunityLegalDocument(context, document),
+        trailing: actionLabel == null
+            ? Icon(Icons.chevron_right, color: style.textTertiary)
+            : TextButton(
+                style: TextButton.styleFrom(foregroundColor: style.accent, textStyle: style.typography.label),
+                onPressed: d.onOpen,
+                child: Text(actionLabel),
+              ),
+        onTap: d.onOpen,
       ),
     );
+    if (d.placement == CommunityLegalDocumentPlacement.accountSettings) return tile;
+    return Material(color: style.surface, child: tile);
   }
 }
 

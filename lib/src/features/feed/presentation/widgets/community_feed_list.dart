@@ -8,16 +8,19 @@ import 'package:rendezvous_community/src/features/config/presentation/widgets/co
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/cubit/feed_cubit.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/pinned_post_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_actions.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_skeletons.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_consent_banner.dart';
 import 'package:rendezvous_community/src/features/offline/presentation/widgets/community_offline_banner.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_list_state_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
@@ -121,6 +124,8 @@ class _FeedPostListState extends State<FeedPostList> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
     return BlocConsumer<FeedCubit, FeedState>(
       listenWhen: (a, b) => a.actionErrorId != b.actionErrorId,
       listener: (context, state) => showCommunityError(context, state.actionError!),
@@ -138,7 +143,7 @@ class _FeedPostListState extends State<FeedPostList> {
             builders.loading,
             context,
             const CommunityListLoadingDetails(),
-            const CommunitySkeleton(),
+            CommunitySkeleton(itemCount: 3, itemBuilder: (_) => const PostCardSkeleton()),
           ),
           LoadStatus.failure => buildCommunityPart(
             builders.error,
@@ -156,6 +161,7 @@ class _FeedPostListState extends State<FeedPostList> {
               addAutomaticKeepAlives: false,
               controller: _scroll,
               physics: const AlwaysScrollableScrollPhysics(),
+              padding: EdgeInsets.only(top: style.sectionGap),
               itemCount: posts.length + 2,
               itemBuilder: (context, index) {
                 if (index == 0) {
@@ -187,20 +193,15 @@ class _FeedPostListState extends State<FeedPostList> {
                           builders.loading,
                           context,
                           const CommunityListLoadingDetails(more: true),
-                          const Padding(
-                            padding: EdgeInsets.all(16),
-                            child: Center(child: CircularProgressIndicator()),
-                          ),
+                          const CommunityLoadingView(),
                         )
-                      : const SizedBox(height: 32);
+                      : SizedBox(height: spacing.xxl);
                 }
                 final post = posts[index - 1];
-                return Column(
+                return Padding(
                   key: ValueKey(post.id),
-                  children: [
-                    FeedPostCard(post: post, cubit: cubit, source: widget.source),
-                    const Divider(height: 1),
-                  ],
+                  padding: EdgeInsets.only(bottom: style.sectionGap),
+                  child: FeedPostCard(post: post, cubit: cubit, source: widget.source),
                 );
               },
             ),
@@ -211,28 +212,41 @@ class _FeedPostListState extends State<FeedPostList> {
           children: [
             const CommunityOfflineBanner(),
             Expanded(
-              child: Stack(
-                children: [
-                  Center(
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
-                      child: body,
-                    ),
-                  ),
-                  if (state.newPosts > 0)
-                    Positioned(
-                      top: 12,
-                      left: 0,
-                      right: 0,
-                      child: Center(
-                        child: FilledButton.icon(
-                          onPressed: _showNewPosts,
-                          icon: const Icon(Icons.arrow_upward, size: 18),
-                          label: Text(l10n.newPosts(state.newPosts)),
-                        ),
+              child: ColoredBox(
+                color: style.background,
+                child: Stack(
+                  children: [
+                    Center(
+                      child: ConstrainedBox(
+                        constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
+                        child: body,
                       ),
                     ),
-                ],
+                    if (state.newPosts > 0)
+                      Positioned(
+                        top: 12,
+                        left: 0,
+                        right: 0,
+                        child: Center(
+                          child: buildFeedPart(
+                            (b) => b.newPosts,
+                            context,
+                            CommunityNewPostsDetails(
+                              count: state.newPosts,
+                              label: l10n.newPosts(state.newPosts),
+                              onTap: _showNewPosts,
+                            ),
+                            FilledButton.icon(
+                              style: style.primaryButtonStyle(),
+                              onPressed: _showNewPosts,
+                              icon: const Icon(Icons.arrow_upward, size: 18),
+                              label: Text(l10n.newPosts(state.newPosts)),
+                            ),
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
           ],

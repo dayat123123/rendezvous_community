@@ -145,7 +145,7 @@ void main() {
         features: features,
       );
       await tester.pumpAndSettle();
-      await tester.tap(find.byIcon(Icons.more_vert).first);
+      await tester.tap(find.byIcon(Icons.more_horiz).first);
       await tester.pumpAndSettle();
     }
 

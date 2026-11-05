@@ -3,12 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
+import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_builders.dart';
+import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_details.dart';
 import 'package:rendezvous_community/src/features/trending/domain/entities/trending.dart';
 import 'package:rendezvous_community/src/features/trending/presentation/cubit/stock_sentiment_cubit.dart';
 import 'package:rendezvous_community/src/features/trending/presentation/widgets/community_trending.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
 class CommunityStockSentiment extends StatelessWidget {
   const CommunityStockSentiment({
@@ -46,76 +50,126 @@ class _SentimentView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
-    final colors = CommunityTheme.of(context);
     return BlocBuilder<StockSentimentCubit, StockSentimentState>(
       builder: (context, state) {
         final cubit = context.read<StockSentimentCubit>();
         final current = state.current;
-        return Padding(
-          padding: padding,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                children: [
-                  Expanded(child: Text(l10n.sentimentTitle, style: theme.textTheme.titleSmall)),
-                  SegmentedButton<TrendWindow>(
-                    showSelectedIcon: false,
-                    style: const ButtonStyle(visualDensity: VisualDensity.compact),
-                    segments: [
-                      ButtonSegment(value: TrendWindow.day, label: Text(l10n.trendingWindowDay)),
-                      ButtonSegment(value: TrendWindow.week, label: Text(l10n.trendingWindowWeek)),
-                    ],
-                    selected: {state.window},
-                    onSelectionChanged: (s) => cubit.setWindow(s.first),
-                  ),
-                ],
-              ),
-              const SizedBox(height: 8),
-              switch (state.status) {
-                LoadStatus.initial || LoadStatus.loading => const LinearProgressIndicator(),
-                LoadStatus.failure => Row(
-                  children: [
-                    Expanded(child: Text(l10n.errorMessage(state.error!), style: theme.textTheme.bodySmall)),
-                    TextButton(onPressed: cubit.load, child: Text(l10n.retry)),
-                  ],
-                ),
-                LoadStatus.ready when current == null || !current.hasLabels => Text(
-                  l10n.sentimentNoData,
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                ),
-                LoadStatus.ready => Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    SentimentBar(bullishPct: current!.bullishPct ?? 0, bearishPct: current.bearishPct ?? 0),
-                    const SizedBox(height: 6),
-                    Row(
-                      children: [
-                        Text(
-                          '${l10n.sentimentBullish} ${current.bullishPct ?? 0}%',
-                          style: theme.textTheme.labelMedium?.copyWith(color: colors.onBullish),
-                        ),
-                        const Spacer(),
-                        Text(
-                          l10n.sentimentBasedOn(current.posts),
-                          style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.outline),
-                        ),
-                        const Spacer(),
-                        Text(
-                          '${l10n.sentimentBearish} ${current.bearishPct ?? 0}%',
-                          style: theme.textTheme.labelMedium?.copyWith(color: colors.onBearish),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              },
-            ],
-          ),
+        final error = state.status == LoadStatus.failure ? state.error : null;
+        final details = CommunityStockSentimentDetails(
+          code: cubit.stockCode,
+          title: l10n.sentimentTitle,
+          window: state.window,
+          windows: TrendWindow.values,
+          windowLabels: [l10n.trendingWindowDay, l10n.trendingWindowWeek],
+          loading: state.status == LoadStatus.initial || state.status == LoadStatus.loading,
+          noDataLabel: l10n.sentimentNoData,
+          bullishLabel: '${l10n.sentimentBullish} ${current?.bullishPct ?? 0}%',
+          bearishLabel: '${l10n.sentimentBearish} ${current?.bearishPct ?? 0}%',
+          basedOnLabel: current == null ? null : l10n.sentimentBasedOn(current.posts),
+          breakdown: state.status == LoadStatus.ready ? current : null,
+          error: error,
+          errorMessage: error == null ? null : l10n.errorMessage(error),
+          retryLabel: l10n.retry,
+          onWindowChanged: cubit.setWindow,
+          onRetry: cubit.load,
+        );
+        return buildDiscoveryPart(
+          (b) => b.stockSentiment,
+          context,
+          details,
+          _DefaultStockSentiment(details: details, padding: padding),
         );
       },
+    );
+  }
+}
+
+class _DefaultStockSentiment extends StatelessWidget {
+  const _DefaultStockSentiment({required this.details, required this.padding});
+
+  final CommunityStockSentimentDetails details;
+  final EdgeInsetsGeometry padding;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final colors = CommunityTheme.of(context);
+    final breakdown = details.breakdown;
+    final errorMessage = details.errorMessage;
+    final selected = WidgetStateProperty.resolveWith(
+      (states) => states.contains(WidgetState.selected) ? style.accentMuted : style.surface,
+    );
+    final foreground = WidgetStateProperty.resolveWith(
+      (states) => states.contains(WidgetState.selected) ? style.accent : style.textSecondary,
+    );
+    final Widget body;
+    if (details.loading) {
+      body = CommunitySkeletonBox(width: double.infinity, height: 10, radius: style.radii.pill);
+    } else if (errorMessage != null) {
+      body = Row(
+        children: [
+          Expanded(child: Text(errorMessage, style: style.typography.meta)),
+          TextButton(
+            onPressed: details.onRetry,
+            style: TextButton.styleFrom(foregroundColor: style.accent, textStyle: style.typography.label),
+            child: Text(details.retryLabel),
+          ),
+        ],
+      );
+    } else if (breakdown == null || !breakdown.hasLabels) {
+      body = Text(details.noDataLabel, style: style.typography.meta);
+    } else {
+      final basedOn = details.basedOnLabel;
+      body = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          SentimentBar(bullishPct: breakdown.bullishPct ?? 0, bearishPct: breakdown.bearishPct ?? 0),
+          SizedBox(height: spacing.sm),
+          Row(
+            children: [
+              Text(details.bullishLabel, style: style.typography.label.copyWith(color: colors.onBullish)),
+              const Spacer(),
+              if (basedOn != null) Text(basedOn, style: style.typography.badge.copyWith(color: style.textSecondary)),
+              const Spacer(),
+              Text(details.bearishLabel, style: style.typography.label.copyWith(color: colors.onBearish)),
+            ],
+          ),
+        ],
+      );
+    }
+    return Padding(
+      padding: padding,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Row(
+            children: [
+              Expanded(
+                child: Semantics(header: true, child: Text(details.title, style: style.typography.sectionTitle)),
+              ),
+              SegmentedButton<TrendWindow>(
+                showSelectedIcon: false,
+                style: ButtonStyle(
+                  backgroundColor: selected,
+                  foregroundColor: foreground,
+                  textStyle: WidgetStatePropertyAll(style.typography.label),
+                  side: WidgetStatePropertyAll(style.borderSide),
+                ),
+                segments: [
+                  for (final (index, window) in details.windows.indexed)
+                    ButtonSegment(value: window, label: Text(details.windowLabels[index])),
+                ],
+                selected: {details.window},
+                onSelectionChanged: (s) => details.onWindowChanged(s.first),
+              ),
+            ],
+          ),
+          SizedBox(height: spacing.md),
+          body,
+        ],
+      ),
     );
   }
 }

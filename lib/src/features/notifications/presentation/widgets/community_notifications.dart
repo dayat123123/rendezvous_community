@@ -19,9 +19,10 @@ import 'package:rendezvous_community/src/shared/presentation/builders/community_
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
-import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_count_badge.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -66,46 +67,46 @@ class CommunityNotificationList extends StatelessWidget {
                 ),
                 CommunityErrorView(error: state.error!, onRetry: cubit.load),
               ),
-              LoadStatus.ready => Column(
-                children: [
-                  buildCommunityPart(parts.header, context, header, _NotificationHeader(details: header)),
-                  Expanded(
-                    child: state.items.isEmpty
-                        ? buildCommunityPart(
-                            parts.empty,
-                            context,
-                            CommunityListEmptyDetails(message: l10n.noNotifications),
-                            CommunityEmptyView(message: l10n.noNotifications, icon: Icons.notifications_none),
-                          )
-                        : NotificationListener<ScrollEndNotification>(
-                            onNotification: (n) {
-                              if (n.metrics.extentAfter < 300) cubit.loadMore();
-                              return false;
-                            },
-                            child: ListView.separated(
-                              addAutomaticKeepAlives: false,
-                              itemCount: state.items.length,
-                              separatorBuilder: (_, _) => const Divider(height: 1),
-                              itemBuilder: (context, i) {
-                                final n = state.items[i];
-                                return _NotificationTile(
-                                  key: ValueKey(n.id),
-                                  notification: n,
-                                  onTap: () {
-                                    cubit.markRead(n);
-                                    final reporter = context.communityFeatures?.notificationReporter;
-                                    final source = NotificationSource(notificationId: n.id);
-                                    unawaited(reporter?.opened(source));
-                                    final custom = onNotificationTap;
-                                    if (custom != null) return custom(context, n);
-                                    if (openCommunityNotification(context, n)) unawaited(reporter?.tapped(source));
-                                  },
-                                );
+              LoadStatus.ready => ColoredBox(
+                color: CommunityStyle.of(context).surface,
+                child: Column(
+                  children: [
+                    buildCommunityPart(parts.header, context, header, _NotificationHeader(details: header)),
+                    Expanded(
+                      child: state.items.isEmpty
+                          ? buildCommunityPart(
+                              parts.empty,
+                              context,
+                              CommunityListEmptyDetails(message: l10n.noNotifications),
+                              CommunityEmptyView(message: l10n.noNotifications, icon: Icons.notifications_none),
+                            )
+                          : NotificationListener<ScrollEndNotification>(
+                              onNotification: (n) {
+                                if (n.metrics.extentAfter < 300) cubit.loadMore();
+                                return false;
                               },
+                              child: _NotificationRows(
+                                items: state.items,
+                                itemBuilder: (context, n) {
+                                  return _NotificationTile(
+                                    key: ValueKey(n.id),
+                                    notification: n,
+                                    onTap: () {
+                                      cubit.markRead(n);
+                                      final reporter = context.communityFeatures?.notificationReporter;
+                                      final source = NotificationSource(notificationId: n.id);
+                                      unawaited(reporter?.opened(source));
+                                      final custom = onNotificationTap;
+                                      if (custom != null) return custom(context, n);
+                                      if (openCommunityNotification(context, n)) unawaited(reporter?.tapped(source));
+                                    },
+                                  );
+                                },
+                              ),
                             ),
-                          ),
-                  ),
-                ],
+                    ),
+                  ],
+                ),
               ),
             };
           },
@@ -147,25 +148,224 @@ bool openCommunityNotification(BuildContext context, AppNotification n) {
   return true;
 }
 
+const _leadingSize = 44.0;
+
+class _NotificationRows extends StatelessWidget {
+  const _NotificationRows({required this.items, required this.itemBuilder});
+
+  final List<AppNotification> items;
+  final Widget Function(BuildContext context, AppNotification notification) itemBuilder;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final split = items.lastIndexWhere((n) => !n.isRead) + 1;
+    final grouped = split > 0;
+    final earlier = grouped && split < items.length;
+    final headers = (grouped ? 1 : 0) + (earlier ? 1 : 0);
+    Widget section(CommunityNotificationSection kind) {
+      final details = CommunityNotificationSectionDetails(
+        section: kind,
+        title: kind == CommunityNotificationSection.newer ? l10n.notifGroupNew : l10n.notifGroupEarlier,
+      );
+      return buildCommunityPart(
+        CommunityNotificationBuilders.of(context).section,
+        context,
+        details,
+        _NotificationSectionHeader(details: details),
+      );
+    }
+
+    return ListView.builder(
+      addAutomaticKeepAlives: false,
+      itemCount: items.length + headers,
+      itemBuilder: (context, row) {
+        if (grouped && row == 0) return section(CommunityNotificationSection.newer);
+        if (earlier && row == split + 1) return section(CommunityNotificationSection.earlier);
+        final index = row - (grouped ? 1 : 0) - (earlier && row > split ? 1 : 0);
+        final last = index == items.length - 1 || (earlier && index == split - 1);
+        final tile = itemBuilder(context, items[index]);
+        if (last) return tile;
+        return Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            tile,
+            _NotificationSeparator(unread: !items[index].isRead && !items[index + 1].isRead),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class _NotificationSectionHeader extends StatelessWidget {
+  const _NotificationSectionHeader({required this.details});
+
+  final CommunityNotificationSectionDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return ColoredBox(
+      color: style.surface,
+      child: Padding(
+        padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.lg, spacing.xs),
+        child: Semantics(
+          header: true,
+          child: Text(details.title, style: style.typography.sectionTitle.copyWith(fontSize: 16)),
+        ),
+      ),
+    );
+  }
+}
+
 class _NotificationHeader extends StatelessWidget {
   const _NotificationHeader({required this.details});
 
   final CommunityNotificationHeaderDetails details;
 
   @override
-  Widget build(BuildContext context) => Padding(
-    padding: const EdgeInsets.fromLTRB(16, 8, 8, 0),
-    child: Row(
-      children: [
-        Expanded(child: Text(details.title, style: Theme.of(context).textTheme.titleLarge)),
-        TextButton.icon(
-          onPressed: details.onMarkAllRead,
-          icon: const Icon(Icons.done_all),
-          label: Text(context.communityL10n.markAllRead),
-        ),
-      ],
-    ),
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return Padding(
+      padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.sm, spacing.xs),
+      child: Row(
+        children: [
+          Expanded(
+            child: Semantics(
+              header: true,
+              child: Text(details.title, style: style.typography.title.copyWith(fontSize: 26, height: 1.2)),
+            ),
+          ),
+          TextButton.icon(
+            style: TextButton.styleFrom(foregroundColor: style.accent, textStyle: style.typography.label),
+            onPressed: details.onMarkAllRead,
+            icon: const Icon(Icons.done_all, size: 18),
+            label: Text(context.communityL10n.markAllRead),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class NotificationTypeIcon extends StatelessWidget {
+  const NotificationTypeIcon({super.key, required this.details});
+
+  final CommunityNotificationIconDetails details;
+
+  @override
+  Widget build(BuildContext context) => buildCommunityPart(
+    CommunityNotificationBuilders.of(context).icon,
+    context,
+    details,
+    _DefaultNotificationIcon(details: details),
   );
+}
+
+class _DefaultNotificationIcon extends StatelessWidget {
+  const _DefaultNotificationIcon({required this.details});
+
+  final CommunityNotificationIconDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final size = details.size;
+    final color = details.important ? Theme.of(context).colorScheme.error : style.accent;
+    final small = size < 32;
+    return SizedBox.square(
+      dimension: size,
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: Color.alphaBlend(color.withValues(alpha: 0.14), style.surface),
+          shape: BoxShape.circle,
+          border: small ? Border.all(color: style.surface, width: 2) : null,
+        ),
+        child: Icon(details.icon, size: small ? size * 0.55 : size * 0.5, color: color),
+      ),
+    );
+  }
+}
+
+class _NotificationRow extends StatelessWidget {
+  const _NotificationRow({required this.details, required this.leading});
+
+  final CommunityNotificationDetails details;
+  final Widget leading;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final unread = !d.isRead;
+    final snippet = d.snippet;
+    final name = d.notification.actor?.name;
+    final title = d.title;
+    final at = name == null || name.isEmpty ? -1 : title.indexOf(name);
+    final base = style.typography.body.copyWith(fontSize: 14, height: 1.4, fontWeight: FontWeight.w400);
+    final strong = base.copyWith(fontWeight: FontWeight.w700);
+    return Material(
+      color: unread ? _unreadTint(style) : style.surface,
+      child: InkWell(
+        onTap: d.onTap,
+        child: Padding(
+          padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.lg, spacing.md),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              leading,
+              SizedBox(width: spacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text.rich(
+                      at < 0
+                          ? TextSpan(
+                              text: title,
+                              style: base.copyWith(fontWeight: FontWeight.w600),
+                            )
+                          : TextSpan(
+                              children: [
+                                if (at > 0) TextSpan(text: title.substring(0, at)),
+                                TextSpan(text: name, style: strong),
+                                TextSpan(text: title.substring(at + name!.length)),
+                              ],
+                            ),
+                      maxLines: 3,
+                      overflow: TextOverflow.ellipsis,
+                      style: base,
+                    ),
+                    if (snippet != null) ...[
+                      SizedBox(height: spacing.xxs),
+                      Text(snippet, maxLines: 2, overflow: TextOverflow.ellipsis, style: style.typography.meta),
+                    ],
+                    SizedBox(height: spacing.xxs),
+                    Text(d.timeLabel, style: style.typography.meta.copyWith(fontSize: 12)),
+                  ],
+                ),
+              ),
+              if (unread)
+                Padding(
+                  padding: EdgeInsets.only(left: spacing.md, top: (_leadingSize - 10) / 2),
+                  child: SizedBox.square(
+                    dimension: 10,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(color: style.accent, shape: BoxShape.circle),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class _NotificationTile extends StatelessWidget {
@@ -179,7 +379,6 @@ class _NotificationTile extends StatelessWidget {
     final n = notification;
     if (n.isOlt) return _OltNotificationTile(notification: n, onTap: onTap);
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
     final name = n.actor?.name ?? l10n.someone;
     final title = switch (n.type) {
       NotificationType.reply => l10n.notifReply(name),
@@ -233,27 +432,21 @@ class _NotificationTile extends StatelessWidget {
       CommunityNotificationBuilders.of(context).item,
       context,
       details,
-      ListTile(
-        tileColor: n.isRead ? null : theme.colorScheme.primaryContainer.withValues(alpha: 0.25),
-        onTap: onTap,
+      _NotificationRow(
+        details: details,
         leading: Stack(
           clipBehavior: Clip.none,
           children: [
-            CommunityAvatar(user: n.actor),
+            CommunityAvatar(user: n.actor, radius: _leadingSize / 2),
             Positioned(
-              right: -4,
-              bottom: -4,
-              child: CircleAvatar(
-                radius: 10,
-                backgroundColor: theme.colorScheme.surface,
-                child: Icon(icon, size: 13, color: CommunityTheme.of(context).link),
+              right: -3,
+              bottom: -3,
+              child: NotificationTypeIcon(
+                details: CommunityNotificationIconDetails(notification: n, icon: icon, size: 20),
               ),
             ),
           ],
         ),
-        title: Text(title, style: n.isRead ? null : const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: details.snippet == null ? null : Text(details.snippet!, maxLines: 2, overflow: TextOverflow.ellipsis),
-        trailing: Text(details.timeLabel, style: theme.textTheme.bodySmall),
       ),
     );
   }
@@ -295,8 +488,6 @@ class _OltNotificationTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final n = notification;
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
     final language = l10n.localeName.split('_').first;
     final kind = n.oltKind;
     final kindLabel = kind == null ? null : notificationTypeLabel(l10n, kind);
@@ -326,16 +517,16 @@ class _OltNotificationTile extends StatelessWidget {
       CommunityNotificationBuilders.of(context).item,
       context,
       details,
-      ListTile(
-        tileColor: n.isRead ? null : scheme.primaryContainer.withValues(alpha: 0.25),
-        onTap: onTap,
-        leading: CircleAvatar(
-          backgroundColor: important ? scheme.errorContainer : scheme.secondaryContainer,
-          child: Icon(icon, color: important ? scheme.onErrorContainer : scheme.onSecondaryContainer),
+      _NotificationRow(
+        details: details,
+        leading: NotificationTypeIcon(
+          details: CommunityNotificationIconDetails(
+            notification: n,
+            icon: icon,
+            important: important,
+            size: _leadingSize,
+          ),
         ),
-        title: Text(title, style: n.isRead ? null : const TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: body == null ? null : Text(body, maxLines: 2, overflow: TextOverflow.ellipsis),
-        trailing: Text(details.timeLabel, style: theme.textTheme.bodySmall),
       ),
     );
   }
@@ -356,6 +547,24 @@ class CommunityNotificationBadge extends StatelessWidget {
         builder: (context, state) =>
             CommunityCountOverlay(kind: CommunityCountKind.notificationUnread, count: state.unread, child: child),
       ),
+    );
+  }
+}
+
+Color _unreadTint(CommunityStyle style) => Color.lerp(style.surface, style.accentMuted, 0.6)!;
+
+class _NotificationSeparator extends StatelessWidget {
+  const _NotificationSeparator({this.unread = false});
+
+  final bool unread;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return ColoredBox(
+      color: unread ? _unreadTint(style) : style.surface,
+      child: CommunityDivider(indent: spacing.lg + _leadingSize + spacing.md),
     );
   }
 }

@@ -1,28 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
+import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/notification_preferences.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/cubit/notification_preferences_cubit.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 Future<void> openCommunityNotificationSettings(BuildContext context) {
   final features = CommunityFeatureScope.of(context);
   final title = context.communityL10n.notificationSettings;
+  final carry = carryCommunityBuilders(context);
   return Navigator.of(context).push<void>(
     MaterialPageRoute(
-      builder: (_) => CommunityFeatureScope(
-        dependencies: features,
-        child: Scaffold(
-          appBar: AppBar(title: Text(title)),
-          body: SafeArea(
-            top: false,
-            child: Center(
-              child: ConstrainedBox(
-                constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
-                child: const SingleChildScrollView(child: CommunityNotificationSettings()),
+      builder: (_) => carry(
+        CommunityFeatureScope(
+          dependencies: features,
+          child: Scaffold(
+            appBar: AppBar(title: Text(title)),
+            body: SafeArea(
+              top: false,
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
+                  child: const SingleChildScrollView(child: CommunityNotificationSettings()),
+                ),
               ),
             ),
           ),
@@ -87,20 +95,46 @@ TimeOfDay? _parseTime(String? value) {
   return hour == null || minute == null ? null : TimeOfDay(hour: hour, minute: minute);
 }
 
+const double _channelWidth = 72;
+
 class _TypeRow extends StatelessWidget {
-  const _TypeRow({required this.preference, required this.muted});
+  const _TypeRow({required this.preference});
 
   final NotificationTypePreference preference;
-  final TextStyle? muted;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
     final cubit = context.read<NotificationPreferencesCubit>();
     final pref = preference;
-    final description = notificationTypeDescription(l10n, pref.type);
+    final details = CommunityNotificationTypeDetails(
+      preference: pref,
+      label: notificationTypeLabel(l10n, pref.type),
+      description: notificationTypeDescription(l10n, pref.type),
+      inAppLabel: l10n.notifInApp,
+      pushLabel: l10n.notifPush,
+      onInAppChanged: pref.supportsInApp && !pref.inAppLocked
+          ? (value) => cubit.setChannel(pref.type, inApp: value)
+          : null,
+      onPushChanged: (value) => cubit.setChannel(pref.type, push: value),
+    );
+    return buildSettingsPart((b) => b.notificationType, context, details, _DefaultTypeRow(details: details));
+  }
+}
+
+class _DefaultTypeRow extends StatelessWidget {
+  const _DefaultTypeRow({required this.details});
+
+  final CommunityNotificationTypeDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final d = details;
+    final description = d.description;
     return Padding(
-      padding: const EdgeInsets.only(left: 16, right: 16),
+      padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xs, spacing.lg, spacing.xs),
       child: Row(
         children: [
           Expanded(
@@ -108,26 +142,20 @@ class _TypeRow extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                Text(notificationTypeLabel(l10n, pref.type)),
-                if (description != null) Text(description, style: muted),
+                Text(d.label, style: style.typography.body.copyWith(fontSize: 14, fontWeight: FontWeight.w600)),
+                if (description != null) Text(description, style: style.typography.meta),
               ],
             ),
           ),
           SizedBox(
-            width: 72,
-            child: pref.supportsInApp
-                ? Switch(
-                    value: pref.inApp ?? true,
-                    onChanged: pref.inAppLocked ? null : (value) => cubit.setChannel(pref.type, inApp: value),
-                  )
+            width: _channelWidth,
+            child: d.supportsInApp
+                ? Switch(value: d.inApp, activeTrackColor: style.accent, onChanged: d.onInAppChanged)
                 : const SizedBox.shrink(),
           ),
           SizedBox(
-            width: 72,
-            child: Switch(
-              value: pref.push,
-              onChanged: (value) => cubit.setChannel(pref.type, push: value),
-            ),
+            width: _channelWidth,
+            child: Switch(value: d.push, activeTrackColor: style.accent, onChanged: d.onPushChanged),
           ),
         ],
       ),
@@ -155,8 +183,9 @@ class _SettingsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
-    final muted = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant);
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final muted = style.typography.meta;
     return BlocConsumer<NotificationPreferencesCubit, NotificationPreferencesState>(
       listenWhen: (a, b) => a.actionErrorId != b.actionErrorId,
       listener: (context, state) => showCommunityError(context, state.actionError!),
@@ -164,15 +193,12 @@ class _SettingsView extends StatelessWidget {
         final cubit = context.read<NotificationPreferencesCubit>();
         switch (state.status) {
           case LoadStatus.initial || LoadStatus.loading:
-            return const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-              child: LinearProgressIndicator(),
-            );
+            return const CommunitySettingsLoading(area: CommunitySettingsArea.notificationPreferences);
           case LoadStatus.failure:
-            return ListTile(
-              leading: Icon(Icons.error_outline, color: theme.colorScheme.error),
-              title: Text(l10n.errorMessage(state.error!)),
-              trailing: TextButton(onPressed: cubit.load, child: Text(l10n.retry)),
+            return CommunitySettingsError(
+              area: CommunitySettingsArea.notificationPreferences,
+              error: state.error!,
+              onRetry: cubit.load,
             );
           case LoadStatus.ready:
             break;
@@ -182,45 +208,53 @@ class _SettingsView extends StatelessWidget {
           for (final pref in state.preferences.types)
             if (pref.isOlt) pref,
         ];
+        final hairline = Divider(height: spacing.lg, thickness: style.borderWidth, color: style.divider);
         return Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 0),
+              padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.lg, spacing.xxs),
               child: Row(
                 children: [
                   const Spacer(),
                   SizedBox(
-                    width: 72,
-                    child: Text(l10n.notifInApp, textAlign: TextAlign.center, style: muted),
+                    width: _channelWidth,
+                    child: Text(l10n.notifInApp, textAlign: TextAlign.center, style: style.typography.label),
                   ),
                   SizedBox(
-                    width: 72,
-                    child: Text(l10n.notifPush, textAlign: TextAlign.center, style: muted),
+                    width: _channelWidth,
+                    child: Text(l10n.notifPush, textAlign: TextAlign.center, style: style.typography.label),
                   ),
                 ],
               ),
             ),
             for (final pref in state.preferences.types)
-              if (!pref.isOlt) _TypeRow(preference: pref, muted: muted),
+              if (!pref.isOlt) _TypeRow(preference: pref),
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+              padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xs, spacing.lg, spacing.sm),
               child: Text(l10n.notifSupportAlwaysOn, style: muted),
             ),
             if (oltTypes.isNotEmpty) ...[
+              hairline,
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 4),
-                child: Text(l10n.notifSectionOlt, style: theme.textTheme.titleSmall),
+                padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xs, spacing.lg, spacing.xs),
+                child: Semantics(header: true, child: Text(l10n.notifSectionOlt, style: style.typography.sectionTitle)),
               ),
-              for (final pref in oltTypes) _TypeRow(preference: pref, muted: muted),
+              for (final pref in oltTypes) _TypeRow(preference: pref),
               Padding(
-                padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
+                padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xs, spacing.lg, spacing.sm),
                 child: Text(l10n.notifOltImportantHint, style: muted),
               ),
             ],
+            hairline,
             SwitchListTile(
-              title: Text(l10n.quietHours),
+              contentPadding: EdgeInsets.symmetric(horizontal: spacing.lg),
+              activeTrackColor: style.accent,
+              title: Text(
+                l10n.quietHours,
+                style: style.typography.body.copyWith(fontSize: 14, fontWeight: FontWeight.w600),
+              ),
               subtitle: Text(
                 quiet.enabled && quiet.start != null && quiet.end != null
                     ? '${l10n.quietHoursRange(quiet.start!, quiet.end!)}\n${l10n.quietHoursHint}'
@@ -239,16 +273,19 @@ class _SettingsView extends StatelessWidget {
             ),
             if (quiet.enabled)
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.md),
                 child: Wrap(
-                  spacing: 8,
+                  spacing: spacing.sm,
+                  runSpacing: spacing.sm,
                   children: [
                     OutlinedButton.icon(
+                      style: style.secondaryButtonStyle(),
                       onPressed: () => _pickTime(context, quiet, start: true),
                       icon: const Icon(Icons.bedtime_outlined, size: 18),
                       label: Text('${l10n.quietHoursStart} ${quiet.start ?? '22:00'}'),
                     ),
                     OutlinedButton.icon(
+                      style: style.secondaryButtonStyle(),
                       onPressed: () => _pickTime(context, quiet, start: false),
                       icon: const Icon(Icons.wb_sunny_outlined, size: 18),
                       label: Text('${l10n.quietHoursEnd} ${quiet.end ?? '06:00'}'),

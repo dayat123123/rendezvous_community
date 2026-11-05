@@ -19,6 +19,25 @@ class CommunityFeedBuilders {
     this.empty,
     this.error,
     this.comment,
+    this.postMenu,
+    this.feedTabs,
+    this.newPosts,
+    this.composePrompt,
+    this.threadHeader,
+    this.threadContext,
+    this.replyComposer,
+    this.threadMore,
+    this.composeToolbar,
+    this.composeSentiment,
+    this.composeAuthor,
+    this.composeImage,
+    this.pollEditor,
+    this.pollOption,
+    this.attachmentImage,
+    this.document,
+    this.draftTile,
+    this.stockHeader,
+    this.editDialog,
   });
 
   final CommunityPartBuilder<CommunityPostDetails>? postCard;
@@ -35,6 +54,25 @@ class CommunityFeedBuilders {
   final CommunityPartBuilder<CommunityListEmptyDetails>? empty;
   final CommunityPartBuilder<CommunityListErrorDetails>? error;
   final CommunityPartBuilder<CommunityCommentDetails>? comment;
+  final CommunityPartBuilder<CommunityPostDetails>? postMenu;
+  final CommunityPartBuilder<CommunityFeedTabsDetails>? feedTabs;
+  final CommunityPartBuilder<CommunityNewPostsDetails>? newPosts;
+  final CommunityPartBuilder<CommunityComposePromptDetails>? composePrompt;
+  final CommunityPartBuilder<CommunityThreadHeaderDetails>? threadHeader;
+  final CommunityPartBuilder<CommunityThreadContextDetails>? threadContext;
+  final CommunityPartBuilder<CommunityReplyComposerDetails>? replyComposer;
+  final CommunityPartBuilder<CommunityThreadMoreDetails>? threadMore;
+  final CommunityPartBuilder<CommunityComposeDetails>? composeToolbar;
+  final CommunityPartBuilder<CommunityComposeSentimentDetails>? composeSentiment;
+  final CommunityPartBuilder<CommunityComposeAuthorDetails>? composeAuthor;
+  final CommunityPartBuilder<CommunityComposeImageDetails>? composeImage;
+  final CommunityPartBuilder<CommunityPollEditorDetails>? pollEditor;
+  final CommunityPartBuilder<CommunityPollOptionDetails>? pollOption;
+  final CommunityPartBuilder<CommunityAttachmentImageDetails>? attachmentImage;
+  final CommunityPartBuilder<CommunityDocumentDetails>? document;
+  final CommunityPartBuilder<CommunityDraftDetails>? draftTile;
+  final CommunityPartBuilder<CommunityStockHeaderDetails>? stockHeader;
+  final CommunityPartBuilder<CommunityEditDialogDetails>? editDialog;
 
   static CommunityFeedBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -60,6 +98,25 @@ class CommunityFeedBuilders {
       empty: other.empty ?? empty,
       error: other.error ?? error,
       comment: other.comment ?? comment,
+      postMenu: other.postMenu ?? postMenu,
+      feedTabs: other.feedTabs ?? feedTabs,
+      newPosts: other.newPosts ?? newPosts,
+      composePrompt: other.composePrompt ?? composePrompt,
+      threadHeader: other.threadHeader ?? threadHeader,
+      threadContext: other.threadContext ?? threadContext,
+      replyComposer: other.replyComposer ?? replyComposer,
+      threadMore: other.threadMore ?? threadMore,
+      composeToolbar: other.composeToolbar ?? composeToolbar,
+      composeSentiment: other.composeSentiment ?? composeSentiment,
+      composeAuthor: other.composeAuthor ?? composeAuthor,
+      composeImage: other.composeImage ?? composeImage,
+      pollEditor: other.pollEditor ?? pollEditor,
+      pollOption: other.pollOption ?? pollOption,
+      attachmentImage: other.attachmentImage ?? attachmentImage,
+      document: other.document ?? document,
+      draftTile: other.draftTile ?? draftTile,
+      stockHeader: other.stockHeader ?? stockHeader,
+      editDialog: other.editDialog ?? editDialog,
     );
   }
 }
@@ -76,3 +133,10 @@ class CommunityFeedBuildersScope extends InheritedWidget {
 Widget withFeedBuilders(BuildContext context, CommunityFeedBuilders? builders, Widget child) => builders == null
     ? child
     : CommunityFeedBuildersScope(builders: CommunityFeedBuilders.of(context).merge(builders), child: child);
+
+Widget buildFeedPart<T>(
+  CommunityPartBuilder<T>? Function(CommunityFeedBuilders builders) select,
+  BuildContext context,
+  T details,
+  Widget fallback,
+) => buildCommunityPart(select(CommunityFeedBuilders.of(context)), context, details, fallback);

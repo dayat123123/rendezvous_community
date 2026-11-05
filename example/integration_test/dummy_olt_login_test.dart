@@ -29,7 +29,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('dummy OLT login form: a wrong password is rejected and email + password signs in', (tester) async {
-    await tester.pumpWidget(const ExampleApp());
+    await tester.pumpWidget(const ExampleApp(promoPopups: false));
     await pumpUntilFound(tester, find.text('Rendezvous OLT (demo)'));
 
     final button = find.text('Masuk via OLT dummy');

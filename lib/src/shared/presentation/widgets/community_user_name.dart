@@ -4,6 +4,9 @@ import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_official_badge.dart';
 
 class CommunityUserName extends StatelessWidget {
@@ -21,37 +24,46 @@ class CommunityUserName extends StatelessWidget {
     final official = CommunityOfficialScope.maybeOf(context)?..ensureLoaded();
     return ValueListenableBuilder<Set<String>>(
       valueListenable: official ?? _none,
-      builder: (context, ids, _) => _name(context, this.official || ids.contains(user.id)),
+      builder: (context, ids, _) {
+        final details = CommunityUserNameDetails(
+          user: user,
+          official: this.official || ids.contains(user.id),
+          showUsername: showUsername,
+          style: style,
+        );
+        return buildSharedPart((b) => b.userName, context, details, _DefaultUserName(details: details));
+      },
     );
   }
+}
 
-  Widget _name(BuildContext context, bool isOfficial) {
-    final theme = Theme.of(context);
+class _DefaultUserName extends StatelessWidget {
+  const _DefaultUserName({required this.details});
+
+  final CommunityUserNameDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final user = details.user;
+    final username = details.usernameLabel;
     return Row(
       mainAxisSize: MainAxisSize.min,
       children: [
         Flexible(
-          child: Text(
-            user.name,
-            overflow: TextOverflow.ellipsis,
-            style: style ?? theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
-          ),
+          child: Text(user.name, overflow: TextOverflow.ellipsis, style: details.style ?? style.typography.author),
         ),
-        if (isOfficial) ...[
-          const SizedBox(width: 4),
+        if (details.official) ...[
+          SizedBox(width: style.spacing.xs),
           const CommunityOfficialBadge(),
         ] else if (user.isVerified) ...[
-          const SizedBox(width: 4),
+          SizedBox(width: style.spacing.xs),
           _VerifiedBadge(user: user),
         ],
-        if (showUsername && user.displayName != null && user.displayName!.isNotEmpty) ...[
-          const SizedBox(width: 6),
+        if (username != null) ...[
+          SizedBox(width: style.spacing.xs + style.spacing.xxs),
           Flexible(
-            child: Text(
-              '@${user.username}',
-              overflow: TextOverflow.ellipsis,
-              style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-            ),
+            child: Text(username, overflow: TextOverflow.ellipsis, style: style.typography.meta),
           ),
         ],
       ],

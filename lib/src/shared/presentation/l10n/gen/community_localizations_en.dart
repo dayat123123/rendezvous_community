@@ -323,6 +323,12 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   }
 
   @override
+  String get profileStatPosts => 'Posts';
+
+  @override
+  String get profileStatFollowers => 'Followers';
+
+  @override
   String get followsYou => 'Follows you';
 
   @override
@@ -1251,6 +1257,12 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get notifSectionOlt => 'OLT notifications';
 
   @override
+  String get notifGroupNew => 'New';
+
+  @override
+  String get notifGroupEarlier => 'Earlier';
+
+  @override
   String get notifOltImportantHint => 'Important messages from OLT are always delivered, even during quiet hours.';
 
   @override
@@ -1499,7 +1511,22 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get bannerOpen => 'Learn more';
 
   @override
+  String get readMore => 'Read more';
+
+  @override
   String get bannerDismiss => 'Dismiss';
+
+  @override
+  String get promoPopupCta => 'View';
+
+  @override
+  String get promoPopupLater => 'Later';
+
+  @override
+  String get promoPopupClose => 'Close promotion';
+
+  @override
+  String get promoPopupLabel => 'Promotion';
 
   @override
   String get draftsTitle => 'Post drafts';

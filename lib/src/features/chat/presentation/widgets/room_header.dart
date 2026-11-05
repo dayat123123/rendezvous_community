@@ -8,6 +8,7 @@ import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_r
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/typing_text.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 
 class RoomHeader extends StatelessWidget {
@@ -74,29 +75,62 @@ class _DefaultRoomHeader extends StatelessWidget {
   Widget build(BuildContext context) {
     final d = details;
     final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
     final onToggleMute = d.onToggleMute;
     final onLeave = d.onLeave;
+    final radius = style.avatarSizes.medium / 2;
     return Material(
-      color: Theme.of(context).colorScheme.surfaceContainerLow,
-      child: ListTile(
-        leading: roomAvatar(context, d.room, online: d.online),
-        title: Text(d.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-        subtitle: Text(
-          d.subtitle,
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: d.highlightSubtitle ? TextStyle(color: CommunityTheme.of(context).onlineIndicator) : null,
-        ),
+      color: style.surface,
+      shape: Border(bottom: style.borderSide.copyWith(color: style.divider)),
+      child: InkWell(
         onTap: d.onTap,
-        trailing: onToggleMute == null
-            ? null
-            : PopupMenuButton<VoidCallback>(
-                onSelected: (action) => action(),
-                itemBuilder: (_) => [
-                  PopupMenuItem(value: onToggleMute, child: Text(d.room.muted ? l10n.unmute : l10n.mute)),
-                  if (onLeave != null) PopupMenuItem(value: onLeave, child: Text(l10n.leaveRoom)),
-                ],
+        child: Padding(
+          padding: EdgeInsetsDirectional.fromSTEB(spacing.lg, spacing.sm, spacing.xs, spacing.sm),
+          child: Row(
+            children: [
+              roomAvatar(context, d.room, online: d.online, radius: radius),
+              SizedBox(width: spacing.md),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      d.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: style.typography.author.copyWith(fontSize: 15),
+                    ),
+                    SizedBox(height: spacing.xxs),
+                    Text(
+                      d.subtitle,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: d.highlightSubtitle
+                          ? style.typography.meta.copyWith(
+                              color: CommunityTheme.of(context).onlineIndicator,
+                              fontWeight: FontWeight.w600,
+                            )
+                          : style.typography.meta,
+                    ),
+                  ],
+                ),
               ),
+              if (onToggleMute != null)
+                PopupMenuButton<VoidCallback>(
+                  iconColor: style.textSecondary,
+                  onSelected: (action) => action(),
+                  itemBuilder: (_) => [
+                    PopupMenuItem(value: onToggleMute, child: Text(d.room.muted ? l10n.unmute : l10n.mute)),
+                    if (onLeave != null) PopupMenuItem(value: onLeave, child: Text(l10n.leaveRoom)),
+                  ],
+                )
+              else
+                SizedBox(height: style.minTouchTarget),
+            ],
+          ),
+        ),
       ),
     );
   }

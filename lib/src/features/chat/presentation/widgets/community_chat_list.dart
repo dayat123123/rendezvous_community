@@ -20,6 +20,7 @@ import 'package:rendezvous_community/src/features/offline/presentation/widgets/c
 import 'package:rendezvous_community/src/features/support/presentation/widgets/community_support_chat.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -160,7 +161,7 @@ class _ChatListLayoutState extends State<_ChatListLayout> {
         return Row(
           children: [
             SizedBox(width: 340, child: list),
-            const VerticalDivider(width: 1),
+            VerticalDivider(width: 1, thickness: 1, color: CommunityStyle.of(context).divider),
             Expanded(
               child: _selected == null
                   ? buildChatPart(
@@ -286,10 +287,7 @@ class _RoomListState extends State<_RoomList> {
                 builders.loading,
                 context,
                 const CommunityLoadingDetails(CommunityChatLoad.moreRooms),
-                const Padding(
-                  padding: EdgeInsets.all(16),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
+                const CommunityLoadingView(),
               );
             }
             final room = rooms[i];
@@ -315,13 +313,16 @@ class _RoomListState extends State<_RoomList> {
       onNewGroup: () => _newGroup(context, cubit),
       onRefresh: () => _refresh(cubit),
     );
-    return Column(
-      children: [
-        buildChatPart(builders.listHeader, context, header, _DefaultListHeader(details: header)),
-        const CommunityOfflineBanner(),
-        if (social && features != null) MessageRequestsEntry(refreshToken: _requestsToken),
-        Expanded(child: body),
-      ],
+    return Material(
+      color: CommunityStyle.of(context).surface,
+      child: Column(
+        children: [
+          buildChatPart(builders.listHeader, context, header, _DefaultListHeader(details: header)),
+          const CommunityOfflineBanner(),
+          if (social && features != null) MessageRequestsEntry(refreshToken: _requestsToken),
+          Expanded(child: body),
+        ],
+      ),
     );
   }
 }
@@ -333,14 +334,22 @@ class _DefaultListHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 8, 8, 0),
+      padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.xs, spacing.xs),
       child: Row(
         children: [
-          Expanded(child: Text(details.title, style: Theme.of(context).textTheme.titleLarge)),
+          Expanded(
+            child: Semantics(
+              header: true,
+              child: Text(details.title, style: style.typography.title.copyWith(fontSize: 26, height: 1.2)),
+            ),
+          ),
           IconButton(
             tooltip: context.communityL10n.newGroup,
             onPressed: details.onNewGroup,
+            color: style.textSecondary,
             icon: const Icon(Icons.group_add_outlined),
           ),
         ],

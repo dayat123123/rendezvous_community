@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.6.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.7.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -79,6 +79,7 @@ Future<void> onOltLoggedIn() async {
     onUserTap: null,      // null = pakai halaman profil bawaan rendezvous_community
     onPostTap: null,      // null = buka CommunityPostDetail
     onRoomTap: null,      // null = buka CommunityChatRoom
+    onBannerLink: (context, uri, banner) => OltRouter.tryOpenDeepLink(context, uri), // opsional, true = ditangani OLT (bagian 5)
     logHandler: (record) => oltLog.write(record.level.name, record.loggerName, record.message),  // opsional
   );
 }
@@ -182,6 +183,44 @@ TabBarView(children: [
 **Upload foto dan PDF** dikirim paket ke `/media/v1` (layanan `media` di server memeriksa isi file dan membuang EXIF/GPS). Server lama tanpa layanan ini menolak upload ("upload belum tersedia").
 
 Navigasi dari dalam widget sosial memakai callback dari langkah 3. Contohnya, mengetuk `$TLKM` di sebuah post memanggil `onStockTap(context, 'TLKM')`, sehingga OLT bisa membuka halaman sahamnya sendiri.
+
+### Banner & popup promo (1.7.0)
+
+Banner yang diterbitkan staf dari Hub datang lewat `get_client_config`. Banner strip tampil di `CommunityBannerHost` (feed sudah memasangnya sendiri); banner `display: "popup"` tampil sebagai kartu di tengah layar bila OLT memasang `CommunityPromoPopupHost` **sekali** di halaman utama, di bawah `Navigator`:
+
+```dart
+MaterialApp(
+  // ...
+  home: CommunityPromoPopupHost(
+    enabled: !oltSession.mustChangePassword,   // false: tunda popup selama layar wajib OLT tampil
+    child: const OltHomePage(),
+  ),
+);
+```
+
+Popup tampil maksimal sekali per sesi aplikasi setelah konfigurasi termuat dan user komunitas masuk, menunggu bila ada dialog/route lain di atas halaman itu, dan tidak tampil saat `update_required`. Aturan frekuensi (`once`/`daily`/`every_open`) dan tabel perilaku tombol ada di [features.md](features.md#popup-promo-170).
+
+**Tautan promo ke halaman OLT.** `link_url` boleh `https://…` atau deep link aplikasi (mis. `olt://promo/akhir-tahun`). Pasang `onBannerLink` sekali di `initialize(...)` (berlaku untuk popup dan banner strip) atau per widget (`CommunityPromoPopupHost(onBannerLink:)`, `CommunityBannerHost(onBannerLink:)`, yang per widget didahulukan). Kembalikan `true` bila OLT sudah menanganinya; `false` membiarkan paket membuka tautan `https`/`http` lewat dialog konfirmasi, sedangkan skema lain diabaikan.
+
+```dart
+await RendezvousCommunity.initialize(
+  // ...
+  onBannerLink: (context, uri, banner) {
+    if (uri.scheme != 'olt') return false;                        // https → dialog konfirmasi bawaan
+    switch (uri.pathSegments) {
+      case [final slug] when uri.host == 'promo':
+        Navigator.of(context).push(MaterialPageRoute(builder: (_) => OltPromoPage(slug: slug, title: banner.title)));
+        return true;
+      case [final code] when uri.host == 'stock':
+        OltRouter.openStock(context, code);
+        return true;
+    }
+    return false;                                                 // skema olt yang tidak dikenal: diabaikan
+  },
+);
+```
+
+Popup ditutup dan event `click` dicatat sebelum callback dipanggil, jadi `context` adalah halaman host (aman untuk `Navigator.push`). Tampilan kartu bisa diganti lewat slot `system.popup` ([customization.md](customization.md#popup-promo)).
 
 ### Chat CS (modul `support`)
 

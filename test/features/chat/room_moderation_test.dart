@@ -6,6 +6,7 @@ import 'package:rendezvous_community/src/features/chat/data/models/chat_models.d
 import 'package:rendezvous_community/src/features/chat/data/repositories/chat_extras_repository_impl.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart' show roomMutedError;
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_list.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_banners.dart';
 
 import '../../support/fakes.dart';
 import '../../support/feature_fakes.dart';
@@ -385,8 +386,9 @@ void main() {
       List<ChatMessage> messages,
       StockRoomState stock,
       FakeFeatureDependencies features,
-      _ModerationExtras extras,
-    ) async {
+      _ModerationExtras extras, {
+      CommunityChatBuilders builders = const CommunityChatBuilders(),
+    }) async {
       final chat = FakeChatRepository(rooms: [stockRoom()], messages: messages);
       addTearDown(chat.dispose);
       extras.stockRoom = stock;
@@ -398,13 +400,17 @@ void main() {
       });
       await pumpFeatureApp(
         tester,
-        BlocProviderValue(
-          cubit: cubit,
-          child: const Column(
-            children: [
-              RoomModerationBanner(),
-              Expanded(child: MessageList()),
-            ],
+        CommunityBuildersScope(
+          builders: CommunityBuilders(chat: builders),
+          child: BlocProviderValue(
+            cubit: cubit,
+            child: const Column(
+              children: [
+                StockRoomBanner(),
+                RoomModerationBanner(),
+                Expanded(child: MessageList()),
+              ],
+            ),
           ),
         ),
         dependencies: FakeDependencies(chat: chat),
@@ -412,6 +418,72 @@ void main() {
       );
       await tester.pump();
     }
+
+    testWidgets('builders replace the room notices, moderation banner, action sheet and moderation dialog', (
+      tester,
+    ) async {
+      final features = FakeFeatureDependencies(config: loadedConfig());
+      addTearDown(features.dispose);
+      final extras = _ModerationExtras();
+      final now = DateTime.now().toUtc();
+      final notices = <CommunityRoomNoticeKind>[];
+      CommunityRoomModerationDialogDetails? dialog;
+      await pumpRoom(
+        tester,
+        [fromAlice('m-1', createdAt: now)],
+        StockRoomState(
+          roomId: 'r',
+          slowModeSeconds: 30,
+          pinnedMessage: fromAlice('m-pin', createdAt: now),
+          moderatorIds: {me.id},
+        ),
+        features,
+        extras,
+        builders: CommunityChatBuilders(
+          roomNotice: (context, d, fallback) {
+            notices.add(d.kind);
+            return Text('notice ${d.kind.name}: ${d.message}');
+          },
+          moderationBanner: (context, d, fallback) => Text('banner ${d.kind.name}'),
+          messageActions: (context, d, fallback) => Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text('aksi ${d.message.message.id} ${d.moderationLabel}'),
+              for (final action in [...d.actions, ...d.moderationActions])
+                TextButton(onPressed: action.onSelected, child: Text('pilih ${action.label}')),
+            ],
+          ),
+          moderationDialog: (context, d, fallback) {
+            dialog = d;
+            return AlertDialog(
+              title: Text('dialog ${d.title}'),
+              actions: [TextButton(onPressed: d.onSubmit, child: const Text('kirim moderasi'))],
+            );
+          },
+        ),
+      );
+      expect(find.text('notice pinned: Pesan m-pin'), findsOneWidget);
+      expect(find.textContaining('notice slowMode: '), findsOneWidget);
+      expect(notices, containsAll([CommunityRoomNoticeKind.pinned, CommunityRoomNoticeKind.slowMode]));
+      expect(find.text('banner moderator'), findsOneWidget);
+
+      await tester.longPress(find.text('Pesan m-1'));
+      await tester.pumpAndSettle();
+      expect(find.text('aksi m-1 Moderator'), findsOneWidget);
+      await tester.tap(find.text('pilih Sembunyikan pesan'));
+      await tester.pumpAndSettle();
+      expect(find.text('dialog Sembunyikan pesan ini?'), findsOneWidget);
+      expect(dialog!.action, RoomModerationAction.hide);
+      expect(dialog!.reasons.map((o) => o.value), ReportReason.values);
+      expect(dialog!.durations, isEmpty);
+      dialog!.onReasonChanged(ReportReason.scam);
+      await tester.pump();
+      expect(dialog!.reason, ReportReason.scam);
+      await tester.tap(find.text('kirim moderasi'));
+      await tester.pumpAndSettle();
+      expect(extras.hidden.single.$1, 'm-1');
+      expect(extras.hidden.single.$2, ReportReason.scam);
+    });
 
     testWidgets('moderators see the badge, the notice, and long-press moderation actions', (tester) async {
       final features = FakeFeatureDependencies(config: loadedConfig());

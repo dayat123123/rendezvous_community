@@ -9,6 +9,8 @@ import 'package:rendezvous_community/src/features/chat/presentation/builders/com
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/stock_cards.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_composer_field.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
@@ -154,79 +156,144 @@ class _DefaultComposer extends StatelessWidget {
   Widget build(BuildContext context) {
     final d = details;
     final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final t = CommunityTheme.of(context);
     final replyPreview = d.replyPreview;
-    return SafeArea(
-      top: false,
-      child: Padding(
-        padding: const EdgeInsets.fromLTRB(8, 6, 8, 8),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (replyPreview != null)
+
+    return Material(
+      color: style.surface,
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: EdgeInsets.all(spacing.sm),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (replyPreview != null)
+                Container(
+                  margin: EdgeInsetsDirectional.only(start: spacing.sm, bottom: spacing.sm),
+                  padding: EdgeInsetsDirectional.only(start: spacing.md),
+                  decoration: BoxDecoration(
+                    color: style.pill,
+                    borderRadius: style.radii.controlRadius,
+                    border: BorderDirectional(start: BorderSide(color: t.link, width: 3)),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.reply, size: 16, color: t.link),
+                      SizedBox(width: spacing.sm),
+                      Expanded(
+                        child: Text(
+                          replyPreview,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: style.typography.meta.copyWith(color: style.textPrimary),
+                        ),
+                      ),
+                      IconButton(
+                        tooltip: l10n.cancel,
+                        visualDensity: VisualDensity.compact,
+                        color: style.textSecondary,
+                        onPressed: d.onCancelReply,
+                        icon: const Icon(Icons.close, size: 18),
+                      ),
+                    ],
+                  ),
+                ),
               Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  const Icon(Icons.reply, size: 16),
-                  const SizedBox(width: 6),
+                  ...d.extraActions,
+                  if (d.onSendStockCard != null)
+                    IconButton(
+                      tooltip: l10n.stockCardSend,
+                      color: style.textSecondary,
+                      onPressed: d.onSendStockCard,
+                      icon: const Icon(Icons.candlestick_chart_outlined),
+                    ),
                   Expanded(
-                    child: Text(
-                      replyPreview,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.labelMedium,
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(color: style.pill, borderRadius: BorderRadius.circular(24)),
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            tooltip: d.allowsDocuments ? l10n.composeAddImageOrPdf : l10n.composeAddImage,
+                            color: style.textSecondary,
+                            onPressed: d.onPickImage,
+                            icon: d.uploading
+                                ? SizedBox.square(
+                                    dimension: 18,
+                                    child: CircularProgressIndicator(strokeWidth: 2, color: style.accent),
+                                  )
+                                : const Icon(Icons.add_photo_alternate_outlined),
+                          ),
+                          Expanded(
+                            child: CommunityComposerField(
+                              controller: d.controller,
+                              focusNode: d.focusNode,
+                              hintText: d.hintText,
+                              maxLength: d.maxLength,
+                              maxLines: 5,
+                              onSubmit: d.onSend,
+                              decoration: InputDecoration(
+                                filled: false,
+                                hintStyle: style.typography.body.copyWith(color: style.textSecondary),
+                                border: InputBorder.none,
+                                enabledBorder: InputBorder.none,
+                                focusedBorder: InputBorder.none,
+                                contentPadding: EdgeInsets.fromLTRB(
+                                  0,
+                                  spacing.md + spacing.xxs,
+                                  spacing.lg,
+                                  spacing.md,
+                                ),
+                                counterText: '',
+                                isDense: true,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                  IconButton(
-                    tooltip: l10n.cancel,
-                    visualDensity: VisualDensity.compact,
-                    onPressed: d.onCancelReply,
-                    icon: const Icon(Icons.close, size: 18),
-                  ),
+                  SizedBox(width: spacing.xs),
+                  if (d.muted)
+                    Tooltip(
+                      message: l10n.roomMutedComposer,
+                      child: IconButton.filled(onPressed: null, icon: const Icon(Icons.volume_off_outlined)),
+                    )
+                  else if (d.coolingDown)
+                    Tooltip(
+                      message: l10n.errorSlowMode(d.cooldownSeconds),
+                      child: FilledButton.tonal(
+                        style: FilledButton.styleFrom(shape: const StadiumBorder()),
+                        onPressed: null,
+                        child: Text(l10n.slowModeWait(d.cooldownSeconds)),
+                      ),
+                    )
+                  else
+                    ValueListenableBuilder<TextEditingValue>(
+                      valueListenable: d.controller,
+                      builder: (context, value, _) {
+                        final empty = value.text.trim().isEmpty;
+                        return IconButton.filled(
+                          tooltip: l10n.composeSubmit,
+                          style: IconButton.styleFrom(
+                            backgroundColor: empty ? style.pill : style.accent,
+                            foregroundColor: empty ? style.textTertiary : style.onAccent,
+                            fixedSize: const Size.square(48),
+                          ),
+                          onPressed: d.onSend,
+                          icon: const Icon(Icons.send, size: 22),
+                        );
+                      },
+                    ),
                 ],
               ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                ...d.extraActions,
-                if (d.onSendStockCard != null)
-                  IconButton(
-                    tooltip: l10n.stockCardSend,
-                    onPressed: d.onSendStockCard,
-                    icon: const Icon(Icons.candlestick_chart_outlined),
-                  ),
-                IconButton(
-                  tooltip: d.allowsDocuments ? l10n.composeAddImageOrPdf : l10n.composeAddImage,
-                  onPressed: d.onPickImage,
-                  icon: d.uploading
-                      ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                      : const Icon(Icons.add_photo_alternate_outlined),
-                ),
-                Expanded(
-                  child: CommunityComposerField(
-                    controller: d.controller,
-                    focusNode: d.focusNode,
-                    hintText: d.hintText,
-                    maxLength: d.maxLength,
-                    maxLines: 5,
-                    onSubmit: d.onSend,
-                    decoration: const InputDecoration(border: OutlineInputBorder(), counterText: '', isDense: true),
-                  ),
-                ),
-                const SizedBox(width: 8),
-                if (d.muted)
-                  Tooltip(
-                    message: l10n.roomMutedComposer,
-                    child: IconButton.filled(onPressed: null, icon: const Icon(Icons.volume_off_outlined)),
-                  )
-                else if (d.coolingDown)
-                  Tooltip(
-                    message: l10n.errorSlowMode(d.cooldownSeconds),
-                    child: FilledButton.tonal(onPressed: null, child: Text(l10n.slowModeWait(d.cooldownSeconds))),
-                  )
-                else
-                  IconButton.filled(tooltip: l10n.composeSubmit, onPressed: d.onSend, icon: const Icon(Icons.send)),
-              ],
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

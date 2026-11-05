@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_bubble.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
 class MessageList extends StatefulWidget {
@@ -38,6 +40,7 @@ class _MessageListState extends State<MessageList> {
   Widget build(BuildContext context) {
     final builders = CommunityChatBuilders.of(context);
     final l10n = context.communityL10n;
+    final spacing = CommunityStyle.of(context).spacing;
     return BlocBuilder<ChatRoomCubit, ChatRoomState>(
       buildWhen: (a, b) =>
           a.messages != b.messages ||
@@ -63,7 +66,7 @@ class _MessageListState extends State<MessageList> {
           addAutomaticKeepAlives: false,
           controller: _scroll,
           reverse: true,
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
           itemCount: state.messages.length + (state.loadingOlder ? 1 : 0),
           itemBuilder: (context, i) {
             if (i == state.messages.length) {
@@ -71,29 +74,26 @@ class _MessageListState extends State<MessageList> {
                 builders.loading,
                 context,
                 const CommunityLoadingDetails(CommunityChatLoad.olderMessages),
-                const Padding(
-                  padding: EdgeInsets.all(12),
-                  child: Center(child: CircularProgressIndicator()),
-                ),
+                const CommunityLoadingView(),
               );
             }
             final message = state.messages[i];
             final older = i + 1 < state.messages.length ? state.messages[i + 1] : null;
+            final newer = i > 0 ? state.messages[i - 1] : null;
             final newDay = older == null || !_sameDay(older.createdAt, message.createdAt);
-            final grouped =
-                older != null &&
-                !newDay &&
-                !older.isSystem &&
-                older.senderId == message.senderId &&
-                message.createdAt.difference(older.createdAt).inMinutes < 3;
+            final grouped = older != null && !newDay && _joins(older, message);
+            final continued = newer != null && _sameDay(message.createdAt, newer.createdAt) && _joins(message, newer);
             final mine = state.isMine(message);
+            final type = state.room?.type;
             final bubble = MessageBubble(
               key: ValueKey(message.clientId ?? message.id),
               message: message,
               mine: mine,
               receipt: state.receiptOf(message),
-              showSender: !grouped && state.room?.type != RoomType.direct && !mine,
+              showSender: !grouped && type != RoomType.direct && !mine,
               startsGroup: !grouped,
+              endsGroup: !continued,
+              showAvatar: !mine && (type == RoomType.group || type == RoomType.stock),
             );
             if (!newDay) return bubble;
             final divider = buildChatPart(
@@ -114,6 +114,12 @@ class _MessageListState extends State<MessageList> {
   }
 }
 
+bool _joins(ChatMessage older, ChatMessage newer) =>
+    !older.isSystem &&
+    !newer.isSystem &&
+    older.senderId == newer.senderId &&
+    newer.createdAt.difference(older.createdAt).inMinutes < 3;
+
 bool _sameDay(DateTime a, DateTime b) {
   final x = a.toLocal();
   final y = b.toLocal();
@@ -127,19 +133,19 @@ class _DayDivider extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: EdgeInsets.only(top: spacing.lg, bottom: spacing.xs),
       child: Center(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 3),
-          decoration: BoxDecoration(
-            color: theme.colorScheme.surfaceContainerHigh,
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Text(
-            context.communityL10n.dayLabel(time),
-            style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
+        child: DecoratedBox(
+          decoration: BoxDecoration(color: style.chip, borderRadius: style.radii.pillRadius),
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.xs),
+            child: Text(
+              context.communityL10n.dayLabel(time),
+              style: style.typography.label.copyWith(fontSize: 12, color: style.textSecondary),
+            ),
           ),
         ),
       ),

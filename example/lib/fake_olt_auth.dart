@@ -3,7 +3,7 @@ import 'package:rendezvous_community/rendezvous_community.dart' show CommunityEx
 
 import 'dummy_olt_client.dart';
 import 'home_page.dart';
-import 'main.dart' show autoLoginUser, dummyOltWsUrl;
+import 'main.dart' show autoLoginUser, dummyOltWsUrl, withPromoPopups;
 
 class FakeOltAuth {
   FakeOltAuth.fixed(String token) : _current = token, _renew = null;
@@ -118,7 +118,9 @@ class _LoginPageState extends State<LoginPage> {
     }
     if (!mounted) return;
     setState(() => _busy = false);
-    await Navigator.of(context).push(MaterialPageRoute<void>(builder: (_) => HomePage(auth: auth)));
+    await Navigator.of(
+      context,
+    ).push(MaterialPageRoute<void>(builder: (context) => withPromoPopups(context, HomePage(auth: auth))));
   }
 
   @override

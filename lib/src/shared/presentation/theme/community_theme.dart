@@ -21,7 +21,8 @@ class CommunityTheme extends ThemeExtension<CommunityTheme> {
     required this.onUnreadBadge,
     required this.onlineIndicator,
     this.readReceipt = const Color(0xFF34B7F1),
-    this.threadIndent = 16,
+    this.like = const Color(0xFFE0245E),
+    this.threadIndent = 40,
     this.maxThreadIndentLevels = 4,
   });
 
@@ -40,20 +41,23 @@ class CommunityTheme extends ThemeExtension<CommunityTheme> {
       onNeutral: scheme.onSurfaceVariant,
       link: scheme.primary,
       threadLine: scheme.outlineVariant,
-      myBubble: scheme.primaryContainer,
-      onMyBubble: scheme.onPrimaryContainer,
+      myBubble: theme.brightness == Brightness.dark ? scheme.primaryContainer : scheme.primary,
+      onMyBubble: theme.brightness == Brightness.dark ? scheme.onPrimaryContainer : scheme.onPrimary,
       otherBubble: scheme.surfaceContainerHigh,
       onOtherBubble: scheme.onSurface,
-      unreadBadge: scheme.error,
-      onUnreadBadge: scheme.onError,
+      unreadBadge: scheme.primary,
+      onUnreadBadge: scheme.onPrimary,
       onlineIndicator: positive.primary,
       readReceipt: theme.brightness == Brightness.dark ? const Color(0xFF53BDEB) : const Color(0xFF1F9BDE),
+      like: theme.brightness == Brightness.dark ? const Color(0xFFFF5C8A) : const Color(0xFFE0245E),
     );
   }
 
+  static final _fallbacks = Expando<CommunityTheme>();
+
   static CommunityTheme of(BuildContext context) {
     final theme = Theme.of(context);
-    return theme.extension<CommunityTheme>() ?? CommunityTheme.fallback(theme);
+    return theme.extension<CommunityTheme>() ?? (_fallbacks[theme] ??= CommunityTheme.fallback(theme));
   }
 
   final Color bullish;
@@ -74,6 +78,7 @@ class CommunityTheme extends ThemeExtension<CommunityTheme> {
   final Color onUnreadBadge;
   final Color onlineIndicator;
   final Color readReceipt;
+  final Color like;
 
   final double threadIndent;
 
@@ -97,6 +102,7 @@ class CommunityTheme extends ThemeExtension<CommunityTheme> {
     Color? onUnreadBadge,
     Color? onlineIndicator,
     Color? readReceipt,
+    Color? like,
     double? threadIndent,
     int? maxThreadIndentLevels,
   }) => CommunityTheme(
@@ -116,6 +122,7 @@ class CommunityTheme extends ThemeExtension<CommunityTheme> {
     onUnreadBadge: onUnreadBadge ?? this.onUnreadBadge,
     onlineIndicator: onlineIndicator ?? this.onlineIndicator,
     readReceipt: readReceipt ?? this.readReceipt,
+    like: like ?? this.like,
     threadIndent: threadIndent ?? this.threadIndent,
     maxThreadIndentLevels: maxThreadIndentLevels ?? this.maxThreadIndentLevels,
   );
@@ -141,6 +148,7 @@ class CommunityTheme extends ThemeExtension<CommunityTheme> {
       onUnreadBadge: c(onUnreadBadge, other.onUnreadBadge),
       onlineIndicator: c(onlineIndicator, other.onlineIndicator),
       readReceipt: c(readReceipt, other.readReceipt),
+      like: c(like, other.like),
       threadIndent: lerpDouble(threadIndent, other.threadIndent, t)!,
       maxThreadIndentLevels: t < 0.5 ? maxThreadIndentLevels : other.maxThreadIndentLevels,
     );

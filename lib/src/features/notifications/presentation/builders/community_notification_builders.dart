@@ -4,13 +4,23 @@ import 'package:rendezvous_community/src/shared/presentation/builders/community_
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 
 class CommunityNotificationBuilders {
-  const CommunityNotificationBuilders({this.item, this.header, this.loading, this.empty, this.error});
+  const CommunityNotificationBuilders({
+    this.item,
+    this.header,
+    this.loading,
+    this.empty,
+    this.error,
+    this.icon,
+    this.section,
+  });
 
   final CommunityPartBuilder<CommunityNotificationDetails>? item;
   final CommunityPartBuilder<CommunityNotificationHeaderDetails>? header;
   final CommunityPartBuilder<CommunityListLoadingDetails>? loading;
   final CommunityPartBuilder<CommunityListEmptyDetails>? empty;
   final CommunityPartBuilder<CommunityListErrorDetails>? error;
+  final CommunityPartBuilder<CommunityNotificationIconDetails>? icon;
+  final CommunityPartBuilder<CommunityNotificationSectionDetails>? section;
 
   static CommunityNotificationBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -27,6 +37,8 @@ class CommunityNotificationBuilders {
       loading: other.loading ?? loading,
       empty: other.empty ?? empty,
       error: other.error ?? error,
+      icon: other.icon ?? icon,
+      section: other.section ?? section,
     );
   }
 }

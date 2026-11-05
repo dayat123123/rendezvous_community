@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/compose_prompt_card.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_tag.dart';
 
 enum CommunityFeedTab { latest, following }
 
@@ -26,40 +29,77 @@ class CommunityStreamFeed extends StatefulWidget {
 class _CommunityStreamFeedState extends State<CommunityStreamFeed> {
   late CommunityFeedTab _tab = widget.initialTab;
 
+  void _select(CommunityFeedTab tab) {
+    if (tab != _tab) setState(() => _tab = tab);
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(12, 8, 12, 0),
-          child: SegmentedButton<CommunityFeedTab>(
-            segments: [
-              ButtonSegment(
-                value: CommunityFeedTab.latest,
-                label: Text(l10n.feedLatest),
-                icon: const Icon(Icons.public),
-              ),
-              ButtonSegment(
-                value: CommunityFeedTab.following,
-                label: Text(l10n.feedFollowing),
-                icon: const Icon(Icons.people_outline),
-              ),
+    final style = CommunityStyle.of(context);
+    final tabs = CommunityFeedTabsDetails(
+      tabs: CommunityFeedTab.values,
+      labels: [l10n.feedLatest, l10n.feedFollowing],
+      selected: _tab,
+      onSelect: _select,
+    );
+    return ColoredBox(
+      color: style.background,
+      child: Column(
+        children: [
+          withFeedBuilders(
+            context,
+            widget.builders,
+            Builder(
+              builder: (context) => buildFeedPart((b) => b.feedTabs, context, tabs, _DefaultFeedTabs(details: tabs)),
+            ),
+          ),
+          Expanded(
+            child: CommunityFeedList(
+              key: ValueKey(_tab),
+              scope: _tab == CommunityFeedTab.latest ? const FeedScope.global() : const FeedScope.following(),
+              emptyMessage: _tab == CommunityFeedTab.latest ? l10n.feedEmpty : l10n.feedFollowingEmpty,
+              header: widget.showComposePrompt ? const ComposePromptCard() : null,
+              builders: widget.builders,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _DefaultFeedTabs extends StatelessWidget {
+  const _DefaultFeedTabs({required this.details});
+
+  final CommunityFeedTabsDetails details;
+
+  static const _icons = {CommunityFeedTab.latest: Icons.public, CommunityFeedTab.following: Icons.people_outline};
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return Material(
+      color: style.surface,
+      child: Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(spacing.md, spacing.xxs, spacing.md, spacing.xxs),
+        child: Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: Wrap(
+            spacing: spacing.sm,
+            children: [
+              for (final (index, tab) in details.tabs.indexed)
+                CommunityTag(
+                  label: details.labels[index],
+                  icon: _icons[tab],
+                  selected: tab == details.selected,
+                  onTap: () => details.onSelect(tab),
+                ),
             ],
-            selected: {_tab},
-            onSelectionChanged: (s) => setState(() => _tab = s.first),
           ),
         ),
-        Expanded(
-          child: CommunityFeedList(
-            key: ValueKey(_tab),
-            scope: _tab == CommunityFeedTab.latest ? const FeedScope.global() : const FeedScope.following(),
-            emptyMessage: _tab == CommunityFeedTab.latest ? l10n.feedEmpty : l10n.feedFollowingEmpty,
-            header: widget.showComposePrompt ? const ComposePromptCard() : null,
-            builders: widget.builders,
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

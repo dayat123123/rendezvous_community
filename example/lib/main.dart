@@ -10,6 +10,7 @@ import 'stock_directory.dart';
 const _anonKey = String.fromEnvironment('OLT_SOCIAL_ANON_KEY');
 const _urlOverride = String.fromEnvironment('OLT_SOCIAL_URL');
 const _dummyOltOverride = String.fromEnvironment('OLT_DUMMY_WS_URL');
+const _promoPopups = bool.fromEnvironment('OLT_PROMO_POPUP', defaultValue: true);
 
 String get socialUrl {
   if (_urlOverride.isNotEmpty) return _urlOverride;
@@ -26,7 +27,9 @@ String get dummyOltWsUrl => _dummyOltOverride.isNotEmpty
 void main() => runApp(const ExampleApp());
 
 class ExampleApp extends StatefulWidget {
-  const ExampleApp({super.key});
+  const ExampleApp({super.key, this.promoPopups = _promoPopups});
+
+  final bool promoPopups;
 
   @override
   State<ExampleApp> createState() => _ExampleAppState();
@@ -55,6 +58,7 @@ class _ExampleAppState extends State<ExampleApp> {
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: _anonKey.isEmpty ? const _MissingConfigPage() : const LoginPage(onSignedIn: _startSocial),
       builder: (context, child) => _SettingsScope(
+        promoPopups: widget.promoPopups,
         toggleTheme: () => setState(() {
           _themeMode = Theme.of(context).brightness == Brightness.dark ? ThemeMode.light : ThemeMode.dark;
         }),
@@ -85,6 +89,7 @@ Future<void> _startSocial(FakeOltAuth auth) async {
     stockSearch: searchStocks,
     stockInfo: (code) => stockNames.containsKey(code) ? CommunityStockInfo(name: stockNames[code]) : null,
     onOltNotificationTap: showOltNotification,
+    onBannerLink: openPromoLink,
     appVersion: '1.3.0',
   );
   await social.ensureSignedIn();
@@ -92,6 +97,7 @@ Future<void> _startSocial(FakeOltAuth auth) async {
 
 class _SettingsScope extends InheritedWidget {
   const _SettingsScope({
+    required this.promoPopups,
     required this.toggleTheme,
     required this.toggleLocale,
     required this.toggleChatStyle,
@@ -103,6 +109,7 @@ class _SettingsScope extends InheritedWidget {
   final VoidCallback toggleLocale;
   final VoidCallback toggleChatStyle;
   final VoidCallback toggleFeedStyle;
+  final bool promoPopups;
 
   @override
   bool updateShouldNotify(_SettingsScope oldWidget) => false;
@@ -117,6 +124,24 @@ void toggleChatStyle(BuildContext context) =>
 
 void toggleFeedStyle(BuildContext context) =>
     context.getInheritedWidgetOfExactType<_SettingsScope>()?.toggleFeedStyle();
+
+Widget withPromoPopups(BuildContext context, Widget child) => CommunityPromoPopupHost(
+  enabled: context.getInheritedWidgetOfExactType<_SettingsScope>()?.promoPopups ?? false,
+  child: child,
+);
+
+bool openPromoLink(BuildContext context, Uri uri, CommunityBanner banner) {
+  if (uri.scheme != 'olt') return false;
+  Navigator.of(context).push(
+    MaterialPageRoute<void>(
+      builder: (_) => Scaffold(
+        appBar: AppBar(title: Text(banner.title)),
+        body: Center(child: Text('Halaman promo OLT\n$uri', textAlign: TextAlign.center)),
+      ),
+    ),
+  );
+  return true;
+}
 
 void openStockPage(BuildContext context, String code) {
   Navigator.of(context).push(

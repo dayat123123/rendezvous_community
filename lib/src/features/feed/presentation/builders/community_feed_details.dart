@@ -1,9 +1,13 @@
-import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_stream_feed.dart';
 import 'package:rendezvous_community/src/features/link_preview/domain/entities/link_preview.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
 class CommunityPostDetails {
   const CommunityPostDetails({
@@ -108,6 +112,7 @@ class CommunityCommentDetails {
     this.onReport,
     this.onBlock,
     this.onAppeal,
+    this.level = 0,
   });
 
   final ThreadComment comment;
@@ -123,6 +128,346 @@ class CommunityCommentDetails {
   final VoidCallback? onReport;
   final VoidCallback? onBlock;
   final VoidCallback? onAppeal;
+  final int level;
 
   bool get edited => comment.editedAt != null && !comment.isDeleted;
+}
+
+enum CommunityThreadMoreKind { moreReplies, continueThread, moreComments }
+
+class CommunityFeedTabsDetails {
+  const CommunityFeedTabsDetails({
+    required this.tabs,
+    required this.labels,
+    required this.selected,
+    required this.onSelect,
+  });
+
+  final List<CommunityFeedTab> tabs;
+  final List<String> labels;
+  final CommunityFeedTab selected;
+  final ValueChanged<CommunityFeedTab> onSelect;
+}
+
+class CommunityNewPostsDetails {
+  const CommunityNewPostsDetails({required this.count, required this.label, required this.onTap});
+
+  final int count;
+  final String label;
+  final VoidCallback onTap;
+}
+
+class CommunityComposePromptDetails {
+  const CommunityComposePromptDetails({required this.user, required this.hintText, required this.onCompose});
+
+  final UserSummary? user;
+  final String hintText;
+  final VoidCallback onCompose;
+}
+
+class CommunityThreadHeaderDetails {
+  const CommunityThreadHeaderDetails({required this.post, required this.commentCount, required this.label});
+
+  final Post post;
+  final int commentCount;
+  final String label;
+}
+
+class CommunityThreadContextDetails {
+  const CommunityThreadContextDetails({
+    required this.root,
+    required this.label,
+    required this.actionLabel,
+    required this.comment,
+    required this.onOpenPost,
+  });
+
+  final ThreadComment root;
+  final String label;
+  final String actionLabel;
+  final Widget comment;
+  final VoidCallback onOpenPost;
+}
+
+class CommunityReplyComposerDetails {
+  const CommunityReplyComposerDetails({
+    required this.controller,
+    required this.focusNode,
+    required this.hintText,
+    required this.sending,
+    required this.sendLabel,
+    required this.cancelLabel,
+    required this.field,
+    this.replyTo,
+    this.replyingLabel,
+    this.onSend,
+    this.onCancelReply,
+  });
+
+  final TextEditingController controller;
+  final FocusNode focusNode;
+  final String hintText;
+  final bool sending;
+  final String sendLabel;
+  final String cancelLabel;
+  final Widget field;
+  final ThreadComment? replyTo;
+  final String? replyingLabel;
+  final VoidCallback? onSend;
+  final VoidCallback? onCancelReply;
+}
+
+class CommunityThreadMoreDetails {
+  const CommunityThreadMoreDetails({
+    required this.kind,
+    required this.label,
+    required this.level,
+    this.remaining,
+    this.loading = false,
+    this.onTap,
+  });
+
+  final CommunityThreadMoreKind kind;
+  final String label;
+  final int level;
+  final int? remaining;
+  final bool loading;
+  final VoidCallback? onTap;
+}
+
+class CommunityComposeDetails {
+  const CommunityComposeDetails({
+    required this.controller,
+    required this.posting,
+    required this.uploading,
+    required this.hasPoll,
+    required this.imageCount,
+    required this.submitLabel,
+    required this.addImageLabel,
+    required this.addPollLabel,
+    this.onPost,
+    this.onPickImage,
+    this.onAddPoll,
+  });
+
+  final TextEditingController controller;
+  final bool posting;
+  final bool uploading;
+  final bool hasPoll;
+  final int imageCount;
+  final String submitLabel;
+  final String addImageLabel;
+  final String addPollLabel;
+  final VoidCallback? onPost;
+  final VoidCallback? onPickImage;
+  final VoidCallback? onAddPoll;
+
+  bool get canPost => onPost != null;
+}
+
+class CommunityComposeSentimentDetails {
+  const CommunityComposeSentimentDetails({
+    required this.title,
+    required this.selected,
+    required this.options,
+    required this.labels,
+    required this.onChanged,
+  });
+
+  final String title;
+  final Sentiment? selected;
+  final List<Sentiment?> options;
+  final List<String> labels;
+  final ValueChanged<Sentiment?> onChanged;
+}
+
+class CommunityComposeAuthorDetails {
+  const CommunityComposeAuthorDetails({required this.user, this.sentiment});
+
+  final UserSummary user;
+  final Sentiment? sentiment;
+}
+
+class CommunityComposeImageDetails {
+  const CommunityComposeImageDetails({
+    required this.attachment,
+    required this.name,
+    required this.removeLabel,
+    this.onRemove,
+  });
+
+  final Attachment attachment;
+  final String name;
+  final String removeLabel;
+  final VoidCallback? onRemove;
+
+  bool get held => attachment.held;
+}
+
+class CommunityPollEditorDetails {
+  const CommunityPollEditorDetails({
+    required this.poll,
+    required this.enabled,
+    required this.controllers,
+    required this.durationLabels,
+    required this.title,
+    this.onAddOption,
+    this.onRemoveOption,
+    this.onOptionChanged,
+    this.onDurationChanged,
+    this.onRemovePoll,
+  });
+
+  final PollDraft poll;
+  final bool enabled;
+  final List<TextEditingController> controllers;
+  final Map<PollDuration, String> durationLabels;
+  final String title;
+  final VoidCallback? onAddOption;
+  final ValueChanged<int>? onRemoveOption;
+  final void Function(int index, String value)? onOptionChanged;
+  final ValueChanged<PollDuration>? onDurationChanged;
+  final VoidCallback? onRemovePoll;
+
+  List<String> get options => poll.options;
+
+  PollDuration get duration => poll.duration;
+
+  bool get canAddOption => onAddOption != null;
+}
+
+class CommunityPollOptionDetails {
+  const CommunityPollOptionDetails({
+    required this.option,
+    required this.index,
+    required this.share,
+    required this.showResults,
+    required this.resultsVisible,
+    required this.mine,
+    required this.leading,
+    required this.pending,
+    this.percentLabel,
+    this.onVote,
+  });
+
+  final PollOption option;
+  final int index;
+  final double share;
+  final bool showResults;
+  final bool resultsVisible;
+  final bool mine;
+  final bool leading;
+  final bool pending;
+  final String? percentLabel;
+  final VoidCallback? onVote;
+}
+
+class CommunityAttachmentImageDetails {
+  const CommunityAttachmentImageDetails({
+    required this.attachment,
+    required this.index,
+    required this.count,
+    required this.blurred,
+    required this.image,
+  });
+
+  final Attachment attachment;
+  final int index;
+  final int count;
+  final bool blurred;
+  final Widget image;
+
+  bool get held => attachment.held;
+}
+
+class CommunityDocumentDetails {
+  const CommunityDocumentDetails({
+    required this.attachment,
+    required this.name,
+    required this.sizeLabel,
+    required this.color,
+    required this.opening,
+    required this.semanticLabel,
+    this.onOpen,
+  });
+
+  final Attachment attachment;
+  final String name;
+  final String sizeLabel;
+  final Color color;
+  final bool opening;
+  final String semanticLabel;
+  final VoidCallback? onOpen;
+}
+
+class CommunityDraftDetails {
+  const CommunityDraftDetails({
+    required this.draft,
+    required this.preview,
+    required this.timeLabel,
+    required this.subtitle,
+    required this.deleteLabel,
+    required this.onOpen,
+    required this.onDelete,
+  });
+
+  final PostDraft draft;
+  final String preview;
+  final String timeLabel;
+  final String subtitle;
+  final String deleteLabel;
+  final VoidCallback onOpen;
+  final VoidCallback onDelete;
+
+  bool get synced => draft.synced;
+}
+
+class CommunityStockHeaderDetails {
+  const CommunityStockHeaderDetails({
+    required this.code,
+    required this.found,
+    required this.loaded,
+    required this.watching,
+    required this.joining,
+    required this.watchLabel,
+    required this.discussionLabel,
+    this.name,
+    this.subtitle,
+    this.onToggleWatch,
+    this.onOpenDiscussion,
+  });
+
+  final String code;
+  final bool found;
+  final bool loaded;
+  final bool watching;
+  final bool joining;
+  final String watchLabel;
+  final String discussionLabel;
+  final String? name;
+  final String? subtitle;
+  final VoidCallback? onToggleWatch;
+  final VoidCallback? onOpenDiscussion;
+}
+
+class CommunityEditDialogDetails {
+  const CommunityEditDialogDetails({
+    required this.title,
+    required this.controller,
+    required this.maxLength,
+    required this.saveLabel,
+    required this.cancelLabel,
+    required this.field,
+    required this.onSave,
+    required this.onCancel,
+  });
+
+  final String title;
+  final TextEditingController controller;
+  final int maxLength;
+  final String saveLabel;
+  final String cancelLabel;
+  final Widget field;
+  final VoidCallback onSave;
+  final VoidCallback onCancel;
 }

@@ -3,6 +3,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 
 class SentimentBadge extends StatelessWidget {
@@ -47,21 +48,20 @@ class _DefaultSentimentBadge extends StatelessWidget {
   final CommunityLabelBadgeDetails details;
 
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
-    decoration: BoxDecoration(color: details.background, borderRadius: BorderRadius.circular(12)),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(details.icon, size: 14, color: details.foreground),
-        const SizedBox(width: 4),
-        Text(
-          details.label,
-          style: Theme.of(
-            context,
-          ).textTheme.labelSmall?.copyWith(color: details.foreground, fontWeight: FontWeight.w600),
-        ),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: spacing.sm, vertical: spacing.xxs),
+      decoration: BoxDecoration(color: details.background, borderRadius: style.radii.pillRadius),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(details.icon, size: 14, color: details.foreground),
+          SizedBox(width: spacing.xs),
+          Text(details.label, style: style.typography.badge.copyWith(color: details.foreground)),
+        ],
+      ),
+    );
+  }
 }

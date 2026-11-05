@@ -9,6 +9,8 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart
 import 'package:rendezvous_community/src/features/feed/presentation/cubit/feed_cubit.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
 import 'package:rendezvous_community/src/features/search/domain/entities/search_results.dart';
+import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_builders.dart';
+import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 
 class CommunityHashtagFeed extends StatelessWidget {
@@ -38,7 +40,12 @@ class CommunityHashtagFeed extends StatelessWidget {
         },
         child: FeedPostList(
           emptyMessage: context.communityL10n.hashtagFeedEmpty(normalized),
-          header: header,
+          header: buildDiscoveryPart(
+            (b) => b.hashtagHeader,
+            context,
+            CommunityHashtagHeaderDetails(tag: normalized, header: header),
+            header ?? const SizedBox.shrink(),
+          ),
           showConsentBanner: false,
           source: 'hashtag',
         ),

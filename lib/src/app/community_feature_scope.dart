@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/config/domain/services/banner_dismissals.dart';
 import 'package:rendezvous_community/src/features/config/domain/services/client_config_service.dart';
+import 'package:rendezvous_community/src/features/config/domain/services/community_promo_popups.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/services/community_drafts.dart';
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
 import 'package:rendezvous_community/src/features/link_preview/domain/services/link_preview_loader.dart';
@@ -33,6 +34,10 @@ abstract interface class CommunityFeatureDependencies {
   CommunityDrafts get drafts;
 }
 
+abstract interface class CommunityPromoPopupDependencies {
+  CommunityPromoPopups get promoPopups;
+}
+
 class CommunityFeatureScope extends InheritedWidget {
   const CommunityFeatureScope({super.key, required this.dependencies, required super.child});
 
@@ -52,6 +57,11 @@ class CommunityFeatureScope extends InheritedWidget {
 
 extension CommunityFeatureContext on BuildContext {
   CommunityFeatureDependencies? get communityFeatures => CommunityFeatureScope.maybeOf(this);
+
+  CommunityPromoPopups? get communityPromoPopups => switch (communityFeatures) {
+    final CommunityPromoPopupDependencies features => features.promoPopups,
+    _ => null,
+  };
 
   ClientConfig get communityConfig => communityFeatures?.configService.current ?? const ClientConfig();
 

@@ -90,6 +90,18 @@ void main() {
         'CommunityBuilders.merge',
         'CommunityTheme.copyWith',
         'CommunityTheme.lerp',
+        'CommunitySharedBuilders.merge',
+        'CommunitySettingsBuilders.merge',
+        'CommunitySystemBuilders.merge',
+        'CommunitySupportBuilders.merge',
+        'CommunityDiscoveryBuilders.merge',
+        'CommunityStyle.copyWith',
+        'CommunityStyle.lerp',
+        'CommunityTypography.copyWith',
+        'CommunityTypography.lerp',
+        'CommunitySpacing.lerp',
+        'CommunityRadii.lerp',
+        'CommunityAvatarSizes.lerp',
       ]),
     );
   });

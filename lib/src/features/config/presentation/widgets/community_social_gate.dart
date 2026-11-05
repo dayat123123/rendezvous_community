@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
+import 'package:rendezvous_community/src/features/config/presentation/builders/community_system_builders.dart';
+import 'package:rendezvous_community/src/features/config/presentation/builders/community_system_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 enum CommunityUnavailableReason { socialDisabled, featureDisabled }
 
@@ -56,27 +60,48 @@ class CommunityUnavailableView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
     final social = reason == CommunityUnavailableReason.socialDisabled;
+    final details = CommunityUnavailableDetails(
+      reason: reason,
+      icon: social ? Icons.construction_outlined : Icons.visibility_off_outlined,
+      title: social ? l10n.socialUnavailableTitle : null,
+      message: social ? l10n.socialUnavailableBody : l10n.featureUnavailable,
+    );
+    return buildSystemPart((b) => b.unavailable, context, details, _DefaultUnavailableView(details: details));
+  }
+}
+
+class _DefaultUnavailableView extends StatelessWidget {
+  const _DefaultUnavailableView({required this.details});
+
+  final CommunityUnavailableDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final title = details.title;
     return Center(
       child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              social ? Icons.construction_outlined : Icons.visibility_off_outlined,
-              size: 48,
-              color: theme.colorScheme.outline,
-            ),
-            const SizedBox(height: 12),
-            if (social) ...[
-              Text(l10n.socialUnavailableTitle, textAlign: TextAlign.center, style: theme.textTheme.titleMedium),
-              const SizedBox(height: 6),
-              Text(l10n.socialUnavailableBody, textAlign: TextAlign.center, style: theme.textTheme.bodyMedium),
-            ] else
-              Text(l10n.featureUnavailable, textAlign: TextAlign.center, style: theme.textTheme.bodyLarge),
-          ],
+        padding: EdgeInsets.all(spacing.xl),
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 360),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CommunityToneIcon(icon: details.icon, size: 64),
+              SizedBox(height: spacing.lg),
+              if (title != null) ...[
+                Text(title, textAlign: TextAlign.center, style: style.typography.title),
+                SizedBox(height: spacing.xs + spacing.xxs),
+              ],
+              Text(
+                details.message,
+                textAlign: TextAlign.center,
+                style: style.typography.body.copyWith(color: style.textSecondary),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
+import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
 import 'package:rendezvous_community/src/features/message_requests/domain/entities/message_request.dart';
 import 'package:rendezvous_community/src/features/message_requests/presentation/cubit/dm_policy_cubit.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 class CommunityDmPolicySettings extends StatelessWidget {
@@ -36,48 +40,68 @@ class _PolicyView extends StatelessWidget {
 
   Widget _build(BuildContext context, DmPolicyState state) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
-    final muted = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant);
     final cubit = context.read<DmPolicyCubit>();
     switch (state.status) {
       case LoadStatus.initial || LoadStatus.loading:
-        return const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          child: LinearProgressIndicator(),
-        );
+        return const CommunitySettingsLoading(area: CommunitySettingsArea.dmPolicy);
       case LoadStatus.failure:
-        return ListTile(
-          leading: Icon(Icons.error_outline, color: theme.colorScheme.error),
-          title: Text(l10n.errorMessage(state.error!)),
-          trailing: TextButton(onPressed: cubit.load, child: Text(l10n.retry)),
-        );
+        return CommunitySettingsError(area: CommunitySettingsArea.dmPolicy, error: state.error!, onRetry: cubit.load);
       case LoadStatus.ready:
         break;
     }
+    final details = CommunityDmPolicyDetails(
+      policy: state.settings.policy,
+      title: l10n.dmPolicyTitle,
+      options: [
+        CommunitySettingsOption(
+          value: DmPolicy.everyone,
+          label: l10n.dmPolicyEveryone,
+          hint: l10n.dmPolicyEveryoneHint,
+        ),
+        CommunitySettingsOption(value: DmPolicy.following, label: l10n.dmPolicyFollowing),
+        CommunitySettingsOption(value: DmPolicy.none, label: l10n.dmPolicyNone, hint: l10n.dmPolicyNoneHint),
+      ],
+      saving: state.saving,
+      onChanged: state.saving ? null : cubit.setPolicy,
+    );
+    return buildSettingsPart((b) => b.dmPolicy, context, details, _DefaultDmPolicy(details: details));
+  }
+}
+
+class _DefaultDmPolicy extends StatelessWidget {
+  const _DefaultDmPolicy({required this.details});
+
+  final CommunityDmPolicyDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final d = details;
+    final onChanged = d.onChanged;
     return RadioGroup<DmPolicy>(
-      groupValue: state.settings.policy,
+      groupValue: d.policy,
       onChanged: (policy) {
-        if (policy != null && !state.saving) cubit.setPolicy(policy);
+        if (policy != null && onChanged != null) onChanged(policy);
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
-            child: Text(l10n.dmPolicyTitle, style: muted),
+            padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.lg, spacing.xs),
+            child: Text(d.title, style: style.typography.meta),
           ),
-          RadioListTile<DmPolicy>(
-            value: DmPolicy.everyone,
-            title: Text(l10n.dmPolicyEveryone),
-            subtitle: Text(l10n.dmPolicyEveryoneHint, style: muted),
-          ),
-          RadioListTile<DmPolicy>(value: DmPolicy.following, title: Text(l10n.dmPolicyFollowing)),
-          RadioListTile<DmPolicy>(
-            value: DmPolicy.none,
-            title: Text(l10n.dmPolicyNone),
-            subtitle: Text(l10n.dmPolicyNoneHint, style: muted),
-          ),
+          for (final option in d.options)
+            RadioListTile<DmPolicy>(
+              value: option.value,
+              fillColor: WidgetStateProperty.resolveWith(
+                (states) => states.contains(WidgetState.selected) ? style.accent : style.textTertiary,
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: spacing.sm),
+              title: Text(option.label, style: style.typography.body),
+              subtitle: option.hint == null ? null : Text(option.hint!, style: style.typography.meta),
+            ),
         ],
       ),
     );

@@ -6,7 +6,7 @@
 
 Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · moderasi
 
-![Versi](https://img.shields.io/badge/versi-1.6.0-0f766e)
+![Versi](https://img.shields.io/badge/versi-1.7.0-0f766e)
 ![Flutter](https://img.shields.io/badge/Flutter-%E2%89%A5%203.44-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-%E2%89%A5%203.12-0175C2?logo=dart&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android-555)
@@ -78,7 +78,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.6.0          # selalu pin ke tag rilis
+      ref: v1.7.0          # selalu pin ke tag rilis
 ```
 
 - **Laptop developer:** login GitHub sekali lewat Git Credential Manager (ikut terpasang bersama Git for Windows).
@@ -190,7 +190,9 @@ Setiap builder menerima `details` (data siap tampil + handler yang sudah tersamb
 |---|---|
 | [doc/integration.md](doc/integration.md) | Langkah lengkap memasang library ke aplikasi OLT |
 | [doc/features.md](doc/features.md) | Perilaku fitur: chat, feed, dokumen hukum, privasi & akun, unggahan, kill switch, DM, analitik, offline, push |
-| [doc/customization.md](doc/customization.md) | Tema, builder chat/feed/notifikasi/profil/badge, cache gambar |
+| [doc/customization.md](doc/customization.md) | Tema, builder chat/feed/notifikasi/profil/badge/komponen bersama, cache gambar |
+| [doc/design.md](doc/design.md) | Token desain (`CommunityStyle`), komponen dasar, aturan spasi/warna/mode gelap/aksesibilitas, harness screenshot |
+| [doc/builders.md](doc/builders.md) | Inventaris semua widget visual dan builder-nya |
 | [doc/architecture.md](doc/architecture.md) | Struktur folder, aturan dependensi, alur auth, realtime, centang, error |
 | [doc/logging.md](doc/logging.md) | Logger, level, format, penyamaran data sensitif |
 | [doc/migration-1.0.md](doc/migration-1.0.md) | Pindah dari `olt_social` 0.3.0 |

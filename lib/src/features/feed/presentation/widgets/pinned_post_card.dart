@@ -6,6 +6,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/widgets/post
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 class PinnedPostCard extends StatelessWidget {
   const PinnedPostCard({super.key, required this.pinned, required this.onLike, this.onOpen, this.onToggleBookmark});
@@ -17,31 +18,23 @@ class PinnedPostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
+    final style = CommunityStyle.of(context);
     final l10n = context.communityL10n;
     final announcement = pinned.announcement;
-    final accent = announcement ? scheme.primary : scheme.onSurfaceVariant;
     final marker = CommunityPinnedMarkerDetails(
       pinned: pinned,
       label: announcement ? l10n.announcementLabel : l10n.pinnedLabel,
     );
-    return Container(
-      decoration: BoxDecoration(
-        color: announcement ? scheme.primaryContainer.withValues(alpha: 0.35) : scheme.surfaceContainerLow,
-        border: Border(
-          left: BorderSide(color: accent, width: 3),
-          bottom: BorderSide(color: theme.dividerColor),
-        ),
-      ),
+    return Padding(
+      padding: EdgeInsets.only(bottom: style.sectionGap),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           buildCommunityPart(
             CommunityFeedBuilders.of(context).pinnedMarker,
             context,
             marker,
-            _DefaultPinnedMarker(details: marker, accent: accent),
+            _DefaultPinnedMarker(details: marker, accent: announcement ? style.accent : style.textSecondary),
           ),
           PostCard(
             post: pinned.post,
@@ -65,30 +58,26 @@ class _DefaultPinnedMarker extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
     final title = details.title;
-    return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 10, 16, 0),
-      child: Row(
-        children: [
-          Icon(details.announcement ? Icons.campaign : Icons.push_pin, size: 16, color: accent),
-          const SizedBox(width: 6),
-          Text(
-            details.label,
-            style: theme.textTheme.labelMedium?.copyWith(color: accent, fontWeight: FontWeight.w600),
-          ),
-          if (title != null && title.isNotEmpty) ...[
-            const SizedBox(width: 6),
-            Flexible(
-              child: Text(
-                title,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-                style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
+    return Material(
+      color: style.surface,
+      child: Padding(
+        padding: EdgeInsetsDirectional.fromSTEB(spacing.lg, spacing.md, spacing.lg, 0),
+        child: Row(
+          children: [
+            Icon(details.announcement ? Icons.campaign_outlined : Icons.push_pin_outlined, size: 16, color: accent),
+            SizedBox(width: spacing.xs + spacing.xxs),
+            Text(details.label, style: style.typography.label.copyWith(color: accent)),
+            if (title != null && title.isNotEmpty) ...[
+              Text(' · ', style: style.typography.label),
+              Flexible(
+                child: Text(title, maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.author),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }

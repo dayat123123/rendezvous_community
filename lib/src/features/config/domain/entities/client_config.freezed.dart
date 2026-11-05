@@ -343,7 +343,7 @@ as DateTime?,
 /// @nodoc
 mixin _$CommunityBanner {
 
- String get id; String get title; String get body; String? get linkUrl; CommunityBannerLevel get level; bool get dismissible; int get priority; DateTime? get startsAt; DateTime? get endsAt;
+ String get id; String get title; String get body; String? get linkUrl; CommunityBannerLevel get level; bool get dismissible; int get priority; DateTime? get startsAt; DateTime? get endsAt; CommunityBannerDisplay get display; String? get imageUrl; String? get ctaLabel; CommunityBannerFrequency get frequency;
 /// Create a copy of CommunityBanner
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -354,16 +354,16 @@ $CommunityBannerCopyWith<CommunityBanner> get copyWith => _$CommunityBannerCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.linkUrl, linkUrl) || other.linkUrl == linkUrl)&&(identical(other.level, level) || other.level == level)&&(identical(other.dismissible, dismissible) || other.dismissible == dismissible)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.linkUrl, linkUrl) || other.linkUrl == linkUrl)&&(identical(other.level, level) || other.level == level)&&(identical(other.dismissible, dismissible) || other.dismissible == dismissible)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.display, display) || other.display == display)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.ctaLabel, ctaLabel) || other.ctaLabel == ctaLabel)&&(identical(other.frequency, frequency) || other.frequency == frequency));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,body,linkUrl,level,dismissible,priority,startsAt,endsAt);
+int get hashCode => Object.hash(runtimeType,id,title,body,linkUrl,level,dismissible,priority,startsAt,endsAt,display,imageUrl,ctaLabel,frequency);
 
 @override
 String toString() {
-  return 'CommunityBanner(id: $id, title: $title, body: $body, linkUrl: $linkUrl, level: $level, dismissible: $dismissible, priority: $priority, startsAt: $startsAt, endsAt: $endsAt)';
+  return 'CommunityBanner(id: $id, title: $title, body: $body, linkUrl: $linkUrl, level: $level, dismissible: $dismissible, priority: $priority, startsAt: $startsAt, endsAt: $endsAt, display: $display, imageUrl: $imageUrl, ctaLabel: $ctaLabel, frequency: $frequency)';
 }
 
 
@@ -374,7 +374,7 @@ abstract mixin class $CommunityBannerCopyWith<$Res>  {
   factory $CommunityBannerCopyWith(CommunityBanner value, $Res Function(CommunityBanner) _then) = _$CommunityBannerCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String body, String? linkUrl, CommunityBannerLevel level, bool dismissible, int priority, DateTime? startsAt, DateTime? endsAt
+ String id, String title, String body, String? linkUrl, CommunityBannerLevel level, bool dismissible, int priority, DateTime? startsAt, DateTime? endsAt, CommunityBannerDisplay display, String? imageUrl, String? ctaLabel, CommunityBannerFrequency frequency
 });
 
 
@@ -391,7 +391,7 @@ class _$CommunityBannerCopyWithImpl<$Res>
 
 /// Create a copy of CommunityBanner
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? body = null,Object? linkUrl = freezed,Object? level = null,Object? dismissible = null,Object? priority = null,Object? startsAt = freezed,Object? endsAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? body = null,Object? linkUrl = freezed,Object? level = null,Object? dismissible = null,Object? priority = null,Object? startsAt = freezed,Object? endsAt = freezed,Object? display = null,Object? imageUrl = freezed,Object? ctaLabel = freezed,Object? frequency = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -402,7 +402,11 @@ as CommunityBannerLevel,dismissible: null == dismissible ? _self.dismissible : d
 as bool,priority: null == priority ? _self.priority : priority // ignore: cast_nullable_to_non_nullable
 as int,startsAt: freezed == startsAt ? _self.startsAt : startsAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,endsAt: freezed == endsAt ? _self.endsAt : endsAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,display: null == display ? _self.display : display // ignore: cast_nullable_to_non_nullable
+as CommunityBannerDisplay,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String?,ctaLabel: freezed == ctaLabel ? _self.ctaLabel : ctaLabel // ignore: cast_nullable_to_non_nullable
+as String?,frequency: null == frequency ? _self.frequency : frequency // ignore: cast_nullable_to_non_nullable
+as CommunityBannerFrequency,
   ));
 }
 
@@ -487,10 +491,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt,  CommunityBannerDisplay display,  String? imageUrl,  String? ctaLabel,  CommunityBannerFrequency frequency)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CommunityBanner() when $default != null:
-return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt);case _:
+return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt,_that.display,_that.imageUrl,_that.ctaLabel,_that.frequency);case _:
   return orElse();
 
 }
@@ -508,10 +512,10 @@ return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt,  CommunityBannerDisplay display,  String? imageUrl,  String? ctaLabel,  CommunityBannerFrequency frequency)  $default,) {final _that = this;
 switch (_that) {
 case _CommunityBanner():
-return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt);case _:
+return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt,_that.display,_that.imageUrl,_that.ctaLabel,_that.frequency);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -528,10 +532,10 @@ return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt,  CommunityBannerDisplay display,  String? imageUrl,  String? ctaLabel,  CommunityBannerFrequency frequency)?  $default,) {final _that = this;
 switch (_that) {
 case _CommunityBanner() when $default != null:
-return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt);case _:
+return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt,_that.display,_that.imageUrl,_that.ctaLabel,_that.frequency);case _:
   return null;
 
 }
@@ -542,8 +546,8 @@ return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.
 /// @nodoc
 
 
-class _CommunityBanner implements CommunityBanner {
-  const _CommunityBanner({required this.id, required this.title, this.body = '', this.linkUrl, this.level = CommunityBannerLevel.info, this.dismissible = true, this.priority = 0, this.startsAt, this.endsAt});
+class _CommunityBanner extends CommunityBanner {
+  const _CommunityBanner({required this.id, required this.title, this.body = '', this.linkUrl, this.level = CommunityBannerLevel.info, this.dismissible = true, this.priority = 0, this.startsAt, this.endsAt, this.display = CommunityBannerDisplay.strip, this.imageUrl, this.ctaLabel, this.frequency = CommunityBannerFrequency.once}): super._();
   
 
 @override final  String id;
@@ -555,6 +559,10 @@ class _CommunityBanner implements CommunityBanner {
 @override@JsonKey() final  int priority;
 @override final  DateTime? startsAt;
 @override final  DateTime? endsAt;
+@override@JsonKey() final  CommunityBannerDisplay display;
+@override final  String? imageUrl;
+@override final  String? ctaLabel;
+@override@JsonKey() final  CommunityBannerFrequency frequency;
 
 /// Create a copy of CommunityBanner
 /// with the given fields replaced by the non-null parameter values.
@@ -566,16 +574,16 @@ _$CommunityBannerCopyWith<_CommunityBanner> get copyWith => __$CommunityBannerCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.linkUrl, linkUrl) || other.linkUrl == linkUrl)&&(identical(other.level, level) || other.level == level)&&(identical(other.dismissible, dismissible) || other.dismissible == dismissible)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.linkUrl, linkUrl) || other.linkUrl == linkUrl)&&(identical(other.level, level) || other.level == level)&&(identical(other.dismissible, dismissible) || other.dismissible == dismissible)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.display, display) || other.display == display)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.ctaLabel, ctaLabel) || other.ctaLabel == ctaLabel)&&(identical(other.frequency, frequency) || other.frequency == frequency));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,body,linkUrl,level,dismissible,priority,startsAt,endsAt);
+int get hashCode => Object.hash(runtimeType,id,title,body,linkUrl,level,dismissible,priority,startsAt,endsAt,display,imageUrl,ctaLabel,frequency);
 
 @override
 String toString() {
-  return 'CommunityBanner(id: $id, title: $title, body: $body, linkUrl: $linkUrl, level: $level, dismissible: $dismissible, priority: $priority, startsAt: $startsAt, endsAt: $endsAt)';
+  return 'CommunityBanner(id: $id, title: $title, body: $body, linkUrl: $linkUrl, level: $level, dismissible: $dismissible, priority: $priority, startsAt: $startsAt, endsAt: $endsAt, display: $display, imageUrl: $imageUrl, ctaLabel: $ctaLabel, frequency: $frequency)';
 }
 
 
@@ -586,7 +594,7 @@ abstract mixin class _$CommunityBannerCopyWith<$Res> implements $CommunityBanner
   factory _$CommunityBannerCopyWith(_CommunityBanner value, $Res Function(_CommunityBanner) _then) = __$CommunityBannerCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String body, String? linkUrl, CommunityBannerLevel level, bool dismissible, int priority, DateTime? startsAt, DateTime? endsAt
+ String id, String title, String body, String? linkUrl, CommunityBannerLevel level, bool dismissible, int priority, DateTime? startsAt, DateTime? endsAt, CommunityBannerDisplay display, String? imageUrl, String? ctaLabel, CommunityBannerFrequency frequency
 });
 
 
@@ -603,7 +611,7 @@ class __$CommunityBannerCopyWithImpl<$Res>
 
 /// Create a copy of CommunityBanner
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? body = null,Object? linkUrl = freezed,Object? level = null,Object? dismissible = null,Object? priority = null,Object? startsAt = freezed,Object? endsAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? body = null,Object? linkUrl = freezed,Object? level = null,Object? dismissible = null,Object? priority = null,Object? startsAt = freezed,Object? endsAt = freezed,Object? display = null,Object? imageUrl = freezed,Object? ctaLabel = freezed,Object? frequency = null,}) {
   return _then(_CommunityBanner(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -614,7 +622,11 @@ as CommunityBannerLevel,dismissible: null == dismissible ? _self.dismissible : d
 as bool,priority: null == priority ? _self.priority : priority // ignore: cast_nullable_to_non_nullable
 as int,startsAt: freezed == startsAt ? _self.startsAt : startsAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,endsAt: freezed == endsAt ? _self.endsAt : endsAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,display: null == display ? _self.display : display // ignore: cast_nullable_to_non_nullable
+as CommunityBannerDisplay,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
+as String?,ctaLabel: freezed == ctaLabel ? _self.ctaLabel : ctaLabel // ignore: cast_nullable_to_non_nullable
+as String?,frequency: null == frequency ? _self.frequency : frequency // ignore: cast_nullable_to_non_nullable
+as CommunityBannerFrequency,
   ));
 }
 

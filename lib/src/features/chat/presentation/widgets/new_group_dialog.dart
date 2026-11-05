@@ -1,17 +1,22 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 Future<String?> showNewGroupDialog(BuildContext context) {
   final deps = CommunityScope.of(context);
+  final carry = carryCommunityBuilders(context);
   return showDialog<String>(
     context: context,
-    builder: (_) => CommunityScope(dependencies: deps, child: const _NewGroupDialog()),
+    builder: (_) => carry(CommunityScope(dependencies: deps, child: const _NewGroupDialog())),
   );
 }
 
@@ -72,43 +77,101 @@ class _NewGroupDialogState extends State<_NewGroupDialog> {
 
   @override
   Widget build(BuildContext context) {
+    final details = CommunityNewGroupDetails(
+      nameController: _name,
+      queryController: _query,
+      results: _results,
+      selected: List.unmodifiable(_selected.values),
+      creating: _creating,
+      onNameChanged: (_) => setState(() {}),
+      onQueryChanged: _search,
+      onToggle: (u, v) => setState(() => v ? _selected[u.id] = u : _selected.remove(u.id)),
+      onCancel: () => Navigator.pop(context),
+      onCreate: _creating || _name.text.trim().isEmpty ? null : _create,
+    );
+    return buildChatPart(
+      CommunityChatBuilders.of(context).newGroupDialog,
+      context,
+      details,
+      _DefaultNewGroupDialog(details: details),
+    );
+  }
+}
+
+class _DefaultNewGroupDialog extends StatelessWidget {
+  const _DefaultNewGroupDialog({required this.details});
+
+  final CommunityNewGroupDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
     final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final field = OutlineInputBorder(borderRadius: style.radii.controlRadius);
     return AlertDialog(
-      title: Text(l10n.newGroup),
+      backgroundColor: style.surface,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(style.radii.card * 2)),
+      title: Text(l10n.newGroup, style: style.typography.title),
       content: SizedBox(
         width: 420,
         height: 420,
         child: Column(
           children: [
             TextField(
-              controller: _name,
+              controller: d.nameController,
               maxLength: 80,
-              decoration: InputDecoration(labelText: l10n.groupName),
-              onChanged: (_) => setState(() {}),
+              decoration: InputDecoration(labelText: l10n.groupName, border: field),
+              onChanged: d.onNameChanged,
             ),
-            if (_selected.isNotEmpty)
-              Wrap(
-                spacing: 6,
-                children: [
-                  for (final u in _selected.values)
-                    InputChip(label: Text(u.name), onDeleted: () => setState(() => _selected.remove(u.id))),
-                ],
+            if (d.selected.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(bottom: spacing.sm),
+                child: Align(
+                  alignment: AlignmentDirectional.centerStart,
+                  child: Wrap(
+                    spacing: spacing.xs + spacing.xxs,
+                    runSpacing: spacing.xs,
+                    children: [
+                      for (final u in d.selected)
+                        InputChip(
+                          avatar: CommunityAvatar(user: u, radius: 10),
+                          label: Text(u.name),
+                          labelStyle: style.typography.label.copyWith(color: style.onChip),
+                          backgroundColor: style.chip,
+                          shape: const StadiumBorder(),
+                          side: style.borderSide,
+                          onDeleted: () => d.onToggle(u, false),
+                        ),
+                    ],
+                  ),
+                ),
               ),
             TextField(
-              controller: _query,
-              decoration: InputDecoration(prefixIcon: const Icon(Icons.search), hintText: l10n.searchUsers),
-              onChanged: _search,
+              controller: d.queryController,
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.search, color: style.textSecondary),
+                hintText: l10n.searchUsers,
+                filled: true,
+                fillColor: style.pill,
+                border: OutlineInputBorder(borderRadius: style.radii.pillRadius, borderSide: BorderSide.none),
+                isDense: true,
+              ),
+              onChanged: d.onQueryChanged,
             ),
+            SizedBox(height: spacing.xs),
             Expanded(
               child: ListView(
                 children: [
-                  for (final u in _results)
+                  for (final u in d.results)
                     CheckboxListTile(
-                      value: _selected.containsKey(u.id),
+                      value: d.isSelected(u),
+                      contentPadding: EdgeInsets.zero,
                       secondary: CommunityAvatar(user: u, radius: 16),
-                      title: Text(u.name),
-                      subtitle: Text('@${u.username}'),
-                      onChanged: (v) => setState(() => v! ? _selected[u.id] = u : _selected.remove(u.id)),
+                      title: Text(u.name, style: style.typography.author),
+                      subtitle: Text('@${u.username}', style: style.typography.meta),
+                      onChanged: (v) => d.onToggle(u, v ?? false),
                     ),
                 ],
               ),
@@ -117,8 +180,12 @@ class _NewGroupDialogState extends State<_NewGroupDialog> {
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
-        FilledButton(onPressed: _creating || _name.text.trim().isEmpty ? null : _create, child: Text(l10n.create)),
+        TextButton(
+          onPressed: d.onCancel,
+          style: TextButton.styleFrom(foregroundColor: style.textSecondary),
+          child: Text(l10n.cancel),
+        ),
+        FilledButton(style: style.primaryButtonStyle(), onPressed: d.onCreate, child: Text(l10n.create)),
       ],
     );
   }

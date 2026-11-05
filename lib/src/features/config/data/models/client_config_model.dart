@@ -38,8 +38,28 @@ List<CommunityBanner> bannersFromJson(Object? value) => [
           priority: (item['priority'] as num?)?.toInt() ?? 0,
           startsAt: DateTime.tryParse(item['starts_at'] as String? ?? ''),
           endsAt: DateTime.tryParse(item['ends_at'] as String? ?? ''),
+          display: CommunityBannerDisplay.values.asNameMap()[item['display']] ?? CommunityBannerDisplay.strip,
+          imageUrl: _imageUrl(item['image_url']),
+          ctaLabel: item['cta_label'] is String && (item['cta_label'] as String).trim().isNotEmpty
+              ? (item['cta_label'] as String).trim()
+              : null,
+          frequency: _frequencies[item['frequency']] ?? CommunityBannerFrequency.once,
         ),
 ];
+
+const _frequencies = {
+  'once': CommunityBannerFrequency.once,
+  'daily': CommunityBannerFrequency.daily,
+  'every_open': CommunityBannerFrequency.everyOpen,
+};
+
+String? _imageUrl(Object? value) {
+  if (value is! String) return null;
+  final url = value.trim();
+  final uri = Uri.tryParse(url);
+  if (uri == null || (uri.scheme != 'https' && uri.scheme != 'http') || uri.host.isEmpty) return null;
+  return url;
+}
 
 @freezed
 abstract class ClientConfigModel with _$ClientConfigModel {

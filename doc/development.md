@@ -14,6 +14,7 @@ OLT_SOCIAL_IT=1 flutter test test/integration   # butuh stack Docker + seed + au
 dart run tool/license_audit.dart # tolak GPL/AGPL/LGPL/MPL
 dart run tool/check_comments.dart # gagal bila ada komentar di kode Dart (kecuali // ignore & file generate)
 dart run tool/check_logging.dart  # gagal bila library memakai print/debugPrint langsung
+flutter test tool/screenshots/screenshots_test.dart  # manual, bukan CI: PNG terang/gelap ke build/screenshots (lihat doc/design.md)
 ```
 
 | Test | Isi |
@@ -27,10 +28,12 @@ dart run tool/check_logging.dart  # gagal bila library memakai print/debugPrint 
 | `test/features/{config,search,trending,bookmarks,chat,message_requests,appeals,link_preview}` | 1.3.0: pemetaan RPC dengan mock, cubit (debounce pencarian, bookmark/edit optimistis, reaksi, slow mode, permintaan pesan, preferensi notifikasi), widget (gate kill switch, sentimen, menu post, chip reaksi, room permintaan, dialog tautan, banding) |
 | `test/core/logging` | Logger: field terstruktur, level, sanitasi data sensitif, `initialize(logHandler:)` |
 | `test/features/{config,notifications,drafts,chat}` (0087–0090) | Banner (parsing, prioritas, tutup tersimpan, widget), laporan dibuka/diketuk (dedupe, antrean offline, push & kotak notifikasi), tipe notifikasi baru & sakelar terkunci, draf (simpan, offline/batas, konflik, gabung daftar, autosave composer, `client_id`), kartu saham (parsing, normalisasi, cubit, kartu & pemilih) |
+| `test/features/config/promo_popup_test.dart` (1.7.0) | Popup promo: parsing field baru (nilai tak dikenal → bawaan), aturan frekuensi `once`/`daily`/`every_open`, prioritas, satu per sesi, riwayat per user, kegagalan penyimpanan/jaringan diabaikan, widget (tampil, tombol utama/gambar/✕/Nanti/overlay/kembali, `onBannerLink`, dialog tautan luar, menunggu route lain, slot `system.popup`, animasi mati), event `record_banner_event` |
 | `test/core/storage`, `test/features/{chat,feed,offline}` (offline) | Store drift in-memory & memori (kontrak sama), rekonsiliasi & pemangkasan, database per user, hapus saat logout/ganti user/hapus akun, buka offline lewat identitas OLT, outbox (tertunda → terkirim/gagal, backoff, urutan, dedupe), cubit cache → server, widget pesan tertunda/gagal & banner offline |
 | `test/tool` | Pemeriksa komentar dan pemeriksa `print` untuk CI, kelengkapan `merge`/`copyWith`/`lerp` (setiap field ikut digabung) |
 | `test/features/customization`, `test/features/chat/presentation/chat_builders_merge_test.dart` (1.4.0) | Builder feed/kartu post/polling/sematan/notifikasi/profil/badge, scope bersarang, regresi `stockCard` hilang saat `merge` |
 | `test/core/storage/image_cache_test.dart`, `test/features/offline/image_cache_lifecycle_test.dart`, `test/features/media` (1.4.0) | Kunci cache stabil, LRU byte, kedaluwarsa, folder per user, hapus saat logout/hapus akun/`clearLocalCache`/ganti user, lampiran CS tidak disimpan, ukuran dekode, daftar panjang lazy |
+| `test/shared/presentation` (1.7.0) | Token `CommunityStyle` (turunan tema, kontras AA terang/gelap untuk beberapa skema, cache, `copyWith`/`lerp`), komponen dasar (render terang/gelap, target sentuh & kontras, skeleton statis, hitungan ringkas per locale), semua slot `CommunitySharedBuilders`, scope bersarang, builder dialog |
 | `test/support` | Fake dependensi & mock data source bersama |
 | `example/integration_test` | E2E app di Windows: login → feed → thread → komentar (Enter) → chat (Enter) → notifikasi |
 
@@ -49,6 +52,7 @@ Dari repo backend, mode `mock`: `docker compose -f docker/compose.yml -f docker/
 
 Tes ini tidak bergantung pada sisa data dev:
 
+- App contoh memasang `CommunityPromoPopupHost`; E2E memompa `ExampleApp(promoPopups: false)` sehingga banner popup yang aktif di dev tidak menutupi layar. Untuk menjalankan app contoh tanpa popup: `--dart-define=OLT_PROMO_POPUP=false`.
 - Tes integrasi yang membuat postingan memakai akun baru per tes (`withFreshAuthor`, token `mock:it<waktu>:it_<tag>_<angka>`), lalu menghapusnya lewat `deleteMyAccount`. Batas 50 post/24 jam juga menghitung postingan yang sudah dihapus, jadi akun seed seperti `budi_santoso` tidak dipakai untuk membuat postingan.
 - `support_test` membuat tiket baru bila tiket terakhir `rina_saham` sudah selesai atau ditutup (menu **Buat tiket baru** → pilih topik), memakai tiket aktif bila ada, dan mengakhiri tiket yang dibuatnya sendiri di akhir tes.
 - `dummy_olt_login_test` menggulir daftar login sampai form OLT dummy terlihat sebelum mengisi dan menekan tombol.

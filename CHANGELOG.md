@@ -1,13 +1,80 @@
-## Unreleased
+## 1.7.0
 
+* **Tampilan bawaan baru: editorial + pola feed/chat umum.** Hanya tampilan; fungsi, perilaku, navigasi, dan API lama
+  tidak berubah (semua tambahan opsional). Warna aksen tetap dari `ColorScheme.primary` aplikasi host. Rincian:
+  [doc/design.md](doc/design.md).
+  * **Token desain** `CommunityStyle` (`ThemeExtension`, diturunkan dari `ThemeData` host bila tidak dipasang):
+    latar, permukaan, border, divider, teks primer/sekunder/tersier, pil, chip, skeleton, `sectionGap` — semuanya
+    mengikuti tema host (`scaffoldBackgroundColor`, `ColorScheme`), tanpa warna yang dipatok, plus
+    `CommunitySpacing`, `CommunityRadii`, `CommunityTypography`, `CommunityAvatarSizes` (tambahan `post`, `comment`,
+    `reply`, `profile`). Mode terang dan gelap, kontras teks AA diuji. `CommunityTheme.of` kini di-cache per tema.
+  * **Komponen dasar** (diekspor, masing-masing punya slot builder): `CommunityCard`, `CommunityAuthorRow`,
+    `CommunityActionPill`/`CommunityActionButton`/`CommunityActionBar`, `CommunitySectionHeader`, `CommunityDivider`,
+    `CommunityTag`, `CommunityLoadingView`, `CommunitySkeletonBox`, `CommunityBump`, `EditorialSection`.
+  * **Feed & post**: post selebar layar (tanpa margin/border/radius) dipisah jalur `sectionGap`; baris pertama pendek
+    tampil sebagai judul; isi dipotong 4 baris dengan "Baca lebih lanjut"; gambar full-bleed dengan rasio terjaga dan
+    grid 2×2 "+N" (`AttachmentGrid(edgeToEdge: true)`); pil "Suka · N" dengan animasi sekali jalan dan haptic; detail
+    dengan chip topik di atas judul dan bar aksi menempel; chip `$KODE`/`#hashtag` tidak lagi dobel di feed.
+  * **Komentar** bergelembung dengan baris "waktu · Suka · Balas", indentasi balasan dengan garis tipis
+    (`CommunityTheme.threadIndent` bawaan 16 → 40).
+  * **Profil**: avatar besar, statistik ringkas (post, pengikut, mengikuti), bio, tombol Ikuti dan Kirim pesan sama
+    lebar. **Pencarian**: chip filter, hasil berikon. **Compose**: header penulis, field lega, alat berlabel.
+  * **Chat**: gelembung sendiri terisi aksen (gelap: `primaryContainer`), pengelompokan pesan berurutan, avatar dan nama
+    pengirim per grup, waktu + centang di dalam gelembung, reaksi menumpang di sudut gelembung, pemisah tanggal berupa
+    pil, indikator mengetik tiga titik (berhenti sendiri, mati bila animasi dinonaktifkan), composer berbentuk pil dengan
+    tombol kirim bulat. Daftar room: avatar 52, belum dibaca ditebalkan, badge aksen.
+  * **Chat CS**: pesan sistem sebagai kartu kecil, quick reply berupa pil, kartu rating baru.
+  * **Notifikasi**: avatar dengan ikon jenis di pojok, nama pelaku tebal, bagian "Baru"/"Sebelumnya" berdasarkan status
+    baca, latar lembut untuk yang belum dibaca.
+  * **State kosong/error/loading**: ikon besar berlatar aksen lembut, judul opsional (`CommunityEmptyView(title:)`),
+    skeleton statis berbentuk post/komentar (tanpa animasi berulang).
+  * Halaman pengaturan, akun, banding, legal, dan banner sistem/persetujuan/offline mengikuti gaya yang sama;
+    `CommunityConsentBanner` bawaan kini selebar penuh (`margin: EdgeInsets.zero`).
+* **Builder untuk semua bagian visual.** Pola tetap `CommunityPartBuilder<T>` = `(context, details, fallback)`.
+  * Set baru: `CommunitySharedBuilders` (komponen dan widget bersama), `CommunityDiscoveryBuilders` (pencarian, hashtag,
+    trending), `CommunitySupportBuilders` (chat CS dan tiket), `CommunitySettingsBuilders` (akun, privasi DM, banding,
+    legal), `CommunitySystemBuilders` (banner, kill switch, offline, persetujuan); semuanya lewat
+    `CommunityBuilders(shared:, discovery:, support:, settings:, system:)`.
+  * Slot baru di set lama: `CommunityFeedBuilders` (+18, mis. `postMenu`, `feedTabs`, `composeToolbar`,
+    `attachmentImage`, `replyComposer`, `composeAuthor`), `CommunityChatBuilders` (+18, mis. `messageActions`,
+    `reactions`, `receipt`, `roomNotice`, `shareTarget`, `requestTile`), `CommunityProfileBuilders` (`menu`,
+    `messageButton`), `CommunityNotificationBuilders` (`icon`, `section`).
+  * Inventaris lengkap per widget: [doc/builders.md](doc/builders.md); contoh: [doc/customization.md](doc/customization.md).
+* **Perlu diperhatikan host:** warna gelembung dan badge belum dibaca bawaan berubah (pasang `CommunityTheme` sendiri
+  untuk mempertahankan warna lama); ikon suka kini hati (`favorite_border`/`favorite`) dengan warna aktif baru
+  `CommunityTheme.like` (bawaan `#E0245E`, gelap `#FF5C8A`) dan `CommunityActionPill(activeColor:)`; `CommunityTheme.threadIndent` bawaan 40; teks
+  "sedang mengetik…" di dalam room kini hanya label pembaca layar (header tetap menampilkannya). String baru:
+  `readMore`, `notifGroupNew`, `notifGroupEarlier`, `profileStatPosts`, `profileStatFollowers`.
+* **Popup promo di tengah layar (backend: field banner `display`, `image_url`, `cta_label`, `frequency` + RPC
+  `record_banner_event`).** Banner `display: "popup"` tidak lagi tampil sebagai strip; pasang
+  `CommunityPromoPopupHost(child:, enabled:, onBannerLink:)` sekali di halaman utama host. Maksimal satu popup per sesi
+  aplikasi (per user), prioritas tertinggi yang lolos frekuensi `once`/`daily`/`every_open` (catatan per user + banner di
+  penyimpanan lokal paket), ditunda selama ada route/dialog lain di atas halaman host, tidak tampil saat
+  `update_required` atau sebelum login. Tampilan bawaan: overlay 60%, kartu ≤ 360 radius 16, gambar 4:5–16:9, tombol
+  utama aksen, "Nanti", ✕ bila `dismissible`, animasi fade + scale 200 ms. Event `impression`/`click`/`dismiss` dikirim
+  tanpa menunggu dan gagal diam-diam. Rincian dan tabel perilaku: [doc/features.md](doc/features.md#popup-promo-170).
+  * Baru: `CommunityPromoPopupHost`, `CommunityPromoPopupCard`, `showCommunityPromoPopup`, slot
+    `CommunitySystemBuilders.popup` (`CommunityPromoPopupDetails`), `CommunityPromoPopups`,
+    `CommunityPromoPopupDependencies` (interface opsional; `RendezvousCommunity` mengimplementasikannya, dependensi
+    fitur buatan host tanpa interface ini tidak menampilkan popup), `BannerEventRepository`,
+    `PromoPopupHistoryRepository`, field `CommunityBanner.display`/`imageUrl`/`ctaLabel`/`frequency` + `isPopup`/`link`,
+    enum `CommunityBannerDisplay`, `CommunityBannerFrequency`, `CommunityBannerEvent`, `CommunityScope.maybeOf`, string
+    `promoPopupCta`, `promoPopupLater`, `promoPopupClose`, `promoPopupLabel`.
+  * **Tautan banner ke host:** `onBannerLink(context, uri, banner)` (`FutureOr<bool>`, `true` = sudah ditangani) di
+    `initialize`/`create`, `CommunityCallbacks`, `CommunityBannerHost`, dan `CommunityPromoPopupHost` (per widget
+    didahulukan). Tidak ditangani: `https`/`http` lewat dialog konfirmasi seperti sebelumnya, skema lain (mis.
+    `olt://…`) diabaikan. Tanpa callback perilaku banner strip tidak berubah.
+  * App contoh memasang popup host (matikan: `--dart-define=OLT_PROMO_POPUP=false`); `example/integration_test/*`
+    memakai `ExampleApp(promoPopups: false)`. Scene screenshot baru `system_promo_popup`, `system_promo_popup_text`.
+* **Alat pengembang:** harness screenshot `flutter test tool/screenshots/screenshots_test.dart` (font Roboto dari SDK,
+  output `build/screenshots/`, tidak ikut CI).
 * **Kill switch `social_disabled` kini `403` (backend `0109`, T24).** Backend tidak lagi menjawab `503` (`PT503`) untuk
-  penolakan kill switch karena PostgREST menganggap setiap `503` sebagai database putus (flush pool dan muat ulang
-  schema cache per request). Klien 1.3.0 ke atas, termasuk 1.6.0, mengenali `social_disabled` dari kodenya, jadi
-  `403` (`PT403`) tetap menyembunyikan fitur komunitas dan menampilkan pesan kill switch; `503` dari backend lama tetap
-  ditangani. Bedanya hanya `CommunityException.kind`: `forbidden` (sebelumnya `unavailable`), sehingga pesan chat yang
-  ditolak langsung gagal alih-alih dicoba ulang otomatis oleh outbox. Tidak perlu rilis baru.
+  penolakan kill switch karena PostgREST menganggap setiap `503` sebagai database putus. Klien 1.3.0 ke atas mengenali
+  `social_disabled` dari kodenya; bedanya hanya `CommunityException.kind`: `forbidden` (sebelumnya `unavailable`),
+  sehingga pesan chat yang ditolak langsung gagal alih-alih dicoba ulang otomatis oleh outbox.
 * Tes integrasi membaca anon key cadangan dari `../chat_service_supabase/docker/secrets/anon_key` (repo backend di folder
-  sebelah); `OLT_SOCIAL_ANON_KEY` tetap diutamakan.
+  sebelah); `OLT_SOCIAL_ANON_KEY` tetap diutamakan. E2E: `support_test` mencakup tiket aktif yang dilanjutkan;
+  `app_test` menggulir ke komentar di detail post.
 
 ## 1.6.0
 

@@ -5,12 +5,14 @@ import 'package:rendezvous_community/src/app/community_image_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/community_chat_room.dart';
+import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/cubit/support_cubit.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_composer.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_dialogs.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_header.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_message_actions.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_topic_picker.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_list_state_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
@@ -67,8 +69,22 @@ class _SupportView extends StatelessWidget {
         builder: (context, state) {
           final cubit = context.read<SupportCubit>();
           return switch (state.status) {
-            LoadStatus.initial || LoadStatus.loading => const CommunitySkeleton(itemCount: 5),
-            LoadStatus.failure => CommunityErrorView(error: state.error!, onRetry: cubit.load),
+            LoadStatus.initial || LoadStatus.loading => buildSupportPart(
+              (b) => b.loading,
+              context,
+              const CommunityListLoadingDetails(),
+              const CommunitySkeleton(itemCount: 5),
+            ),
+            LoadStatus.failure => buildSupportPart(
+              (b) => b.error,
+              context,
+              CommunityListErrorDetails(
+                error: state.error!,
+                message: l10n.errorMessage(state.error!),
+                onRetry: cubit.load,
+              ),
+              CommunityErrorView(error: state.error!, onRetry: cubit.load),
+            ),
             LoadStatus.ready => Column(
               children: [
                 SupportHeader(onClose: onClose),

@@ -2,10 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/compose_prompt_card.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/editorial_section.dart';
 import 'package:rendezvous_community/src/features/stocks/presentation/cubit/stock_cubit.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 class CommunityStockFeed extends StatelessWidget {
@@ -49,67 +53,104 @@ class _StockHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
     return BlocBuilder<StockCubit, StockState>(
       builder: (context, state) {
         final cubit = context.read<StockCubit>();
         final stock = state.stock;
-        return Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 4),
-          child: Row(
+        final details = CommunityStockHeaderDetails(
+          code: cubit.code,
+          name: name,
+          subtitle: stock != null
+              ? [?name, l10n.watchers(stock.watcherCount)].join(' · ')
+              : state.loaded
+              ? l10n.stockNotFound
+              : null,
+          found: stock != null,
+          loaded: state.loaded,
+          watching: state.watching,
+          joining: state.joining,
+          watchLabel: state.watching ? l10n.watching : l10n.watch,
+          discussionLabel: l10n.stockDiscussion,
+          onToggleWatch: stock == null ? null : cubit.toggleWatch,
+          onOpenDiscussion: stock == null || state.joining
+              ? null
+              : () async {
+                  final roomId = await cubit.joinDiscussion();
+                  if (roomId != null && context.mounted) CommunityNavigator.openRoom(context, roomId);
+                },
+        );
+        return buildFeedPart((b) => b.stockHeader, context, details, _DefaultStockHeader(details: details));
+      },
+    );
+  }
+}
+
+class _DefaultStockHeader extends StatelessWidget {
+  const _DefaultStockHeader({required this.details});
+
+  final CommunityStockHeaderDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final subtitle = details.subtitle;
+    final size = style.avatarSizes.large - spacing.lg;
+    return EditorialSection(
+      padding: EdgeInsets.all(spacing.lg),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
             children: [
-              CircleAvatar(
-                radius: 24,
-                backgroundColor: theme.colorScheme.primaryContainer,
-                foregroundColor: theme.colorScheme.onPrimaryContainer,
-                child: const Icon(Icons.show_chart),
+              Container(
+                width: size,
+                height: size,
+                decoration: BoxDecoration(color: style.accentMuted, shape: BoxShape.circle),
+                child: Icon(Icons.show_chart, color: style.accent),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: spacing.md),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('\$${cubit.code}', style: theme.textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700)),
-                    if (stock != null)
-                      Text(
-                        [?name, l10n.watchers(stock.watcherCount)].join(' · '),
-                        style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                      )
-                    else if (state.loaded)
-                      Text(l10n.stockNotFound, style: theme.textTheme.bodySmall),
+                    Text('\$${details.code}', style: style.typography.title.copyWith(fontSize: 20)),
+                    if (subtitle != null)
+                      Text(subtitle, style: style.typography.meta, maxLines: 2, overflow: TextOverflow.ellipsis),
                   ],
                 ),
               ),
-              if (stock != null) ...[
-                state.watching
-                    ? FilledButton.tonalIcon(
-                        onPressed: cubit.toggleWatch,
-                        icon: const Icon(Icons.star),
-                        label: Text(l10n.watching),
-                      )
-                    : OutlinedButton.icon(
-                        onPressed: cubit.toggleWatch,
-                        icon: const Icon(Icons.star_border),
-                        label: Text(l10n.watch),
-                      ),
-                const SizedBox(width: 8),
-                IconButton.filledTonal(
-                  tooltip: l10n.stockDiscussion,
-                  onPressed: state.joining
-                      ? null
-                      : () async {
-                          final roomId = await cubit.joinDiscussion();
-                          if (roomId != null && context.mounted) CommunityNavigator.openRoom(context, roomId);
-                        },
-                  icon: const Icon(Icons.forum_outlined),
-                ),
-              ],
             ],
           ),
-        );
-      },
+          if (details.found) ...[
+            SizedBox(height: spacing.md),
+            Row(
+              children: [
+                details.watching
+                    ? OutlinedButton.icon(
+                        style: style.secondaryButtonStyle(),
+                        onPressed: details.onToggleWatch,
+                        icon: Icon(Icons.star, size: 18, color: style.accent),
+                        label: Text(details.watchLabel),
+                      )
+                    : FilledButton.icon(
+                        style: style.primaryButtonStyle(),
+                        onPressed: details.onToggleWatch,
+                        icon: const Icon(Icons.star_border, size: 18),
+                        label: Text(details.watchLabel),
+                      ),
+                SizedBox(width: spacing.sm),
+                OutlinedButton.icon(
+                  style: style.secondaryButtonStyle(),
+                  onPressed: details.onOpenDiscussion,
+                  icon: const Icon(Icons.forum_outlined, size: 18),
+                  label: Text(details.discussionLabel),
+                ),
+              ],
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

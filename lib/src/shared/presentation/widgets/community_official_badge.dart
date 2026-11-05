@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 class CommunityOfficialBadge extends StatelessWidget {
   const CommunityOfficialBadge({super.key});
@@ -26,19 +27,19 @@ class _DefaultOfficialBadge extends StatelessWidget {
   final CommunityLabelBadgeDetails details;
 
   @override
-  Widget build(BuildContext context) => Container(
-    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1),
-    decoration: BoxDecoration(color: details.background, borderRadius: BorderRadius.circular(8)),
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Icon(details.icon, size: 12, color: details.foreground),
-        const SizedBox(width: 3),
-        Text(
-          details.label,
-          style: TextStyle(color: details.foreground, fontSize: 11, fontWeight: FontWeight.w600),
-        ),
-      ],
-    ),
-  );
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: style.spacing.xs + style.spacing.xxs, vertical: 1),
+      decoration: BoxDecoration(color: details.background, borderRadius: style.radii.badgeRadius),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(details.icon, size: 12, color: details.foreground),
+          const SizedBox(width: 3),
+          Text(details.label, style: style.typography.badge.copyWith(color: details.foreground)),
+        ],
+      ),
+    );
+  }
 }

@@ -197,7 +197,7 @@ void main() {
         deps: _Deps(feed: feed),
       );
       expect(find.text('Default'), findsOneWidget);
-      expect(find.byIcon(Icons.favorite_border), findsOneWidget);
+      expect(find.byIcon(Icons.favorite_border_rounded), findsOneWidget);
       expect(find.byIcon(Icons.mode_comment_outlined), findsOneWidget);
     });
   });

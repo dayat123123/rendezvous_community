@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/widgets.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
+import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
 import 'package:rendezvous_community/src/features/media/domain/repositories/media_repository.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/repositories/moderation_repository.dart';
@@ -28,6 +31,8 @@ typedef CommunityStockSearch = Future<List<StockSuggestion>> Function(String que
 
 typedef CommunityStockInfoProvider = CommunityStockInfo? Function(String stockCode);
 
+typedef CommunityBannerLinkCallback = FutureOr<bool> Function(BuildContext context, Uri uri, CommunityBanner banner);
+
 class CommunityCallbacks {
   const CommunityCallbacks({
     this.onStockTap,
@@ -38,6 +43,7 @@ class CommunityCallbacks {
     this.onHashtagTap,
     this.onOltNotificationTap,
     this.stockInfo,
+    this.onBannerLink,
   });
 
   final CommunityStockTapCallback? onStockTap;
@@ -48,6 +54,7 @@ class CommunityCallbacks {
   final CommunityHashtagTapCallback? onHashtagTap;
   final CommunityOltNotificationTapCallback? onOltNotificationTap;
   final CommunityStockInfoProvider? stockInfo;
+  final CommunityBannerLinkCallback? onBannerLink;
 }
 
 abstract interface class CommunityDependencies {

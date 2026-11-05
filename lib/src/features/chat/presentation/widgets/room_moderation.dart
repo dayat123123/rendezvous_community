@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rendezvous_community/src/app/community_builders.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 class RoomModerationInput {
   const RoomModerationInput({required this.reason, this.duration, this.note});
@@ -45,9 +51,10 @@ Future<void> runRoomModeration(
   final l10n = context.communityL10n;
   final messenger = ScaffoldMessenger.maybeOf(context);
   final name = message.sender?.name ?? l10n.someone;
+  final carry = carryCommunityBuilders(context);
   final input = await showDialog<RoomModerationInput>(
     context: context,
-    builder: (_) => RoomModerationDialog(action: action, memberName: name),
+    builder: (_) => carry(RoomModerationDialog(action: action, memberName: name)),
   );
   if (input == null) return;
   void notify(String text) => messenger
@@ -106,14 +113,65 @@ class _RoomModerationDialogState extends State<RoomModerationDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
+    final mute = widget.action == RoomModerationAction.mute;
     final (title, body, confirm) = switch (widget.action) {
       RoomModerationAction.hide => (l10n.roomModHideTitle, l10n.roomModHideBody, l10n.roomModHide),
       RoomModerationAction.mute => (l10n.roomModMuteTitle(widget.memberName), l10n.roomModMuteBody, l10n.roomModMute),
       RoomModerationAction.escalate => (l10n.roomModEscalateTitle, l10n.roomModEscalateBody, l10n.roomModEscalate),
     };
+    final details = CommunityRoomModerationDialogDetails(
+      action: widget.action,
+      memberName: widget.memberName,
+      title: title,
+      body: body,
+      confirmLabel: confirm,
+      cancelLabel: l10n.cancel,
+      reasonLabel: l10n.roomModReason,
+      reasons: [
+        for (final r in ReportReason.values) CommunitySettingsOption(value: r, label: reportReasonLabel(l10n, r)),
+      ],
+      reason: _reason,
+      noteController: _note,
+      noteHint: l10n.roomModNoteHint,
+      onReasonChanged: (r) => setState(() => _reason = r),
+      onSubmit: _submit,
+      onCancel: () => Navigator.pop(context),
+      durationLabel: mute ? l10n.roomModDuration : null,
+      durations: mute
+          ? [
+              for (final d in roomMuteDurations)
+                CommunitySettingsOption(value: d, label: roomMuteDurationLabel(l10n, d)),
+            ]
+          : const [],
+      duration: mute ? _duration : null,
+      onDurationChanged: mute ? (d) => setState(() => _duration = d) : null,
+    );
+    return buildChatPart(
+      CommunityChatBuilders.of(context).moderationDialog,
+      context,
+      details,
+      _DefaultModerationDialog(details: details),
+    );
+  }
+}
+
+class _DefaultModerationDialog extends StatelessWidget {
+  const _DefaultModerationDialog({required this.details});
+
+  final CommunityRoomModerationDialogDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final scheme = Theme.of(context).colorScheme;
+    final durationLabel = d.durationLabel;
+    final onDurationChanged = d.onDurationChanged;
     return AlertDialog(
-      title: Text(title),
+      backgroundColor: style.surface,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(style.radii.card * 2)),
+      title: Text(d.title, style: style.typography.title),
       content: SizedBox(
         width: 420,
         child: SingleChildScrollView(
@@ -121,57 +179,79 @@ class _RoomModerationDialogState extends State<RoomModerationDialog> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(body, style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant)),
-              if (widget.action == RoomModerationAction.mute) ...[
-                const SizedBox(height: 12),
-                Text(l10n.roomModDuration, style: theme.textTheme.labelLarge),
-                const SizedBox(height: 6),
+              Text(d.body, style: style.typography.meta),
+              if (durationLabel != null && onDurationChanged != null) ...[
+                SizedBox(height: spacing.lg),
+                Text(durationLabel, style: style.typography.label.copyWith(color: style.textPrimary)),
+                SizedBox(height: spacing.sm),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 4,
+                  spacing: spacing.sm,
+                  runSpacing: spacing.xs,
                   children: [
-                    for (final duration in roomMuteDurations)
+                    for (final option in d.durations)
                       ChoiceChip(
-                        label: Text(roomMuteDurationLabel(l10n, duration)),
-                        selected: duration == _duration,
-                        onSelected: (_) => setState(() => _duration = duration),
+                        label: Text(option.label),
+                        selected: option.value == d.duration,
+                        showCheckmark: false,
+                        shape: const StadiumBorder(),
+                        side: option.value == d.duration ? BorderSide(color: style.accent) : style.borderSide,
+                        backgroundColor: style.chip,
+                        selectedColor: style.accentMuted,
+                        labelStyle: style.typography.label.copyWith(
+                          color: option.value == d.duration ? style.accent : style.onChip,
+                        ),
+                        onSelected: (_) => onDurationChanged(option.value),
                       ),
                   ],
                 ),
               ],
-              const SizedBox(height: 12),
-              Text(l10n.roomModReason, style: theme.textTheme.labelLarge),
+              SizedBox(height: spacing.lg),
+              Text(d.reasonLabel, style: style.typography.label.copyWith(color: style.textPrimary)),
               RadioGroup<ReportReason>(
-                groupValue: _reason,
-                onChanged: (r) => setState(() => _reason = r ?? _reason),
+                groupValue: d.reason,
+                onChanged: (r) {
+                  if (r != null) d.onReasonChanged(r);
+                },
                 child: Column(
                   children: [
-                    for (final r in ReportReason.values)
-                      RadioListTile<ReportReason>(value: r, title: Text(reportReasonLabel(l10n, r)), dense: true),
+                    for (final option in d.reasons)
+                      RadioListTile<ReportReason>(
+                        value: option.value,
+                        title: Text(option.label, style: style.typography.body.copyWith(fontSize: 14)),
+                        dense: true,
+                        contentPadding: EdgeInsets.zero,
+                      ),
                   ],
                 ),
               ),
               TextField(
-                controller: _note,
+                controller: d.noteController,
                 maxLength: 500,
                 maxLines: 2,
-                decoration: InputDecoration(hintText: l10n.roomModNoteHint),
+                decoration: InputDecoration(
+                  hintText: d.noteHint,
+                  border: OutlineInputBorder(borderRadius: style.radii.controlRadius),
+                ),
               ),
             ],
           ),
         ),
       ),
       actions: [
-        TextButton(onPressed: () => Navigator.pop(context), child: Text(l10n.cancel)),
+        TextButton(
+          onPressed: d.onCancel,
+          style: TextButton.styleFrom(foregroundColor: style.textSecondary),
+          child: Text(d.cancelLabel),
+        ),
         FilledButton(
-          style: widget.action == RoomModerationAction.escalate
-              ? null
-              : FilledButton.styleFrom(
-                  backgroundColor: theme.colorScheme.error,
-                  foregroundColor: theme.colorScheme.onError,
-                ),
-          onPressed: _submit,
-          child: Text(confirm),
+          style: d.destructive
+              ? style.primaryButtonStyle().copyWith(
+                  backgroundColor: WidgetStatePropertyAll(scheme.error),
+                  foregroundColor: WidgetStatePropertyAll(scheme.onError),
+                )
+              : style.primaryButtonStyle(),
+          onPressed: d.onSubmit,
+          child: Text(d.confirmLabel),
         ),
       ],
     );
@@ -236,49 +316,35 @@ class RoomModerationBanner extends StatelessWidget {
     final state = context.select((ChatRoomCubit c) => c.state);
     if (!state.isStockRoom) return const SizedBox.shrink();
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
     final muted = state.mutedUntil();
+    final CommunityRoomModerationDetails details;
     if (muted != null) {
-      return _Strip(
+      details = CommunityRoomModerationDetails(
+        kind: CommunityRoomModerationKind.muted,
         icon: Icons.volume_off_outlined,
-        text: l10n.roomMutedBanner(roomModerationTime(l10n, muted)),
-        background: theme.colorScheme.errorContainer,
-        foreground: theme.colorScheme.onErrorContainer,
+        message: l10n.roomMutedBanner(roomModerationTime(l10n, muted)),
+        mutedUntil: muted,
       );
-    }
-    if (state.isRoomModerator) {
-      return _Strip(
+    } else if (state.isRoomModerator) {
+      details = CommunityRoomModerationDetails(
+        kind: CommunityRoomModerationKind.moderator,
         icon: Icons.shield_outlined,
-        text: l10n.roomModeratorNotice,
-        background: theme.colorScheme.primaryContainer.withValues(alpha: 0.6),
-        foreground: theme.colorScheme.onPrimaryContainer,
+        message: l10n.roomModeratorNotice,
       );
+    } else {
+      return const SizedBox.shrink();
     }
-    return const SizedBox.shrink();
+    return buildChatPart(
+      CommunityChatBuilders.of(context).moderationBanner,
+      context,
+      details,
+      ChatStrip(
+        icon: details.icon,
+        message: details.message,
+        tone: details.kind == CommunityRoomModerationKind.muted
+            ? Theme.of(context).colorScheme.error
+            : CommunityStyle.of(context).accent,
+      ),
+    );
   }
-}
-
-class _Strip extends StatelessWidget {
-  const _Strip({required this.icon, required this.text, required this.background, required this.foreground});
-
-  final IconData icon;
-  final String text;
-  final Color background;
-  final Color foreground;
-
-  @override
-  Widget build(BuildContext context) => Container(
-    width: double.infinity,
-    color: background,
-    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-    child: Row(
-      children: [
-        Icon(icon, size: 16, color: foreground),
-        const SizedBox(width: 8),
-        Expanded(
-          child: Text(text, style: Theme.of(context).textTheme.bodySmall?.copyWith(color: foreground)),
-        ),
-      ],
-    ),
-  );
 }

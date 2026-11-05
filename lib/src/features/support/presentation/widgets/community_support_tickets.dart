@@ -13,11 +13,17 @@ import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/community_chat_room.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 import 'package:rendezvous_community/src/features/support/domain/repositories/support_repository.dart';
+import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
+import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_header.dart';
+import 'package:rendezvous_community/src/features/support/presentation/widgets/support_tone.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_topic_picker.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_list_state_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
 class CommunitySupportTickets extends StatefulWidget {
@@ -33,37 +39,67 @@ class _CommunitySupportTicketsState extends State<CommunitySupportTickets> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
     return FutureBuilder<List<SupportTicket>>(
       future: _tickets,
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return CommunityErrorView(
-            error: snapshot.error!,
-            onRetry: () => setState(() => _tickets = CommunitySupportScope.of(context).support.myTickets()),
+          void retry() => setState(() => _tickets = CommunitySupportScope.of(context).support.myTickets());
+          return buildSupportPart(
+            (b) => b.error,
+            context,
+            CommunityListErrorDetails(
+              error: snapshot.error!,
+              message: l10n.errorMessage(snapshot.error!),
+              onRetry: retry,
+            ),
+            CommunityErrorView(error: snapshot.error!, onRetry: retry),
           );
         }
-        if (!snapshot.hasData) return const CommunitySkeleton(itemCount: 4);
+        if (!snapshot.hasData) {
+          return buildSupportPart(
+            (b) => b.loading,
+            context,
+            const CommunityListLoadingDetails(),
+            const CommunitySkeleton(itemCount: 4),
+          );
+        }
         final tickets = snapshot.data!;
-        if (tickets.isEmpty) return CommunityEmptyView(message: l10n.supportNoTickets, icon: Icons.inbox_outlined);
-        return ListView.separated(
-          addAutomaticKeepAlives: false,
-          itemCount: tickets.length,
-          separatorBuilder: (_, _) => const Divider(height: 1),
-          itemBuilder: (context, i) {
-            final ticket = tickets[i];
-            return ListTile(
-              leading: Icon(supportTopicIcon(ticket.topic)),
-              title: Text('${ticket.ticketNumber} · ${ticket.topicName ?? ticket.topic}'),
-              subtitle: Text(
-                [
-                  l10n.supportTicketMeta(l10n.dayLabel(ticket.createdAt), supportStatusText(l10n, ticket)),
-                  if (ticket.rating != null) l10n.supportRating(ticket.rating!),
-                ].join(' · '),
-              ),
-              trailing: const Icon(Icons.chevron_right),
-              onTap: () => _openTranscript(context, ticket),
-            );
-          },
+        if (tickets.isEmpty) {
+          return buildSupportPart(
+            (b) => b.empty,
+            context,
+            CommunityListEmptyDetails(message: l10n.supportNoTickets),
+            CommunityEmptyView(message: l10n.supportNoTickets, icon: Icons.inbox_outlined),
+          );
+        }
+        final indent = style.spacing.lg + 40 + style.spacing.md;
+        return ColoredBox(
+          color: style.surface,
+          child: ListView.separated(
+            addAutomaticKeepAlives: false,
+            itemCount: tickets.length,
+            separatorBuilder: (_, _) => CommunityDivider(indent: indent),
+            itemBuilder: (context, i) {
+              final ticket = tickets[i];
+              final day = l10n.dayLabel(ticket.createdAt);
+              final details = CommunitySupportTicketDetails(
+                ticket: ticket,
+                title: '${ticket.ticketNumber} · ${ticket.topicName ?? ticket.topic}',
+                statusLabel: supportStatusText(l10n, ticket),
+                meta: [day, if (ticket.rating != null) l10n.supportRating(ticket.rating!)].join(' · '),
+                timeLabel: day,
+                icon: supportTopicIcon(ticket.topic),
+                onOpen: () => _openTranscript(context, ticket),
+              );
+              return buildSupportPart(
+                (b) => b.ticketTile,
+                context,
+                details,
+                SupportTicketTile(key: ValueKey(ticket.id), details: details),
+              );
+            },
+          ),
         );
       },
     );
@@ -89,6 +125,51 @@ class _CommunitySupportTicketsState extends State<CommunitySupportTickets> {
                   composer: const SizedBox.shrink(),
                 ),
               ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class SupportTicketTile extends StatelessWidget {
+  const SupportTicketTile({super.key, required this.details});
+
+  final CommunitySupportTicketDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final statusColor = supportStatusColor(context, d.ticket.status);
+    return Material(
+      color: style.surface,
+      child: InkWell(
+        onTap: d.onOpen,
+        child: ConstrainedBox(
+          constraints: BoxConstraints(minHeight: style.minTouchTarget),
+          child: Padding(
+            padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.sm, spacing.md),
+            child: Row(
+              children: [
+                SupportIconCircle(icon: d.icon, color: d.closed ? style.textSecondary : style.accent),
+                SizedBox(width: spacing.md),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(d.title, maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.author),
+                      SizedBox(height: spacing.xxs),
+                      Text(d.meta, maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.meta),
+                      SizedBox(height: spacing.xs + spacing.xxs),
+                      SupportSoftPill(label: d.statusLabel, color: statusColor),
+                    ],
+                  ),
+                ),
+                Icon(Icons.chevron_right, color: style.textTertiary),
+              ],
             ),
           ),
         ),

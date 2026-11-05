@@ -1,9 +1,14 @@
 import 'package:flutter/widgets.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
+import 'package:rendezvous_community/src/features/config/presentation/builders/community_system_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/builders/community_notification_builders.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/builders/community_profile_builders.dart';
+import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_builders.dart';
+import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_builders.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
 
 class CommunityBuilders {
   const CommunityBuilders({
@@ -12,6 +17,11 @@ class CommunityBuilders {
     this.notifications = const CommunityNotificationBuilders(),
     this.profile = const CommunityProfileBuilders(),
     this.badges = const CommunityBadgeBuilders(),
+    this.shared = const CommunitySharedBuilders(),
+    this.discovery = const CommunityDiscoveryBuilders(),
+    this.support = const CommunitySupportBuilders(),
+    this.settings = const CommunitySettingsBuilders(),
+    this.system = const CommunitySystemBuilders(),
   });
 
   final CommunityChatBuilders chat;
@@ -19,6 +29,11 @@ class CommunityBuilders {
   final CommunityNotificationBuilders notifications;
   final CommunityProfileBuilders profile;
   final CommunityBadgeBuilders badges;
+  final CommunitySharedBuilders shared;
+  final CommunityDiscoveryBuilders discovery;
+  final CommunitySupportBuilders support;
+  final CommunitySettingsBuilders settings;
+  final CommunitySystemBuilders system;
 
   static CommunityBuilders of(BuildContext context, {bool listen = true}) => CommunityBuilders(
     chat: CommunityChatBuilders.of(context, listen: listen),
@@ -26,6 +41,11 @@ class CommunityBuilders {
     notifications: CommunityNotificationBuilders.of(context, listen: listen),
     profile: CommunityProfileBuilders.of(context, listen: listen),
     badges: CommunityBadgeBuilders.of(context, listen: listen),
+    shared: CommunitySharedBuilders.of(context, listen: listen),
+    discovery: CommunityDiscoveryBuilders.of(context, listen: listen),
+    support: CommunitySupportBuilders.of(context, listen: listen),
+    settings: CommunitySettingsBuilders.of(context, listen: listen),
+    system: CommunitySystemBuilders.of(context, listen: listen),
   );
 
   CommunityBuilders merge(CommunityBuilders? other) {
@@ -36,6 +56,11 @@ class CommunityBuilders {
       notifications: notifications.merge(other.notifications),
       profile: profile.merge(other.profile),
       badges: badges.merge(other.badges),
+      shared: shared.merge(other.shared),
+      discovery: discovery.merge(other.discovery),
+      support: support.merge(other.support),
+      settings: settings.merge(other.settings),
+      system: system.merge(other.system),
     );
   }
 
@@ -47,7 +72,22 @@ class CommunityBuilders {
         builders: notifications,
         child: CommunityProfileBuildersScope(
           builders: profile,
-          child: CommunityBadgeBuildersScope(builders: badges, child: child),
+          child: CommunityBadgeBuildersScope(
+            builders: badges,
+            child: CommunitySharedBuildersScope(
+              builders: shared,
+              child: CommunityDiscoveryBuildersScope(
+                builders: discovery,
+                child: CommunitySupportBuildersScope(
+                  builders: support,
+                  child: CommunitySettingsBuildersScope(
+                    builders: settings,
+                    child: CommunitySystemBuildersScope(builders: system, child: child),
+                  ),
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     ),
@@ -74,7 +114,12 @@ class _CommunityBuildersScopeState extends State<CommunityBuildersScope> {
       identical(a.feed, b.feed) &&
       identical(a.notifications, b.notifications) &&
       identical(a.profile, b.profile) &&
-      identical(a.badges, b.badges);
+      identical(a.badges, b.badges) &&
+      identical(a.shared, b.shared) &&
+      identical(a.discovery, b.discovery) &&
+      identical(a.support, b.support) &&
+      identical(a.settings, b.settings) &&
+      identical(a.system, b.system);
 
   @override
   Widget build(BuildContext context) {

@@ -36,6 +36,9 @@ export 'src/core/text/social_text_parser.dart'
         parseSocialText;
 export 'src/features/account/domain/entities/community_data_export.dart';
 export 'src/features/account/domain/repositories/account_repository.dart';
+export 'src/features/account/presentation/builders/community_settings_builders.dart'
+    show CommunitySettingsBuilders, CommunitySettingsBuildersScope;
+export 'src/features/account/presentation/builders/community_settings_details.dart';
 export 'src/features/account/presentation/export_saver.dart' show CommunityExportSaver, saveCommunityDataExport;
 export 'src/features/account/presentation/widgets/community_account_settings.dart'
     show CommunityAccountSettings, openCommunityAccountSettings;
@@ -97,10 +100,18 @@ export 'src/features/compose/presentation/widgets/community_compose_post.dart'
     show CommunityComposePost, CommunityComposerImage, showCommunityComposer;
 export 'src/features/config/domain/entities/client_config.dart';
 export 'src/features/config/domain/repositories/banner_dismissal_repository.dart';
+export 'src/features/config/domain/repositories/banner_event_repository.dart';
 export 'src/features/config/domain/repositories/client_config_repository.dart';
+export 'src/features/config/domain/repositories/promo_popup_history_repository.dart';
 export 'src/features/config/domain/services/banner_dismissals.dart';
 export 'src/features/config/domain/services/client_config_service.dart';
+export 'src/features/config/domain/services/community_promo_popups.dart' show CommunityPromoPopups;
+export 'src/features/config/presentation/builders/community_system_builders.dart'
+    show CommunitySystemBuilders, CommunitySystemBuildersScope;
+export 'src/features/config/presentation/builders/community_system_details.dart';
 export 'src/features/config/presentation/widgets/community_banner_host.dart';
+export 'src/features/config/presentation/widgets/community_promo_popup_host.dart'
+    show CommunityPromoPopupCard, CommunityPromoPopupHost, showCommunityPromoPopup;
 export 'src/features/config/presentation/widgets/community_social_gate.dart';
 export 'src/features/drafts/domain/entities/post_draft.dart';
 export 'src/features/drafts/domain/repositories/post_draft_repository.dart';
@@ -172,6 +183,9 @@ export 'src/features/push/presentation/open_community_push.dart' show isCommunit
 export 'src/features/search/domain/entities/search_results.dart'
     show SearchResults, SearchType, StockSearchResult, UserSearchResult, normalizeHashtag;
 export 'src/features/search/domain/repositories/search_repository.dart';
+export 'src/features/search/presentation/builders/community_discovery_builders.dart'
+    show CommunityDiscoveryBuilders, CommunityDiscoveryBuildersScope;
+export 'src/features/search/presentation/builders/community_discovery_details.dart';
 export 'src/features/search/presentation/widgets/community_hashtag_feed.dart';
 export 'src/features/search/presentation/widgets/community_search.dart' show CommunitySearch, openCommunitySearch;
 export 'src/features/stocks/domain/entities/stock.dart';
@@ -181,6 +195,9 @@ export 'src/features/stocks/domain/repositories/stock_repository.dart';
 export 'src/features/stocks/presentation/widgets/community_stock_feed.dart' show CommunityStockFeed;
 export 'src/features/support/domain/entities/support_ticket.dart';
 export 'src/features/support/domain/repositories/support_repository.dart';
+export 'src/features/support/presentation/builders/community_support_builders.dart'
+    show CommunitySupportBuilders, CommunitySupportBuildersScope;
+export 'src/features/support/presentation/builders/community_support_details.dart';
 export 'src/features/support/presentation/widgets/community_support_badge.dart' show CommunitySupportBadge;
 export 'src/features/support/presentation/widgets/community_support_chat.dart'
     show CommunitySupportChat, CommunitySupportPage, openCommunitySupport;
@@ -201,17 +218,30 @@ export 'src/shared/presentation/builders/community_badge_builders.dart'
 export 'src/shared/presentation/builders/community_badge_details.dart' hide communityCountLabel;
 export 'src/shared/presentation/builders/community_list_state_details.dart';
 export 'src/shared/presentation/builders/community_part_builder.dart' show CommunityPartBuilder;
+export 'src/shared/presentation/builders/community_shared_builders.dart'
+    show CommunitySharedBuilders, CommunitySharedBuildersScope;
+export 'src/shared/presentation/builders/community_shared_details.dart';
 export 'src/shared/presentation/images/community_image_loader.dart'
     show CommunityImageLoadException, CommunityImageLoader;
 export 'src/shared/presentation/images/community_image_provider.dart' show CommunityImageProvider;
 export 'src/shared/presentation/l10n/l10n.dart' show CommunityErrorText, CommunityL10nContext, CommunityLocalizations;
 export 'src/shared/presentation/load_status.dart';
+export 'src/shared/presentation/theme/community_style.dart';
 export 'src/shared/presentation/theme/community_theme.dart';
+export 'src/shared/presentation/theme/community_tokens.dart';
+export 'src/shared/presentation/widgets/community_actions.dart';
+export 'src/shared/presentation/widgets/community_author_row.dart';
 export 'src/shared/presentation/widgets/community_avatar.dart';
+export 'src/shared/presentation/widgets/community_card.dart';
 export 'src/shared/presentation/widgets/community_composer_field.dart';
 export 'src/shared/presentation/widgets/community_count_badge.dart';
 export 'src/shared/presentation/widgets/community_disclaimer.dart';
+export 'src/shared/presentation/widgets/community_divider.dart';
 export 'src/shared/presentation/widgets/community_network_image.dart' show CommunityNetworkImage;
+export 'src/shared/presentation/widgets/community_section_header.dart';
+export 'src/shared/presentation/widgets/community_tag.dart';
 export 'src/shared/presentation/widgets/link_opener.dart' show openCommunityLink;
 export 'src/shared/presentation/widgets/moderation_notice.dart';
 export 'src/shared/presentation/widgets/social_text.dart';
+export 'src/shared/presentation/widgets/state_views.dart'
+    show CommunityEmptyView, CommunityErrorView, CommunityLoadingView, CommunitySkeleton, CommunitySkeletonBox;

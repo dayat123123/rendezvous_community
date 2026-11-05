@@ -5,6 +5,8 @@ import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/editorial_section.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_skeletons.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/moderation/presentation/widgets/moderation_actions.dart';
 import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
@@ -14,6 +16,8 @@ import 'package:rendezvous_community/src/features/profile/presentation/cubit/pro
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_actions.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_user_name.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
@@ -48,7 +52,7 @@ class CommunityUserProfile extends StatelessWidget {
             final l10n = context.communityL10n;
             switch (state.status) {
               case LoadStatus.initial || LoadStatus.loading:
-                return const CommunitySkeleton(itemCount: 3);
+                return CommunitySkeleton(itemCount: 3, itemBuilder: (_) => const PostCardSkeleton());
               case LoadStatus.failure:
                 return CommunityErrorView(error: state.error!, onRetry: context.read<ProfileCubit>().load);
               case LoadStatus.ready:
@@ -76,13 +80,11 @@ class _ProfileHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         final cubit = context.read<ProfileCubit>();
         final profile = state.profile!;
         final user = profile.user;
-        final muted = theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.onSurfaceVariant);
         final parts = CommunityProfileBuilders.of(context);
         final details = CommunityProfileDetails(
           profile: profile,
@@ -106,97 +108,103 @@ class _ProfileHeader extends StatelessWidget {
                 },
           onUnblock: profile.isMe || !profile.isBlocked ? null : cubit.unblock,
         );
-        return buildCommunityPart(parts.header, context, details, _defaultHeader(context, details, parts, muted));
+        return buildCommunityPart(parts.header, context, details, _defaultHeader(context, details, parts));
       },
     );
   }
 
-  Widget _defaultHeader(
-    BuildContext context,
-    CommunityProfileDetails details,
-    CommunityProfileBuilders parts,
-    TextStyle? muted,
-  ) {
+  Widget _defaultHeader(BuildContext context, CommunityProfileDetails details, CommunityProfileBuilders parts) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
     final profile = details.profile;
     final user = profile.user;
-    return Padding(
-      padding: const EdgeInsets.all(16),
+    final bio = profile.bio;
+    final follow = profile.isFollowing
+        ? OutlinedButton(
+            style: style.secondaryButtonStyle(),
+            onPressed: details.onToggleFollow,
+            child: Text(l10n.followingLabel),
+          )
+        : FilledButton(style: style.primaryButtonStyle(), onPressed: details.onToggleFollow, child: Text(l10n.follow));
+    final message = OutlinedButton.icon(
+      style: style.secondaryButtonStyle(),
+      onPressed: details.onMessage,
+      icon: const Icon(Icons.chat_bubble_outline, size: 18),
+      label: Text(l10n.sendMessage),
+    );
+    return EditorialSection(
+      padding: EdgeInsets.fromLTRB(spacing.lg, spacing.lg, spacing.lg, spacing.lg),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
             children: [
-              CommunityAvatar(user: user, radius: 32),
-              const SizedBox(width: 16),
+              CommunityAvatar(user: user, radius: style.avatarSizes.profile / 2),
+              SizedBox(width: spacing.lg),
+              Expanded(child: buildCommunityPart(parts.stats, context, details, _ProfileStats(details: details))),
+            ],
+          ),
+          SizedBox(height: spacing.md),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    CommunityUserName(user: user, showUsername: false, style: theme.textTheme.titleLarge),
-                    Text('@${user.username}', style: muted),
-                    if (profile.followsMe) Text(l10n.followsYou, style: muted),
-                  ],
-                ),
-              ),
-              if (!profile.isMe)
-                PopupMenuButton<String>(
-                  onSelected: (action) => switch (action) {
-                    'report' => details.onReport?.call(),
-                    'block' => details.onBlock?.call(),
-                    'unblock' => details.onUnblock?.call(),
-                    _ => null,
-                  },
-                  itemBuilder: (_) => [
-                    PopupMenuItem(value: 'report', child: Text(l10n.report)),
-                    PopupMenuItem(
-                      value: profile.isBlocked ? 'unblock' : 'block',
-                      child: Text(profile.isBlocked ? l10n.unblock : l10n.block),
+                    CommunityUserName(
+                      user: user,
+                      showUsername: false,
+                      style: style.typography.title.copyWith(fontSize: 17),
+                    ),
+                    SizedBox(height: spacing.xxs),
+                    Wrap(
+                      spacing: spacing.sm,
+                      runSpacing: spacing.xs,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Text('@${user.username}', style: style.typography.meta),
+                        if (profile.followsMe)
+                          DecoratedBox(
+                            decoration: BoxDecoration(color: style.pill, borderRadius: style.radii.badgeRadius),
+                            child: Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: spacing.xs + spacing.xxs,
+                                vertical: spacing.xxs,
+                              ),
+                              child: Text(
+                                l10n.followsYou,
+                                style: style.typography.badge.copyWith(color: style.textSecondary),
+                              ),
+                            ),
+                          ),
+                      ],
                     ),
                   ],
                 ),
+              ),
+              if (!profile.isMe) buildCommunityPart(parts.menu, context, details, _ProfileMenu(details: details)),
             ],
           ),
-          if (profile.bio != null && profile.bio!.isNotEmpty) ...[const SizedBox(height: 12), SocialText(profile.bio!)],
-          const SizedBox(height: 12),
-          buildCommunityPart(
-            parts.stats,
-            context,
-            details,
-            Wrap(
-              spacing: 16,
-              children: [
-                Text(details.followersLabel, style: muted),
-                Text(details.followingLabel, style: muted),
-                Text(details.postsLabel, style: muted),
-              ],
-            ),
-          ),
-          const SizedBox(height: 12),
+          if (bio != null && bio.isNotEmpty) ...[
+            SizedBox(height: spacing.sm),
+            SocialText(bio, style: style.typography.body.copyWith(height: 1.45)),
+          ],
+          SizedBox(height: spacing.lg),
           if (profile.isMe)
             OutlinedButton.icon(
+              style: style.secondaryButtonStyle(),
               onPressed: details.onEdit,
-              icon: const Icon(Icons.edit_outlined),
+              icon: const Icon(Icons.edit_outlined, size: 18),
               label: Text(l10n.editProfile),
             )
           else if (!profile.isBlocked)
-            Wrap(
-              spacing: 8,
+            Row(
               children: [
-                buildCommunityPart(
-                  parts.followButton,
-                  context,
-                  details,
-                  profile.isFollowing
-                      ? FilledButton.tonal(onPressed: details.onToggleFollow, child: Text(l10n.followingLabel))
-                      : FilledButton(onPressed: details.onToggleFollow, child: Text(l10n.follow)),
-                ),
-                OutlinedButton.icon(
-                  onPressed: details.onMessage,
-                  icon: const Icon(Icons.chat_bubble_outline),
-                  label: Text(l10n.sendMessage),
-                ),
+                Expanded(child: buildCommunityPart(parts.followButton, context, details, follow)),
+                SizedBox(width: spacing.sm),
+                Expanded(child: buildCommunityPart(parts.messageButton, context, details, message)),
               ],
             ),
         ],
@@ -256,5 +264,86 @@ class _ProfileHeader extends StatelessWidget {
     );
     name.dispose();
     bio.dispose();
+  }
+}
+
+class _ProfileMenu extends StatelessWidget {
+  const _ProfileMenu({required this.details});
+
+  final CommunityProfileDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final blocked = details.profile.isBlocked;
+    return PopupMenuButton<String>(
+      icon: Icon(Icons.more_horiz, color: CommunityStyle.of(context).textSecondary),
+      onSelected: (action) => switch (action) {
+        'report' => details.onReport?.call(),
+        'block' => details.onBlock?.call(),
+        'unblock' => details.onUnblock?.call(),
+        _ => null,
+      },
+      itemBuilder: (_) => [
+        PopupMenuItem(value: 'report', child: Text(l10n.report)),
+        PopupMenuItem(value: blocked ? 'unblock' : 'block', child: Text(blocked ? l10n.unblock : l10n.block)),
+      ],
+    );
+  }
+}
+
+class _ProfileStats extends StatelessWidget {
+  const _ProfileStats({required this.details});
+
+  final CommunityProfileDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final profile = details.profile;
+    return Row(
+      children: [
+        _ProfileStat(count: profile.postCount, label: l10n.profileStatPosts, semanticLabel: details.postsLabel),
+        _ProfileStat(
+          count: profile.followerCount,
+          label: l10n.profileStatFollowers,
+          semanticLabel: details.followersLabel,
+        ),
+        _ProfileStat(count: profile.followingCount, label: l10n.followingLabel, semanticLabel: details.followingLabel),
+      ],
+    );
+  }
+}
+
+class _ProfileStat extends StatelessWidget {
+  const _ProfileStat({required this.count, required this.label, required this.semanticLabel});
+
+  final int count;
+  final String label;
+  final String semanticLabel;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    return Expanded(
+      child: Semantics(
+        container: true,
+        label: semanticLabel,
+        child: ExcludeSemantics(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                communityCountText(context, count),
+                maxLines: 1,
+                style: style.typography.title.copyWith(fontSize: 18, height: 1.2),
+              ),
+              SizedBox(height: style.spacing.xxs),
+              Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.meta),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -3,11 +3,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
+import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
+import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
 import 'package:rendezvous_community/src/features/support/presentation/cubit/support_cubit.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/community_support_tickets.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_dialogs.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_message_parts.dart';
+import 'package:rendezvous_community/src/features/support/presentation/widgets/support_tone.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
 
 String supportStatusText(CommunityLocalizations l10n, SupportTicket ticket) => switch (ticket.status) {
   SupportStatus.open => [
@@ -22,13 +27,6 @@ String supportStatusText(CommunityLocalizations l10n, SupportTicket ticket) => s
 
 enum _MenuAction { complaint, reportFake, endChat, myTickets, newTicket }
 
-Color _statusColor(ColorScheme scheme, SupportStatus status) => switch (status) {
-  SupportStatus.open => scheme.tertiary,
-  SupportStatus.claimed => scheme.primary,
-  SupportStatus.waitingCustomer => scheme.secondary,
-  SupportStatus.resolved || SupportStatus.closed => scheme.outline,
-};
-
 class SupportHeader extends StatelessWidget {
   const SupportHeader({super.key, this.onClose});
 
@@ -37,75 +35,45 @@ class SupportHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
+    final style = CommunityStyle.of(context);
     final state = context.watch<SupportCubit>().state;
     final home = state.home;
     final ticket = state.ticket;
     final active = ticket?.isActive ?? false;
+    VoidCallback run(_MenuAction action) =>
+        () => _onAction(context, action);
+    final details = CommunitySupportHeaderDetails(
+      title: home?.supportName ?? '',
+      subtitle: ticket == null
+          ? l10n.supportOfficialChannel
+          : '#${ticket.ticketNumber} · ${ticket.topicName ?? ticket.topic}',
+      menuTooltip: l10n.supportMenu,
+      ticket: ticket,
+      statusLabel: ticket == null ? null : supportStatusText(l10n, ticket),
+      busy: state.busy,
+      onComplaint: active && ticket?.complaintReceivedAt == null ? run(_MenuAction.complaint) : null,
+      onReportFake: run(_MenuAction.reportFake),
+      onEndChat: active ? run(_MenuAction.endChat) : null,
+      onNewTicket: active ? null : run(_MenuAction.newTicket),
+      onShowTickets: run(_MenuAction.myTickets),
+      onClose: onClose,
+    );
+    final nextOpenAt = home?.nextOpenAt;
+    final banner = home != null && !home.serviceOpen && nextOpenAt != null
+        ? CommunitySupportBannerDetails(
+            message: l10n.supportOutOfHours('${l10n.dayLabel(nextOpenAt)} ${l10n.clockTime(nextOpenAt)}'),
+            tone: CommunitySupportTone.warning,
+            icon: Icons.schedule,
+          )
+        : null;
     return Material(
-      color: theme.colorScheme.surfaceContainerLow,
+      color: style.surface,
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          ListTile(
-            leading: CircleAvatar(
-              backgroundColor: theme.colorScheme.primary,
-              foregroundColor: theme.colorScheme.onPrimary,
-              child: const Icon(Icons.support_agent),
-            ),
-            title: Row(
-              children: [
-                Flexible(child: Text(home?.supportName ?? '', maxLines: 1, overflow: TextOverflow.ellipsis)),
-                const SizedBox(width: 6),
-                OfficialBadge(color: theme.colorScheme.primary),
-              ],
-            ),
-            subtitle: ticket == null
-                ? Text(l10n.supportOfficialChannel)
-                : Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        '#${ticket.ticketNumber} · ${ticket.topicName ?? ticket.topic}',
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                      Text(
-                        supportStatusText(l10n, ticket),
-                        maxLines: 2,
-                        overflow: TextOverflow.ellipsis,
-                        style: theme.textTheme.labelLarge?.copyWith(
-                          color: _statusColor(theme.colorScheme, ticket.status),
-                        ),
-                      ),
-                    ],
-                  ),
-            trailing: Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                PopupMenuButton<_MenuAction>(
-                  tooltip: l10n.supportMenu,
-                  icon: const Icon(Icons.more_horiz),
-                  onSelected: (action) => _onAction(context, action),
-                  itemBuilder: (context) => [
-                    if (active && ticket?.complaintReceivedAt == null)
-                      PopupMenuItem(value: _MenuAction.complaint, child: Text(l10n.supportComplaint)),
-                    PopupMenuItem(value: _MenuAction.reportFake, child: Text(l10n.supportReportFake)),
-                    if (!active) PopupMenuItem(value: _MenuAction.newTicket, child: Text(l10n.supportNewTicket)),
-                    PopupMenuItem(value: _MenuAction.myTickets, child: Text(l10n.supportMyTickets)),
-                    if (active) PopupMenuItem(value: _MenuAction.endChat, child: Text(l10n.supportEndChat)),
-                  ],
-                ),
-                if (onClose != null) IconButton(tooltip: l10n.close, onPressed: onClose, icon: const Icon(Icons.close)),
-              ],
-            ),
-          ),
-          if (state.busy) const LinearProgressIndicator(minHeight: 2),
-          if (home != null && !home.serviceOpen && home.nextOpenAt != null)
-            _Banner(
-              text: l10n.supportOutOfHours('${l10n.dayLabel(home.nextOpenAt!)} ${l10n.clockTime(home.nextOpenAt!)}'),
-            ),
+          buildSupportPart((b) => b.header, context, details, _DefaultSupportHeader(details: details)),
+          if (state.busy) const LinearProgressIndicator(minHeight: 2) else const CommunityDivider(),
+          if (banner != null) buildSupportPart((b) => b.banner, context, banner, SupportBanner(details: banner)),
         ],
       ),
     );
@@ -149,24 +117,101 @@ class SupportHeader extends StatelessWidget {
   }
 }
 
-class _Banner extends StatelessWidget {
-  const _Banner({required this.text});
+class _DefaultSupportHeader extends StatelessWidget {
+  const _DefaultSupportHeader({required this.details});
 
-  final String text;
+  final CommunitySupportHeaderDetails details;
 
   @override
   Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Container(
-      width: double.infinity,
-      color: scheme.tertiaryContainer,
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+    final d = details;
+    final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final status = d.status;
+    final statusLabel = d.statusLabel;
+    final onClose = d.onClose;
+    final menu = <(VoidCallback?, String)>[
+      (d.onComplaint, l10n.supportComplaint),
+      (d.onReportFake, l10n.supportReportFake),
+      (d.onNewTicket, l10n.supportNewTicket),
+      (d.onShowTickets, l10n.supportMyTickets),
+      (d.onEndChat, l10n.supportEndChat),
+    ];
+    return Padding(
+      padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.xs, spacing.md),
       child: Row(
         children: [
-          Icon(Icons.schedule, size: 16, color: scheme.onTertiaryContainer),
-          const SizedBox(width: 8),
+          SupportIconCircle(icon: Icons.support_agent, color: style.accent, filled: true),
+          SizedBox(width: spacing.md),
           Expanded(
-            child: Text(text, style: TextStyle(color: scheme.onTertiaryContainer)),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        d.title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: style.typography.author,
+                      ),
+                    ),
+                    SizedBox(width: spacing.xs + spacing.xxs),
+                    OfficialBadge(color: style.accent),
+                  ],
+                ),
+                SizedBox(height: spacing.xxs),
+                Text(d.subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.meta),
+                if (status != null && statusLabel != null) ...[
+                  SizedBox(height: spacing.xs + spacing.xxs),
+                  SupportSoftPill(label: statusLabel, color: supportStatusColor(context, status), maxLines: 2),
+                ],
+              ],
+            ),
+          ),
+          PopupMenuButton<VoidCallback>(
+            tooltip: d.menuTooltip,
+            icon: Icon(Icons.more_horiz, color: style.textSecondary),
+            onSelected: (action) => action(),
+            itemBuilder: (context) => [
+              for (final (handler, label) in menu)
+                if (handler != null) PopupMenuItem(value: handler, child: Text(label)),
+            ],
+          ),
+          if (onClose != null)
+            IconButton(
+              tooltip: l10n.close,
+              onPressed: onClose,
+              icon: Icon(Icons.close, color: style.textSecondary),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class SupportBanner extends StatelessWidget {
+  const SupportBanner({super.key, required this.details});
+
+  final CommunitySupportBannerDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final color = supportToneColor(context, details.tone);
+    return Container(
+      width: double.infinity,
+      color: supportSoftBackground(style, color),
+      padding: EdgeInsets.symmetric(horizontal: style.spacing.lg, vertical: style.spacing.sm),
+      child: Row(
+        children: [
+          Icon(details.icon ?? Icons.info_outline, size: 16, color: color),
+          SizedBox(width: style.spacing.sm),
+          Expanded(
+            child: Text(details.message, style: style.typography.meta.copyWith(color: color)),
           ),
         ],
       ),

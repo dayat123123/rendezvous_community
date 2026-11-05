@@ -13,11 +13,18 @@ import 'package:rendezvous_community/src/features/compose/presentation/widgets/p
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_consent_flow.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_composer_field.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_disclaimer.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_tag.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_user_name.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/moderation_notice.dart';
 
@@ -204,7 +211,6 @@ class _ComposeViewState extends State<_ComposeView> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
     return BlocConsumer<ComposeCubit, ComposeState>(
       listenWhen: (a, b) => a.errorId != b.errorId || a.draftNoticeId != b.draftNoticeId,
       listener: (context, state) {
@@ -229,12 +235,41 @@ class _ComposeViewState extends State<_ComposeView> {
       builder: (context, state) {
         final cubit = context.read<ComposeCubit>();
         final poll = state.poll;
+        final style = CommunityStyle.of(context);
+        final spacing = style.spacing;
+        final sentiment = CommunityComposeSentimentDetails(
+          title: l10n.sentimentLabel,
+          selected: state.sentiment,
+          options: const [Sentiment.bullish, Sentiment.bearish, Sentiment.neutral, null],
+          labels: [l10n.sentimentBullish, l10n.sentimentBearish, l10n.sentimentNeutral, l10n.sentimentNone],
+          onChanged: cubit.setSentiment,
+        );
+        final toolbar = CommunityComposeDetails(
+          controller: _controller,
+          posting: state.submitting,
+          uploading: state.uploading,
+          hasPoll: poll != null,
+          imageCount: state.attachments.length,
+          submitLabel: l10n.composeSubmit,
+          addImageLabel: l10n.composeAddImage,
+          addPollLabel: l10n.pollAddTooltip,
+          onPost: state.busy ? null : _submit,
+          onPickImage: state.busy || !state.canAddImage ? null : _pickImage,
+          onAddPoll: state.busy || !state.canAddPoll ? null : cubit.addPoll,
+        );
+        final hint = style.typography.meta.copyWith(color: style.textSecondary);
+        final user = CommunityScope.of(context).currentUser;
+        final author = user == null ? null : CommunityComposeAuthorDetails(user: user, sentiment: state.sentiment);
         return SingleChildScrollView(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(spacing.lg),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              if (author != null) ...[
+                buildFeedPart((b) => b.composeAuthor, context, author, _DefaultComposeAuthor(details: author)),
+                SizedBox(height: spacing.md),
+              ],
               CommunityComposerField(
                 controller: _controller,
                 hintText: l10n.composeHint,
@@ -244,102 +279,249 @@ class _ComposeViewState extends State<_ComposeView> {
                 autofocus: widget.autofocus,
                 enabled: !state.submitting,
                 onSubmit: _submit,
-                decoration: const InputDecoration(border: OutlineInputBorder()),
+                decoration: InputDecoration(
+                  border: InputBorder.none,
+                  enabledBorder: InputBorder.none,
+                  focusedBorder: InputBorder.none,
+                  disabledBorder: InputBorder.none,
+                  isCollapsed: true,
+                  hintStyle: style.typography.body.copyWith(color: style.textSecondary, fontSize: 17, height: 1.45),
+                  counterStyle: style.typography.meta,
+                  contentPadding: EdgeInsets.symmetric(vertical: spacing.sm),
+                ),
               ),
-              if (poll != null) ...[const SizedBox(height: 12), PollEditor(poll: poll, enabled: !state.submitting)],
-              const SizedBox(height: 12),
-              Text(l10n.sentimentLabel, style: theme.textTheme.labelLarge),
-              const SizedBox(height: 6),
-              SegmentedButton<Sentiment?>(
-                showSelectedIcon: false,
-                segments: [
-                  ButtonSegment(
-                    value: Sentiment.bullish,
-                    label: Text(l10n.sentimentBullish),
-                    icon: const Icon(Icons.trending_up),
-                  ),
-                  ButtonSegment(
-                    value: Sentiment.bearish,
-                    label: Text(l10n.sentimentBearish),
-                    icon: const Icon(Icons.trending_down),
-                  ),
-                  ButtonSegment(
-                    value: Sentiment.neutral,
-                    label: Text(l10n.sentimentNeutral),
-                    icon: const Icon(Icons.trending_flat),
-                  ),
-                  ButtonSegment(value: null, label: Text(l10n.sentimentNone)),
-                ],
-                selected: {state.sentiment},
-                onSelectionChanged: (s) => cubit.setSentiment(s.first),
+              if (poll != null) ...[SizedBox(height: spacing.md), PollEditor(poll: poll, enabled: !state.submitting)],
+              SizedBox(height: spacing.md),
+              buildFeedPart(
+                (b) => b.composeSentiment,
+                context,
+                sentiment,
+                _DefaultComposeSentiment(details: sentiment),
               ),
               if (state.attachments.isNotEmpty) ...[
-                const SizedBox(height: 12),
+                SizedBox(height: spacing.md),
                 Wrap(
-                  spacing: 8,
-                  runSpacing: 8,
+                  spacing: spacing.sm,
+                  runSpacing: spacing.sm,
                   children: [
                     for (final a in state.attachments)
-                      InputChip(
-                        avatar: const Icon(Icons.image_outlined),
-                        label: a.held
-                            ? Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Flexible(child: Text(a.path.split('/').last, overflow: TextOverflow.ellipsis)),
-                                  const SizedBox(width: 6),
-                                  const HeldAttachmentLabel(),
-                                ],
-                              )
-                            : Text(a.path.split('/').last, overflow: TextOverflow.ellipsis),
-                        deleteButtonTooltipMessage: l10n.composeRemoveImage,
-                        onDeleted: state.busy ? null : () => cubit.removeImage(a),
+                      Builder(
+                        builder: (context) {
+                          final image = CommunityComposeImageDetails(
+                            attachment: a,
+                            name: a.path.split('/').last,
+                            removeLabel: l10n.composeRemoveImage,
+                            onRemove: state.busy ? null : () => cubit.removeImage(a),
+                          );
+                          return buildFeedPart(
+                            (b) => b.composeImage,
+                            context,
+                            image,
+                            _DefaultComposeImage(details: image),
+                          );
+                        },
                       ),
                   ],
                 ),
               ],
-              const SizedBox(height: 8),
-              Row(
-                children: [
-                  IconButton(
-                    tooltip: l10n.composeAddImage,
-                    onPressed: state.busy || !state.canAddImage ? null : _pickImage,
-                    icon: const Icon(Icons.add_photo_alternate_outlined),
-                  ),
-                  IconButton(
-                    tooltip: l10n.pollAddTooltip,
-                    onPressed: state.busy || !state.canAddPoll ? null : cubit.addPoll,
-                    icon: const Icon(Icons.poll_outlined),
-                  ),
-                  if (state.uploading)
-                    const SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2)),
-                  const Spacer(),
-                  FilledButton.icon(
-                    onPressed: state.busy ? null : _submit,
-                    icon: state.submitting
-                        ? const SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2))
-                        : const Icon(Icons.send),
-                    label: Text(l10n.composeSubmit),
-                  ),
-                ],
-              ),
-              if (isDesktopPlatform(context))
-                Text(
-                  l10n.sendShortcutHint,
-                  textAlign: TextAlign.end,
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.outline),
-                ),
+              SizedBox(height: spacing.md),
+              const CommunityDivider(),
+              SizedBox(height: spacing.xs),
+              buildFeedPart((b) => b.composeToolbar, context, toolbar, _DefaultComposeToolbar(details: toolbar)),
+              if (isDesktopPlatform(context)) Text(l10n.sendShortcutHint, textAlign: TextAlign.end, style: hint),
               if (state.draftStatus != null)
                 Text(
                   state.draftStatus == DraftSyncStatus.synced ? l10n.draftSaved : l10n.draftSavedLocally,
                   textAlign: TextAlign.end,
-                  style: theme.textTheme.bodySmall?.copyWith(color: theme.colorScheme.outline),
+                  style: hint,
                 ),
-              const CommunityDisclaimer(padding: EdgeInsets.only(top: 12)),
+              CommunityDisclaimer(padding: EdgeInsets.only(top: spacing.md)),
             ],
           ),
         );
       },
+    );
+  }
+}
+
+class _DefaultComposeSentiment extends StatelessWidget {
+  const _DefaultComposeSentiment({required this.details});
+
+  final CommunityComposeSentimentDetails details;
+
+  static const _icons = {
+    Sentiment.bullish: Icons.trending_up,
+    Sentiment.bearish: Icons.trending_down,
+    Sentiment.neutral: Icons.trending_flat,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(details.title, style: style.typography.label),
+        SizedBox(height: spacing.xs),
+        Wrap(
+          spacing: spacing.sm,
+          children: [
+            for (final (index, option) in details.options.indexed)
+              CommunityTag(
+                label: details.labels[index],
+                icon: _icons[option],
+                selected: option == details.selected,
+                onTap: () => details.onChanged(option),
+              ),
+          ],
+        ),
+      ],
+    );
+  }
+}
+
+class _DefaultComposeImage extends StatelessWidget {
+  const _DefaultComposeImage({required this.details});
+
+  final CommunityComposeImageDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final name = Text(details.name, overflow: TextOverflow.ellipsis);
+    return InputChip(
+      avatar: Icon(Icons.image_outlined, color: style.textSecondary),
+      label: details.held
+          ? Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(child: name),
+                SizedBox(width: style.spacing.xs + style.spacing.xxs),
+                const HeldAttachmentLabel(),
+              ],
+            )
+          : name,
+      labelStyle: style.typography.label.copyWith(color: style.onChip),
+      backgroundColor: style.chip,
+      shape: const StadiumBorder(),
+      side: style.borderSide,
+      deleteIconColor: style.textSecondary,
+      deleteButtonTooltipMessage: details.removeLabel,
+      onDeleted: details.onRemove,
+    );
+  }
+}
+
+class _DefaultComposeToolbar extends StatelessWidget {
+  const _DefaultComposeToolbar({required this.details});
+
+  final CommunityComposeDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Wrap(
+                spacing: spacing.xs,
+                crossAxisAlignment: WrapCrossAlignment.center,
+                children: [
+                  _ComposeTool(
+                    icon: Icons.add_photo_alternate_outlined,
+                    label: details.addImageLabel,
+                    onPressed: details.onPickImage,
+                  ),
+                  _ComposeTool(icon: Icons.poll_outlined, label: details.addPollLabel, onPressed: details.onAddPoll),
+                ],
+              ),
+            ),
+            if (details.uploading)
+              SizedBox.square(
+                dimension: 20,
+                child: CircularProgressIndicator(strokeWidth: 2, color: style.textSecondary),
+              ),
+          ],
+        ),
+        SizedBox(height: spacing.md),
+        FilledButton.icon(
+          style: style.primaryButtonStyle().copyWith(
+            minimumSize: WidgetStatePropertyAll(Size.fromHeight(style.minTouchTarget)),
+          ),
+          onPressed: details.onPost,
+          icon: details.posting
+              ? SizedBox.square(
+                  dimension: 18,
+                  child: CircularProgressIndicator(strokeWidth: 2, color: style.textSecondary),
+                )
+              : const Icon(Icons.send, size: 18),
+          label: Text(details.submitLabel),
+        ),
+      ],
+    );
+  }
+}
+
+class _ComposeTool extends StatelessWidget {
+  const _ComposeTool({required this.icon, required this.label, this.onPressed});
+
+  final IconData icon;
+  final String label;
+  final VoidCallback? onPressed;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    return TextButton.icon(
+      onPressed: onPressed,
+      style: TextButton.styleFrom(
+        foregroundColor: style.textPrimary,
+        iconColor: style.accent,
+        disabledForegroundColor: style.textTertiary,
+        disabledIconColor: style.textTertiary,
+        textStyle: style.typography.label.copyWith(fontSize: 14),
+        minimumSize: Size(style.minTouchTarget, style.minTouchTarget),
+        padding: EdgeInsets.symmetric(horizontal: style.spacing.md),
+        shape: const StadiumBorder(),
+        backgroundColor: style.pill,
+      ),
+      icon: Icon(icon, size: 20),
+      label: Text(label),
+    );
+  }
+}
+
+class _DefaultComposeAuthor extends StatelessWidget {
+  const _DefaultComposeAuthor({required this.details});
+
+  final CommunityComposeAuthorDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final user = details.user;
+    return Row(
+      children: [
+        CommunityAvatar(user: user, radius: style.avatarSizes.post / 2),
+        SizedBox(width: style.spacing.sm + style.spacing.xxs),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              CommunityUserName(user: user, showUsername: false),
+              SizedBox(height: style.spacing.xxs),
+              Text('@${user.username}', maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.meta),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

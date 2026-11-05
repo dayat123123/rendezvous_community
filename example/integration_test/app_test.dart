@@ -55,7 +55,7 @@ void main() {
 
   testWidgets('login, feed, comment thread, commenting, and chat with Enter', (tester) async {
     final stamp = DateTime.now().millisecondsSinceEpoch;
-    await tester.pumpWidget(const ExampleApp());
+    await tester.pumpWidget(const ExampleApp(promoPopups: false));
     await pumpUntilFound(tester, find.text('Budi Santoso'));
 
     await tester.tap(find.text('Budi Santoso'));
@@ -75,9 +75,10 @@ void main() {
     await tester.pump(const Duration(milliseconds: 300));
 
     await tester.tap(seedPost.first);
-    await pumpUntilFound(tester, find.textContaining('Divergence itu maksudnya'));
-    expect(find.text('Konten ini opini pengguna, bukan rekomendasi investasi.'), findsWidgets);
+    await pumpUntilFound(tester, find.byType(CommunityPostDetail));
+    await pumpUntilFound(tester, find.text('Konten ini opini pengguna, bukan rekomendasi investasi.'));
     final thread = find.descendant(of: find.byType(CommunityPostDetail), matching: find.byType(Scrollable)).first;
+    await pumpUntilFoundWhileScrolling(tester, find.textContaining('Divergence itu maksudnya'), thread);
     await tester.scrollUntilVisible(find.text('Lanjutkan thread →'), 200, scrollable: thread);
 
     final commentText = 'Komentar e2e $stamp';

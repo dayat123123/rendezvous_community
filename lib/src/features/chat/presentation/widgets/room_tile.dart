@@ -8,8 +8,10 @@ import 'package:rendezvous_community/src/features/chat/presentation/widgets/typi
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_message_parts.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_count_badge.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
 
 class RoomTile extends StatelessWidget {
   const RoomTile({
@@ -60,79 +62,106 @@ class _DefaultRoomTile extends StatelessWidget {
 
   final CommunityRoomTileDetails details;
 
+  static const _avatarSize = 52.0;
+
   @override
   Widget build(BuildContext context) {
     final d = details;
     final room = d.room;
-    final theme = Theme.of(context);
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
     final t = CommunityTheme.of(context);
-    return ListTile(
-      selected: d.selected,
-      onTap: d.onTap,
-      leading: roomAvatar(context, room, online: d.online),
-      title: room.type == RoomType.support
-          ? Row(
-              children: [
-                Flexible(child: Text(d.title, maxLines: 1, overflow: TextOverflow.ellipsis)),
-                const SizedBox(width: 6),
-                OfficialBadge(color: t.link),
-                const SizedBox(width: 4),
-                Icon(Icons.push_pin, size: 14, color: theme.colorScheme.outline),
-              ],
-            )
-          : Text(d.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-      subtitle: _subtitle(context),
-      trailing: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          Text(
-            d.timeLabel,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: room.unreadCount > 0 && !room.muted ? t.unreadBadge : null,
+    final unread = room.unreadCount > 0;
+    final support = room.type == RoomType.support;
+    final title = Text(
+      d.title,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: style.typography.author.copyWith(fontSize: 15, fontWeight: unread ? FontWeight.w700 : FontWeight.w500),
+    );
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Material(
+          color: d.selected ? style.accentMuted : style.surface,
+          child: InkWell(
+            onTap: d.onTap,
+            child: Semantics(
+              selected: d.selected,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.sm + spacing.xxs),
+                child: Row(
+                  children: [
+                    roomAvatar(context, room, online: d.online, radius: _avatarSize / 2),
+                    SizedBox(width: spacing.md),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Row(
+                            children: [
+                              Flexible(child: title),
+                              if (support) ...[
+                                SizedBox(width: spacing.xs + spacing.xxs),
+                                OfficialBadge(color: t.link),
+                                SizedBox(width: spacing.xs),
+                                Icon(Icons.push_pin, size: 14, color: style.textTertiary),
+                              ],
+                              if (room.muted) ...[
+                                SizedBox(width: spacing.xs),
+                                Icon(Icons.notifications_off_outlined, size: 14, color: style.textTertiary),
+                              ],
+                            ],
+                          ),
+                          SizedBox(height: spacing.xxs),
+                          _subtitle(context, style, unread: unread),
+                        ],
+                      ),
+                    ),
+                    if (unread) ...[
+                      SizedBox(width: spacing.md),
+                      CommunityCountBadge(count: room.unreadCount, muted: room.muted),
+                    ],
+                  ],
+                ),
+              ),
             ),
           ),
-          const SizedBox(height: 4),
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (room.muted) Icon(Icons.notifications_off_outlined, size: 14, color: theme.colorScheme.outline),
-              CommunityCountBadge(count: room.unreadCount, muted: room.muted),
-            ],
-          ),
-        ],
-      ),
+        ),
+        CommunityDivider(indent: spacing.lg + _avatarSize + spacing.md),
+      ],
     );
   }
 
-  Widget? _subtitle(BuildContext context) {
+  Widget _subtitle(BuildContext context, CommunityStyle style, {required bool unread}) {
     final d = details;
+    final meta = style.typography.meta;
+    final emphasis = unread ? meta.copyWith(color: style.textPrimary, fontWeight: FontWeight.w600) : meta;
     final typing = d.typingText;
     if (typing != null) {
       return Text(
         typing,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
-        style: TextStyle(color: CommunityTheme.of(context).onlineIndicator, fontWeight: FontWeight.w600),
+        style: meta.copyWith(color: CommunityTheme.of(context).onlineIndicator, fontWeight: FontWeight.w600),
       );
     }
     final preview = d.preview;
-    if (preview == null) return null;
     final receipt = d.lastMessageReceipt;
     return Row(
       children: [
-        if (receipt != null) ...[
-          ReceiptIcon(receipt: receipt, color: Theme.of(context).colorScheme.outline),
-          const SizedBox(width: 4),
+        if (receipt != null && preview != null) ...[
+          ReceiptIcon(receipt: receipt, color: style.textTertiary),
+          SizedBox(width: style.spacing.xs),
         ],
-        Expanded(
-          child: Text(
-            preview,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: d.room.unreadCount > 0 ? const TextStyle(fontWeight: FontWeight.w600) : null,
+        if (preview != null) ...[
+          Flexible(
+            child: Text(preview, maxLines: 1, overflow: TextOverflow.ellipsis, style: emphasis),
           ),
-        ),
+          Text(' · ', style: meta),
+        ],
+        Text(d.timeLabel, maxLines: 1, style: unread && !d.room.muted ? emphasis : meta),
       ],
     );
   }

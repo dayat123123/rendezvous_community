@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -69,51 +72,68 @@ class _DocumentTileState extends State<_DocumentTile> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
     final a = widget.attachment;
     final name = (a.name ?? '').isEmpty ? l10n.documentFallbackName : a.name!;
     final size = documentSize(a.size);
+    final details = CommunityDocumentDetails(
+      attachment: a,
+      name: name,
+      sizeLabel: size.isEmpty ? 'PDF' : 'PDF · $size',
+      color: widget.color,
+      opening: _opening,
+      semanticLabel: l10n.openDocument(name),
+      onOpen: _opening ? null : _open,
+    );
+    return buildFeedPart((b) => b.document, context, details, _DefaultDocumentTile(details: details));
+  }
+}
+
+class _DefaultDocumentTile extends StatelessWidget {
+  const _DefaultDocumentTile({required this.details});
+
+  final CommunityDocumentDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final color = details.color;
     return Semantics(
       button: true,
-      label: l10n.openDocument(name),
+      label: details.semanticLabel,
       excludeSemantics: true,
       child: InkWell(
-        onTap: _opening ? null : _open,
-        borderRadius: BorderRadius.circular(10),
+        onTap: details.onOpen,
+        borderRadius: style.radii.controlRadius,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+          constraints: BoxConstraints(minHeight: style.minTouchTarget),
+          padding: EdgeInsets.symmetric(horizontal: spacing.sm + spacing.xxs, vertical: spacing.sm),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(color: widget.color.withValues(alpha: 0.25)),
+            borderRadius: style.radii.controlRadius,
+            border: Border.all(color: color.withValues(alpha: 0.25), width: style.borderWidth),
           ),
           child: Row(
             children: [
-              Icon(Icons.picture_as_pdf_outlined, color: widget.color),
-              const SizedBox(width: 10),
+              Icon(Icons.picture_as_pdf_outlined, color: color),
+              SizedBox(width: spacing.sm + spacing.xxs),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      name,
+                      details.name,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.bodyMedium?.copyWith(color: widget.color, fontWeight: FontWeight.w600),
+                      style: style.typography.author.copyWith(color: color, fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      size.isEmpty ? 'PDF' : 'PDF · $size',
-                      style: theme.textTheme.bodySmall?.copyWith(color: widget.color.withValues(alpha: 0.8)),
-                    ),
+                    Text(details.sizeLabel, style: style.typography.meta.copyWith(color: color.withValues(alpha: 0.8))),
                   ],
                 ),
               ),
-              const SizedBox(width: 8),
-              _opening
-                  ? SizedBox.square(
-                      dimension: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: widget.color),
-                    )
-                  : Icon(Icons.open_in_new, size: 18, color: widget.color.withValues(alpha: 0.8)),
+              SizedBox(width: spacing.sm),
+              details.opening
+                  ? SizedBox.square(dimension: 16, child: CircularProgressIndicator(strokeWidth: 2, color: color))
+                  : Icon(Icons.open_in_new, size: 18, color: color.withValues(alpha: 0.8)),
             ],
           ),
         ),

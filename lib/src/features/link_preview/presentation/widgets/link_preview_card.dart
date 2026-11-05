@@ -5,6 +5,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/builders/com
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/link_preview/domain/entities/link_preview.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_network_image.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/link_opener.dart';
 
@@ -47,78 +48,98 @@ class _PreviewCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final scheme = theme.colorScheme;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
     final preview = details.preview;
     final title = preview.title?.trim();
     final description = preview.description?.trim();
     final site = preview.siteName?.trim();
     final image = preview.imageUrl;
+    final thumb = style.avatarSizes.large + spacing.sm;
     return Padding(
       padding: margin,
       child: Material(
-        color: scheme.surfaceContainerLow,
-        shape: RoundedRectangleBorder(
-          side: BorderSide(color: scheme.outlineVariant),
-          borderRadius: BorderRadius.circular(10),
-        ),
+        color: style.surface,
+        shape: style.cardShape(),
         clipBehavior: Clip.antiAlias,
         child: InkWell(
           onTap: details.onOpen,
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 520),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                if (image != null)
-                  SizedBox(
-                    width: 84,
-                    height: 84,
-                    child: CommunityNetworkImage.url(image, error: ColoredBox(color: scheme.surfaceContainerHighest)),
-                  ),
-                Expanded(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        if (site != null && site.isNotEmpty)
-                          Text(
-                            site,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.labelSmall?.copyWith(color: scheme.onSurfaceVariant),
-                          ),
-                        if (title != null && title.isNotEmpty)
-                          Text(title, maxLines: 2, overflow: TextOverflow.ellipsis, style: theme.textTheme.titleSmall),
-                        if (description != null && description.isNotEmpty)
-                          Text(
-                            description,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: theme.textTheme.bodySmall,
-                          ),
-                        const SizedBox(height: 2),
-                        Row(
-                          children: [
-                            Icon(Icons.link, size: 12, color: scheme.outline),
-                            const SizedBox(width: 3),
-                            Flexible(
+            child: Padding(
+              padding: EdgeInsets.all(spacing.sm),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (image != null) ...[
+                    ClipRRect(
+                      borderRadius: style.radii.imageRadius,
+                      child: SizedBox.square(
+                        dimension: thumb,
+                        child: CommunityNetworkImage.url(image, error: ColoredBox(color: style.skeleton)),
+                      ),
+                    ),
+                    SizedBox(width: spacing.md),
+                  ],
+                  Expanded(
+                    child: Padding(
+                      padding: EdgeInsetsDirectional.only(
+                        start: image == null ? spacing.xs : 0,
+                        top: spacing.xxs,
+                        end: spacing.xs,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          if (site != null && site.isNotEmpty)
+                            Text(
+                              site,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: style.typography.badge.copyWith(color: style.textSecondary),
+                            ),
+                          if (title != null && title.isNotEmpty)
+                            Padding(
+                              padding: EdgeInsets.only(top: spacing.xxs),
                               child: Text(
-                                preview.domain,
-                                maxLines: 1,
+                                title,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.labelSmall?.copyWith(color: scheme.outline),
+                                style: style.typography.author,
                               ),
                             ),
-                          ],
-                        ),
-                      ],
+                          if (description != null && description.isNotEmpty)
+                            Padding(
+                              padding: EdgeInsets.only(top: spacing.xxs),
+                              child: Text(
+                                description,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
+                                style: style.typography.meta,
+                              ),
+                            ),
+                          SizedBox(height: spacing.xs),
+                          Row(
+                            children: [
+                              Icon(Icons.link, size: 14, color: style.textSecondary),
+                              SizedBox(width: spacing.xs),
+                              Flexible(
+                                child: Text(
+                                  preview.domain,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: style.typography.badge.copyWith(color: style.textSecondary),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ),

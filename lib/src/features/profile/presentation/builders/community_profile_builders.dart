@@ -3,11 +3,13 @@ import 'package:rendezvous_community/src/features/profile/presentation/builders/
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 
 class CommunityProfileBuilders {
-  const CommunityProfileBuilders({this.header, this.stats, this.followButton});
+  const CommunityProfileBuilders({this.header, this.stats, this.followButton, this.menu, this.messageButton});
 
   final CommunityPartBuilder<CommunityProfileDetails>? header;
   final CommunityPartBuilder<CommunityProfileDetails>? stats;
   final CommunityPartBuilder<CommunityProfileDetails>? followButton;
+  final CommunityPartBuilder<CommunityProfileDetails>? menu;
+  final CommunityPartBuilder<CommunityProfileDetails>? messageButton;
 
   static CommunityProfileBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -22,6 +24,8 @@ class CommunityProfileBuilders {
       header: other.header ?? header,
       stats: other.stats ?? stats,
       followButton: other.followButton ?? followButton,
+      menu: other.menu ?? menu,
+      messageButton: other.messageButton ?? messageButton,
     );
   }
 }

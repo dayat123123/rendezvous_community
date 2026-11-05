@@ -632,6 +632,18 @@ abstract class CommunityLocalizations {
   /// **'{count} post'**
   String postsCount(int count);
 
+  /// No description provided for @profileStatPosts.
+  ///
+  /// In id, this message translates to:
+  /// **'Post'**
+  String get profileStatPosts;
+
+  /// No description provided for @profileStatFollowers.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengikut'**
+  String get profileStatFollowers;
+
   /// No description provided for @followsYou.
   ///
   /// In id, this message translates to:
@@ -2282,6 +2294,18 @@ abstract class CommunityLocalizations {
   /// **'Notifikasi OLT'**
   String get notifSectionOlt;
 
+  /// No description provided for @notifGroupNew.
+  ///
+  /// In id, this message translates to:
+  /// **'Baru'**
+  String get notifGroupNew;
+
+  /// No description provided for @notifGroupEarlier.
+  ///
+  /// In id, this message translates to:
+  /// **'Sebelumnya'**
+  String get notifGroupEarlier;
+
   /// No description provided for @notifOltImportantHint.
   ///
   /// In id, this message translates to:
@@ -2714,11 +2738,41 @@ abstract class CommunityLocalizations {
   /// **'Selengkapnya'**
   String get bannerOpen;
 
+  /// No description provided for @readMore.
+  ///
+  /// In id, this message translates to:
+  /// **'Baca lebih lanjut'**
+  String get readMore;
+
   /// No description provided for @bannerDismiss.
   ///
   /// In id, this message translates to:
   /// **'Tutup'**
   String get bannerDismiss;
+
+  /// No description provided for @promoPopupCta.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat'**
+  String get promoPopupCta;
+
+  /// No description provided for @promoPopupLater.
+  ///
+  /// In id, this message translates to:
+  /// **'Nanti'**
+  String get promoPopupLater;
+
+  /// No description provided for @promoPopupClose.
+  ///
+  /// In id, this message translates to:
+  /// **'Tutup promo'**
+  String get promoPopupClose;
+
+  /// No description provided for @promoPopupLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Promo'**
+  String get promoPopupLabel;
 
   /// No description provided for @draftsTitle.
   ///

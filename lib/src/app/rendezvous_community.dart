@@ -45,10 +45,13 @@ import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_
 import 'package:rendezvous_community/src/features/chat/domain/services/delivery_tracker.dart';
 import 'package:rendezvous_community/src/features/chat/domain/services/message_outbox.dart';
 import 'package:rendezvous_community/src/features/config/data/repositories/banner_dismissal_repository_impl.dart';
+import 'package:rendezvous_community/src/features/config/data/repositories/banner_event_repository_impl.dart';
 import 'package:rendezvous_community/src/features/config/data/repositories/client_config_repository_impl.dart';
+import 'package:rendezvous_community/src/features/config/data/repositories/promo_popup_history_repository_impl.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/config/domain/services/banner_dismissals.dart';
 import 'package:rendezvous_community/src/features/config/domain/services/client_config_service.dart';
+import 'package:rendezvous_community/src/features/config/domain/services/community_promo_popups.dart';
 import 'package:rendezvous_community/src/features/drafts/data/repositories/post_draft_repository_impl.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/services/community_drafts.dart';
 import 'package:rendezvous_community/src/features/edit/data/repositories/content_edit_repository_impl.dart';
@@ -116,6 +119,7 @@ class RendezvousCommunity
         CommunitySupportDependencies,
         CommunityAccountDependencies,
         CommunityFeatureDependencies,
+        CommunityPromoPopupDependencies,
         CommunityOfflineDependencies {
   RendezvousCommunity._({
     required this.client,
@@ -148,6 +152,7 @@ class RendezvousCommunity
     required this.analytics,
     required this.notificationReporter,
     required this.bannerDismissals,
+    required this.promoPopups,
     required this.drafts,
     required this.connectivity,
     required this._offline,
@@ -188,6 +193,7 @@ class RendezvousCommunity
     CommunityStockInfoProvider? stockInfo,
     CommunityHashtagTapCallback? onHashtagTap,
     CommunityOltNotificationTapCallback? onOltNotificationTap,
+    CommunityBannerLinkCallback? onBannerLink,
     String? appVersion,
     CommunityPlatform? platform,
     CommunityUpdateRequiredCallback? onUpdateRequired,
@@ -215,6 +221,7 @@ class RendezvousCommunity
       stockInfo: stockInfo,
       onHashtagTap: onHashtagTap,
       onOltNotificationTap: onOltNotificationTap,
+      onBannerLink: onBannerLink,
       appVersion: appVersion,
       platform: platform ?? defaultCommunityPlatform(),
       onUpdateRequired: onUpdateRequired,
@@ -245,6 +252,7 @@ class RendezvousCommunity
     CommunityStockInfoProvider? stockInfo,
     CommunityHashtagTapCallback? onHashtagTap,
     CommunityOltNotificationTapCallback? onOltNotificationTap,
+    CommunityBannerLinkCallback? onBannerLink,
     String? appVersion,
     CommunityPlatform? platform,
     CommunityUpdateRequiredCallback? onUpdateRequired,
@@ -324,6 +332,7 @@ class RendezvousCommunity
         stockInfo: stockInfo,
         onHashtagTap: onHashtagTap,
         onOltNotificationTap: onOltNotificationTap,
+        onBannerLink: onBannerLink,
       ),
       feed: FeedRepositoryImpl(api, realtime, feedCache),
       comments: CommentRepositoryImpl(api, realtime),
@@ -362,6 +371,11 @@ class RendezvousCommunity
       linkPreviews: LinkPreviewLoader(LinkPreviewRepositoryImpl(api)),
       notificationReporter: NotificationReporter(NotificationEventRepositoryImpl(api)),
       bannerDismissals: BannerDismissals(BannerDismissalRepositoryImpl(localValues)),
+      promoPopups: CommunityPromoPopups(
+        BannerEventRepositoryImpl(api),
+        PromoPopupHistoryRepositoryImpl(localValues),
+        currentUserId: () => tokens.currentUserId,
+      ),
       drafts: CommunityDrafts(PostDraftRepositoryImpl(api), PostDraftStoreImpl(localValues)),
       analytics: CommunityAnalytics(
         AnalyticsRepositoryImpl(api),
@@ -393,6 +407,7 @@ class RendezvousCommunity
         social.linkPreviews.clear();
         social.notificationReporter.reset();
         social.bannerDismissals.reset();
+        social.promoPopups.onUserChanged(userId);
         if (social._started && userId != null) unawaited(social.configService.refresh());
         if (session != null) unawaited(social._bindOffline(session.user));
       }
@@ -452,6 +467,8 @@ class RendezvousCommunity
   final NotificationReporter notificationReporter;
   @override
   final BannerDismissals bannerDismissals;
+  @override
+  final CommunityPromoPopups promoPopups;
   @override
   final CommunityDrafts drafts;
   @override
@@ -652,6 +669,7 @@ class RendezvousCommunity
     analytics.dispose();
     linkPreviews.dispose();
     await bannerDismissals.dispose();
+    promoPopups.dispose();
     await configService.dispose();
     await _sessionSub?.cancel();
     await _connectivitySub?.cancel();

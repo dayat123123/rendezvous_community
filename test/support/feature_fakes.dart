@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/core/storage/local_values.dart';
 import 'package:rendezvous_community/src/features/config/data/repositories/banner_dismissal_repository_impl.dart';
+import 'package:rendezvous_community/src/features/config/data/repositories/promo_popup_history_repository_impl.dart';
 import 'package:rendezvous_community/src/features/drafts/data/repositories/post_draft_repository_impl.dart';
 
 import 'fakes.dart';
@@ -235,7 +236,19 @@ class FakeTrendingRepository extends Fake implements TrendingRepository {
   Future<StockSentiment> stockSentiment(String stockCode) async => sentiment;
 }
 
-class FakeFeatureDependencies implements CommunityFeatureDependencies {
+class FakeBannerEventRepository implements BannerEventRepository {
+  final events = <(String, CommunityBannerEvent)>[];
+  Object? error;
+
+  @override
+  Future<void> record(String bannerId, CommunityBannerEvent event) async {
+    events.add((bannerId, event));
+    final failure = error;
+    if (failure != null) throw failure;
+  }
+}
+
+class FakeFeatureDependencies implements CommunityFeatureDependencies, CommunityPromoPopupDependencies {
   FakeFeatureDependencies({
     ClientConfig config = const ClientConfig(),
     FakeConfigRepository? configRepository,
@@ -286,6 +299,15 @@ class FakeFeatureDependencies implements CommunityFeatureDependencies {
   late final BannerDismissals bannerDismissals = BannerDismissals(BannerDismissalRepositoryImpl(localValues));
   @override
   late final CommunityDrafts drafts = CommunityDrafts(draftRepository, PostDraftStoreImpl(localValues));
+  final bannerEvents = FakeBannerEventRepository();
+  DateTime Function() clock = DateTime.now;
+  @override
+  late final CommunityPromoPopups promoPopups = CommunityPromoPopups(
+    bannerEvents,
+    PromoPopupHistoryRepositoryImpl(localValues),
+    currentUserId: () => signedIn ? me.id : null,
+    clock: () => clock(),
+  );
 
   void dispose() {
     analytics.dispose();

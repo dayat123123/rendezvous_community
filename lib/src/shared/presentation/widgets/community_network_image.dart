@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/app/community_image_scope.dart';
 import 'package:rendezvous_community/src/core/network/authorized_image.dart';
 import 'package:rendezvous_community/src/core/storage/image_disk_cache.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/images/community_image_provider.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 CommunityImageProvider communityImageProvider(
   BuildContext context, {
@@ -71,14 +74,45 @@ class CommunityNetworkImage extends StatelessWidget {
         height: constraints.hasBoundedHeight ? constraints.maxHeight : null,
         persist: persist,
       );
-      final placeholder = this.placeholder ?? const SizedBox.expand();
+      final placeholder = this.placeholder ?? const _ImagePlaceholder(failed: false);
       return Image(
         image: provider,
         fit: fit,
         gaplessPlayback: true,
         frameBuilder: (context, child, frame, synchronous) => frame == null && !synchronous ? placeholder : child,
-        errorBuilder: (context, _, _) => error ?? placeholder,
+        errorBuilder: (context, _, _) => error ?? this.placeholder ?? const _ImagePlaceholder(failed: true),
       );
     },
   );
+}
+
+Widget communityImagePlaceholder({bool failed = false}) => _ImagePlaceholder(failed: failed);
+
+class _ImagePlaceholder extends StatelessWidget {
+  const _ImagePlaceholder({required this.failed});
+
+  final bool failed;
+
+  @override
+  Widget build(BuildContext context) {
+    final details = CommunityImagePlaceholderDetails(failed: failed);
+    return buildSharedPart((b) => b.imagePlaceholder, context, details, _DefaultImagePlaceholder(details: details));
+  }
+}
+
+class _DefaultImagePlaceholder extends StatelessWidget {
+  const _DefaultImagePlaceholder({required this.details});
+
+  final CommunityImagePlaceholderDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    return SizedBox.expand(
+      child: ColoredBox(
+        color: style.skeleton,
+        child: details.failed ? Center(child: Icon(Icons.broken_image_outlined, color: style.textTertiary)) : null,
+      ),
+    );
+  }
 }

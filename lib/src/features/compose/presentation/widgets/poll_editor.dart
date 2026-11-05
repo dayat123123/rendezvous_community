@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/cubit/compose_cubit.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 class PollEditor extends StatefulWidget {
   const PollEditor({super.key, required this.poll, required this.enabled});
@@ -65,56 +68,92 @@ class _PollEditorState extends State<PollEditor> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
     final cubit = context.read<ComposeCubit>();
     final options = widget.poll.options;
+    final enabled = widget.enabled;
+    final details = CommunityPollEditorDetails(
+      poll: widget.poll,
+      enabled: enabled,
+      controllers: List.unmodifiable(_controllers),
+      durationLabels: {for (final d in PollDuration.values) d: _durationLabel(context, d)},
+      title: l10n.pollAddTooltip,
+      onAddOption: enabled && options.length < PollDraft.maxOptions ? cubit.addPollOption : null,
+      onRemoveOption: enabled && options.length > PollDraft.minOptions ? cubit.removePollOption : null,
+      onOptionChanged: cubit.setPollOption,
+      onDurationChanged: enabled ? cubit.setPollDuration : null,
+      onRemovePoll: enabled ? cubit.removePoll : null,
+    );
+    return buildFeedPart((b) => b.pollEditor, context, details, _DefaultPollEditor(details: details));
+  }
+}
+
+class _DefaultPollEditor extends StatelessWidget {
+  const _DefaultPollEditor({required this.details});
+
+  final CommunityPollEditorDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final options = details.options;
+    final border = OutlineInputBorder(borderRadius: style.radii.controlRadius, borderSide: style.borderSide);
+    final remove = details.onRemoveOption;
+    final changed = details.onOptionChanged;
+    final durationChanged = details.onDurationChanged;
     return DecoratedBox(
-      decoration: BoxDecoration(
-        border: Border.all(color: theme.colorScheme.outlineVariant),
-        borderRadius: BorderRadius.circular(12),
-      ),
+      decoration: style.cardDecoration(),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(12, 8, 4, 8),
+        padding: EdgeInsetsDirectional.fromSTEB(spacing.md, spacing.xs, spacing.xs, spacing.sm),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Row(
               children: [
-                Icon(Icons.poll_outlined, size: 18, color: theme.colorScheme.primary),
-                const SizedBox(width: 8),
-                Expanded(child: Text(l10n.pollAddTooltip, style: theme.textTheme.titleSmall)),
+                Icon(Icons.poll_outlined, size: 18, color: style.accent),
+                SizedBox(width: spacing.sm),
+                Expanded(child: Text(details.title, style: style.typography.sectionTitle)),
                 IconButton(
                   tooltip: l10n.pollRemove,
-                  onPressed: widget.enabled ? cubit.removePoll : null,
+                  color: style.textSecondary,
+                  onPressed: details.onRemovePoll,
                   icon: const Icon(Icons.close),
                 ),
               ],
             ),
             for (var i = 0; i < options.length; i++)
               Padding(
-                padding: const EdgeInsets.only(bottom: 8),
+                padding: EdgeInsets.only(bottom: spacing.sm),
                 child: Row(
                   children: [
                     Expanded(
                       child: TextField(
                         key: ValueKey('poll-option-$i'),
-                        controller: _controllers[i],
-                        enabled: widget.enabled,
+                        controller: details.controllers[i],
+                        enabled: details.enabled,
                         maxLength: PollDraft.maxOptionLength,
+                        style: style.typography.body.copyWith(fontSize: 14),
                         decoration: InputDecoration(
                           hintText: l10n.pollOptionHint(i + 1),
+                          hintStyle: style.typography.body.copyWith(fontSize: 14, color: style.textSecondary),
                           isDense: true,
                           counterText: '',
-                          border: const OutlineInputBorder(),
+                          border: border,
+                          enabledBorder: border,
+                          focusedBorder: border.copyWith(
+                            borderSide: BorderSide(color: style.accent, width: style.borderWidth),
+                          ),
                         ),
-                        onChanged: (value) => cubit.setPollOption(i, value),
+                        onChanged: changed == null ? null : (value) => changed(i, value),
                       ),
                     ),
                     SizedBox(
-                      width: 48,
+                      width: style.minTouchTarget,
                       child: options.length > PollDraft.minOptions
                           ? IconButton(
-                              onPressed: widget.enabled ? () => cubit.removePollOption(i) : null,
+                              color: style.textSecondary,
+                              onPressed: remove == null ? null : () => remove(i),
                               icon: const Icon(Icons.remove_circle_outline),
                             )
                           : null,
@@ -124,25 +163,29 @@ class _PollEditorState extends State<PollEditor> {
               ),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
-              spacing: 12,
+              spacing: spacing.md,
               children: [
                 if (options.length < PollDraft.maxOptions)
                   TextButton.icon(
-                    onPressed: widget.enabled ? cubit.addPollOption : null,
-                    icon: const Icon(Icons.add),
+                    style: TextButton.styleFrom(foregroundColor: style.accent, textStyle: style.typography.label),
+                    onPressed: details.onAddOption,
+                    icon: const Icon(Icons.add, size: 18),
                     label: Text(l10n.pollAddOption),
                   ),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(l10n.pollDuration, style: theme.textTheme.labelLarge),
-                    const SizedBox(width: 8),
+                    Text(l10n.pollDuration, style: style.typography.label),
+                    SizedBox(width: spacing.sm),
                     DropdownButton<PollDuration>(
-                      value: widget.poll.duration,
-                      onChanged: widget.enabled ? (d) => d == null ? null : cubit.setPollDuration(d) : null,
+                      value: details.duration,
+                      style: style.typography.body.copyWith(fontSize: 14),
+                      underline: const SizedBox.shrink(),
+                      borderRadius: style.radii.cardRadius,
+                      onChanged: durationChanged == null ? null : (d) => d == null ? null : durationChanged(d),
                       items: [
                         for (final d in PollDuration.values)
-                          DropdownMenuItem(value: d, child: Text(_durationLabel(context, d))),
+                          DropdownMenuItem(value: d, child: Text(details.durationLabels[d] ?? d.name)),
                       ],
                     ),
                   ],

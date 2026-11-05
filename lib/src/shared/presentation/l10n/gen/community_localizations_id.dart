@@ -324,6 +324,12 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   }
 
   @override
+  String get profileStatPosts => 'Post';
+
+  @override
+  String get profileStatFollowers => 'Pengikut';
+
+  @override
   String get followsYou => 'Mengikuti Anda';
 
   @override
@@ -1242,6 +1248,12 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get notifSectionOlt => 'Notifikasi OLT';
 
   @override
+  String get notifGroupNew => 'Baru';
+
+  @override
+  String get notifGroupEarlier => 'Sebelumnya';
+
+  @override
   String get notifOltImportantHint => 'Pesan penting dari OLT selalu dikirim, termasuk saat jam tenang.';
 
   @override
@@ -1490,7 +1502,22 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get bannerOpen => 'Selengkapnya';
 
   @override
+  String get readMore => 'Baca lebih lanjut';
+
+  @override
   String get bannerDismiss => 'Tutup';
+
+  @override
+  String get promoPopupCta => 'Lihat';
+
+  @override
+  String get promoPopupLater => 'Nanti';
+
+  @override
+  String get promoPopupClose => 'Tutup promo';
+
+  @override
+  String get promoPopupLabel => 'Promo';
 
   @override
   String get draftsTitle => 'Draf postingan';

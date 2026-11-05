@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/moderation_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_details.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 class ModerationNotice extends StatelessWidget {
   const ModerationNotice({super.key, required this.status, this.onAppeal, this.compact = false, this.color});
@@ -17,59 +20,93 @@ class ModerationNotice extends StatelessWidget {
     final status = this.status;
     if (status == null || status == ModerationStatus.visible) return const SizedBox.shrink();
     final l10n = context.communityL10n;
-    final theme = Theme.of(context);
+    final scheme = Theme.of(context).colorScheme;
     final held = status == ModerationStatus.held;
-    final accent = color ?? (held ? theme.colorScheme.tertiary : theme.colorScheme.error);
-    final label = held ? l10n.moderationHeld : l10n.moderationHidden;
-    final hint = held ? l10n.moderationHeldHint : l10n.moderationHiddenHint;
-    final icon = held ? Icons.hourglass_top : Icons.visibility_off_outlined;
-    if (compact) {
-      return Semantics(
-        label: label,
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(icon, size: 12, color: accent),
-            const SizedBox(width: 3),
-            Flexible(
-              child: Text(label, style: theme.textTheme.labelSmall?.copyWith(color: accent)),
+    final details = CommunityModerationNoticeDetails(
+      status: status,
+      label: held ? l10n.moderationHeld : l10n.moderationHidden,
+      hint: held ? l10n.moderationHeldHint : l10n.moderationHiddenHint,
+      icon: held ? Icons.hourglass_top : Icons.visibility_off_outlined,
+      color: color ?? (held ? scheme.tertiary : scheme.error),
+      compact: compact,
+      onAppeal: held ? null : onAppeal,
+    );
+    return buildSharedPart(
+      (b) => b.moderationNotice,
+      context,
+      details,
+      compact ? _CompactNotice(details: details) : _FullNotice(details: details),
+    );
+  }
+}
+
+class _CompactNotice extends StatelessWidget {
+  const _CompactNotice({required this.details});
+
+  final CommunityModerationNoticeDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final accent = details.color;
+    final text = style.typography.badge.copyWith(color: accent, fontWeight: FontWeight.w500);
+    final onAppeal = details.onAppeal;
+    return Semantics(
+      label: details.label,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(details.icon, size: 12, color: accent),
+          const SizedBox(width: 3),
+          Flexible(child: Text(details.label, style: text)),
+          if (onAppeal != null) ...[
+            SizedBox(width: style.spacing.xs + style.spacing.xxs),
+            InkWell(
+              onTap: onAppeal,
+              child: Text(l10n.appealAction, style: text.copyWith(decoration: TextDecoration.underline)),
             ),
-            if (!held && onAppeal != null) ...[
-              const SizedBox(width: 6),
-              InkWell(
-                onTap: onAppeal,
-                child: Text(
-                  l10n.appealAction,
-                  style: theme.textTheme.labelSmall?.copyWith(color: accent, decoration: TextDecoration.underline),
-                ),
-              ),
-            ],
           ],
-        ),
-      );
-    }
+        ],
+      ),
+    );
+  }
+}
+
+class _FullNotice extends StatelessWidget {
+  const _FullNotice({required this.details});
+
+  final CommunityModerationNoticeDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final accent = details.color;
+    final onAppeal = details.onAppeal;
     return Container(
-      margin: const EdgeInsets.only(top: 4, bottom: 4),
-      padding: const EdgeInsets.fromLTRB(10, 6, 4, 6),
+      margin: EdgeInsets.symmetric(vertical: style.spacing.xs),
+      padding: EdgeInsets.fromLTRB(style.spacing.md, style.spacing.sm, style.spacing.xs, style.spacing.sm),
       decoration: BoxDecoration(
-        color: accent.withValues(alpha: 0.08),
-        border: Border.all(color: accent.withValues(alpha: 0.4)),
-        borderRadius: BorderRadius.circular(8),
+        color: Color.alphaBlend(accent.withValues(alpha: 0.08), style.surface),
+        border: Border.all(color: accent.withValues(alpha: 0.4), width: style.borderWidth),
+        borderRadius: style.radii.controlRadius,
       ),
       child: Row(
         children: [
-          Icon(icon, size: 16, color: accent),
-          const SizedBox(width: 8),
+          Icon(details.icon, size: 16, color: accent),
+          SizedBox(width: style.spacing.sm),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: theme.textTheme.labelLarge?.copyWith(color: accent)),
-                Text(hint, style: theme.textTheme.bodySmall),
+                Text(details.label, style: style.typography.label.copyWith(color: accent)),
+                SizedBox(height: style.spacing.xxs),
+                Text(details.hint, style: style.typography.meta),
               ],
             ),
           ),
-          if (!held && onAppeal != null) TextButton(onPressed: onAppeal, child: Text(l10n.appealAction)),
+          if (onAppeal != null) TextButton(onPressed: onAppeal, child: Text(l10n.appealAction)),
         ],
       ),
     );
@@ -81,22 +118,34 @@ class HeldAttachmentLabel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final scheme = Theme.of(context).colorScheme;
+    final details = CommunityHeldLabelDetails(
+      label: context.communityL10n.moderationHeld,
+      icon: Icons.hourglass_top,
+      foreground: scheme.onTertiaryContainer,
+      background: scheme.tertiaryContainer.withValues(alpha: 0.92),
+    );
+    return buildSharedPart((b) => b.heldLabel, context, details, _DefaultHeldLabel(details: details));
+  }
+}
+
+class _DefaultHeldLabel extends StatelessWidget {
+  const _DefaultHeldLabel({required this.details});
+
+  final CommunityHeldLabelDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-      decoration: BoxDecoration(
-        color: theme.colorScheme.tertiaryContainer.withValues(alpha: 0.92),
-        borderRadius: BorderRadius.circular(6),
-      ),
+      padding: EdgeInsets.symmetric(horizontal: style.spacing.xs + style.spacing.xxs, vertical: style.spacing.xxs),
+      decoration: BoxDecoration(color: details.background, borderRadius: style.radii.badgeRadius),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.hourglass_top, size: 12, color: theme.colorScheme.onTertiaryContainer),
+          Icon(details.icon, size: 12, color: details.foreground),
           const SizedBox(width: 3),
-          Text(
-            context.communityL10n.moderationHeld,
-            style: theme.textTheme.labelSmall?.copyWith(color: theme.colorScheme.onTertiaryContainer),
-          ),
+          Text(details.label, style: style.typography.badge.copyWith(color: details.foreground)),
         ],
       ),
     );
@@ -127,10 +176,10 @@ class _DefaultBotBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final style = CommunityStyle.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-      decoration: BoxDecoration(color: details.background, borderRadius: BorderRadius.circular(4)),
+      decoration: BoxDecoration(color: details.background, borderRadius: style.radii.badgeRadius),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
@@ -138,7 +187,7 @@ class _DefaultBotBadge extends StatelessWidget {
           const SizedBox(width: 2),
           Text(
             details.label,
-            style: theme.textTheme.labelSmall?.copyWith(color: details.foreground, fontWeight: FontWeight.w700),
+            style: style.typography.badge.copyWith(color: details.foreground, fontWeight: FontWeight.w700),
           ),
         ],
       ),

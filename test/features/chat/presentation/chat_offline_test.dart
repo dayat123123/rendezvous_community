@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/core/storage/memory_offline_store.dart'
 import 'package:rendezvous_community/src/core/storage/offline_cache.dart';
 import 'package:rendezvous_community/src/features/chat/data/repositories/outbox_repository_impl.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_list_cubit.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_list.dart';
 
 import '../../../support/chat_app.dart';
 import '../../../support/fakes.dart';
@@ -272,6 +273,10 @@ void main() {
 
     testWidgets('the room shows an offline banner while the network is down', (tester) async {
       await tester.runAsync(() => pumpRoom(tester, queued: const []));
+      for (var i = 0; i < 50 && find.byType(MessageList).evaluate().isEmpty; i++) {
+        await tester.runAsync(() => Future<void>.delayed(const Duration(milliseconds: 10)));
+        await tester.pump();
+      }
       await tester.pumpAndSettle();
       final l10n = CommunityLocalizations.of(tester.element(find.byType(CommunityChatRoom)))!;
       expect(find.text(l10n.offlineChatBanner), findsNothing);

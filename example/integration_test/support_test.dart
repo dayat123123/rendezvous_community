@@ -134,7 +134,7 @@ void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Windows: support chat in a side panel while the main screen stays visible', (tester) async {
-    await tester.pumpWidget(const ExampleApp());
+    await tester.pumpWidget(const ExampleApp(promoPopups: false));
     final rina = find.text('Rina Kartika');
     await pumpUntilFound(tester, find.text('Rendezvous OLT (demo)'));
     await reveal(tester, rina, find.text('Rendezvous OLT (demo)'));

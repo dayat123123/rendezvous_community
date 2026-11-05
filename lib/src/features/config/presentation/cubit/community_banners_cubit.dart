@@ -13,7 +13,8 @@ List<CommunityBanner> visibleBanners(
 }) {
   final active = [
     for (final banner in banners)
-      if (!(banner.dismissible && dismissed.contains(banner.id)) &&
+      if (!banner.isPopup &&
+          !(banner.dismissible && dismissed.contains(banner.id)) &&
           (banner.endsAt == null || banner.endsAt!.isAfter(now)) &&
           (banner.startsAt == null || !banner.startsAt!.isAfter(now)))
         banner,

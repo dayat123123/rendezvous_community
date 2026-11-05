@@ -1,9 +1,13 @@
 import 'package:flutter/widgets.dart';
 import 'package:rendezvous_community/src/core/network/realtime_status.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_extras.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
+import 'package:rendezvous_community/src/features/message_requests/domain/entities/message_request.dart';
+import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/stocks/domain/entities/stock_info.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
@@ -32,6 +36,8 @@ class CommunityMessageDetails {
     this.onHide,
     this.onMuteSender,
     this.onEscalate,
+    this.endsGroup = true,
+    this.showAvatar = false,
   });
 
   final ChatMessage message;
@@ -57,6 +63,8 @@ class CommunityMessageDetails {
   final VoidCallback? onHide;
   final VoidCallback? onMuteSender;
   final VoidCallback? onEscalate;
+  final bool endsGroup;
+  final bool showAvatar;
 
   bool get hasModeration => onHide != null || onMuteSender != null || onEscalate != null;
 }
@@ -218,4 +226,307 @@ class CommunityStockCardDetails {
   final bool isMine;
   final CommunityStockInfo? info;
   final VoidCallback? onTap;
+}
+
+class CommunityDeliveryNoticeDetails {
+  const CommunityDeliveryNoticeDetails({
+    required this.message,
+    required this.isMine,
+    required this.failed,
+    required this.label,
+    this.errorLabel,
+    this.onRetry,
+    this.onDiscard,
+  });
+
+  final ChatMessage message;
+  final bool isMine;
+  final bool failed;
+  final String label;
+  final String? errorLabel;
+  final VoidCallback? onRetry;
+  final VoidCallback? onDiscard;
+}
+
+class CommunityReactionPickerDetails {
+  const CommunityReactionPickerDetails({required this.choices, required this.onSelected, this.selected});
+
+  final List<String> choices;
+  final String? selected;
+  final ValueChanged<String> onSelected;
+}
+
+class CommunityReactionsDetails {
+  const CommunityReactionsDetails({required this.reactions, this.isMine = false, this.onReact});
+
+  final List<MessageReaction> reactions;
+  final bool isMine;
+  final ValueChanged<String>? onReact;
+}
+
+class CommunityReceiptDetails {
+  const CommunityReceiptDetails({
+    required this.receipt,
+    required this.sendStatus,
+    required this.color,
+    required this.size,
+    this.semanticLabel,
+    this.readColor,
+  });
+
+  final ReceiptStatus? receipt;
+  final MessageStatus sendStatus;
+  final Color color;
+  final double size;
+  final String? semanticLabel;
+  final Color? readColor;
+
+  bool get read => sendStatus == MessageStatus.sent && receipt == ReceiptStatus.read;
+}
+
+class CommunityMessageAction {
+  const CommunityMessageAction({required this.icon, required this.label, required this.onSelected});
+
+  final IconData icon;
+  final String label;
+  final VoidCallback onSelected;
+}
+
+class CommunityMessageActionsDetails {
+  const CommunityMessageActionsDetails({
+    required this.message,
+    required this.actions,
+    this.moderationActions = const [],
+    this.moderationLabel,
+    this.moderationNote,
+    this.onReact,
+  });
+
+  final CommunityMessageDetails message;
+  final List<CommunityMessageAction> actions;
+  final List<CommunityMessageAction> moderationActions;
+  final String? moderationLabel;
+  final String? moderationNote;
+  final ValueChanged<String>? onReact;
+}
+
+enum CommunityRoomNoticeKind { pinned, slowMode, dmRequestReceived, dmRequestLimit, dmRequestSent, dmRequestInfo }
+
+class CommunityRoomNoticeDetails {
+  const CommunityRoomNoticeDetails({
+    required this.kind,
+    required this.icon,
+    required this.message,
+    this.title,
+    this.strong = false,
+    this.pinned,
+    this.actionLabel,
+    this.onAction,
+  });
+
+  final CommunityRoomNoticeKind kind;
+  final IconData icon;
+  final String message;
+  final String? title;
+  final bool strong;
+  final ChatMessage? pinned;
+  final String? actionLabel;
+  final VoidCallback? onAction;
+}
+
+enum CommunityRoomModerationKind { muted, moderator }
+
+class CommunityRoomModerationDetails {
+  const CommunityRoomModerationDetails({
+    required this.kind,
+    required this.icon,
+    required this.message,
+    this.mutedUntil,
+  });
+
+  final CommunityRoomModerationKind kind;
+  final IconData icon;
+  final String message;
+  final DateTime? mutedUntil;
+}
+
+class CommunityRoomModerationDialogDetails {
+  const CommunityRoomModerationDialogDetails({
+    required this.action,
+    required this.memberName,
+    required this.title,
+    required this.body,
+    required this.confirmLabel,
+    required this.cancelLabel,
+    required this.reasonLabel,
+    required this.reasons,
+    required this.reason,
+    required this.noteController,
+    required this.noteHint,
+    required this.onReasonChanged,
+    required this.onSubmit,
+    required this.onCancel,
+    this.durationLabel,
+    this.durations = const [],
+    this.duration,
+    this.onDurationChanged,
+  });
+
+  final RoomModerationAction action;
+  final String memberName;
+  final String title;
+  final String body;
+  final String confirmLabel;
+  final String cancelLabel;
+  final String reasonLabel;
+  final List<CommunitySettingsOption<ReportReason>> reasons;
+  final ReportReason reason;
+  final TextEditingController noteController;
+  final String noteHint;
+  final ValueChanged<ReportReason> onReasonChanged;
+  final VoidCallback onSubmit;
+  final VoidCallback onCancel;
+  final String? durationLabel;
+  final List<CommunitySettingsOption<Duration>> durations;
+  final Duration? duration;
+  final ValueChanged<Duration>? onDurationChanged;
+
+  bool get destructive => action != RoomModerationAction.escalate;
+}
+
+class CommunityRoomAvatarDetails {
+  const CommunityRoomAvatarDetails({required this.room, required this.radius, this.online = false});
+
+  final ChatRoom room;
+  final double radius;
+  final bool online;
+}
+
+class CommunityNewGroupDetails {
+  const CommunityNewGroupDetails({
+    required this.nameController,
+    required this.queryController,
+    required this.results,
+    required this.selected,
+    required this.creating,
+    required this.onNameChanged,
+    required this.onQueryChanged,
+    required this.onToggle,
+    required this.onCancel,
+    this.onCreate,
+  });
+
+  final TextEditingController nameController;
+  final TextEditingController queryController;
+  final List<UserSummary> results;
+  final List<UserSummary> selected;
+  final bool creating;
+  final ValueChanged<String> onNameChanged;
+  final ValueChanged<String> onQueryChanged;
+  final void Function(UserSummary user, bool selected) onToggle;
+  final VoidCallback onCancel;
+  final VoidCallback? onCreate;
+
+  bool get canCreate => onCreate != null;
+
+  bool isSelected(UserSummary user) => selected.any((u) => u.id == user.id);
+}
+
+class CommunityShareTargetDetails {
+  const CommunityShareTargetDetails({required this.room, required this.title, required this.sending, this.onShare});
+
+  final ChatRoom room;
+  final String title;
+  final bool sending;
+  final VoidCallback? onShare;
+}
+
+class CommunitySharedPostDetails {
+  const CommunitySharedPostDetails({
+    required this.postId,
+    required this.loading,
+    required this.available,
+    this.post,
+    this.color,
+    this.onOpen,
+  });
+
+  final String postId;
+  final bool loading;
+  final bool available;
+  final SharedPost? post;
+  final Color? color;
+  final VoidCallback? onOpen;
+}
+
+class CommunityStockCardPickerDetails {
+  const CommunityStockCardPickerDetails({
+    required this.controller,
+    required this.codes,
+    required this.max,
+    required this.onAdd,
+    required this.onRemove,
+    required this.onSend,
+    required this.onCancel,
+    this.error,
+  });
+
+  final TextEditingController controller;
+  final List<String> codes;
+  final int max;
+  final VoidCallback onAdd;
+  final ValueChanged<String> onRemove;
+  final VoidCallback onSend;
+  final VoidCallback onCancel;
+  final String? error;
+}
+
+class CommunityRequestsEntryDetails {
+  const CommunityRequestsEntryDetails({required this.count, required this.label, required this.onOpen});
+
+  final int count;
+  final String label;
+  final VoidCallback onOpen;
+}
+
+class CommunityMessageRequestDetails {
+  const CommunityMessageRequestDetails({
+    required this.request,
+    required this.preview,
+    required this.timeLabel,
+    required this.countLabel,
+    required this.onOpen,
+  });
+
+  final MessageRequest request;
+  final String preview;
+  final String timeLabel;
+  final String countLabel;
+  final VoidCallback onOpen;
+}
+
+class CommunityRequestIntroDetails {
+  const CommunityRequestIntroDetails({required this.request, required this.message, this.imageNotice});
+
+  final MessageRequest request;
+  final String message;
+  final String? imageNotice;
+}
+
+class CommunityRequestActionsDetails {
+  const CommunityRequestActionsDetails({
+    required this.request,
+    required this.busy,
+    this.responding,
+    this.onAccept,
+    this.onDecline,
+    this.onBlock,
+  });
+
+  final MessageRequest request;
+  final bool busy;
+  final MessageRequestAction? responding;
+  final VoidCallback? onAccept;
+  final VoidCallback? onDecline;
+  final VoidCallback? onBlock;
 }

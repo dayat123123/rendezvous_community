@@ -14,12 +14,16 @@ import 'package:rendezvous_community/src/features/chat/presentation/widgets/mess
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_banners.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_header.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_moderation.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/typing_bubble.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/typing_text.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_consent_flow.dart';
 import 'package:rendezvous_community/src/features/offline/presentation/widgets/community_offline_banner.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -105,24 +109,35 @@ class _ChatRoomView extends StatelessWidget {
           ),
           LoadStatus.ready => _gate(
             state,
-            Column(
-              children: [
-                if (header != null) header! else if (showHeader) const RoomHeader(),
-                const _ReconnectBanner(),
-                const StockRoomBanner(),
-                const RoomModerationBanner(),
-                const DmRequestNotice(),
-                const Expanded(child: MessageList()),
-                const _TypingIndicator(),
-                const Divider(height: 1),
-                composer ?? const MessageComposer(),
-              ],
+            _RoomSurface(
+              child: Column(
+                children: [
+                  if (header != null) header! else if (showHeader) const RoomHeader(),
+                  const _ReconnectBanner(),
+                  const StockRoomBanner(),
+                  const RoomModerationBanner(),
+                  const DmRequestNotice(),
+                  const Expanded(child: MessageList()),
+                  const _TypingIndicator(),
+                  const CommunityDivider(),
+                  composer ?? const MessageComposer(),
+                ],
+              ),
             ),
           ),
         };
       },
     );
   }
+}
+
+class _RoomSurface extends StatelessWidget {
+  const _RoomSurface({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) => ColoredBox(color: CommunityStyle.of(context).surface, child: child);
 }
 
 Widget _gate(ChatRoomState state, Widget child) =>
@@ -168,25 +183,16 @@ class _RealtimeBanner extends StatelessWidget {
     final status = context.select((ChatRoomCubit c) => c.state.connection);
     if (status != RealtimeStatus.reconnecting) return const SizedBox.shrink();
     final label = context.communityL10n.reconnecting;
-    final theme = Theme.of(context);
+    final tone = Theme.of(context).colorScheme.tertiary;
     return buildChatPart(
       CommunityChatBuilders.of(context).connectionBanner,
       context,
       CommunityConnectionDetails(status: status, label: label),
-      Container(
-        width: double.infinity,
-        color: theme.colorScheme.tertiaryContainer,
-        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        child: Row(
-          children: [
-            SizedBox.square(
-              dimension: 14,
-              child: CircularProgressIndicator(strokeWidth: 2, color: theme.colorScheme.onTertiaryContainer),
-            ),
-            const SizedBox(width: 8),
-            Text(label, style: TextStyle(color: theme.colorScheme.onTertiaryContainer)),
-          ],
-        ),
+      ChatStrip(
+        icon: Icons.sync,
+        message: label,
+        tone: tone,
+        leading: SizedBox.square(dimension: 14, child: CircularProgressIndicator(strokeWidth: 2, color: tone)),
       ),
     );
   }
@@ -199,7 +205,8 @@ class _TypingIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     final state = context.select((ChatRoomCubit c) => c.state);
     if (!state.anyoneTyping) return const SizedBox(height: 0);
-    final theme = Theme.of(context);
+    final type = state.room?.type;
+    final typists = state.typing.values.toList();
     final text = typingText(
       context.communityL10n,
       state.typing.values,
@@ -209,19 +216,12 @@ class _TypingIndicator extends StatelessWidget {
     return buildChatPart(
       CommunityChatBuilders.of(context).typingIndicator,
       context,
-      CommunityTypingDetails(users: state.typing.values.toList(), text: text, count: state.typingOthers),
-      Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 4),
-        child: Align(
-          alignment: Alignment.centerLeft,
-          child: Text(
-            text,
-            style: theme.textTheme.bodySmall?.copyWith(
-              color: theme.colorScheme.onSurfaceVariant,
-              fontStyle: FontStyle.italic,
-            ),
-          ),
-        ),
+      CommunityTypingDetails(users: typists, text: text, count: state.typingOthers),
+      TypingBubble(
+        label: text,
+        user: (type == RoomType.group || type == RoomType.stock) && typists.length == 1 && state.typingOthers == 0
+            ? typists.single
+            : null,
       ),
     );
   }

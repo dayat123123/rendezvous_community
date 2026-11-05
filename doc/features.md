@@ -179,11 +179,51 @@ await showCommunityComposer(context, draft: draft);
 await RendezvousCommunity.instance.reportNotificationTapped(pushData); // bila host membuka tujuan push sendiri
 ```
 
-- **Banner:** maksimal 3 tampil (atur `maxVisible`), urut `priority`. Gaya per level `info`/`warning`/`critical`, tautan dibuka setelah dialog konfirmasi. Banner yang bisa ditutup dan sudah ditutup disimpan per user di perangkat (ikut terhapus saat logout); banner yang tidak bisa ditutup selalu tampil. Feed Terbaru/Mengikuti menampilkannya otomatis di atas daftar.
+- **Banner:** maksimal 3 tampil (atur `maxVisible`), urut `priority`. Gaya per level `info`/`warning`/`critical`, tautan dibuka setelah dialog konfirmasi. Banner yang bisa ditutup dan sudah ditutup disimpan per user di perangkat (ikut terhapus saat logout); banner yang tidak bisa ditutup selalu tampil. Feed Terbaru/Mengikuti menampilkannya otomatis di atas daftar. Banner `display: "popup"` tidak tampil sebagai strip (lihat [Popup promo](#popup-promo-170)).
 - **Statistik notifikasi:** membuka item kotak notifikasi atau push melapor `opened`, mengikuti tujuannya melapor `tapped` (`report_notification_event`; `notification_id`, lalu `campaign_id`/`broadcast_id`). Tidak pernah menahan UI; gagal karena jaringan diantrekan di memori sampai online. Push OLT yang diteruskan ke `onOltNotificationTap` dihitung `tapped`.
 - **Notifikasi baru:** `followed_post` → postingan, `watchlist_digest` → feed saham teratas (`onStockTap`), `moderation` → "Banding saya" dengan keterangan bisa/tidaknya banding, mention di room saham → room. Sakelar in-app jenis yang dikunci server (`moderation`) nonaktif.
 - **Draf:** composer menyimpan otomatis ke perangkat dan server (`save_post_draft`). Bila draf diubah di perangkat lain dan lebih baru, versi itu dimuat dan pengguna diberi tahu; batas 20 draf atau offline → draf hanya di perangkat. Saat terbit, `client_draft_id` dipakai sebagai `client_id` sehingga server menghapus drafnya.
 - **Kartu saham:** tombol "Kirim kartu saham" di composer chat (DM, grup, room saham; tidak di chat CS), maksimal 3 kode. Harga tidak dikirim ke server; nama/harga di kartu berasal dari `stockInfo` host atau builder `CommunityChatBuilders(stockCard:)`.
+
+## Popup promo (1.7.0)
+
+Banner dari `get_client_config` dengan `display: "popup"` tampil sebagai kartu di tengah layar, bukan strip. Pasang `CommunityPromoPopupHost` sekali di halaman utama host (di bawah `Navigator`, mis. pembungkus `home`); `CommunityBannerHost` tidak pernah menampilkan banner popup.
+
+```dart
+MaterialApp(
+  home: CommunityPromoPopupHost(
+    onBannerLink: (context, uri, banner) => oltRouter.tryOpen(context, uri), // opsional, true = sudah ditangani
+    child: const OltHomePage(),
+  ),
+);
+```
+
+- **Kapan tampil:** setelah konfigurasi klien termuat dan frame pertama selesai, maksimal **satu popup per sesi aplikasi** (per user; sesi baru dimulai saat cold start atau ganti akun). Dipilih banner popup aktif (jadwal, platform, dan versi disaring server; `starts_at`/`ends_at` diperiksa lagi dengan jam server) dengan `priority` tertinggi yang lolos aturan frekuensi; prioritas sama → `starts_at` terbaru. Bila konfigurasi baru datang di tengah sesi dan belum ada popup yang tampil, popup bisa muncul saat itu.
+- **Tidak tampil** bila belum ada user yang masuk (frekuensi dicatat per user), saat `update_required`, saat `CommunityPromoPopupHost(enabled: false)`, atau selama ada route/dialog lain di atas route host (mis. persetujuan dokumen wajib, dialog update dari `CommunityUpdateListener`, halaman yang dibuka di atasnya); popup ditunda sampai route host kembali teratas. Kill switch tidak berpengaruh, sama seperti banner strip.
+- **Frekuensi** (`frequency`, tak dikenal → `once`):
+
+| Nilai | Tampil bila |
+|---|---|
+| `once` (bawaan) | belum pernah ditampilkan ke user ini di perangkat ini |
+| `daily` | belum ditampilkan hari ini (tanggal lokal perangkat) |
+| `every_open` | setiap sesi/cold start (bukan setiap rebuild atau pindah halaman) |
+
+  Waktu tampil disimpan per user + banner di penyimpanan lokal paket yang sama dengan banner yang ditutup (database offline milik user, kunci `promo_popups:<user>`, maks 100 banner terakhir); ikut terhapus saat logout/ganti akun. Dengan `initialize(offlineCache: false)` catatan hanya di memori, jadi `once`/`daily` bisa muncul lagi setelah aplikasi dibuka ulang.
+- **Tampilan bawaan:** overlay hitam 60%, kartu lebar maks 360 radius 16 mengikuti `CommunityStyle` (terang/gelap, aksen host), gambar `image_url` di atas (rasio dari gambar, dibatasi 4:5–16:9, placeholder skeleton saat memuat), judul tebal, isi, tombol utama aksen penuh lebar (`cta_label`, bawaan "Lihat") bila ada `link_url`, tombol "Nanti", ikon ✕ bila `dismissible`. Animasi masuk fade + scale 200 ms sekali jalan, mati bila animasi dinonaktifkan sistem. Semantik dialog berlabel "Promo", fokus terkunci di popup, target sentuh ≥ 48. Ganti tampilannya lewat slot `system.popup` ([customization.md](customization.md#banner-kill-switch-dan-offline-170)).
+- **Perilaku:**
+
+| Aksi pengguna | Hasil | Event |
+|---|---|---|
+| Popup tampil | – | `impression` (sekali) |
+| Tombol utama atau ketuk gambar | tutup popup, lalu buka tautan | `click` |
+| ✕ (hanya bila `dismissible`) | tutup | `dismiss` |
+| "Nanti" (selalu ada; tanpa `link_url` berlabel "Tutup") | tutup; frekuensi tetap berlaku, juga untuk popup yang tidak `dismissible` | `dismiss` |
+| Ketuk overlay di luar kartu / tombol kembali Android | tutup bila `dismissible`; diabaikan bila tidak | `dismiss` bila tertutup |
+
+- **Tautan** (`link_url`, berlaku juga untuk tombol "Selengkapnya" di banner strip): `onBannerLink` milik `CommunityPromoPopupHost`/`CommunityBannerHost` dipanggil lebih dulu, kalau tidak ada dipakai `initialize(onBannerLink:)`; nilai `true` berarti host sudah menanganinya (mis. deep link `olt://promo/akhir-tahun`). Bila tidak ditangani: `https`/`http` dibuka lewat dialog konfirmasi tautan luar seperti tautan lain, skema lain diabaikan dengan aman. Tanpa callback perilaku strip sama seperti sebelumnya.
+- **Event** dikirim lewat RPC `record_banner_event(p_banner_id, p_event)` (`impression`/`click`/`dismiss`, idempoten di server) tanpa menunggu; gagal jaringan diabaikan diam-diam (log level `FINE` di `RendezvousCommunity.Config`).
+- **Kontrak server:** objek di `banners` mendapat `display` (`strip`/`popup`, tak ada → `strip`), `image_url` (URL `http(s)` publik atau null; selain itu diabaikan), `cta_label` (null/kosong → label bawaan), `frequency` (`once`/`daily`/`every_open`). Backend tanpa field ini: semua banner tetap strip seperti sebelumnya; tanpa RPC `record_banner_event`: popup tetap jalan, event tidak tercatat.
+- **Manual:** `showCommunityPromoPopup(context, banner)` menampilkan satu banner sebagai popup (tanpa aturan frekuensi), mis. untuk pratinjau di aplikasi admin; hasilnya `CommunityBannerEvent.click` atau `dismiss`.
 
 ## Offline: cache & outbox (1.3.0)
 

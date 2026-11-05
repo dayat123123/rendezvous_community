@@ -6,6 +6,9 @@ import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/stocks/domain/entities/stock_suggestion.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
+import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 
@@ -170,43 +173,50 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
+    final style = CommunityStyle.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         if (_suggestions.isNotEmpty)
           Material(
-            elevation: 2,
-            borderRadius: BorderRadius.circular(12),
-            color: theme.colorScheme.surfaceContainer,
+            shape: RoundedRectangleBorder(borderRadius: style.radii.cardRadius, side: style.borderSide),
+            color: style.surface,
             clipBehavior: Clip.antiAlias,
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxHeight: 240),
               child: ListView.builder(
                 addAutomaticKeepAlives: false,
                 shrinkWrap: true,
-                padding: EdgeInsets.zero,
+                padding: EdgeInsets.symmetric(vertical: style.spacing.xs),
                 itemCount: _suggestions.length,
                 itemBuilder: (context, i) {
                   final s = _suggestions[i];
-                  final subtitle = switch (s) {
-                    _StockSuggestion(:final stock) => stock.name,
-                    _UserSuggestion(:final user) => '@${user.username}',
-                  };
-                  return ListTile(
-                    dense: true,
-                    selected: i == _highlight,
-                    leading: switch (s) {
-                      _StockSuggestion() => const Icon(Icons.show_chart),
-                      _UserSuggestion(:final user) => CommunityAvatar(user: user, radius: 14),
+                  final details = CommunityComposerSuggestionDetails(
+                    kind: switch (s) {
+                      _StockSuggestion() => CommunitySuggestionKind.stock,
+                      _UserSuggestion() => CommunitySuggestionKind.user,
                     },
-                    title: Text(switch (s) {
+                    title: switch (s) {
                       _StockSuggestion(:final stock) => '\$${stock.code}',
                       _UserSuggestion(:final user) => user.name,
-                    }),
-                    subtitle: subtitle == null ? null : Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis),
-                    onTap: () => _apply(s),
+                    },
+                    subtitle: switch (s) {
+                      _StockSuggestion(:final stock) => stock.name,
+                      _UserSuggestion(:final user) => '@${user.username}',
+                    },
+                    leading: switch (s) {
+                      _StockSuggestion() => Icon(Icons.show_chart, color: style.textSecondary),
+                      _UserSuggestion(:final user) => CommunityAvatar(user: user, radius: 14),
+                    },
+                    highlighted: i == _highlight,
+                    onSelect: () => _apply(s),
+                  );
+                  return buildSharedPart(
+                    (b) => b.composerSuggestion,
+                    context,
+                    details,
+                    _DefaultSuggestion(details: details),
                   );
                 },
               ),
@@ -226,6 +236,29 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
           decoration: (widget.decoration ?? const InputDecoration()).copyWith(hintText: widget.hintText),
         ),
       ],
+    );
+  }
+}
+
+class _DefaultSuggestion extends StatelessWidget {
+  const _DefaultSuggestion({required this.details});
+
+  final CommunityComposerSuggestionDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final subtitle = details.subtitle;
+    return ListTile(
+      dense: true,
+      selected: details.highlighted,
+      selectedTileColor: style.accentMuted,
+      leading: details.leading,
+      title: Text(details.title, style: style.typography.author.copyWith(fontWeight: FontWeight.w600)),
+      subtitle: subtitle == null
+          ? null
+          : Text(subtitle, maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.meta),
+      onTap: details.onSelect,
     );
   }
 }

@@ -60,6 +60,12 @@ abstract class ClientConfig with _$ClientConfig {
 
 enum CommunityBannerLevel { info, warning, critical }
 
+enum CommunityBannerDisplay { strip, popup }
+
+enum CommunityBannerFrequency { once, daily, everyOpen }
+
+enum CommunityBannerEvent { impression, click, dismiss }
+
 @freezed
 abstract class CommunityBanner with _$CommunityBanner {
   const factory CommunityBanner({
@@ -72,5 +78,18 @@ abstract class CommunityBanner with _$CommunityBanner {
     @Default(0) int priority,
     DateTime? startsAt,
     DateTime? endsAt,
+    @Default(CommunityBannerDisplay.strip) CommunityBannerDisplay display,
+    String? imageUrl,
+    String? ctaLabel,
+    @Default(CommunityBannerFrequency.once) CommunityBannerFrequency frequency,
   }) = _CommunityBanner;
+
+  const CommunityBanner._();
+
+  bool get isPopup => display == CommunityBannerDisplay.popup;
+
+  Uri? get link {
+    final uri = Uri.tryParse(linkUrl ?? '');
+    return uri == null || !uri.hasScheme ? null : uri;
+  }
 }
