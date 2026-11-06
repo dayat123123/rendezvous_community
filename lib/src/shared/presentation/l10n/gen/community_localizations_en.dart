@@ -1819,4 +1819,28 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String imageCounter(int index, int count) {
     return '$index of $count';
   }
+
+  @override
+  String get imageZoomIn => 'Zoom in';
+
+  @override
+  String get imageZoomOut => 'Zoom out';
+
+  @override
+  String get imageRotate => 'Rotate';
+
+  @override
+  String get imageActualSize => 'Fit to screen';
+
+  @override
+  String get imageCopy => 'Copy image';
+
+  @override
+  String get imageCopied => 'Image copied';
+
+  @override
+  String get imageCopyFailed => 'The image couldn\'t be copied.';
+
+  @override
+  String get imageReact => 'React';
 }

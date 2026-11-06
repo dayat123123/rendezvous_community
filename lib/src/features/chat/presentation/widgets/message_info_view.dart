@@ -309,7 +309,15 @@ class _MessagePreview extends StatelessWidget {
                 child: AttachmentGrid(
                   attachments: images,
                   maxHeight: 240,
-                  onOpen: (index) => unawaited(showCommunityImageViewer(context, images: images, initialIndex: index)),
+                  onOpen: (index) => unawaited(
+                    showCommunityImageViewer(
+                      context,
+                      images: images,
+                      initialIndex: index,
+                      sender: message.sender,
+                      sentAt: message.createdAt,
+                    ),
+                  ),
                 ),
               ),
             if (documents.isNotEmpty)

@@ -550,5 +550,13 @@
   "imageOpen": "View image",
   "imagePrevious": "Previous image",
   "imageNext": "Next image",
-  "imageCounter": "{index} of {count}"
+  "imageCounter": "{index} of {count}",
+  "imageZoomIn": "Zoom in",
+  "imageZoomOut": "Zoom out",
+  "imageRotate": "Rotate",
+  "imageActualSize": "Fit to screen",
+  "imageCopy": "Copy image",
+  "imageCopied": "Image copied",
+  "imageCopyFailed": "The image couldn't be copied.",
+  "imageReact": "React"
 }

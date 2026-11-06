@@ -90,7 +90,10 @@ void main() {
     await _settle(tester);
     expect(find.text('1 dari 2'), findsOneWidget);
     expect(find.byTooltip('Unduh'), findsOneWidget);
-    expect(find.byTooltip('Gambar sebelumnya'), findsNothing);
+    IconButton nav(String tooltip) =>
+        tester.widget<IconButton>(find.ancestor(of: find.byTooltip(tooltip), matching: find.byType(IconButton)).first);
+    expect(nav('Gambar sebelumnya').onPressed, isNull);
+    expect(nav('Gambar berikutnya').onPressed, isNotNull);
 
     await tester.tap(find.byTooltip('Gambar berikutnya'));
     await _settle(tester);
@@ -152,5 +155,65 @@ void main() {
     await tester.tap(find.descendant(of: info, matching: _photoTiles()).last);
     await _settle(tester);
     expect(find.text('2 dari 2'), findsOneWidget);
+  });
+
+  testWidgets('the viewer shows the sender and time, zooms, copies, and replies', (tester) async {
+    await _pump(
+      tester,
+      FakeChatRepository(rooms: [directRoom()], members: directMembers(), messages: [_photoMessage()]),
+    );
+    final copied = <int>[];
+    final context = tester.element(find.byType(CommunityChatRoom));
+    var replied = 0;
+    unawaited(
+      showCommunityImageViewer(
+        context,
+        images: _photos,
+        sender: me,
+        sentAt: DateTime.now(),
+        onReply: () => replied++,
+        copier: (bytes) async => copied.add(bytes.length),
+      ),
+    );
+    await _settle(tester);
+
+    expect(find.text(me.name), findsOneWidget);
+    expect(find.textContaining('Hari ini, '), findsOneWidget);
+
+    IconButton button(String tooltip) =>
+        tester.widget<IconButton>(find.ancestor(of: find.byTooltip(tooltip), matching: find.byType(IconButton)).first);
+    expect(button('Perkecil').onPressed, isNull);
+    await tester.tap(find.byTooltip('Perbesar'));
+    await _settle(tester);
+    expect(button('Perkecil').onPressed, isNotNull);
+    await tester.tap(find.byTooltip('Perkecil'));
+    await _settle(tester);
+    expect(button('Perkecil').onPressed, isNull);
+
+    await tester.tap(find.byTooltip('Salin gambar'));
+    await _settle(tester);
+    expect(copied, [_png.length]);
+    expect(find.text('Gambar disalin'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Balas pesan').last);
+    await _settle(tester);
+    expect(replied, 1);
+    expect(find.byTooltip('Unduh'), findsNothing);
+  });
+
+  testWidgets('reply from a chat photo closes the viewer and prepares the reply in the composer', (tester) async {
+    await _pump(
+      tester,
+      FakeChatRepository(rooms: [directRoom()], members: directMembers(), messages: [_photoMessage()]),
+    );
+    await tester.tap(_photoTiles().first);
+    await _settle(tester);
+    expect(find.text(me.name), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Balas pesan').last);
+    await _settle(tester);
+
+    expect(find.byTooltip('Unduh'), findsNothing);
+    expect(find.text('Anda'), findsOneWidget);
   });
 }

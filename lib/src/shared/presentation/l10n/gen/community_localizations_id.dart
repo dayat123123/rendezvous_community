@@ -1806,4 +1806,28 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String imageCounter(int index, int count) {
     return '$index dari $count';
   }
+
+  @override
+  String get imageZoomIn => 'Perbesar';
+
+  @override
+  String get imageZoomOut => 'Perkecil';
+
+  @override
+  String get imageRotate => 'Putar';
+
+  @override
+  String get imageActualSize => 'Ukuran pas layar';
+
+  @override
+  String get imageCopy => 'Salin gambar';
+
+  @override
+  String get imageCopied => 'Gambar disalin';
+
+  @override
+  String get imageCopyFailed => 'Gambar tidak bisa disalin.';
+
+  @override
+  String get imageReact => 'Beri reaksi';
 }

@@ -313,13 +313,25 @@ class CommunityImageViewerDetails {
     required this.image,
     required this.onClose,
     required this.onDownload,
+    this.onCopy,
+    this.sender,
+    this.timeLabel,
+    this.onReply,
+    this.reactionChoices = const [],
+    this.onReact,
   });
 
   final List<Attachment> attachments;
   final int initialIndex;
   final Widget Function(Attachment attachment) image;
   final VoidCallback onClose;
-  final Future<void> Function(Attachment attachment) onDownload;
+  final Future<String?> Function(Attachment attachment) onDownload;
+  final Future<String?> Function(Attachment attachment)? onCopy;
+  final UserSummary? sender;
+  final String? timeLabel;
+  final VoidCallback? onReply;
+  final List<String> reactionChoices;
+  final ValueChanged<String>? onReact;
 }
 
 class CommunityImagePlaceholderDetails {

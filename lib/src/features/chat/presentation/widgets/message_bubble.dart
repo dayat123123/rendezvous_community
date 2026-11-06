@@ -454,7 +454,18 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
               child: AttachmentGrid(
                 attachments: images,
                 maxHeight: 220,
-                onOpen: (index) => unawaited(showCommunityImageViewer(context, images: images, initialIndex: index)),
+                onOpen: (index) => unawaited(
+                  showCommunityImageViewer(
+                    context,
+                    images: images,
+                    initialIndex: index,
+                    sender: m.sender,
+                    sentAt: m.createdAt,
+                    onReply: d.onReply,
+                    reactionChoices: d.reactionChoices,
+                    onReact: d.onReact,
+                  ),
+                ),
               ),
             ),
           ),

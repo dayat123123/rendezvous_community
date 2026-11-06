@@ -3265,6 +3265,54 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'{index} dari {count}'**
   String imageCounter(int index, int count);
+
+  /// No description provided for @imageZoomIn.
+  ///
+  /// In id, this message translates to:
+  /// **'Perbesar'**
+  String get imageZoomIn;
+
+  /// No description provided for @imageZoomOut.
+  ///
+  /// In id, this message translates to:
+  /// **'Perkecil'**
+  String get imageZoomOut;
+
+  /// No description provided for @imageRotate.
+  ///
+  /// In id, this message translates to:
+  /// **'Putar'**
+  String get imageRotate;
+
+  /// No description provided for @imageActualSize.
+  ///
+  /// In id, this message translates to:
+  /// **'Ukuran pas layar'**
+  String get imageActualSize;
+
+  /// No description provided for @imageCopy.
+  ///
+  /// In id, this message translates to:
+  /// **'Salin gambar'**
+  String get imageCopy;
+
+  /// No description provided for @imageCopied.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar disalin'**
+  String get imageCopied;
+
+  /// No description provided for @imageCopyFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar tidak bisa disalin.'**
+  String get imageCopyFailed;
+
+  /// No description provided for @imageReact.
+  ///
+  /// In id, this message translates to:
+  /// **'Beri reaksi'**
+  String get imageReact;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {
