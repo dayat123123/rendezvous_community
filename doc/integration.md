@@ -38,7 +38,7 @@ Langkah rilis (rinciannya di [PRODUCTION.md](https://github.com/dayat123123/chat
 
 1. OLT merilis app dengan `rendezvous_community` 1.5.0 untuk semua platform, dan app mengisi `appVersion` + `platform` + `onUpdateRequired` saat `initialize(...)` (bagian 3, [Konfigurasi klien](#konfigurasi-klien-130)).
 2. Backend dengan `0098` di-deploy.
-3. Super Admin membuka web CS **Pengaturan → Fitur & versi → Versi minimum aplikasi** dan mengisi versi app OLT pertama yang membawa 1.5.0 untuk tiap platform (`android`, `windows`, dan seterusnya). Perubahan tercatat di jejak audit. `get_client_config` lalu menjawab `update_required: true` untuk app yang lebih lama, dan `onUpdateRequired` mengarahkan nasabah ke update OLT.
+3. Super Admin atau staf berperan Fitur & Kampanye membuka Rendezvous Hub **Fitur & Kampanye → Fitur & versi → Versi minimum aplikasi** dan mengisi versi app OLT pertama yang membawa 1.5.0 untuk tiap platform (`android`, `windows`, dan seterusnya). Perubahan tercatat di jejak audit. `get_client_config` lalu menjawab `update_required: true` untuk app yang lebih lama, dan `onUpdateRequired` mengarahkan nasabah ke update OLT.
 
 Yang dibandingkan adalah versi **app OLT** (`appVersion`), bukan versi package. App lama yang tidak mengisi `appVersion` tidak bisa dipaksa update lewat mekanisme ini; pastikan semua build yang beredar sudah mengirimnya.
 
