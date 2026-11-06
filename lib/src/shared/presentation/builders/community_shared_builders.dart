@@ -25,6 +25,7 @@ class CommunitySharedBuilders {
     this.confirmDialog,
     this.linkDialog,
     this.imagePlaceholder,
+    this.imageViewer,
   });
 
   final CommunityPartBuilder<CommunityAvatarDetails>? avatar;
@@ -48,6 +49,7 @@ class CommunitySharedBuilders {
   final CommunityPartBuilder<CommunityConfirmDetails>? confirmDialog;
   final CommunityPartBuilder<CommunityLinkConfirmDetails>? linkDialog;
   final CommunityPartBuilder<CommunityImagePlaceholderDetails>? imagePlaceholder;
+  final CommunityPartBuilder<CommunityImageViewerDetails>? imageViewer;
 
   static CommunitySharedBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -80,6 +82,7 @@ class CommunitySharedBuilders {
       confirmDialog: other.confirmDialog ?? confirmDialog,
       linkDialog: other.linkDialog ?? linkDialog,
       imagePlaceholder: other.imagePlaceholder ?? imagePlaceholder,
+      imageViewer: other.imageViewer ?? imageViewer,
     );
   }
 }

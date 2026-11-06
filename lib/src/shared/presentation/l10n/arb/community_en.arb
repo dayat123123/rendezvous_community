@@ -543,5 +543,12 @@
   "moreActions": "More",
   "attachmentsTooMany": "Up to 4 attachments per message.",
   "removeAttachment": "Remove attachment",
-  "imageTooLarge": "The image is too large to send."
+  "imageTooLarge": "The image is too large to send.",
+  "imageDownload": "Download",
+  "imageSaved": "Image saved",
+  "imageSaveFailed": "The image couldn't be downloaded.",
+  "imageOpen": "View image",
+  "imagePrevious": "Previous image",
+  "imageNext": "Next image",
+  "imageCounter": "{index} of {count}"
 }

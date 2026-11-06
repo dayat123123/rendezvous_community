@@ -9,6 +9,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/builders/com
 import 'package:rendezvous_community/src/features/media/domain/repositories/media_repository.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
+import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_network_image.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/moderation_notice.dart';
@@ -20,12 +21,14 @@ class AttachmentGrid extends StatelessWidget {
     this.maxHeight = 280,
     this.blurred = false,
     this.edgeToEdge = false,
+    this.onOpen,
   });
 
   final List<Attachment> attachments;
   final double maxHeight;
   final bool blurred;
   final bool edgeToEdge;
+  final ValueChanged<int>? onOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +40,7 @@ class AttachmentGrid extends StatelessWidget {
     final columns = count == 1 ? 1 : 2;
     Widget tile(int index) {
       final a = attachments[index];
-      return buildCommunityPart(
+      final part = buildCommunityPart(
         builder,
         context,
         CommunityAttachmentImageDetails(
@@ -48,6 +51,16 @@ class AttachmentGrid extends StatelessWidget {
           image: _AttachmentImage(attachment: a, media: media),
         ),
         _AttachmentTile(attachment: a, media: media, blurred: blurred),
+      );
+      final open = onOpen;
+      if (open == null) return part;
+      return Semantics(
+        button: true,
+        label: context.communityL10n.imageOpen,
+        child: MouseRegion(
+          cursor: SystemMouseCursors.click,
+          child: GestureDetector(behavior: HitTestBehavior.opaque, onTap: () => open(index), child: part),
+        ),
       );
     }
 

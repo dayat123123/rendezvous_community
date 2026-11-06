@@ -1796,4 +1796,27 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get imageTooLarge => 'The image is too large to send.';
+
+  @override
+  String get imageDownload => 'Download';
+
+  @override
+  String get imageSaved => 'Image saved';
+
+  @override
+  String get imageSaveFailed => 'The image couldn\'t be downloaded.';
+
+  @override
+  String get imageOpen => 'View image';
+
+  @override
+  String get imagePrevious => 'Previous image';
+
+  @override
+  String get imageNext => 'Next image';
+
+  @override
+  String imageCounter(int index, int count) {
+    return '$index of $count';
+  }
 }

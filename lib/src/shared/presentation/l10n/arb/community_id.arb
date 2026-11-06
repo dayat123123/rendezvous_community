@@ -620,5 +620,13 @@
   "moreActions": "Lainnya",
   "attachmentsTooMany": "Maksimal 4 lampiran per pesan.",
   "removeAttachment": "Hapus lampiran",
-  "imageTooLarge": "Gambar terlalu besar untuk dikirim."
+  "imageTooLarge": "Gambar terlalu besar untuk dikirim.",
+  "imageDownload": "Unduh",
+  "imageSaved": "Gambar disimpan",
+  "imageSaveFailed": "Gambar tidak bisa diunduh.",
+  "imageOpen": "Lihat gambar",
+  "imagePrevious": "Gambar sebelumnya",
+  "imageNext": "Gambar berikutnya",
+  "imageCounter": "{index} dari {count}",
+  "@imageCounter": { "placeholders": { "index": { "type": "int" }, "count": { "type": "int" } } }
 }

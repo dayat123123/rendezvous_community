@@ -27,6 +27,7 @@ import 'package:rendezvous_community/src/features/config/domain/entities/client_
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/image_viewer.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/moderation/presentation/widgets/moderation_actions.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_message_parts.dart';
@@ -450,7 +451,11 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
             padding: EdgeInsets.only(bottom: mediaOnly ? spacing.xs : spacing.xs + spacing.xxs),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(_bubbleRadius.x - inset),
-              child: AttachmentGrid(attachments: images, maxHeight: 220),
+              child: AttachmentGrid(
+                attachments: images,
+                maxHeight: 220,
+                onOpen: (index) => unawaited(showCommunityImageViewer(context, images: images, initialIndex: index)),
+              ),
             ),
           ),
         if (documents.isNotEmpty) DocumentAttachments(attachments: documents, color: fg),

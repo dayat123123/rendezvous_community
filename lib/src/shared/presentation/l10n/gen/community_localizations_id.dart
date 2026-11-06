@@ -1783,4 +1783,27 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get imageTooLarge => 'Gambar terlalu besar untuk dikirim.';
+
+  @override
+  String get imageDownload => 'Unduh';
+
+  @override
+  String get imageSaved => 'Gambar disimpan';
+
+  @override
+  String get imageSaveFailed => 'Gambar tidak bisa diunduh.';
+
+  @override
+  String get imageOpen => 'Lihat gambar';
+
+  @override
+  String get imagePrevious => 'Gambar sebelumnya';
+
+  @override
+  String get imageNext => 'Gambar berikutnya';
+
+  @override
+  String imageCounter(int index, int count) {
+    return '$index dari $count';
+  }
 }

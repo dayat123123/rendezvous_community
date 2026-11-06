@@ -16,6 +16,11 @@
     `CommunityComposerDetails.files`/`onRemoveFile`.
   * Ikon tombol lampiran: klip kertas bila PDF diizinkan (chat CS), ikon gambar bila hanya gambar.
   * Setelah mengirim pesan, daftar chat menggulir sekali ke pesan terbaru (juga saat sedang membaca pesan lama).
+  * Penampil gambar layar penuh: ketuk foto di gelembung chat atau di Info pesan untuk membuka; zoom (cubit/scroll),
+    geser atau ←/→ antar foto, Esc/✕ menutup, tombol **Unduh** (desktop: dialog Simpan sebagai; ponsel: lembar
+    berbagi untuk menyimpan; web: unduhan browser) memakai cache gambar yang sama. Info pesan kini menampilkan foto
+    dan PDF pesan. `showCommunityImageViewer`, slot `CommunitySharedBuilders.imageViewer`
+    (`CommunityImageViewerDetails`), `AttachmentGrid(onOpen:)`.
   * Teks chat bisa diseleksi dengan mouse dan disalin di desktop dan web (`SelectionArea` meliputi header room,
     pesan, kutipan, pesan sistem, header chat CS, dan Info pesan; kolom input tidak). Di ponsel tekan lama tetap
     membuka menu aksi berisi Salin.

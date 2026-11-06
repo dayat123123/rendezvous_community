@@ -3223,6 +3223,48 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Gambar terlalu besar untuk dikirim.'**
   String get imageTooLarge;
+
+  /// No description provided for @imageDownload.
+  ///
+  /// In id, this message translates to:
+  /// **'Unduh'**
+  String get imageDownload;
+
+  /// No description provided for @imageSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar disimpan'**
+  String get imageSaved;
+
+  /// No description provided for @imageSaveFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar tidak bisa diunduh.'**
+  String get imageSaveFailed;
+
+  /// No description provided for @imageOpen.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat gambar'**
+  String get imageOpen;
+
+  /// No description provided for @imagePrevious.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar sebelumnya'**
+  String get imagePrevious;
+
+  /// No description provided for @imageNext.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar berikutnya'**
+  String get imageNext;
+
+  /// No description provided for @imageCounter.
+  ///
+  /// In id, this message translates to:
+  /// **'{index} dari {count}'**
+  String imageCounter(int index, int count);
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
+import 'package:rendezvous_community/src/app/community_image_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
@@ -12,6 +13,9 @@ import 'package:rendezvous_community/src/features/chat/presentation/builders/com
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/receipt_icon.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/image_viewer.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
@@ -25,10 +29,18 @@ Future<void> showCommunityMessageInfo(BuildContext context, ChatMessage message)
   final cubit = context.read<ChatRoomCubit>();
   final carry = carryCommunityBuilders(context);
   final deps = CommunityScope.maybeOf(context);
+  final loader = CommunityImageScope.of(context);
+  final persist = CommunityImagePersistence.of(context);
   Widget content(BuildContext _) {
-    final view = BlocProvider.value(
-      value: cubit,
-      child: MessageInfoView(message: message),
+    final view = CommunityImageScope(
+      loader: loader,
+      child: CommunityImagePersistence(
+        persist: persist,
+        child: BlocProvider.value(
+          value: cubit,
+          child: MessageInfoView(message: message),
+        ),
+      ),
     );
     return carry(deps == null ? view : CommunityScope(dependencies: deps, child: view));
   }
@@ -261,34 +273,68 @@ class _MessagePreview extends StatelessWidget {
     final spacing = style.spacing;
     final t = CommunityTheme.of(context);
     final text = message.body?.trim() ?? '';
-    final image = message.attachments.any((a) => !a.isDocument);
-    final document = message.attachments.where((a) => a.isDocument).firstOrNull;
+    final images = [
+      for (final a in message.attachments)
+        if (!a.isDocument) a,
+    ];
+    final documents = [
+      for (final a in message.attachments)
+        if (a.isDocument) a,
+    ];
     final summary = text.isNotEmpty
         ? text
-        : image
-        ? l10n.photo
-        : document?.name ?? l10n.attachment;
+        : images.isEmpty && documents.isEmpty
+        ? l10n.attachment
+        : null;
     final meta = style.typography.meta.copyWith(fontSize: 11, color: t.onMyBubble.withValues(alpha: 0.82));
     return Align(
       alignment: Alignment.centerRight,
       child: Container(
         margin: EdgeInsets.symmetric(horizontal: spacing.lg),
         constraints: const BoxConstraints(maxWidth: 320),
-        padding: EdgeInsets.fromLTRB(spacing.md, spacing.sm, spacing.md, spacing.xs + spacing.xxs),
+        padding: EdgeInsets.fromLTRB(
+          images.isEmpty ? spacing.md : spacing.xs,
+          images.isEmpty ? spacing.sm : spacing.xs,
+          images.isEmpty ? spacing.md : spacing.xs,
+          spacing.xs + spacing.xxs,
+        ),
         decoration: BoxDecoration(color: t.myBubble, borderRadius: BorderRadius.circular(16)),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.end,
           mainAxisSize: MainAxisSize.min,
           children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Text(
-                summary,
-                maxLines: 6,
-                overflow: TextOverflow.ellipsis,
-                style: style.typography.body.copyWith(color: t.onMyBubble),
+            if (images.isNotEmpty)
+              ClipRRect(
+                borderRadius: BorderRadius.circular(12),
+                child: AttachmentGrid(
+                  attachments: images,
+                  maxHeight: 240,
+                  onOpen: (index) => unawaited(showCommunityImageViewer(context, images: images, initialIndex: index)),
+                ),
               ),
-            ),
+            if (documents.isNotEmpty)
+              Padding(
+                padding: EdgeInsets.only(top: images.isEmpty ? 0 : spacing.xs),
+                child: DocumentAttachments(attachments: documents, color: t.onMyBubble),
+              ),
+            if (summary != null)
+              Padding(
+                padding: EdgeInsets.fromLTRB(
+                  images.isEmpty ? 0 : spacing.sm,
+                  images.isEmpty && documents.isEmpty ? 0 : spacing.xs,
+                  images.isEmpty ? 0 : spacing.sm,
+                  0,
+                ),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    summary,
+                    maxLines: 6,
+                    overflow: TextOverflow.ellipsis,
+                    style: style.typography.body.copyWith(color: t.onMyBubble),
+                  ),
+                ),
+              ),
             SizedBox(height: spacing.xxs),
             Text(details.timeLabel(sentAt), style: meta),
           ],

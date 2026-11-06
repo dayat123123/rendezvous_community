@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/moderation_status.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
@@ -303,6 +304,22 @@ class CommunityLinkConfirmDetails {
   final String cancelLabel;
   final VoidCallback onConfirm;
   final VoidCallback onCancel;
+}
+
+class CommunityImageViewerDetails {
+  const CommunityImageViewerDetails({
+    required this.attachments,
+    required this.initialIndex,
+    required this.image,
+    required this.onClose,
+    required this.onDownload,
+  });
+
+  final List<Attachment> attachments;
+  final int initialIndex;
+  final Widget Function(Attachment attachment) image;
+  final VoidCallback onClose;
+  final Future<void> Function(Attachment attachment) onDownload;
 }
 
 class CommunityImagePlaceholderDetails {
