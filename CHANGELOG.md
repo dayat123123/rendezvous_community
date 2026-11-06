@@ -1,5 +1,9 @@
 ## 1.7.0
 
+* **Tombol ke pesan terbaru** ala WhatsApp: lingkaran ⌄ di kanan bawah daftar pesan muncul saat posisi menjauh
+  dari pesan terbaru, dengan badge jumlah pesan masuk selama itu (`99+`); sekali tekan langsung ke bawah. Slot builder
+  `CommunityChatBuilders.jumpToLatest` (`CommunityJumpToLatestDetails`).
+
 * **Info pesan ala WhatsApp.** Desktop/tablet (≥ 600 px): panel kecil di samping gelembung (bukan dialog), bagian
   **DIBACA**/**TERKIRIM** (grup: **DIBACA OLEH**/**TERKIRIM KE**) dalam kotak membulat, `•••` selama memuat atau bila
   belum ada, tutup dengan klik di luar atau Esc. Ponsel: halaman **Info pesan** penuh (tombol kembali) dengan gelembung

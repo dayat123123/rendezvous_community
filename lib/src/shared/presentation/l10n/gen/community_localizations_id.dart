@@ -1830,4 +1830,12 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get imageReact => 'Beri reaksi';
+
+  @override
+  String get jumpToLatest => 'Ke pesan terbaru';
+
+  @override
+  String jumpToLatestUnread(int count) {
+    return '$count pesan baru, ke pesan terbaru';
+  }
 }

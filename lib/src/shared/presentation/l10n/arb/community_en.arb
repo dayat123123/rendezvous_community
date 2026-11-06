@@ -558,5 +558,7 @@
   "imageCopy": "Copy image",
   "imageCopied": "Image copied",
   "imageCopyFailed": "The image couldn't be copied.",
-  "imageReact": "React"
+  "imageReact": "React",
+  "jumpToLatest": "Jump to latest",
+  "jumpToLatestUnread": "{count} new messages, jump to latest"
 }

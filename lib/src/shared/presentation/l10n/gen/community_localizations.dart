@@ -3313,6 +3313,18 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Beri reaksi'**
   String get imageReact;
+
+  /// No description provided for @jumpToLatest.
+  ///
+  /// In id, this message translates to:
+  /// **'Ke pesan terbaru'**
+  String get jumpToLatest;
+
+  /// No description provided for @jumpToLatestUnread.
+  ///
+  /// In id, this message translates to:
+  /// **'{count} pesan baru, ke pesan terbaru'**
+  String jumpToLatestUnread(int count);
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

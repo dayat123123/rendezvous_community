@@ -636,5 +636,8 @@
   "imageCopy": "Salin gambar",
   "imageCopied": "Gambar disalin",
   "imageCopyFailed": "Gambar tidak bisa disalin.",
-  "imageReact": "Beri reaksi"
+  "imageReact": "Beri reaksi",
+  "jumpToLatest": "Ke pesan terbaru",
+  "jumpToLatestUnread": "{count} pesan baru, ke pesan terbaru",
+  "@jumpToLatestUnread": { "placeholders": { "count": { "type": "int" } } }
 }

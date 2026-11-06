@@ -1843,4 +1843,12 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get imageReact => 'React';
+
+  @override
+  String get jumpToLatest => 'Jump to latest';
+
+  @override
+  String jumpToLatestUnread(int count) {
+    return '$count new messages, jump to latest';
+  }
 }

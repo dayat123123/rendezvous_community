@@ -53,4 +53,78 @@ void main() {
     await tester.pumpAndSettle();
     expect(position.pixels, greaterThan(0));
   });
+
+  testWidgets('a jump-to-latest button appears when scrolled up, counts new messages, and jumps back', (tester) async {
+    useScreen(tester, const Size(1000, 700));
+    final chat = repository(45);
+    await pumpChat(tester, chat, const CommunityChatRoom(roomId: 'dm'));
+    final jump = find.byTooltip('Ke pesan terbaru');
+    expect(jump.hitTestable(), findsNothing);
+
+    final list = find.byType(ListView);
+    await tester.drag(list, const Offset(0, 1500));
+    await tester.pumpAndSettle();
+    expect(jump.hitTestable(), findsOneWidget);
+
+    chat.roomEvents
+      ..add(
+        MessageUpserted(
+          ChatMessage(
+            id: 'in-1',
+            roomId: 'dm',
+            senderId: alice.id,
+            sender: alice,
+            body: 'Baru 1',
+            createdAt: DateTime.now().toUtc(),
+          ),
+        ),
+      )
+      ..add(
+        MessageUpserted(
+          ChatMessage(
+            id: 'in-2',
+            roomId: 'dm',
+            senderId: alice.id,
+            sender: alice,
+            body: 'Baru 2',
+            createdAt: DateTime.now().toUtc(),
+          ),
+        ),
+      );
+    await tester.pumpAndSettle();
+    expect(find.text('2'), findsOneWidget);
+    expect(find.byTooltip('2 pesan baru, ke pesan terbaru').hitTestable(), findsOneWidget);
+
+    await tester.tap(find.byTooltip('2 pesan baru, ke pesan terbaru'));
+    await tester.pumpAndSettle();
+    final position = tester
+        .state<ScrollableState>(find.descendant(of: list, matching: find.byType(Scrollable)))
+        .position;
+    expect(position.pixels, position.minScrollExtent);
+    expect(find.text('Baru 2').hitTestable(), findsOneWidget);
+    expect(jump.hitTestable(), findsNothing);
+    expect(find.text('2'), findsNothing);
+  });
+
+  testWidgets('new messages at the bottom do not show the button or a count', (tester) async {
+    useScreen(tester, const Size(1000, 700));
+    final chat = repository(45);
+    await pumpChat(tester, chat, const CommunityChatRoom(roomId: 'dm'));
+
+    chat.roomEvents.add(
+      MessageUpserted(
+        ChatMessage(
+          id: 'in-1',
+          roomId: 'dm',
+          senderId: alice.id,
+          sender: alice,
+          body: 'Baru 1',
+          createdAt: DateTime.now().toUtc(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('Ke pesan terbaru').hitTestable(), findsNothing);
+    expect(find.text('Baru 1').hitTestable(), findsOneWidget);
+  });
 }

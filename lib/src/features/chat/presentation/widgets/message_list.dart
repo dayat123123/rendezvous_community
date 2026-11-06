@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +12,7 @@ import 'package:rendezvous_community/src/features/chat/presentation/widgets/mess
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_jump.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_tokens.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -25,12 +27,64 @@ class _MessageListState extends State<MessageList> {
   final _scroll = ScrollController();
   final _anchors = MessageAnchors();
   final _highlight = ValueNotifier<String?>(null);
+  final _away = ValueNotifier<bool>(false);
+  final _unseen = ValueNotifier<int>(0);
   Timer? _highlightTimer;
 
   @override
   void initState() {
     super.initState();
-    _scroll.addListener(_loadOlderNearTop);
+    _scroll
+      ..addListener(_loadOlderNearTop)
+      ..addListener(_trackPosition);
+  }
+
+  void _trackPosition() {
+    if (!_scroll.hasClients) return;
+    final position = _scroll.position;
+    final away = position.pixels - position.minScrollExtent > math.max(240.0, position.viewportDimension * 0.5);
+    if (away && !_away.value) _lastSeenTop = context.read<ChatRoomCubit>().state.messages.firstOrNull?.id;
+    _away.value = away;
+    if (!away) _unseen.value = 0;
+  }
+
+  bool _arrivedWhileAway(ChatRoomState before, ChatRoomState after) {
+    if (!_away.value) return false;
+    final latest = after.messages.firstOrNull;
+    if (latest == null || after.isMine(latest) || latest.id == before.messages.firstOrNull?.id) return false;
+    return before.messages.isNotEmpty;
+  }
+
+  void _countArrivals(ChatRoomState state) {
+    final previous = _lastSeenTop;
+    var added = 0;
+    if (previous != null && state.messages.any((m) => m.id == previous)) {
+      for (final message in state.messages) {
+        if (message.id == previous) break;
+        if (!state.isMine(message)) added++;
+      }
+    }
+    _unseen.value += added == 0 ? 1 : added;
+    _lastSeenTop = state.messages.firstOrNull?.id;
+  }
+
+  String? _lastSeenTop;
+
+  void _jumpToLatest() {
+    if (!_scroll.hasClients) return;
+    final position = _scroll.position;
+    _unseen.value = 0;
+    if (position.pixels - position.minScrollExtent > position.viewportDimension * 3) {
+      _scroll.jumpTo(position.minScrollExtent);
+    } else {
+      unawaited(
+        _scroll.animateTo(
+          position.minScrollExtent,
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.easeOutCubic,
+        ),
+      );
+    }
   }
 
   void _loadOlderNearTop() {
@@ -41,6 +95,8 @@ class _MessageListState extends State<MessageList> {
   void dispose() {
     _highlightTimer?.cancel();
     _highlight.dispose();
+    _away.dispose();
+    _unseen.dispose();
     _scroll.dispose();
     super.dispose();
   }
@@ -127,9 +183,17 @@ class _MessageListState extends State<MessageList> {
     final builders = CommunityChatBuilders.of(context);
     final l10n = context.communityL10n;
     final spacing = CommunityStyle.of(context).spacing;
-    return BlocListener<ChatRoomCubit, ChatRoomState>(
-      listenWhen: _sentByMe,
-      listener: (_, _) => _scrollToLatest(),
+    return MultiBlocListener(
+      listeners: [
+        BlocListener<ChatRoomCubit, ChatRoomState>(listenWhen: _sentByMe, listener: (_, _) => _scrollToLatest()),
+        BlocListener<ChatRoomCubit, ChatRoomState>(
+          listenWhen: (before, after) {
+            if (!_away.value) _lastSeenTop = after.messages.firstOrNull?.id;
+            return _arrivedWhileAway(before, after);
+          },
+          listener: (_, state) => _countArrivals(state),
+        ),
+      ],
       child: BlocBuilder<ChatRoomCubit, ChatRoomState>(
         buildWhen: (a, b) =>
             a.messages != b.messages ||
@@ -154,64 +218,173 @@ class _MessageListState extends State<MessageList> {
           return MessageJumpScope(
             reveal: _reveal,
             highlighted: _highlight,
-            child: ListView.builder(
-              addAutomaticKeepAlives: false,
-              controller: _scroll,
-              reverse: true,
-              padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
-              itemCount: state.messages.length + (state.loadingOlder ? 1 : 0),
-              itemBuilder: (context, i) {
-                if (i == state.messages.length) {
-                  return buildChatPart(
-                    builders.loading,
-                    context,
-                    const CommunityLoadingDetails(CommunityChatLoad.olderMessages),
-                    const CommunityLoadingView(),
-                  );
-                }
-                final message = state.messages[i];
-                final older = i + 1 < state.messages.length ? state.messages[i + 1] : null;
-                final newer = i > 0 ? state.messages[i - 1] : null;
-                final newDay = older == null || !_sameDay(older.createdAt, message.createdAt);
-                final grouped = older != null && !newDay && _joins(older, message);
-                final continued =
-                    newer != null && _sameDay(message.createdAt, newer.createdAt) && _joins(message, newer);
-                final mine = state.isMine(message);
-                final type = state.room?.type;
-                final bubble = MessageBubble(
-                  key: ValueKey(message.clientId ?? message.id),
-                  message: message,
-                  mine: mine,
-                  receipt: state.receiptOf(message),
-                  showSender: !grouped && type != RoomType.direct && !mine,
-                  startsGroup: !grouped,
-                  endsGroup: !continued,
-                  showAvatar: !mine && (type == RoomType.group || type == RoomType.stock),
-                );
-                final anchored = MessageAnchor(
-                  key: ValueKey('anchor-${message.clientId ?? message.id}'),
-                  id: message.id,
-                  index: i,
-                  anchors: _anchors,
-                  highlighted: _highlight,
-                  child: bubble,
-                );
-                if (!newDay) return anchored;
-                final divider = buildChatPart(
-                  builders.dayDivider,
-                  context,
-                  CommunityDayDetails(day: message.createdAt, label: l10n.dayLabel(message.createdAt)),
-                  _DayDivider(time: message.createdAt),
-                );
-                return Column(
-                  key: ValueKey('day-${message.clientId ?? message.id}'),
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [divider, anchored],
-                );
-              },
+            child: Stack(
+              children: [
+                Positioned.fill(child: _list(context, state, builders, l10n, spacing)),
+                Positioned(
+                  right: spacing.md,
+                  bottom: spacing.md,
+                  child: ValueListenableBuilder<bool>(
+                    valueListenable: _away,
+                    builder: (context, away, _) => IgnorePointer(
+                      ignoring: !away,
+                      child: AnimatedScale(
+                        scale: away ? 1 : 0,
+                        duration: const Duration(milliseconds: 160),
+                        curve: Curves.easeOutBack,
+                        child: ValueListenableBuilder<int>(
+                          valueListenable: _unseen,
+                          builder: (context, unread, _) {
+                            final details = CommunityJumpToLatestDetails(
+                              unread: unread,
+                              label: unread > 0 ? l10n.jumpToLatestUnread(unread) : l10n.jumpToLatest,
+                              onPressed: _jumpToLatest,
+                            );
+                            return buildChatPart(
+                              builders.jumpToLatest,
+                              context,
+                              details,
+                              _JumpToLatestButton(details: details),
+                            );
+                          },
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
           );
         },
+      ),
+    );
+  }
+
+  Widget _list(
+    BuildContext context,
+    ChatRoomState state,
+    CommunityChatBuilders builders,
+    CommunityLocalizations l10n,
+    CommunitySpacing spacing,
+  ) {
+    return ListView.builder(
+      addAutomaticKeepAlives: false,
+      controller: _scroll,
+      reverse: true,
+      padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
+      itemCount: state.messages.length + (state.loadingOlder ? 1 : 0),
+      itemBuilder: (context, i) {
+        if (i == state.messages.length) {
+          return buildChatPart(
+            builders.loading,
+            context,
+            const CommunityLoadingDetails(CommunityChatLoad.olderMessages),
+            const CommunityLoadingView(),
+          );
+        }
+        final message = state.messages[i];
+        final older = i + 1 < state.messages.length ? state.messages[i + 1] : null;
+        final newer = i > 0 ? state.messages[i - 1] : null;
+        final newDay = older == null || !_sameDay(older.createdAt, message.createdAt);
+        final grouped = older != null && !newDay && _joins(older, message);
+        final continued = newer != null && _sameDay(message.createdAt, newer.createdAt) && _joins(message, newer);
+        final mine = state.isMine(message);
+        final type = state.room?.type;
+        final bubble = MessageBubble(
+          key: ValueKey(message.clientId ?? message.id),
+          message: message,
+          mine: mine,
+          receipt: state.receiptOf(message),
+          showSender: !grouped && type != RoomType.direct && !mine,
+          startsGroup: !grouped,
+          endsGroup: !continued,
+          showAvatar: !mine && (type == RoomType.group || type == RoomType.stock),
+        );
+        final anchored = MessageAnchor(
+          key: ValueKey('anchor-${message.clientId ?? message.id}'),
+          id: message.id,
+          index: i,
+          anchors: _anchors,
+          highlighted: _highlight,
+          child: bubble,
+        );
+        if (!newDay) return anchored;
+        final divider = buildChatPart(
+          builders.dayDivider,
+          context,
+          CommunityDayDetails(day: message.createdAt, label: l10n.dayLabel(message.createdAt)),
+          _DayDivider(time: message.createdAt),
+        );
+        return Column(
+          key: ValueKey('day-${message.clientId ?? message.id}'),
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [divider, anchored],
+        );
+      },
+    );
+  }
+}
+
+class _JumpToLatestButton extends StatelessWidget {
+  const _JumpToLatestButton({required this.details});
+
+  final CommunityJumpToLatestDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final style = CommunityStyle.of(context);
+    final unread = d.unread;
+    return Tooltip(
+      message: d.label,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          Material(
+            color: Color.alphaBlend(style.textPrimary.withValues(alpha: 0.05), style.surface),
+            shape: CircleBorder(
+              side: BorderSide(color: style.divider, width: style.borderWidth),
+            ),
+            elevation: 3,
+            shadowColor: Colors.black.withValues(alpha: 0.3),
+            surfaceTintColor: Colors.transparent,
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: d.onPressed,
+              child: Semantics(
+                button: true,
+                label: d.label,
+                excludeSemantics: true,
+                child: SizedBox.square(
+                  dimension: 42,
+                  child: Icon(Icons.keyboard_arrow_down_rounded, size: 28, color: style.textSecondary),
+                ),
+              ),
+            ),
+          ),
+          if (unread > 0)
+            Positioned(
+              top: -6,
+              right: -4,
+              child: IgnorePointer(
+                child: Container(
+                  constraints: const BoxConstraints(minWidth: 20),
+                  height: 20,
+                  padding: const EdgeInsets.symmetric(horizontal: 6),
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(color: style.accent, borderRadius: BorderRadius.circular(10)),
+                  child: Text(
+                    unread > 99 ? '99+' : '$unread',
+                    style: style.typography.label.copyWith(
+                      color: style.onAccent,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

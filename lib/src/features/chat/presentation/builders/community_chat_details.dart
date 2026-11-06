@@ -332,6 +332,14 @@ class CommunityMessageActionsDetails {
   final ValueChanged<String>? onReact;
 }
 
+class CommunityJumpToLatestDetails {
+  const CommunityJumpToLatestDetails({required this.unread, required this.label, required this.onPressed});
+
+  final int unread;
+  final String label;
+  final VoidCallback onPressed;
+}
+
 class CommunityMessageInfoDetails {
   const CommunityMessageInfoDetails({
     required this.message,

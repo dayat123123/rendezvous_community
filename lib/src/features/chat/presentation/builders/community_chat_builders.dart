@@ -22,6 +22,7 @@ class CommunityChatBuilders {
     this.receipt,
     this.messageActions,
     this.messageInfo,
+    this.jumpToLatest,
     this.roomNotice,
     this.moderationBanner,
     this.moderationDialog,
@@ -55,6 +56,7 @@ class CommunityChatBuilders {
   final CommunityPartBuilder<CommunityReceiptDetails>? receipt;
   final CommunityPartBuilder<CommunityMessageActionsDetails>? messageActions;
   final CommunityPartBuilder<CommunityMessageInfoDetails>? messageInfo;
+  final CommunityPartBuilder<CommunityJumpToLatestDetails>? jumpToLatest;
   final CommunityPartBuilder<CommunityRoomNoticeDetails>? roomNotice;
   final CommunityPartBuilder<CommunityRoomModerationDetails>? moderationBanner;
   final CommunityPartBuilder<CommunityRoomModerationDialogDetails>? moderationDialog;
@@ -97,6 +99,7 @@ class CommunityChatBuilders {
       receipt: other.receipt ?? receipt,
       messageActions: other.messageActions ?? messageActions,
       messageInfo: other.messageInfo ?? messageInfo,
+      jumpToLatest: other.jumpToLatest ?? jumpToLatest,
       roomNotice: other.roomNotice ?? roomNotice,
       moderationBanner: other.moderationBanner ?? moderationBanner,
       moderationDialog: other.moderationDialog ?? moderationDialog,
