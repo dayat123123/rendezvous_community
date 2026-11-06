@@ -9,6 +9,15 @@
   * Hover tidak lagi melebarkan atau menyempitkan gelembung: ruang aksi selalu tetap.
   * Tempel gambar dengan Ctrl+V/⌘V (paket `pasteboard`, Apache-2.0) atau dari keyboard Android; BMP dari clipboard
     Windows diubah ke PNG dan diperkecil bila > 5 MB. Tanpa gambar di clipboard, teks ditempel seperti biasa.
+  * Lampiran tidak langsung terkirim, seperti di web Hub: gambar/PDF dari pemilih file (bisa beberapa sekaligus),
+    tempel, atau keyboard masuk antrean di atas kolom input (thumbnail 56 px atau kartu PDF dengan nama dan ukuran,
+    masing-masing bisa dihapus), maksimal 4 per pesan, lalu dikirim bersama teks dalam satu pesan saat Enter/tombol
+    kirim. Antrean tetap ada bila unggahan gagal. `ChatRoomCubit.sendWithFiles`, `ChatOutgoingFile`,
+    `CommunityComposerDetails.files`/`onRemoveFile`.
+  * Ikon tombol lampiran: klip kertas bila PDF diizinkan (chat CS), ikon gambar bila hanya gambar.
+  * Teks chat bisa diseleksi dengan mouse dan disalin di desktop dan web (`SelectionArea` meliputi header room,
+    pesan, kutipan, pesan sistem, header chat CS, dan Info pesan; kolom input tidak). Di ponsel tekan lama tetap
+    membuka menu aksi berisi Salin.
   * Detail builder baru: `CommunityMessageDetails.replyToName`/`onReplyTap`, `CommunityComposerDetails.replyToName`/
     `onPaste`/`onContentInserted`. Aplikasi host perlu build ulang penuh (plugin native baru), bukan hot reload.
   * **Info pesan** ala WhatsApp (server migrasi `0122`, RPC `get_message_info`): waktu terkirim dan dibaca per penerima

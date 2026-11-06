@@ -8,11 +8,13 @@ import 'package:rendezvous_community/src/core/media/clipboard_image.dart';
 import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/core/media/pasted_image.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/outgoing_file.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/stock_cards.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
@@ -20,6 +22,8 @@ import 'package:rendezvous_community/src/shared/presentation/widgets/community_c
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 const _controlSize = 48.0;
+const _maxFiles = 4;
+const _thumbSize = 56.0;
 
 class MessageComposer extends StatefulWidget {
   const MessageComposer({
@@ -44,6 +48,7 @@ class _MessageComposerState extends State<MessageComposer> {
 
   final _controller = TextEditingController();
   final _focus = FocusNode();
+  final _files = <ChatOutgoingFile>[];
   Timer? _ticker;
 
   void _syncTicker(Duration cooldown) {
@@ -81,12 +86,34 @@ class _MessageComposerState extends State<MessageComposer> {
   }
 
   Future<void> _send() async {
+    final cubit = context.read<ChatRoomCubit>();
     final text = _controller.text;
-    if (text.trim().isEmpty) return;
-    if (context.read<ChatRoomCubit>().state.cooldownLeft() > Duration.zero) return;
-    _controller.clear();
+    final files = List.of(_files);
+    if (text.trim().isEmpty && files.isEmpty) return;
+    if (cubit.state.cooldownLeft() > Duration.zero || cubit.state.uploading) return;
     _focus.requestFocus();
-    await context.read<ChatRoomCubit>().send(text);
+    if (files.isEmpty) {
+      _controller.clear();
+      await cubit.send(text);
+      return;
+    }
+    if (!await cubit.sendWithFiles(text, files) || !mounted) return;
+    setState(() => _files.removeWhere(files.contains));
+    if (_controller.text == text) _controller.clear();
+  }
+
+  void _addFiles(List<ChatOutgoingFile> files) {
+    if (files.isEmpty || !mounted) return;
+    final room = _maxFiles - _files.length;
+    if (files.length > room) showCommunityMessage(context, context.communityL10n.attachmentsTooMany);
+    if (room <= 0) return;
+    setState(() => _files.addAll(files.take(room)));
+    _focus.requestFocus();
+  }
+
+  void _removeFile(int index) {
+    if (index < 0 || index >= _files.length) return;
+    setState(() => _files.removeAt(index));
   }
 
   Future<void> _pickImage() async {
@@ -97,40 +124,46 @@ class _MessageComposerState extends State<MessageComposer> {
       mimeTypes: [pdfMimeType],
       uniformTypeIdentifiers: ['com.adobe.pdf'],
     );
-    final file = await openFile(acceptedTypeGroups: widget.allowDocuments ? const [images, pdf] : const [images]);
-    if (file == null || !mounted) return;
-    final document = widget.allowDocuments && isPdfFile(file.name, file.mimeType);
-    if (document && await file.length() > maxSupportDocumentBytes) {
-      if (mounted) showCommunityMessage(context, context.communityL10n.documentTooLarge);
-      return;
+    final picked = await openFiles(acceptedTypeGroups: widget.allowDocuments ? const [images, pdf] : const [images]);
+    if (picked.isEmpty || !mounted) return;
+    final l10n = context.communityL10n;
+    final files = <ChatOutgoingFile>[];
+    for (final file in picked.take(_maxFiles + 1)) {
+      final document = widget.allowDocuments && isPdfFile(file.name, file.mimeType);
+      if (document && await file.length() > maxSupportDocumentBytes) {
+        if (mounted) showCommunityMessage(context, l10n.documentTooLarge);
+        continue;
+      }
+      final bytes = await file.readAsBytes();
+      if (document) {
+        files.add(ChatOutgoingFile(bytes: bytes, mimeType: pdfMimeType, name: file.name, document: true));
+        continue;
+      }
+      final image = await preparePastedImage(bytes);
+      if (image == null) {
+        if (mounted) showCommunityMessage(context, l10n.imageTooLarge);
+        continue;
+      }
+      files.add(ChatOutgoingFile(bytes: image.bytes, mimeType: image.mimeType, name: file.name));
     }
-    final bytes = await file.readAsBytes();
-    if (!mounted) return;
-    final cubit = context.read<ChatRoomCubit>();
-    if (document) {
-      await cubit.sendDocument(bytes, file.name);
-    } else {
-      await cubit.sendImage(bytes, mimeFromName(file.name, file.mimeType));
-    }
+    _addFiles(files);
   }
 
   Future<bool> _pasteImage() async {
     final raw = await widget.clipboardImage();
     if (raw == null || !mounted) return false;
-    unawaited(_sendPastedImage(raw));
+    unawaited(_stageImage(raw));
     return true;
   }
 
-  Future<void> _sendPastedImage(Uint8List raw) async {
-    final cubit = context.read<ChatRoomCubit>();
-    if (cubit.state.uploading) return;
+  Future<void> _stageImage(Uint8List raw) async {
     final image = await preparePastedImage(raw);
     if (!mounted) return;
     if (image == null) {
       showCommunityMessage(context, context.communityL10n.pasteImageFailed);
       return;
     }
-    await cubit.sendImage(image.bytes, image.mimeType);
+    _addFiles([ChatOutgoingFile(bytes: image.bytes, mimeType: image.mimeType)]);
   }
 
   Future<void> _pickStockCards() async {
@@ -178,7 +211,9 @@ class _MessageComposerState extends State<MessageComposer> {
           onSendStockCard: context.read<ChatRoomCubit>().canSendStockCards ? _pickStockCards : null,
           mutedUntil: state.mutedUntil(),
           onPaste: _pasteImage,
-          onContentInserted: (bytes) => unawaited(_sendPastedImage(bytes)),
+          onContentInserted: (bytes) => unawaited(_stageImage(bytes)),
+          files: List.unmodifiable(_files),
+          onRemoveFile: _removeFile,
         );
         return buildChatPart(builder, context, details, _DefaultComposer(details: details));
       },
@@ -238,6 +273,11 @@ class _DefaultComposer extends StatelessWidget {
                             onCancel: d.onCancelReply,
                           ),
                         ),
+                      if (d.files.isNotEmpty)
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(spacing.md, spacing.sm + spacing.xxs, spacing.md, 0),
+                          child: _PendingFiles(files: d.files, onRemove: d.onRemoveFile),
+                        ),
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
@@ -252,7 +292,7 @@ class _DefaultComposer extends StatelessWidget {
                                       dimension: 18,
                                       child: CircularProgressIndicator(strokeWidth: 2, color: style.accent),
                                     )
-                                  : const Icon(Icons.add_photo_alternate_outlined),
+                                  : Icon(d.allowsDocuments ? Icons.attach_file : Icons.add_photo_alternate_outlined),
                             ),
                           ),
                           Expanded(
@@ -329,7 +369,7 @@ class _SendButton extends StatelessWidget {
     return ValueListenableBuilder<TextEditingValue>(
       valueListenable: d.controller,
       builder: (context, value, _) {
-        final empty = value.text.trim().isEmpty;
+        final empty = value.text.trim().isEmpty && d.files.isEmpty;
         return IconButton.filled(
           tooltip: l10n.composeSubmit,
           style: IconButton.styleFrom(
@@ -341,6 +381,117 @@ class _SendButton extends StatelessWidget {
           icon: const Icon(Icons.send, size: 22),
         );
       },
+    );
+  }
+}
+
+class _PendingFiles extends StatelessWidget {
+  const _PendingFiles({required this.files, this.onRemove});
+
+  final List<ChatOutgoingFile> files;
+  final ValueChanged<int>? onRemove;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return Wrap(
+      spacing: spacing.sm,
+      runSpacing: spacing.sm,
+      children: [
+        for (final (index, file) in files.indexed)
+          _PendingFile(file: file, onRemove: onRemove == null ? null : () => onRemove!(index)),
+      ],
+    );
+  }
+}
+
+class _PendingFile extends StatelessWidget {
+  const _PendingFile({required this.file, this.onRemove});
+
+  final ChatOutgoingFile file;
+  final VoidCallback? onRemove;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final radius = BorderRadius.circular(spacing.sm);
+    final dpr = MediaQuery.devicePixelRatioOf(context);
+    final Widget body = file.document
+        ? Container(
+            height: _thumbSize,
+            width: 176,
+            padding: EdgeInsets.symmetric(horizontal: spacing.sm + spacing.xxs),
+            decoration: BoxDecoration(
+              color: style.surface,
+              borderRadius: radius,
+              border: Border.all(color: style.border, width: style.borderWidth),
+            ),
+            child: Row(
+              children: [
+                Icon(Icons.description_outlined, size: 20, color: style.textSecondary),
+                SizedBox(width: spacing.sm),
+                Expanded(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        file.name ?? 'PDF',
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: style.typography.label.copyWith(color: style.textPrimary),
+                      ),
+                      Text(documentSize(file.size), style: style.typography.meta.copyWith(color: style.textSecondary)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )
+        : ClipRRect(
+            borderRadius: radius,
+            child: Image.memory(
+              file.bytes,
+              width: _thumbSize,
+              height: _thumbSize,
+              fit: BoxFit.cover,
+              cacheWidth: (_thumbSize * dpr).round(),
+              gaplessPlayback: true,
+              errorBuilder: (_, _, _) => SizedBox.square(
+                dimension: _thumbSize,
+                child: Icon(Icons.broken_image_outlined, color: style.textSecondary),
+              ),
+            ),
+          );
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        body,
+        Positioned(
+          top: -6,
+          right: -6,
+          child: Material(
+            color: style.surface,
+            shape: CircleBorder(
+              side: BorderSide(color: style.border, width: style.borderWidth),
+            ),
+            child: InkWell(
+              customBorder: const CircleBorder(),
+              onTap: onRemove,
+              child: Tooltip(
+                message: l10n.removeAttachment,
+                child: Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: Icon(Icons.close, size: 14, color: style.textSecondary),
+                ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

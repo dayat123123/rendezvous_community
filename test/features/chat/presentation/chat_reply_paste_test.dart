@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -192,7 +193,7 @@ void main() {
     expect(find.text('Pesan yang dibalas tidak ditemukan.'), findsOneWidget);
   });
 
-  testWidgets('Ctrl+V with an image on the clipboard sends it as a photo', (tester) async {
+  testWidgets('Ctrl+V queues the clipboard image; it is sent with the typed text only on send', (tester) async {
     useScreen(tester, const Size(500, 900));
     final chat = _chat([_message('a-1', 1, alice, 'Kirim screenshot ya')]);
     final media = _Media();
@@ -204,10 +205,43 @@ void main() {
     );
 
     await _pressPaste(tester);
+    await _pressPaste(tester, focus: false);
 
-    expect(media.uploads, ['image/png']);
-    expect(chat.sentAttachments.single.single.mime, 'image/png');
+    expect(media.uploads, isEmpty);
+    expect(find.byTooltip('Hapus lampiran'), findsNWidgets(2));
+
+    await tester.enterText(find.byType(TextField), 'Ini buktinya');
+    await tester.tap(find.byIcon(Icons.send));
+    await tester.pumpAndSettle();
+
+    expect(media.uploads, ['image/png', 'image/png']);
+    expect(chat.sentAttachments.single, hasLength(2));
+    expect(find.text('Ini buktinya'), findsOneWidget);
+    expect(find.byTooltip('Hapus lampiran'), findsNothing);
     expect(tester.widget<TextField>(find.byType(TextField)).controller!.text, isEmpty);
+  });
+
+  testWidgets('at most four attachments can be queued and each can be removed', (tester) async {
+    useScreen(tester, const Size(500, 900));
+    final media = _Media();
+    await _pumpRoom(
+      tester,
+      _chat([_message('a-1', 1, alice, 'Halo')]),
+      media: media,
+      composer: MessageComposer(clipboardImage: () async => _png),
+    );
+
+    await _pressPaste(tester);
+    for (var i = 0; i < 4; i++) {
+      await _pressPaste(tester, focus: false);
+    }
+    expect(find.byTooltip('Hapus lampiran'), findsNWidgets(4));
+    expect(find.text('Maksimal 4 lampiran per pesan.'), findsOneWidget);
+
+    await tester.tap(find.byTooltip('Hapus lampiran').first);
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('Hapus lampiran'), findsNWidgets(3));
+    expect(media.uploads, isEmpty);
   });
 
   testWidgets('Ctrl+V without an image pastes the clipboard text at the cursor', (tester) async {
@@ -231,5 +265,31 @@ void main() {
 
     expect(tester.widget<TextField>(find.byType(TextField)).controller!.text, 'Ini kode order 123');
     expect(media.uploads, isEmpty);
+  });
+
+  testWidgets('chat text is selectable with the mouse on desktop but keeps long-press actions on phones', (
+    tester,
+  ) async {
+    useScreen(tester, const Size(500, 900));
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+    await _pumpRoom(tester, _chat([_message('a-1', 1, alice, 'Kode order 4471')]));
+    expect(find.ancestor(of: find.text('Kode order 4471'), matching: find.byType(SelectionArea)), findsOneWidget);
+    expect(find.ancestor(of: find.byType(TextField), matching: find.byType(SelectionArea)), findsNothing);
+
+    debugDefaultTargetPlatformOverride = TargetPlatform.android;
+    await _pumpRoom(tester, _chat([_message('a-1', 1, alice, 'Kode order 4471')]));
+    expect(find.byType(SelectionArea), findsNothing);
+    debugDefaultTargetPlatformOverride = null;
+  });
+
+  testWidgets('the attach button shows a paperclip when PDFs are allowed and an image icon otherwise', (tester) async {
+    useScreen(tester, const Size(500, 900));
+    await _pumpRoom(tester, _chat([]), composer: const MessageComposer(allowDocuments: true));
+    expect(find.byIcon(Icons.attach_file), findsOneWidget);
+    expect(find.byIcon(Icons.add_photo_alternate_outlined), findsNothing);
+
+    await _pumpRoom(tester, _chat([]));
+    expect(find.byIcon(Icons.add_photo_alternate_outlined), findsOneWidget);
+    expect(find.byIcon(Icons.attach_file), findsNothing);
   });
 }

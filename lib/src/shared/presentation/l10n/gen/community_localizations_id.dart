@@ -1774,4 +1774,13 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get moreActions => 'Lainnya';
+
+  @override
+  String get attachmentsTooMany => 'Maksimal 4 lampiran per pesan.';
+
+  @override
+  String get removeAttachment => 'Hapus lampiran';
+
+  @override
+  String get imageTooLarge => 'Gambar terlalu besar untuk dikirim.';
 }

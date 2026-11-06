@@ -15,6 +15,7 @@ import 'package:rendezvous_community/src/features/support/presentation/widgets/s
 import 'package:rendezvous_community/src/shared/presentation/builders/community_list_state_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_selectable.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 import 'package:uuid/uuid.dart';
@@ -87,7 +88,7 @@ class _SupportView extends StatelessWidget {
             ),
             LoadStatus.ready => Column(
               children: [
-                SupportHeader(onClose: onClose),
+                CommunitySelectable(child: SupportHeader(onClose: onClose)),
                 Expanded(
                   child: state.showsConversation(DateTime.now())
                       ? _Conversation(state: state)

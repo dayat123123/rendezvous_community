@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/chat_mess
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_extras.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_info.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/outgoing_file.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
 import 'package:rendezvous_community/src/features/message_requests/domain/entities/message_request.dart';
@@ -100,6 +101,8 @@ class CommunityComposerDetails {
     this.replyToName,
     this.onPaste,
     this.onContentInserted,
+    this.files = const [],
+    this.onRemoveFile,
   });
 
   final TextEditingController controller;
@@ -120,6 +123,8 @@ class CommunityComposerDetails {
   final String? replyToName;
   final Future<bool> Function()? onPaste;
   final ValueChanged<Uint8List>? onContentInserted;
+  final List<ChatOutgoingFile> files;
+  final ValueChanged<int>? onRemoveFile;
 
   bool get coolingDown => cooldown > Duration.zero;
 

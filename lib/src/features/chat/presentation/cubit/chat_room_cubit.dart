@@ -20,6 +20,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/gap_horiz
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_extras.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_info.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/outbox_message.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/outgoing_file.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/stock_card.dart';
@@ -959,6 +960,36 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
 
   Future<void> sendDocument(Uint8List bytes, String name) =>
       _sendAttachment(() => _media.uploadSupportDocument(roomId, bytes, name: name));
+
+  Future<bool> sendWithFiles(String text, List<ChatOutgoingFile> files) async {
+    if (files.isEmpty) {
+      await send(text);
+      return true;
+    }
+    if (_connectivity?.isOnline == false) {
+      _fail(attachmentOfflineError);
+      return false;
+    }
+    emit(state.copyWith(uploading: true));
+    try {
+      final uploaded = <Attachment>[];
+      for (final file in files) {
+        uploaded.add(
+          file.document
+              ? await _media.uploadSupportDocument(roomId, file.bytes, name: file.name ?? 'dokumen.pdf')
+              : await _media.uploadChatImage(roomId, file.bytes, mimeType: file.mimeType),
+        );
+      }
+      if (!isClosed) emit(state.copyWith(uploading: false));
+      await send(text, attachments: uploaded);
+      return true;
+    } catch (e) {
+      if (!isClosed) emit(state.copyWith(uploading: false));
+      final mapped = mapError(e);
+      _fail(mapped.kind == CommunityErrorKind.network && _outbox != null ? attachmentOfflineError : e);
+      return false;
+    }
+  }
 
   Future<void> _sendAttachment(Future<Attachment> Function() upload) async {
     if (_connectivity?.isOnline == false) return _fail(attachmentOfflineError);

@@ -16,6 +16,7 @@ import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_selectable.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
 const _wideLayout = 600.0;
@@ -209,29 +210,31 @@ class _DefaultMessageInfo extends StatelessWidget {
       color: style.surface,
       child: SafeArea(
         top: false,
-        child: SingleChildScrollView(
-          padding: EdgeInsets.only(bottom: spacing.md),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.xs, spacing.xs),
-                child: Row(
-                  children: [
-                    Expanded(child: Text(l10n.messageInfo, style: style.typography.title)),
-                    IconButton(
-                      tooltip: l10n.close,
-                      onPressed: () => Navigator.of(context).maybePop(),
-                      icon: const Icon(Icons.close),
-                    ),
-                  ],
+        child: CommunitySelectable(
+          child: SingleChildScrollView(
+            padding: EdgeInsets.only(bottom: spacing.md),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Padding(
+                  padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.xs, spacing.xs),
+                  child: Row(
+                    children: [
+                      Expanded(child: Text(l10n.messageInfo, style: style.typography.title)),
+                      IconButton(
+                        tooltip: l10n.close,
+                        onPressed: () => Navigator.of(context).maybePop(),
+                        icon: const Icon(Icons.close),
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              _MessagePreview(message: d.message, sentAt: info?.sentAt ?? d.message.createdAt, details: d),
-              SizedBox(height: spacing.sm),
-              body,
-            ],
+                _MessagePreview(message: d.message, sentAt: info?.sentAt ?? d.message.createdAt, details: d),
+                SizedBox(height: spacing.sm),
+                body,
+              ],
+            ),
           ),
         ),
       ),

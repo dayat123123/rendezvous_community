@@ -24,6 +24,7 @@ import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_selectable.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -112,12 +113,20 @@ class _ChatRoomView extends StatelessWidget {
             _RoomSurface(
               child: Column(
                 children: [
-                  if (header != null) header! else if (showHeader) const RoomHeader(),
-                  const _ReconnectBanner(),
-                  const StockRoomBanner(),
-                  const RoomModerationBanner(),
-                  const DmRequestNotice(),
-                  const Expanded(child: MessageList()),
+                  Expanded(
+                    child: CommunitySelectable(
+                      child: Column(
+                        children: [
+                          if (header != null) header! else if (showHeader) const RoomHeader(),
+                          const _ReconnectBanner(),
+                          const StockRoomBanner(),
+                          const RoomModerationBanner(),
+                          const DmRequestNotice(),
+                          const Expanded(child: MessageList()),
+                        ],
+                      ),
+                    ),
+                  ),
                   const _TypingIndicator(),
                   const CommunityDivider(),
                   composer ?? const MessageComposer(),

@@ -3205,6 +3205,24 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Lainnya'**
   String get moreActions;
+
+  /// No description provided for @attachmentsTooMany.
+  ///
+  /// In id, this message translates to:
+  /// **'Maksimal 4 lampiran per pesan.'**
+  String get attachmentsTooMany;
+
+  /// No description provided for @removeAttachment.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus lampiran'**
+  String get removeAttachment;
+
+  /// No description provided for @imageTooLarge.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar terlalu besar untuk dikirim.'**
+  String get imageTooLarge;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

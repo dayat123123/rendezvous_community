@@ -617,5 +617,8 @@
   "messageInfoFailed": "Info pesan tidak bisa dimuat.",
   "copyMessage": "Salin",
   "messageCopied": "Pesan disalin",
-  "moreActions": "Lainnya"
+  "moreActions": "Lainnya",
+  "attachmentsTooMany": "Maksimal 4 lampiran per pesan.",
+  "removeAttachment": "Hapus lampiran",
+  "imageTooLarge": "Gambar terlalu besar untuk dikirim."
 }

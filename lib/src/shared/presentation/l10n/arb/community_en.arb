@@ -540,5 +540,8 @@
   "messageInfoFailed": "Message info couldn't be loaded.",
   "copyMessage": "Copy",
   "messageCopied": "Message copied",
-  "moreActions": "More"
+  "moreActions": "More",
+  "attachmentsTooMany": "Up to 4 attachments per message.",
+  "removeAttachment": "Remove attachment",
+  "imageTooLarge": "The image is too large to send."
 }

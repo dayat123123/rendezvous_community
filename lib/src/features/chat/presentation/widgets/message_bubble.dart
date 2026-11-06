@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -366,7 +367,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
       );
     } else if (text.isNotEmpty) {
       message = support
-          ? SelectableText(text, style: body)
+          ? (kIsWeb || isDesktopPlatform(context) ? Text(text, style: body) : SelectableText(text, style: body))
           : line == t.link
           ? SocialText(text, style: body, source: 'chat')
           : Theme(

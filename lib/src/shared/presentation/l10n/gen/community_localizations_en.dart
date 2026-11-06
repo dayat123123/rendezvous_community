@@ -1787,4 +1787,13 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get moreActions => 'More';
+
+  @override
+  String get attachmentsTooMany => 'Up to 4 attachments per message.';
+
+  @override
+  String get removeAttachment => 'Remove attachment';
+
+  @override
+  String get imageTooLarge => 'The image is too large to send.';
 }
