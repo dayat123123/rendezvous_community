@@ -33,6 +33,7 @@ const _muted = Color(0xFFA8ACB1);
 const _minScale = 1.0;
 const _maxScale = 5.0;
 const _zoomStep = 1.5;
+const _iconSize = 21.0;
 
 bool get _savesWithDialog =>
     !kIsWeb &&
@@ -378,12 +379,18 @@ class _DefaultImageViewerState extends State<_DefaultImageViewer> {
                         onPressed: _scale < _maxScale - 0.01 ? () => _zoomBy(_zoomStep) : null,
                       ),
                       if (onReply != null)
-                        _BarButton(icon: Icons.reply_outlined, tooltip: l10n.replyToMessage, onPressed: onReply),
+                        _BarButton(
+                          icon: Icons.reply_outlined,
+                          size: 20,
+                          tooltip: l10n.replyToMessage,
+                          onPressed: onReply,
+                        ),
                       if (onReact != null && d.reactionChoices.isNotEmpty)
                         _ReactButton(choices: d.reactionChoices, onReact: onReact),
                       if (onCopy != null)
                         _BarButton(
                           icon: Icons.content_copy_outlined,
+                          size: 16,
                           tooltip: l10n.imageCopy,
                           onPressed: _busy ? null : () => _run(onCopy),
                         ),
@@ -400,7 +407,7 @@ class _DefaultImageViewerState extends State<_DefaultImageViewer> {
                         ],
                       ),
                       const SizedBox(width: 4),
-                      _BarButton(icon: Icons.close_rounded, tooltip: l10n.close, onPressed: d.onClose),
+                      _BarButton(icon: Icons.close_rounded, size: 22, tooltip: l10n.close, onPressed: d.onClose),
                       const SizedBox(width: 12),
                     ],
                   ),
@@ -512,14 +519,24 @@ class _SenderLabel extends StatelessWidget {
                   user.name,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: text.titleSmall?.copyWith(color: _onSurface, fontWeight: FontWeight.w600),
+                  style: text.titleSmall?.copyWith(
+                    color: _onSurface,
+                    fontSize: 14,
+                    height: 1.25,
+                    fontWeight: FontWeight.w600,
+                  ),
                 ),
               if (time != null)
                 Text(
                   time,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: text.bodySmall?.copyWith(color: _muted),
+                  style: text.bodySmall?.copyWith(
+                    color: _onSurface.withValues(alpha: 0.6),
+                    fontSize: 12,
+                    height: 1.3,
+                    fontWeight: FontWeight.w400,
+                  ),
                 ),
             ],
           ),
@@ -540,15 +557,16 @@ ButtonStyle _barStyle() => IconButton.styleFrom(
 );
 
 class _BarButton extends StatelessWidget {
-  const _BarButton({required this.icon, required this.tooltip, this.onPressed});
+  const _BarButton({required this.icon, required this.tooltip, this.onPressed, this.size = _iconSize});
 
   final IconData icon;
   final String tooltip;
   final VoidCallback? onPressed;
+  final double size;
 
   @override
   Widget build(BuildContext context) =>
-      IconButton(tooltip: tooltip, style: _barStyle(), iconSize: 21, onPressed: onPressed, icon: Icon(icon));
+      IconButton(tooltip: tooltip, style: _barStyle(), iconSize: size, onPressed: onPressed, icon: Icon(icon));
 }
 
 class _MoreButton extends StatelessWidget {
@@ -561,7 +579,7 @@ class _MoreButton extends StatelessWidget {
   Widget build(BuildContext context) => PopupMenuButton<VoidCallback>(
     tooltip: tooltip,
     style: _barStyle(),
-    iconSize: 21,
+    iconSize: _iconSize,
     icon: const Icon(Icons.more_vert),
     color: const Color(0xFF2D2E30),
     position: PopupMenuPosition.under,
@@ -592,8 +610,8 @@ class _ReactButton extends StatelessWidget {
   Widget build(BuildContext context) => PopupMenuButton<String>(
     tooltip: context.communityL10n.imageReact,
     style: _barStyle(),
-    iconSize: 21,
-    icon: const Icon(Icons.add_reaction_outlined),
+    iconSize: _iconSize,
+    icon: const Icon(Icons.add_reaction_outlined, size: 17),
     color: const Color(0xFF2D2E30),
     position: PopupMenuPosition.under,
     onSelected: onReact,
