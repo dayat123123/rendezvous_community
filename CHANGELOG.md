@@ -11,6 +11,13 @@
     Windows diubah ke PNG dan diperkecil bila > 5 MB. Tanpa gambar di clipboard, teks ditempel seperti biasa.
   * Detail builder baru: `CommunityMessageDetails.replyToName`/`onReplyTap`, `CommunityComposerDetails.replyToName`/
     `onPaste`/`onContentInserted`. Aplikasi host perlu build ulang penuh (plugin native baru), bukan hot reload.
+  * **Info pesan** ala WhatsApp (server migrasi `0122`, RPC `get_message_info`): waktu terkirim dan dibaca per penerima
+    untuk pesan sendiri di DM, grup, dan chat CS; dialog di desktop, bottom sheet di ponsel, ikut diperbarui saat tanda
+    terima berubah. Slot builder `CommunityChatBuilders.messageInfo` (`CommunityMessageInfoDetails`), entitas
+    `MessageInfo`/`MessageRecipientInfo`, dan antarmuka `MessageInfoRepository` (terpisah dari `ChatRepository`, jadi
+    implementasi host tidak rusak).
+  * Menu ⋮ saat hover (Balas, Salin, Info pesan, Laporkan, Hapus) dan entri Salin/Info pesan di menu tekan lama.
+    `CommunityMessageDetails.onCopy`/`onInfo`.
 
 * **Tampilan bawaan baru: editorial + pola feed/chat umum.** Hanya tampilan; fungsi, perilaku, navigasi, dan API lama
   tidak berubah (semua tambahan opsional). Warna aksen tetap dari `ColorScheme.primary` aplikasi host. Rincian:

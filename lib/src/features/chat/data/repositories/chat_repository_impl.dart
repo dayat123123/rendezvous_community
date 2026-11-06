@@ -12,16 +12,19 @@ import 'package:rendezvous_community/src/features/chat/data/repositories/message
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_events.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/message_info.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_preview.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/message_index_repository.dart';
+import 'package:rendezvous_community/src/features/chat/domain/repositories/message_info_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/room_preview_repository.dart';
 import 'package:rendezvous_community/src/shared/data/models/attachment_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ChatRepositoryImpl implements ChatRepository, MessageIndexRepository, RoomPreviewRepository {
+class ChatRepositoryImpl
+    implements ChatRepository, MessageIndexRepository, RoomPreviewRepository, MessageInfoRepository {
   ChatRepositoryImpl(this._api, [this._realtime, this._cache]);
 
   final SocialRemoteDataSource _api;
@@ -190,6 +193,12 @@ class ChatRepositoryImpl implements ChatRepository, MessageIndexRepository, Room
     final me = await _api.requireUserId();
     await _api.update('chat_members', {'muted': muted}, {'room_id': roomId, 'user_id': me});
     _unreadChanged();
+  }
+
+  @override
+  Future<MessageInfo> getMessageInfo(String messageId) async {
+    final value = await _api.rpcValue('get_message_info', {'p_message_id': messageId});
+    return messageInfoFromJson(Map<String, dynamic>.from(value! as Map));
   }
 
   @override

@@ -3127,6 +3127,84 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Gambar dari clipboard tidak bisa dikirim.'**
   String get pasteImageFailed;
+
+  /// No description provided for @messageInfo.
+  ///
+  /// In id, this message translates to:
+  /// **'Info pesan'**
+  String get messageInfo;
+
+  /// No description provided for @messageInfoRead.
+  ///
+  /// In id, this message translates to:
+  /// **'Dibaca'**
+  String get messageInfoRead;
+
+  /// No description provided for @messageInfoDelivered.
+  ///
+  /// In id, this message translates to:
+  /// **'Terkirim'**
+  String get messageInfoDelivered;
+
+  /// No description provided for @messageInfoReadBy.
+  ///
+  /// In id, this message translates to:
+  /// **'Dibaca oleh'**
+  String get messageInfoReadBy;
+
+  /// No description provided for @messageInfoDeliveredTo.
+  ///
+  /// In id, this message translates to:
+  /// **'Terkirim ke'**
+  String get messageInfoDeliveredTo;
+
+  /// No description provided for @messageInfoNotYet.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum'**
+  String get messageInfoNotYet;
+
+  /// No description provided for @messageInfoTimeUnknown.
+  ///
+  /// In id, this message translates to:
+  /// **'Waktu tidak tercatat'**
+  String get messageInfoTimeUnknown;
+
+  /// No description provided for @messageInfoPending.
+  ///
+  /// In id, this message translates to:
+  /// **'{count} anggota belum menerima'**
+  String messageInfoPending(int count);
+
+  /// No description provided for @messageInfoTime.
+  ///
+  /// In id, this message translates to:
+  /// **'{day}, {time}'**
+  String messageInfoTime(String day, String time);
+
+  /// No description provided for @messageInfoFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Info pesan tidak bisa dimuat.'**
+  String get messageInfoFailed;
+
+  /// No description provided for @copyMessage.
+  ///
+  /// In id, this message translates to:
+  /// **'Salin'**
+  String get copyMessage;
+
+  /// No description provided for @messageCopied.
+  ///
+  /// In id, this message translates to:
+  /// **'Pesan disalin'**
+  String get messageCopied;
+
+  /// No description provided for @moreActions.
+  ///
+  /// In id, this message translates to:
+  /// **'Lainnya'**
+  String get moreActions;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

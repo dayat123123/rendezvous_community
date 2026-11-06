@@ -11,12 +11,14 @@ import 'package:rendezvous_community/src/features/chat/data/repositories/message
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_events.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/message_info.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
+import 'package:rendezvous_community/src/features/chat/domain/repositories/message_info_repository.dart';
 import 'package:rendezvous_community/src/shared/data/models/attachment_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
-class SupportChatRepository implements ChatRepository {
+class SupportChatRepository implements ChatRepository, MessageInfoRepository {
   SupportChatRepository(this._cs, {RealtimeGateway? realtime, required this._rooms})
     : _realtime = realtime,
       _hub = realtime == null
@@ -109,6 +111,12 @@ class SupportChatRepository implements ChatRepository {
 
   @override
   Future<void> setMuted(String roomId, {required bool muted}) => Future.error(_locked);
+
+  @override
+  Future<MessageInfo> getMessageInfo(String messageId) async {
+    final value = await _cs.inSchema('public').rpcValue('get_message_info', {'p_message_id': messageId});
+    return messageInfoFromJson(Map<String, dynamic>.from(value! as Map));
+  }
 
   @override
   Future<List<RoomMember>> getMembers(String roomId) async {

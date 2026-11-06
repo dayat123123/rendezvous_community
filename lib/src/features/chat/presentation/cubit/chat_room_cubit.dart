@@ -18,6 +18,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/chat_mess
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/gap_horizon.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_extras.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/message_info.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/outbox_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
@@ -26,6 +27,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/stock_roo
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_cache_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_extras_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
+import 'package:rendezvous_community/src/features/chat/domain/repositories/message_info_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/services/message_gap_fill.dart';
 import 'package:rendezvous_community/src/features/chat/domain/services/message_outbox.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/gap_fill_schedule.dart';
@@ -748,6 +750,16 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
   }
 
   void setReplyTo(ChatMessage? message) => emit(state.copyWith(replyTo: message));
+
+  bool canShowInfo(ChatMessage m) =>
+      _chat is MessageInfoRepository &&
+      state.isMine(m) &&
+      m.status == MessageStatus.sent &&
+      !m.isLocal &&
+      !m.isDeleted &&
+      (state.room?.tracksReceipts ?? false);
+
+  Future<MessageInfo> messageInfo(ChatMessage m) => (_chat as MessageInfoRepository).getMessageInfo(m.id);
 
   Future<void> send(String text, {List<Attachment> attachments = const []}) async {
     final body = text.trim();

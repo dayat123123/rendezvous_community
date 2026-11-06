@@ -56,6 +56,7 @@ export 'src/features/chat/domain/entities/chat_events.dart';
 export 'src/features/chat/domain/entities/chat_message.dart';
 export 'src/features/chat/domain/entities/chat_room.dart';
 export 'src/features/chat/domain/entities/message_extras.dart';
+export 'src/features/chat/domain/entities/message_info.dart';
 export 'src/features/chat/domain/entities/outbox_message.dart';
 export 'src/features/chat/domain/entities/receipt.dart';
 export 'src/features/chat/domain/entities/room_moderation.dart';
@@ -67,6 +68,7 @@ export 'src/features/chat/domain/repositories/chat_cache_repository.dart';
 export 'src/features/chat/domain/repositories/chat_extras_repository.dart';
 export 'src/features/chat/domain/repositories/chat_repository.dart';
 export 'src/features/chat/domain/repositories/message_index_repository.dart';
+export 'src/features/chat/domain/repositories/message_info_repository.dart';
 export 'src/features/chat/domain/repositories/room_preview_repository.dart';
 export 'src/features/chat/domain/services/message_outbox.dart'
     show

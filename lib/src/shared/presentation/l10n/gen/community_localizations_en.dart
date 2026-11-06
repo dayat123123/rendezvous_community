@@ -1744,4 +1744,47 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get pasteImageFailed => 'The image from the clipboard could not be sent.';
+
+  @override
+  String get messageInfo => 'Message info';
+
+  @override
+  String get messageInfoRead => 'Read';
+
+  @override
+  String get messageInfoDelivered => 'Delivered';
+
+  @override
+  String get messageInfoReadBy => 'Read by';
+
+  @override
+  String get messageInfoDeliveredTo => 'Delivered to';
+
+  @override
+  String get messageInfoNotYet => 'Not yet';
+
+  @override
+  String get messageInfoTimeUnknown => 'Time not recorded';
+
+  @override
+  String messageInfoPending(int count) {
+    return '$count members haven\'t received it';
+  }
+
+  @override
+  String messageInfoTime(String day, String time) {
+    return '$day, $time';
+  }
+
+  @override
+  String get messageInfoFailed => 'Message info couldn\'t be loaded.';
+
+  @override
+  String get copyMessage => 'Copy';
+
+  @override
+  String get messageCopied => 'Message copied';
+
+  @override
+  String get moreActions => 'More';
 }

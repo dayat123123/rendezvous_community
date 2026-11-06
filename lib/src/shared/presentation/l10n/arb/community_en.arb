@@ -527,5 +527,18 @@
   "errorAlreadyModerated": "This action was already taken.",
   "photo": "Photo",
   "replyOriginalMissing": "The original message could not be found.",
-  "pasteImageFailed": "The image from the clipboard could not be sent."
+  "pasteImageFailed": "The image from the clipboard could not be sent.",
+  "messageInfo": "Message info",
+  "messageInfoRead": "Read",
+  "messageInfoDelivered": "Delivered",
+  "messageInfoReadBy": "Read by",
+  "messageInfoDeliveredTo": "Delivered to",
+  "messageInfoNotYet": "Not yet",
+  "messageInfoTimeUnknown": "Time not recorded",
+  "messageInfoPending": "{count} members haven't received it",
+  "messageInfoTime": "{day}, {time}",
+  "messageInfoFailed": "Message info couldn't be loaded.",
+  "copyMessage": "Copy",
+  "messageCopied": "Message copied",
+  "moreActions": "More"
 }

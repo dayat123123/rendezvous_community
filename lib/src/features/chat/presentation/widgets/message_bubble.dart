@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
@@ -14,6 +15,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/room_mode
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_info_view.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_jump.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/receipt_icon.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_moderation.dart';
@@ -115,6 +117,8 @@ class MessageBubble extends StatelessWidget {
       onEscalate: room.canEscalate(m) ? moderate(RoomModerationAction.escalate) : null,
       replyToName: _replyName(context, room),
       onReplyTap: _revealReply(context),
+      onCopy: sent && (m.body?.trim().isNotEmpty ?? false) ? () => unawaited(_copy(context)) : null,
+      onInfo: cubit.canShowInfo(m) ? () => unawaited(showCommunityMessageInfo(context, m)) : null,
     );
     return details;
   }
@@ -143,6 +147,12 @@ class MessageBubble extends StatelessWidget {
     return () => unawaited(jump.reveal(id));
   }
 
+  Future<void> _copy(BuildContext context) async {
+    final l10n = context.communityL10n;
+    await Clipboard.setData(ClipboardData(text: message.body ?? ''));
+    if (context.mounted) showCommunityMessage(context, l10n.messageCopied);
+  }
+
   Future<void> _delete(BuildContext context, ChatRoomCubit cubit) async {
     if (await confirmCommunityAction(context, context.communityL10n.deleteMessageConfirm)) {
       await cubit.deleteMessage(message);
@@ -165,6 +175,8 @@ class MessageBubble extends StatelessWidget {
           actions: [
             for (final (handler, icon, label) in [
               (details.onReply, Icons.reply, l10n.replyToMessage),
+              (details.onCopy, Icons.copy_outlined, l10n.copyMessage),
+              (details.onInfo, Icons.info_outline, l10n.messageInfo),
               (details.onDelete, Icons.delete_outline, l10n.delete),
               (details.onReport, Icons.flag_outlined, l10n.report),
             ])
@@ -542,7 +554,17 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
     }
 
     const actionSize = BoxConstraints.tightFor(width: _actionSize, height: _actionSize);
-    final hasActions = d.onReply != null || d.onDelete != null || d.onReact != null;
+    final menu = [
+      for (final (handler, icon, label) in [
+        (d.onReply, Icons.reply, l10n.replyToMessage),
+        (d.onCopy, Icons.copy_outlined, l10n.copyMessage),
+        (d.onInfo, Icons.info_outline, l10n.messageInfo),
+        (d.onReport, Icons.flag_outlined, l10n.report),
+        (d.onDelete, Icons.delete_outline, l10n.delete),
+      ])
+        if (handler != null) (handler, icon, label),
+    ];
+    final hasActions = menu.isNotEmpty || d.onReact != null;
     final actions = SizedBox(
       width: _actionSize * 3,
       child: !hasActions
@@ -592,15 +614,32 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
                       onPressed: d.onReply,
                       icon: const Icon(Icons.reply),
                     ),
-                  if (d.onDelete != null)
-                    IconButton(
-                      tooltip: l10n.delete,
-                      constraints: actionSize,
-                      padding: EdgeInsets.zero,
+                  if (menu.isNotEmpty)
+                    PopupMenuButton<VoidCallback>(
+                      tooltip: l10n.moreActions,
                       iconSize: 18,
-                      color: style.textSecondary,
-                      onPressed: d.onDelete,
-                      icon: const Icon(Icons.delete_outline),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(minWidth: 180),
+                      style: IconButton.styleFrom(
+                        minimumSize: const Size.square(_actionSize),
+                        fixedSize: const Size.square(_actionSize),
+                      ),
+                      iconColor: style.textSecondary,
+                      icon: const Icon(Icons.more_vert),
+                      onSelected: (handler) => handler(),
+                      itemBuilder: (_) => [
+                        for (final (handler, icon, label) in menu)
+                          PopupMenuItem<VoidCallback>(
+                            value: handler,
+                            child: Row(
+                              children: [
+                                Icon(icon, size: 18, color: style.textSecondary),
+                                SizedBox(width: spacing.md),
+                                Text(label, style: style.typography.body),
+                              ],
+                            ),
+                          ),
+                      ],
                     ),
                 ],
               ),

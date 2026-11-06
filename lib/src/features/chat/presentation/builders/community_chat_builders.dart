@@ -21,6 +21,7 @@ class CommunityChatBuilders {
     this.reactions,
     this.receipt,
     this.messageActions,
+    this.messageInfo,
     this.roomNotice,
     this.moderationBanner,
     this.moderationDialog,
@@ -53,6 +54,7 @@ class CommunityChatBuilders {
   final CommunityPartBuilder<CommunityReactionsDetails>? reactions;
   final CommunityPartBuilder<CommunityReceiptDetails>? receipt;
   final CommunityPartBuilder<CommunityMessageActionsDetails>? messageActions;
+  final CommunityPartBuilder<CommunityMessageInfoDetails>? messageInfo;
   final CommunityPartBuilder<CommunityRoomNoticeDetails>? roomNotice;
   final CommunityPartBuilder<CommunityRoomModerationDetails>? moderationBanner;
   final CommunityPartBuilder<CommunityRoomModerationDialogDetails>? moderationDialog;
@@ -94,6 +96,7 @@ class CommunityChatBuilders {
       reactions: other.reactions ?? reactions,
       receipt: other.receipt ?? receipt,
       messageActions: other.messageActions ?? messageActions,
+      messageInfo: other.messageInfo ?? messageInfo,
       roomNotice: other.roomNotice ?? roomNotice,
       moderationBanner: other.moderationBanner ?? moderationBanner,
       moderationDialog: other.moderationDialog ?? moderationDialog,

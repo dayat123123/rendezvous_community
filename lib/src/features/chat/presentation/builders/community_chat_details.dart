@@ -6,6 +6,7 @@ import 'package:rendezvous_community/src/features/account/presentation/builders/
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_extras.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/message_info.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
 import 'package:rendezvous_community/src/features/message_requests/domain/entities/message_request.dart';
@@ -42,6 +43,8 @@ class CommunityMessageDetails {
     this.showAvatar = false,
     this.replyToName,
     this.onReplyTap,
+    this.onCopy,
+    this.onInfo,
   });
 
   final ChatMessage message;
@@ -71,6 +74,8 @@ class CommunityMessageDetails {
   final bool showAvatar;
   final String? replyToName;
   final VoidCallback? onReplyTap;
+  final VoidCallback? onCopy;
+  final VoidCallback? onInfo;
 
   bool get hasModeration => onHide != null || onMuteSender != null || onEscalate != null;
 }
@@ -320,6 +325,26 @@ class CommunityMessageActionsDetails {
   final String? moderationLabel;
   final String? moderationNote;
   final ValueChanged<String>? onReact;
+}
+
+class CommunityMessageInfoDetails {
+  const CommunityMessageInfoDetails({
+    required this.message,
+    required this.isGroup,
+    required this.loading,
+    required this.timeLabel,
+    this.info,
+    this.error,
+    this.onRetry,
+  });
+
+  final ChatMessage message;
+  final bool isGroup;
+  final bool loading;
+  final String Function(DateTime time) timeLabel;
+  final MessageInfo? info;
+  final Object? error;
+  final VoidCallback? onRetry;
 }
 
 enum CommunityRoomNoticeKind { pinned, slowMode, dmRequestReceived, dmRequestLimit, dmRequestSent, dmRequestInfo }

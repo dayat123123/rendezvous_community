@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_info_view.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_banners.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/typing_bubble.dart';
 import 'package:rendezvous_community/src/features/message_requests/presentation/widgets/community_message_requests.dart';
@@ -193,6 +194,88 @@ class _ChatRoomSample extends StatelessWidget {
             callbacks: const CommunityCallbacks(stockInfo: _stockInfo),
           ),
           child: CommunityChatRoom(roomId: 'dm-rina', repository: chat),
+        ),
+      ),
+    );
+  }
+}
+
+class _InfoChat extends FakeChatRepository implements MessageInfoRepository {
+  _InfoChat({super.rooms, super.members, super.messages, required this.info});
+
+  final MessageInfo info;
+
+  @override
+  Future<MessageInfo> getMessageInfo(String messageId) async => info;
+}
+
+class _MessageInfoSample extends StatelessWidget {
+  const _MessageInfoSample();
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final room = ChatRoom(
+      id: 'grp-info',
+      type: RoomType.group,
+      name: 'Diskusi Dividen',
+      createdAt: _ago(const Duration(days: 9)),
+      lastReadAt: _ago(Duration.zero),
+    );
+    final sent = _ago(const Duration(minutes: 42));
+    final message = ChatMessage(
+      id: 'info-1',
+      roomId: 'grp-info',
+      senderId: me.id,
+      sender: me,
+      body: 'Jadwal cum date TLKM sudah keluar, cek pengumuman di IDX ya.',
+      createdAt: sent,
+    );
+    final chat = _InfoChat(
+      rooms: [room],
+      members: [
+        RoomMember(user: me, lastReadAt: _ago(Duration.zero), lastDeliveredAt: _ago(Duration.zero), joinedAt: _now),
+        RoomMember(user: _rina, lastReadAt: _ago(Duration.zero), lastDeliveredAt: _ago(Duration.zero), joinedAt: _now),
+        RoomMember(user: alice, lastReadAt: sent, lastDeliveredAt: _ago(Duration.zero), joinedAt: _now),
+      ],
+      messages: [message],
+      info: MessageInfo(
+        messageId: 'info-1',
+        sentAt: sent,
+        recipients: [
+          MessageRecipientInfo(
+            user: _rina,
+            delivered: true,
+            read: true,
+            deliveredAt: _ago(const Duration(minutes: 41)),
+            readAt: _ago(const Duration(minutes: 37)),
+          ),
+          MessageRecipientInfo(
+            user: alice,
+            delivered: true,
+            read: false,
+            deliveredAt: _ago(const Duration(minutes: 40)),
+          ),
+          const MessageRecipientInfo(
+            user: UserSummary(id: 'u-dimas', username: 'dimas', displayName: 'Dimas Pratama'),
+            delivered: false,
+            read: false,
+          ),
+        ],
+      ),
+    );
+    return SizedBox(
+      height: 640,
+      child: Material(
+        color: style.surface,
+        child: CommunityScope(
+          dependencies: FakeDependencies(chat: chat),
+          child: CommunityChatRoom(
+            roomId: 'grp-info',
+            repository: chat,
+            showHeader: false,
+            composer: SizedBox(height: 470, child: MessageInfoView(message: message)),
+          ),
         ),
       ),
     );
@@ -414,6 +497,7 @@ class _RequestsSample extends StatelessWidget {
 final chatScenes = <ScreenshotScene>[
   ScreenshotScene('chat_rooms', padding: EdgeInsets.zero, (context) => const _RoomListSample()),
   ScreenshotScene('chat_room', padding: EdgeInsets.zero, (context) => const _ChatRoomSample()),
+  ScreenshotScene('chat_message_info', padding: EdgeInsets.zero, (context) => const _MessageInfoSample()),
   ScreenshotScene('chat_group', padding: EdgeInsets.zero, (context) => const _GroupRoomSample()),
   ScreenshotScene('chat_notices', padding: EdgeInsets.zero, (context) => const _NoticesSample()),
   ScreenshotScene('chat_requests', padding: EdgeInsets.zero, (context) => const _RequestsSample()),

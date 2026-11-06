@@ -602,5 +602,20 @@
   "errorAlreadyModerated": "Aksi ini sudah dilakukan sebelumnya.",
   "photo": "Foto",
   "replyOriginalMissing": "Pesan yang dibalas tidak ditemukan.",
-  "pasteImageFailed": "Gambar dari clipboard tidak bisa dikirim."
+  "pasteImageFailed": "Gambar dari clipboard tidak bisa dikirim.",
+  "messageInfo": "Info pesan",
+  "messageInfoRead": "Dibaca",
+  "messageInfoDelivered": "Terkirim",
+  "messageInfoReadBy": "Dibaca oleh",
+  "messageInfoDeliveredTo": "Terkirim ke",
+  "messageInfoNotYet": "Belum",
+  "messageInfoTimeUnknown": "Waktu tidak tercatat",
+  "messageInfoPending": "{count} anggota belum menerima",
+  "@messageInfoPending": {"placeholders": {"count": {"type": "int"}}},
+  "messageInfoTime": "{day}, {time}",
+  "@messageInfoTime": {"placeholders": {"day": {"type": "String"}, "time": {"type": "String"}}},
+  "messageInfoFailed": "Info pesan tidak bisa dimuat.",
+  "copyMessage": "Salin",
+  "messageCopied": "Pesan disalin",
+  "moreActions": "Lainnya"
 }

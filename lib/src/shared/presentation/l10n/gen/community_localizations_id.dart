@@ -1731,4 +1731,47 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get pasteImageFailed => 'Gambar dari clipboard tidak bisa dikirim.';
+
+  @override
+  String get messageInfo => 'Info pesan';
+
+  @override
+  String get messageInfoRead => 'Dibaca';
+
+  @override
+  String get messageInfoDelivered => 'Terkirim';
+
+  @override
+  String get messageInfoReadBy => 'Dibaca oleh';
+
+  @override
+  String get messageInfoDeliveredTo => 'Terkirim ke';
+
+  @override
+  String get messageInfoNotYet => 'Belum';
+
+  @override
+  String get messageInfoTimeUnknown => 'Waktu tidak tercatat';
+
+  @override
+  String messageInfoPending(int count) {
+    return '$count anggota belum menerima';
+  }
+
+  @override
+  String messageInfoTime(String day, String time) {
+    return '$day, $time';
+  }
+
+  @override
+  String get messageInfoFailed => 'Info pesan tidak bisa dimuat.';
+
+  @override
+  String get copyMessage => 'Salin';
+
+  @override
+  String get messageCopied => 'Pesan disalin';
+
+  @override
+  String get moreActions => 'Lainnya';
 }
