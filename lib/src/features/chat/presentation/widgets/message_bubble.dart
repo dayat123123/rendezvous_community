@@ -40,7 +40,7 @@ import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.da
 import 'package:rendezvous_community/src/shared/presentation/widgets/moderation_notice.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/social_text.dart';
 
-class MessageBubble extends StatelessWidget {
+class MessageBubble extends StatefulWidget {
   const MessageBubble({
     super.key,
     required this.message,
@@ -61,9 +61,32 @@ class MessageBubble extends StatelessWidget {
   final bool showAvatar;
 
   @override
+  State<MessageBubble> createState() => _MessageBubbleState();
+}
+
+class _MessageBubbleState extends State<MessageBubble> {
+  final _bubble = GlobalKey();
+
+  ChatMessage get message => widget.message;
+  bool get mine => widget.mine;
+  ReceiptStatus? get receipt => widget.receipt;
+  bool get showSender => widget.showSender;
+  bool get startsGroup => widget.startsGroup;
+  bool get endsGroup => widget.endsGroup;
+  bool get showAvatar => widget.showAvatar;
+
+  Rect? _bubbleRect() {
+    final box = (_bubble.currentContext ?? context).findRenderObject();
+    if (box is! RenderBox || !box.attached || !box.hasSize) return null;
+    return box.localToGlobal(Offset.zero) & box.size;
+  }
+
+  @override
   Widget build(BuildContext context) {
     final details = _details(context);
-    final fallback = message.isSystem ? SupportSystemNotice(message: message) : _DefaultBubble(details: details);
+    final fallback = message.isSystem
+        ? SupportSystemNotice(message: message)
+        : _DefaultBubble(details: details, anchor: _bubble);
     return buildChatPart(CommunityChatBuilders.of(context).message, context, details, fallback);
   }
 
@@ -120,7 +143,9 @@ class MessageBubble extends StatelessWidget {
       replyToName: _replyName(context, room),
       onReplyTap: _revealReply(context),
       onCopy: sent && (m.body?.trim().isNotEmpty ?? false) ? () => unawaited(_copy(context)) : null,
-      onInfo: cubit.canShowInfo(m) ? () => unawaited(showCommunityMessageInfo(context, m)) : null,
+      onInfo: cubit.canShowInfo(m)
+          ? () => unawaited(showCommunityMessageInfo(context, m, anchor: _bubbleRect()))
+          : null,
     );
     return details;
   }
@@ -287,7 +312,9 @@ ThemeData _bubbleLinkTheme(ThemeData theme, CommunityTheme t, Color link) {
 }
 
 class _DefaultBubble extends StatefulWidget {
-  const _DefaultBubble({required this.details});
+  const _DefaultBubble({required this.details, this.anchor});
+
+  final GlobalKey? anchor;
 
   final CommunityMessageDetails details;
 
@@ -692,7 +719,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
                   crossAxisAlignment: d.isMine ? CrossAxisAlignment.end : CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    decorated,
+                    KeyedSubtree(key: widget.anchor, child: decorated),
                     if (m.status == MessageStatus.pending || m.status == MessageStatus.failed)
                       MessageDeliveryNotice(details: d),
                   ],

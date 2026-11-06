@@ -1,7 +1,10 @@
 import 'package:flutter/gestures.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
+
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_info_view.dart';
 
 import '../../../support/chat_app.dart';
 import '../../../support/fakes.dart';
@@ -174,5 +177,39 @@ void main() {
 
     expect(copied, 'Kode order 4471');
     expect(find.text('Pesan disalin'), findsOneWidget);
+  });
+
+  testWidgets('on a wide screen message info opens as a panel beside the bubble, without a page', (tester) async {
+    useScreen(tester, const Size(1100, 800));
+    final chat = _InfoChat(
+      rooms: [directRoom()],
+      members: directMembers(),
+      messages: [_mine('m-1', 'Order sudah saya kirim')],
+      info: MessageInfo(
+        messageId: 'm-1',
+        sentAt: _sentAt,
+        recipients: [MessageRecipientInfo(user: alice, delivered: true, read: false, deliveredAt: _sentAt)],
+      ),
+    );
+    await pumpChat(tester, chat, const CommunityChatRoom(roomId: 'dm'));
+    final bubble = tester.getRect(find.text('Order sudah saya kirim'));
+
+    await _openMenu(tester, 'Order sudah saya kirim');
+    await tester.tap(find.text('Info pesan'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(AppBar), findsNothing);
+    expect(find.text('DIBACA'), findsOneWidget);
+    expect(find.text('TERKIRIM'), findsOneWidget);
+    final panel = tester.getRect(find.byType(MessageInfoView));
+    expect(panel.right, lessThanOrEqualTo(bubble.left));
+    expect(
+      find.descendant(of: find.byType(MessageInfoView), matching: find.text('Order sudah saya kirim')),
+      findsNothing,
+    );
+
+    await tester.tapAt(const Offset(20, 400));
+    await tester.pumpAndSettle();
+    expect(find.byType(MessageInfoView), findsNothing);
   });
 }

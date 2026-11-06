@@ -8,6 +8,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_info_view.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/image_viewer.dart';
 
 import '../../support/chat_app.dart';
@@ -136,8 +137,10 @@ void main() {
     expect(find.text('Gambar disimpan'), findsOneWidget);
   });
 
-  testWidgets('message info shows the photos of the message and opens them in the viewer', (tester) async {
+  testWidgets('message info on a phone shows the photos of the message and opens them in the viewer', (tester) async {
     await _pump(tester, _InfoChat(rooms: [directRoom()], members: directMembers(), messages: [_photoMessage()]));
+    useScreen(tester, const Size(420, 900));
+    await tester.pumpAndSettle();
     final mouse = await tester.createGesture(kind: PointerDeviceKind.mouse);
     addTearDown(mouse.removePointer);
     await mouse.addPointer(location: Offset.zero);
@@ -148,7 +151,7 @@ void main() {
     await tester.tap(find.text('Info pesan'));
     await tester.pumpAndSettle();
 
-    final info = find.byType(Dialog);
+    final info = find.byType(MessageInfoView);
     expect(find.descendant(of: info, matching: _photoTiles()), findsNWidgets(2));
     expect(find.descendant(of: info, matching: find.text('Bukti transfer')), findsOneWidget);
 

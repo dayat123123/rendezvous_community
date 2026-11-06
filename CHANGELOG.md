@@ -1,5 +1,11 @@
 ## 1.7.0
 
+* **Info pesan ala WhatsApp.** Desktop/tablet (≥ 600 px): panel kecil di samping gelembung (bukan dialog), bagian
+  **DIBACA**/**TERKIRIM** (grup: **DIBACA OLEH**/**TERKIRIM KE**) dalam kotak membulat, `•••` selama memuat atau bila
+  belum ada, tutup dengan klik di luar atau Esc. Ponsel: halaman **Info pesan** penuh (tombol kembali) dengan gelembung
+  pesan di atas dan kartu Dibaca/Terkirim beserta waktu, atau daftar pembaca grup dengan avatar.
+  `CommunityMessageInfoDetails.anchored`, `showCommunityMessageInfo(context, message, anchor:)`.
+
 * **Kolom input tetap rapi di desktop:** `CommunityComposerField` memakai kepadatan visual standar, sehingga kolom
   input chat/postingan/komentar tetap setinggi 48 px dengan teks di tengah walau aplikasi memakai `VisualDensity.compact`
   (bawaan Flutter di Windows, macOS, dan Linux). Sebelumnya teks turun sekitar 5 px.

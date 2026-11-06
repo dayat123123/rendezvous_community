@@ -341,9 +341,11 @@ class CommunityMessageInfoDetails {
     this.info,
     this.error,
     this.onRetry,
+    this.anchored = false,
   });
 
   final ChatMessage message;
+  final bool anchored;
   final bool isGroup;
   final bool loading;
   final String Function(DateTime time) timeLabel;
