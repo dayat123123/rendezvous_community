@@ -1722,4 +1722,13 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorAlreadyModerated => 'Aksi ini sudah dilakukan sebelumnya.';
+
+  @override
+  String get photo => 'Foto';
+
+  @override
+  String get replyOriginalMissing => 'Pesan yang dibalas tidak ditemukan.';
+
+  @override
+  String get pasteImageFailed => 'Gambar dari clipboard tidak bisa dikirim.';
 }

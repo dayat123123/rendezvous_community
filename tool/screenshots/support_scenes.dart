@@ -83,6 +83,9 @@ ChatMessage _message(
   SenderRole? role,
   MessageKind kind = MessageKind.text,
   Map<String, Object?> payload = const {},
+  String? replyToId,
+  String? replyToBody,
+  String? replyToSenderUsername,
 }) => ChatMessage(
   id: id,
   roomId: 'r-cs',
@@ -94,7 +97,45 @@ ChatMessage _message(
   senderRole: role,
   ticketId: 't-1',
   payload: payload,
+  replyToId: replyToId,
+  replyToBody: replyToBody,
+  replyToSenderUsername: replyToSenderUsername,
 );
+
+List<ChatMessage> _replyMessages() => [
+  ..._activeMessages().take(4),
+  _message(
+    'm-6',
+    5,
+    body: 'Biarkan saja dulu, nanti saya ubah sendiri.',
+    sender: me,
+    replyToId: 'm-4',
+    replyToBody: 'Halo Pak Budi, order limit di 9.150 belum tersentuh harga pasar. Apakah ingin diubah?',
+    replyToSenderUsername: 'cs_nadia',
+  ),
+];
+
+class _ReplyingComposer extends StatefulWidget {
+  const _ReplyingComposer();
+
+  @override
+  State<_ReplyingComposer> createState() => _ReplyingComposerState();
+}
+
+class _ReplyingComposerState extends State<_ReplyingComposer> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      final cubit = context.read<ChatRoomCubit>();
+      final target = cubit.state.messages.where((m) => m.id == 'm-4').firstOrNull;
+      if (target != null) cubit.setReplyTo(target);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => const SupportComposer();
+}
 
 List<ChatMessage> _activeMessages() => [
   _message(
@@ -154,12 +195,19 @@ List<ChatMessage> _closedMessages() => [
 ];
 
 class _SupportPanel extends StatelessWidget {
-  const _SupportPanel({required this.state, required this.messages, required this.height, this.closed = false});
+  const _SupportPanel({
+    required this.state,
+    required this.messages,
+    required this.height,
+    this.closed = false,
+    this.replying = false,
+  });
 
   final SupportState state;
   final List<ChatMessage> messages;
   final double height;
   final bool closed;
+  final bool replying;
 
   @override
   Widget build(BuildContext context) {
@@ -188,6 +236,8 @@ class _SupportPanel extends StatelessWidget {
                     showHeader: false,
                     composer: closed && ticket != null
                         ? SupportClosedBar(ticketNumber: ticket.ticketNumber)
+                        : replying
+                        ? const _ReplyingComposer()
                         : const SupportComposer(),
                   ),
                 ),
@@ -286,6 +336,16 @@ final supportScenes = <ScreenshotScene>[
       state: _state(_ticket(SupportStatus.claimed), sensitive: true),
       messages: _activeMessages(),
       height: 760,
+    ),
+    padding: EdgeInsets.zero,
+  ),
+  ScreenshotScene(
+    'support_reply',
+    (context) => _SupportPanel(
+      state: _state(_ticket(SupportStatus.claimed)),
+      messages: _replyMessages(),
+      height: 760,
+      replying: true,
     ),
     padding: EdgeInsets.zero,
   ),

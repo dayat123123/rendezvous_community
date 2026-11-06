@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
@@ -12,6 +14,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/room_mode
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_jump.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/receipt_icon.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_moderation.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
@@ -110,8 +113,34 @@ class MessageBubble extends StatelessWidget {
       onHide: moderating ? moderate(RoomModerationAction.hide) : null,
       onMuteSender: moderating ? moderate(RoomModerationAction.mute) : null,
       onEscalate: room.canEscalate(m) ? moderate(RoomModerationAction.escalate) : null,
+      replyToName: _replyName(context, room),
+      onReplyTap: _revealReply(context),
     );
     return details;
+  }
+
+  String? _replyName(BuildContext context, ChatRoomState room) {
+    final id = message.replyToId;
+    if (id == null) return null;
+    final username = message.replyToSenderUsername;
+    final target = room.messages.where((x) => x.id == id).firstOrNull;
+    final sender =
+        target?.sender ??
+        (username == null
+            ? null
+            : room.members.values.map((m) => m.user).where((u) => u.username == username).firstOrNull);
+    if ((target != null && room.isMine(target)) || (sender != null && sender.id == room.me?.id)) {
+      return context.communityL10n.you;
+    }
+    if (sender != null) return sender.name;
+    return username == null ? null : '@$username';
+  }
+
+  VoidCallback? _revealReply(BuildContext context) {
+    final id = message.replyToId;
+    final jump = MessageJumpScope.maybeOf(context);
+    if (id == null || jump == null) return null;
+    return () => unawaited(jump.reveal(id));
   }
 
   Future<void> _delete(BuildContext context, ChatRoomCubit cubit) async {
@@ -225,6 +254,7 @@ const _joinRadius = Radius.circular(6);
 const _tailRadius = Radius.circular(4);
 const _reactionHeight = 24.0;
 const _reactionOverlap = 8.0;
+const _actionSize = 36.0;
 
 final _linkThemes = Expando<(Color, ThemeData)>();
 
@@ -360,32 +390,45 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
                 ),
         ),
       if (m.replyToId != null)
-        Container(
-          margin: EdgeInsets.only(top: spacing.xxs, bottom: spacing.xs + spacing.xxs),
-          padding: EdgeInsets.fromLTRB(spacing.sm + spacing.xxs, spacing.xs + spacing.xxs, spacing.sm, spacing.xs + 2),
-          decoration: BoxDecoration(
+        Padding(
+          padding: EdgeInsets.only(top: spacing.xxs, bottom: spacing.xs + spacing.xxs),
+          child: Material(
             color: fg.withValues(alpha: d.isMine ? 0.14 : 0.06),
-            border: Border(left: BorderSide(color: line, width: 3)),
             borderRadius: style.radii.controlRadius,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (m.replyToSenderUsername != null)
-                Text(
-                  '@${m.replyToSenderUsername}',
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: style.typography.label.copyWith(color: line, fontWeight: FontWeight.w700),
+            clipBehavior: Clip.antiAlias,
+            child: InkWell(
+              onTap: d.onReplyTap,
+              child: Container(
+                padding: EdgeInsets.fromLTRB(
+                  spacing.sm + spacing.xxs,
+                  spacing.xs + spacing.xxs,
+                  spacing.md,
+                  spacing.xs + 2,
                 ),
-              Text(
-                m.replyToBody ?? l10n.messageDeleted,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                style: style.typography.meta.copyWith(color: fg.withValues(alpha: 0.85)),
+                decoration: BoxDecoration(
+                  border: Border(left: BorderSide(color: line, width: 4)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (d.replyToName != null)
+                      Text(
+                        d.replyToName!,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: style.typography.label.copyWith(color: line, fontWeight: FontWeight.w700),
+                      ),
+                    Text(
+                      m.replyToBody ?? l10n.messageDeleted,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: style.typography.meta.copyWith(color: fg.withValues(alpha: 0.85)),
+                    ),
+                  ],
+                ),
               ),
-            ],
+            ),
           ),
         ),
       if (!m.isDeleted) ...[
@@ -498,52 +541,71 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
       decorated = bubble;
     }
 
-    final actions = _hovered && (d.onReply != null || d.onDelete != null || d.onReact != null)
-        ? Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              if (d.onReact != null)
-                PopupMenuButton<String>(
-                  tooltip: l10n.reactionAdd,
-                  iconSize: 18,
-                  iconColor: style.textSecondary,
-                  icon: const Icon(Icons.add_reaction_outlined),
-                  onSelected: d.onReact,
-                  itemBuilder: (_) => [
-                    PopupMenuItem<String>(
-                      enabled: false,
-                      child: ReactionPicker(
-                        choices: d.reactionChoices,
-                        selected: myReaction(d.reactions),
-                        onSelected: (emoji) {
-                          Navigator.pop(context);
-                          d.onReact!(emoji);
-                        },
+    const actionSize = BoxConstraints.tightFor(width: _actionSize, height: _actionSize);
+    final hasActions = d.onReply != null || d.onDelete != null || d.onReact != null;
+    final actions = SizedBox(
+      width: _actionSize * 3,
+      child: !hasActions
+          ? null
+          : Visibility(
+              visible: _hovered,
+              maintainSize: true,
+              maintainAnimation: true,
+              maintainState: true,
+              child: Row(
+                mainAxisAlignment: d.isMine ? MainAxisAlignment.end : MainAxisAlignment.start,
+                children: [
+                  if (d.onReact != null)
+                    PopupMenuButton<String>(
+                      tooltip: l10n.reactionAdd,
+                      iconSize: 18,
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      style: IconButton.styleFrom(
+                        minimumSize: const Size.square(_actionSize),
+                        fixedSize: const Size.square(_actionSize),
                       ),
+                      iconColor: style.textSecondary,
+                      icon: const Icon(Icons.add_reaction_outlined),
+                      onSelected: d.onReact,
+                      itemBuilder: (_) => [
+                        PopupMenuItem<String>(
+                          enabled: false,
+                          child: ReactionPicker(
+                            choices: d.reactionChoices,
+                            selected: myReaction(d.reactions),
+                            onSelected: (emoji) {
+                              Navigator.pop(context);
+                              d.onReact!(emoji);
+                            },
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
-                ),
-              if (d.onReply != null)
-                IconButton(
-                  tooltip: l10n.replyToMessage,
-                  visualDensity: VisualDensity.compact,
-                  iconSize: 18,
-                  color: style.textSecondary,
-                  onPressed: d.onReply,
-                  icon: const Icon(Icons.reply),
-                ),
-              if (d.onDelete != null)
-                IconButton(
-                  tooltip: l10n.delete,
-                  visualDensity: VisualDensity.compact,
-                  iconSize: 18,
-                  color: style.textSecondary,
-                  onPressed: d.onDelete,
-                  icon: const Icon(Icons.delete_outline),
-                ),
-            ],
-          )
-        : const SizedBox(width: 108);
+                  if (d.onReply != null)
+                    IconButton(
+                      tooltip: l10n.replyToMessage,
+                      constraints: actionSize,
+                      padding: EdgeInsets.zero,
+                      iconSize: 18,
+                      color: style.textSecondary,
+                      onPressed: d.onReply,
+                      icon: const Icon(Icons.reply),
+                    ),
+                  if (d.onDelete != null)
+                    IconButton(
+                      tooltip: l10n.delete,
+                      constraints: actionSize,
+                      padding: EdgeInsets.zero,
+                      iconSize: 18,
+                      color: style.textSecondary,
+                      onPressed: d.onDelete,
+                      icon: const Icon(Icons.delete_outline),
+                    ),
+                ],
+              ),
+            ),
+    );
 
     final avatarSize = style.avatarSizes.small;
     return MouseRegion(

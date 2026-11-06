@@ -1,5 +1,17 @@
 ## 1.7.0
 
+* **Chat: balas pesan dan tempel gambar ala WhatsApp** (tanpa naik versi; API lama tidak berubah, semua tambahan
+  opsional).
+  * Composer: kolom input dan tombol kirim sama tinggi (48 px) dan sejajar; kartu "sedang membalas" di dalam kolom input
+    dengan garis warna pengirim, nama tampilan, cuplikan (ikon untuk foto/dokumen), dan tombol tutup.
+  * Kutipan di gelembung menampilkan nama tampilan pengirim (bukan `@username`, termasuk nama CS) dan "Anda" untuk pesan
+    sendiri. Mengetuk kutipan menggulir ke pesan asli lalu menyorotnya sebentar; halaman lama dimuat bila perlu.
+  * Hover tidak lagi melebarkan atau menyempitkan gelembung: ruang aksi selalu tetap.
+  * Tempel gambar dengan Ctrl+V/⌘V (paket `pasteboard`, Apache-2.0) atau dari keyboard Android; BMP dari clipboard
+    Windows diubah ke PNG dan diperkecil bila > 5 MB. Tanpa gambar di clipboard, teks ditempel seperti biasa.
+  * Detail builder baru: `CommunityMessageDetails.replyToName`/`onReplyTap`, `CommunityComposerDetails.replyToName`/
+    `onPaste`/`onContentInserted`. Aplikasi host perlu build ulang penuh (plugin native baru), bukan hot reload.
+
 * **Tampilan bawaan baru: editorial + pola feed/chat umum.** Hanya tampilan; fungsi, perilaku, navigasi, dan API lama
   tidak berubah (semua tambahan opsional). Warna aksen tetap dari `ColorScheme.primary` aplikasi host. Rincian:
   [doc/design.md](doc/design.md).

@@ -3109,6 +3109,24 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Aksi ini sudah dilakukan sebelumnya.'**
   String get errorAlreadyModerated;
+
+  /// No description provided for @photo.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto'**
+  String get photo;
+
+  /// No description provided for @replyOriginalMissing.
+  ///
+  /// In id, this message translates to:
+  /// **'Pesan yang dibalas tidak ditemukan.'**
+  String get replyOriginalMissing;
+
+  /// No description provided for @pasteImageFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar dari clipboard tidak bisa dikirim.'**
+  String get pasteImageFailed;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

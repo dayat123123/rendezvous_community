@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
@@ -26,6 +27,9 @@ class CommunityComposerField extends StatefulWidget {
     this.autofocus = false,
     this.enableAutocomplete = true,
     this.decoration,
+    this.style,
+    this.onPaste,
+    this.onContentInserted,
   });
 
   final TextEditingController controller;
@@ -39,6 +43,9 @@ class CommunityComposerField extends StatefulWidget {
   final bool autofocus;
   final bool enableAutocomplete;
   final InputDecoration? decoration;
+  final TextStyle? style;
+  final Future<bool> Function()? onPaste;
+  final ValueChanged<Uint8List>? onContentInserted;
 
   @override
   State<CommunityComposerField> createState() => _CommunityComposerFieldState();
@@ -86,6 +93,11 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
     final key = event.logicalKey;
     final shift = HardwareKeyboard.instance.isShiftPressed;
 
+    if (widget.onPaste != null && event is KeyDownEvent && _isPaste(key)) {
+      unawaited(_paste());
+      return KeyEventResult.handled;
+    }
+
     if (_suggestions.isNotEmpty) {
       if (key == LogicalKeyboardKey.arrowDown) {
         setState(() => _highlight = (_highlight + 1) % _suggestions.length);
@@ -111,6 +123,29 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
       return KeyEventResult.handled;
     }
     return KeyEventResult.ignored;
+  }
+
+  bool _isPaste(LogicalKeyboardKey key) {
+    if (key != LogicalKeyboardKey.keyV) return false;
+    final keyboard = HardwareKeyboard.instance;
+    final apple = defaultTargetPlatform == TargetPlatform.macOS || defaultTargetPlatform == TargetPlatform.iOS;
+    return apple ? keyboard.isMetaPressed : keyboard.isControlPressed;
+  }
+
+  Future<void> _paste() async {
+    if (await widget.onPaste!() || !mounted) return;
+    final text = (await Clipboard.getData(Clipboard.kTextPlain))?.text;
+    if (text == null || text.isEmpty || !mounted) return;
+    final value = widget.controller.value;
+    final selection = value.selection.isValid ? value.selection : TextSelection.collapsed(offset: value.text.length);
+    var insert = text;
+    final max = widget.maxLength;
+    if (max != null) {
+      final room = max - (value.text.length - (selection.end - selection.start));
+      if (room <= 0) return;
+      if (insert.length > room) insert = insert.substring(0, room);
+    }
+    widget.controller.value = value.replaced(selection, insert);
   }
 
   void _onTextChanged() {
@@ -233,7 +268,17 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
           keyboardType: TextInputType.multiline,
           textInputAction: TextInputAction.newline,
           textCapitalization: TextCapitalization.sentences,
+          style: widget.style,
           decoration: (widget.decoration ?? const InputDecoration()).copyWith(hintText: widget.hintText),
+          contentInsertionConfiguration: widget.onContentInserted == null
+              ? null
+              : ContentInsertionConfiguration(
+                  allowedMimeTypes: const ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
+                  onContentInserted: (content) {
+                    final data = content.data;
+                    if (data != null && data.isNotEmpty) widget.onContentInserted!(data);
+                  },
+                ),
         ),
       ],
     );

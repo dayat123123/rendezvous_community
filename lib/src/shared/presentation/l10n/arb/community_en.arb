@@ -524,5 +524,8 @@
   "errorNotRoomModerator": "You no longer moderate this room.",
   "errorRoomModeratorSuspended": "Your moderator rights are suspended.",
   "errorRoomModTarget": "Official accounts, other moderators, and your own messages cannot be moderated.",
-  "errorAlreadyModerated": "This action was already taken."
+  "errorAlreadyModerated": "This action was already taken.",
+  "photo": "Photo",
+  "replyOriginalMissing": "The original message could not be found.",
+  "pasteImageFailed": "The image from the clipboard could not be sent."
 }

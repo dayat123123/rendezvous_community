@@ -1735,4 +1735,13 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorAlreadyModerated => 'This action was already taken.';
+
+  @override
+  String get photo => 'Photo';
+
+  @override
+  String get replyOriginalMissing => 'The original message could not be found.';
+
+  @override
+  String get pasteImageFailed => 'The image from the clipboard could not be sent.';
 }

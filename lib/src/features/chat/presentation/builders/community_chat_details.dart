@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/widgets.dart';
 import 'package:rendezvous_community/src/core/network/realtime_status.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
@@ -38,6 +40,8 @@ class CommunityMessageDetails {
     this.onEscalate,
     this.endsGroup = true,
     this.showAvatar = false,
+    this.replyToName,
+    this.onReplyTap,
   });
 
   final ChatMessage message;
@@ -65,6 +69,8 @@ class CommunityMessageDetails {
   final VoidCallback? onEscalate;
   final bool endsGroup;
   final bool showAvatar;
+  final String? replyToName;
+  final VoidCallback? onReplyTap;
 
   bool get hasModeration => onHide != null || onMuteSender != null || onEscalate != null;
 }
@@ -86,6 +92,9 @@ class CommunityComposerDetails {
     this.cooldown = Duration.zero,
     this.onSendStockCard,
     this.mutedUntil,
+    this.replyToName,
+    this.onPaste,
+    this.onContentInserted,
   });
 
   final TextEditingController controller;
@@ -103,6 +112,9 @@ class CommunityComposerDetails {
   final Duration cooldown;
   final VoidCallback? onSendStockCard;
   final DateTime? mutedUntil;
+  final String? replyToName;
+  final Future<bool> Function()? onPaste;
+  final ValueChanged<Uint8List>? onContentInserted;
 
   bool get coolingDown => cooldown > Duration.zero;
 
