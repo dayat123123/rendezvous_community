@@ -1,5 +1,9 @@
 ## 1.7.0
 
+* **Kolom input tetap rapi di desktop:** `CommunityComposerField` memakai kepadatan visual standar, sehingga kolom
+  input chat/postingan/komentar tetap setinggi 48 px dengan teks di tengah walau aplikasi memakai `VisualDensity.compact`
+  (bawaan Flutter di Windows, macOS, dan Linux). Sebelumnya teks turun sekitar 5 px.
+
 * **Pesan sistem chat CS mengikuti bahasa aplikasi** (server migrasi `0123`): server menyimpan teks setiap pesan
   sistem tiket dalam Bahasa Indonesia dan Inggris (`payload.texts`, templat dari Pengaturan → Pesan otomatis, tanggal
   diformat per bahasa); `SupportSystemNotice` memilih sesuai `Localizations.localeOf(context)` dan ikut berganti saat

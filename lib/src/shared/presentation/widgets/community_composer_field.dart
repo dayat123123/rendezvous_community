@@ -65,6 +65,9 @@ class _UserSuggestion extends _Suggestion {
   final UserSummary user;
 }
 
+ThemeData _standardDensity(ThemeData theme) =>
+    theme.visualDensity == VisualDensity.standard ? theme : theme.copyWith(visualDensity: VisualDensity.standard);
+
 class _CommunityComposerFieldState extends State<CommunityComposerField> {
   late final FocusNode _focusNode = widget.focusNode ?? FocusNode();
   Timer? _debounce;
@@ -257,28 +260,31 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
               ),
             ),
           ),
-        TextField(
-          controller: widget.controller,
-          focusNode: _focusNode,
-          enabled: widget.enabled,
-          autofocus: widget.autofocus,
-          minLines: widget.minLines,
-          maxLines: widget.maxLines,
-          maxLength: widget.maxLength,
-          keyboardType: TextInputType.multiline,
-          textInputAction: TextInputAction.newline,
-          textCapitalization: TextCapitalization.sentences,
-          style: widget.style,
-          decoration: (widget.decoration ?? const InputDecoration()).copyWith(hintText: widget.hintText),
-          contentInsertionConfiguration: widget.onContentInserted == null
-              ? null
-              : ContentInsertionConfiguration(
-                  allowedMimeTypes: const ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
-                  onContentInserted: (content) {
-                    final data = content.data;
-                    if (data != null && data.isNotEmpty) widget.onContentInserted!(data);
-                  },
-                ),
+        Theme(
+          data: _standardDensity(Theme.of(context)),
+          child: TextField(
+            controller: widget.controller,
+            focusNode: _focusNode,
+            enabled: widget.enabled,
+            autofocus: widget.autofocus,
+            minLines: widget.minLines,
+            maxLines: widget.maxLines,
+            maxLength: widget.maxLength,
+            keyboardType: TextInputType.multiline,
+            textInputAction: TextInputAction.newline,
+            textCapitalization: TextCapitalization.sentences,
+            style: widget.style,
+            decoration: (widget.decoration ?? const InputDecoration()).copyWith(hintText: widget.hintText),
+            contentInsertionConfiguration: widget.onContentInserted == null
+                ? null
+                : ContentInsertionConfiguration(
+                    allowedMimeTypes: const ['image/png', 'image/jpeg', 'image/gif', 'image/webp'],
+                    onContentInserted: (content) {
+                      final data = content.data;
+                      if (data != null && data.isNotEmpty) widget.onContentInserted!(data);
+                    },
+                  ),
+          ),
         ),
       ],
     );
