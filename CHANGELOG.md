@@ -1,5 +1,10 @@
 ## 1.7.0
 
+* **Pesan sistem chat CS mengikuti bahasa aplikasi** (server migrasi `0123`): server menyimpan teks setiap pesan
+  sistem tiket dalam Bahasa Indonesia dan Inggris (`payload.texts`, templat dari Pengaturan → Pesan otomatis, tanggal
+  diformat per bahasa); `SupportSystemNotice` memilih sesuai `Localizations.localeOf(context)` dan ikut berganti saat
+  bahasa diganti. Pesan lama tanpa terjemahan tetap memakai `body`. `supportNoticeText(message, languageCode)`.
+
 * **Chat: balas pesan dan tempel gambar ala WhatsApp** (tanpa naik versi; API lama tidak berubah, semua tambahan
   opsional).
   * Composer: kolom input dan tombol kirim sama tinggi (48 px) dan sejajar; kartu "sedang membalas" di dalam kolom input

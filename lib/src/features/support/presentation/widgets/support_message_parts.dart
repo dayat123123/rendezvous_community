@@ -10,6 +10,15 @@ import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+String supportNoticeText(ChatMessage message, String languageCode) {
+  final texts = message.payload['texts'];
+  if (texts is Map) {
+    final localized = texts[languageCode];
+    if (localized is String && localized.trim().isNotEmpty) return localized;
+  }
+  return message.body ?? '';
+}
+
 class SupportSystemNotice extends StatelessWidget {
   const SupportSystemNotice({super.key, required this.message});
 
@@ -40,7 +49,7 @@ class SupportSystemNotice extends StatelessWidget {
         (actions?.canRate?.call(ticketId) ?? false);
     final details = CommunitySupportNoticeDetails(
       message: message,
-      text: message.body ?? '',
+      text: supportNoticeText(message, Localizations.localeOf(context).languageCode),
       icon: iconFor(message.systemCode),
       timeLabel: l10n.clockTime(message.createdAt),
       rateLabel: rateable ? l10n.supportRatePrompt : null,
