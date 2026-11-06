@@ -97,92 +97,122 @@ class _MessageListState extends State<MessageList> {
     });
   }
 
+  bool _sentByMe(ChatRoomState before, ChatRoomState after) {
+    final latest = after.messages.firstOrNull;
+    if (latest == null || !latest.isLocal || !after.isMine(latest)) return false;
+    return before.messages.firstOrNull?.clientId != latest.clientId;
+  }
+
+  void _scrollToLatest() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_scroll.hasClients) return;
+      final position = _scroll.position;
+      if (position.pixels <= position.minScrollExtent) return;
+      if (position.pixels > position.viewportDimension * 3) {
+        _scroll.jumpTo(position.minScrollExtent);
+      } else {
+        unawaited(
+          _scroll.animateTo(
+            position.minScrollExtent,
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeOutCubic,
+          ),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final builders = CommunityChatBuilders.of(context);
     final l10n = context.communityL10n;
     final spacing = CommunityStyle.of(context).spacing;
-    return BlocBuilder<ChatRoomCubit, ChatRoomState>(
-      buildWhen: (a, b) =>
-          a.messages != b.messages ||
-          a.members != b.members ||
-          a.loadingOlder != b.loadingOlder ||
-          a.room != b.room ||
-          a.stockRoom?.moderatorIds != b.stockRoom?.moderatorIds ||
-          a.stockRoom?.mutes != b.stockRoom?.mutes ||
-          a.me != b.me,
-      builder: (context, state) {
-        if (state.messages.isEmpty) {
-          return buildChatPart(
-            builders.empty,
-            context,
-            CommunityEmptyDetails(kind: CommunityChatEmpty.messages, message: l10n.messageHint),
-            CommunityEmptyView(message: l10n.messageHint, icon: Icons.waving_hand_outlined),
-          );
-        }
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          if (mounted) _loadOlderNearTop();
-        });
-        return MessageJumpScope(
-          reveal: _reveal,
-          highlighted: _highlight,
-          child: ListView.builder(
-            addAutomaticKeepAlives: false,
-            controller: _scroll,
-            reverse: true,
-            padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
-            itemCount: state.messages.length + (state.loadingOlder ? 1 : 0),
-            itemBuilder: (context, i) {
-              if (i == state.messages.length) {
-                return buildChatPart(
-                  builders.loading,
-                  context,
-                  const CommunityLoadingDetails(CommunityChatLoad.olderMessages),
-                  const CommunityLoadingView(),
+    return BlocListener<ChatRoomCubit, ChatRoomState>(
+      listenWhen: _sentByMe,
+      listener: (_, _) => _scrollToLatest(),
+      child: BlocBuilder<ChatRoomCubit, ChatRoomState>(
+        buildWhen: (a, b) =>
+            a.messages != b.messages ||
+            a.members != b.members ||
+            a.loadingOlder != b.loadingOlder ||
+            a.room != b.room ||
+            a.stockRoom?.moderatorIds != b.stockRoom?.moderatorIds ||
+            a.stockRoom?.mutes != b.stockRoom?.mutes ||
+            a.me != b.me,
+        builder: (context, state) {
+          if (state.messages.isEmpty) {
+            return buildChatPart(
+              builders.empty,
+              context,
+              CommunityEmptyDetails(kind: CommunityChatEmpty.messages, message: l10n.messageHint),
+              CommunityEmptyView(message: l10n.messageHint, icon: Icons.waving_hand_outlined),
+            );
+          }
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) _loadOlderNearTop();
+          });
+          return MessageJumpScope(
+            reveal: _reveal,
+            highlighted: _highlight,
+            child: ListView.builder(
+              addAutomaticKeepAlives: false,
+              controller: _scroll,
+              reverse: true,
+              padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
+              itemCount: state.messages.length + (state.loadingOlder ? 1 : 0),
+              itemBuilder: (context, i) {
+                if (i == state.messages.length) {
+                  return buildChatPart(
+                    builders.loading,
+                    context,
+                    const CommunityLoadingDetails(CommunityChatLoad.olderMessages),
+                    const CommunityLoadingView(),
+                  );
+                }
+                final message = state.messages[i];
+                final older = i + 1 < state.messages.length ? state.messages[i + 1] : null;
+                final newer = i > 0 ? state.messages[i - 1] : null;
+                final newDay = older == null || !_sameDay(older.createdAt, message.createdAt);
+                final grouped = older != null && !newDay && _joins(older, message);
+                final continued =
+                    newer != null && _sameDay(message.createdAt, newer.createdAt) && _joins(message, newer);
+                final mine = state.isMine(message);
+                final type = state.room?.type;
+                final bubble = MessageBubble(
+                  key: ValueKey(message.clientId ?? message.id),
+                  message: message,
+                  mine: mine,
+                  receipt: state.receiptOf(message),
+                  showSender: !grouped && type != RoomType.direct && !mine,
+                  startsGroup: !grouped,
+                  endsGroup: !continued,
+                  showAvatar: !mine && (type == RoomType.group || type == RoomType.stock),
                 );
-              }
-              final message = state.messages[i];
-              final older = i + 1 < state.messages.length ? state.messages[i + 1] : null;
-              final newer = i > 0 ? state.messages[i - 1] : null;
-              final newDay = older == null || !_sameDay(older.createdAt, message.createdAt);
-              final grouped = older != null && !newDay && _joins(older, message);
-              final continued = newer != null && _sameDay(message.createdAt, newer.createdAt) && _joins(message, newer);
-              final mine = state.isMine(message);
-              final type = state.room?.type;
-              final bubble = MessageBubble(
-                key: ValueKey(message.clientId ?? message.id),
-                message: message,
-                mine: mine,
-                receipt: state.receiptOf(message),
-                showSender: !grouped && type != RoomType.direct && !mine,
-                startsGroup: !grouped,
-                endsGroup: !continued,
-                showAvatar: !mine && (type == RoomType.group || type == RoomType.stock),
-              );
-              final anchored = MessageAnchor(
-                key: ValueKey('anchor-${message.clientId ?? message.id}'),
-                id: message.id,
-                index: i,
-                anchors: _anchors,
-                highlighted: _highlight,
-                child: bubble,
-              );
-              if (!newDay) return anchored;
-              final divider = buildChatPart(
-                builders.dayDivider,
-                context,
-                CommunityDayDetails(day: message.createdAt, label: l10n.dayLabel(message.createdAt)),
-                _DayDivider(time: message.createdAt),
-              );
-              return Column(
-                key: ValueKey('day-${message.clientId ?? message.id}'),
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [divider, anchored],
-              );
-            },
-          ),
-        );
-      },
+                final anchored = MessageAnchor(
+                  key: ValueKey('anchor-${message.clientId ?? message.id}'),
+                  id: message.id,
+                  index: i,
+                  anchors: _anchors,
+                  highlighted: _highlight,
+                  child: bubble,
+                );
+                if (!newDay) return anchored;
+                final divider = buildChatPart(
+                  builders.dayDivider,
+                  context,
+                  CommunityDayDetails(day: message.createdAt, label: l10n.dayLabel(message.createdAt)),
+                  _DayDivider(time: message.createdAt),
+                );
+                return Column(
+                  key: ValueKey('day-${message.clientId ?? message.id}'),
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [divider, anchored],
+                );
+              },
+            ),
+          );
+        },
+      ),
     );
   }
 }

@@ -15,6 +15,7 @@
     kirim. Antrean tetap ada bila unggahan gagal. `ChatRoomCubit.sendWithFiles`, `ChatOutgoingFile`,
     `CommunityComposerDetails.files`/`onRemoveFile`.
   * Ikon tombol lampiran: klip kertas bila PDF diizinkan (chat CS), ikon gambar bila hanya gambar.
+  * Setelah mengirim pesan, daftar chat menggulir sekali ke pesan terbaru (juga saat sedang membaca pesan lama).
   * Teks chat bisa diseleksi dengan mouse dan disalin di desktop dan web (`SelectionArea` meliputi header room,
     pesan, kutipan, pesan sistem, header chat CS, dan Info pesan; kolom input tidak). Di ponsel tekan lama tetap
     membuka menu aksi berisi Salin.

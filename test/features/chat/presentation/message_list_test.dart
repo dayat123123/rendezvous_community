@@ -29,4 +29,28 @@ void main() {
     await tester.pumpAndSettle();
     expect(chat.olderCursors, hasLength(2));
   });
+
+  testWidgets('sending a message scrolls back to the newest message once', (tester) async {
+    useScreen(tester, const Size(1000, 700));
+    final chat = repository(45);
+    await pumpChat(tester, chat, const CommunityChatRoom(roomId: 'dm'));
+    final list = find.byType(ListView);
+    await tester.drag(list, const Offset(0, 1500));
+    await tester.pumpAndSettle();
+    final position = tester
+        .state<ScrollableState>(find.descendant(of: list, matching: find.byType(Scrollable)))
+        .position;
+    expect(position.pixels, greaterThan(0));
+
+    await tester.enterText(find.byType(TextField), 'Pesan baru saya');
+    await tester.tap(find.byIcon(Icons.send));
+    await tester.pumpAndSettle();
+
+    expect(position.pixels, position.minScrollExtent);
+    expect(find.text('Pesan baru saya').hitTestable(), findsOneWidget);
+
+    await tester.drag(list, const Offset(0, 400));
+    await tester.pumpAndSettle();
+    expect(position.pixels, greaterThan(0));
+  });
 }
