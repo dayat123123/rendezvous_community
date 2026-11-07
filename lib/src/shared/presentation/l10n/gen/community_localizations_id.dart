@@ -1838,4 +1838,19 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String jumpToLatestUnread(int count) {
     return '$count pesan baru, ke pesan terbaru';
   }
+
+  @override
+  String get contactCall => 'Telepon';
+
+  @override
+  String get contactSendEmail => 'Kirim email';
+
+  @override
+  String get contactCopy => 'Salin';
+
+  @override
+  String get contactPhoneCopied => 'Nomor disalin';
+
+  @override
+  String get contactEmailCopied => 'Email disalin';
 }

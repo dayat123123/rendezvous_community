@@ -560,5 +560,10 @@
   "imageCopyFailed": "The image couldn't be copied.",
   "imageReact": "React",
   "jumpToLatest": "Jump to latest",
-  "jumpToLatestUnread": "{count} new messages, jump to latest"
+  "jumpToLatestUnread": "{count} new messages, jump to latest",
+  "contactCall": "Call",
+  "contactSendEmail": "Send email",
+  "contactCopy": "Copy",
+  "contactPhoneCopied": "Number copied",
+  "contactEmailCopied": "Email copied"
 }

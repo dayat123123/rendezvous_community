@@ -1851,4 +1851,19 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String jumpToLatestUnread(int count) {
     return '$count new messages, jump to latest';
   }
+
+  @override
+  String get contactCall => 'Call';
+
+  @override
+  String get contactSendEmail => 'Send email';
+
+  @override
+  String get contactCopy => 'Copy';
+
+  @override
+  String get contactPhoneCopied => 'Number copied';
+
+  @override
+  String get contactEmailCopied => 'Email copied';
 }

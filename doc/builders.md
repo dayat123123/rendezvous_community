@@ -56,6 +56,7 @@ Keempat set baru sudah tersambung ke `CommunityBuilders` (`discovery`, `support`
 | `CommunityNetworkImage` (placeholder/gagal) | ya | ya (`shared.imagePlaceholder`) | `CommunityImagePlaceholderDetails` (`failed`) |
 | `confirmCommunityAction` (dialog) | tidak | ya (`shared.confirmDialog`) | `CommunityConfirmDetails` (`message`, `confirmLabel`, `cancelLabel`; `onConfirm`, `onCancel`) |
 | `openCommunityLink` (dialog tautan) | ya | ya (`shared.linkDialog`) | `CommunityLinkConfirmDetails` (`uri`, `domain`, `title`, `body`, `confirmLabel`, `cancelLabel`; `onConfirm`, `onCancel`) |
+| `showCommunityContactActions` (email/telepon di teks) | ya | ya (`shared.contactActions`) | `CommunityContactActionsDetails` (`uri`, `value`, `phone`, `openLabel`, `copyLabel`, `cancelLabel`; `onOpen`, `onCopy`, `onCancel`) |
 | `SocialText` | ya | token saja | warna tautan `CommunityTheme.link`; gaya teks dari pemanggil (`style: CommunityStyle.of(context).typography.body`) |
 | `showCommunityError`, `showCommunityMessage` (SnackBar) | tidak | tema host | ikut `SnackBarTheme` host; tidak perlu builder |
 

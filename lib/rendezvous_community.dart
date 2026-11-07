@@ -242,7 +242,7 @@ export 'src/shared/presentation/widgets/community_divider.dart';
 export 'src/shared/presentation/widgets/community_network_image.dart' show CommunityNetworkImage;
 export 'src/shared/presentation/widgets/community_section_header.dart';
 export 'src/shared/presentation/widgets/community_tag.dart';
-export 'src/shared/presentation/widgets/link_opener.dart' show openCommunityLink;
+export 'src/shared/presentation/widgets/link_opener.dart' show openCommunityLink, showCommunityContactActions;
 export 'src/shared/presentation/widgets/moderation_notice.dart';
 export 'src/shared/presentation/widgets/social_text.dart';
 export 'src/shared/presentation/widgets/state_views.dart'

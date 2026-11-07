@@ -24,6 +24,7 @@ class CommunitySharedBuilders {
     this.composerSuggestion,
     this.confirmDialog,
     this.linkDialog,
+    this.contactActions,
     this.imagePlaceholder,
     this.imageViewer,
   });
@@ -48,6 +49,7 @@ class CommunitySharedBuilders {
   final CommunityPartBuilder<CommunityComposerSuggestionDetails>? composerSuggestion;
   final CommunityPartBuilder<CommunityConfirmDetails>? confirmDialog;
   final CommunityPartBuilder<CommunityLinkConfirmDetails>? linkDialog;
+  final CommunityPartBuilder<CommunityContactActionsDetails>? contactActions;
   final CommunityPartBuilder<CommunityImagePlaceholderDetails>? imagePlaceholder;
   final CommunityPartBuilder<CommunityImageViewerDetails>? imageViewer;
 
@@ -81,6 +83,7 @@ class CommunitySharedBuilders {
       composerSuggestion: other.composerSuggestion ?? composerSuggestion,
       confirmDialog: other.confirmDialog ?? confirmDialog,
       linkDialog: other.linkDialog ?? linkDialog,
+      contactActions: other.contactActions ?? contactActions,
       imagePlaceholder: other.imagePlaceholder ?? imagePlaceholder,
       imageViewer: other.imageViewer ?? imageViewer,
     );

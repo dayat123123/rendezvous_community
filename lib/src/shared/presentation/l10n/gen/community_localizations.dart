@@ -3325,6 +3325,36 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'{count} pesan baru, ke pesan terbaru'**
   String jumpToLatestUnread(int count);
+
+  /// No description provided for @contactCall.
+  ///
+  /// In id, this message translates to:
+  /// **'Telepon'**
+  String get contactCall;
+
+  /// No description provided for @contactSendEmail.
+  ///
+  /// In id, this message translates to:
+  /// **'Kirim email'**
+  String get contactSendEmail;
+
+  /// No description provided for @contactCopy.
+  ///
+  /// In id, this message translates to:
+  /// **'Salin'**
+  String get contactCopy;
+
+  /// No description provided for @contactPhoneCopied.
+  ///
+  /// In id, this message translates to:
+  /// **'Nomor disalin'**
+  String get contactPhoneCopied;
+
+  /// No description provided for @contactEmailCopied.
+  ///
+  /// In id, this message translates to:
+  /// **'Email disalin'**
+  String get contactEmailCopied;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

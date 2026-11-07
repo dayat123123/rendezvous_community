@@ -17,6 +17,9 @@ class SocialText extends StatefulWidget {
     this.links = true,
     this.hashtags = true,
     this.source,
+    this.contacts = true,
+    this.cashtags = true,
+    this.mentions = true,
   });
 
   final String text;
@@ -26,6 +29,9 @@ class SocialText extends StatefulWidget {
   final bool links;
   final bool hashtags;
   final String? source;
+  final bool contacts;
+  final bool cashtags;
+  final bool mentions;
 
   @override
   State<SocialText> createState() => _SocialTextState();
@@ -59,6 +65,9 @@ class _SocialTextState extends State<SocialText> {
       validStockCodes: widget.validStockCodes,
       hashtags: hashtagsActive,
       links: widget.links,
+      contacts: widget.links && widget.contacts,
+      cashtags: widget.cashtags,
+      mentions: widget.mentions,
     );
     final spans = <InlineSpan>[
       for (final segment in segments)
@@ -86,7 +95,11 @@ class _SocialTextState extends State<SocialText> {
             text: segment.text,
             style: link.copyWith(decoration: TextDecoration.underline, fontWeight: FontWeight.w500),
             mouseCursor: SystemMouseCursors.click,
-            recognizer: _recognizer(() => openCommunityLink(context, uri)),
+            recognizer: _recognizer(
+              () => uri.scheme == 'tel' || uri.scheme == 'mailto'
+                  ? showCommunityContactActions(context, uri)
+                  : openCommunityLink(context, uri),
+            ),
           ),
         },
     ];

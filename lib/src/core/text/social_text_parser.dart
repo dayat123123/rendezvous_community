@@ -8,6 +8,17 @@ final linkPattern = RegExp(r'''https?://[^\s<>"'`{}|\\^\[\]]+''', caseSensitive:
 
 final _trailingPunctuation = RegExp(r'''[.,;:!?\]}'"»”’]+$''');
 
+final _wwwLinkPattern = RegExp(
+  r'''(?<![\w@./-])www\.[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)+(?:[/?#][^\s<>"'`{}|\\^\[\]]*)?''',
+  caseSensitive: false,
+);
+
+final _emailPattern = RegExp(
+  r'(?<![\w.%+-])[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+(?:\.[A-Za-z0-9-]+)*\.[A-Za-z]{2,}(?![\w-])',
+);
+
+final _phonePattern = RegExp(r'(?<![\w+])(?:\+62[ -]?|0)\d(?:[ -]?\d){8,13}(?!\w)');
+
 const maxTagsPerPost = 10;
 
 const maxLinksPerContent = 3;
@@ -102,6 +113,9 @@ List<SocialTextSegment> parseSocialText(
   Set<String>? validStockCodes,
   bool hashtags = false,
   bool links = false,
+  bool contacts = false,
+  bool cashtags = true,
+  bool mentions = true,
 }) {
   final matches = <({int start, int end, SocialTextSegment segment})>[];
 
@@ -112,14 +126,36 @@ List<SocialTextSegment> parseSocialText(
       if (uri == null) continue;
       matches.add((start: m.start, end: m.start + url.length, segment: LinkSegment(url, uri)));
     }
+    for (final m in _wwwLinkPattern.allMatches(text)) {
+      final url = trimLinkMatch(m.group(0)!);
+      final uri = safeLinkUri('https://$url');
+      if (uri == null) continue;
+      matches.add((start: m.start, end: m.start + url.length, segment: LinkSegment(url, uri)));
+    }
   }
-  for (final m in cashtagPattern.allMatches(text)) {
-    final code = m.group(1)!.toUpperCase();
-    if (validStockCodes != null && !validStockCodes.contains(code)) continue;
-    matches.add((start: m.start, end: m.end, segment: CashtagSegment(m.group(0)!, code)));
+  if (contacts) {
+    for (final m in _emailPattern.allMatches(text)) {
+      final email = m.group(0)!;
+      matches.add((start: m.start, end: m.end, segment: LinkSegment(email, Uri(scheme: 'mailto', path: email))));
+    }
+    for (final m in _phonePattern.allMatches(text)) {
+      final number = m.group(0)!;
+      final digits = number.replaceAll(RegExp(r'\D'), '');
+      final uri = Uri.parse('tel:${number.startsWith('+') ? '+' : ''}$digits');
+      matches.add((start: m.start, end: m.end, segment: LinkSegment(number, uri)));
+    }
   }
-  for (final m in mentionPattern.allMatches(text)) {
-    matches.add((start: m.start, end: m.end, segment: MentionSegment(m.group(0)!, m.group(1)!)));
+  if (cashtags) {
+    for (final m in cashtagPattern.allMatches(text)) {
+      final code = m.group(1)!.toUpperCase();
+      if (validStockCodes != null && !validStockCodes.contains(code)) continue;
+      matches.add((start: m.start, end: m.end, segment: CashtagSegment(m.group(0)!, code)));
+    }
+  }
+  if (mentions) {
+    for (final m in mentionPattern.allMatches(text)) {
+      matches.add((start: m.start, end: m.end, segment: MentionSegment(m.group(0)!, m.group(1)!)));
+    }
   }
   if (hashtags) {
     for (final m in hashtagTextPattern.allMatches(text)) {

@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -396,14 +395,15 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
         style: body.copyWith(fontStyle: FontStyle.italic, color: fg.withValues(alpha: 0.8)),
       );
     } else if (text.isNotEmpty) {
-      message = support
-          ? (kIsWeb || isDesktopPlatform(context) ? Text(text, style: body) : SelectableText(text, style: body))
-          : line == t.link
-          ? SocialText(text, style: body, source: 'chat')
-          : Theme(
-              data: _bubbleLinkTheme(theme, t, line),
-              child: SocialText(text, style: body, source: 'chat'),
-            );
+      final social = SocialText(
+        text,
+        style: body,
+        source: support ? 'support' : 'chat',
+        hashtags: !support,
+        cashtags: !support,
+        mentions: !support,
+      );
+      message = line == t.link ? social : Theme(data: _bubbleLinkTheme(theme, t, line), child: social);
     }
 
     final sender = m.sender;

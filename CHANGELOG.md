@@ -1,5 +1,17 @@
 ## Belum dirilis
 
+* **Email, nomor telepon, dan alamat `www.` di teks bisa diketuk** (postingan, komentar, chat, dan chat CS).
+  * Email menjadi `mailto:`, nomor telepon Indonesia (`08…`, `+62…`, `021-…`, minimal 10 digit, boleh dipisah
+    spasi atau `-`) menjadi `tel:`. Saat diketuk muncul pilihan **Kirim email**/**Telepon** atau **Salin**
+    (`showCommunityContactActions`, slot `CommunitySharedBuilders.contactActions` dengan
+    `CommunityContactActionsDetails`). Tanggal, nomor tiket, dan nomor rekening yang tidak diawali `0` tidak ikut.
+  * `www.contoh.co.id` tanpa `https://` dibuka sebagai `https://`, tetap lewat dialog konfirmasi tautan.
+  * Chat CS kini memakai `SocialText` (tanpa mention, cashtag, dan hashtag), sehingga tautan, email, dan telepon di
+    pesan CS ikut bisa diketuk. Salin teks tetap lewat menu pesan.
+  * `parseSocialText` punya parameter opsional `contacts` (bawaan `false`; email/telepon muncul sebagai
+    `LinkSegment` dengan skema `mailto:`/`tel:`), `cashtags`, dan `mentions` (bawaan `true`). `SocialText` punya
+    `contacts`, `cashtags`, dan `mentions` (bawaan `true`). Tidak ada jenis segmen baru, jadi `switch` lama tetap jalan.
+
 * **Geser untuk membalas ala WhatsApp.** Di layar sentuh, gelembung pesan (milik sendiri maupun orang lain) bisa
   digeser ke kanan: ikon balas muncul perlahan, getar halus saat melewati ambang 56 px, dan saat dilepas pesan itu
   dibalas lalu kolom input langsung fokus. Geser pendek, geser ke kiri, atau drag mouse tidak memicu balasan, jadi

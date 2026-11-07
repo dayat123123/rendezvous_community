@@ -639,5 +639,10 @@
   "imageReact": "Beri reaksi",
   "jumpToLatest": "Ke pesan terbaru",
   "jumpToLatestUnread": "{count} pesan baru, ke pesan terbaru",
-  "@jumpToLatestUnread": { "placeholders": { "count": { "type": "int" } } }
+  "@jumpToLatestUnread": { "placeholders": { "count": { "type": "int" } } },
+  "contactCall": "Telepon",
+  "contactSendEmail": "Kirim email",
+  "contactCopy": "Salin",
+  "contactPhoneCopied": "Nomor disalin",
+  "contactEmailCopied": "Email disalin"
 }

@@ -306,6 +306,30 @@ class CommunityLinkConfirmDetails {
   final VoidCallback onCancel;
 }
 
+class CommunityContactActionsDetails {
+  const CommunityContactActionsDetails({
+    required this.uri,
+    required this.value,
+    required this.phone,
+    required this.openLabel,
+    required this.copyLabel,
+    required this.cancelLabel,
+    required this.onOpen,
+    required this.onCopy,
+    required this.onCancel,
+  });
+
+  final Uri uri;
+  final String value;
+  final bool phone;
+  final String openLabel;
+  final String copyLabel;
+  final String cancelLabel;
+  final VoidCallback onOpen;
+  final VoidCallback onCopy;
+  final VoidCallback onCancel;
+}
+
 class CommunityImageViewerDetails {
   const CommunityImageViewerDetails({
     required this.attachments,

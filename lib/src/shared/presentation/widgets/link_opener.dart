@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';
@@ -40,6 +41,70 @@ Future<bool> openCommunityLink(BuildContext context, Uri uri, {CommunityLinkLaun
   final opened = await (launcher ?? _launchExternal)(safe).catchError((Object _) => false);
   if (!opened && context.mounted) showCommunityMessage(context, l10n.linkOpenFailed);
   return opened;
+}
+
+Future<void> showCommunityContactActions(BuildContext context, Uri uri, {CommunityLinkLauncher? launcher}) async {
+  final phone = uri.scheme == 'tel';
+  if (!phone && uri.scheme != 'mailto') return;
+  final l10n = context.communityL10n;
+  final value = uri.path;
+  final builder = CommunitySharedBuilders.of(context, listen: false).contactActions;
+  final open = await showDialog<bool>(
+    context: context,
+    builder: (dialogContext) {
+      final details = CommunityContactActionsDetails(
+        uri: uri,
+        value: value,
+        phone: phone,
+        openLabel: phone ? l10n.contactCall : l10n.contactSendEmail,
+        copyLabel: l10n.contactCopy,
+        cancelLabel: l10n.cancel,
+        onOpen: () => Navigator.pop(dialogContext, true),
+        onCopy: () => Navigator.pop(dialogContext, false),
+        onCancel: () => Navigator.pop(dialogContext),
+      );
+      final fallback = _ContactDialog(details: details);
+      return builder == null ? fallback : builder(dialogContext, details, fallback);
+    },
+  );
+  if (open == null || !context.mounted) return;
+  if (!open) {
+    await Clipboard.setData(ClipboardData(text: value));
+    if (context.mounted) showCommunityMessage(context, phone ? l10n.contactPhoneCopied : l10n.contactEmailCopied);
+    return;
+  }
+  final opened = await (launcher ?? _launchExternal)(uri).catchError((Object _) => false);
+  if (!opened && context.mounted) showCommunityMessage(context, l10n.linkOpenFailed);
+}
+
+class _ContactDialog extends StatelessWidget {
+  const _ContactDialog({required this.details});
+
+  final CommunityContactActionsDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final style = CommunityStyle.of(context);
+    return SimpleDialog(
+      title: Text(d.value, style: style.typography.title),
+      children: [
+        ListTile(
+          leading: Icon(d.phone ? Icons.call_outlined : Icons.mail_outline),
+          title: Text(d.openLabel),
+          onTap: d.onOpen,
+        ),
+        ListTile(leading: const Icon(Icons.copy_outlined), title: Text(d.copyLabel), onTap: d.onCopy),
+        Align(
+          alignment: Alignment.centerRight,
+          child: Padding(
+            padding: EdgeInsets.only(right: style.spacing.md),
+            child: TextButton(onPressed: d.onCancel, child: Text(d.cancelLabel)),
+          ),
+        ),
+      ],
+    );
+  }
 }
 
 class _LinkDialog extends StatelessWidget {

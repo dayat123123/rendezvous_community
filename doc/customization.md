@@ -89,6 +89,7 @@ Slot `discovery`, `support`, `settings`, dan `system` diisi bertahap (lihat [bui
 | `composerSuggestion` | `CommunityComposerSuggestionDetails` (`kind`, `title`, `subtitle`, `leading`, `highlighted`; `onSelect`) | baris saran `$KODE`/`@user` di `CommunityComposerField` |
 | `confirmDialog` | `CommunityConfirmDetails` (`message`, `confirmLabel`, `cancelLabel`; `onConfirm`, `onCancel`) | dialog konfirmasi hapus/blokir |
 | `linkDialog` | `CommunityLinkConfirmDetails` (`uri`, `domain`, `title`, `body`, `confirmLabel`, `cancelLabel`; `onConfirm`, `onCancel`) | dialog sebelum membuka tautan |
+| `contactActions` | `CommunityContactActionsDetails` (`uri` `mailto:`/`tel:`, `value`, `phone`, `openLabel`, `copyLabel`, `cancelLabel`; `onOpen`, `onCopy`, `onCancel`) | pilihan saat email atau nomor telepon di teks diketuk: kirim email/telepon atau salin |
 | `imagePlaceholder` | `CommunityImagePlaceholderDetails` (`failed`) | placeholder & gagal muat `CommunityNetworkImage` |
 
 Builder dialog mengembalikan widget dialog (mis. `AlertDialog`); `onConfirm`/`onCancel` sudah menutup dialog dengan hasilnya. Di dalam builder sebuah slot jangan memakai komponen yang memanggil slot yang sama (mis. `CommunityCard` di builder `card`); bungkus `fallback` atau gambar sendiri.
