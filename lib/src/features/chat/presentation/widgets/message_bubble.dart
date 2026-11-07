@@ -23,6 +23,7 @@ import 'package:rendezvous_community/src/features/chat/presentation/widgets/room
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/shared_post_card.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/stock_cards.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/swipe_to_reply.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
@@ -87,7 +88,8 @@ class _MessageBubbleState extends State<MessageBubble> {
     final fallback = message.isSystem
         ? SupportSystemNotice(message: message)
         : _DefaultBubble(details: details, anchor: _bubble);
-    return buildChatPart(CommunityChatBuilders.of(context).message, context, details, fallback);
+    final part = buildChatPart(CommunityChatBuilders.of(context).message, context, details, fallback);
+    return message.isSystem ? part : SwipeToReply(onReply: details.onReply, child: part);
   }
 
   CommunityMessageDetails _details(BuildContext context) {

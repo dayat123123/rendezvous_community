@@ -1,3 +1,10 @@
+## Belum dirilis
+
+* **Geser untuk membalas ala WhatsApp.** Di layar sentuh, gelembung pesan (milik sendiri maupun orang lain) bisa
+  digeser ke kanan: ikon balas muncul perlahan, getar halus saat melewati ambang 56 px, dan saat dilepas pesan itu
+  dibalas lalu kolom input langsung fokus. Geser pendek, geser ke kiri, atau drag mouse tidak memicu balasan, jadi
+  memilih teks dengan mouse di desktop tetap bisa. Berlaku juga untuk gelembung dari builder `chat.message`.
+
 ## 1.8.0
 
 * **Header halaman turunan chat CS bisa diganti.** Slot builder baru `CommunitySupportBuilders.pageHeader`
