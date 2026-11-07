@@ -137,6 +137,7 @@ void main() {
       helpLink: a,
       topicPicker: a,
       topicTile: a,
+      pageHeader: a,
     );
     List<Object?> slots(CommunitySupportBuilders b) => [
       b.loading,
@@ -155,6 +156,7 @@ void main() {
       b.helpLink,
       b.topicPicker,
       b.topicTile,
+      b.pageHeader,
     ];
     expect(slots(const CommunitySupportBuilders().merge(full)), slots(full));
     expect(slots(full.merge(const CommunitySupportBuilders())), slots(full));
@@ -435,5 +437,148 @@ void main() {
     await tester.tap(find.text('L:olt.example'));
     expect(opened, Uri.parse('https://olt.example/help'));
     expect(find.text('O:Nadia'), findsOneWidget);
+  });
+
+  Future<FakeChatRepository> pumpPanel(
+    WidgetTester tester, {
+    required VoidCallback onClose,
+    CommunitySupportBuilders builders = const CommunitySupportBuilders(),
+  }) async {
+    when(() => support.home()).thenAnswer((_) async => _home(current: _ticket()));
+    when(() => support.myTickets()).thenAnswer((_) async => [_ticket()]);
+    when(() => support.ticketMessages(any())).thenAnswer((_) async => const []);
+    final chat = FakeChatRepository(
+      rooms: [ChatRoom(id: 'r-cs', type: RoomType.support, createdAt: now, lastReadAt: now)],
+    );
+    await tester.pumpWidget(
+      _app(
+        CommunityScope(
+          dependencies: FakeDependencies(chat: chat),
+          child: CommunitySupportScope(
+            dependencies: _SupportDeps(support, chat),
+            child: CommunitySupportChat(onClose: onClose),
+          ),
+        ),
+        support: builders,
+      ),
+    );
+    await tester.pumpAndSettle();
+    return chat;
+  }
+
+  Future<void> openMyTickets(WidgetTester tester) async {
+    await tester.tap(find.byTooltip('Menu bantuan'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Tiket saya').last);
+    await tester.pumpAndSettle();
+  }
+
+  testWidgets('page header fallback: AppBar with back, panel close and a separate ticket subtitle', (tester) async {
+    var closed = 0;
+    final chat = await pumpPanel(tester, onClose: () => closed++);
+
+    await openMyTickets(tester);
+    final ticketsBar = find.byType(AppBar);
+    expect(find.descendant(of: ticketsBar, matching: find.text('Tiket saya')), findsOneWidget);
+    expect(find.descendant(of: ticketsBar, matching: find.byType(BackButton)), findsOneWidget);
+    await tester.tap(find.descendant(of: ticketsBar, matching: find.byTooltip('Tutup')));
+    expect(closed, 1);
+
+    await tester.tap(find.text('CS-20261030-0001 · Order & Transaksi'));
+    await tester.pumpAndSettle();
+    final transcriptBar = find.byType(AppBar).last;
+    expect(find.descendant(of: transcriptBar, matching: find.text('Order & Transaksi')), findsOneWidget);
+    expect(find.descendant(of: transcriptBar, matching: find.text('#CS-20261030-0001')), findsOneWidget);
+    expect(find.textContaining(' · Order & Transaksi', findRichText: true).hitTestable(), findsNothing);
+    await tester.tap(find.descendant(of: transcriptBar, matching: find.byTooltip('Tutup')));
+    expect(closed, 2);
+
+    await tester.tap(find.descendant(of: transcriptBar, matching: find.byType(BackButton)));
+    await tester.pumpAndSettle();
+    expect(find.text('CS-20261030-0001 · Order & Transaksi'), findsOneWidget);
+    await chat.dispose();
+  });
+
+  testWidgets('page header builder replaces the AppBar on My tickets and the transcript', (tester) async {
+    var closed = 0;
+    final headers = <CommunitySupportPageHeaderDetails>[];
+    final chat = await pumpPanel(
+      tester,
+      onClose: () => closed++,
+      builders: CommunitySupportBuilders(
+        pageHeader: (context, d, fallback) {
+          headers.add(d);
+          return Row(
+            children: [
+              TextButton(onPressed: d.onBack, child: Text('PH:${d.title}:${d.subtitle}:${d.ticket?.id}')),
+              TextButton(onPressed: d.onClose, child: const Text('PH-close')),
+            ],
+          );
+        },
+      ),
+    );
+
+    await openMyTickets(tester);
+    expect(find.byType(AppBar), findsNothing);
+    expect(find.text('PH:Tiket saya:null:null'), findsOneWidget);
+    expect(headers.last.onBack, isNotNull);
+    await tester.tap(find.text('PH-close'));
+    expect(closed, 1);
+
+    await tester.tap(find.text('CS-20261030-0001 · Order & Transaksi'));
+    await tester.pumpAndSettle();
+    expect(find.text('PH:Order & Transaksi:#CS-20261030-0001:t-1'), findsOneWidget);
+    expect(headers.last.ticket?.ticketNumber, 'CS-20261030-0001');
+    await tester.tap(find.text('PH-close').last);
+    expect(closed, 2);
+
+    await tester.tap(find.text('PH:Order & Transaksi:#CS-20261030-0001:t-1'));
+    await tester.pumpAndSettle();
+    expect(find.text('PH:Tiket saya:null:null'), findsOneWidget);
+    await tester.tap(find.text('PH:Tiket saya:null:null'));
+    await tester.pumpAndSettle();
+    expect(find.byTooltip('Menu bantuan'), findsOneWidget);
+    await chat.dispose();
+  });
+
+  testWidgets('sub pages stay on the nearest navigator, not the root one', (tester) async {
+    final chat = await (() async {
+      when(() => support.home()).thenAnswer((_) async => _home(current: _ticket()));
+      when(() => support.myTickets()).thenAnswer((_) async => [_ticket()]);
+      final chat = FakeChatRepository(
+        rooms: [ChatRoom(id: 'r-cs', type: RoomType.support, createdAt: now, lastReadAt: now)],
+      );
+      await tester.pumpWidget(
+        _app(
+          Row(
+            children: [
+              const Expanded(child: Text('host body')),
+              SizedBox(
+                width: 420,
+                child: Navigator(
+                  onGenerateRoute: (_) => MaterialPageRoute<void>(
+                    builder: (_) => CommunityScope(
+                      dependencies: FakeDependencies(chat: chat),
+                      child: CommunitySupportScope(
+                        dependencies: _SupportDeps(support, chat),
+                        child: CommunitySupportChat(onClose: () {}),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+      return chat;
+    })();
+
+    await openMyTickets(tester);
+    expect(find.text('host body'), findsOneWidget);
+    expect(find.byType(AppBar), findsOneWidget);
+    expect(tester.getSize(find.byType(AppBar)).width, 420);
+    await chat.dispose();
   });
 }

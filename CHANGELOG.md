@@ -1,3 +1,16 @@
+## 1.8.0
+
+* **Header halaman turunan chat CS bisa diganti.** Slot builder baru `CommunitySupportBuilders.pageHeader`
+  (`CommunitySupportPageHeaderDetails`: `title`, `subtitle`, `ticket`, `onBack`, `onClose`) dipakai halaman
+  **Tiket saya** dan transkrip tiket, sehingga host yang menampilkan `CommunitySupportChat` di panel samping bisa
+  menyamakan gaya header dan menambah tombol tutup panel. Tanpa builder, header tetap `AppBar` bawaan, kini dengan
+  tombol tutup bila `CommunitySupportChat.onClose` diisi.
+  * `onClose` milik `CommunitySupportChat` diteruskan ke kedua halaman itu (`CommunitySupportPageHeaderDetails.onClose`).
+  * Transkrip memisahkan judul dan nomor tiket: judul = nama topik, `subtitle` = `#nomor` (sebelumnya digabung
+    `nomor · topik` di judul), dan `ticket` berisi tiket yang dibuka.
+  * Halaman tetap dibuka di navigator terdekat (`Navigator.of(context)`), jadi navigasi tetap di dalam panel host.
+  * Halaman **Tiket saya** kini ikut membawa `CommunitySupportScope` dari chat CS yang membukanya.
+
 ## 1.7.0
 
 * **Tombol ke pesan terbaru** ala WhatsApp: lingkaran ⌄ di kanan bawah daftar pesan muncul saat posisi menjauh

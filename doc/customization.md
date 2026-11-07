@@ -466,6 +466,7 @@ CommunityBuildersScope(
 | `ratingDialog` | `CommunitySupportRatingDetails` | `rating`, `maxRating`, `controller` (komentar), label; `onRate(n)`, `onSubmit` (null sampai memilih), `onCancel` |
 | `fakeCsWarning` | `CommunityFakeCsDetails` | dialog lapor CS palsu: `controller`, `title`, `hintText`, label; `onSubmit` (null bila < 5 huruf), `onCancel` |
 | `ticketTile` | `CommunitySupportTicketDetails` | `ticket`, `number`, `title`, `statusLabel`, `meta` (tanggal · nilai), `timeLabel`, `icon`, `closed`; `onOpen` (buka transkrip) |
+| `pageHeader` (1.8.0) | `CommunitySupportPageHeaderDetails` | header halaman **Tiket saya** dan transkrip tiket: `title` ("Tiket saya" / nama topik), `subtitle` (`#nomor` di transkrip), `ticket` (transkrip); `onBack` (null bila tidak bisa kembali), `onClose` (dari `CommunitySupportChat.onClose`, untuk menutup panel host). Bawaan: `AppBar` dengan tombol kembali dan tombol tutup |
 | `loading` / `empty` / `error` | `CommunityListLoadingDetails` / `CommunityListEmptyDetails` / `CommunityListErrorDetails` | status awal chat CS dan daftar "Tiket saya" |
 
 Dialog konfirmasi (akhiri chat, keluhan) memakai `shared.confirmDialog`. Dialog dibuka di rute baru, jadi builder `support` yang dipasang di bawah `MaterialApp` ikut terbawa ke `ratingDialog` dan `fakeCsWarning`.

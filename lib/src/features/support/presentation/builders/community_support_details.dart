@@ -39,6 +39,16 @@ class CommunitySupportHeaderDetails {
   String? get ticketNumber => ticket?.ticketNumber;
 }
 
+class CommunitySupportPageHeaderDetails {
+  const CommunitySupportPageHeaderDetails({required this.title, this.subtitle, this.onBack, this.onClose, this.ticket});
+
+  final String title;
+  final String? subtitle;
+  final VoidCallback? onBack;
+  final VoidCallback? onClose;
+  final SupportTicket? ticket;
+}
+
 class CommunitySupportBannerDetails {
   const CommunitySupportBannerDetails({required this.message, this.tone = CommunitySupportTone.info, this.icon});
 

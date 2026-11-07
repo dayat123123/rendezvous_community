@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_support_scope.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
@@ -9,6 +10,7 @@ import 'package:rendezvous_community/src/features/support/presentation/cubit/sup
 import 'package:rendezvous_community/src/features/support/presentation/widgets/community_support_tickets.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_dialogs.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_message_parts.dart';
+import 'package:rendezvous_community/src/features/support/presentation/widgets/support_subpage.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_tone.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -99,15 +101,19 @@ class SupportHeader extends StatelessWidget {
       case _MenuAction.myTickets:
         if (!context.mounted) return;
         final deps = CommunityScope.of(context);
+        final support = CommunitySupportScope.of(context);
         final carry = carryCommunityBuilders(context);
         await Navigator.of(context).push(
           MaterialPageRoute<void>(
             builder: (_) => carry(
               CommunityScope(
                 dependencies: deps,
-                child: Scaffold(
-                  appBar: AppBar(title: Text(l10n.supportMyTickets)),
-                  body: const CommunitySupportTickets(),
+                child: CommunitySupportScope(
+                  dependencies: support,
+                  child: SupportPanelScope(
+                    onClose: onClose,
+                    child: SupportSubpage(title: l10n.supportMyTickets, body: const CommunitySupportTickets()),
+                  ),
                 ),
               ),
             ),

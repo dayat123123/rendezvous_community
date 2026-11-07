@@ -189,6 +189,7 @@ Dialog, sheet, dan halaman yang didorong chat (aksi pesan, moderasi, kartu saham
 | `CommunitySupportBadge` | ya | ya (`badges.countOverlay`) | – |
 | `CommunitySupportChat`, `CommunitySupportPage`, `openCommunitySupport`, `_SupportView`, `_Conversation` | ya | sudah (`support.loading`, `support.error`; pesan lewat `chat.message`) | `CommunityListLoadingDetails`, `CommunityListErrorDetails` |
 | `CommunitySupportTickets`, `SupportTicketTile` | ya | sudah (`support.ticketTile`, `support.loading`, `support.empty`, `support.error`) | `CommunitySupportTicketDetails` (`ticket`, `number`, `title`, `statusLabel`, `meta`, `timeLabel`, `icon`, `closed`; `onOpen`) |
+| `SupportSubpage` (header **Tiket saya** dan transkrip) | tidak | sudah (`support.pageHeader`, 1.8.0) | `CommunitySupportPageHeaderDetails` (`title`, `subtitle`, `ticket`; `onBack`, `onClose`) |
 | `SupportComposer` | tidak | sudah (`support.sensitiveWarning`; field lewat `chat.composer`) | `CommunitySensitiveWarningDetails` (`kinds`, `message`) |
 | `SupportClosedBar` | tidak | sudah (`support.closedBar`) | `CommunitySupportClosedDetails` (`ticketNumber`, `message`, `newTicketLabel`; `onNewTicket`) |
 | `askSupportRating`, `SupportRatingDialog`, `SupportRatingStars` | tidak | sudah (`support.ratingDialog`) | `CommunitySupportRatingDetails` (`rating`, `maxRating`, `controller`, `title`, `commentLabel`, `submitLabel`, `cancelLabel`, `canSubmit`; `onRate`, `onSubmit` null bila belum memilih bintang, `onCancel`) |

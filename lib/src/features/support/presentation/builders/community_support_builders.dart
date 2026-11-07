@@ -21,6 +21,7 @@ class CommunitySupportBuilders {
     this.helpLink,
     this.topicPicker,
     this.topicTile,
+    this.pageHeader,
   });
 
   final CommunityPartBuilder<CommunityListLoadingDetails>? loading;
@@ -39,6 +40,7 @@ class CommunitySupportBuilders {
   final CommunityPartBuilder<CommunityHelpLinkDetails>? helpLink;
   final CommunityPartBuilder<CommunitySupportTopicPickerDetails>? topicPicker;
   final CommunityPartBuilder<CommunitySupportTopicDetails>? topicTile;
+  final CommunityPartBuilder<CommunitySupportPageHeaderDetails>? pageHeader;
 
   static CommunitySupportBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -66,6 +68,7 @@ class CommunitySupportBuilders {
       helpLink: other.helpLink ?? helpLink,
       topicPicker: other.topicPicker ?? topicPicker,
       topicTile: other.topicTile ?? topicTile,
+      pageHeader: other.pageHeader ?? pageHeader,
     );
   }
 }

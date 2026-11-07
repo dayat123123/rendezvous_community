@@ -16,6 +16,7 @@ import 'package:rendezvous_community/src/features/support/domain/repositories/su
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_header.dart';
+import 'package:rendezvous_community/src/features/support/presentation/widgets/support_subpage.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_tone.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_topic_picker.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
@@ -109,20 +110,26 @@ class _CommunitySupportTicketsState extends State<CommunitySupportTickets> {
     final deps = CommunityScope.of(context);
     final support = CommunitySupportScope.of(context).support;
     final carry = carryCommunityBuilders(context);
+    final onClose = SupportPanelScope.closeOf(context);
     return Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => carry(
           CommunityScope(
             dependencies: deps,
-            child: Scaffold(
-              appBar: AppBar(title: Text('${ticket.ticketNumber} · ${ticket.topicName ?? ticket.topic}')),
-              body: CommunityImagePersistence(
-                persist: false,
-                child: CommunityChatRoom(
-                  roomId: ticket.roomId,
-                  repository: _TranscriptRepository(support, ticket),
-                  showHeader: false,
-                  composer: const SizedBox.shrink(),
+            child: SupportPanelScope(
+              onClose: onClose,
+              child: SupportSubpage(
+                title: ticket.topicName ?? ticket.topic,
+                subtitle: '#${ticket.ticketNumber}',
+                ticket: ticket,
+                body: CommunityImagePersistence(
+                  persist: false,
+                  child: CommunityChatRoom(
+                    roomId: ticket.roomId,
+                    repository: _TranscriptRepository(support, ticket),
+                    showHeader: false,
+                    composer: const SizedBox.shrink(),
+                  ),
                 ),
               ),
             ),
