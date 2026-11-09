@@ -2,10 +2,14 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/error/error_mapper.dart';
+import 'package:rendezvous_community/src/core/logging/community_logger.dart';
 import 'package:rendezvous_community/src/features/help/domain/entities/help_article.dart';
 import 'package:rendezvous_community/src/features/help/domain/repositories/help_repository.dart';
+import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
+import 'package:rendezvous_community/src/features/support/domain/repositories/support_repository.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 
 part 'help_center_cubit.freezed.dart';
@@ -30,6 +34,7 @@ abstract class HelpCenterState with _$HelpCenterState {
     List<HelpArticle>? results,
     @Default(false) bool savedResults,
     Object? searchError,
+    @Default(<SupportIncident>[]) List<SupportIncident> incidents,
   }) = _HelpCenterState;
 
   const HelpCenterState._();
@@ -38,10 +43,15 @@ abstract class HelpCenterState with _$HelpCenterState {
 }
 
 class HelpCenterCubit extends Cubit<HelpCenterState> {
-  HelpCenterCubit({required this._help, this.language = 'id', this.searchDelay = const Duration(milliseconds: 350)})
-    : super(const HelpCenterState());
+  HelpCenterCubit({
+    required this._help,
+    this._support,
+    this.language = 'id',
+    this.searchDelay = const Duration(milliseconds: 350),
+  }) : super(const HelpCenterState());
 
   final HelpRepository _help;
+  final SupportRepository? _support;
   final String language;
   final Duration searchDelay;
   Timer? _debounce;
@@ -51,6 +61,7 @@ class HelpCenterCubit extends Cubit<HelpCenterState> {
   Future<void> load() async {
     if (_loading) return;
     _loading = true;
+    final incidents = _loadIncidents();
     try {
       if (state.content == null) {
         emit(state.copyWith(status: LoadStatus.loading, error: null));
@@ -73,6 +84,22 @@ class HelpCenterCubit extends Cubit<HelpCenterState> {
       }
     } finally {
       _loading = false;
+    }
+    await incidents;
+  }
+
+  Future<void> _loadIncidents() async {
+    final support = _support;
+    if (support == null) return;
+    try {
+      final incidents = await support.serviceStatus(language: language);
+      if (!isClosed) emit(state.copyWith(incidents: incidents));
+    } catch (e) {
+      CommunityLoggers.support.event(
+        Level.FINE,
+        'Service status unavailable in help center',
+        fields: {'errorType': e.runtimeType.toString()},
+      );
     }
   }
 

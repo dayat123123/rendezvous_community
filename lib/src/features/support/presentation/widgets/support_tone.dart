@@ -81,3 +81,37 @@ class SupportIconCircle extends StatelessWidget {
     );
   }
 }
+
+class SupportNoticeBox extends StatelessWidget {
+  const SupportNoticeBox({super.key, required this.message, required this.tone, this.icon});
+
+  final String message;
+  final CommunitySupportTone tone;
+  final IconData? icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final color = supportToneColor(context, tone);
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm + spacing.xxs),
+      decoration: BoxDecoration(
+        color: supportSoftBackground(style, color),
+        borderRadius: style.radii.controlRadius,
+        border: Border.all(color: color.withValues(alpha: 0.3), width: style.borderWidth),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Icon(icon ?? Icons.info_outline, size: 18, color: color),
+          SizedBox(width: spacing.sm),
+          Expanded(
+            child: Text(message, style: style.typography.meta.copyWith(color: color)),
+          ),
+        ],
+      ),
+    );
+  }
+}

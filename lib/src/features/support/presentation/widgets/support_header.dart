@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
+import 'package:rendezvous_community/src/app/community_help_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
+import 'package:rendezvous_community/src/features/help/presentation/widgets/community_help_article.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
 import 'package:rendezvous_community/src/features/support/presentation/cubit/support_cubit.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/community_support_tickets.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_dialogs.dart';
+import 'package:rendezvous_community/src/features/support/presentation/widgets/support_incidents.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_message_parts.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_subpage.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_tone.dart';
@@ -20,6 +23,7 @@ String supportStatusText(CommunityLocalizations l10n, SupportTicket ticket) => s
   SupportStatus.open => [
     l10n.supportStatusWaiting,
     if ((ticket.queueAhead ?? 0) > 0) l10n.supportQueueAhead(ticket.queueAhead!),
+    if ((ticket.etaMinutes ?? 0) > 0) l10n.supportQueueEta(ticket.etaMinutes!),
   ].join(' · '),
   SupportStatus.claimed => l10n.supportStatusHandled(ticket.agent?.displayName ?? ''),
   SupportStatus.waitingCustomer => l10n.supportStatusWaitingYou,
@@ -76,6 +80,11 @@ class SupportHeader extends StatelessWidget {
           buildSupportPart((b) => b.header, context, details, _DefaultSupportHeader(details: details)),
           if (state.busy) const LinearProgressIndicator(minHeight: 2) else const CommunityDivider(),
           if (banner != null) buildSupportPart((b) => b.banner, context, banner, SupportBanner(details: banner)),
+          if (home != null && home.incidents.isNotEmpty)
+            SupportIncidentBanners(
+              incidents: home.incidents,
+              onOpenArticle: CommunityHelpScope.maybeOf(context) == null ? null : openSupportIncidentArticle,
+            ),
         ],
       ),
     );
@@ -121,6 +130,17 @@ class SupportHeader extends StatelessWidget {
         );
     }
   }
+}
+
+void openSupportIncidentArticle(BuildContext context, SupportIncident incident) {
+  final id = incident.faqArticleId;
+  if (id == null) return;
+  openCommunityHelpArticleById(
+    context,
+    id,
+    title: incident.title,
+    onContactSupport: (articleContext, _) => Navigator.of(articleContext).pop(),
+  );
 }
 
 class _DefaultSupportHeader extends StatelessWidget {

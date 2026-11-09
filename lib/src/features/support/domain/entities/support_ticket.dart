@@ -28,6 +28,8 @@ abstract class SupportTicket with _$SupportTicket {
     DateTime? reopenUntil,
     int? rating,
     @Default(false) bool canRate,
+    int? etaMinutes,
+    @Default(<String>[]) List<String> quickReplies,
   }) = _SupportTicket;
 
   const SupportTicket._();
@@ -49,9 +51,18 @@ abstract class SupportHome with _$SupportHome {
     @Default(true) bool serviceOpen,
     DateTime? nextOpenAt,
     @Default(SupportTopicPickerTexts()) SupportTopicPickerTexts topicPicker,
+    @Default(<SupportIncident>[]) List<SupportIncident> incidents,
+    @Default(<String, SupportSurvey>{}) Map<String, SupportSurvey> surveys,
   }) = _SupportHome;
 
   const SupportHome._();
+
+  SupportSurvey? survey(String languageCode) => surveys[languageCode] ?? surveys['id'];
+
+  List<SupportIncident> activeIncidents(DateTime now) => [
+    for (final incident in incidents)
+      if (incident.activeAt(now)) incident,
+  ];
 
   String? topicTitle(String languageCode) => topicPicker.title[languageCode];
 
@@ -71,11 +82,78 @@ abstract class SupportTopic with _$SupportTopic {
     String? description,
     String? icon,
     @Default('normal') String style,
+    @Default(<SupportIntakeField>[]) List<SupportIntakeField> intake,
   }) = _SupportTopic;
 
   const SupportTopic._();
 
   bool get danger => style == 'danger';
+
+  bool get hasIntake => intake.isNotEmpty;
+}
+
+enum SupportIntakeType { text, number, date, choice }
+
+@freezed
+abstract class SupportIntakeOption with _$SupportIntakeOption {
+  const factory SupportIntakeOption({required String value, required String label}) = _SupportIntakeOption;
+}
+
+@freezed
+abstract class SupportIntakeField with _$SupportIntakeField {
+  const factory SupportIntakeField({
+    required String key,
+    required SupportIntakeType type,
+    required String label,
+    @Default(false) bool isRequired,
+    @Default(<SupportIntakeOption>[]) List<SupportIntakeOption> options,
+  }) = _SupportIntakeField;
+
+  const SupportIntakeField._();
+
+  String? optionLabel(String value) => options.where((o) => o.value == value).firstOrNull?.label;
+}
+
+enum SupportIncidentLevel { info, warning, critical }
+
+@freezed
+abstract class SupportIncident with _$SupportIncident {
+  const factory SupportIncident({
+    required String id,
+    required String title,
+    required String body,
+    @Default(SupportIncidentLevel.info) SupportIncidentLevel level,
+    DateTime? startsAt,
+    DateTime? endsAt,
+    String? faqArticleId,
+  }) = _SupportIncident;
+
+  const SupportIncident._();
+
+  bool activeAt(DateTime now) => endsAt == null || endsAt!.isAfter(now);
+}
+
+@freezed
+abstract class SupportSurveyReason with _$SupportSurveyReason {
+  const factory SupportSurveyReason({required String code, required String label}) = _SupportSurveyReason;
+}
+
+@freezed
+abstract class SupportSurvey with _$SupportSurvey {
+  const factory SupportSurvey({
+    required String question,
+    @Default(5) int scale,
+    @Default(2) int lowMax,
+    @Default(<SupportSurveyReason>[]) List<SupportSurveyReason> reasons,
+  }) = _SupportSurvey;
+
+  const SupportSurvey._();
+
+  List<int> get values => scale == 3 ? const [1, 3, 5] : const [1, 2, 3, 4, 5];
+
+  bool isLow(int rating) => rating > 0 && rating <= lowMax;
+
+  bool asksReasons(int rating) => reasons.isNotEmpty && isLow(rating);
 }
 
 @freezed

@@ -2044,4 +2044,143 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorScannerUnavailable => 'Pemeriksaan file sedang tidak tersedia. Coba kirim lagi sebentar lagi.';
+
+  @override
+  String supportQueueEta(int minutes) {
+    return 'Perkiraan menunggu ± $minutes menit';
+  }
+
+  @override
+  String get supportIntakeTitle => 'Sebelum mulai chat';
+
+  @override
+  String get supportIntakeHint => 'Jawab beberapa pertanyaan singkat agar CS bisa langsung membantu.';
+
+  @override
+  String get supportIntakeSubmit => 'Mulai chat';
+
+  @override
+  String get supportIntakeOptional => 'opsional';
+
+  @override
+  String get supportIntakePickDate => 'Pilih tanggal';
+
+  @override
+  String get supportIntakeRequired => 'Wajib diisi.';
+
+  @override
+  String supportIntakeTooLong(int max) {
+    return 'Maksimal $max karakter.';
+  }
+
+  @override
+  String get supportIntakeNumber => 'Isi dengan angka, misalnya 1500 atau 12,5.';
+
+  @override
+  String get supportIntakeDate => 'Pilih tanggal yang valid.';
+
+  @override
+  String get supportIntakeChoice => 'Pilih salah satu.';
+
+  @override
+  String get errorIntakeRequired => 'Lengkapi dulu pertanyaan yang wajib diisi.';
+
+  @override
+  String get errorInvalidIntakeAnswers => 'Ada jawaban yang belum sesuai. Periksa lagi isian Anda.';
+
+  @override
+  String get supportIncidentInfo => 'Info layanan';
+
+  @override
+  String get supportIncidentWarning => 'Gangguan layanan';
+
+  @override
+  String get supportIncidentCritical => 'Gangguan serius';
+
+  @override
+  String get supportIncidentMore => 'Selengkapnya';
+
+  @override
+  String get supportIncidentDismiss => 'Tutup pemberitahuan';
+
+  @override
+  String get supportLeaveMessage => 'Tinggalkan pesan';
+
+  @override
+  String get supportLeaveMessageTitle => 'CS sedang di luar jam layanan';
+
+  @override
+  String get supportLeaveMessageHint => 'Tinggalkan pesan sekarang. Tiket Anda tercatat dan dibalas saat layanan buka.';
+
+  @override
+  String get supportLeaveMessageArticles => 'Sambil menunggu, artikel ini mungkin menjawab pertanyaan Anda.';
+
+  @override
+  String get supportSurveyReasons => 'Apa yang kurang?';
+
+  @override
+  String get supportSurveyReasonsHint => 'Boleh pilih lebih dari satu.';
+
+  @override
+  String get supportRateBad => 'Kurang puas';
+
+  @override
+  String get supportRateOkay => 'Biasa saja';
+
+  @override
+  String get supportRateGood => 'Puas';
+
+  @override
+  String get supportReplySuggestions => 'Saran balasan';
+
+  @override
+  String get supportTranscriptDownload => 'Unduh transkrip';
+
+  @override
+  String get supportTranscriptSaved => 'Transkrip disimpan.';
+
+  @override
+  String get supportTranscriptTitle => 'Transkrip chat CS';
+
+  @override
+  String get supportTranscriptTicket => 'Tiket';
+
+  @override
+  String get supportTranscriptTopic => 'Topik';
+
+  @override
+  String get supportTranscriptCreated => 'Dibuat';
+
+  @override
+  String get supportTranscriptResolved => 'Selesai';
+
+  @override
+  String get supportTranscriptClosed => 'Ditutup';
+
+  @override
+  String get supportTranscriptCustomer => 'Anda';
+
+  @override
+  String get supportTranscriptAgent => 'CS';
+
+  @override
+  String get supportTranscriptSystem => 'Sistem';
+
+  @override
+  String get supportTranscriptDeleted => '(pesan dihapus)';
+
+  @override
+  String get supportTranscriptAttachments => 'Lampiran';
+
+  @override
+  String get supportTranscriptEmpty => '(belum ada pesan)';
+
+  @override
+  String get supportTranscriptFilePrefix => 'transkrip';
+
+  @override
+  String get errorTicketActive => 'Transkrip tersedia setelah tiket selesai.';
+
+  @override
+  String get errorSurveyChanged => 'Survei baru saja diperbarui. Tutup dialog lalu beri nilai lagi.';
 }

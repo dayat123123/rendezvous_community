@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
@@ -6,22 +7,30 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 class SupportRating {
-  const SupportRating(this.rating, this.comment);
+  const SupportRating(this.rating, this.comment, {this.reasons = const []});
 
   final int rating;
   final String? comment;
+  final List<String> reasons;
 }
 
-Future<SupportRating?> askSupportRating(BuildContext context) {
+Future<SupportRating?> askSupportRating(BuildContext context, {SupportSurvey? survey}) {
   final builders = CommunitySupportBuilders.of(context, listen: false);
   return showDialog<SupportRating>(
     context: context,
-    builder: (_) => CommunitySupportBuildersScope(builders: builders, child: const SupportRatingDialog()),
+    builder: (_) => CommunitySupportBuildersScope(
+      builders: builders,
+      child: SupportRatingDialog(survey: survey),
+    ),
   );
 }
 
 class SupportRatingDialog extends StatefulWidget {
-  const SupportRatingDialog({super.key});
+  const SupportRatingDialog({super.key, this.survey, this.initialRating = 0, this.initialReasons = const {}});
+
+  final SupportSurvey? survey;
+  final int initialRating;
+  final Set<String> initialReasons;
 
   @override
   State<SupportRatingDialog> createState() => _SupportRatingDialogState();
@@ -29,7 +38,8 @@ class SupportRatingDialog extends StatefulWidget {
 
 class _SupportRatingDialogState extends State<SupportRatingDialog> {
   final _comment = TextEditingController();
-  int _rating = 0;
+  late int _rating = widget.initialRating;
+  late final Set<String> _reasons = {...widget.initialReasons};
 
   @override
   void dispose() {
@@ -37,26 +47,120 @@ class _SupportRatingDialogState extends State<SupportRatingDialog> {
     super.dispose();
   }
 
+  bool get _asksReasons => widget.survey?.asksReasons(_rating) ?? false;
+
+  void _rate(int value) => setState(() {
+    _rating = value;
+    if (!_asksReasons) _reasons.clear();
+  });
+
+  void _toggle(String code) => setState(() {
+    if (!_reasons.remove(code)) _reasons.add(code);
+  });
+
   void _submit() {
     final comment = _comment.text.trim();
-    Navigator.pop(context, SupportRating(_rating, comment.isEmpty ? null : comment));
+    final survey = widget.survey;
+    final reasons = _asksReasons && survey != null
+        ? [
+            for (final reason in survey.reasons)
+              if (_reasons.contains(reason.code)) reason.code,
+          ]
+        : const <String>[];
+    Navigator.pop(context, SupportRating(_rating, comment.isEmpty ? null : comment, reasons: reasons));
   }
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
+    final survey = widget.survey;
+    final selected = Set<String>.unmodifiable(_reasons);
+    final reasons = survey != null && _asksReasons
+        ? SupportSurveyReasonsView(
+            details: CommunitySupportSurveyReasonsDetails(
+              reasons: survey.reasons,
+              selected: selected,
+              title: l10n.supportSurveyReasons,
+              hint: l10n.supportSurveyReasonsHint,
+              onToggle: _toggle,
+            ),
+          )
+        : null;
     final details = CommunitySupportRatingDetails(
       rating: _rating,
       controller: _comment,
-      title: l10n.supportRateTitle,
+      title: survey?.question ?? l10n.supportRateTitle,
       commentLabel: l10n.supportRateComment,
       submitLabel: l10n.supportRateSubmit,
       cancelLabel: l10n.cancel,
-      onRate: (value) => setState(() => _rating = value),
+      onRate: _rate,
       onCancel: () => Navigator.pop(context),
       onSubmit: _rating == 0 ? null : _submit,
+      survey: survey,
+      values: survey?.values ?? const [1, 2, 3, 4, 5],
+      ratingLabels: survey?.scale == 3
+          ? {1: l10n.supportRateBad, 3: l10n.supportRateOkay, 5: l10n.supportRateGood}
+          : const {},
+      selectedReasons: selected,
+      onToggleReason: reasons == null ? null : _toggle,
+      reasons: reasons,
     );
     return buildSupportPart((b) => b.ratingDialog, context, details, _DefaultRatingDialog(details: details));
+  }
+}
+
+class SupportSurveyReasonsView extends StatelessWidget {
+  const SupportSurveyReasonsView({super.key, required this.details});
+
+  final CommunitySupportSurveyReasonsDetails details;
+
+  @override
+  Widget build(BuildContext context) =>
+      buildSupportPart((b) => b.surveyReasons, context, details, _DefaultSurveyReasons(details: details));
+}
+
+class _DefaultSurveyReasons extends StatelessWidget {
+  const _DefaultSurveyReasons({required this.details});
+
+  final CommunitySupportSurveyReasonsDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(d.title, style: style.typography.label),
+        SizedBox(height: spacing.xxs),
+        Text(d.hint, style: style.typography.meta),
+        SizedBox(height: spacing.sm),
+        Wrap(
+          spacing: spacing.xs,
+          runSpacing: spacing.xs,
+          children: [
+            for (final reason in d.reasons)
+              FilterChip(
+                label: Text(reason.label),
+                selected: d.selected.contains(reason.code),
+                selectedColor: style.accentMuted,
+                backgroundColor: style.surface,
+                checkmarkColor: style.accent,
+                side: BorderSide(
+                  color: d.selected.contains(reason.code) ? style.accent : style.border,
+                  width: style.borderWidth,
+                ),
+                labelStyle: style.typography.label.copyWith(
+                  color: d.selected.contains(reason.code) ? style.accent : style.textPrimary,
+                ),
+                onSelected: (_) => d.onToggle(reason.code),
+              ),
+          ],
+        ),
+      ],
+    );
   }
 }
 
@@ -84,29 +188,35 @@ class _DefaultRatingDialog extends StatelessWidget {
       actionsAlignment: MainAxisAlignment.center,
       content: SizedBox(
         width: 360,
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            SupportRatingStars(rating: d.rating, max: d.maxRating, onRate: d.onRate),
-            SizedBox(height: spacing.lg),
-            TextField(
-              controller: d.controller,
-              maxLines: 3,
-              maxLength: 500,
-              style: style.typography.body,
-              decoration: InputDecoration(
-                labelText: d.commentLabel,
-                alignLabelWithHint: true,
-                filled: true,
-                fillColor: style.pill,
-                border: OutlineInputBorder(borderRadius: style.radii.controlRadius, borderSide: style.borderSide),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: style.radii.controlRadius,
-                  borderSide: style.borderSide,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              if (d.faces)
+                SupportRatingFaces(rating: d.rating, values: d.values, labels: d.ratingLabels, onRate: d.onRate)
+              else
+                SupportRatingStars(rating: d.rating, max: d.maxRating, onRate: d.onRate),
+              if (d.reasons case final reasons?) ...[SizedBox(height: spacing.md), reasons],
+              SizedBox(height: spacing.lg),
+              TextField(
+                controller: d.controller,
+                maxLines: 3,
+                maxLength: 500,
+                style: style.typography.body,
+                decoration: InputDecoration(
+                  labelText: d.commentLabel,
+                  alignLabelWithHint: true,
+                  filled: true,
+                  fillColor: style.pill,
+                  border: OutlineInputBorder(borderRadius: style.radii.controlRadius, borderSide: style.borderSide),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: style.radii.controlRadius,
+                    borderSide: style.borderSide,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
       actions: [
@@ -146,6 +256,69 @@ class SupportRatingStars extends StatelessWidget {
               icon: Icon(
                 i <= rating ? Icons.star_rounded : Icons.star_outline_rounded,
                 color: i <= rating ? style.accent : style.textTertiary,
+              ),
+            ),
+        ],
+      ),
+    );
+  }
+}
+
+class SupportRatingFaces extends StatelessWidget {
+  const SupportRatingFaces({
+    super.key,
+    required this.rating,
+    required this.onRate,
+    this.values = const [1, 3, 5],
+    this.labels = const {},
+  });
+
+  final int rating;
+  final List<int> values;
+  final Map<int, String> labels;
+  final ValueChanged<int>? onRate;
+
+  static IconData iconFor(int value) => switch (value) {
+    <= 2 => Icons.sentiment_very_dissatisfied_rounded,
+    3 => Icons.sentiment_neutral_rounded,
+    _ => Icons.sentiment_very_satisfied_rounded,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final onRate = this.onRate;
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          for (final value in values)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: style.spacing.xs),
+              child: Semantics(
+                selected: value == rating,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      tooltip: labels[value] ?? '$value',
+                      iconSize: 44,
+                      padding: EdgeInsets.all(style.spacing.xs),
+                      onPressed: onRate == null ? null : () => onRate(value),
+                      icon: Icon(iconFor(value), color: value == rating ? style.accent : style.textTertiary),
+                    ),
+                    if (labels[value] case final label?)
+                      ExcludeSemantics(
+                        child: Text(
+                          label,
+                          style: style.typography.meta.copyWith(
+                            color: value == rating ? style.accent : style.textSecondary,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
               ),
             ),
         ],

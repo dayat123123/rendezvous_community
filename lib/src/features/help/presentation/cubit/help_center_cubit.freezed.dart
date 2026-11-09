@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$HelpCenterState {
 
- LoadStatus get status; HelpCenterContent? get content; bool get offline; Object? get error; String get query; bool get searching; List<HelpArticle>? get results; bool get savedResults; Object? get searchError;
+ LoadStatus get status; HelpCenterContent? get content; bool get offline; Object? get error; String get query; bool get searching; List<HelpArticle>? get results; bool get savedResults; Object? get searchError; List<SupportIncident> get incidents;
 /// Create a copy of HelpCenterState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $HelpCenterStateCopyWith<HelpCenterState> get copyWith => _$HelpCenterStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpCenterState&&(identical(other.status, status) || other.status == status)&&(identical(other.content, content) || other.content == content)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.query, query) || other.query == query)&&(identical(other.searching, searching) || other.searching == searching)&&const DeepCollectionEquality().equals(other.results, results)&&(identical(other.savedResults, savedResults) || other.savedResults == savedResults)&&const DeepCollectionEquality().equals(other.searchError, searchError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpCenterState&&(identical(other.status, status) || other.status == status)&&(identical(other.content, content) || other.content == content)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.query, query) || other.query == query)&&(identical(other.searching, searching) || other.searching == searching)&&const DeepCollectionEquality().equals(other.results, results)&&(identical(other.savedResults, savedResults) || other.savedResults == savedResults)&&const DeepCollectionEquality().equals(other.searchError, searchError)&&const DeepCollectionEquality().equals(other.incidents, incidents));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,content,offline,const DeepCollectionEquality().hash(error),query,searching,const DeepCollectionEquality().hash(results),savedResults,const DeepCollectionEquality().hash(searchError));
+int get hashCode => Object.hash(runtimeType,status,content,offline,const DeepCollectionEquality().hash(error),query,searching,const DeepCollectionEquality().hash(results),savedResults,const DeepCollectionEquality().hash(searchError),const DeepCollectionEquality().hash(incidents));
 
 @override
 String toString() {
-  return 'HelpCenterState(status: $status, content: $content, offline: $offline, error: $error, query: $query, searching: $searching, results: $results, savedResults: $savedResults, searchError: $searchError)';
+  return 'HelpCenterState(status: $status, content: $content, offline: $offline, error: $error, query: $query, searching: $searching, results: $results, savedResults: $savedResults, searchError: $searchError, incidents: $incidents)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $HelpCenterStateCopyWith<$Res>  {
   factory $HelpCenterStateCopyWith(HelpCenterState value, $Res Function(HelpCenterState) _then) = _$HelpCenterStateCopyWithImpl;
 @useResult
 $Res call({
- LoadStatus status, HelpCenterContent? content, bool offline, Object? error, String query, bool searching, List<HelpArticle>? results, bool savedResults, Object? searchError
+ LoadStatus status, HelpCenterContent? content, bool offline, Object? error, String query, bool searching, List<HelpArticle>? results, bool savedResults, Object? searchError, List<SupportIncident> incidents
 });
 
 
@@ -62,7 +62,7 @@ class _$HelpCenterStateCopyWithImpl<$Res>
 
 /// Create a copy of HelpCenterState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? content = freezed,Object? offline = null,Object? error = freezed,Object? query = null,Object? searching = null,Object? results = freezed,Object? savedResults = null,Object? searchError = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? content = freezed,Object? offline = null,Object? error = freezed,Object? query = null,Object? searching = null,Object? results = freezed,Object? savedResults = null,Object? searchError = freezed,Object? incidents = null,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
@@ -71,7 +71,8 @@ as bool,error: freezed == error ? _self.error : error ,query: null == query ? _s
 as String,searching: null == searching ? _self.searching : searching // ignore: cast_nullable_to_non_nullable
 as bool,results: freezed == results ? _self.results : results // ignore: cast_nullable_to_non_nullable
 as List<HelpArticle>?,savedResults: null == savedResults ? _self.savedResults : savedResults // ignore: cast_nullable_to_non_nullable
-as bool,searchError: freezed == searchError ? _self.searchError : searchError ,
+as bool,searchError: freezed == searchError ? _self.searchError : searchError ,incidents: null == incidents ? _self.incidents : incidents // ignore: cast_nullable_to_non_nullable
+as List<SupportIncident>,
   ));
 }
 /// Create a copy of HelpCenterState
@@ -168,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( LoadStatus status,  HelpCenterContent? content,  bool offline,  Object? error,  String query,  bool searching,  List<HelpArticle>? results,  bool savedResults,  Object? searchError)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( LoadStatus status,  HelpCenterContent? content,  bool offline,  Object? error,  String query,  bool searching,  List<HelpArticle>? results,  bool savedResults,  Object? searchError,  List<SupportIncident> incidents)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HelpCenterState() when $default != null:
-return $default(_that.status,_that.content,_that.offline,_that.error,_that.query,_that.searching,_that.results,_that.savedResults,_that.searchError);case _:
+return $default(_that.status,_that.content,_that.offline,_that.error,_that.query,_that.searching,_that.results,_that.savedResults,_that.searchError,_that.incidents);case _:
   return orElse();
 
 }
@@ -189,10 +190,10 @@ return $default(_that.status,_that.content,_that.offline,_that.error,_that.query
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( LoadStatus status,  HelpCenterContent? content,  bool offline,  Object? error,  String query,  bool searching,  List<HelpArticle>? results,  bool savedResults,  Object? searchError)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( LoadStatus status,  HelpCenterContent? content,  bool offline,  Object? error,  String query,  bool searching,  List<HelpArticle>? results,  bool savedResults,  Object? searchError,  List<SupportIncident> incidents)  $default,) {final _that = this;
 switch (_that) {
 case _HelpCenterState():
-return $default(_that.status,_that.content,_that.offline,_that.error,_that.query,_that.searching,_that.results,_that.savedResults,_that.searchError);case _:
+return $default(_that.status,_that.content,_that.offline,_that.error,_that.query,_that.searching,_that.results,_that.savedResults,_that.searchError,_that.incidents);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -209,10 +210,10 @@ return $default(_that.status,_that.content,_that.offline,_that.error,_that.query
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( LoadStatus status,  HelpCenterContent? content,  bool offline,  Object? error,  String query,  bool searching,  List<HelpArticle>? results,  bool savedResults,  Object? searchError)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( LoadStatus status,  HelpCenterContent? content,  bool offline,  Object? error,  String query,  bool searching,  List<HelpArticle>? results,  bool savedResults,  Object? searchError,  List<SupportIncident> incidents)?  $default,) {final _that = this;
 switch (_that) {
 case _HelpCenterState() when $default != null:
-return $default(_that.status,_that.content,_that.offline,_that.error,_that.query,_that.searching,_that.results,_that.savedResults,_that.searchError);case _:
+return $default(_that.status,_that.content,_that.offline,_that.error,_that.query,_that.searching,_that.results,_that.savedResults,_that.searchError,_that.incidents);case _:
   return null;
 
 }
@@ -224,7 +225,7 @@ return $default(_that.status,_that.content,_that.offline,_that.error,_that.query
 
 
 class _HelpCenterState extends HelpCenterState {
-  const _HelpCenterState({this.status = LoadStatus.initial, this.content, this.offline = false, this.error, this.query = '', this.searching = false, final  List<HelpArticle>? results, this.savedResults = false, this.searchError}): _results = results,super._();
+  const _HelpCenterState({this.status = LoadStatus.initial, this.content, this.offline = false, this.error, this.query = '', this.searching = false, final  List<HelpArticle>? results, this.savedResults = false, this.searchError, final  List<SupportIncident> incidents = const <SupportIncident>[]}): _results = results,_incidents = incidents,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -244,6 +245,13 @@ class _HelpCenterState extends HelpCenterState {
 
 @override@JsonKey() final  bool savedResults;
 @override final  Object? searchError;
+ final  List<SupportIncident> _incidents;
+@override@JsonKey() List<SupportIncident> get incidents {
+  if (_incidents is EqualUnmodifiableListView) return _incidents;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_incidents);
+}
+
 
 /// Create a copy of HelpCenterState
 /// with the given fields replaced by the non-null parameter values.
@@ -255,16 +263,16 @@ _$HelpCenterStateCopyWith<_HelpCenterState> get copyWith => __$HelpCenterStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpCenterState&&(identical(other.status, status) || other.status == status)&&(identical(other.content, content) || other.content == content)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.query, query) || other.query == query)&&(identical(other.searching, searching) || other.searching == searching)&&const DeepCollectionEquality().equals(other._results, _results)&&(identical(other.savedResults, savedResults) || other.savedResults == savedResults)&&const DeepCollectionEquality().equals(other.searchError, searchError));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpCenterState&&(identical(other.status, status) || other.status == status)&&(identical(other.content, content) || other.content == content)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.query, query) || other.query == query)&&(identical(other.searching, searching) || other.searching == searching)&&const DeepCollectionEquality().equals(other._results, _results)&&(identical(other.savedResults, savedResults) || other.savedResults == savedResults)&&const DeepCollectionEquality().equals(other.searchError, searchError)&&const DeepCollectionEquality().equals(other._incidents, _incidents));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,content,offline,const DeepCollectionEquality().hash(error),query,searching,const DeepCollectionEquality().hash(_results),savedResults,const DeepCollectionEquality().hash(searchError));
+int get hashCode => Object.hash(runtimeType,status,content,offline,const DeepCollectionEquality().hash(error),query,searching,const DeepCollectionEquality().hash(_results),savedResults,const DeepCollectionEquality().hash(searchError),const DeepCollectionEquality().hash(_incidents));
 
 @override
 String toString() {
-  return 'HelpCenterState(status: $status, content: $content, offline: $offline, error: $error, query: $query, searching: $searching, results: $results, savedResults: $savedResults, searchError: $searchError)';
+  return 'HelpCenterState(status: $status, content: $content, offline: $offline, error: $error, query: $query, searching: $searching, results: $results, savedResults: $savedResults, searchError: $searchError, incidents: $incidents)';
 }
 
 
@@ -275,7 +283,7 @@ abstract mixin class _$HelpCenterStateCopyWith<$Res> implements $HelpCenterState
   factory _$HelpCenterStateCopyWith(_HelpCenterState value, $Res Function(_HelpCenterState) _then) = __$HelpCenterStateCopyWithImpl;
 @override @useResult
 $Res call({
- LoadStatus status, HelpCenterContent? content, bool offline, Object? error, String query, bool searching, List<HelpArticle>? results, bool savedResults, Object? searchError
+ LoadStatus status, HelpCenterContent? content, bool offline, Object? error, String query, bool searching, List<HelpArticle>? results, bool savedResults, Object? searchError, List<SupportIncident> incidents
 });
 
 
@@ -292,7 +300,7 @@ class __$HelpCenterStateCopyWithImpl<$Res>
 
 /// Create a copy of HelpCenterState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? content = freezed,Object? offline = null,Object? error = freezed,Object? query = null,Object? searching = null,Object? results = freezed,Object? savedResults = null,Object? searchError = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? content = freezed,Object? offline = null,Object? error = freezed,Object? query = null,Object? searching = null,Object? results = freezed,Object? savedResults = null,Object? searchError = freezed,Object? incidents = null,}) {
   return _then(_HelpCenterState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
@@ -301,7 +309,8 @@ as bool,error: freezed == error ? _self.error : error ,query: null == query ? _s
 as String,searching: null == searching ? _self.searching : searching // ignore: cast_nullable_to_non_nullable
 as bool,results: freezed == results ? _self._results : results // ignore: cast_nullable_to_non_nullable
 as List<HelpArticle>?,savedResults: null == savedResults ? _self.savedResults : savedResults // ignore: cast_nullable_to_non_nullable
-as bool,searchError: freezed == searchError ? _self.searchError : searchError ,
+as bool,searchError: freezed == searchError ? _self.searchError : searchError ,incidents: null == incidents ? _self._incidents : incidents // ignore: cast_nullable_to_non_nullable
+as List<SupportIncident>,
   ));
 }
 

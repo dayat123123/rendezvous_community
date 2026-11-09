@@ -3703,6 +3703,276 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Pemeriksaan file sedang tidak tersedia. Coba kirim lagi sebentar lagi.'**
   String get errorScannerUnavailable;
+
+  /// No description provided for @supportQueueEta.
+  ///
+  /// In id, this message translates to:
+  /// **'Perkiraan menunggu ± {minutes} menit'**
+  String supportQueueEta(int minutes);
+
+  /// No description provided for @supportIntakeTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Sebelum mulai chat'**
+  String get supportIntakeTitle;
+
+  /// No description provided for @supportIntakeHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Jawab beberapa pertanyaan singkat agar CS bisa langsung membantu.'**
+  String get supportIntakeHint;
+
+  /// No description provided for @supportIntakeSubmit.
+  ///
+  /// In id, this message translates to:
+  /// **'Mulai chat'**
+  String get supportIntakeSubmit;
+
+  /// No description provided for @supportIntakeOptional.
+  ///
+  /// In id, this message translates to:
+  /// **'opsional'**
+  String get supportIntakeOptional;
+
+  /// No description provided for @supportIntakePickDate.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih tanggal'**
+  String get supportIntakePickDate;
+
+  /// No description provided for @supportIntakeRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Wajib diisi.'**
+  String get supportIntakeRequired;
+
+  /// No description provided for @supportIntakeTooLong.
+  ///
+  /// In id, this message translates to:
+  /// **'Maksimal {max} karakter.'**
+  String supportIntakeTooLong(int max);
+
+  /// No description provided for @supportIntakeNumber.
+  ///
+  /// In id, this message translates to:
+  /// **'Isi dengan angka, misalnya 1500 atau 12,5.'**
+  String get supportIntakeNumber;
+
+  /// No description provided for @supportIntakeDate.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih tanggal yang valid.'**
+  String get supportIntakeDate;
+
+  /// No description provided for @supportIntakeChoice.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih salah satu.'**
+  String get supportIntakeChoice;
+
+  /// No description provided for @errorIntakeRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Lengkapi dulu pertanyaan yang wajib diisi.'**
+  String get errorIntakeRequired;
+
+  /// No description provided for @errorInvalidIntakeAnswers.
+  ///
+  /// In id, this message translates to:
+  /// **'Ada jawaban yang belum sesuai. Periksa lagi isian Anda.'**
+  String get errorInvalidIntakeAnswers;
+
+  /// No description provided for @supportIncidentInfo.
+  ///
+  /// In id, this message translates to:
+  /// **'Info layanan'**
+  String get supportIncidentInfo;
+
+  /// No description provided for @supportIncidentWarning.
+  ///
+  /// In id, this message translates to:
+  /// **'Gangguan layanan'**
+  String get supportIncidentWarning;
+
+  /// No description provided for @supportIncidentCritical.
+  ///
+  /// In id, this message translates to:
+  /// **'Gangguan serius'**
+  String get supportIncidentCritical;
+
+  /// No description provided for @supportIncidentMore.
+  ///
+  /// In id, this message translates to:
+  /// **'Selengkapnya'**
+  String get supportIncidentMore;
+
+  /// No description provided for @supportIncidentDismiss.
+  ///
+  /// In id, this message translates to:
+  /// **'Tutup pemberitahuan'**
+  String get supportIncidentDismiss;
+
+  /// No description provided for @supportLeaveMessage.
+  ///
+  /// In id, this message translates to:
+  /// **'Tinggalkan pesan'**
+  String get supportLeaveMessage;
+
+  /// No description provided for @supportLeaveMessageTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'CS sedang di luar jam layanan'**
+  String get supportLeaveMessageTitle;
+
+  /// No description provided for @supportLeaveMessageHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Tinggalkan pesan sekarang. Tiket Anda tercatat dan dibalas saat layanan buka.'**
+  String get supportLeaveMessageHint;
+
+  /// No description provided for @supportLeaveMessageArticles.
+  ///
+  /// In id, this message translates to:
+  /// **'Sambil menunggu, artikel ini mungkin menjawab pertanyaan Anda.'**
+  String get supportLeaveMessageArticles;
+
+  /// No description provided for @supportSurveyReasons.
+  ///
+  /// In id, this message translates to:
+  /// **'Apa yang kurang?'**
+  String get supportSurveyReasons;
+
+  /// No description provided for @supportSurveyReasonsHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Boleh pilih lebih dari satu.'**
+  String get supportSurveyReasonsHint;
+
+  /// No description provided for @supportRateBad.
+  ///
+  /// In id, this message translates to:
+  /// **'Kurang puas'**
+  String get supportRateBad;
+
+  /// No description provided for @supportRateOkay.
+  ///
+  /// In id, this message translates to:
+  /// **'Biasa saja'**
+  String get supportRateOkay;
+
+  /// No description provided for @supportRateGood.
+  ///
+  /// In id, this message translates to:
+  /// **'Puas'**
+  String get supportRateGood;
+
+  /// No description provided for @supportReplySuggestions.
+  ///
+  /// In id, this message translates to:
+  /// **'Saran balasan'**
+  String get supportReplySuggestions;
+
+  /// No description provided for @supportTranscriptDownload.
+  ///
+  /// In id, this message translates to:
+  /// **'Unduh transkrip'**
+  String get supportTranscriptDownload;
+
+  /// No description provided for @supportTranscriptSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Transkrip disimpan.'**
+  String get supportTranscriptSaved;
+
+  /// No description provided for @supportTranscriptTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Transkrip chat CS'**
+  String get supportTranscriptTitle;
+
+  /// No description provided for @supportTranscriptTicket.
+  ///
+  /// In id, this message translates to:
+  /// **'Tiket'**
+  String get supportTranscriptTicket;
+
+  /// No description provided for @supportTranscriptTopic.
+  ///
+  /// In id, this message translates to:
+  /// **'Topik'**
+  String get supportTranscriptTopic;
+
+  /// No description provided for @supportTranscriptCreated.
+  ///
+  /// In id, this message translates to:
+  /// **'Dibuat'**
+  String get supportTranscriptCreated;
+
+  /// No description provided for @supportTranscriptResolved.
+  ///
+  /// In id, this message translates to:
+  /// **'Selesai'**
+  String get supportTranscriptResolved;
+
+  /// No description provided for @supportTranscriptClosed.
+  ///
+  /// In id, this message translates to:
+  /// **'Ditutup'**
+  String get supportTranscriptClosed;
+
+  /// No description provided for @supportTranscriptCustomer.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda'**
+  String get supportTranscriptCustomer;
+
+  /// No description provided for @supportTranscriptAgent.
+  ///
+  /// In id, this message translates to:
+  /// **'CS'**
+  String get supportTranscriptAgent;
+
+  /// No description provided for @supportTranscriptSystem.
+  ///
+  /// In id, this message translates to:
+  /// **'Sistem'**
+  String get supportTranscriptSystem;
+
+  /// No description provided for @supportTranscriptDeleted.
+  ///
+  /// In id, this message translates to:
+  /// **'(pesan dihapus)'**
+  String get supportTranscriptDeleted;
+
+  /// No description provided for @supportTranscriptAttachments.
+  ///
+  /// In id, this message translates to:
+  /// **'Lampiran'**
+  String get supportTranscriptAttachments;
+
+  /// No description provided for @supportTranscriptEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'(belum ada pesan)'**
+  String get supportTranscriptEmpty;
+
+  /// No description provided for @supportTranscriptFilePrefix.
+  ///
+  /// In id, this message translates to:
+  /// **'transkrip'**
+  String get supportTranscriptFilePrefix;
+
+  /// No description provided for @errorTicketActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Transkrip tersedia setelah tiket selesai.'**
+  String get errorTicketActive;
+
+  /// No description provided for @errorSurveyChanged.
+  ///
+  /// In id, this message translates to:
+  /// **'Survei baru saja diperbarui. Tutup dialog lalu beri nilai lagi.'**
+  String get errorSurveyChanged;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

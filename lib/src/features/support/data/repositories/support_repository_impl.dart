@@ -12,6 +12,7 @@ import 'package:rendezvous_community/src/features/notifications/domain/entities/
 import 'package:rendezvous_community/src/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:rendezvous_community/src/features/support/data/models/support_models.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
+import 'package:rendezvous_community/src/features/support/domain/entities/support_transcript.dart';
 import 'package:rendezvous_community/src/features/support/domain/repositories/support_repository.dart';
 
 class SupportRepositoryImpl implements SupportRepository {
@@ -40,6 +41,7 @@ class SupportRepositoryImpl implements SupportRepository {
           description: row['description'] as String?,
           icon: row['icon'] as String?,
           style: row['style'] as String? ?? 'normal',
+          intake: parseSupportIntake(row['intake']),
         ),
     ];
   }
@@ -50,19 +52,22 @@ class SupportRepositoryImpl implements SupportRepository {
     String language = 'id',
     String? screen,
     bool complaint = false,
+    Map<String, String>? intake,
   }) async {
+    final answers = intake == null || intake.isEmpty ? null : intake;
     final ticket = _ticket(
       await _cs.rpcValue('open_ticket', {
         'p_topic': topic,
         'p_language': language,
         'p_screen': screen,
         'p_complaint': complaint,
+        'p_intake': ?answers,
       }),
     );
     CommunityLoggers.support.event(
       Level.INFO,
       'Support ticket opened',
-      fields: {'ticketId': ticket.id, 'topic': topic, 'status': ticket.status},
+      fields: {'ticketId': ticket.id, 'topic': topic, 'status': ticket.status, 'intakeAnswers': answers?.length ?? 0},
     );
     return ticket;
   }
@@ -84,8 +89,42 @@ class SupportRepositoryImpl implements SupportRepository {
       _ticket(await _cs.rpcValue('close_ticket', {'p_ticket_id': ticketId}));
 
   @override
-  Future<SupportTicket> rateTicket(String ticketId, int rating, {String? comment}) async =>
-      _ticket(await _cs.rpcValue('rate_ticket', {'p_ticket_id': ticketId, 'p_rating': rating, 'p_comment': comment}));
+  Future<SupportTicket> rateTicket(String ticketId, int rating, {String? comment, List<String>? reasons}) async {
+    final codes = reasons == null || reasons.isEmpty ? null : reasons.toSet().toList();
+    return _ticket(
+      await _cs.rpcValue('rate_ticket', {
+        'p_ticket_id': ticketId,
+        'p_rating': rating,
+        'p_comment': comment,
+        'p_reasons': ?codes,
+      }),
+    );
+  }
+
+  @override
+  Future<List<SupportIncident>> serviceStatus({String language = 'id'}) async {
+    try {
+      final value = await _cs.rpcValue('service_status', {'p_language': language == 'en' ? 'en' : 'id'});
+      return parseSupportIncidents(value is Map<String, dynamic> ? value['incidents'] : null);
+    } on CommunityException catch (e) {
+      if (e.code != 'PGRST202' && e.kind != CommunityErrorKind.notFound) rethrow;
+      CommunityLoggers.support.info('Server has no service status endpoint; showing no incidents');
+      return const [];
+    }
+  }
+
+  @override
+  Future<SupportTranscript> transcript(String ticketId) async {
+    final transcript = parseSupportTranscript(
+      (await _cs.rpcValue('ticket_transcript', {'p_ticket_id': ticketId}))! as Map<String, dynamic>,
+    );
+    CommunityLoggers.support.event(
+      Level.INFO,
+      'Support transcript loaded',
+      fields: {'ticketId': ticketId, 'messages': transcript.messages.length},
+    );
+    return transcript;
+  }
 
   @override
   Future<SupportTicket> requestComplaint() async => _ticket(await _cs.rpcValue('request_complaint'));

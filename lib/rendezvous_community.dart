@@ -215,10 +215,15 @@ export 'src/features/stocks/domain/entities/stock_suggestion.dart';
 export 'src/features/stocks/domain/repositories/stock_repository.dart';
 export 'src/features/stocks/presentation/widgets/community_stock_feed.dart' show CommunityStockFeed;
 export 'src/features/support/domain/entities/support_ticket.dart';
+export 'src/features/support/domain/entities/support_transcript.dart';
 export 'src/features/support/domain/repositories/support_repository.dart';
+export 'src/features/support/domain/services/support_intake.dart';
+export 'src/features/support/domain/services/support_transcript_text.dart';
 export 'src/features/support/presentation/builders/community_support_builders.dart'
     show CommunitySupportBuilders, CommunitySupportBuildersScope;
 export 'src/features/support/presentation/builders/community_support_details.dart';
+export 'src/features/support/presentation/support_transcript_saver.dart'
+    show CommunityTranscriptSaver, saveSupportTranscript, supportTranscriptFile;
 export 'src/features/support/presentation/widgets/community_support_badge.dart' show CommunitySupportBadge;
 export 'src/features/support/presentation/widgets/community_support_chat.dart'
     show CommunitySupportChat, CommunitySupportPage, openCommunitySupport;

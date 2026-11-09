@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$SupportTicketModel {
 
- String get id; String get ticketNumber; String get roomId; String get topic; String? get topicName; String get status; int? get queueAhead; Map<String, dynamic>? get agent; Map<String, dynamic>? get complaint; DateTime get createdAt; DateTime? get resolvedAt; DateTime? get closedAt; DateTime? get reopenUntil; int? get rating; bool get canRate;
+ String get id; String get ticketNumber; String get roomId; String get topic; String? get topicName; String get status; int? get queueAhead; Map<String, dynamic>? get agent; Map<String, dynamic>? get complaint; DateTime get createdAt; DateTime? get resolvedAt; DateTime? get closedAt; DateTime? get reopenUntil; int? get rating; bool get canRate; int? get etaMinutes; List<Object?>? get quickReplies;
 /// Create a copy of SupportTicketModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $SupportTicketModelCopyWith<SupportTicketModel> get copyWith => _$SupportTicketM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTicketModel&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&const DeepCollectionEquality().equals(other.agent, agent)&&const DeepCollectionEquality().equals(other.complaint, complaint)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTicketModel&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&const DeepCollectionEquality().equals(other.agent, agent)&&const DeepCollectionEquality().equals(other.complaint, complaint)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate)&&(identical(other.etaMinutes, etaMinutes) || other.etaMinutes == etaMinutes)&&const DeepCollectionEquality().equals(other.quickReplies, quickReplies));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,const DeepCollectionEquality().hash(agent),const DeepCollectionEquality().hash(complaint),createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate);
+int get hashCode => Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,const DeepCollectionEquality().hash(agent),const DeepCollectionEquality().hash(complaint),createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate,etaMinutes,const DeepCollectionEquality().hash(quickReplies));
 
 @override
 String toString() {
-  return 'SupportTicketModel(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaint: $complaint, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate)';
+  return 'SupportTicketModel(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaint: $complaint, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate, etaMinutes: $etaMinutes, quickReplies: $quickReplies)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $SupportTicketModelCopyWith<$Res>  {
   factory $SupportTicketModelCopyWith(SupportTicketModel value, $Res Function(SupportTicketModel) _then) = _$SupportTicketModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String ticketNumber, String roomId, String topic, String? topicName, String status, int? queueAhead, Map<String, dynamic>? agent, Map<String, dynamic>? complaint, DateTime createdAt, DateTime? resolvedAt, DateTime? closedAt, DateTime? reopenUntil, int? rating, bool canRate
+ String id, String ticketNumber, String roomId, String topic, String? topicName, String status, int? queueAhead, Map<String, dynamic>? agent, Map<String, dynamic>? complaint, DateTime createdAt, DateTime? resolvedAt, DateTime? closedAt, DateTime? reopenUntil, int? rating, bool canRate, int? etaMinutes, List<Object?>? quickReplies
 });
 
 
@@ -65,7 +65,7 @@ class _$SupportTicketModelCopyWithImpl<$Res>
 
 /// Create a copy of SupportTicketModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? ticketNumber = null,Object? roomId = null,Object? topic = null,Object? topicName = freezed,Object? status = null,Object? queueAhead = freezed,Object? agent = freezed,Object? complaint = freezed,Object? createdAt = null,Object? resolvedAt = freezed,Object? closedAt = freezed,Object? reopenUntil = freezed,Object? rating = freezed,Object? canRate = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? ticketNumber = null,Object? roomId = null,Object? topic = null,Object? topicName = freezed,Object? status = null,Object? queueAhead = freezed,Object? agent = freezed,Object? complaint = freezed,Object? createdAt = null,Object? resolvedAt = freezed,Object? closedAt = freezed,Object? reopenUntil = freezed,Object? rating = freezed,Object? canRate = null,Object? etaMinutes = freezed,Object? quickReplies = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,ticketNumber: null == ticketNumber ? _self.ticketNumber : ticketNumber // ignore: cast_nullable_to_non_nullable
@@ -82,7 +82,9 @@ as DateTime?,closedAt: freezed == closedAt ? _self.closedAt : closedAt // ignore
 as DateTime?,reopenUntil: freezed == reopenUntil ? _self.reopenUntil : reopenUntil // ignore: cast_nullable_to_non_nullable
 as DateTime?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
 as int?,canRate: null == canRate ? _self.canRate : canRate // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,etaMinutes: freezed == etaMinutes ? _self.etaMinutes : etaMinutes // ignore: cast_nullable_to_non_nullable
+as int?,quickReplies: freezed == quickReplies ? _self.quickReplies : quickReplies // ignore: cast_nullable_to_non_nullable
+as List<Object?>?,
   ));
 }
 
@@ -167,10 +169,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String ticketNumber,  String roomId,  String topic,  String? topicName,  String status,  int? queueAhead,  Map<String, dynamic>? agent,  Map<String, dynamic>? complaint,  DateTime createdAt,  DateTime? resolvedAt,  DateTime? closedAt,  DateTime? reopenUntil,  int? rating,  bool canRate)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String ticketNumber,  String roomId,  String topic,  String? topicName,  String status,  int? queueAhead,  Map<String, dynamic>? agent,  Map<String, dynamic>? complaint,  DateTime createdAt,  DateTime? resolvedAt,  DateTime? closedAt,  DateTime? reopenUntil,  int? rating,  bool canRate,  int? etaMinutes,  List<Object?>? quickReplies)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SupportTicketModel() when $default != null:
-return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topicName,_that.status,_that.queueAhead,_that.agent,_that.complaint,_that.createdAt,_that.resolvedAt,_that.closedAt,_that.reopenUntil,_that.rating,_that.canRate);case _:
+return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topicName,_that.status,_that.queueAhead,_that.agent,_that.complaint,_that.createdAt,_that.resolvedAt,_that.closedAt,_that.reopenUntil,_that.rating,_that.canRate,_that.etaMinutes,_that.quickReplies);case _:
   return orElse();
 
 }
@@ -188,10 +190,10 @@ return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topic
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String ticketNumber,  String roomId,  String topic,  String? topicName,  String status,  int? queueAhead,  Map<String, dynamic>? agent,  Map<String, dynamic>? complaint,  DateTime createdAt,  DateTime? resolvedAt,  DateTime? closedAt,  DateTime? reopenUntil,  int? rating,  bool canRate)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String ticketNumber,  String roomId,  String topic,  String? topicName,  String status,  int? queueAhead,  Map<String, dynamic>? agent,  Map<String, dynamic>? complaint,  DateTime createdAt,  DateTime? resolvedAt,  DateTime? closedAt,  DateTime? reopenUntil,  int? rating,  bool canRate,  int? etaMinutes,  List<Object?>? quickReplies)  $default,) {final _that = this;
 switch (_that) {
 case _SupportTicketModel():
-return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topicName,_that.status,_that.queueAhead,_that.agent,_that.complaint,_that.createdAt,_that.resolvedAt,_that.closedAt,_that.reopenUntil,_that.rating,_that.canRate);case _:
+return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topicName,_that.status,_that.queueAhead,_that.agent,_that.complaint,_that.createdAt,_that.resolvedAt,_that.closedAt,_that.reopenUntil,_that.rating,_that.canRate,_that.etaMinutes,_that.quickReplies);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -208,10 +210,10 @@ return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topic
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String ticketNumber,  String roomId,  String topic,  String? topicName,  String status,  int? queueAhead,  Map<String, dynamic>? agent,  Map<String, dynamic>? complaint,  DateTime createdAt,  DateTime? resolvedAt,  DateTime? closedAt,  DateTime? reopenUntil,  int? rating,  bool canRate)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String ticketNumber,  String roomId,  String topic,  String? topicName,  String status,  int? queueAhead,  Map<String, dynamic>? agent,  Map<String, dynamic>? complaint,  DateTime createdAt,  DateTime? resolvedAt,  DateTime? closedAt,  DateTime? reopenUntil,  int? rating,  bool canRate,  int? etaMinutes,  List<Object?>? quickReplies)?  $default,) {final _that = this;
 switch (_that) {
 case _SupportTicketModel() when $default != null:
-return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topicName,_that.status,_that.queueAhead,_that.agent,_that.complaint,_that.createdAt,_that.resolvedAt,_that.closedAt,_that.reopenUntil,_that.rating,_that.canRate);case _:
+return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topicName,_that.status,_that.queueAhead,_that.agent,_that.complaint,_that.createdAt,_that.resolvedAt,_that.closedAt,_that.reopenUntil,_that.rating,_that.canRate,_that.etaMinutes,_that.quickReplies);case _:
   return null;
 
 }
@@ -223,7 +225,7 @@ return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topic
 @JsonSerializable()
 
 class _SupportTicketModel extends SupportTicketModel {
-  const _SupportTicketModel({required this.id, required this.ticketNumber, required this.roomId, required this.topic, this.topicName, required this.status, this.queueAhead, final  Map<String, dynamic>? agent, final  Map<String, dynamic>? complaint, required this.createdAt, this.resolvedAt, this.closedAt, this.reopenUntil, this.rating, this.canRate = false}): _agent = agent,_complaint = complaint,super._();
+  const _SupportTicketModel({required this.id, required this.ticketNumber, required this.roomId, required this.topic, this.topicName, required this.status, this.queueAhead, final  Map<String, dynamic>? agent, final  Map<String, dynamic>? complaint, required this.createdAt, this.resolvedAt, this.closedAt, this.reopenUntil, this.rating, this.canRate = false, this.etaMinutes, final  List<Object?>? quickReplies}): _agent = agent,_complaint = complaint,_quickReplies = quickReplies,super._();
   factory _SupportTicketModel.fromJson(Map<String, dynamic> json) => _$SupportTicketModelFromJson(json);
 
 @override final  String id;
@@ -257,6 +259,16 @@ class _SupportTicketModel extends SupportTicketModel {
 @override final  DateTime? reopenUntil;
 @override final  int? rating;
 @override@JsonKey() final  bool canRate;
+@override final  int? etaMinutes;
+ final  List<Object?>? _quickReplies;
+@override List<Object?>? get quickReplies {
+  final value = _quickReplies;
+  if (value == null) return null;
+  if (_quickReplies is EqualUnmodifiableListView) return _quickReplies;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
 
 /// Create a copy of SupportTicketModel
 /// with the given fields replaced by the non-null parameter values.
@@ -271,16 +283,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTicketModel&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&const DeepCollectionEquality().equals(other._agent, _agent)&&const DeepCollectionEquality().equals(other._complaint, _complaint)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTicketModel&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&const DeepCollectionEquality().equals(other._agent, _agent)&&const DeepCollectionEquality().equals(other._complaint, _complaint)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate)&&(identical(other.etaMinutes, etaMinutes) || other.etaMinutes == etaMinutes)&&const DeepCollectionEquality().equals(other._quickReplies, _quickReplies));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,const DeepCollectionEquality().hash(_agent),const DeepCollectionEquality().hash(_complaint),createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate);
+int get hashCode => Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,const DeepCollectionEquality().hash(_agent),const DeepCollectionEquality().hash(_complaint),createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate,etaMinutes,const DeepCollectionEquality().hash(_quickReplies));
 
 @override
 String toString() {
-  return 'SupportTicketModel(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaint: $complaint, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate)';
+  return 'SupportTicketModel(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaint: $complaint, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate, etaMinutes: $etaMinutes, quickReplies: $quickReplies)';
 }
 
 
@@ -291,7 +303,7 @@ abstract mixin class _$SupportTicketModelCopyWith<$Res> implements $SupportTicke
   factory _$SupportTicketModelCopyWith(_SupportTicketModel value, $Res Function(_SupportTicketModel) _then) = __$SupportTicketModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String ticketNumber, String roomId, String topic, String? topicName, String status, int? queueAhead, Map<String, dynamic>? agent, Map<String, dynamic>? complaint, DateTime createdAt, DateTime? resolvedAt, DateTime? closedAt, DateTime? reopenUntil, int? rating, bool canRate
+ String id, String ticketNumber, String roomId, String topic, String? topicName, String status, int? queueAhead, Map<String, dynamic>? agent, Map<String, dynamic>? complaint, DateTime createdAt, DateTime? resolvedAt, DateTime? closedAt, DateTime? reopenUntil, int? rating, bool canRate, int? etaMinutes, List<Object?>? quickReplies
 });
 
 
@@ -308,7 +320,7 @@ class __$SupportTicketModelCopyWithImpl<$Res>
 
 /// Create a copy of SupportTicketModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? ticketNumber = null,Object? roomId = null,Object? topic = null,Object? topicName = freezed,Object? status = null,Object? queueAhead = freezed,Object? agent = freezed,Object? complaint = freezed,Object? createdAt = null,Object? resolvedAt = freezed,Object? closedAt = freezed,Object? reopenUntil = freezed,Object? rating = freezed,Object? canRate = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? ticketNumber = null,Object? roomId = null,Object? topic = null,Object? topicName = freezed,Object? status = null,Object? queueAhead = freezed,Object? agent = freezed,Object? complaint = freezed,Object? createdAt = null,Object? resolvedAt = freezed,Object? closedAt = freezed,Object? reopenUntil = freezed,Object? rating = freezed,Object? canRate = null,Object? etaMinutes = freezed,Object? quickReplies = freezed,}) {
   return _then(_SupportTicketModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,ticketNumber: null == ticketNumber ? _self.ticketNumber : ticketNumber // ignore: cast_nullable_to_non_nullable
@@ -325,7 +337,9 @@ as DateTime?,closedAt: freezed == closedAt ? _self.closedAt : closedAt // ignore
 as DateTime?,reopenUntil: freezed == reopenUntil ? _self.reopenUntil : reopenUntil // ignore: cast_nullable_to_non_nullable
 as DateTime?,rating: freezed == rating ? _self.rating : rating // ignore: cast_nullable_to_non_nullable
 as int?,canRate: null == canRate ? _self.canRate : canRate // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,etaMinutes: freezed == etaMinutes ? _self.etaMinutes : etaMinutes // ignore: cast_nullable_to_non_nullable
+as int?,quickReplies: freezed == quickReplies ? _self._quickReplies : quickReplies // ignore: cast_nullable_to_non_nullable
+as List<Object?>?,
   ));
 }
 
@@ -336,7 +350,7 @@ as bool,
 /// @nodoc
 mixin _$SupportHomeModel {
 
- String? get roomId; String get supportName; SupportTicketModel? get ticket; bool get active; int get unreadCount; bool get serviceOpen; DateTime? get nextOpenAt; Map<String, dynamic>? get topicPicker;
+ String? get roomId; String get supportName; SupportTicketModel? get ticket; bool get active; int get unreadCount; bool get serviceOpen; DateTime? get nextOpenAt; Map<String, dynamic>? get topicPicker; List<Object?>? get incidents; Map<String, dynamic>? get survey;
 /// Create a copy of SupportHomeModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -349,16 +363,16 @@ $SupportHomeModelCopyWith<SupportHomeModel> get copyWith => _$SupportHomeModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&const DeepCollectionEquality().equals(other.topicPicker, topicPicker));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&const DeepCollectionEquality().equals(other.topicPicker, topicPicker)&&const DeepCollectionEquality().equals(other.incidents, incidents)&&const DeepCollectionEquality().equals(other.survey, survey));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,const DeepCollectionEquality().hash(topicPicker));
+int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,const DeepCollectionEquality().hash(topicPicker),const DeepCollectionEquality().hash(incidents),const DeepCollectionEquality().hash(survey));
 
 @override
 String toString() {
-  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker)';
+  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker, incidents: $incidents, survey: $survey)';
 }
 
 
@@ -369,7 +383,7 @@ abstract mixin class $SupportHomeModelCopyWith<$Res>  {
   factory $SupportHomeModelCopyWith(SupportHomeModel value, $Res Function(SupportHomeModel) _then) = _$SupportHomeModelCopyWithImpl;
 @useResult
 $Res call({
- String? roomId, String supportName, SupportTicketModel? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt, Map<String, dynamic>? topicPicker
+ String? roomId, String supportName, SupportTicketModel? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt, Map<String, dynamic>? topicPicker, List<Object?>? incidents, Map<String, dynamic>? survey
 });
 
 
@@ -386,7 +400,7 @@ class _$SupportHomeModelCopyWithImpl<$Res>
 
 /// Create a copy of SupportHomeModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = freezed,Object? incidents = freezed,Object? survey = freezed,}) {
   return _then(_self.copyWith(
 roomId: freezed == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String?,supportName: null == supportName ? _self.supportName : supportName // ignore: cast_nullable_to_non_nullable
@@ -396,6 +410,8 @@ as bool,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ig
 as int,serviceOpen: null == serviceOpen ? _self.serviceOpen : serviceOpen // ignore: cast_nullable_to_non_nullable
 as bool,nextOpenAt: freezed == nextOpenAt ? _self.nextOpenAt : nextOpenAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,topicPicker: freezed == topicPicker ? _self.topicPicker : topicPicker // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,incidents: freezed == incidents ? _self.incidents : incidents // ignore: cast_nullable_to_non_nullable
+as List<Object?>?,survey: freezed == survey ? _self.survey : survey // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,
   ));
 }
@@ -493,10 +509,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  Map<String, dynamic>? topicPicker)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  Map<String, dynamic>? topicPicker,  List<Object?>? incidents,  Map<String, dynamic>? survey)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SupportHomeModel() when $default != null:
-return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker);case _:
+return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker,_that.incidents,_that.survey);case _:
   return orElse();
 
 }
@@ -514,10 +530,10 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  Map<String, dynamic>? topicPicker)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  Map<String, dynamic>? topicPicker,  List<Object?>? incidents,  Map<String, dynamic>? survey)  $default,) {final _that = this;
 switch (_that) {
 case _SupportHomeModel():
-return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker);case _:
+return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker,_that.incidents,_that.survey);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -534,10 +550,10 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  Map<String, dynamic>? topicPicker)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  Map<String, dynamic>? topicPicker,  List<Object?>? incidents,  Map<String, dynamic>? survey)?  $default,) {final _that = this;
 switch (_that) {
 case _SupportHomeModel() when $default != null:
-return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker);case _:
+return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker,_that.incidents,_that.survey);case _:
   return null;
 
 }
@@ -549,7 +565,7 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 @JsonSerializable()
 
 class _SupportHomeModel extends SupportHomeModel {
-  const _SupportHomeModel({this.roomId, this.supportName = '', this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt, final  Map<String, dynamic>? topicPicker}): _topicPicker = topicPicker,super._();
+  const _SupportHomeModel({this.roomId, this.supportName = '', this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt, final  Map<String, dynamic>? topicPicker, final  List<Object?>? incidents, final  Map<String, dynamic>? survey}): _topicPicker = topicPicker,_incidents = incidents,_survey = survey,super._();
   factory _SupportHomeModel.fromJson(Map<String, dynamic> json) => _$SupportHomeModelFromJson(json);
 
 @override final  String? roomId;
@@ -568,6 +584,24 @@ class _SupportHomeModel extends SupportHomeModel {
   return EqualUnmodifiableMapView(value);
 }
 
+ final  List<Object?>? _incidents;
+@override List<Object?>? get incidents {
+  final value = _incidents;
+  if (value == null) return null;
+  if (_incidents is EqualUnmodifiableListView) return _incidents;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(value);
+}
+
+ final  Map<String, dynamic>? _survey;
+@override Map<String, dynamic>? get survey {
+  final value = _survey;
+  if (value == null) return null;
+  if (_survey is EqualUnmodifiableMapView) return _survey;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
+}
+
 
 /// Create a copy of SupportHomeModel
 /// with the given fields replaced by the non-null parameter values.
@@ -582,16 +616,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&const DeepCollectionEquality().equals(other._topicPicker, _topicPicker));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&const DeepCollectionEquality().equals(other._topicPicker, _topicPicker)&&const DeepCollectionEquality().equals(other._incidents, _incidents)&&const DeepCollectionEquality().equals(other._survey, _survey));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,const DeepCollectionEquality().hash(_topicPicker));
+int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,const DeepCollectionEquality().hash(_topicPicker),const DeepCollectionEquality().hash(_incidents),const DeepCollectionEquality().hash(_survey));
 
 @override
 String toString() {
-  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker)';
+  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker, incidents: $incidents, survey: $survey)';
 }
 
 
@@ -602,7 +636,7 @@ abstract mixin class _$SupportHomeModelCopyWith<$Res> implements $SupportHomeMod
   factory _$SupportHomeModelCopyWith(_SupportHomeModel value, $Res Function(_SupportHomeModel) _then) = __$SupportHomeModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? roomId, String supportName, SupportTicketModel? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt, Map<String, dynamic>? topicPicker
+ String? roomId, String supportName, SupportTicketModel? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt, Map<String, dynamic>? topicPicker, List<Object?>? incidents, Map<String, dynamic>? survey
 });
 
 
@@ -619,7 +653,7 @@ class __$SupportHomeModelCopyWithImpl<$Res>
 
 /// Create a copy of SupportHomeModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = freezed,Object? incidents = freezed,Object? survey = freezed,}) {
   return _then(_SupportHomeModel(
 roomId: freezed == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String?,supportName: null == supportName ? _self.supportName : supportName // ignore: cast_nullable_to_non_nullable
@@ -629,6 +663,8 @@ as bool,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ig
 as int,serviceOpen: null == serviceOpen ? _self.serviceOpen : serviceOpen // ignore: cast_nullable_to_non_nullable
 as bool,nextOpenAt: freezed == nextOpenAt ? _self.nextOpenAt : nextOpenAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,topicPicker: freezed == topicPicker ? _self._topicPicker : topicPicker // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,incidents: freezed == incidents ? _self._incidents : incidents // ignore: cast_nullable_to_non_nullable
+as List<Object?>?,survey: freezed == survey ? _self._survey : survey // ignore: cast_nullable_to_non_nullable
 as Map<String, dynamic>?,
   ));
 }

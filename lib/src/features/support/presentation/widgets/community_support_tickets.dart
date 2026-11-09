@@ -15,6 +15,7 @@ import 'package:rendezvous_community/src/features/support/domain/entities/suppor
 import 'package:rendezvous_community/src/features/support/domain/repositories/support_repository.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
+import 'package:rendezvous_community/src/features/support/presentation/support_transcript_saver.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_header.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_subpage.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_tone.dart';
@@ -25,10 +26,13 @@ import 'package:rendezvous_community/src/shared/presentation/builders/community_
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
 class CommunitySupportTickets extends StatefulWidget {
-  const CommunitySupportTickets({super.key});
+  const CommunitySupportTickets({super.key, this.transcriptSaver});
+
+  final CommunityTranscriptSaver? transcriptSaver;
 
   @override
   State<CommunitySupportTickets> createState() => _CommunitySupportTicketsState();
@@ -111,6 +115,7 @@ class _CommunitySupportTicketsState extends State<CommunitySupportTickets> {
     final support = CommunitySupportScope.of(context).support;
     final carry = carryCommunityBuilders(context);
     final onClose = SupportPanelScope.closeOf(context);
+    final saver = widget.transcriptSaver ?? saveSupportTranscript;
     return Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => carry(
@@ -118,22 +123,65 @@ class _CommunitySupportTicketsState extends State<CommunitySupportTickets> {
             dependencies: deps,
             child: SupportPanelScope(
               onClose: onClose,
-              child: SupportSubpage(
-                title: ticket.topicName ?? ticket.topic,
-                subtitle: '#${ticket.ticketNumber}',
-                ticket: ticket,
-                body: CommunityImagePersistence(
-                  persist: false,
-                  child: CommunityChatRoom(
-                    roomId: ticket.roomId,
-                    repository: _TranscriptRepository(support, ticket),
-                    showHeader: false,
-                    composer: const SizedBox.shrink(),
-                  ),
-                ),
-              ),
+              child: SupportTranscriptPage(ticket: ticket, support: support, saver: saver),
             ),
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class SupportTranscriptPage extends StatefulWidget {
+  const SupportTranscriptPage({super.key, required this.ticket, required this.support, required this.saver});
+
+  final SupportTicket ticket;
+  final SupportRepository support;
+  final CommunityTranscriptSaver saver;
+
+  @override
+  State<SupportTranscriptPage> createState() => _SupportTranscriptPageState();
+}
+
+class _SupportTranscriptPageState extends State<SupportTranscriptPage> {
+  late final _repository = _TranscriptRepository(widget.support, widget.ticket);
+  bool _downloading = false;
+
+  bool get _finished => widget.ticket.status == SupportStatus.resolved || widget.ticket.status == SupportStatus.closed;
+
+  Future<void> _download() async {
+    if (_downloading) return;
+    final l10n = context.communityL10n;
+    setState(() => _downloading = true);
+    try {
+      final transcript = await widget.support.transcript(widget.ticket.id);
+      if (!mounted) return;
+      final saved = await widget.saver(context, supportTranscriptFile(transcript, l10n));
+      if (saved && mounted) showCommunityMessage(context, l10n.supportTranscriptSaved);
+    } catch (e) {
+      if (mounted) showCommunityError(context, e);
+    } finally {
+      if (mounted) setState(() => _downloading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final ticket = widget.ticket;
+    return SupportSubpage(
+      title: ticket.topicName ?? ticket.topic,
+      subtitle: '#${ticket.ticketNumber}',
+      ticket: ticket,
+      downloadLabel: _finished ? context.communityL10n.supportTranscriptDownload : null,
+      onDownload: _finished ? _download : null,
+      downloading: _downloading,
+      body: CommunityImagePersistence(
+        persist: false,
+        child: CommunityChatRoom(
+          roomId: ticket.roomId,
+          repository: _repository,
+          showHeader: false,
+          composer: const SizedBox.shrink(),
         ),
       ),
     );

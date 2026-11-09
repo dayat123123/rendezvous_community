@@ -9,6 +9,7 @@ import 'package:rendezvous_community/src/features/help/domain/repositories/help_
 import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 import 'package:rendezvous_community/src/features/support/domain/repositories/support_repository.dart';
+import 'package:rendezvous_community/src/features/support/domain/services/support_intake.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 
 part 'support_cubit.freezed.dart';
@@ -34,6 +35,8 @@ abstract class SupportState with _$SupportState {
     String? suggestionTopic,
     @Default(<HelpArticle>[]) List<HelpArticle> suggestions,
     CommunityAttachmentPolicy? attachmentPolicy,
+    @Default(false) bool leavingMessage,
+    String? intakeTopic,
   }) = _SupportState;
 
   const SupportState._();
@@ -45,7 +48,11 @@ abstract class SupportState with _$SupportState {
 
   bool canRate(String ticketId) => ticket?.id == ticketId && (ticket?.canRate ?? false);
 
-  bool get showsSuggestions => suggestionTopic != null && suggestions.isNotEmpty;
+  bool get showsSuggestions => suggestionTopic != null && (suggestions.isNotEmpty || leavingMessage);
+
+  SupportTopic? topicByCode(String code) => topics.where((t) => t.code == code).firstOrNull;
+
+  bool get serviceOpen => home?.serviceOpen ?? true;
 }
 
 class SupportCubit extends Cubit<SupportState> {
@@ -74,12 +81,18 @@ class SupportCubit extends Cubit<SupportState> {
     try {
       final results = await Future.wait([_support.home(), _support.topics(language: language)]);
       if (isClosed) return;
-      final home = results[0] as SupportHome;
+      final home = await _localized(results[0] as SupportHome);
+      if (isClosed) return;
       emit(state.copyWith(status: LoadStatus.ready, home: home, topics: results[1] as List<SupportTopic>));
       _watch(home.roomId);
       unawaited(loadAttachmentPolicy());
       final initialTopic = topic;
-      if (!home.active && initialTopic != null) await start(initialTopic);
+      if (home.active || initialTopic == null) return;
+      if (state.topicByCode(initialTopic)?.hasIntake ?? false) {
+        emit(state.copyWith(picking: true, intakeTopic: initialTopic));
+        return;
+      }
+      await start(initialTopic);
     } catch (e) {
       if (!isClosed) emit(state.copyWith(status: LoadStatus.failure, error: e));
     }
@@ -101,49 +114,107 @@ class SupportCubit extends Cubit<SupportState> {
     _ticketEvents = _support.watchTicket(roomId).listen((_) => refresh());
   }
 
+  Future<SupportHome> _localized(SupportHome home) async {
+    if (home.incidents.isEmpty || language == 'id') return home;
+    try {
+      return home.copyWith(incidents: await _support.serviceStatus(language: language));
+    } catch (e) {
+      CommunityLoggers.support.event(
+        Level.FINE,
+        'Localized service status unavailable',
+        fields: {'errorType': e.runtimeType.toString()},
+      );
+      return home;
+    }
+  }
+
   Future<void> refresh() async {
     try {
-      final home = await _support.home();
+      final home = await _localized(await _support.home());
       if (isClosed) return;
       emit(state.copyWith(home: home));
       _watch(home.roomId);
     } catch (_) {}
   }
 
-  void pickTopic() => emit(state.copyWith(picking: true, history: false, suggestionTopic: null, suggestions: const []));
+  void pickTopic() => emit(
+    state.copyWith(
+      picking: true,
+      history: false,
+      suggestionTopic: null,
+      suggestions: const [],
+      leavingMessage: false,
+      intakeTopic: null,
+    ),
+  );
 
   void showHistory() => emit(state.copyWith(picking: false, history: true));
 
   Future<void> select(String topic) async {
-    final help = _help;
-    if (help == null) return start(topic);
     if (state.busy || state.suggesting != null) return;
-    emit(state.copyWith(suggesting: topic));
+    final closedHours = !state.serviceOpen;
+    final help = _help;
+    if (help == null && !closedHours) return proceed(topic);
     var articles = const <HelpArticle>[];
-    try {
-      articles = await help.articlesForTopic(topic, language: language).timeout(suggestionTimeout);
-    } catch (e) {
-      CommunityLoggers.support.event(
-        Level.FINE,
-        'Help suggestions unavailable',
-        fields: {'topic': topic, 'errorType': e.runtimeType.toString()},
-      );
+    if (help != null) {
+      emit(state.copyWith(suggesting: topic));
+      try {
+        articles = await help.articlesForTopic(topic, language: language).timeout(suggestionTimeout);
+      } catch (e) {
+        CommunityLoggers.support.event(
+          Level.FINE,
+          'Help suggestions unavailable',
+          fields: {'topic': topic, 'errorType': e.runtimeType.toString()},
+        );
+      }
+      if (isClosed) return;
     }
-    if (isClosed) return;
-    if (articles.isEmpty) {
+    if (articles.isEmpty && !closedHours) {
       emit(state.copyWith(suggesting: null));
-      return start(topic);
+      return proceed(topic);
     }
-    emit(state.copyWith(suggesting: null, suggestionTopic: topic, suggestions: articles));
+    emit(state.copyWith(suggesting: null, suggestionTopic: topic, suggestions: articles, leavingMessage: closedHours));
   }
 
-  void dismissSuggestions() => emit(state.copyWith(suggestionTopic: null, suggestions: const []));
+  void dismissSuggestions() =>
+      emit(state.copyWith(suggestionTopic: null, suggestions: const [], leavingMessage: false));
 
-  Future<void> start(String topic) => _act(() async {
-    await _support.openTicket(topic: topic, language: language, screen: screen);
+  Future<void> proceed(String topic) async {
+    if (state.busy) return;
+    if (!(state.topicByCode(topic)?.hasIntake ?? false)) return start(topic);
+    emit(state.copyWith(intakeTopic: topic, suggestionTopic: null, suggestions: const []));
+  }
+
+  void cancelIntake() => emit(state.copyWith(intakeTopic: null, leavingMessage: false));
+
+  Future<bool> submitIntake(Map<String, String> answers) async {
+    final code = state.intakeTopic;
+    if (code == null) return false;
+    final fields = state.topicByCode(code)?.intake ?? const <SupportIntakeField>[];
+    if (validateSupportIntake(fields, answers).isNotEmpty) return false;
+    await start(code, intake: supportIntakePayload(fields, answers));
+    return state.intakeTopic == null;
+  }
+
+  Future<void> start(String topic, {Map<String, String>? intake}) => _act(() async {
+    await _support.openTicket(
+      topic: topic,
+      language: language,
+      screen: screen,
+      intake: intake == null || intake.isEmpty ? null : intake,
+    );
     await refresh();
     if (!isClosed) {
-      emit(state.copyWith(picking: false, history: false, suggestionTopic: null, suggestions: const []));
+      emit(
+        state.copyWith(
+          picking: false,
+          history: false,
+          suggestionTopic: null,
+          suggestions: const [],
+          leavingMessage: false,
+          intakeTopic: null,
+        ),
+      );
     }
   });
 
@@ -165,8 +236,13 @@ class SupportCubit extends Cubit<SupportState> {
     if (!isClosed) emit(state.copyWith(picking: false));
   }, notice: SupportNoticeKind.fakeReported);
 
-  Future<void> rate(String ticketId, int rating, {String? comment}) => _act(() async {
-    await _support.rateTicket(ticketId, rating, comment: comment);
+  Future<void> rate(String ticketId, int rating, {String? comment, List<String>? reasons}) => _act(() async {
+    await _support.rateTicket(
+      ticketId,
+      rating,
+      comment: comment,
+      reasons: reasons == null || reasons.isEmpty ? null : reasons,
+    );
     await refresh();
   }, notice: SupportNoticeKind.rated);
 

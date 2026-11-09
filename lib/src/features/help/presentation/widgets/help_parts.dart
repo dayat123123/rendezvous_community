@@ -3,6 +3,7 @@ import 'package:rendezvous_community/src/features/help/domain/entities/help_arti
 import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_builders.dart';
 import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_details.dart';
 import 'package:rendezvous_community/src/features/help/presentation/cubit/help_center_cubit.dart';
+import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_tone.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_topic_picker.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -394,6 +395,7 @@ class _DefaultTopicSuggestions extends StatelessWidget {
     final style = CommunityStyle.of(context);
     final spacing = style.spacing;
     final topic = d.topic;
+    final notice = d.notice;
     return ColoredBox(
       color: style.background,
       child: ListView(
@@ -414,6 +416,14 @@ class _DefaultTopicSuggestions extends StatelessWidget {
           Semantics(header: true, child: Text(d.title, style: style.typography.title)),
           SizedBox(height: spacing.xs),
           Text(d.hint, style: style.typography.body.copyWith(color: style.textSecondary)),
+          if (notice != null) ...[
+            SizedBox(height: spacing.md),
+            SupportNoticeBox(
+              message: notice,
+              tone: d.outOfHours ? CommunitySupportTone.warning : CommunitySupportTone.info,
+              icon: d.outOfHours ? Icons.schedule : Icons.info_outline,
+            ),
+          ],
           SizedBox(height: spacing.lg),
           for (final article in d.articles)
             HelpArticleTile(
@@ -427,7 +437,7 @@ class _DefaultTopicSuggestions extends StatelessWidget {
           FilledButton.icon(
             style: style.primaryButtonStyle(),
             onPressed: d.busy ? null : d.onContinue,
-            icon: const Icon(Icons.chat_bubble_outline, size: 18),
+            icon: Icon(d.outOfHours ? Icons.edit_note : Icons.chat_bubble_outline, size: 18),
             label: Text(d.continueLabel),
           ),
           SizedBox(height: spacing.xs),

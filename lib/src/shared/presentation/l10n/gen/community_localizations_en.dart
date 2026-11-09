@@ -2058,4 +2058,143 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorScannerUnavailable => 'File checking is unavailable right now. Try sending again shortly.';
+
+  @override
+  String supportQueueEta(int minutes) {
+    return 'Estimated wait ± $minutes min';
+  }
+
+  @override
+  String get supportIntakeTitle => 'Before you start';
+
+  @override
+  String get supportIntakeHint => 'Answer a few quick questions so our agent can help you right away.';
+
+  @override
+  String get supportIntakeSubmit => 'Start chat';
+
+  @override
+  String get supportIntakeOptional => 'optional';
+
+  @override
+  String get supportIntakePickDate => 'Pick a date';
+
+  @override
+  String get supportIntakeRequired => 'This field is required.';
+
+  @override
+  String supportIntakeTooLong(int max) {
+    return 'Use at most $max characters.';
+  }
+
+  @override
+  String get supportIntakeNumber => 'Enter a number, for example 1500 or 12.5.';
+
+  @override
+  String get supportIntakeDate => 'Pick a valid date.';
+
+  @override
+  String get supportIntakeChoice => 'Choose one option.';
+
+  @override
+  String get errorIntakeRequired => 'Please answer the required questions first.';
+
+  @override
+  String get errorInvalidIntakeAnswers => 'Some answers are not valid. Please check them again.';
+
+  @override
+  String get supportIncidentInfo => 'Service notice';
+
+  @override
+  String get supportIncidentWarning => 'Service disruption';
+
+  @override
+  String get supportIncidentCritical => 'Major disruption';
+
+  @override
+  String get supportIncidentMore => 'Learn more';
+
+  @override
+  String get supportIncidentDismiss => 'Dismiss notice';
+
+  @override
+  String get supportLeaveMessage => 'Leave a message';
+
+  @override
+  String get supportLeaveMessageTitle => 'Support is closed right now';
+
+  @override
+  String get supportLeaveMessageHint => 'Leave a message now. Your ticket is saved and answered when we open.';
+
+  @override
+  String get supportLeaveMessageArticles => 'While you wait, these articles may answer your question.';
+
+  @override
+  String get supportSurveyReasons => 'What went wrong?';
+
+  @override
+  String get supportSurveyReasonsHint => 'You can choose more than one.';
+
+  @override
+  String get supportRateBad => 'Not satisfied';
+
+  @override
+  String get supportRateOkay => 'Okay';
+
+  @override
+  String get supportRateGood => 'Satisfied';
+
+  @override
+  String get supportReplySuggestions => 'Suggested replies';
+
+  @override
+  String get supportTranscriptDownload => 'Download transcript';
+
+  @override
+  String get supportTranscriptSaved => 'Transcript saved.';
+
+  @override
+  String get supportTranscriptTitle => 'Customer support chat transcript';
+
+  @override
+  String get supportTranscriptTicket => 'Ticket';
+
+  @override
+  String get supportTranscriptTopic => 'Topic';
+
+  @override
+  String get supportTranscriptCreated => 'Opened';
+
+  @override
+  String get supportTranscriptResolved => 'Resolved';
+
+  @override
+  String get supportTranscriptClosed => 'Closed';
+
+  @override
+  String get supportTranscriptCustomer => 'You';
+
+  @override
+  String get supportTranscriptAgent => 'Agent';
+
+  @override
+  String get supportTranscriptSystem => 'System';
+
+  @override
+  String get supportTranscriptDeleted => '(message deleted)';
+
+  @override
+  String get supportTranscriptAttachments => 'Attachments';
+
+  @override
+  String get supportTranscriptEmpty => '(no messages)';
+
+  @override
+  String get supportTranscriptFilePrefix => 'transcript';
+
+  @override
+  String get errorTicketActive => 'The transcript is available once the ticket is finished.';
+
+  @override
+  String get errorSurveyChanged => 'The survey was just updated. Close the dialog and rate again.';
 }

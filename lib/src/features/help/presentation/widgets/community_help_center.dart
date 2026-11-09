@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_help_scope.dart';
+import 'package:rendezvous_community/src/app/community_support_scope.dart';
 import 'package:rendezvous_community/src/features/help/domain/entities/help_article.dart';
 import 'package:rendezvous_community/src/features/help/domain/repositories/help_repository.dart';
 import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_builders.dart';
@@ -8,6 +9,9 @@ import 'package:rendezvous_community/src/features/help/presentation/builders/com
 import 'package:rendezvous_community/src/features/help/presentation/cubit/help_center_cubit.dart';
 import 'package:rendezvous_community/src/features/help/presentation/widgets/community_help_article.dart';
 import 'package:rendezvous_community/src/features/help/presentation/widgets/help_parts.dart';
+import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
+import 'package:rendezvous_community/src/features/support/domain/repositories/support_repository.dart';
+import 'package:rendezvous_community/src/features/support/presentation/widgets/support_incidents.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_list_state_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
@@ -16,16 +20,18 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_the
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
 class CommunityHelpCenter extends StatelessWidget {
-  const CommunityHelpCenter({super.key, this.onContactSupport, this.repository});
+  const CommunityHelpCenter({super.key, this.onContactSupport, this.repository, this.support});
 
   final CommunityHelpContactCallback? onContactSupport;
   final HelpRepository? repository;
+  final SupportRepository? support;
 
   @override
   Widget build(BuildContext context) {
     final help = repository ?? CommunityHelpScope.of(context).help;
+    final status = support ?? CommunitySupportScope.maybeOf(context)?.support;
     return BlocProvider(
-      create: (_) => HelpCenterCubit(help: help, language: helpLanguage(context))..load(),
+      create: (_) => HelpCenterCubit(help: help, support: status, language: helpLanguage(context))..load(),
       child: _HelpCenterView(help: help, onContactSupport: onContactSupport ?? openSupportFromHelp),
     );
   }
@@ -67,6 +73,20 @@ class _HelpCenterViewState extends State<_HelpCenterView> {
     categoryName: content.category(article.category)?.name,
     onContactSupport: widget.onContactSupport,
   );
+
+  void _openIncident(BuildContext context, SupportIncident incident, HelpCenterContent content) {
+    final id = incident.faqArticleId;
+    if (id == null) return;
+    final known = content.articles.where((a) => a.id == id).firstOrNull;
+    if (known != null) return _openArticle(known, content);
+    openCommunityHelpArticleById(
+      context,
+      id,
+      title: incident.title,
+      repository: widget.help,
+      onContactSupport: widget.onContactSupport,
+    );
+  }
 
   void _openCategory(HelpCategory category, HelpCenterContent content) => pushHelpPage(
     context,
@@ -125,6 +145,11 @@ class _HelpCenterViewState extends State<_HelpCenterView> {
                     onRetry: cubit.load,
                     savedAt: content.savedAt,
                   ),
+                ),
+              if (state.incidents.isNotEmpty)
+                SupportIncidentBanners(
+                  incidents: state.incidents,
+                  onOpenArticle: (context, incident) => _openIncident(context, incident, content),
                 ),
               Expanded(
                 child: Align(

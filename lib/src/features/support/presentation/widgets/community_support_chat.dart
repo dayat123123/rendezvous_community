@@ -126,8 +126,11 @@ class _Conversation extends StatelessWidget {
       onQuickReply: (option) => chat.sendMessage(roomId, body: option, clientId: _uuid.v4()),
       canRate: state.canRate,
       onRate: (ticketId) async {
-        final rating = await askSupportRating(context);
-        if (rating != null) await cubit.rate(ticketId, rating.rating, comment: rating.comment);
+        final language = Localizations.localeOf(context).languageCode == 'en' ? 'en' : 'id';
+        final rating = await askSupportRating(context, survey: state.home?.survey(language));
+        if (rating != null) {
+          await cubit.rate(ticketId, rating.rating, comment: rating.comment, reasons: rating.reasons);
+        }
       },
       child: CommunityScope(
         dependencies: deps,

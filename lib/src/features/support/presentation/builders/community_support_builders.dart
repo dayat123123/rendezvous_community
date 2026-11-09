@@ -22,6 +22,11 @@ class CommunitySupportBuilders {
     this.topicPicker,
     this.topicTile,
     this.pageHeader,
+    this.incidentBanner,
+    this.intakeForm,
+    this.intakeField,
+    this.surveyReasons,
+    this.replySuggestions,
   });
 
   final CommunityPartBuilder<CommunityListLoadingDetails>? loading;
@@ -41,6 +46,11 @@ class CommunitySupportBuilders {
   final CommunityPartBuilder<CommunitySupportTopicPickerDetails>? topicPicker;
   final CommunityPartBuilder<CommunitySupportTopicDetails>? topicTile;
   final CommunityPartBuilder<CommunitySupportPageHeaderDetails>? pageHeader;
+  final CommunityPartBuilder<CommunitySupportIncidentDetails>? incidentBanner;
+  final CommunityPartBuilder<CommunitySupportIntakeDetails>? intakeForm;
+  final CommunityPartBuilder<CommunitySupportIntakeFieldDetails>? intakeField;
+  final CommunityPartBuilder<CommunitySupportSurveyReasonsDetails>? surveyReasons;
+  final CommunityPartBuilder<CommunitySupportReplySuggestionsDetails>? replySuggestions;
 
   static CommunitySupportBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -69,6 +79,11 @@ class CommunitySupportBuilders {
       topicPicker: other.topicPicker ?? topicPicker,
       topicTile: other.topicTile ?? topicTile,
       pageHeader: other.pageHeader ?? pageHeader,
+      incidentBanner: other.incidentBanner ?? incidentBanner,
+      intakeForm: other.intakeForm ?? intakeForm,
+      intakeField: other.intakeField ?? intakeField,
+      surveyReasons: other.surveyReasons ?? surveyReasons,
+      replySuggestions: other.replySuggestions ?? replySuggestions,
     );
   }
 }

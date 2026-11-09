@@ -85,6 +85,19 @@ Future<void> openCommunityHelpArticle(
   );
 }
 
+Future<void> openCommunityHelpArticleById(
+  BuildContext context,
+  String id, {
+  String? title,
+  CommunityHelpContactCallback? onContactSupport,
+  HelpRepository? repository,
+}) => openCommunityHelpArticle(
+  context,
+  HelpArticle(id: id, category: '', question: title ?? '', answer: ''),
+  onContactSupport: onContactSupport,
+  repository: repository,
+);
+
 class CommunityHelpArticleView extends StatelessWidget {
   const CommunityHelpArticleView({
     super.key,

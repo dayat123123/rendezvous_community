@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/features/support/domain/entities/suppor
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
 import 'package:rendezvous_community/src/features/support/presentation/cubit/support_cubit.dart';
+import 'package:rendezvous_community/src/features/support/presentation/widgets/support_intake_form.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_tone.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -36,27 +37,45 @@ class SupportTopicPicker extends StatelessWidget {
     final history = state.home?.roomId != null;
     final language = Localizations.localeOf(context).languageCode == 'en' ? 'en' : 'id';
     final suggestionTopic = state.suggestionTopic;
+    final nextOpenAt = state.home?.nextOpenAt;
+    final closedNotice = state.serviceOpen
+        ? null
+        : nextOpenAt == null
+        ? l10n.supportLeaveMessageTitle
+        : l10n.supportOutOfHours('${l10n.dayLabel(nextOpenAt)} ${l10n.clockTime(nextOpenAt)}');
+    final intakeTopic = state.intakeTopic == null ? null : state.topicByCode(state.intakeTopic!);
+    if (intakeTopic != null && intakeTopic.hasIntake) {
+      return SupportIntakeForm(key: ValueKey(intakeTopic.code), topic: intakeTopic, notice: closedNotice);
+    }
     if (state.showsSuggestions && suggestionTopic != null) {
-      final topic = state.topics.where((t) => t.code == suggestionTopic).firstOrNull;
+      final topic = state.topicByCode(suggestionTopic);
+      final leaving = state.leavingMessage;
+      final articles = state.suggestions;
       return HelpTopicSuggestions(
         details: CommunityHelpSuggestionsDetails(
           topicCode: suggestionTopic,
           topic: topic,
-          title: l10n.helpSuggestionsTitle,
-          hint: l10n.helpSuggestionsHint(topic?.name ?? suggestionTopic),
-          articles: state.suggestions,
-          continueLabel: l10n.helpContinueChat,
+          title: leaving ? l10n.supportLeaveMessageTitle : l10n.helpSuggestionsTitle,
+          hint: !leaving
+              ? l10n.helpSuggestionsHint(topic?.name ?? suggestionTopic)
+              : articles.isEmpty
+              ? l10n.supportLeaveMessageHint
+              : l10n.supportLeaveMessageArticles,
+          articles: articles,
+          continueLabel: leaving ? l10n.supportLeaveMessage : l10n.helpContinueChat,
           backLabel: l10n.helpPickAnotherTopic,
           busy: state.busy,
+          notice: leaving ? closedNotice : null,
+          outOfHours: leaving,
           onOpenArticle: (article) => openCommunityHelpArticle(
             context,
             article,
             onContactSupport: (articleContext, _) {
               Navigator.of(articleContext).pop();
-              cubit.start(suggestionTopic);
+              cubit.proceed(suggestionTopic);
             },
           ),
-          onContinue: () => cubit.start(suggestionTopic),
+          onContinue: () => cubit.proceed(suggestionTopic),
           onBack: cubit.dismissSuggestions,
         ),
       );

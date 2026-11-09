@@ -1,6 +1,7 @@
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
+import 'package:rendezvous_community/src/features/support/domain/entities/support_transcript.dart';
 
 abstract interface class SupportRepository {
   Future<SupportHome> home();
@@ -12,6 +13,7 @@ abstract interface class SupportRepository {
     String language = 'id',
     String? screen,
     bool complaint = false,
+    Map<String, String>? intake,
   });
 
   Future<List<SupportTicket>> myTickets();
@@ -20,7 +22,11 @@ abstract interface class SupportRepository {
 
   Future<SupportTicket> closeTicket(String ticketId);
 
-  Future<SupportTicket> rateTicket(String ticketId, int rating, {String? comment});
+  Future<SupportTicket> rateTicket(String ticketId, int rating, {String? comment, List<String>? reasons});
+
+  Future<List<SupportIncident>> serviceStatus({String language = 'id'});
+
+  Future<SupportTranscript> transcript(String ticketId);
 
   Future<SupportTicket> requestComplaint();
 

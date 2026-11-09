@@ -22,6 +22,8 @@ _SupportTicketModel _$SupportTicketModelFromJson(Map<String, dynamic> json) => _
   reopenUntil: json['reopen_until'] == null ? null : DateTime.parse(json['reopen_until'] as String),
   rating: (json['rating'] as num?)?.toInt(),
   canRate: json['can_rate'] as bool? ?? false,
+  etaMinutes: (json['eta_minutes'] as num?)?.toInt(),
+  quickReplies: json['quick_replies'] as List<dynamic>?,
 );
 
 Map<String, dynamic> _$SupportTicketModelToJson(_SupportTicketModel instance) => <String, dynamic>{
@@ -40,6 +42,8 @@ Map<String, dynamic> _$SupportTicketModelToJson(_SupportTicketModel instance) =>
   'reopen_until': instance.reopenUntil?.toIso8601String(),
   'rating': instance.rating,
   'can_rate': instance.canRate,
+  'eta_minutes': instance.etaMinutes,
+  'quick_replies': instance.quickReplies,
 };
 
 _SupportHomeModel _$SupportHomeModelFromJson(Map<String, dynamic> json) => _SupportHomeModel(
@@ -51,6 +55,8 @@ _SupportHomeModel _$SupportHomeModelFromJson(Map<String, dynamic> json) => _Supp
   serviceOpen: json['service_open'] as bool? ?? true,
   nextOpenAt: json['next_open_at'] == null ? null : DateTime.parse(json['next_open_at'] as String),
   topicPicker: json['topic_picker'] as Map<String, dynamic>?,
+  incidents: json['incidents'] as List<dynamic>?,
+  survey: json['survey'] as Map<String, dynamic>?,
 );
 
 Map<String, dynamic> _$SupportHomeModelToJson(_SupportHomeModel instance) => <String, dynamic>{
@@ -62,4 +68,6 @@ Map<String, dynamic> _$SupportHomeModelToJson(_SupportHomeModel instance) => <St
   'service_open': instance.serviceOpen,
   'next_open_at': instance.nextOpenAt?.toIso8601String(),
   'topic_picker': instance.topicPicker,
+  'incidents': instance.incidents,
+  'survey': instance.survey,
 };

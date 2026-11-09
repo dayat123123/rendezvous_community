@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_composer.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
@@ -29,6 +30,8 @@ class SupportComposer extends StatelessWidget {
     final cubit = context.read<SupportCubit>();
     final sensitive = context.select((SupportCubit c) => c.state.sensitive);
     final policy = context.select((SupportCubit c) => c.state.attachmentPolicy);
+    final ticket = context.select((SupportCubit c) => c.state.ticket);
+    final replies = ticket != null && ticket.isActive ? ticket.quickReplies : const <String>[];
     final kinds = sensitive.kinds.isEmpty ? const ['otp'] : sensitive.kinds;
     final warning = sensitive.masked
         ? CommunitySensitiveWarningDetails(kinds: kinds, message: l10n.supportSensitiveWarning(_kinds(l10n, kinds)))
@@ -36,10 +39,75 @@ class SupportComposer extends StatelessWidget {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        if (replies.isNotEmpty) SupportReplySuggestions(replies: replies),
         if (warning != null)
           buildSupportPart((b) => b.sensitiveWarning, context, warning, _DefaultSensitiveWarning(details: warning)),
         MessageComposer(onChanged: cubit.checkText, allowDocuments: true, attachmentPolicy: policy),
       ],
+    );
+  }
+}
+
+class SupportReplySuggestions extends StatelessWidget {
+  const SupportReplySuggestions({super.key, required this.replies});
+
+  final List<String> replies;
+
+  @override
+  Widget build(BuildContext context) {
+    final chat = context.read<ChatRoomCubit>();
+    final uploading = context.select((ChatRoomCubit c) => c.state.uploading);
+    final details = CommunitySupportReplySuggestionsDetails(
+      replies: replies,
+      label: context.communityL10n.supportReplySuggestions,
+      onSelect: uploading
+          ? null
+          : (text) {
+              if (chat.state.cooldownLeft() > Duration.zero || chat.state.uploading) return;
+              chat.send(text);
+            },
+    );
+    return buildSupportPart((b) => b.replySuggestions, context, details, _DefaultReplySuggestions(details: details));
+  }
+}
+
+class _DefaultReplySuggestions extends StatelessWidget {
+  const _DefaultReplySuggestions({required this.details});
+
+  final CommunitySupportReplySuggestionsDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final onSelect = d.onSelect;
+    return Semantics(
+      container: true,
+      label: d.label,
+      child: SizedBox(
+        height: style.minTouchTarget + spacing.sm,
+        child: ListView.separated(
+          addAutomaticKeepAlives: false,
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.fromLTRB(spacing.sm, spacing.xs, spacing.sm, 0),
+          itemCount: d.replies.length,
+          separatorBuilder: (_, _) => SizedBox(width: spacing.xs),
+          itemBuilder: (context, i) {
+            final reply = d.replies[i];
+            return Center(
+              child: ActionChip(
+                label: Text(reply),
+                onPressed: onSelect == null ? null : () => onSelect(reply),
+                backgroundColor: style.surface,
+                side: BorderSide(color: style.accent.withValues(alpha: 0.5), width: style.borderWidth),
+                labelStyle: style.typography.label.copyWith(color: style.accent),
+                shape: RoundedRectangleBorder(borderRadius: style.radii.pillRadius),
+              ),
+            );
+          },
+        ),
+      ),
     );
   }
 }

@@ -161,6 +161,8 @@ class CommunityHelpSuggestionsDetails {
     required this.onBack,
     this.topic,
     this.busy = false,
+    this.notice,
+    this.outOfHours = false,
   });
 
   final String topicCode;
@@ -174,4 +176,6 @@ class CommunityHelpSuggestionsDetails {
   final VoidCallback onContinue;
   final VoidCallback onBack;
   final bool busy;
+  final String? notice;
+  final bool outOfHours;
 }

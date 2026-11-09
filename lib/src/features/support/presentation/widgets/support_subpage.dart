@@ -18,12 +18,24 @@ class SupportPanelScope extends InheritedWidget {
 }
 
 class SupportSubpage extends StatelessWidget {
-  const SupportSubpage({super.key, required this.title, this.subtitle, this.ticket, required this.body});
+  const SupportSubpage({
+    super.key,
+    required this.title,
+    this.subtitle,
+    this.ticket,
+    required this.body,
+    this.downloadLabel,
+    this.onDownload,
+    this.downloading = false,
+  });
 
   final String title;
   final String? subtitle;
   final SupportTicket? ticket;
   final Widget body;
+  final String? downloadLabel;
+  final VoidCallback? onDownload;
+  final bool downloading;
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +46,9 @@ class SupportSubpage extends StatelessWidget {
       ticket: ticket,
       onBack: navigator.canPop() ? () => navigator.maybePop() : null,
       onClose: SupportPanelScope.closeOf(context),
+      downloadLabel: downloadLabel,
+      onDownload: downloading ? null : onDownload,
+      downloading: downloading,
     );
     return Scaffold(
       body: Column(
@@ -58,6 +73,7 @@ class _DefaultPageHeader extends StatelessWidget {
     final subtitle = d.subtitle;
     final onBack = d.onBack;
     final onClose = d.onClose;
+    final downloadLabel = d.downloadLabel;
     return AppBar(
       automaticallyImplyLeading: false,
       leading: onBack == null ? null : BackButton(onPressed: onBack),
@@ -72,6 +88,14 @@ class _DefaultPageHeader extends StatelessWidget {
               ],
             ),
       actions: [
+        if (downloadLabel != null && (d.canDownload || d.downloading))
+          IconButton(
+            tooltip: downloadLabel,
+            onPressed: d.onDownload,
+            icon: d.downloading
+                ? SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: style.accent))
+                : const Icon(Icons.download_outlined),
+          ),
         if (onClose != null)
           IconButton(tooltip: context.communityL10n.close, onPressed: onClose, icon: const Icon(Icons.close)),
       ],
