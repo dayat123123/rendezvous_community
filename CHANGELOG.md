@@ -1,4 +1,5 @@
-## Belum dirilis
+## 1.12.0
+
 
 Server: butuh migrasi `0140` (pengaduan tamu). Di server lama halaman pengaduan tamu menampilkan "Pengaduan tanpa login sedang tidak tersedia". Tidak ada perubahan antarmuka yang wajib diikuti host; parameter baru bersifat opsional.
 
