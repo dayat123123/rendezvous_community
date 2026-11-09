@@ -1,4 +1,6 @@
-## Belum dirilis
+## 1.10.0
+
+Server: lampiran dokumen/video butuh migrasi `0131`–`0132` (layanan media 0.3.0 + ClamAV); fitur bantuan lanjutan butuh `0133`–`0136`. Di server lama fitur baru tidak tampil dan perilaku tetap seperti 1.9.0. **Perubahan antarmuka:** host yang mengimplementasikan sendiri `SupportRepository` atau `MediaRepository` perlu menambah metode baru (`attachmentPolicy`, `uploadSupportFile`, `serviceStatus`, `transcript`); `Fake`/`Mock` bawaan sudah diperbarui.
 
 Server: fitur bantuan lanjutan butuh migrasi `0134`–`0136`. Di server lama semuanya mundur ke perilaku 1.9.0 (tanpa form, banner, survei, saran balasan, dan perkiraan waktu tunggu); transkrip butuh `0136`.
 
