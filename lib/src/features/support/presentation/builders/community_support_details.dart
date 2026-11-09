@@ -231,4 +231,6 @@ class CommunitySupportTopicDetails {
   final VoidCallback? onSelect;
 
   bool get urgent => topic.urgent;
+
+  bool get danger => topic.danger;
 }

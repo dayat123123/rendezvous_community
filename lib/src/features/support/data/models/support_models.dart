@@ -71,6 +71,7 @@ abstract class SupportHomeModel with _$SupportHomeModel {
     @Default(0) int unreadCount,
     @Default(true) bool serviceOpen,
     DateTime? nextOpenAt,
+    Map<String, dynamic>? topicPicker,
   }) = _SupportHomeModel;
 
   const SupportHomeModel._();
@@ -85,5 +86,12 @@ abstract class SupportHomeModel with _$SupportHomeModel {
     unreadCount: unreadCount,
     serviceOpen: serviceOpen,
     nextOpenAt: nextOpenAt,
+    topicPicker: SupportTopicPickerTexts(title: _texts(topicPicker?['title']), hint: _texts(topicPicker?['hint'])),
   );
+
+  static Map<String, String> _texts(Object? raw) => {
+    if (raw is Map)
+      for (final entry in raw.entries)
+        if (entry.value is String && (entry.value as String).trim().isNotEmpty) '${entry.key}': entry.value as String,
+  };
 }

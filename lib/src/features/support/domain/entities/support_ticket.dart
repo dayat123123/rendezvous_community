@@ -48,9 +48,14 @@ abstract class SupportHome with _$SupportHome {
     @Default(0) int unreadCount,
     @Default(true) bool serviceOpen,
     DateTime? nextOpenAt,
+    @Default(SupportTopicPickerTexts()) SupportTopicPickerTexts topicPicker,
   }) = _SupportHome;
 
   const SupportHome._();
+
+  String? topicTitle(String languageCode) => topicPicker.title[languageCode];
+
+  String? topicHint(String languageCode) => topicPicker.hint[languageCode];
 
   bool showsConversation(DateTime now) =>
       roomId != null && (active || (ticket?.reopenable(now) ?? false) || (ticket?.canRate ?? false));
@@ -63,7 +68,22 @@ abstract class SupportTopic with _$SupportTopic {
     required String name,
     String? helpUrl,
     @Default(false) bool urgent,
+    String? description,
+    String? icon,
+    @Default('normal') String style,
   }) = _SupportTopic;
+
+  const SupportTopic._();
+
+  bool get danger => style == 'danger';
+}
+
+@freezed
+abstract class SupportTopicPickerTexts with _$SupportTopicPickerTexts {
+  const factory SupportTopicPickerTexts({
+    @Default(<String, String>{}) Map<String, String> title,
+    @Default(<String, String>{}) Map<String, String> hint,
+  }) = _SupportTopicPickerTexts;
 }
 
 @freezed

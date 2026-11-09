@@ -50,6 +50,7 @@ _SupportHomeModel _$SupportHomeModelFromJson(Map<String, dynamic> json) => _Supp
   unreadCount: (json['unread_count'] as num?)?.toInt() ?? 0,
   serviceOpen: json['service_open'] as bool? ?? true,
   nextOpenAt: json['next_open_at'] == null ? null : DateTime.parse(json['next_open_at'] as String),
+  topicPicker: json['topic_picker'] as Map<String, dynamic>?,
 );
 
 Map<String, dynamic> _$SupportHomeModelToJson(_SupportHomeModel instance) => <String, dynamic>{
@@ -60,4 +61,5 @@ Map<String, dynamic> _$SupportHomeModelToJson(_SupportHomeModel instance) => <St
   'unread_count': instance.unreadCount,
   'service_open': instance.serviceOpen,
   'next_open_at': instance.nextOpenAt?.toIso8601String(),
+  'topic_picker': instance.topicPicker,
 };

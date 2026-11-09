@@ -336,7 +336,7 @@ as bool,
 /// @nodoc
 mixin _$SupportHomeModel {
 
- String? get roomId; String get supportName; SupportTicketModel? get ticket; bool get active; int get unreadCount; bool get serviceOpen; DateTime? get nextOpenAt;
+ String? get roomId; String get supportName; SupportTicketModel? get ticket; bool get active; int get unreadCount; bool get serviceOpen; DateTime? get nextOpenAt; Map<String, dynamic>? get topicPicker;
 /// Create a copy of SupportHomeModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -349,16 +349,16 @@ $SupportHomeModelCopyWith<SupportHomeModel> get copyWith => _$SupportHomeModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&const DeepCollectionEquality().equals(other.topicPicker, topicPicker));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt);
+int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,const DeepCollectionEquality().hash(topicPicker));
 
 @override
 String toString() {
-  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt)';
+  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker)';
 }
 
 
@@ -369,7 +369,7 @@ abstract mixin class $SupportHomeModelCopyWith<$Res>  {
   factory $SupportHomeModelCopyWith(SupportHomeModel value, $Res Function(SupportHomeModel) _then) = _$SupportHomeModelCopyWithImpl;
 @useResult
 $Res call({
- String? roomId, String supportName, SupportTicketModel? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt
+ String? roomId, String supportName, SupportTicketModel? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt, Map<String, dynamic>? topicPicker
 });
 
 
@@ -386,7 +386,7 @@ class _$SupportHomeModelCopyWithImpl<$Res>
 
 /// Create a copy of SupportHomeModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = freezed,}) {
   return _then(_self.copyWith(
 roomId: freezed == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String?,supportName: null == supportName ? _self.supportName : supportName // ignore: cast_nullable_to_non_nullable
@@ -395,7 +395,8 @@ as SupportTicketModel?,active: null == active ? _self.active : active // ignore:
 as bool,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ignore: cast_nullable_to_non_nullable
 as int,serviceOpen: null == serviceOpen ? _self.serviceOpen : serviceOpen // ignore: cast_nullable_to_non_nullable
 as bool,nextOpenAt: freezed == nextOpenAt ? _self.nextOpenAt : nextOpenAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,topicPicker: freezed == topicPicker ? _self.topicPicker : topicPicker // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,
   ));
 }
 /// Create a copy of SupportHomeModel
@@ -492,10 +493,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  Map<String, dynamic>? topicPicker)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SupportHomeModel() when $default != null:
-return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt);case _:
+return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker);case _:
   return orElse();
 
 }
@@ -513,10 +514,10 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  Map<String, dynamic>? topicPicker)  $default,) {final _that = this;
 switch (_that) {
 case _SupportHomeModel():
-return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt);case _:
+return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -533,10 +534,10 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? roomId,  String supportName,  SupportTicketModel? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  Map<String, dynamic>? topicPicker)?  $default,) {final _that = this;
 switch (_that) {
 case _SupportHomeModel() when $default != null:
-return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt);case _:
+return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker);case _:
   return null;
 
 }
@@ -548,7 +549,7 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 @JsonSerializable()
 
 class _SupportHomeModel extends SupportHomeModel {
-  const _SupportHomeModel({this.roomId, this.supportName = '', this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt}): super._();
+  const _SupportHomeModel({this.roomId, this.supportName = '', this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt, final  Map<String, dynamic>? topicPicker}): _topicPicker = topicPicker,super._();
   factory _SupportHomeModel.fromJson(Map<String, dynamic> json) => _$SupportHomeModelFromJson(json);
 
 @override final  String? roomId;
@@ -558,6 +559,15 @@ class _SupportHomeModel extends SupportHomeModel {
 @override@JsonKey() final  int unreadCount;
 @override@JsonKey() final  bool serviceOpen;
 @override final  DateTime? nextOpenAt;
+ final  Map<String, dynamic>? _topicPicker;
+@override Map<String, dynamic>? get topicPicker {
+  final value = _topicPicker;
+  if (value == null) return null;
+  if (_topicPicker is EqualUnmodifiableMapView) return _topicPicker;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(value);
+}
+
 
 /// Create a copy of SupportHomeModel
 /// with the given fields replaced by the non-null parameter values.
@@ -572,16 +582,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&const DeepCollectionEquality().equals(other._topicPicker, _topicPicker));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt);
+int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,const DeepCollectionEquality().hash(_topicPicker));
 
 @override
 String toString() {
-  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt)';
+  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker)';
 }
 
 
@@ -592,7 +602,7 @@ abstract mixin class _$SupportHomeModelCopyWith<$Res> implements $SupportHomeMod
   factory _$SupportHomeModelCopyWith(_SupportHomeModel value, $Res Function(_SupportHomeModel) _then) = __$SupportHomeModelCopyWithImpl;
 @override @useResult
 $Res call({
- String? roomId, String supportName, SupportTicketModel? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt
+ String? roomId, String supportName, SupportTicketModel? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt, Map<String, dynamic>? topicPicker
 });
 
 
@@ -609,7 +619,7 @@ class __$SupportHomeModelCopyWithImpl<$Res>
 
 /// Create a copy of SupportHomeModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = freezed,}) {
   return _then(_SupportHomeModel(
 roomId: freezed == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String?,supportName: null == supportName ? _self.supportName : supportName // ignore: cast_nullable_to_non_nullable
@@ -618,7 +628,8 @@ as SupportTicketModel?,active: null == active ? _self.active : active // ignore:
 as bool,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ignore: cast_nullable_to_non_nullable
 as int,serviceOpen: null == serviceOpen ? _self.serviceOpen : serviceOpen // ignore: cast_nullable_to_non_nullable
 as bool,nextOpenAt: freezed == nextOpenAt ? _self.nextOpenAt : nextOpenAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,topicPicker: freezed == topicPicker ? _self._topicPicker : topicPicker // ignore: cast_nullable_to_non_nullable
+as Map<String, dynamic>?,
   ));
 }
 

@@ -242,6 +242,45 @@ void main() {
     await chat.dispose();
   });
 
+  testWidgets('topic picker shows server texts, descriptions, icons and the danger style', (tester) async {
+    when(() => support.home()).thenAnswer(
+      (_) async => _home(roomId: null).copyWith(
+        topicPicker: const SupportTopicPickerTexts(
+          title: {'id': 'Ada kendala apa?'},
+          hint: {'id': 'Pilih topik di bawah'},
+        ),
+      ),
+    );
+    when(() => support.topics(language: any(named: 'language'))).thenAnswer(
+      (_) async => const [
+        SupportTopic(code: 'account', name: 'Akun & Login', description: 'Login, password, PIN', icon: 'lock'),
+        SupportTopic(code: 'fraud', name: 'Laporkan Penipuan', icon: 'shield', style: 'danger'),
+        SupportTopic(code: 'legacy', name: 'Server lama'),
+      ],
+    );
+    CommunitySupportTopicDetails? fraud;
+    final chat = await _pumpChat(
+      tester,
+      support,
+      builders: CommunitySupportBuilders(
+        topicTile: (context, d, fallback) {
+          if (d.topic.code == 'fraud') fraud = d;
+          return fallback;
+        },
+      ),
+    );
+
+    expect(find.text('Ada kendala apa?'), findsOneWidget);
+    expect(find.text('Pilih topik di bawah'), findsOneWidget);
+    expect(find.text('Login, password, PIN'), findsOneWidget);
+    expect(find.byIcon(Icons.lock_outline), findsOneWidget);
+    expect(find.byIcon(Icons.help_outline), findsOneWidget);
+    expect(fraud!.danger, isTrue);
+    final name = tester.widget<Text>(find.text('Laporkan Penipuan'));
+    expect(name.style?.color, Theme.of(tester.element(find.text('Laporkan Penipuan'))).colorScheme.error);
+    await chat.dispose();
+  });
+
   testWidgets('sensitive warning goes through its builder', (tester) async {
     when(() => support.home()).thenAnswer((_) async => _home(current: _ticket()));
     when(

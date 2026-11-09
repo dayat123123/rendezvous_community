@@ -1,5 +1,15 @@
 ## Belum dirilis
 
+* **Topik chat CS sepenuhnya dari server** (server migrasi `0127`): deskripsi, ikon, dan gaya setiap topik, serta judul
+  dan petunjuk halaman pilih topik, diatur dari Hub (Konten Layanan → Topik chat CS). Tampilan bawaan menampilkan
+  deskripsi di bawah nama, ikon dari server, dan nama merah untuk gaya `danger`. Host tidak perlu lagi menulis
+  deskripsi atau ikon sendiri di builder `topicTile`.
+  * `SupportTopic`: `description`, `icon` (kunci, misalnya `account`, `wallet`, `shield`), `style` (`normal`/`danger`),
+    getter `danger`. `CommunitySupportTopicDetails.danger`. `supportTopicIconFor(topic)` memetakan kunci ke `IconData`;
+    tanpa kunci (server lama) tetap memakai pemetaan per kode.
+  * `SupportHome.topicPicker` (`SupportTopicPickerTexts` dengan `title`/`hint` per bahasa), `topicTitle(bahasa)`,
+    `topicHint(bahasa)`. Kosong = teks bawaan library.
+
 * **Email, nomor telepon, dan alamat `www.` di teks bisa diketuk** (postingan, komentar, chat, dan chat CS).
   * Email menjadi `mailto:`, nomor telepon Indonesia (`08…`, `+62…`, `021-…`, minimal 10 digit, boleh dipisah
     spasi atau `-`) menjadi `tel:`. Saat diketuk muncul pilihan **Kirim email**/**Telepon** atau **Salin**

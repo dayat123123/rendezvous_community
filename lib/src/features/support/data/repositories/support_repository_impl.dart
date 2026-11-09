@@ -35,6 +35,9 @@ class SupportRepositoryImpl implements SupportRepository {
           name: row['name'] as String,
           helpUrl: row['help_url'] as String?,
           urgent: row['urgent'] == true,
+          description: row['description'] as String?,
+          icon: row['icon'] as String?,
+          style: row['style'] as String? ?? 'normal',
         ),
     ];
   }

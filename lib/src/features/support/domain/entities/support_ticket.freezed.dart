@@ -600,7 +600,7 @@ $SupportAgentCopyWith<$Res>? get agent {
 /// @nodoc
 mixin _$SupportHome {
 
- String? get roomId; String get supportName; SupportTicket? get ticket; bool get active; int get unreadCount; bool get serviceOpen; DateTime? get nextOpenAt;
+ String? get roomId; String get supportName; SupportTicket? get ticket; bool get active; int get unreadCount; bool get serviceOpen; DateTime? get nextOpenAt; SupportTopicPickerTexts get topicPicker;
 /// Create a copy of SupportHome
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -611,16 +611,16 @@ $SupportHomeCopyWith<SupportHome> get copyWith => _$SupportHomeCopyWithImpl<Supp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHome&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHome&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&(identical(other.topicPicker, topicPicker) || other.topicPicker == topicPicker));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt);
+int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,topicPicker);
 
 @override
 String toString() {
-  return 'SupportHome(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt)';
+  return 'SupportHome(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker)';
 }
 
 
@@ -631,11 +631,11 @@ abstract mixin class $SupportHomeCopyWith<$Res>  {
   factory $SupportHomeCopyWith(SupportHome value, $Res Function(SupportHome) _then) = _$SupportHomeCopyWithImpl;
 @useResult
 $Res call({
- String? roomId, String supportName, SupportTicket? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt
+ String? roomId, String supportName, SupportTicket? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt, SupportTopicPickerTexts topicPicker
 });
 
 
-$SupportTicketCopyWith<$Res>? get ticket;
+$SupportTicketCopyWith<$Res>? get ticket;$SupportTopicPickerTextsCopyWith<$Res> get topicPicker;
 
 }
 /// @nodoc
@@ -648,7 +648,7 @@ class _$SupportHomeCopyWithImpl<$Res>
 
 /// Create a copy of SupportHome
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = null,}) {
   return _then(_self.copyWith(
 roomId: freezed == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String?,supportName: null == supportName ? _self.supportName : supportName // ignore: cast_nullable_to_non_nullable
@@ -657,7 +657,8 @@ as SupportTicket?,active: null == active ? _self.active : active // ignore: cast
 as bool,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ignore: cast_nullable_to_non_nullable
 as int,serviceOpen: null == serviceOpen ? _self.serviceOpen : serviceOpen // ignore: cast_nullable_to_non_nullable
 as bool,nextOpenAt: freezed == nextOpenAt ? _self.nextOpenAt : nextOpenAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,topicPicker: null == topicPicker ? _self.topicPicker : topicPicker // ignore: cast_nullable_to_non_nullable
+as SupportTopicPickerTexts,
   ));
 }
 /// Create a copy of SupportHome
@@ -671,6 +672,15 @@ $SupportTicketCopyWith<$Res>? get ticket {
 
   return $SupportTicketCopyWith<$Res>(_self.ticket!, (value) {
     return _then(_self.copyWith(ticket: value));
+  });
+}/// Create a copy of SupportHome
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SupportTopicPickerTextsCopyWith<$Res> get topicPicker {
+  
+  return $SupportTopicPickerTextsCopyWith<$Res>(_self.topicPicker, (value) {
+    return _then(_self.copyWith(topicPicker: value));
   });
 }
 }
@@ -754,10 +764,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicket? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicket? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  SupportTopicPickerTexts topicPicker)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SupportHome() when $default != null:
-return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt);case _:
+return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker);case _:
   return orElse();
 
 }
@@ -775,10 +785,10 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicket? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String? roomId,  String supportName,  SupportTicket? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  SupportTopicPickerTexts topicPicker)  $default,) {final _that = this;
 switch (_that) {
 case _SupportHome():
-return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt);case _:
+return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -795,10 +805,10 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? roomId,  String supportName,  SupportTicket? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String? roomId,  String supportName,  SupportTicket? ticket,  bool active,  int unreadCount,  bool serviceOpen,  DateTime? nextOpenAt,  SupportTopicPickerTexts topicPicker)?  $default,) {final _that = this;
 switch (_that) {
 case _SupportHome() when $default != null:
-return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt);case _:
+return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.unreadCount,_that.serviceOpen,_that.nextOpenAt,_that.topicPicker);case _:
   return null;
 
 }
@@ -810,7 +820,7 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 
 
 class _SupportHome extends SupportHome {
-  const _SupportHome({this.roomId, required this.supportName, this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt}): super._();
+  const _SupportHome({this.roomId, required this.supportName, this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt, this.topicPicker = const SupportTopicPickerTexts()}): super._();
   
 
 @override final  String? roomId;
@@ -820,6 +830,7 @@ class _SupportHome extends SupportHome {
 @override@JsonKey() final  int unreadCount;
 @override@JsonKey() final  bool serviceOpen;
 @override final  DateTime? nextOpenAt;
+@override@JsonKey() final  SupportTopicPickerTexts topicPicker;
 
 /// Create a copy of SupportHome
 /// with the given fields replaced by the non-null parameter values.
@@ -831,16 +842,16 @@ _$SupportHomeCopyWith<_SupportHome> get copyWith => __$SupportHomeCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHome&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHome&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&(identical(other.topicPicker, topicPicker) || other.topicPicker == topicPicker));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt);
+int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,topicPicker);
 
 @override
 String toString() {
-  return 'SupportHome(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt)';
+  return 'SupportHome(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker)';
 }
 
 
@@ -851,11 +862,11 @@ abstract mixin class _$SupportHomeCopyWith<$Res> implements $SupportHomeCopyWith
   factory _$SupportHomeCopyWith(_SupportHome value, $Res Function(_SupportHome) _then) = __$SupportHomeCopyWithImpl;
 @override @useResult
 $Res call({
- String? roomId, String supportName, SupportTicket? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt
+ String? roomId, String supportName, SupportTicket? ticket, bool active, int unreadCount, bool serviceOpen, DateTime? nextOpenAt, SupportTopicPickerTexts topicPicker
 });
 
 
-@override $SupportTicketCopyWith<$Res>? get ticket;
+@override $SupportTicketCopyWith<$Res>? get ticket;@override $SupportTopicPickerTextsCopyWith<$Res> get topicPicker;
 
 }
 /// @nodoc
@@ -868,7 +879,7 @@ class __$SupportHomeCopyWithImpl<$Res>
 
 /// Create a copy of SupportHome
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = null,}) {
   return _then(_SupportHome(
 roomId: freezed == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String?,supportName: null == supportName ? _self.supportName : supportName // ignore: cast_nullable_to_non_nullable
@@ -877,7 +888,8 @@ as SupportTicket?,active: null == active ? _self.active : active // ignore: cast
 as bool,unreadCount: null == unreadCount ? _self.unreadCount : unreadCount // ignore: cast_nullable_to_non_nullable
 as int,serviceOpen: null == serviceOpen ? _self.serviceOpen : serviceOpen // ignore: cast_nullable_to_non_nullable
 as bool,nextOpenAt: freezed == nextOpenAt ? _self.nextOpenAt : nextOpenAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,topicPicker: null == topicPicker ? _self.topicPicker : topicPicker // ignore: cast_nullable_to_non_nullable
+as SupportTopicPickerTexts,
   ));
 }
 
@@ -893,13 +905,22 @@ $SupportTicketCopyWith<$Res>? get ticket {
   return $SupportTicketCopyWith<$Res>(_self.ticket!, (value) {
     return _then(_self.copyWith(ticket: value));
   });
+}/// Create a copy of SupportHome
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$SupportTopicPickerTextsCopyWith<$Res> get topicPicker {
+  
+  return $SupportTopicPickerTextsCopyWith<$Res>(_self.topicPicker, (value) {
+    return _then(_self.copyWith(topicPicker: value));
+  });
 }
 }
 
 /// @nodoc
 mixin _$SupportTopic {
 
- String get code; String get name; String? get helpUrl; bool get urgent;
+ String get code; String get name; String? get helpUrl; bool get urgent; String? get description; String? get icon; String get style;
 /// Create a copy of SupportTopic
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -910,16 +931,16 @@ $SupportTopicCopyWith<SupportTopic> get copyWith => _$SupportTopicCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTopic&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.helpUrl, helpUrl) || other.helpUrl == helpUrl)&&(identical(other.urgent, urgent) || other.urgent == urgent));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTopic&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.helpUrl, helpUrl) || other.helpUrl == helpUrl)&&(identical(other.urgent, urgent) || other.urgent == urgent)&&(identical(other.description, description) || other.description == description)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.style, style) || other.style == style));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,name,helpUrl,urgent);
+int get hashCode => Object.hash(runtimeType,code,name,helpUrl,urgent,description,icon,style);
 
 @override
 String toString() {
-  return 'SupportTopic(code: $code, name: $name, helpUrl: $helpUrl, urgent: $urgent)';
+  return 'SupportTopic(code: $code, name: $name, helpUrl: $helpUrl, urgent: $urgent, description: $description, icon: $icon, style: $style)';
 }
 
 
@@ -930,7 +951,7 @@ abstract mixin class $SupportTopicCopyWith<$Res>  {
   factory $SupportTopicCopyWith(SupportTopic value, $Res Function(SupportTopic) _then) = _$SupportTopicCopyWithImpl;
 @useResult
 $Res call({
- String code, String name, String? helpUrl, bool urgent
+ String code, String name, String? helpUrl, bool urgent, String? description, String? icon, String style
 });
 
 
@@ -947,13 +968,16 @@ class _$SupportTopicCopyWithImpl<$Res>
 
 /// Create a copy of SupportTopic
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? name = null,Object? helpUrl = freezed,Object? urgent = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? name = null,Object? helpUrl = freezed,Object? urgent = null,Object? description = freezed,Object? icon = freezed,Object? style = null,}) {
   return _then(_self.copyWith(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,helpUrl: freezed == helpUrl ? _self.helpUrl : helpUrl // ignore: cast_nullable_to_non_nullable
 as String?,urgent: null == urgent ? _self.urgent : urgent // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as String?,style: null == style ? _self.style : style // ignore: cast_nullable_to_non_nullable
+as String,
   ));
 }
 
@@ -1038,10 +1062,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  String name,  String? helpUrl,  bool urgent)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  String name,  String? helpUrl,  bool urgent,  String? description,  String? icon,  String style)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _SupportTopic() when $default != null:
-return $default(_that.code,_that.name,_that.helpUrl,_that.urgent);case _:
+return $default(_that.code,_that.name,_that.helpUrl,_that.urgent,_that.description,_that.icon,_that.style);case _:
   return orElse();
 
 }
@@ -1059,10 +1083,10 @@ return $default(_that.code,_that.name,_that.helpUrl,_that.urgent);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  String name,  String? helpUrl,  bool urgent)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  String name,  String? helpUrl,  bool urgent,  String? description,  String? icon,  String style)  $default,) {final _that = this;
 switch (_that) {
 case _SupportTopic():
-return $default(_that.code,_that.name,_that.helpUrl,_that.urgent);case _:
+return $default(_that.code,_that.name,_that.helpUrl,_that.urgent,_that.description,_that.icon,_that.style);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1079,10 +1103,10 @@ return $default(_that.code,_that.name,_that.helpUrl,_that.urgent);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  String name,  String? helpUrl,  bool urgent)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  String name,  String? helpUrl,  bool urgent,  String? description,  String? icon,  String style)?  $default,) {final _that = this;
 switch (_that) {
 case _SupportTopic() when $default != null:
-return $default(_that.code,_that.name,_that.helpUrl,_that.urgent);case _:
+return $default(_that.code,_that.name,_that.helpUrl,_that.urgent,_that.description,_that.icon,_that.style);case _:
   return null;
 
 }
@@ -1093,14 +1117,17 @@ return $default(_that.code,_that.name,_that.helpUrl,_that.urgent);case _:
 /// @nodoc
 
 
-class _SupportTopic implements SupportTopic {
-  const _SupportTopic({required this.code, required this.name, this.helpUrl, this.urgent = false});
+class _SupportTopic extends SupportTopic {
+  const _SupportTopic({required this.code, required this.name, this.helpUrl, this.urgent = false, this.description, this.icon, this.style = 'normal'}): super._();
   
 
 @override final  String code;
 @override final  String name;
 @override final  String? helpUrl;
 @override@JsonKey() final  bool urgent;
+@override final  String? description;
+@override final  String? icon;
+@override@JsonKey() final  String style;
 
 /// Create a copy of SupportTopic
 /// with the given fields replaced by the non-null parameter values.
@@ -1112,16 +1139,16 @@ _$SupportTopicCopyWith<_SupportTopic> get copyWith => __$SupportTopicCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTopic&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.helpUrl, helpUrl) || other.helpUrl == helpUrl)&&(identical(other.urgent, urgent) || other.urgent == urgent));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTopic&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.helpUrl, helpUrl) || other.helpUrl == helpUrl)&&(identical(other.urgent, urgent) || other.urgent == urgent)&&(identical(other.description, description) || other.description == description)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.style, style) || other.style == style));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,name,helpUrl,urgent);
+int get hashCode => Object.hash(runtimeType,code,name,helpUrl,urgent,description,icon,style);
 
 @override
 String toString() {
-  return 'SupportTopic(code: $code, name: $name, helpUrl: $helpUrl, urgent: $urgent)';
+  return 'SupportTopic(code: $code, name: $name, helpUrl: $helpUrl, urgent: $urgent, description: $description, icon: $icon, style: $style)';
 }
 
 
@@ -1132,7 +1159,7 @@ abstract mixin class _$SupportTopicCopyWith<$Res> implements $SupportTopicCopyWi
   factory _$SupportTopicCopyWith(_SupportTopic value, $Res Function(_SupportTopic) _then) = __$SupportTopicCopyWithImpl;
 @override @useResult
 $Res call({
- String code, String name, String? helpUrl, bool urgent
+ String code, String name, String? helpUrl, bool urgent, String? description, String? icon, String style
 });
 
 
@@ -1149,13 +1176,288 @@ class __$SupportTopicCopyWithImpl<$Res>
 
 /// Create a copy of SupportTopic
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? name = null,Object? helpUrl = freezed,Object? urgent = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? name = null,Object? helpUrl = freezed,Object? urgent = null,Object? description = freezed,Object? icon = freezed,Object? style = null,}) {
   return _then(_SupportTopic(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,helpUrl: freezed == helpUrl ? _self.helpUrl : helpUrl // ignore: cast_nullable_to_non_nullable
 as String?,urgent: null == urgent ? _self.urgent : urgent // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
+as String?,style: null == style ? _self.style : style // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
+}
+
+
+}
+
+/// @nodoc
+mixin _$SupportTopicPickerTexts {
+
+ Map<String, String> get title; Map<String, String> get hint;
+/// Create a copy of SupportTopicPickerTexts
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SupportTopicPickerTextsCopyWith<SupportTopicPickerTexts> get copyWith => _$SupportTopicPickerTextsCopyWithImpl<SupportTopicPickerTexts>(this as SupportTopicPickerTexts, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTopicPickerTexts&&const DeepCollectionEquality().equals(other.title, title)&&const DeepCollectionEquality().equals(other.hint, hint));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(title),const DeepCollectionEquality().hash(hint));
+
+@override
+String toString() {
+  return 'SupportTopicPickerTexts(title: $title, hint: $hint)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SupportTopicPickerTextsCopyWith<$Res>  {
+  factory $SupportTopicPickerTextsCopyWith(SupportTopicPickerTexts value, $Res Function(SupportTopicPickerTexts) _then) = _$SupportTopicPickerTextsCopyWithImpl;
+@useResult
+$Res call({
+ Map<String, String> title, Map<String, String> hint
+});
+
+
+
+
+}
+/// @nodoc
+class _$SupportTopicPickerTextsCopyWithImpl<$Res>
+    implements $SupportTopicPickerTextsCopyWith<$Res> {
+  _$SupportTopicPickerTextsCopyWithImpl(this._self, this._then);
+
+  final SupportTopicPickerTexts _self;
+  final $Res Function(SupportTopicPickerTexts) _then;
+
+/// Create a copy of SupportTopicPickerTexts
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? hint = null,}) {
+  return _then(_self.copyWith(
+title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as Map<String, String>,hint: null == hint ? _self.hint : hint // ignore: cast_nullable_to_non_nullable
+as Map<String, String>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [SupportTopicPickerTexts].
+extension SupportTopicPickerTextsPatterns on SupportTopicPickerTexts {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _SupportTopicPickerTexts value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _SupportTopicPickerTexts() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _SupportTopicPickerTexts value)  $default,){
+final _that = this;
+switch (_that) {
+case _SupportTopicPickerTexts():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _SupportTopicPickerTexts value)?  $default,){
+final _that = this;
+switch (_that) {
+case _SupportTopicPickerTexts() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( Map<String, String> title,  Map<String, String> hint)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _SupportTopicPickerTexts() when $default != null:
+return $default(_that.title,_that.hint);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( Map<String, String> title,  Map<String, String> hint)  $default,) {final _that = this;
+switch (_that) {
+case _SupportTopicPickerTexts():
+return $default(_that.title,_that.hint);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( Map<String, String> title,  Map<String, String> hint)?  $default,) {final _that = this;
+switch (_that) {
+case _SupportTopicPickerTexts() when $default != null:
+return $default(_that.title,_that.hint);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _SupportTopicPickerTexts implements SupportTopicPickerTexts {
+  const _SupportTopicPickerTexts({final  Map<String, String> title = const <String, String>{}, final  Map<String, String> hint = const <String, String>{}}): _title = title,_hint = hint;
+  
+
+ final  Map<String, String> _title;
+@override@JsonKey() Map<String, String> get title {
+  if (_title is EqualUnmodifiableMapView) return _title;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_title);
+}
+
+ final  Map<String, String> _hint;
+@override@JsonKey() Map<String, String> get hint {
+  if (_hint is EqualUnmodifiableMapView) return _hint;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableMapView(_hint);
+}
+
+
+/// Create a copy of SupportTopicPickerTexts
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SupportTopicPickerTextsCopyWith<_SupportTopicPickerTexts> get copyWith => __$SupportTopicPickerTextsCopyWithImpl<_SupportTopicPickerTexts>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTopicPickerTexts&&const DeepCollectionEquality().equals(other._title, _title)&&const DeepCollectionEquality().equals(other._hint, _hint));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_title),const DeepCollectionEquality().hash(_hint));
+
+@override
+String toString() {
+  return 'SupportTopicPickerTexts(title: $title, hint: $hint)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$SupportTopicPickerTextsCopyWith<$Res> implements $SupportTopicPickerTextsCopyWith<$Res> {
+  factory _$SupportTopicPickerTextsCopyWith(_SupportTopicPickerTexts value, $Res Function(_SupportTopicPickerTexts) _then) = __$SupportTopicPickerTextsCopyWithImpl;
+@override @useResult
+$Res call({
+ Map<String, String> title, Map<String, String> hint
+});
+
+
+
+
+}
+/// @nodoc
+class __$SupportTopicPickerTextsCopyWithImpl<$Res>
+    implements _$SupportTopicPickerTextsCopyWith<$Res> {
+  __$SupportTopicPickerTextsCopyWithImpl(this._self, this._then);
+
+  final _SupportTopicPickerTexts _self;
+  final $Res Function(_SupportTopicPickerTexts) _then;
+
+/// Create a copy of SupportTopicPickerTexts
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? title = null,Object? hint = null,}) {
+  return _then(_SupportTopicPickerTexts(
+title: null == title ? _self._title : title // ignore: cast_nullable_to_non_nullable
+as Map<String, String>,hint: null == hint ? _self._hint : hint // ignore: cast_nullable_to_non_nullable
+as Map<String, String>,
   ));
 }
 

@@ -76,6 +76,47 @@ void main() {
     expect(home.showsConversation(DateTime.utc(2026, 10, 30)), isTrue);
   });
 
+  test('topics carry the description, icon and style from the server, and home carries the page texts', () async {
+    when(() => cs.rpcValue('topics', any())).thenAnswer(
+      (_) async => [
+        {
+          'code': 'account',
+          'name': 'Akun & Login',
+          'description': 'Login, password, PIN, dan data akun',
+          'icon': 'account',
+          'style': 'normal',
+          'help_url': null,
+          'urgent': false,
+        },
+        {'code': 'fraud', 'name': 'Laporkan Penipuan', 'icon': 'shield', 'style': 'danger', 'urgent': true},
+        {'code': 'legacy', 'name': 'Server lama'},
+      ],
+    );
+    when(() => cs.rpcValue('support_home', any())).thenAnswer(
+      (_) async => {
+        'support_name': 'CS OLT',
+        'topic_picker': {
+          'title': {'id': 'Ada kendala apa?', 'en': 'What do you need?'},
+          'hint': {'id': 'Pilih topik di bawah'},
+        },
+      },
+    );
+
+    final topics = await repo.topics();
+    expect(topics[0].description, 'Login, password, PIN, dan data akun');
+    expect(topics[0].icon, 'account');
+    expect(topics[1].danger, isTrue);
+    expect(topics[2].description, isNull);
+    expect(topics[2].icon, isNull);
+    expect(topics[2].danger, isFalse);
+
+    final home = await repo.home();
+    expect(home.topicTitle('en'), 'What do you need?');
+    expect(home.topicTitle('id'), 'Ada kendala apa?');
+    expect(home.topicHint('id'), 'Pilih topik di bawah');
+    expect(home.topicHint('en'), isNull);
+  });
+
   test('opening a ticket sends only the topic and source screen, without client business data', () async {
     when(() => cs.rpcValue('open_ticket', any())).thenAnswer((_) async => ticketView(status: 'open'));
 
