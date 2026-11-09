@@ -1,5 +1,10 @@
 ## Belum dirilis
 
+* **Pengaturan geser untuk membalas oleh host:** `CommunitySwipeToReplyScope` dengan `CommunitySwipeToReplySettings`
+  (`enabled`, `threshold` dalam px, arah `mine`/`others` berupa `CommunitySwipeDirection.right`/`left`, `haptic`).
+  Bawaan tetap: aktif, 56 px, kanan untuk semua pesan, dengan getar. Contoh gaya WhatsApp iOS:
+  `CommunitySwipeToReplySettings(mine: CommunitySwipeDirection.left)`. Pasang sekali, misalnya di `MaterialApp.builder`.
+
 * **Tanggal mengambang saat menggulir chat** ala WhatsApp: saat daftar pesan digulir ke pesan lama, label hari pesan
   teratas yang terlihat ("Hari ini", "Kemarin", nama hari, atau tanggal) menempel di tengah atas daftar, lalu memudar
   sendiri 1,5 detik setelah guliran berhenti (muncul 150 ms, hilang 300 ms). Tidak muncul di posisi pesan terbaru dan

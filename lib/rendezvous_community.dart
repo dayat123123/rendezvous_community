@@ -98,6 +98,8 @@ export 'src/features/chat/presentation/widgets/room_visuals.dart' show Community
 export 'src/features/chat/presentation/widgets/share_post_sheet.dart' show showSharePostToChat;
 export 'src/features/chat/presentation/widgets/shared_post_card.dart' show SharedPostCard;
 export 'src/features/chat/presentation/widgets/stock_cards.dart' show StockCardTile, StockCards, showStockCardPicker;
+export 'src/features/chat/presentation/widgets/swipe_to_reply.dart'
+    show CommunitySwipeDirection, CommunitySwipeToReplyScope, CommunitySwipeToReplySettings;
 export 'src/features/compose/presentation/widgets/community_compose_post.dart'
     show CommunityComposePost, CommunityComposerImage, showCommunityComposer;
 export 'src/features/config/domain/entities/client_config.dart';

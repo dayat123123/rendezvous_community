@@ -88,7 +88,7 @@ class _MessageBubbleState extends State<MessageBubble> {
         ? SupportSystemNotice(message: message)
         : _DefaultBubble(details: details, anchor: _bubble);
     final part = buildChatPart(CommunityChatBuilders.of(context).message, context, details, fallback);
-    return message.isSystem ? part : SwipeToReply(onReply: details.onReply, child: part);
+    return message.isSystem ? part : SwipeToReply(onReply: details.onReply, mine: details.isMine, child: part);
   }
 
   CommunityMessageDetails _details(BuildContext context) {
