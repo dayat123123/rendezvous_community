@@ -3572,6 +3572,24 @@ abstract class CommunityLocalizations {
   /// **'Video tidak bisa dibuka. Coba lagi.'**
   String get videoOpenFailed;
 
+  /// No description provided for @videoDownload.
+  ///
+  /// In id, this message translates to:
+  /// **'Unduh video'**
+  String get videoDownload;
+
+  /// No description provided for @videoSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Video disimpan.'**
+  String get videoSaved;
+
+  /// No description provided for @videoDownloadFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Video tidak bisa diunduh. Coba lagi.'**
+  String get videoDownloadFailed;
+
   /// No description provided for @videoPause.
   ///
   /// In id, this message translates to:

@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/features/chat/presentation/builders/com
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/media/domain/repositories/media_repository.dart';
 import 'package:rendezvous_community/src/features/media/presentation/file_opener.dart';
+import 'package:rendezvous_community/src/features/media/presentation/file_saver.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/video_player_page.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
@@ -42,6 +43,7 @@ class VideoAttachments extends StatelessWidget {
     this.playsInApp,
     this.onPlay,
     this.onOpenExternal,
+    this.onSave,
   });
 
   final List<Attachment> attachments;
@@ -49,6 +51,7 @@ class VideoAttachments extends StatelessWidget {
   final bool? playsInApp;
   final CommunityVideoLauncher? onPlay;
   final DocumentOpener? onOpenExternal;
+  final CommunityFileSaver? onSave;
 
   @override
   Widget build(BuildContext context) => Column(
@@ -64,6 +67,7 @@ class VideoAttachments extends StatelessWidget {
             playsInApp: playsInApp ?? communityVideoPlaysInApp(),
             onPlay: onPlay,
             onOpenExternal: onOpenExternal,
+            onSave: onSave,
           ),
         ),
     ],
@@ -77,6 +81,7 @@ class _VideoTile extends StatefulWidget {
     required this.playsInApp,
     this.onPlay,
     this.onOpenExternal,
+    this.onSave,
   });
 
   final Attachment attachment;
@@ -84,6 +89,7 @@ class _VideoTile extends StatefulWidget {
   final bool playsInApp;
   final CommunityVideoLauncher? onPlay;
   final DocumentOpener? onOpenExternal;
+  final CommunityFileSaver? onSave;
 
   @override
   State<_VideoTile> createState() => _VideoTileState();
@@ -91,6 +97,25 @@ class _VideoTile extends StatefulWidget {
 
 class _VideoTileState extends State<_VideoTile> {
   bool _opening = false;
+  bool _downloading = false;
+
+  Future<void> _download() async {
+    final l10n = context.communityL10n;
+    final media = CommunityScope.of(context).media;
+    final a = widget.attachment;
+    setState(() => _downloading = true);
+    try {
+      final uri = await media.documentUri(a);
+      if (!mounted) return;
+      final save = widget.onSave ?? saveCommunityFile;
+      final saved = await save(context, uri, fileName: _name(l10n), mimeType: a.mime ?? 'video/mp4');
+      if (saved && mounted && communitySavesWithDialog()) showCommunityMessage(context, l10n.videoSaved);
+    } catch (_) {
+      if (mounted) showCommunityMessage(context, l10n.videoDownloadFailed);
+    } finally {
+      if (mounted) setState(() => _downloading = false);
+    }
+  }
 
   String _name(CommunityLocalizations l10n) {
     final name = widget.attachment.name ?? '';
@@ -153,6 +178,9 @@ class _VideoTileState extends State<_VideoTile> {
       semanticLabel: l10n.videoPlay(duration).trim(),
       thumbnail: thumb == null ? null : _Thumbnail(thumbnail: thumb, media: media),
       onPlay: _opening ? null : _play,
+      downloadLabel: l10n.videoDownload,
+      downloading: _downloading,
+      onDownload: _downloading ? null : _download,
     );
     return buildChatPart(
       CommunityChatBuilders.of(context).video,
@@ -197,74 +225,110 @@ class _DefaultVideoTile extends StatelessWidget {
     final ratio = w != null && h != null && w > 0 && h > 0 ? (w / h).clamp(0.56, 1.91).toDouble() : 16 / 9;
     const overlay = Color(0xB3000000);
     final chip = style.typography.meta.copyWith(color: Colors.white, fontWeight: FontWeight.w600);
-    return Semantics(
-      button: true,
-      label: details.semanticLabel,
-      excludeSemantics: true,
-      child: ClipRRect(
-        borderRadius: style.radii.controlRadius,
-        child: Material(
-          color: style.skeleton,
-          child: InkWell(
-            onTap: details.onPlay,
-            child: LayoutBuilder(
-              builder: (context, constraints) {
-                final width = constraints.maxWidth.isFinite ? constraints.maxWidth : 260.0;
-                final height = (width / ratio).clamp(120.0, _maxVideoHeight);
-                return SizedBox(
-                  width: width,
-                  height: height,
-                  child: Stack(
-                    fit: StackFit.expand,
-                    children: [
-                      details.thumbnail ??
-                          ColoredBox(
-                            color: style.skeleton,
-                            child: Center(child: Icon(Icons.movie_outlined, size: 40, color: style.textTertiary)),
-                          ),
-                      Center(
-                        child: DecoratedBox(
-                          decoration: const BoxDecoration(color: overlay, shape: BoxShape.circle),
-                          child: Padding(
-                            padding: EdgeInsets.all(spacing.sm + spacing.xxs),
-                            child: details.opening
-                                ? const SizedBox.square(
-                                    dimension: 28,
-                                    child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white),
-                                  )
-                                : Icon(
-                                    details.playsInApp ? Icons.play_arrow_rounded : Icons.open_in_new,
-                                    size: 28,
-                                    color: Colors.white,
-                                  ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        left: spacing.sm,
-                        bottom: spacing.sm,
-                        right: spacing.sm,
-                        child: Row(
-                          children: [
-                            _Chip(
-                              icon: Icons.videocam_outlined,
-                              label: details.durationLabel,
-                              style: chip,
-                              color: overlay,
+    return ClipRRect(
+      borderRadius: style.radii.controlRadius,
+      child: LayoutBuilder(
+        builder: (context, constraints) {
+          final width = constraints.maxWidth.isFinite ? constraints.maxWidth : 260.0;
+          final height = (width / ratio).clamp(120.0, _maxVideoHeight);
+          return SizedBox(
+            width: width,
+            height: height,
+            child: Stack(
+              fit: StackFit.expand,
+              children: [
+                Semantics(
+                  button: true,
+                  label: details.semanticLabel,
+                  excludeSemantics: true,
+                  child: Material(
+                    color: style.skeleton,
+                    child: InkWell(
+                      onTap: details.onPlay,
+                      child: Stack(
+                        fit: StackFit.expand,
+                        children: [
+                          details.thumbnail ??
+                              ColoredBox(
+                                color: style.skeleton,
+                                child: Center(child: Icon(Icons.movie_outlined, size: 40, color: style.textTertiary)),
+                              ),
+                          Center(
+                            child: DecoratedBox(
+                              decoration: const BoxDecoration(color: overlay, shape: BoxShape.circle),
+                              child: Padding(
+                                padding: EdgeInsets.all(spacing.sm + spacing.xxs),
+                                child: details.opening
+                                    ? const SizedBox.square(
+                                        dimension: 28,
+                                        child: CircularProgressIndicator(strokeWidth: 2.5, color: Colors.white),
+                                      )
+                                    : Icon(
+                                        details.playsInApp ? Icons.play_arrow_rounded : Icons.open_in_new,
+                                        size: 28,
+                                        color: Colors.white,
+                                      ),
+                              ),
                             ),
-                            const Spacer(),
-                            if (details.sizeLabel.isNotEmpty)
-                              _Chip(label: details.sizeLabel, style: chip, color: overlay),
-                          ],
+                          ),
+                          Positioned(
+                            left: spacing.sm,
+                            bottom: spacing.sm,
+                            right: spacing.sm,
+                            child: Row(
+                              children: [
+                                _Chip(
+                                  icon: Icons.videocam_outlined,
+                                  label: details.durationLabel,
+                                  style: chip,
+                                  color: overlay,
+                                ),
+                                const Spacer(),
+                                if (details.sizeLabel.isNotEmpty)
+                                  _Chip(label: details.sizeLabel, style: chip, color: overlay),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+                if (details.onDownload != null || details.downloading)
+                  Positioned(
+                    top: spacing.xs,
+                    right: spacing.xs,
+                    child: Semantics(
+                      button: true,
+                      label: details.downloadLabel,
+                      excludeSemantics: true,
+                      child: Tooltip(
+                        message: details.downloadLabel,
+                        child: Material(
+                          color: overlay,
+                          shape: const CircleBorder(),
+                          clipBehavior: Clip.antiAlias,
+                          child: InkWell(
+                            key: const ValueKey('community-video-download'),
+                            onTap: details.onDownload,
+                            child: Padding(
+                              padding: EdgeInsets.all(spacing.xs + spacing.xxs),
+                              child: details.downloading
+                                  ? const SizedBox.square(
+                                      dimension: 20,
+                                      child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white),
+                                    )
+                                  : const Icon(Icons.download_rounded, size: 20, color: Colors.white),
+                            ),
+                          ),
                         ),
                       ),
-                    ],
+                    ),
                   ),
-                );
-              },
+              ],
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }

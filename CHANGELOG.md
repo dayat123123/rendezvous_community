@@ -1,3 +1,10 @@
+## 1.11.0
+
+Tidak ada perubahan antarmuka repository; cukup naikkan versi.
+
+* **Unduh video di chat CS.** Gelembung video punya tombol **Unduh video** di pojok kanan atas, terpisah dari tombol putar: di Windows, macOS, dan Linux muncul dialog simpan, di Android dan iOS lembar bagikan/simpan, dan di web file diunduh dengan nama aslinya. `CommunityVideoDetails` mendapat `downloadLabel`, `downloading`, dan `onDownload` untuk builder `chat.video`.
+* Gambar chat CS kini mengikuti batas server sampai 10 MB (server migrasi `0138`); chat global tetap 5 MB.
+
 ## 1.10.0
 
 Server: lampiran dokumen/video butuh migrasi `0131`–`0132` (layanan media 0.3.0 + ClamAV); fitur bantuan lanjutan butuh `0133`–`0136`. Di server lama fitur baru tidak tampil dan perilaku tetap seperti 1.9.0. **Perubahan antarmuka:** host yang mengimplementasikan sendiri `SupportRepository` atau `MediaRepository` perlu menambah metode baru (`attachmentPolicy`, `uploadSupportFile`, `serviceStatus`, `transcript`); `Fake`/`Mock` bawaan sudah diperbarui.

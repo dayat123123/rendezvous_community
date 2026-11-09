@@ -1973,6 +1973,15 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get videoOpenFailed => 'Video tidak bisa dibuka. Coba lagi.';
 
   @override
+  String get videoDownload => 'Unduh video';
+
+  @override
+  String get videoSaved => 'Video disimpan.';
+
+  @override
+  String get videoDownloadFailed => 'Video tidak bisa diunduh. Coba lagi.';
+
+  @override
   String get videoPause => 'Jeda';
 
   @override

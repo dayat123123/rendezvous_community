@@ -603,6 +603,9 @@ class CommunityVideoDetails {
     required this.semanticLabel,
     this.thumbnail,
     this.onPlay,
+    this.downloadLabel = '',
+    this.downloading = false,
+    this.onDownload,
   });
 
   final Attachment attachment;
@@ -615,6 +618,9 @@ class CommunityVideoDetails {
   final String semanticLabel;
   final Widget? thumbnail;
   final VoidCallback? onPlay;
+  final String downloadLabel;
+  final bool downloading;
+  final VoidCallback? onDownload;
 
   Duration? get duration {
     final seconds = attachment.duration;

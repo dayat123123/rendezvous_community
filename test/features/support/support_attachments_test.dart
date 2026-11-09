@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_composer.dart';
+import 'package:rendezvous_community/src/features/media/presentation/file_saver.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/video_attachments.dart';
 
@@ -360,6 +361,40 @@ void main() {
 
       expect(external, [Uri.parse('https://api.test/sign/rooms/r-cs/u-1/v.mp4')]);
       debugDefaultTargetPlatformOverride = null;
+    });
+
+    testWidgets('the download button saves the video under its own name without playing it', (tester) async {
+      final saved = <(Uri, String, String)>[];
+      await tester.pumpWidget(
+        _app(
+          VideoAttachments(
+            attachments: const [_video],
+            color: Colors.black,
+            onPlay: (context, video, uri) async => fail('download must not play'),
+            onSave: (context, uri, {required fileName, required mimeType}) async {
+              saved.add((uri, fileName, mimeType));
+              return true;
+            },
+          ),
+          media: _Media(),
+        ),
+      );
+      await tester.pump();
+
+      expect(find.bySemanticsLabel('Unduh video'), findsOneWidget);
+      await tester.tap(find.byKey(const ValueKey('community-video-download')));
+      await tester.pumpAndSettle();
+
+      expect(saved, hasLength(1));
+      expect(saved.single.$1, Uri.parse('https://api.test/sign/rooms/r-cs/u-1/v.mp4'));
+      expect(saved.single.$3, 'video/mp4');
+    });
+
+    test('the web download link asks storage for the original file name', () {
+      expect(
+        communityDownloadUri(Uri.parse('https://api.test/sign/v.mp4?token=t'), 'Rekaman layar.mp4').queryParameters,
+        {'token': 't', 'download': 'Rekaman layar.mp4'},
+      );
     });
 
     testWidgets('a failed system player opening is explained', (tester) async {

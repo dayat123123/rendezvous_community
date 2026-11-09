@@ -1987,6 +1987,15 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get videoOpenFailed => 'The video could not be opened. Try again.';
 
   @override
+  String get videoDownload => 'Download video';
+
+  @override
+  String get videoSaved => 'Video saved.';
+
+  @override
+  String get videoDownloadFailed => 'The video could not be downloaded. Please try again.';
+
+  @override
   String get videoPause => 'Pause';
 
   @override
