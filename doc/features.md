@@ -294,6 +294,21 @@ Semua isi diatur dari Hub (pertanyaan awal dan saran balasan per topik, pengumum
 
 Server lama: tanpa `intake` tidak ada form; tanpa `incidents`/`service_status` tidak ada banner (RPC yang belum ada dianggap tanpa gangguan); tanpa `survey` dialog rating lama; tanpa `quick_replies`/`eta_minutes` tidak ada chip dan perkiraan. `p_intake` dan `p_reasons` hanya dikirim bila berisi, jadi pemanggilan ke server lama tetap cocok dengan tanda tangan RPC lama. Transkrip butuh `0136`.
 
+## Pengaduan tamu sebelum login (server migrasi `0140`)
+
+Nasabah yang tidak bisa masuk (lupa password/PIN, akun terkunci) bisa membuat pengaduan dari halaman login aplikasi host, **tanpa sesi dan tanpa OTP**. Pasang tombol **"Tidak bisa masuk? Hubungi CS"** yang memanggil `openCommunityGuestSupport(context)` (cara pemasangan ada di [integration.md](integration.md#pengaduan-tamu-dari-halaman-login)).
+
+| Bagian | Perilaku |
+|---|---|
+| Form | Nama (2–60 karakter), Login ID opsional (otomatis huruf besar, hanya `A–Z`, angka, `.`, `_`, `@`, `-`, maks. 50), chip jenis masalah dari `cs_api.guest_config` (`password`, `pin`, `locked`, `other`; label sesuai bahasa), dan cerita masalah (10–1.000 karakter). Validasi sama dengan `cs_api.guest_start`; galat server (`invalid_*`, `rate_limited` 3/jam dan 10/hari per perangkat, `guest_login_limit` 5/hari per Login ID, `guest_disabled`) tampil sebagai pesan yang jelas |
+| Catatan keamanan | Selalu tampil di form dan di awal percakapan: *"CS tidak pernah meminta password, PIN, atau OTP. Reset password/PIN hanya dikirim ke email yang terdaftar di akun Anda."* CS memang hanya bisa mengirim reset ke email akun, jadi nasabah tahu apa yang akan terjadi |
+| Chat | Header berisi nomor pengaduan, topik, status, posisi antrean dan perkiraan waktu tunggu (sama dengan chat CS), serta tombol **Akhiri** (`cs_api.guest_end`, dengan konfirmasi). Pesan CS tampil dengan penanda **CS Resmi**, pesan sistem memakai tampilan pesan sistem chat CS. Nasabah hanya bisa mengirim teks (1–2.000 karakter); lampiran dari CS ditampilkan sebagai keterangan karena tamu tidak punya akses berkas |
+| Pembaruan | `cs_api.guest_poll` setiap 4 detik selama halaman terlihat dan aplikasi aktif (berhenti saat aplikasi di latar belakang). Bila gagal, jeda naik 8, 16, 32 sampai maks. 60 detik dan banner **"Koneksi terputus. Mencoba lagi…"** tampil; kembali ke 4 detik setelah berhasil |
+| Akhir | Tiket `resolved`/`closed`, sesi kedaluwarsa (`guest_session_expired`), atau nasabah menekan **Akhiri** → kolom ketik diganti panel akhir dengan tombol **Buat pengaduan baru**. Polling berhenti dan token dihapus |
+| Token | Token sesi (berlaku `session_hours`, bawaan 24 jam) disimpan di memori lewat `CommunityGuestSessionStore`. Bawaannya `MemoryGuestSessionStore`: nasabah bisa menutup dan membuka lagi halaman selama aplikasi berjalan, tetapi percakapan hilang bila aplikasi ditutup (teks di header memberi tahu ini). Cache lokal paket terikat ke akun yang login, jadi tidak dipakai sebelum login. Host yang ingin nasabah bisa kembali dalam 24 jam memasang store sendiri, misalnya di penyimpanan aman (lihat [integration.md](integration.md#pengaduan-tamu-dari-halaman-login)) |
+
+Semua panggilan memakai **anon key** (`Authorization: Bearer <ANON_KEY>`, skema `cs_api`), tidak pernah token sosial, dan tidak memicu penukaran token OLT, meskipun `RendezvousCommunity` sudah diinisialisasi. Token tamu tidak pernah ditulis ke log. Di server lama tanpa `0140` (`cs_api.guest_config` belum ada) halaman menampilkan *"Pengaduan tanpa login sedang tidak tersedia…"*, sama seperti saat Super Admin mematikan `guest.enabled` dari Hub.
+
 ## Offline: cache & outbox (1.3.0)
 
 Bawaannya aktif. Paket menyimpan data terakhir di database lokal milik user komunitas yang sedang masuk, lalu menampilkannya seketika saat layar dibuka; data server dimuat di latar belakang dan menggantikannya (server tetap sumber kebenaran).

@@ -478,6 +478,32 @@ CommunityBuildersScope(
 
 Dialog konfirmasi (akhiri chat, keluhan) memakai `shared.confirmDialog`. Dialog dibuka di rute baru, jadi builder `support` yang dipasang di bawah `MaterialApp` ikut terbawa ke `ratingDialog` dan `fakeCsWarning`.
 
+### Pengaduan tamu
+
+Halaman pengaduan tamu (`CommunityGuestSupport`, lihat [integration.md](integration.md#pengaduan-tamu-dari-halaman-login)) memakai set `support` yang sama. Tiga slot khusus:
+
+```dart
+CommunitySupportBuilders(
+  guestSecurityNote: (context, d, fallback) => Card(
+    child: ListTile(leading: const Icon(Icons.lock_outline), title: Text(d.title), subtitle: Text(d.message)),
+  ),
+  guestHeader: (context, d, fallback) => ListTile(
+    title: Text(d.title),
+    subtitle: Text([d.subtitle, ?d.statusLabel, ?d.sessionNote].join('
+')),
+    trailing: d.onEnd == null ? null : TextButton(onPressed: d.onEnd, child: Text(d.endLabel)),
+  ),
+)
+```
+
+| Slot | Details | Isi |
+|---|---|---|
+| `guestForm` | `CommunityGuestFormDetails` | form pengaduan: `title`, `hint`, `securityNote` (widget catatan keamanan siap pakai, jangan dihilangkan), `nameController`, `loginIdController`, `descriptionController`, label (`nameLabel`, `loginIdLabel`, `loginIdHint`, `optionalLabel`, `problemLabel`, `descriptionLabel`, `descriptionHint`, `submitLabel`), `problems` (`GuestLoginProblem` dari server), `selectedProblem`, `errors` (pesan per `GuestSupportField`, terisi setelah menekan kirim; `errorFor(field)`), `busy`, batas panjang (`nameMaxLength`, `loginIdMaxLength`, `descriptionMaxLength`); `onSelectProblem(code)`, `onSubmit` (memvalidasi seperti server lalu membuat pengaduan). Login ID diubah ke huruf besar oleh server; untuk isian sendiri pakai `TextCapitalization.characters` |
+| `guestSecurityNote` | `CommunityGuestSecurityNoteDetails` | `title`, `message` ("CS tidak pernah meminta password, PIN, atau OTP…"), `compact` (`true` di awal percakapan, `false` di form). Pesan ini wajib tetap tampil |
+| `guestHeader` | `CommunityGuestHeaderDetails` | header chat: `title` ("Pengaduan #nomor"), `subtitle` (topik), `ticket`, `ticketNumber`, `status`, `statusLabel` (status + antrean + perkiraan waktu tunggu, sama dengan chat CS), `sessionNote` (sampai kapan sesi berlaku; menyebut bila percakapan hilang saat aplikasi ditutup), `endLabel`, `onEnd` (null bila pengaduan sudah berakhir), `busy`, `reconnecting`/`reconnectingLabel` |
+
+Slot lain ikut dipakai: `systemNotice` dan `officialSender` untuk pesan, `banner` untuk "Koneksi terputus. Mencoba lagi…", dan `closedBar` untuk panel akhir (`message` sesuai alasan: selesai, ditutup, sesi berakhir, atau diakhiri nasabah; `newTicketLabel` = "Buat pengaduan baru"). Dialog konfirmasi **Akhiri** memakai `shared.confirmDialog`.
+
 ### Pusat Bantuan
 
 Semua bagian Pusat Bantuan (`CommunityHelpCenter`, `openCommunityHelpCenter`, `openCommunityHelpArticle`) dan langkah saran artikel di halaman pilih topik chat CS bisa diganti lewat `CommunityBuilders(help: CommunityHelpBuilders(...))`. Warna, huruf, dan mode gelap mengikuti `CommunityStyle` seperti bagian lain.

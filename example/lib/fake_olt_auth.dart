@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rendezvous_community/rendezvous_community.dart' show CommunityException;
+import 'package:rendezvous_community/rendezvous_community.dart' show CommunityException, openCommunityGuestSupport;
 
 import 'dummy_olt_client.dart';
 import 'home_page.dart';
@@ -198,6 +198,12 @@ class _LoginPageState extends State<LoginPage> {
                     ],
                   ),
                 ),
+              ),
+              const SizedBox(height: 12),
+              TextButton.icon(
+                onPressed: _busy ? null : () => openCommunityGuestSupport(context),
+                icon: const Icon(Icons.support_agent),
+                label: const Text('Tidak bisa masuk? Hubungi CS'),
               ),
             ],
           ),

@@ -170,6 +170,7 @@ Semua widget adalah konten tanpa `Scaffold`, sehingga OLT tetap memegang AppBar,
 | Ikon menu "Bantuan" | `CommunitySupportBadge(child: Icon(Icons.support_agent_outlined))` (balasan CS yang belum dibaca) |
 | Tombol bantuan di layar order / dana / portofolio | `openCommunitySupport(context, topic: 'orders', screen: 'order_detail')` atau `CommunitySupportChat(topic: ..., screen: ...)` di panel samping. Topik dan asal layar ikut tercatat di tiket; detail order tidak dikirim ke server |
 | Riwayat tiket | `CommunitySupportTickets()` (juga ada di menu "⋯" room CS) |
+| Halaman login OLT ("Tidak bisa masuk? Hubungi CS") | `openCommunityGuestSupport(context)` atau `CommunityGuestSupport()`: pengaduan tamu tanpa login, lihat [Pengaduan tamu dari halaman login](#pengaduan-tamu-dari-halaman-login) |
 | Menu "Pengaturan → Privasi & akun komunitas" | `openCommunityAccountSettings(context, onAccountDeleted: ...)` atau `CommunityAccountSettings(...)`: baca S&K/Pedoman/Kebijakan Privasi, unduh data saya, hapus akun komunitas (akun trading tidak terpengaruh) |
 
 Contoh tab Diskusi di halaman saham OLT:
@@ -253,6 +254,73 @@ Menu "⋯" berisi:
 Pesan yang gagal karena offline otomatis dikirim ulang saat koneksi kembali. Pengiriman ulang ini aman karena memakai `client_id` yang idempoten.
 
 **Notifikasi saat CS mengambil, membalas, atau menyelesaikan tiket.** `RendezvousCommunity.instance.support.notices()` mengalirkan `SupportNotice` (judul = nama CS, isi = cuplikan pesan) selama aplikasi berjalan. Tampilkan sebagai notifikasi lokal bila room CS sedang tidak terbuka. Contohnya ada di `example/lib/support_notifications.dart` (`flutter_local_notifications`, BSD-3: Windows toast dan Android). Push saat aplikasi tertutup dikirim layanan notifier lewat FCM: daftarkan token dengan `RendezvousCommunity.instance.registerPushToken(...)` dan buka push yang diketuk dengan `openCommunityPush(context, message.data)`. Langkahnya ada di [docs/push](https://github.com/dayat123123/chat_service_supabase/blob/main/docs/push/README.md#aplikasi-olt-pengembang).
+
+### Pengaduan tamu dari halaman login
+
+Nasabah yang lupa password/PIN atau akunnya terkunci tidak punya sesi, jadi chat CS biasa tidak bisa dipakai. Pasang tombol di **halaman login OLT** yang membuka pengaduan tamu (butuh server migrasi `0140`):
+
+```dart
+TextButton.icon(
+  onPressed: () => openCommunityGuestSupport(context),
+  icon: const Icon(Icons.support_agent),
+  label: const Text('Tidak bisa masuk? Hubungi CS'),
+)
+```
+
+`openCommunityGuestSupport` membuka `CommunityGuestSupportPage` (layar penuh dengan AppBar). Untuk panel sendiri, tanam `const CommunityGuestSupport()` (tanpa `Scaffold`).
+
+Halaman ini bekerja **tanpa login**: semua RPC `cs_api.guest_*` dikirim dengan anon key, bukan token sosial, dan `tokenProvider` tidak dipanggil. Ada dua cara menyediakan dependensinya:
+
+1. **Library belum diinisialisasi saat halaman login tampil** (alur bagian 3). Pasang klien anonim di atas navigator, misalnya di `MaterialApp.builder`:
+
+   ```dart
+   final guestSupport = CommunityGuestSupportClient.anonymous(
+     supabaseUrl: Env.socialApiUrl,
+     anonKey: Env.socialAnonKey,
+   );
+
+   MaterialApp(
+     builder: (context, child) => CommunityGuestSupportScope(dependencies: guestSupport, child: child!),
+     home: const OltLoginPage(),
+   );
+   ```
+
+   Buat klien sekali (variabel global atau milik state aplikasi) agar token pengaduan tetap tersimpan saat halaman ditutup lalu dibuka lagi.
+
+2. **Library sudah diinisialisasi sebelum login** (`RendezvousCommunity.initialize(..., signInEagerly: false)` dengan `tokenProvider` yang mengembalikan `null` sebelum login). Tanpa `CommunityGuestSupportScope`, `openCommunityGuestSupport` memakai `RendezvousCommunity.instance`, yang juga memanggil RPC tamu dengan anon key.
+
+**Menyimpan sesi pengaduan.** Bawaannya token hanya di memori (`MemoryGuestSessionStore`): pengaduan bisa dibuka lagi selama aplikasi berjalan, tetapi hilang bila aplikasi ditutup. Cache lokal paket terikat ke akun yang login sehingga tidak dipakai di sini. Agar nasabah bisa kembali sampai sesi berakhir (bawaan 24 jam), implementasikan `CommunityGuestSessionStore` dengan penyimpanan aman milik OLT dan kembalikan `persistent: true`:
+
+```dart
+class OltGuestSessionStore implements CommunityGuestSessionStore {
+  @override
+  bool get persistent => true;
+
+  @override
+  Future<GuestSupportToken?> read() async {
+    final raw = await oltSecureStorage.read('guest_support');
+    if (raw == null) return null;
+    final json = jsonDecode(raw) as Map<String, dynamic>;
+    return GuestSupportToken(token: json['token'] as String, expiresAt: DateTime.parse(json['expires_at'] as String));
+  }
+
+  @override
+  Future<void> write(GuestSupportToken token) => oltSecureStorage.write(
+    'guest_support',
+    jsonEncode({'token': token.token, 'expires_at': token.expiresAt.toIso8601String()}),
+  );
+
+  @override
+  Future<void> clear() => oltSecureStorage.delete('guest_support');
+}
+
+CommunityGuestSupportClient.anonymous(supabaseUrl: ..., anonKey: ..., sessions: OltGuestSessionStore());
+// atau RendezvousCommunity.initialize(..., guestSessionStore: OltGuestSessionStore());
+```
+
+Token adalah kunci akses ke percakapan itu, jadi simpan di penyimpanan aman (Keychain/Keystore), bukan preferensi biasa. Library menghapusnya sendiri saat pengaduan selesai, ditutup, diakhiri, atau kedaluwarsa, dan token yang sudah lewat `expires_at` tidak dipakai lagi.
+
+Perilaku lengkap (validasi, polling, galat) ada di [features.md](features.md#pengaduan-tamu-sebelum-login-server-migrasi-0140); builder `guestForm`, `guestSecurityNote`, dan `guestHeader` di [customization.md](customization.md#pengaduan-tamu).
 
 ## 6. Penanganan error
 

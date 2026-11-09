@@ -18,6 +18,8 @@ String get socialUrl {
   return defaultTargetPlatform == TargetPlatform.android ? 'http://10.0.2.2:8000' : 'http://localhost:8000';
 }
 
+final exampleGuestSupport = CommunityGuestSupportClient.anonymous(supabaseUrl: socialUrl, anonKey: _anonKey);
+
 String? get autoLoginUser => kIsWeb ? Uri.base.queryParameters['user'] : null;
 
 String get dummyOltWsUrl => _dummyOltOverride.isNotEmpty
@@ -73,7 +75,7 @@ class _ExampleAppState extends State<ExampleApp> {
             feed: _customFeed ? customFeedBuilders : const CommunityFeedBuilders(),
             badges: _customFeed ? customBadgeBuilders : const CommunityBadgeBuilders(),
           ),
-          child: child!,
+          child: CommunityGuestSupportScope(dependencies: exampleGuestSupport, child: child!),
         ),
       ),
     );

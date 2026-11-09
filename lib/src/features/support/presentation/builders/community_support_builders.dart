@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:rendezvous_community/src/features/guest_support/presentation/builders/community_guest_support_details.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_list_state_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
@@ -27,6 +28,9 @@ class CommunitySupportBuilders {
     this.intakeField,
     this.surveyReasons,
     this.replySuggestions,
+    this.guestForm,
+    this.guestSecurityNote,
+    this.guestHeader,
   });
 
   final CommunityPartBuilder<CommunityListLoadingDetails>? loading;
@@ -51,6 +55,9 @@ class CommunitySupportBuilders {
   final CommunityPartBuilder<CommunitySupportIntakeFieldDetails>? intakeField;
   final CommunityPartBuilder<CommunitySupportSurveyReasonsDetails>? surveyReasons;
   final CommunityPartBuilder<CommunitySupportReplySuggestionsDetails>? replySuggestions;
+  final CommunityPartBuilder<CommunityGuestFormDetails>? guestForm;
+  final CommunityPartBuilder<CommunityGuestSecurityNoteDetails>? guestSecurityNote;
+  final CommunityPartBuilder<CommunityGuestHeaderDetails>? guestHeader;
 
   static CommunitySupportBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -84,6 +91,9 @@ class CommunitySupportBuilders {
       intakeField: other.intakeField ?? intakeField,
       surveyReasons: other.surveyReasons ?? surveyReasons,
       replySuggestions: other.replySuggestions ?? replySuggestions,
+      guestForm: other.guestForm ?? guestForm,
+      guestSecurityNote: other.guestSecurityNote ?? guestSecurityNote,
+      guestHeader: other.guestHeader ?? guestHeader,
     );
   }
 }

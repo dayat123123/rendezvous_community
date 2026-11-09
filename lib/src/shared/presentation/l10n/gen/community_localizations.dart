@@ -3991,6 +3991,234 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Survei baru saja diperbarui. Tutup dialog lalu beri nilai lagi.'**
   String get errorSurveyChanged;
+
+  /// No description provided for @guestSupportEntry.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak bisa masuk? Hubungi CS'**
+  String get guestSupportEntry;
+
+  /// No description provided for @guestSupportTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Hubungi CS'**
+  String get guestSupportTitle;
+
+  /// No description provided for @guestSupportFormTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak bisa masuk ke akun?'**
+  String get guestSupportFormTitle;
+
+  /// No description provided for @guestSupportFormHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Ceritakan masalahnya tanpa perlu login. CS membalas di halaman ini.'**
+  String get guestSupportFormHint;
+
+  /// No description provided for @guestSupportSecurityTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Jaga keamanan akun Anda'**
+  String get guestSupportSecurityTitle;
+
+  /// No description provided for @guestSupportSecurityNote.
+  ///
+  /// In id, this message translates to:
+  /// **'CS tidak pernah meminta password, PIN, atau OTP. Reset password/PIN hanya dikirim ke email yang terdaftar di akun Anda.'**
+  String get guestSupportSecurityNote;
+
+  /// No description provided for @guestSupportName.
+  ///
+  /// In id, this message translates to:
+  /// **'Nama lengkap'**
+  String get guestSupportName;
+
+  /// No description provided for @guestSupportLoginId.
+  ///
+  /// In id, this message translates to:
+  /// **'Login ID'**
+  String get guestSupportLoginId;
+
+  /// No description provided for @guestSupportLoginIdHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Huruf besar, misalnya BUDI01'**
+  String get guestSupportLoginIdHint;
+
+  /// No description provided for @guestSupportProblem.
+  ///
+  /// In id, this message translates to:
+  /// **'Masalah yang dialami'**
+  String get guestSupportProblem;
+
+  /// No description provided for @guestSupportDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Ceritakan masalahnya'**
+  String get guestSupportDescription;
+
+  /// No description provided for @guestSupportDescriptionHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Misalnya: lupa PIN setelah ganti HP. Jangan tulis password, PIN, atau OTP.'**
+  String get guestSupportDescriptionHint;
+
+  /// No description provided for @guestSupportSubmit.
+  ///
+  /// In id, this message translates to:
+  /// **'Kirim pengaduan'**
+  String get guestSupportSubmit;
+
+  /// No description provided for @guestSupportNameRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Isi nama Anda.'**
+  String get guestSupportNameRequired;
+
+  /// No description provided for @guestSupportNameLength.
+  ///
+  /// In id, this message translates to:
+  /// **'Nama {min}–{max} karakter.'**
+  String guestSupportNameLength(int min, int max);
+
+  /// No description provided for @guestSupportLoginIdInvalid.
+  ///
+  /// In id, this message translates to:
+  /// **'Login ID hanya boleh huruf A–Z, angka, titik, garis bawah, @, dan tanda hubung (maks. {max} karakter).'**
+  String guestSupportLoginIdInvalid(int max);
+
+  /// No description provided for @guestSupportProblemRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih jenis masalah.'**
+  String get guestSupportProblemRequired;
+
+  /// No description provided for @guestSupportDescriptionRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Ceritakan masalahnya.'**
+  String get guestSupportDescriptionRequired;
+
+  /// No description provided for @guestSupportDescriptionLength.
+  ///
+  /// In id, this message translates to:
+  /// **'Ceritakan masalahnya ({min}–{max} karakter).'**
+  String guestSupportDescriptionLength(int min, int max);
+
+  /// No description provided for @guestSupportTicket.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaduan #{number}'**
+  String guestSupportTicket(String number);
+
+  /// No description provided for @guestSupportEnd.
+  ///
+  /// In id, this message translates to:
+  /// **'Akhiri'**
+  String get guestSupportEnd;
+
+  /// No description provided for @guestSupportEndConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Akhiri pengaduan ini? Percakapan tidak bisa dibuka lagi dari perangkat ini.'**
+  String get guestSupportEndConfirm;
+
+  /// No description provided for @guestSupportReconnecting.
+  ///
+  /// In id, this message translates to:
+  /// **'Koneksi terputus. Mencoba lagi…'**
+  String get guestSupportReconnecting;
+
+  /// No description provided for @guestSupportSessionSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda bisa kembali ke percakapan ini sampai {time}.'**
+  String guestSupportSessionSaved(String time);
+
+  /// No description provided for @guestSupportSessionMemory.
+  ///
+  /// In id, this message translates to:
+  /// **'Biarkan aplikasi tetap terbuka: percakapan ini hilang bila aplikasi ditutup. Sesi berlaku sampai {time}.'**
+  String guestSupportSessionMemory(String time);
+
+  /// No description provided for @guestSupportAttachment.
+  ///
+  /// In id, this message translates to:
+  /// **'Lampiran bisa dibuka setelah Anda masuk ke aplikasi.'**
+  String get guestSupportAttachment;
+
+  /// No description provided for @guestSupportEndedResolved.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaduan #{number} sudah selesai. Bila masih perlu bantuan, buat pengaduan baru.'**
+  String guestSupportEndedResolved(String number);
+
+  /// No description provided for @guestSupportEndedClosed.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaduan #{number} sudah ditutup. Bila masih perlu bantuan, buat pengaduan baru.'**
+  String guestSupportEndedClosed(String number);
+
+  /// No description provided for @guestSupportEndedExpired.
+  ///
+  /// In id, this message translates to:
+  /// **'Sesi pengaduan sudah berakhir. Silakan buat pengaduan baru.'**
+  String get guestSupportEndedExpired;
+
+  /// No description provided for @guestSupportEndedByYou.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda sudah mengakhiri pengaduan #{number}.'**
+  String guestSupportEndedByYou(String number);
+
+  /// No description provided for @guestSupportNew.
+  ///
+  /// In id, this message translates to:
+  /// **'Buat pengaduan baru'**
+  String get guestSupportNew;
+
+  /// No description provided for @guestSupportDisabled.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaduan tanpa login sedang tidak tersedia. Silakan coba lagi nanti atau hubungi kantor cabang.'**
+  String get guestSupportDisabled;
+
+  /// No description provided for @guestErrorRateLimited.
+  ///
+  /// In id, this message translates to:
+  /// **'Terlalu banyak pengaduan dari perangkat ini. Coba lagi nanti.'**
+  String get guestErrorRateLimited;
+
+  /// No description provided for @guestErrorLoginLimit.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaduan untuk Login ID ini sudah banyak hari ini. Coba lagi besok atau hubungi kantor cabang.'**
+  String get guestErrorLoginLimit;
+
+  /// No description provided for @guestErrorMessageRate.
+  ///
+  /// In id, this message translates to:
+  /// **'Terlalu banyak pesan. Tunggu sebentar lalu kirim lagi.'**
+  String get guestErrorMessageRate;
+
+  /// No description provided for @guestErrorTicketNotActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaduan ini sudah selesai. Buat pengaduan baru bila masih perlu bantuan.'**
+  String get guestErrorTicketNotActive;
+
+  /// No description provided for @guestErrorSessionExpired.
+  ///
+  /// In id, this message translates to:
+  /// **'Sesi pengaduan sudah berakhir. Silakan buat pengaduan baru.'**
+  String get guestErrorSessionExpired;
+
+  /// No description provided for @guestErrorInvalidMessage.
+  ///
+  /// In id, this message translates to:
+  /// **'Pesan 1–{max} karakter.'**
+  String guestErrorInvalidMessage(int max);
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

@@ -1,3 +1,18 @@
+## Belum dirilis
+
+Server: butuh migrasi `0140` (pengaduan tamu). Di server lama halaman pengaduan tamu menampilkan "Pengaduan tanpa login sedang tidak tersedia". Tidak ada perubahan antarmuka yang wajib diikuti host; parameter baru bersifat opsional.
+
+* **Pengaduan tamu sebelum login.** Nasabah yang lupa password/PIN atau akunnya terkunci bisa menghubungi CS dari halaman login tanpa sesi dan tanpa OTP: `openCommunityGuestSupport(context)`, `CommunityGuestSupport()` (tanpa `Scaffold`), dan `CommunityGuestSupportPage` (lihat [doc/integration.md](doc/integration.md#pengaduan-tamu-dari-halaman-login)).
+  * Form nama, Login ID opsional (huruf besar), chip jenis masalah dari `cs_api.guest_config`, dan cerita masalah, dengan validasi yang sama dengan `cs_api.guest_start` dan pesan galat yang jelas (`guest_disabled`, `rate_limited`, `guest_login_limit`, `invalid_*`).
+  * Catatan keamanan di form dan di awal percakapan: "CS tidak pernah meminta password, PIN, atau OTP. Reset password/PIN hanya dikirim ke email yang terdaftar di akun Anda."
+  * Chat dengan posisi antrean dan perkiraan waktu tunggu seperti chat CS, pesan CS bertanda resmi, pesan sistem, kolom ketik teks (1–2.000 karakter, kirim ulang bila gagal), dan tombol **Akhiri** (`cs_api.guest_end`). `cs_api.guest_poll` setiap 4 detik selama halaman terlihat, dengan jeda bertahap sampai 60 detik saat gagal.
+  * Tiket selesai/ditutup, sesi kedaluwarsa, atau diakhiri nasabah menampilkan panel akhir dengan tombol **Buat pengaduan baru**.
+  * Semua RPC tamu memakai anon key (skema `cs_api`) lewat jalur anonim yang sama dengan konfigurasi klien; `tokenProvider` dan penukaran token OLT tidak pernah dipanggil. Tanpa `RendezvousCommunity.initialize`, pasang `CommunityGuestSupportScope(dependencies: CommunityGuestSupportClient.anonymous(supabaseUrl: ..., anonKey: ...))`.
+  * Token sesi disimpan di memori (`MemoryGuestSessionStore`) karena cache lokal paket terikat ke akun yang login. Host bisa memasang `CommunityGuestSessionStore` sendiri (misalnya penyimpanan aman) lewat `CommunityGuestSupportClient(sessions:)` atau `RendezvousCommunity.initialize(guestSessionStore:)` agar nasabah bisa kembali sampai sesi berakhir (bawaan 24 jam).
+  * Builder baru di `CommunitySupportBuilders`: `guestForm` (`CommunityGuestFormDetails`), `guestSecurityNote` (`CommunityGuestSecurityNoteDetails`), `guestHeader` (`CommunityGuestHeaderDetails`); panel akhir memakai `closedBar`.
+  * API: `GuestSupportRepository`, `GuestSupportConfig`, `GuestLoginProblem`, `GuestSupportToken`, `GuestSupportSession`, `GuestSupportSnapshot`, `CommunityGuestSupportDependencies`, `CommunityGuestSupportScope`, `CommunityGuestSupportClient`, `CommunityGuestSessionStore`, `MemoryGuestSessionStore`, validasi `validateGuestSupportForm`, `normalizeGuestLoginId`, `isGuestLoginId`, `isGuestMessageValid`, `guestSupportErrorOf` (`GuestSupportError`, `GuestSupportField`, `GuestSupportFieldIssue`), dan `RendezvousCommunity.guestSupport`/`guestSessions`.
+* Aplikasi contoh: tombol **Tidak bisa masuk? Hubungi CS** di halaman login.
+
 ## 1.11.0
 
 Tidak ada perubahan antarmuka repository; cukup naikkan versi.

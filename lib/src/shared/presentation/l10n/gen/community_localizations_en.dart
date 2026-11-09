@@ -2206,4 +2206,142 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorSurveyChanged => 'The survey was just updated. Close the dialog and rate again.';
+
+  @override
+  String get guestSupportEntry => 'Can\'t sign in? Contact support';
+
+  @override
+  String get guestSupportTitle => 'Contact support';
+
+  @override
+  String get guestSupportFormTitle => 'Can\'t sign in to your account?';
+
+  @override
+  String get guestSupportFormHint => 'Tell us what happened, no sign-in needed. Support replies on this page.';
+
+  @override
+  String get guestSupportSecurityTitle => 'Keep your account safe';
+
+  @override
+  String get guestSupportSecurityNote =>
+      'Support never asks for your password, PIN, or OTP. Password/PIN resets are only sent to the email registered on your account.';
+
+  @override
+  String get guestSupportName => 'Full name';
+
+  @override
+  String get guestSupportLoginId => 'Login ID';
+
+  @override
+  String get guestSupportLoginIdHint => 'Uppercase, for example BUDI01';
+
+  @override
+  String get guestSupportProblem => 'What is the problem?';
+
+  @override
+  String get guestSupportDescription => 'Describe the problem';
+
+  @override
+  String get guestSupportDescriptionHint =>
+      'For example: forgot my PIN after changing phones. Do not write your password, PIN, or OTP.';
+
+  @override
+  String get guestSupportSubmit => 'Send complaint';
+
+  @override
+  String get guestSupportNameRequired => 'Enter your name.';
+
+  @override
+  String guestSupportNameLength(int min, int max) {
+    return 'Name must be $min–$max characters.';
+  }
+
+  @override
+  String guestSupportLoginIdInvalid(int max) {
+    return 'Login ID may only contain letters A–Z, digits, dots, underscores, @, and hyphens (max. $max characters).';
+  }
+
+  @override
+  String get guestSupportProblemRequired => 'Choose the type of problem.';
+
+  @override
+  String get guestSupportDescriptionRequired => 'Describe the problem.';
+
+  @override
+  String guestSupportDescriptionLength(int min, int max) {
+    return 'Describe the problem ($min–$max characters).';
+  }
+
+  @override
+  String guestSupportTicket(String number) {
+    return 'Complaint #$number';
+  }
+
+  @override
+  String get guestSupportEnd => 'End';
+
+  @override
+  String get guestSupportEndConfirm => 'End this complaint? The conversation can no longer be opened from this device.';
+
+  @override
+  String get guestSupportReconnecting => 'Connection lost. Retrying…';
+
+  @override
+  String guestSupportSessionSaved(String time) {
+    return 'You can come back to this conversation until $time.';
+  }
+
+  @override
+  String guestSupportSessionMemory(String time) {
+    return 'Keep the app open: this conversation is lost if you close the app. The session is valid until $time.';
+  }
+
+  @override
+  String get guestSupportAttachment => 'Attachments can be opened after you sign in to the app.';
+
+  @override
+  String guestSupportEndedResolved(String number) {
+    return 'Complaint #$number is resolved. If you still need help, start a new complaint.';
+  }
+
+  @override
+  String guestSupportEndedClosed(String number) {
+    return 'Complaint #$number is closed. If you still need help, start a new complaint.';
+  }
+
+  @override
+  String get guestSupportEndedExpired => 'The complaint session has ended. Please start a new complaint.';
+
+  @override
+  String guestSupportEndedByYou(String number) {
+    return 'You ended complaint #$number.';
+  }
+
+  @override
+  String get guestSupportNew => 'New complaint';
+
+  @override
+  String get guestSupportDisabled =>
+      'Complaints without signing in are not available right now. Please try again later or contact a branch office.';
+
+  @override
+  String get guestErrorRateLimited => 'Too many complaints from this device. Please try again later.';
+
+  @override
+  String get guestErrorLoginLimit =>
+      'There have been many complaints for this Login ID today. Try again tomorrow or contact a branch office.';
+
+  @override
+  String get guestErrorMessageRate => 'Too many messages. Wait a moment, then send again.';
+
+  @override
+  String get guestErrorTicketNotActive => 'This complaint is finished. Start a new complaint if you still need help.';
+
+  @override
+  String get guestErrorSessionExpired => 'The complaint session has ended. Please start a new complaint.';
+
+  @override
+  String guestErrorInvalidMessage(int max) {
+    return 'Messages must be 1–$max characters.';
+  }
 }

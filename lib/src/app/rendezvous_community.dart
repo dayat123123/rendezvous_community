@@ -7,6 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/app/community_account_scope.dart';
 import 'package:rendezvous_community/src/app/community_dependencies.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/app/community_guest_support_scope.dart';
 import 'package:rendezvous_community/src/app/community_help_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
@@ -61,6 +62,9 @@ import 'package:rendezvous_community/src/features/feed/data/local/feed_local_cac
 import 'package:rendezvous_community/src/features/feed/data/repositories/feed_repository_impl.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_cache_repository.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
+import 'package:rendezvous_community/src/features/guest_support/data/repositories/guest_support_repository_impl.dart';
+import 'package:rendezvous_community/src/features/guest_support/domain/repositories/guest_session_store.dart';
+import 'package:rendezvous_community/src/features/guest_support/domain/repositories/guest_support_repository.dart';
 import 'package:rendezvous_community/src/features/help/data/repositories/help_repository_impl.dart';
 import 'package:rendezvous_community/src/features/help/domain/repositories/help_repository.dart';
 import 'package:rendezvous_community/src/features/legal/data/repositories/legal_repository_impl.dart';
@@ -120,6 +124,7 @@ class RendezvousCommunity
     implements
         CommunityDependencies,
         CommunitySupportDependencies,
+        CommunityGuestSupportDependencies,
         CommunityHelpDependencies,
         CommunityAccountDependencies,
         CommunityFeatureDependencies,
@@ -140,6 +145,8 @@ class RendezvousCommunity
     required this.media,
     required this.support,
     required this.supportChat,
+    required this.guestSupport,
+    required this.guestSessions,
     required this.help,
     required this._push,
     required this.consent,
@@ -207,6 +214,7 @@ class RendezvousCommunity
     bool offlineCache = true,
     int offlineMessageLimit = 200,
     CommunityImageCacheConfig imageCache = const CommunityImageCacheConfig(),
+    CommunityGuestSessionStore? guestSessionStore,
     http.Client? httpClient,
     CommunityLogHandler? logHandler,
     Level? logLevel,
@@ -234,6 +242,7 @@ class RendezvousCommunity
       offlineCache: offlineCache,
       offlineMessageLimit: offlineMessageLimit,
       imageCache: imageCache,
+      guestSessionStore: guestSessionStore,
       httpClient: httpClient,
     );
     _instance = social;
@@ -267,6 +276,7 @@ class RendezvousCommunity
     OfflineStoreFactory? offlineStores,
     CommunityImageCacheConfig imageCache = const CommunityImageCacheConfig(),
     ImageDiskCache? imageDiskCache,
+    CommunityGuestSessionStore? guestSessionStore,
     http.Client? httpClient,
   }) {
     final baseUrl = supabaseUrl.replaceAll(RegExp(r'/+$'), '');
@@ -361,6 +371,8 @@ class RendezvousCommunity
           ];
         },
       ),
+      guestSupport: GuestSupportRepositoryImpl(cs.anonymousRpcValue),
+      guestSessions: guestSessionStore ?? MemoryGuestSessionStore(),
       help: HelpRepositoryImpl(cs: cs, cache: localValues),
       push: PushRegistrar(PushRepositoryImpl(api), currentUserId: () => tokens.currentSession?.user.id),
       consent: CommunityConsent(LegalRepositoryImpl(api)),
@@ -564,6 +576,10 @@ class RendezvousCommunity
   final SupportRepository support;
   @override
   final ChatRepository supportChat;
+  @override
+  final GuestSupportRepository guestSupport;
+  @override
+  final CommunityGuestSessionStore guestSessions;
   @override
   final HelpRepository help;
   @override

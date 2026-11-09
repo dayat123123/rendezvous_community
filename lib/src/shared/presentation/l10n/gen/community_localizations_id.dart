@@ -2192,4 +2192,142 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorSurveyChanged => 'Survei baru saja diperbarui. Tutup dialog lalu beri nilai lagi.';
+
+  @override
+  String get guestSupportEntry => 'Tidak bisa masuk? Hubungi CS';
+
+  @override
+  String get guestSupportTitle => 'Hubungi CS';
+
+  @override
+  String get guestSupportFormTitle => 'Tidak bisa masuk ke akun?';
+
+  @override
+  String get guestSupportFormHint => 'Ceritakan masalahnya tanpa perlu login. CS membalas di halaman ini.';
+
+  @override
+  String get guestSupportSecurityTitle => 'Jaga keamanan akun Anda';
+
+  @override
+  String get guestSupportSecurityNote =>
+      'CS tidak pernah meminta password, PIN, atau OTP. Reset password/PIN hanya dikirim ke email yang terdaftar di akun Anda.';
+
+  @override
+  String get guestSupportName => 'Nama lengkap';
+
+  @override
+  String get guestSupportLoginId => 'Login ID';
+
+  @override
+  String get guestSupportLoginIdHint => 'Huruf besar, misalnya BUDI01';
+
+  @override
+  String get guestSupportProblem => 'Masalah yang dialami';
+
+  @override
+  String get guestSupportDescription => 'Ceritakan masalahnya';
+
+  @override
+  String get guestSupportDescriptionHint =>
+      'Misalnya: lupa PIN setelah ganti HP. Jangan tulis password, PIN, atau OTP.';
+
+  @override
+  String get guestSupportSubmit => 'Kirim pengaduan';
+
+  @override
+  String get guestSupportNameRequired => 'Isi nama Anda.';
+
+  @override
+  String guestSupportNameLength(int min, int max) {
+    return 'Nama $min–$max karakter.';
+  }
+
+  @override
+  String guestSupportLoginIdInvalid(int max) {
+    return 'Login ID hanya boleh huruf A–Z, angka, titik, garis bawah, @, dan tanda hubung (maks. $max karakter).';
+  }
+
+  @override
+  String get guestSupportProblemRequired => 'Pilih jenis masalah.';
+
+  @override
+  String get guestSupportDescriptionRequired => 'Ceritakan masalahnya.';
+
+  @override
+  String guestSupportDescriptionLength(int min, int max) {
+    return 'Ceritakan masalahnya ($min–$max karakter).';
+  }
+
+  @override
+  String guestSupportTicket(String number) {
+    return 'Pengaduan #$number';
+  }
+
+  @override
+  String get guestSupportEnd => 'Akhiri';
+
+  @override
+  String get guestSupportEndConfirm => 'Akhiri pengaduan ini? Percakapan tidak bisa dibuka lagi dari perangkat ini.';
+
+  @override
+  String get guestSupportReconnecting => 'Koneksi terputus. Mencoba lagi…';
+
+  @override
+  String guestSupportSessionSaved(String time) {
+    return 'Anda bisa kembali ke percakapan ini sampai $time.';
+  }
+
+  @override
+  String guestSupportSessionMemory(String time) {
+    return 'Biarkan aplikasi tetap terbuka: percakapan ini hilang bila aplikasi ditutup. Sesi berlaku sampai $time.';
+  }
+
+  @override
+  String get guestSupportAttachment => 'Lampiran bisa dibuka setelah Anda masuk ke aplikasi.';
+
+  @override
+  String guestSupportEndedResolved(String number) {
+    return 'Pengaduan #$number sudah selesai. Bila masih perlu bantuan, buat pengaduan baru.';
+  }
+
+  @override
+  String guestSupportEndedClosed(String number) {
+    return 'Pengaduan #$number sudah ditutup. Bila masih perlu bantuan, buat pengaduan baru.';
+  }
+
+  @override
+  String get guestSupportEndedExpired => 'Sesi pengaduan sudah berakhir. Silakan buat pengaduan baru.';
+
+  @override
+  String guestSupportEndedByYou(String number) {
+    return 'Anda sudah mengakhiri pengaduan #$number.';
+  }
+
+  @override
+  String get guestSupportNew => 'Buat pengaduan baru';
+
+  @override
+  String get guestSupportDisabled =>
+      'Pengaduan tanpa login sedang tidak tersedia. Silakan coba lagi nanti atau hubungi kantor cabang.';
+
+  @override
+  String get guestErrorRateLimited => 'Terlalu banyak pengaduan dari perangkat ini. Coba lagi nanti.';
+
+  @override
+  String get guestErrorLoginLimit =>
+      'Pengaduan untuk Login ID ini sudah banyak hari ini. Coba lagi besok atau hubungi kantor cabang.';
+
+  @override
+  String get guestErrorMessageRate => 'Terlalu banyak pesan. Tunggu sebentar lalu kirim lagi.';
+
+  @override
+  String get guestErrorTicketNotActive => 'Pengaduan ini sudah selesai. Buat pengaduan baru bila masih perlu bantuan.';
+
+  @override
+  String get guestErrorSessionExpired => 'Sesi pengaduan sudah berakhir. Silakan buat pengaduan baru.';
+
+  @override
+  String guestErrorInvalidMessage(int max) {
+    return 'Pesan 1–$max karakter.';
+  }
 }
