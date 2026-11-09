@@ -1,8 +1,10 @@
-## Belum dirilis
+## 1.9.0
+
+Server: semua fitur baru butuh migrasi sampai `0130`. Library ini tetap jalan di server lama: topik memakai pemetaan bawaan dan saran FAQ di halaman pilih topik dilewati bila RPC belum ada.
 
 * **Pusat Bantuan / FAQ** (server migrasi `0129`, gambar jawaban `0130`): `CommunityHelpCenter` dan
   `openCommunityHelpCenter(context)` menampilkan kategori, pencarian, dan artikel bantuan dua bahasa yang diatur dari
-  Hub (Bantuan / FAQ). Jawaban memakai Markdown terbatas (tebal, miring, daftar, judul, tautan hanya `https`, gambar
+  Hub (**Konten Layanan → Pusat Bantuan**). Jawaban memakai Markdown terbatas (tebal, miring, daftar, judul, tautan hanya `https`, gambar
   hanya dari bucket `faq-images`) lewat `CommunityHelpMarkdown`, tanpa paket tambahan dan tanpa HTML.
   * "Apakah ini membantu?" **Ya**/**Tidak** dengan komentar opsional (maks. 500 huruf); pilihan sebelumnya tampil
     lagi saat artikel dibuka.
