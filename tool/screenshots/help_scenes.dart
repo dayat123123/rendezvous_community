@@ -80,4 +80,24 @@ final helpScenes = <ScreenshotScene>[
     ),
     padding: EdgeInsets.zero,
   ),
+  ScreenshotScene(
+    'support_leave_message',
+    (context) => SizedBox(
+      height: 560,
+      child: BlocProvider<SupportCubit>(
+        create: (_) => _ReadyCubit(
+          SupportState(
+            status: LoadStatus.ready,
+            home: SupportHome(supportName: 'CS OLT', serviceOpen: false, nextOpenAt: DateTime(2026, 11, 10, 8)),
+            topics: _topics,
+            suggestionTopic: 'funds',
+            suggestions: const [depositArticle],
+            leavingMessage: true,
+          ),
+        ),
+        child: const SupportTopicPicker(),
+      ),
+    ),
+    padding: EdgeInsets.zero,
+  ),
 ];

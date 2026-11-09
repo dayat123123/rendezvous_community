@@ -20,26 +20,80 @@ const _nadia = UserSummary(id: 'a-1', username: 'cs_nadia', displayName: 'Nadia'
 
 final _created = DateTime(2026, 11, 4, 9, 12);
 
-SupportTicket _ticket(SupportStatus status, {String number = 'CS-20261104-0007', String topic = 'orders'}) =>
-    SupportTicket(
-      id: 't-$number',
-      ticketNumber: number,
-      roomId: 'r-cs',
-      topic: topic,
-      topicName: switch (topic) {
-        'funds' => 'Deposit/Tarik Dana',
-        'technical' => 'Aplikasi/Teknis',
-        _ => 'Order & Transaksi',
-      },
-      status: status,
-      agent: status == SupportStatus.claimed ? const SupportAgent(displayName: 'Nadia') : null,
-      createdAt: _created,
-      rating: status == SupportStatus.closed ? 5 : null,
-      canRate: status == SupportStatus.resolved,
-    );
+SupportTicket _ticket(
+  SupportStatus status, {
+  String number = 'CS-20261104-0007',
+  String topic = 'orders',
+  int? queueAhead,
+  int? etaMinutes,
+  List<String> quickReplies = const [],
+}) => SupportTicket(
+  id: 't-$number',
+  ticketNumber: number,
+  roomId: 'r-cs',
+  topic: topic,
+  topicName: switch (topic) {
+    'funds' => 'Deposit/Tarik Dana',
+    'technical' => 'Aplikasi/Teknis',
+    _ => 'Order & Transaksi',
+  },
+  status: status,
+  agent: status == SupportStatus.claimed ? const SupportAgent(displayName: 'Nadia') : null,
+  createdAt: _created,
+  rating: status == SupportStatus.closed ? 5 : null,
+  canRate: status == SupportStatus.resolved,
+  queueAhead: queueAhead,
+  etaMinutes: etaMinutes,
+  quickReplies: quickReplies,
+);
+
+const _intake = [
+  SupportIntakeField(key: 'order_no', type: SupportIntakeType.text, label: 'Nomor order', isRequired: true),
+  SupportIntakeField(key: 'trade_date', type: SupportIntakeType.date, label: 'Tanggal transaksi', isRequired: true),
+  SupportIntakeField(key: 'amount', type: SupportIntakeType.number, label: 'Nominal (Rp)'),
+  SupportIntakeField(
+    key: 'side',
+    type: SupportIntakeType.choice,
+    label: 'Jenis order',
+    isRequired: true,
+    options: [
+      SupportIntakeOption(value: 'buy', label: 'Beli'),
+      SupportIntakeOption(value: 'sell', label: 'Jual'),
+    ],
+  ),
+];
+
+const _incidents = [SceneIncidents.critical, SceneIncidents.info];
+
+abstract final class SceneIncidents {
+  static const critical = SupportIncident(
+    id: 'i-1',
+    title: 'Gangguan login aplikasi',
+    body: 'Sebagian nasabah gagal masuk sejak 08.10 WIB. Tim kami sedang menangani.',
+    level: SupportIncidentLevel.critical,
+    faqArticleId: 'a-login',
+  );
+
+  static const info = SupportIncident(
+    id: 'i-2',
+    title: 'Pemeliharaan terjadwal',
+    body: 'Sabtu 01.00–03.00 WIB, transfer dana diproses setelah pemeliharaan.',
+  );
+}
+
+const _survey = SupportSurvey(
+  question: 'Bagaimana layanan CS kami?',
+  scale: 3,
+  reasons: [
+    SupportSurveyReason(code: 'slow', label: 'Terlalu lama'),
+    SupportSurveyReason(code: 'unresolved', label: 'Masalah belum selesai'),
+    SupportSurveyReason(code: 'unclear', label: 'Penjelasan kurang jelas'),
+    SupportSurveyReason(code: 'attitude', label: 'Sikap kurang ramah'),
+  ],
+);
 
 const _topics = [
-  SupportTopic(code: 'orders', name: 'Order & Transaksi'),
+  SupportTopic(code: 'orders', name: 'Order & Transaksi', intake: _intake),
   SupportTopic(code: 'funds', name: 'Deposit/Tarik Dana'),
   SupportTopic(code: 'technical', name: 'Aplikasi/Teknis'),
   SupportTopic(code: 'fraud', name: 'Penipuan & keamanan akun', urgent: true),
@@ -66,7 +120,13 @@ class _ReadyCubit extends SupportCubit {
   }
 }
 
-SupportState _state(SupportTicket? ticket, {bool sensitive = false, bool serviceOpen = true}) => SupportState(
+SupportState _state(
+  SupportTicket? ticket, {
+  bool sensitive = false,
+  bool serviceOpen = true,
+  List<SupportIncident> incidents = const [],
+  String? intakeTopic,
+}) => SupportState(
   status: LoadStatus.ready,
   home: SupportHome(
     roomId: 'r-cs',
@@ -75,10 +135,34 @@ SupportState _state(SupportTicket? ticket, {bool sensitive = false, bool service
     active: ticket?.isActive ?? false,
     serviceOpen: serviceOpen,
     nextOpenAt: serviceOpen ? null : DateTime(2026, 11, 5, 8),
+    incidents: incidents,
   ),
   topics: _topics,
   sensitive: sensitive ? const SensitiveCheck(masked: true, kinds: ['otp']) : const SensitiveCheck(),
+  picking: intakeTopic != null,
+  intakeTopic: intakeTopic,
 );
+
+class _TopicPanel extends StatelessWidget {
+  const _TopicPanel({required this.state, required this.height});
+
+  final SupportState state;
+  final double height;
+
+  @override
+  Widget build(BuildContext context) => SizedBox(
+    height: height,
+    child: BlocProvider<SupportCubit>(
+      create: (_) => _ReadyCubit(state),
+      child: const Column(
+        children: [
+          SupportHeader(onClose: _noop),
+          Expanded(child: SupportTopicPicker()),
+        ],
+      ),
+    ),
+  );
+}
 
 ChatMessage _message(
   String id,
@@ -533,6 +617,40 @@ final supportScenes = <ScreenshotScene>[
     padding: EdgeInsets.zero,
   ),
   ScreenshotScene('support_rating', (context) => const SupportRatingDialog()),
+  ScreenshotScene(
+    'support_survey_reasons',
+    (context) => const SupportRatingDialog(survey: _survey, initialRating: 1, initialReasons: {'slow'}),
+  ),
+  ScreenshotScene(
+    'support_incident',
+    (context) => _TopicPanel(state: _state(null, incidents: _incidents), height: 720),
+    padding: EdgeInsets.zero,
+  ),
+  ScreenshotScene(
+    'support_intake',
+    (context) => _TopicPanel(state: _state(null, intakeTopic: 'orders'), height: 760),
+    padding: EdgeInsets.zero,
+  ),
+  ScreenshotScene(
+    'support_queue_eta',
+    (context) => _SupportPanel(
+      state: _state(_ticket(SupportStatus.open, queueAhead: 3, etaMinutes: 12)),
+      messages: _activeMessages().take(2).toList(),
+      height: 420,
+    ),
+    padding: EdgeInsets.zero,
+  ),
+  ScreenshotScene(
+    'support_quick_replies',
+    (context) => _SupportPanel(
+      state: _state(
+        _ticket(SupportStatus.claimed, quickReplies: const ['Sudah saya coba', 'Belum bisa', 'Terima kasih']),
+      ),
+      messages: _activeMessages().take(4).toList(),
+      height: 640,
+    ),
+    padding: EdgeInsets.zero,
+  ),
   ScreenshotScene('support_tickets', (context) {
     final chat = FakeChatRepository();
     return SizedBox(
