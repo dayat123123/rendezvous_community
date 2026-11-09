@@ -10,6 +10,7 @@ class CommunityChatBuilders {
     this.typingIndicator,
     this.connectionBanner,
     this.dayDivider,
+    this.floatingDate,
     this.roomTile,
     this.listHeader,
     this.loading,
@@ -44,6 +45,7 @@ class CommunityChatBuilders {
   final CommunityPartBuilder<CommunityTypingDetails>? typingIndicator;
   final CommunityPartBuilder<CommunityConnectionDetails>? connectionBanner;
   final CommunityPartBuilder<CommunityDayDetails>? dayDivider;
+  final CommunityPartBuilder<CommunityDayDetails>? floatingDate;
   final CommunityPartBuilder<CommunityRoomTileDetails>? roomTile;
   final CommunityPartBuilder<CommunityChatListHeaderDetails>? listHeader;
   final CommunityPartBuilder<CommunityLoadingDetails>? loading;
@@ -87,6 +89,7 @@ class CommunityChatBuilders {
       typingIndicator: other.typingIndicator ?? typingIndicator,
       connectionBanner: other.connectionBanner ?? connectionBanner,
       dayDivider: other.dayDivider ?? dayDivider,
+      floatingDate: other.floatingDate ?? floatingDate,
       roomTile: other.roomTile ?? roomTile,
       listHeader: other.listHeader ?? listHeader,
       loading: other.loading ?? loading,

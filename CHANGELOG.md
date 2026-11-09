@@ -1,5 +1,11 @@
 ## Belum dirilis
 
+* **Tanggal mengambang saat menggulir chat** ala WhatsApp: saat daftar pesan digulir ke pesan lama, label hari pesan
+  teratas yang terlihat ("Hari ini", "Kemarin", nama hari, atau tanggal) menempel di tengah atas daftar, lalu memudar
+  sendiri 1,5 detik setelah guliran berhenti (muncul 150 ms, hilang 300 ms). Tidak muncul di posisi pesan terbaru dan
+  disembunyikan saat pemisah tanggal asli sedang tepat di atas. Slot builder `CommunityChatBuilders.floatingDate`
+  (`CommunityDayDetails`, sama dengan `dayDivider`).
+
 * **Topik chat CS sepenuhnya dari server** (server migrasi `0127`): deskripsi, ikon, dan gaya setiap topik, serta judul
   dan petunjuk halaman pilih topik, diatur dari Hub (Konten Layanan → Topik chat CS). Tampilan bawaan menampilkan
   deskripsi di bawah nama, ikon dari server, dan nama merah untuk gaya `danger`. Host tidak perlu lagi menulis

@@ -23,6 +23,19 @@ class MessageAnchors {
     return item != null && item.mounted ? item.context : null;
   }
 
+  (int, double)? topmost(RenderBox viewport) {
+    (int, double)? best;
+    for (final item in _items.values) {
+      if (!item.mounted) continue;
+      final box = item.context.findRenderObject();
+      if (box is! RenderBox || !box.attached || !box.hasSize) continue;
+      final top = box.localToGlobal(Offset.zero, ancestor: viewport).dy;
+      if (top + box.size.height <= 0 || top >= viewport.size.height) continue;
+      if (best == null || top < best.$2) best = (item.widget.index, top);
+    }
+    return best;
+  }
+
   (int, int)? get builtRange {
     int? low;
     int? high;

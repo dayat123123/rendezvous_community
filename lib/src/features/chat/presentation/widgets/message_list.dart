@@ -29,6 +29,11 @@ class _MessageListState extends State<MessageList> {
   final _highlight = ValueNotifier<String?>(null);
   final _away = ValueNotifier<bool>(false);
   final _unseen = ValueNotifier<int>(0);
+  final _listKey = GlobalKey();
+  final _floatingDay = ValueNotifier<DateTime?>(null);
+  final _floatingShown = ValueNotifier<bool>(false);
+  Timer? _floatingTimer;
+  bool _floatingPending = false;
   Timer? _highlightTimer;
 
   @override
@@ -46,6 +51,34 @@ class _MessageListState extends State<MessageList> {
     if (away && !_away.value) _lastSeenTop = context.read<ChatRoomCubit>().state.messages.firstOrNull?.id;
     _away.value = away;
     if (!away) _unseen.value = 0;
+    if (!_floatingPending) {
+      _floatingPending = true;
+      WidgetsBinding.instance.addPostFrameCallback((_) => _updateFloatingDate());
+    }
+  }
+
+  void _updateFloatingDate() {
+    _floatingPending = false;
+    if (!mounted || !_scroll.hasClients) return;
+    final position = _scroll.position;
+    final viewport = _listKey.currentContext?.findRenderObject();
+    final top = viewport is RenderBox && viewport.hasSize ? _anchors.topmost(viewport) : null;
+    final messages = context.read<ChatRoomCubit>().state.messages;
+    if (position.pixels - position.minScrollExtent < 24 || top == null || top.$1 >= messages.length) {
+      _floatingTimer?.cancel();
+      _floatingShown.value = false;
+      return;
+    }
+    final index = top.$1;
+    final message = messages[index];
+    final older = index + 1 < messages.length ? messages[index + 1] : null;
+    final dividerShowing = (older == null || !_sameDay(older.createdAt, message.createdAt)) && top.$2 < 56;
+    _floatingDay.value = message.createdAt;
+    _floatingShown.value = !dividerShowing;
+    _floatingTimer?.cancel();
+    _floatingTimer = Timer(_floatingHold, () {
+      if (mounted) _floatingShown.value = false;
+    });
   }
 
   bool _arrivedWhileAway(ChatRoomState before, ChatRoomState after) {
@@ -97,6 +130,9 @@ class _MessageListState extends State<MessageList> {
     _highlight.dispose();
     _away.dispose();
     _unseen.dispose();
+    _floatingTimer?.cancel();
+    _floatingDay.dispose();
+    _floatingShown.dispose();
     _scroll.dispose();
     super.dispose();
   }
@@ -220,7 +256,43 @@ class _MessageListState extends State<MessageList> {
             highlighted: _highlight,
             child: Stack(
               children: [
-                Positioned.fill(child: _list(context, state, builders, l10n, spacing)),
+                Positioned.fill(
+                  child: KeyedSubtree(key: _listKey, child: _list(context, state, builders, l10n, spacing)),
+                ),
+                Positioned(
+                  top: spacing.sm,
+                  left: 0,
+                  right: 0,
+                  child: IgnorePointer(
+                    child: ExcludeSemantics(
+                      child: Center(
+                        child: ValueListenableBuilder<bool>(
+                          valueListenable: _floatingShown,
+                          builder: (context, shown, _) => AnimatedOpacity(
+                            key: const ValueKey('community-floating-date-fade'),
+                            opacity: shown ? 1 : 0,
+                            duration: Duration(milliseconds: shown ? 150 : 300),
+                            curve: Curves.easeOut,
+                            child: ValueListenableBuilder<DateTime?>(
+                              valueListenable: _floatingDay,
+                              builder: (context, day, _) => KeyedSubtree(
+                                key: const ValueKey('community-floating-date'),
+                                child: day == null
+                                    ? const SizedBox.shrink()
+                                    : buildChatPart(
+                                        builders.floatingDate,
+                                        context,
+                                        CommunityDayDetails(day: day, label: l10n.dayLabel(day)),
+                                        _FloatingDate(label: l10n.dayLabel(day)),
+                                      ),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
                 Positioned(
                   right: spacing.md,
                   bottom: spacing.md,
@@ -400,6 +472,31 @@ bool _sameDay(DateTime a, DateTime b) {
   final x = a.toLocal();
   final y = b.toLocal();
   return x.year == y.year && x.month == y.month && x.day == y.day;
+}
+
+const _floatingHold = Duration(milliseconds: 1500);
+
+class _FloatingDate extends StatelessWidget {
+  const _FloatingDate({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: style.chip,
+        borderRadius: style.radii.pillRadius,
+        boxShadow: const [BoxShadow(color: Color(0x1F000000), blurRadius: 6, offset: Offset(0, 1))],
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.xs),
+        child: Text(label, style: style.typography.label.copyWith(fontSize: 12, color: style.textSecondary)),
+      ),
+    );
+  }
 }
 
 class _DayDivider extends StatelessWidget {

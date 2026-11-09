@@ -159,6 +159,7 @@ Builder juga bisa dipasang per widget: `CommunityChatList(builders: ...)` atau `
 | `typingIndicator` | `CommunityTypingDetails` | `users`, `text`, `count` (jumlah yang mengetik dari ringkasan room besar; `users` kosong) — dipanggil hanya saat ada yang mengetik |
 | `connectionBanner` | `CommunityConnectionDetails` | `status`, `label` (dipanggil hanya saat menyambung ulang) |
 | `dayDivider` | `CommunityDayDetails` | `day`, `label` |
+| `floatingDate` | `CommunityDayDetails` | `day`, `label`; pil tanggal yang menempel di atas daftar saat menggulir pesan lama (muncul dan memudar diatur library) |
 | `roomTile` | `CommunityRoomTileDetails` | `room`, `title`, `preview`, `typingText`, `timeLabel`, `online`, `selected`, `lastMessageReceipt`; `onTap` |
 | `listHeader` | `CommunityChatListHeaderDetails` | `title`; `onNewGroup`, `onRefresh` |
 | `loading` | `CommunityLoadingDetails` | `kind`: `rooms`, `moreRooms`, `messages`, `olderMessages` |
