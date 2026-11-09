@@ -82,6 +82,26 @@ void main() {
     expect((object.size, object.width, object.height), (3, 2, 1));
   });
 
+  test('a processed video reply carries its duration, size, and thumbnail', () async {
+    final client = gateway(
+      (_) async => _json(200, {
+        'bucket': 'cs-videos',
+        'path': 'rooms/r-1/u-1/v.mp4',
+        'mime': 'video/mp4',
+        'size': 1200,
+        'width': 1280,
+        'height': 720,
+        'duration': 42.5,
+        'thumbnail': 'rooms/r-1/u-1/v.jpg',
+      }),
+    );
+
+    final object = await client.upload('cs-videos', 'rooms/r-1/u-1/v.mp4', Uint8List(4), contentType: 'video/mp4');
+
+    expect((object.duration, object.thumbnail), (42.5, 'rooms/r-1/u-1/v.jpg'));
+    expect((object.width, object.height), (1280, 720));
+  });
+
   test('sends x-upsert only when asked to overwrite', () async {
     final client = gateway(
       (request) async => _json(200, {'bucket': 'avatars', 'path': request.url.pathSegments.last, 'mime': 'image/png'}),

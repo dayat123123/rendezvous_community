@@ -157,8 +157,14 @@ export 'src/features/link_preview/domain/entities/link_preview.dart';
 export 'src/features/link_preview/domain/repositories/link_preview_repository.dart';
 export 'src/features/link_preview/domain/services/link_preview_loader.dart';
 export 'src/features/link_preview/presentation/widgets/link_preview_card.dart';
+export 'src/features/media/domain/entities/attachment_policy.dart';
+export 'src/features/media/domain/entities/document_type.dart';
 export 'src/features/media/domain/repositories/media_repository.dart';
+export 'src/features/media/presentation/file_opener.dart'
+    show CommunityFileOpener, DocumentOpener, communityOpensDownloadedFiles, communityVideoPlaysInApp;
 export 'src/features/media/presentation/widgets/attachment_grid.dart';
+export 'src/features/media/presentation/widgets/video_player_page.dart'
+    show CommunityVideoControllerFactory, CommunityVideoPlayerPage, showCommunityVideoPlayer;
 export 'src/features/message_requests/domain/entities/message_request.dart';
 export 'src/features/message_requests/domain/repositories/message_request_repository.dart';
 export 'src/features/message_requests/presentation/widgets/community_dm_policy_settings.dart';

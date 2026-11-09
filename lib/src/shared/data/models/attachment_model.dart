@@ -34,6 +34,8 @@ abstract class AttachmentModel with _$AttachmentModel {
     @JsonKey(includeIfNull: false) int? size,
     int? width,
     int? height,
+    @JsonKey(includeIfNull: false) double? duration,
+    @JsonKey(includeIfNull: false) String? thumbnail,
   }) = _AttachmentModel;
 
   const AttachmentModel._();
@@ -48,8 +50,19 @@ abstract class AttachmentModel with _$AttachmentModel {
     size: a.size,
     width: a.width,
     height: a.height,
+    duration: a.duration,
+    thumbnail: a.thumbnail,
   );
 
-  Attachment toEntity() =>
-      Attachment(path: path, bucket: bucket, mime: mime, name: name, size: size, width: width, height: height);
+  Attachment toEntity() => Attachment(
+    path: path,
+    bucket: bucket,
+    mime: mime,
+    name: name,
+    size: size,
+    width: width,
+    height: height,
+    duration: duration,
+    thumbnail: thumbnail,
+  );
 }

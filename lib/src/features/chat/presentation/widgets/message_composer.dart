@@ -5,21 +5,31 @@ import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/core/media/clipboard_image.dart';
-import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/core/media/pasted_image.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/outgoing_file.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/attachment_picker.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/stock_cards.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/document_type.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_composer_field.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
+
+typedef CommunityFilesPicker =
+    Future<List<XFile>> Function({
+      List<XTypeGroup> acceptedTypeGroups,
+      String? initialDirectory,
+      String? confirmButtonText,
+    });
 
 const _controlSize = 48.0;
 const _maxFiles = 4;
@@ -32,12 +42,19 @@ class MessageComposer extends StatefulWidget {
     this.leading = const [],
     this.allowDocuments = false,
     this.clipboardImage = readClipboardImage,
+    this.attachmentPolicy,
+    this.openFilesPicker = openFiles,
   });
 
   final ValueChanged<String>? onChanged;
   final List<Widget> leading;
   final bool allowDocuments;
   final ClipboardImageReader clipboardImage;
+  final CommunityAttachmentPolicy? attachmentPolicy;
+  final CommunityFilesPicker openFilesPicker;
+
+  CommunityAttachmentPolicy get policy =>
+      allowDocuments ? attachmentPolicy ?? CommunityAttachmentPolicy.legacy : CommunityAttachmentPolicy.imagesOnly;
 
   @override
   State<MessageComposer> createState() => _MessageComposerState();
@@ -117,36 +134,18 @@ class _MessageComposerState extends State<MessageComposer> {
   }
 
   Future<void> _pickImage() async {
-    const images = XTypeGroup(label: 'images', extensions: ['jpg', 'jpeg', 'png', 'webp', 'gif']);
-    const pdf = XTypeGroup(
-      label: 'PDF',
-      extensions: ['pdf'],
-      mimeTypes: [pdfMimeType],
-      uniformTypeIdentifiers: ['com.adobe.pdf'],
-    );
-    final picked = await openFiles(acceptedTypeGroups: widget.allowDocuments ? const [images, pdf] : const [images]);
-    if (picked.isEmpty || !mounted) return;
     final l10n = context.communityL10n;
-    final files = <ChatOutgoingFile>[];
-    for (final file in picked.take(_maxFiles + 1)) {
-      final document = widget.allowDocuments && isPdfFile(file.name, file.mimeType);
-      if (document && await file.length() > maxSupportDocumentBytes) {
-        if (mounted) showCommunityMessage(context, l10n.documentTooLarge);
-        continue;
-      }
-      final bytes = await file.readAsBytes();
-      if (document) {
-        files.add(ChatOutgoingFile(bytes: bytes, mimeType: pdfMimeType, name: file.name, document: true));
-        continue;
-      }
-      final image = await preparePastedImage(bytes);
-      if (image == null) {
-        if (mounted) showCommunityMessage(context, l10n.imageTooLarge);
-        continue;
-      }
-      files.add(ChatOutgoingFile(bytes: image.bytes, mimeType: image.mimeType, name: file.name));
+    final policy = widget.policy;
+    final groups = attachmentTypeGroups(policy, l10n);
+    if (groups.isEmpty) return;
+    final picked = await widget.openFilesPicker(acceptedTypeGroups: groups);
+    if (picked.isEmpty || !mounted) return;
+    final result = await prepareAttachments(picked.take(_maxFiles + 1).toList(), policy, l10n);
+    if (!mounted) return;
+    for (final error in result.errors) {
+      showCommunityMessage(context, error);
     }
-    _addFiles(files);
+    _addFiles(result.files);
   }
 
   Future<bool> _pasteImage() async {
@@ -170,6 +169,13 @@ class _MessageComposerState extends State<MessageComposer> {
     final cubit = context.read<ChatRoomCubit>();
     final codes = await showStockCardPicker(context);
     if (codes != null && codes.isNotEmpty) await cubit.sendStockCards(codes);
+  }
+
+  String _attachLabel(CommunityLocalizations l10n) {
+    final policy = widget.policy;
+    if (!widget.allowDocuments) return l10n.composeAddImage;
+    if (policy.videos.usable || !policy.onlyPdfDocuments) return l10n.composeAttachFiles;
+    return l10n.composeAddImageOrPdf;
   }
 
   @override
@@ -206,6 +212,9 @@ class _MessageComposerState extends State<MessageComposer> {
           onCancelReply: replyTo == null ? null : () => context.read<ChatRoomCubit>().setReplyTo(null),
           onPickImage: state.uploading ? null : _pickImage,
           allowsDocuments: widget.allowDocuments,
+          attachmentPolicy: widget.policy,
+          attachLabel: _attachLabel(l10n),
+          uploadingLabel: state.uploading ? l10n.attachmentChecking : null,
           extraActions: widget.leading,
           cooldown: cooldown,
           onSendStockCard: context.read<ChatRoomCubit>().canSendStockCards ? _pickStockCards : null,
@@ -273,6 +282,11 @@ class _DefaultComposer extends StatelessWidget {
                             onCancel: d.onCancelReply,
                           ),
                         ),
+                      if (d.uploadingLabel != null)
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(spacing.md, spacing.sm, spacing.md, 0),
+                          child: _CheckingLabel(label: d.uploadingLabel!),
+                        ),
                       if (d.files.isNotEmpty)
                         Padding(
                           padding: EdgeInsets.fromLTRB(spacing.md, spacing.sm + spacing.xxs, spacing.md, 0),
@@ -284,7 +298,9 @@ class _DefaultComposer extends StatelessWidget {
                           SizedBox.square(
                             dimension: _controlSize,
                             child: IconButton(
-                              tooltip: d.allowsDocuments ? l10n.composeAddImageOrPdf : l10n.composeAddImage,
+                              tooltip:
+                                  d.attachLabel ??
+                                  (d.allowsDocuments ? l10n.composeAddImageOrPdf : l10n.composeAddImage),
                               color: style.textSecondary,
                               onPressed: d.onPickImage,
                               icon: d.uploading
@@ -406,6 +422,34 @@ class _PendingFiles extends StatelessWidget {
   }
 }
 
+IconData _pendingIcon(ChatOutgoingFile file) {
+  if (file.video) return Icons.videocam_outlined;
+  return documentTypeIcon(documentTypeOf(Attachment(path: file.name ?? '', mime: file.mimeType, name: file.name)));
+}
+
+class _CheckingLabel extends StatelessWidget {
+  const _CheckingLabel({required this.label});
+
+  final String label;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    return Semantics(
+      liveRegion: true,
+      child: Row(
+        children: [
+          SizedBox.square(dimension: 14, child: CircularProgressIndicator(strokeWidth: 2, color: style.accent)),
+          SizedBox(width: style.spacing.sm),
+          Flexible(
+            child: Text(label, style: style.typography.meta.copyWith(color: style.textSecondary)),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
 class _PendingFile extends StatelessWidget {
   const _PendingFile({required this.file, this.onRemove});
 
@@ -419,7 +463,7 @@ class _PendingFile extends StatelessWidget {
     final spacing = style.spacing;
     final radius = BorderRadius.circular(spacing.sm);
     final dpr = MediaQuery.devicePixelRatioOf(context);
-    final Widget body = file.document
+    final Widget body = file.kind != CommunityAttachmentKind.image
         ? Container(
             height: _thumbSize,
             width: 176,
@@ -431,7 +475,7 @@ class _PendingFile extends StatelessWidget {
             ),
             child: Row(
               children: [
-                Icon(Icons.description_outlined, size: 20, color: style.textSecondary),
+                Icon(_pendingIcon(file), size: 20, color: style.textSecondary),
                 SizedBox(width: spacing.sm),
                 Expanded(
                   child: Column(
@@ -439,7 +483,7 @@ class _PendingFile extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        file.name ?? 'PDF',
+                        file.name ?? (file.video ? l10n.video : l10n.documentTypeOther),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: style.typography.label.copyWith(color: style.textPrimary),
@@ -511,13 +555,16 @@ class _ReplyPreview extends StatelessWidget {
     final t = CommunityTheme.of(context);
     final background = Color.alphaBlend(style.textPrimary.withValues(alpha: 0.06), style.pill);
     final color = chatSenderColor(message.senderId ?? '', background, fallback: t.link);
-    final image = message.attachments.any((a) => !a.isDocument);
+    final image = message.attachments.any((a) => a.isImage);
+    final video = message.attachments.any((a) => a.isVideo);
     final document = message.attachments.where((a) => a.isDocument).firstOrNull;
     final text = message.body?.trim() ?? '';
     final summary = text.isNotEmpty
         ? text
         : image
         ? l10n.photo
+        : video
+        ? l10n.video
         : document?.name ?? l10n.attachment;
     return ClipRRect(
       borderRadius: style.radii.controlRadius,
@@ -544,9 +591,13 @@ class _ReplyPreview extends StatelessWidget {
                       SizedBox(height: spacing.xxs),
                       Row(
                         children: [
-                          if (image || document != null) ...[
+                          if (image || video || document != null) ...[
                             Icon(
-                              image ? Icons.photo_camera_outlined : Icons.description_outlined,
+                              image
+                                  ? Icons.photo_camera_outlined
+                                  : video
+                                  ? Icons.videocam_outlined
+                                  : Icons.description_outlined,
                               size: 15,
                               color: style.textSecondary,
                             ),

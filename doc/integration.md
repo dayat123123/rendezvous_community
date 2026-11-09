@@ -52,12 +52,19 @@ Yang dibandingkan adalah versi **app OLT** (`appVersion`), bukan versi package. 
   ```
 
 - Produksi memakai HTTPS. Bila staging masih HTTP, izinkan cleartext **hanya** di `src/debug/AndroidManifest.xml`. Contohnya ada di [`example/android`](../example/android).
-- Pemilihan gambar memakai `file_selector`, yang membuka pemilih dokumen sistem; tidak perlu izin storage.
+- Pemilihan gambar, dokumen, dan video memakai `file_selector`, yang membuka pemilih dokumen sistem; **tidak perlu izin storage atau `READ_MEDIA_*`**.
+- Video chat CS diputar dengan `video_player` (ExoPlayer) dari signed URL HTTPS; cukup izin `INTERNET`. Dokumen dibuka dengan meneruskan signed URL ke aplikasi atau browser sistem lewat `url_launcher`, jadi tidak perlu `FileProvider` (tidak ada `file://` yang dibagikan ke aplikasi lain).
 - Bila memakai notifikasi lokal untuk balasan CS (`flutter_local_notifications`):
   - tambahkan izin `android.permission.POST_NOTIFICATIONS` (Android 13+);
   - aktifkan core library desugaring di `android/app/build.gradle.kts`: `isCoreLibraryDesugaringEnabled = true` dan `coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")`.
 
-**Windows:** tidak ada konfigurasi tambahan.
+**iOS:** tidak ada kunci `Info.plist` baru. `file_selector` memakai pemilih dokumen sistem (Files), `video_player` (AVPlayer) memutar signed URL HTTPS. Bila server staging masih HTTP, izinkan lewat `NSAppTransportSecurity` hanya di build debug. Foto HEIC dari Files diubah ke JPEG di perangkat bila dekoder sistem tersedia; bila tidak, nasabah diminta menyimpan foto sebagai JPEG.
+
+**macOS:** aktifkan `com.apple.security.network.client` (sudah wajib untuk Supabase) dan `com.apple.security.files.user-selected.read-only` untuk pemilih file. Video diputar di aplikasi (`video_player`); dokumen diunduh ke folder sementara lalu dibuka aplikasi bawaan.
+
+**Windows:** tidak ada konfigurasi tambahan. `video_player` belum mendukung Windows, jadi video chat CS diunduh ke folder sementara lalu dibuka di pemutar bawaan Windows; dokumen juga diunduh lalu dibuka aplikasi bawaan (Word, Excel, dan sebagainya). Paket berat seperti `media_kit` sengaja tidak dipakai.
+
+**Web:** video diputar dengan elemen `<video>` browser (`video_player_web`); MOV hanya jalan di browser yang mendukungnya (Safari). Dokumen dibuka di tab baru.
 
 ## 3. Inisialisasi setelah login OLT
 
@@ -291,6 +298,6 @@ Bungkus widget sosial dengan `CommunityScope` dan berikan implementasi palsu `Co
 | Log auth-bridge: `token lifetime exceeds the limit` / `token expired` | OLT menerbitkan token lebih dari `OLT_JWT_MAX_TTL` (15 menit), atau jam server OLT/sosial selisih lebih dari 30 detik (cek NTP) |
 | Log auth-bridge: `audience` / `issuer` | Klaim `aud` harus memuat `olt-social` dan `iss` harus `olt` (atau sesuai `OLT_JWT_AUDIENCE` / `OLT_JWT_ISSUER`) |
 | Realtime tidak masuk | Pastikan port 443/8000 meneruskan WebSocket (Traefik sudah). Cek `docker compose logs realtime` |
-| Upload foto gagal "Jenis file tidak didukung" | Server memeriksa isi file, bukan ekstensinya. HEIC dari iPhone belum didukung; konversi ke JPEG di sisi OLT (mis. `image_picker` dengan `imageQuality`) |
+| Upload foto gagal "Jenis file tidak didukung" | Server memeriksa isi file, bukan ekstensinya. Foto HEIC diubah library ke JPEG di perangkat (Android 9+, iOS/macOS, Safari); di Windows/Linux nasabah perlu menyimpan foto sebagai JPEG dulu |
 | "Upload belum tersedia" | Server belum menjalankan layanan `media` (`/media/v1` 404). Update server ke versi yang memuat `services/media` |
 | "Terlalu cepat" | Rate limit server (post 5/menit, komentar 20/menit, pesan 30/menit). Ubah lewat `private.rate_limits` |

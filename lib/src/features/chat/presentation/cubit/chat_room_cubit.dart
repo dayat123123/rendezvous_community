@@ -8,6 +8,7 @@ import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/error/error_mapper.dart';
 import 'package:rendezvous_community/src/core/logging/community_logger.dart';
+import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/core/network/community_connectivity.dart';
 import 'package:rendezvous_community/src/core/network/realtime_status.dart';
 import 'package:rendezvous_community/src/core/paging/paged.dart';
@@ -33,6 +34,7 @@ import 'package:rendezvous_community/src/features/chat/domain/services/message_g
 import 'package:rendezvous_community/src/features/chat/domain/services/message_outbox.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/gap_fill_schedule.dart';
 import 'package:rendezvous_community/src/features/legal/domain/services/consent_gate.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
 import 'package:rendezvous_community/src/features/media/domain/repositories/media_repository.dart';
 import 'package:rendezvous_community/src/features/message_requests/domain/entities/message_request.dart';
 import 'package:rendezvous_community/src/features/message_requests/domain/repositories/message_request_repository.dart';
@@ -974,11 +976,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     try {
       final uploaded = <Attachment>[];
       for (final file in files) {
-        uploaded.add(
-          file.document
-              ? await _media.uploadSupportDocument(roomId, file.bytes, name: file.name ?? 'dokumen.pdf')
-              : await _media.uploadChatImage(roomId, file.bytes, mimeType: file.mimeType),
-        );
+        uploaded.add(await _uploadFile(file));
       }
       if (!isClosed) emit(state.copyWith(uploading: false));
       await send(text, attachments: uploaded);
@@ -989,6 +987,24 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
       _fail(mapped.kind == CommunityErrorKind.network && _outbox != null ? attachmentOfflineError : e);
       return false;
     }
+  }
+
+  Future<Attachment> _uploadFile(ChatOutgoingFile file) {
+    if (file.kind == CommunityAttachmentKind.image) {
+      return _media.uploadChatImage(roomId, file.bytes, mimeType: file.mimeType);
+    }
+    if (file.document && file.mimeType == pdfMimeType) {
+      return _media.uploadSupportDocument(roomId, file.bytes, name: file.name ?? 'dokumen.pdf');
+    }
+    final name = file.name ?? '';
+    final ext = name.contains('.') ? name.substring(name.lastIndexOf('.') + 1).toLowerCase() : '';
+    return _media.uploadSupportFile(
+      roomId,
+      file.bytes,
+      name: name.isEmpty ? 'file' : name,
+      kind: file.kind,
+      format: file.format ?? CommunityAttachmentFormat(code: ext, mime: file.mimeType, extension: ext),
+    );
   }
 
   Future<void> _sendAttachment(Future<Attachment> Function() upload) async {

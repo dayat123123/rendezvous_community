@@ -329,7 +329,7 @@ abstract class CommunityLocalizations {
   /// No description provided for @errorAttachmentNotAllowed.
   ///
   /// In id, this message translates to:
-  /// **'Lampiran ini tidak didukung. Chat CS menerima gambar dan PDF; chat lain hanya gambar.'**
+  /// **'Format lampiran ini tidak diterima di chat ini. Chat CS menerima format sesuai daftar dari server; chat lain hanya gambar.'**
   String get errorAttachmentNotAllowed;
 
   /// No description provided for @composeRemoveImage.
@@ -1415,13 +1415,13 @@ abstract class CommunityLocalizations {
   /// No description provided for @errorUnsupportedType.
   ///
   /// In id, this message translates to:
-  /// **'Jenis file tidak didukung. Gunakan gambar JPEG, PNG, WebP, atau GIF (foto profil tanpa GIF), atau PDF di chat CS.'**
+  /// **'Jenis file tidak didukung. Gambar: JPEG, PNG, WebP, atau GIF (foto profil tanpa GIF). Chat CS juga menerima dokumen dan video sesuai daftar format dari server.'**
   String get errorUnsupportedType;
 
   /// No description provided for @errorFileTooLarge.
   ///
   /// In id, this message translates to:
-  /// **'File terlalu besar. Batasnya 5 MB untuk gambar, 2 MB untuk foto profil, dan 10 MB untuk PDF.'**
+  /// **'File terlalu besar. Batasnya 5 MB untuk gambar dan 2 MB untuk foto profil; batas dokumen dan video di chat CS diatur server.'**
   String get errorFileTooLarge;
 
   /// No description provided for @errorEmptyFile.
@@ -3499,6 +3499,210 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Kata pencarian harus 2–100 karakter.'**
   String get errorHelpQuery;
+
+  /// No description provided for @documentTypePdf.
+  ///
+  /// In id, this message translates to:
+  /// **'PDF'**
+  String get documentTypePdf;
+
+  /// No description provided for @documentTypeWord.
+  ///
+  /// In id, this message translates to:
+  /// **'Word'**
+  String get documentTypeWord;
+
+  /// No description provided for @documentTypeExcel.
+  ///
+  /// In id, this message translates to:
+  /// **'Excel'**
+  String get documentTypeExcel;
+
+  /// No description provided for @documentTypePowerPoint.
+  ///
+  /// In id, this message translates to:
+  /// **'PowerPoint'**
+  String get documentTypePowerPoint;
+
+  /// No description provided for @documentTypeCsv.
+  ///
+  /// In id, this message translates to:
+  /// **'CSV'**
+  String get documentTypeCsv;
+
+  /// No description provided for @documentTypeText.
+  ///
+  /// In id, this message translates to:
+  /// **'Teks'**
+  String get documentTypeText;
+
+  /// No description provided for @documentTypeOther.
+  ///
+  /// In id, this message translates to:
+  /// **'Dokumen'**
+  String get documentTypeOther;
+
+  /// No description provided for @video.
+  ///
+  /// In id, this message translates to:
+  /// **'Video'**
+  String get video;
+
+  /// No description provided for @videoPlay.
+  ///
+  /// In id, this message translates to:
+  /// **'Putar video {duration}'**
+  String videoPlay(String duration);
+
+  /// No description provided for @videoOpenExternal.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka di pemutar video'**
+  String get videoOpenExternal;
+
+  /// No description provided for @videoPlayFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Video tidak bisa diputar di sini. Coba lagi atau buka di pemutar video perangkat.'**
+  String get videoPlayFailed;
+
+  /// No description provided for @videoOpenFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Video tidak bisa dibuka. Coba lagi.'**
+  String get videoOpenFailed;
+
+  /// No description provided for @videoPause.
+  ///
+  /// In id, this message translates to:
+  /// **'Jeda'**
+  String get videoPause;
+
+  /// No description provided for @videoResume.
+  ///
+  /// In id, this message translates to:
+  /// **'Putar'**
+  String get videoResume;
+
+  /// No description provided for @attachmentChecking.
+  ///
+  /// In id, this message translates to:
+  /// **'Memeriksa file…'**
+  String get attachmentChecking;
+
+  /// No description provided for @composeAttachFiles.
+  ///
+  /// In id, this message translates to:
+  /// **'Lampirkan foto, video, atau dokumen'**
+  String get composeAttachFiles;
+
+  /// No description provided for @attachmentGroupImages.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto'**
+  String get attachmentGroupImages;
+
+  /// No description provided for @attachmentGroupVideos.
+  ///
+  /// In id, this message translates to:
+  /// **'Video'**
+  String get attachmentGroupVideos;
+
+  /// No description provided for @attachmentGroupDocuments.
+  ///
+  /// In id, this message translates to:
+  /// **'Dokumen'**
+  String get attachmentGroupDocuments;
+
+  /// No description provided for @attachmentFormatRejected.
+  ///
+  /// In id, this message translates to:
+  /// **'{name} tidak bisa dikirim. Format yang diterima: {formats}.'**
+  String attachmentFormatRejected(String name, String formats);
+
+  /// No description provided for @attachmentFileTooLarge.
+  ///
+  /// In id, this message translates to:
+  /// **'{name} terlalu besar. Batasnya {limit}.'**
+  String attachmentFileTooLarge(String name, String limit);
+
+  /// No description provided for @heicUnsupported.
+  ///
+  /// In id, this message translates to:
+  /// **'Foto HEIC belum bisa diubah ke JPEG di perangkat ini. Simpan foto sebagai JPEG, lalu kirim lagi.'**
+  String get heicUnsupported;
+
+  /// No description provided for @errorAttachmentTooLarge.
+  ///
+  /// In id, this message translates to:
+  /// **'Lampiran melebihi batas ukuran untuk chat ini.'**
+  String get errorAttachmentTooLarge;
+
+  /// No description provided for @errorAttachmentTooLong.
+  ///
+  /// In id, this message translates to:
+  /// **'Video melebihi batas durasi. Kirim video yang lebih pendek.'**
+  String get errorAttachmentTooLong;
+
+  /// No description provided for @errorKindDisabled.
+  ///
+  /// In id, this message translates to:
+  /// **'Jenis lampiran ini sedang tidak diterima di chat CS.'**
+  String get errorKindDisabled;
+
+  /// No description provided for @errorPolicyUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Daftar format lampiran belum bisa dimuat. Coba lagi sebentar lagi.'**
+  String get errorPolicyUnavailable;
+
+  /// No description provided for @errorOfficeMacro.
+  ///
+  /// In id, this message translates to:
+  /// **'Dokumen berisi makro dan ditolak demi keamanan. Simpan ulang sebagai .docx, .xlsx, atau .pptx tanpa makro.'**
+  String get errorOfficeMacro;
+
+  /// No description provided for @errorOfficeUnsafe.
+  ///
+  /// In id, this message translates to:
+  /// **'Dokumen berisi objek tertanam yang tidak aman sehingga ditolak.'**
+  String get errorOfficeUnsafe;
+
+  /// No description provided for @errorArchiveBomb.
+  ///
+  /// In id, this message translates to:
+  /// **'Isi dokumen tidak wajar (terlalu banyak atau terlalu besar saat dibuka) sehingga ditolak.'**
+  String get errorArchiveBomb;
+
+  /// No description provided for @errorInvalidText.
+  ///
+  /// In id, this message translates to:
+  /// **'File teks atau CSV harus memakai UTF-8 dan tidak boleh berisi data biner.'**
+  String get errorInvalidText;
+
+  /// No description provided for @errorInvalidVideo.
+  ///
+  /// In id, this message translates to:
+  /// **'Video rusak atau formatnya tidak didukung. Gunakan MP4 (H.264), MOV, atau WebM.'**
+  String get errorInvalidVideo;
+
+  /// No description provided for @errorVideoTooLong.
+  ///
+  /// In id, this message translates to:
+  /// **'Video terlalu panjang. Potong videonya, lalu kirim lagi.'**
+  String get errorVideoTooLong;
+
+  /// No description provided for @errorMalwareDetected.
+  ///
+  /// In id, this message translates to:
+  /// **'File ditolak karena pemindai antivirus mendeteksi isi berbahaya.'**
+  String get errorMalwareDetected;
+
+  /// No description provided for @errorScannerUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Pemeriksaan file sedang tidak tersedia. Coba kirim lagi sebentar lagi.'**
+  String get errorScannerUnavailable;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

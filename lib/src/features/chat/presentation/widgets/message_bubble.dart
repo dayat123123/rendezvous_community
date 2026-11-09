@@ -28,6 +28,7 @@ import 'package:rendezvous_community/src/features/link_preview/presentation/widg
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/image_viewer.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/video_attachments.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/moderation/presentation/widgets/moderation_actions.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_message_parts.dart';
@@ -350,7 +351,11 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
     final bottom = d.endsGroup ? _tailRadius : _joinRadius;
     final images = [
       for (final a in m.attachments)
-        if (!a.isDocument) a,
+        if (a.isImage) a,
+    ];
+    final videos = [
+      for (final a in m.attachments)
+        if (a.isVideo) a,
     ];
     final documents = [
       for (final a in m.attachments)
@@ -362,6 +367,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
         !m.isDeleted &&
         images.isNotEmpty &&
         documents.isEmpty &&
+        videos.isEmpty &&
         text.isEmpty &&
         m.sharedPostId == null &&
         m.stockCodes.isEmpty &&
@@ -498,6 +504,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
               ),
             ),
           ),
+        if (videos.isNotEmpty) VideoAttachments(attachments: videos, color: fg),
         if (documents.isNotEmpty) DocumentAttachments(attachments: documents, color: fg),
         if (m.sharedPostId != null)
           SharedPostCard(postId: m.sharedPostId!, sharedPost: m.sharedPost, color: fg, onOpen: d.onOpenSharedPost),

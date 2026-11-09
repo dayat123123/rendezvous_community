@@ -1,6 +1,7 @@
 const attachmentBucket = 'attachments';
 const avatarBucket = 'avatars';
 const supportDocumentBucket = 'cs-documents';
+const supportVideoBucket = 'cs-videos';
 const gifMimeType = 'image/gif';
 const pdfMimeType = 'application/pdf';
 const maxSupportDocumentBytes = 10 * 1024 * 1024;

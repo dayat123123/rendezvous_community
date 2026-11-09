@@ -14,6 +14,8 @@ class UploadedObject {
     this.size,
     this.width,
     this.height,
+    this.duration,
+    this.thumbnail,
     this.held = false,
   });
 
@@ -23,6 +25,8 @@ class UploadedObject {
   final int? size;
   final int? width;
   final int? height;
+  final double? duration;
+  final String? thumbnail;
   final bool held;
 }
 
@@ -107,6 +111,8 @@ class MediaGatewayClient {
       size: (body?['size'] as num?)?.toInt(),
       width: (body?['width'] as num?)?.toInt(),
       height: (body?['height'] as num?)?.toInt(),
+      duration: (body?['duration'] as num?)?.toDouble(),
+      thumbnail: body?['thumbnail'] is String ? body!['thumbnail'] as String : null,
       held: body?['held'] == true,
     );
   }

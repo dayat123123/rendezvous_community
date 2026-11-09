@@ -8,6 +8,8 @@ import '../../../support/feature_fakes.dart';
 
 Widget _hostStockCard(BuildContext context, CommunityStockCardDetails d, Widget fallback) => Text('host ${d.code}');
 
+Widget _hostVideo(BuildContext context, CommunityVideoDetails d, Widget fallback) => Text('video ${d.name}');
+
 Widget _nestedMessage(BuildContext context, CommunityMessageDetails d, Widget fallback) => fallback;
 
 void main() {
@@ -16,6 +18,12 @@ void main() {
     final merged = host.merge(const CommunityChatBuilders(message: _nestedMessage));
     expect(merged.stockCard, same(_hostStockCard));
     expect(merged.message, same(_nestedMessage));
+  });
+
+  test('merge keeps the host video builder and lets a nested set replace it', () {
+    const host = CommunityChatBuilders(video: _hostVideo);
+    expect(host.merge(const CommunityChatBuilders(message: _nestedMessage)).video, same(_hostVideo));
+    expect(const CommunityChatBuilders().merge(host).video, same(_hostVideo));
   });
 
   testWidgets('a nested chat builders scope still renders the host stock card builder', (tester) async {

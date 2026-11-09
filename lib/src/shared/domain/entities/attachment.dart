@@ -13,10 +13,16 @@ abstract class Attachment with _$Attachment {
     int? size,
     int? width,
     int? height,
+    double? duration,
+    String? thumbnail,
     @Default(false) bool held,
   }) = _Attachment;
 
   const Attachment._();
 
-  bool get isDocument => bucket == supportDocumentBucket || mime == pdfMimeType;
+  bool get isVideo => bucket == supportVideoBucket || (mime?.startsWith('video/') ?? false);
+
+  bool get isDocument => !isVideo && (bucket == supportDocumentBucket || mime == pdfMimeType);
+
+  bool get isImage => !isVideo && !isDocument;
 }

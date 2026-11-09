@@ -142,7 +142,7 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorAttachmentNotAllowed =>
-      'This attachment is not supported. Support chat accepts images and PDFs; other chats accept images only.';
+      'This attachment format is not accepted in this chat. Support chat accepts the formats listed by the server; other chats accept images only.';
 
   @override
   String get composeRemoveImage => 'Remove image';
@@ -782,11 +782,11 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorUnsupportedType =>
-      'This file type is not supported. Use JPEG, PNG, WebP, or GIF images (no GIF for profile photos), or PDFs in support chat.';
+      'This file type is not supported. Images: JPEG, PNG, WebP, or GIF (no GIF for profile photos). Support chat also accepts documents and videos listed by the server.';
 
   @override
   String get errorFileTooLarge =>
-      'The file is too large. Limits: 5 MB for images, 2 MB for profile photos, and 10 MB for PDFs.';
+      'The file is too large. Limits: 5 MB for images and 2 MB for profile photos; document and video limits in support chat are set by the server.';
 
   @override
   String get errorEmptyFile => 'The file is empty. Choose another file.';
@@ -1947,4 +1947,115 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorHelpQuery => 'Search must be 2–100 characters.';
+
+  @override
+  String get documentTypePdf => 'PDF';
+
+  @override
+  String get documentTypeWord => 'Word';
+
+  @override
+  String get documentTypeExcel => 'Excel';
+
+  @override
+  String get documentTypePowerPoint => 'PowerPoint';
+
+  @override
+  String get documentTypeCsv => 'CSV';
+
+  @override
+  String get documentTypeText => 'Text';
+
+  @override
+  String get documentTypeOther => 'Document';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String videoPlay(String duration) {
+    return 'Play video $duration';
+  }
+
+  @override
+  String get videoOpenExternal => 'Open in video player';
+
+  @override
+  String get videoPlayFailed => 'The video cannot be played here. Try again or open it in the device\'s video player.';
+
+  @override
+  String get videoOpenFailed => 'The video could not be opened. Try again.';
+
+  @override
+  String get videoPause => 'Pause';
+
+  @override
+  String get videoResume => 'Play';
+
+  @override
+  String get attachmentChecking => 'Checking file…';
+
+  @override
+  String get composeAttachFiles => 'Attach photo, video, or document';
+
+  @override
+  String get attachmentGroupImages => 'Photos';
+
+  @override
+  String get attachmentGroupVideos => 'Videos';
+
+  @override
+  String get attachmentGroupDocuments => 'Documents';
+
+  @override
+  String attachmentFormatRejected(String name, String formats) {
+    return '$name cannot be sent. Accepted formats: $formats.';
+  }
+
+  @override
+  String attachmentFileTooLarge(String name, String limit) {
+    return '$name is too large. The limit is $limit.';
+  }
+
+  @override
+  String get heicUnsupported =>
+      'HEIC photos cannot be converted to JPEG on this device. Save the photo as JPEG, then send it again.';
+
+  @override
+  String get errorAttachmentTooLarge => 'The attachment is larger than this chat allows.';
+
+  @override
+  String get errorAttachmentTooLong => 'The video is longer than allowed. Send a shorter video.';
+
+  @override
+  String get errorKindDisabled => 'This attachment type is not accepted in support chat right now.';
+
+  @override
+  String get errorPolicyUnavailable => 'The list of attachment formats could not be loaded. Try again shortly.';
+
+  @override
+  String get errorOfficeMacro =>
+      'The document contains macros and was rejected for safety. Save it again as .docx, .xlsx, or .pptx without macros.';
+
+  @override
+  String get errorOfficeUnsafe => 'The document contains an unsafe embedded object and was rejected.';
+
+  @override
+  String get errorArchiveBomb =>
+      'The document\'s contents are abnormal (too many or too large when unpacked) and were rejected.';
+
+  @override
+  String get errorInvalidText => 'Text and CSV files must use UTF-8 and must not contain binary data.';
+
+  @override
+  String get errorInvalidVideo => 'The video is damaged or its format is not supported. Use MP4 (H.264), MOV, or WebM.';
+
+  @override
+  String get errorVideoTooLong => 'The video is too long. Trim it, then send it again.';
+
+  @override
+  String get errorMalwareDetected => 'The file was rejected because the virus scanner found harmful content.';
+
+  @override
+  String get errorScannerUnavailable => 'File checking is unavailable right now. Try sending again shortly.';
 }

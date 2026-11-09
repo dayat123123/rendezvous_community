@@ -2,13 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/document_type.dart';
+import 'package:rendezvous_community/src/features/media/presentation/file_opener.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
-import 'package:url_launcher/url_launcher.dart';
 
-typedef DocumentOpener = Future<bool> Function(Uri uri);
+export 'package:rendezvous_community/src/features/media/presentation/file_opener.dart' show DocumentOpener;
+
+String documentTypeLabel(CommunityLocalizations l10n, CommunityDocumentType type) => switch (type) {
+  CommunityDocumentType.pdf => l10n.documentTypePdf,
+  CommunityDocumentType.word => l10n.documentTypeWord,
+  CommunityDocumentType.excel => l10n.documentTypeExcel,
+  CommunityDocumentType.powerPoint => l10n.documentTypePowerPoint,
+  CommunityDocumentType.csv => l10n.documentTypeCsv,
+  CommunityDocumentType.text => l10n.documentTypeText,
+  CommunityDocumentType.other => l10n.documentTypeOther,
+};
+
+IconData documentTypeIcon(CommunityDocumentType type) => switch (type) {
+  CommunityDocumentType.pdf => Icons.picture_as_pdf_outlined,
+  CommunityDocumentType.word => Icons.article_outlined,
+  CommunityDocumentType.excel => Icons.table_chart_outlined,
+  CommunityDocumentType.powerPoint => Icons.slideshow_outlined,
+  CommunityDocumentType.csv => Icons.grid_on_outlined,
+  CommunityDocumentType.text => Icons.notes_outlined,
+  CommunityDocumentType.other => Icons.description_outlined,
+};
 
 String documentSize(int? bytes) {
   if (bytes == null) return '';
@@ -59,8 +80,12 @@ class _DocumentTileState extends State<_DocumentTile> {
     final media = CommunityScope.of(context).media;
     setState(() => _opening = true);
     try {
-      final uri = await media.documentUri(widget.attachment);
-      final opened = await (widget.onOpen ?? (uri) => launchUrl(uri, mode: LaunchMode.externalApplication))(uri);
+      final a = widget.attachment;
+      final uri = await media.documentUri(a);
+      final onOpen = widget.onOpen;
+      final opened = onOpen != null
+          ? await onOpen(uri)
+          : await const CommunityFileOpener().open(uri, fileName: _fileName(l10n), key: a.path);
       if (!opened && mounted) showCommunityMessage(context, l10n.documentOpenFailed);
     } catch (_) {
       if (mounted) showCommunityMessage(context, l10n.documentOpenFailed);
@@ -69,16 +94,32 @@ class _DocumentTileState extends State<_DocumentTile> {
     }
   }
 
+  String _fileName(CommunityLocalizations l10n) {
+    final a = widget.attachment;
+    final name = a.name ?? '';
+    if (name.isNotEmpty) return name;
+    final ext = a.path.contains('.') ? a.path.substring(a.path.lastIndexOf('.')) : '';
+    return '${l10n.documentTypeOther}$ext';
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
     final a = widget.attachment;
-    final name = (a.name ?? '').isEmpty ? l10n.documentFallbackName : a.name!;
+    final type = documentTypeOf(a);
+    final name = (a.name ?? '').isNotEmpty
+        ? a.name!
+        : type == CommunityDocumentType.pdf
+        ? l10n.documentFallbackName
+        : _fileName(l10n);
     final size = documentSize(a.size);
+    final typeLabel = documentTypeLabel(l10n, type);
     final details = CommunityDocumentDetails(
       attachment: a,
       name: name,
-      sizeLabel: size.isEmpty ? 'PDF' : 'PDF · $size',
+      sizeLabel: size.isEmpty ? typeLabel : '$typeLabel · $size',
+      type: type,
+      typeLabel: typeLabel,
       color: widget.color,
       opening: _opening,
       semanticLabel: l10n.openDocument(name),
@@ -114,7 +155,7 @@ class _DefaultDocumentTile extends StatelessWidget {
           ),
           child: Row(
             children: [
-              Icon(Icons.picture_as_pdf_outlined, color: color),
+              Icon(documentTypeIcon(details.type), color: color),
               SizedBox(width: spacing.sm + spacing.xxs),
               Expanded(
                 child: Column(

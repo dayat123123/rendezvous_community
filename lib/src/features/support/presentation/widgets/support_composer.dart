@@ -28,6 +28,7 @@ class SupportComposer extends StatelessWidget {
     final l10n = context.communityL10n;
     final cubit = context.read<SupportCubit>();
     final sensitive = context.select((SupportCubit c) => c.state.sensitive);
+    final policy = context.select((SupportCubit c) => c.state.attachmentPolicy);
     final kinds = sensitive.kinds.isEmpty ? const ['otp'] : sensitive.kinds;
     final warning = sensitive.masked
         ? CommunitySensitiveWarningDetails(kinds: kinds, message: l10n.supportSensitiveWarning(_kinds(l10n, kinds)))
@@ -37,7 +38,7 @@ class SupportComposer extends StatelessWidget {
       children: [
         if (warning != null)
           buildSupportPart((b) => b.sensitiveWarning, context, warning, _DefaultSensitiveWarning(details: warning)),
-        MessageComposer(onChanged: cubit.checkText, allowDocuments: true),
+        MessageComposer(onChanged: cubit.checkText, allowDocuments: true, attachmentPolicy: policy),
       ],
     );
   }

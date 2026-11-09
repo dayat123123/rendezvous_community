@@ -1,7 +1,12 @@
+import 'dart:async';
+import 'dart:typed_data';
+
+import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_composer.dart';
 import 'package:rendezvous_community/src/features/support/presentation/cubit/support_cubit.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_composer.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_dialogs.dart';
@@ -175,6 +180,139 @@ List<ChatMessage> _activeMessages() => [
   ),
 ];
 
+Attachment _document(String name, String mime, int size) =>
+    Attachment(path: 'rooms/r-cs/a-1/$name', bucket: 'cs-documents', mime: mime, name: name, size: size);
+
+List<ChatMessage> _attachmentMessages() => [
+  _message('m-1', 0, body: 'Aplikasi keluar sendiri saat buka portofolio. Ini rekaman layarnya.', sender: me),
+  _message('m-2', 1, sender: me).copyWith(
+    attachments: const [
+      Attachment(
+        path: 'rooms/r-cs/u-1/rekaman.mp4',
+        bucket: 'cs-videos',
+        mime: 'video/mp4',
+        name: 'rekaman layar.mp4',
+        size: 6200000,
+        duration: 47,
+        width: 1280,
+        height: 720,
+        thumbnail: 'rooms/r-cs/u-1/rekaman.jpg',
+      ),
+    ],
+  ),
+  _message(
+    'm-3',
+    3,
+    body: 'Terima kasih. Mohon isi dan kirim kembali dokumen berikut.',
+    sender: _nadia,
+    role: SenderRole.agent,
+  ).copyWith(
+    attachments: [
+      _document('Formulir Pengaduan.pdf', 'application/pdf', 182000),
+      _document('Surat Kuasa.docx', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 24000),
+      _document(
+        'Panduan Aplikasi.pptx',
+        'application/vnd.openxmlformats-officedocument.presentationml.presentation',
+        2400000,
+      ),
+    ],
+  ),
+  _message('m-4', 5, sender: me).copyWith(
+    attachments: [
+      _document('Mutasi Oktober.xlsx', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 51200),
+      _document('transaksi.csv', 'text/csv', 900),
+      _document('catatan.txt', 'text/plain', 2048),
+    ],
+  ),
+];
+
+class _PendingMedia extends Fake implements MediaRepository {
+  @override
+  Future<Uri> documentUri(Attachment attachment) => Completer<Uri>().future;
+
+  @override
+  Future<Attachment> uploadSupportFile(
+    String roomId,
+    Uint8List bytes, {
+    required String name,
+    required CommunityAttachmentKind kind,
+    required CommunityAttachmentFormat format,
+  }) => Completer<Attachment>().future;
+
+  @override
+  Future<AuthorizedImage> attachmentImage(Attachment attachment) => Completer<AuthorizedImage>().future;
+}
+
+XFile _pickedFile(String name, int size) => XFile.fromData(Uint8List(size), name: name, path: name, length: size);
+
+class _CheckingComposer extends StatefulWidget {
+  const _CheckingComposer();
+
+  @override
+  State<_CheckingComposer> createState() => _CheckingComposerState();
+}
+
+class _CheckingComposerState extends State<_CheckingComposer> {
+  void _press(String tooltip) {
+    void visit(Element element) {
+      final widget = element.widget;
+      if (widget is IconButton && widget.tooltip == tooltip) {
+        widget.onPressed?.call();
+        return;
+      }
+      element.visitChildren(visit);
+    }
+
+    context.visitChildElements(visit);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      _press('Lampirkan foto, video, atau dokumen');
+      await Future<void>.delayed(const Duration(milliseconds: 50));
+      if (mounted) _press('Kirim');
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) => MessageComposer(
+    allowDocuments: true,
+    attachmentPolicy: CommunityAttachmentPolicy.fromJson(_policyJson),
+    openFilesPicker: ({acceptedTypeGroups = const [], initialDirectory, confirmButtonText}) async => [
+      _pickedFile('Rekening Koran.xlsx', 51200),
+      _pickedFile('rekaman layar.mp4', 6200000),
+    ],
+  );
+}
+
+const _policyJson = <String, dynamic>{
+  'documents': {
+    'enabled': true,
+    'max_bytes': 10485760,
+    'formats': [
+      {'code': 'pdf', 'mime': 'application/pdf', 'ext': 'pdf'},
+      {'code': 'xlsx', 'mime': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'ext': 'xlsx'},
+    ],
+  },
+  'images': {
+    'enabled': true,
+    'max_bytes': 5242880,
+    'formats': [
+      {'code': 'jpeg', 'mime': 'image/jpeg', 'ext': 'jpg'},
+    ],
+  },
+  'videos': {
+    'enabled': true,
+    'max_bytes': 26214400,
+    'max_seconds': 120,
+    'formats': [
+      {'code': 'mp4', 'mime': 'video/mp4', 'ext': 'mp4'},
+    ],
+  },
+};
+
 List<ChatMessage> _closedMessages() => [
   _message('m-1', 0, body: 'Terima kasih, sudah beres.', sender: me),
   _message(
@@ -201,6 +339,8 @@ class _SupportPanel extends StatelessWidget {
     required this.height,
     this.closed = false,
     this.replying = false,
+    this.media,
+    this.composer,
   });
 
   final SupportState state;
@@ -208,6 +348,8 @@ class _SupportPanel extends StatelessWidget {
   final double height;
   final bool closed;
   final bool replying;
+  final MediaRepository? media;
+  final Widget? composer;
 
   @override
   Widget build(BuildContext context) {
@@ -219,7 +361,7 @@ class _SupportPanel extends StatelessWidget {
     return SizedBox(
       height: height,
       child: CommunityScope(
-        dependencies: FakeDependencies(chat: chat),
+        dependencies: FakeDependencies(chat: chat, mediaRepository: media),
         child: BlocProvider<SupportCubit>(
           create: (_) => _ReadyCubit(state),
           child: Column(
@@ -234,7 +376,9 @@ class _SupportPanel extends StatelessWidget {
                     roomId: 'r-cs',
                     repository: chat,
                     showHeader: false,
-                    composer: closed && ticket != null
+                    composer: composer != null
+                        ? composer!
+                        : closed && ticket != null
                         ? SupportClosedBar(ticketNumber: ticket.ticketNumber)
                         : replying
                         ? const _ReplyingComposer()
@@ -346,6 +490,27 @@ final supportScenes = <ScreenshotScene>[
       messages: _replyMessages(),
       height: 760,
       replying: true,
+    ),
+    padding: EdgeInsets.zero,
+  ),
+  ScreenshotScene(
+    'support_attachments',
+    (context) => _SupportPanel(
+      state: _state(_ticket(SupportStatus.claimed)),
+      messages: _attachmentMessages(),
+      height: 900,
+      media: _PendingMedia(),
+    ),
+    padding: EdgeInsets.zero,
+  ),
+  ScreenshotScene(
+    'support_upload_checking',
+    (context) => _SupportPanel(
+      state: _state(_ticket(SupportStatus.claimed)),
+      messages: _activeMessages().take(4).toList(),
+      height: 640,
+      media: _PendingMedia(),
+      composer: const _CheckingComposer(),
     ),
     padding: EdgeInsets.zero,
   ),

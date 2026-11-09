@@ -110,7 +110,9 @@ Status tahap 2: **sudah** untuk semua baris di bawah. Revisi gaya Quora: feed, d
 | `LinkPreviewCard`, `_PreviewCard` | ya | ya (`feed.linkPreview`) | sudah: kartu bergaris tipis, gambar radius `image` |
 | `AttachmentGrid` | ya | ya (`feed.attachments` untuk post, `feed.attachmentImage` per gambar) | sudah: `CommunityAttachmentImageDetails` (`attachment`, `index`, `count`, `held`, `blurred`, `image`). Berlaku di mana pun grid dipakai (post, chat, pratinjau post). Tidak ada `onOpen`: library belum punya penampil media, jadi tidak ditambah |
 | `_AttachmentImage` | tidak | fallback | sudah: placeholder `skeleton` |
-| `DocumentAttachments`, `_DocumentTile` | tidak | ya (`feed.document`) | sudah: `CommunityDocumentDetails` (`attachment`, `name`, `sizeLabel`, `color`, `opening`, `semanticLabel`; `onOpen`) |
+| `DocumentAttachments`, `_DocumentTile` | tidak | ya (`feed.document`) | sudah: `CommunityDocumentDetails` (`attachment`, `name`, `type`, `typeLabel`, `sizeLabel`, `color`, `opening`, `semanticLabel`; `onOpen`) |
+| `VideoAttachments`, `_VideoTile` | tidak | ya (`chat.video`) | sudah: `CommunityVideoDetails` (`attachment`, `name`, `durationLabel`, `sizeLabel`, `color`, `thumbnail`, `playsInApp`, `opening`, `semanticLabel`; `onPlay`) |
+| `CommunityVideoPlayerPage`, `showCommunityVideoPlayer` | ya | tidak (layar penuh `video_player`; host bisa memakai `chat.video` + `onPlay` sendiri) | – |
 
 ### Pencarian, hashtag, trending (`features/search`, `features/trending`) → set `discovery`
 

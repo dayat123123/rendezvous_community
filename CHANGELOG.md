@@ -1,3 +1,40 @@
+## Belum dirilis
+
+Server: daftar format lampiran butuh migrasi `0131` dan layanan `media` yang sudah memeriksa dokumen Office dan video. Di server lama (tanpa `cs_api.attachment_policy`) chat CS tetap menerima gambar dan PDF seperti 1.9.0.
+
+* **Lampiran dokumen lain dan video di chat CS** (format dan batas diatur Super Admin dari Hub, dibaca dari server).
+  * Pemilih file chat CS menampilkan grup **Foto**, **Video**, dan **Dokumen** hanya untuk jenis yang aktif. Bawaan
+    server: PDF, Word `.docx`, Excel `.xlsx`, PowerPoint `.pptx`, `.txt`, `.csv` (10 MB); MP4, MOV, WebM (25 MB,
+    2 menit). Format dan ukuran dicek sebelum unggah dengan pesan yang jelas, misalnya "makro.docm tidak bisa dikirim.
+    Format yang diterima: …". Grup pemilih kini selalu membawa UTI, sehingga pemilih file iOS tidak lagi gagal.
+  * Selama layanan `media` memindai antivirus dan memproses video, composer menampilkan **"Memeriksa file…"**.
+  * Kartu dokumen per jenis (ikon dan label PDF, Word, Excel, PowerPoint, CSV, Teks) dengan nama asli dan ukuran.
+    Diketuk: di Windows, macOS, dan Linux file diunduh ke folder sementara lalu dibuka aplikasi bawaan (juga untuk
+    PDF); di Android, iOS, dan web signed URL dibuka seperti sebelumnya.
+  * Gelembung video dengan thumbnail dari server, durasi, dan ukuran. Android, iOS, macOS, dan web memutar di aplikasi
+    (`CommunityVideoPlayerPage`, layar penuh, jeda dan geser); Windows dan Linux mengunduh video lalu membukanya di
+    pemutar bawaan sistem. Tidak memakai `media_kit`.
+  * Foto **HEIC/HEIF** diubah ke JPEG di perangkat sebelum dikirim (juga di chat biasa): didekode dekoder platform,
+    diperkecil ke 3072 px, di-encode JPEG 85 di isolate. Di perangkat yang tidak bisa mendekode HEIC (Windows, Linux,
+    Android < 9, sebagian browser) muncul pesan agar foto disimpan sebagai JPEG dulu.
+  * Pesan galat baru (ID/EN) untuk `kind_disabled`, `policy_unavailable`, `office_macro`, `office_unsafe`,
+    `archive_bomb`, `invalid_text`, `invalid_video`, `video_too_long`, `malware_detected`, `scanner_unavailable`,
+    `attachment_too_large`, `attachment_too_long`; teks `unsupported_type`, `file_too_large`, dan
+    `attachment_not_allowed` diperbarui.
+  * Builder: slot baru `CommunityChatBuilders.video` (`CommunityVideoDetails`). `CommunityDocumentDetails` (slot
+    `feed.document`) mendapat `type` (`CommunityDocumentType`) dan `typeLabel`. `CommunityComposerDetails` mendapat
+    `attachmentPolicy`, `attachLabel`, dan `uploadingLabel`.
+  * API: `CommunityAttachmentPolicy` (`legacy`, `imagesOnly`, `fromJson`, `match`), `CommunityAttachmentRule`,
+    `CommunityAttachmentFormat`, `CommunityAttachmentKind`, `CommunityDocumentType` + `documentTypeOf`,
+    `CommunityFileOpener`, `communityVideoPlaysInApp`, `communityOpensDownloadedFiles`, `CommunityVideoPlayerPage` +
+    `showCommunityVideoPlayer`. `Attachment` punya `duration`, `thumbnail`, `isVideo`, dan `isImage`; `isDocument`
+    kini `false` untuk video. `ChatOutgoingFile` punya `kind`, `format`, dan `video`.
+  * Antarmuka yang bertambah metode (implementasi host perlu ikut menambah, `Fake`/`Mock` tidak terpengaruh):
+    `SupportRepository.attachmentPolicy()` dan `MediaRepository.uploadSupportFile(...)`. `SupportState` punya
+    `attachmentPolicy`; `MessageComposer` punya `attachmentPolicy` dan `openFilesPicker`.
+  * Dependensi baru: `video_player` (BSD-3) dan `image` (MIT, Dart murni; membawa `archive` MIT). Android tidak butuh
+    izin storage; catatan platform ada di [doc/integration.md](doc/integration.md#2-konfigurasi-platform).
+
 ## 1.9.0
 
 Server: semua fitur baru butuh migrasi sampai `0130`. Library ini tetap jalan di server lama: topik memakai pemetaan bawaan dan saran FAQ di halaman pilih topik dilewati bila RPC belum ada.

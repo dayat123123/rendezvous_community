@@ -4,6 +4,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_po
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_stream_feed.dart';
 import 'package:rendezvous_community/src/features/link_preview/domain/entities/link_preview.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/document_type.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
@@ -389,6 +390,8 @@ class CommunityDocumentDetails {
     required this.opening,
     required this.semanticLabel,
     this.onOpen,
+    this.type = CommunityDocumentType.pdf,
+    this.typeLabel = 'PDF',
   });
 
   final Attachment attachment;
@@ -398,6 +401,8 @@ class CommunityDocumentDetails {
   final bool opening;
   final String semanticLabel;
   final VoidCallback? onOpen;
+  final CommunityDocumentType type;
+  final String typeLabel;
 }
 
 class CommunityDraftDetails {

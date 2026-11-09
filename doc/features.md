@@ -21,7 +21,7 @@ Rincian perilaku setiap fitur bawaan paket. Contoh pemasangan ada di [README](..
 | Badge tab chat | `CommunityChatBadge` menampilkan jumlah **chat** (DM & grup yang tidak dibisukan) yang punya pesan belum dibaca, seperti tab Chat WhatsApp; `99+` bila lebih. Room saham tidak dihitung. Diperbarui saat pesan masuk dan saat room dibuka |
 | Mengetik & online | "mengetik…" (DM) atau "Budi sedang mengetik…" (grup) tampil di daftar chat dan di room. Room besar (room saham dan grup mulai 50 anggota, diatur server) hanya menampilkan "Seseorang sedang mengetik…" atau "Beberapa orang sedang mengetik…" tanpa nama, dari ringkasan server paling sering tiap 3 dtk. Titik hijau dan teks "Online" untuk lawan bicara DM; presence hanya dipakai di DM (1.6.0) |
 | Daftar room saham | Pratinjau dan jumlah belum dibaca room saham di daftar chat diperbarui lewat polling ringan `get_room_previews` selama daftar terlihat (`TickerMode` aktif, aplikasi di depan, online): tiap ±15 dtk ± 25% (diatur server), langsung saat aplikasi kembali ke depan. DM, grup, dan CS tetap realtime (1.6.0) |
-| Lampiran | Chat global (DM, grup, room saham) hanya gambar (JPEG, PNG, WebP, GIF). Chat CS (`CommunitySupportChat`) juga menerima PDF maksimal 10 MB lewat `MessageComposer(allowDocuments: true)`. PDF tampil sebagai kartu nama + ukuran dan dibuka di aplikasi PDF perangkat lewat signed URL 5 menit. Semua unggahan lewat media gateway (lihat di bawah). Gambar bisa ditempel ke kolom chat dengan Ctrl+V (⌘V di macOS) di desktop, atau dari keyboard Android; gambar clipboard Windows (BMP) diubah ke PNG dan diperkecil bila melebihi 5 MB. Bila clipboard tidak berisi gambar, Ctrl+V menempel teks seperti biasa. Lampiran (pilih beberapa file, tempel, atau keyboard) masuk antrean di atas kolom input dan baru dikirim bersama teks saat Enter/tombol kirim, maksimal 4 per pesan; tiap lampiran bisa dihapus dari antrean |
+| Lampiran | Chat global (DM, grup, room saham) hanya gambar (JPEG, PNG, WebP, GIF). Chat CS (`CommunitySupportChat`) juga menerima dokumen dan video sesuai daftar format dari server (lihat [Lampiran chat CS](#lampiran-chat-cs-dokumen-dan-video)); server lama tetap gambar + PDF maksimal 10 MB. Foto HEIC/HEIF diubah ke JPEG di perangkat sebelum dikirim. Semua unggahan lewat media gateway (lihat di bawah). Gambar bisa ditempel ke kolom chat dengan Ctrl+V (⌘V di macOS) di desktop, atau dari keyboard Android; gambar clipboard Windows (BMP) diubah ke PNG dan diperkecil bila melebihi 5 MB. Bila clipboard tidak berisi gambar, Ctrl+V menempel teks seperti biasa. Lampiran (pilih beberapa file, tempel, atau keyboard) masuk antrean di atas kolom input dan baru dikirim bersama teks saat Enter/tombol kirim, maksimal 4 per pesan; tiap lampiran bisa dihapus dari antrean |
 | Penampil gambar | Ketuk foto di chat atau Info pesan untuk melihat layar penuh: zoom, geser antar foto (atau ←/→), Esc/✕ menutup, dan **Unduh** (desktop: Simpan sebagai; ponsel: lembar berbagi; web: unduhan browser). Bisa diganti lewat slot `shared.imageViewer` |
 | Seleksi teks | Di desktop dan web, teks pesan, nama, kutipan, pesan sistem, header chat CS, dan Info pesan bisa diseleksi dengan mouse lalu disalin (Ctrl+C), termasuk lintas beberapa gelembung. Di ponsel, tekan lama membuka menu aksi dengan Salin |
 | Polling | Tombol polling di composer: 2–4 pilihan (maks 40 karakter, tidak boleh sama), durasi 1 jam–7 hari. Satu suara per user dan tidak bisa diubah; pembuat tidak ikut memilih. Hasil (persentase, pilihan Anda, pilihan teratas) tampil setelah memilih, saat polling selesai, atau bagi pembuat |
@@ -86,6 +86,22 @@ await RendezvousCommunity.instance.deleteMyAccount();
 
 `deleteMyAccount()` membersihkan sesi komunitas di perangkat (realtime, pelacak centang, cache dokumen, cache offline dan outbox) tanpa login ulang otomatis. Panggilan API komunitas berikutnya menukar token OLT lagi dan server membuat profil komunitas baru yang kosong. Token push dilepas server; token yang terdaftar dipasang lagi otomatis di sesi berikutnya. Karena itu, arahkan pengguna keluar dari layar komunitas di `onAccountDeleted`.
 
+## Lampiran chat CS: dokumen dan video
+
+Server dengan migrasi `0131` menyimpan daftar format lampiran chat CS yang diatur Super Admin dari Hub. Library membacanya lewat `cs_api.attachment_policy()` saat chat CS dibuka (`SupportRepository.attachmentPolicy()`, hasilnya `CommunityAttachmentPolicy` di `SupportState.attachmentPolicy`) dan meneruskannya ke `MessageComposer(attachmentPolicy: ...)`. Server lama tanpa RPC ini memakai `CommunityAttachmentPolicy.legacy` (gambar + PDF 10 MB), jadi perilakunya sama seperti sebelumnya. Chat lain (DM, grup, room saham) tetap hanya gambar (`CommunityAttachmentPolicy.imagesOnly`).
+
+| Jenis | Format (bawaan server) | Batas bawaan | Tampilan |
+|---|---|---|---|
+| Dokumen | PDF, Word `.docx`, Excel `.xlsx`, PowerPoint `.pptx`, teks `.txt`, `.csv` | 10 MB | Kartu per jenis (ikon, nama asli, "Word · 23 KB"). Diketuk: di Windows/macOS/Linux file diunduh ke folder sementara lalu dibuka aplikasi bawaan; di Android/iOS signed URL 5 menit dibuka aplikasi/browser sistem; di web dibuka di tab baru |
+| Gambar | JPEG, PNG, WebP, GIF; HEIC/HEIF diubah ke JPEG di perangkat | 5 MB | Sama seperti sebelumnya |
+| Video | MP4 (H.264/AAC), MOV, WebM | 25 MB, 2 menit | Thumbnail dari server + durasi + ukuran. Android, iOS, macOS, dan web memutar di aplikasi (`video_player`, layar penuh dengan jeda/geser). Windows dan Linux mengunduh video lalu membukanya di pemutar bawaan sistem |
+
+- **Pemilih file** (`file_selector`) menampilkan grup **Foto**, **Video**, **Dokumen** hanya untuk jenis yang aktif, lengkap dengan ekstensi, MIME, dan UTI (iOS butuh UTI). Jenis yang dimatikan Super Admin tidak muncul.
+- **Sebelum unggah**, file dicocokkan ke daftar format (ekstensi dulu, lalu MIME dari sistem) dan ukurannya dicek terhadap `max_bytes` jenisnya. File yang ditolak tidak dikirim dan nasabah melihat pesan, misalnya "makro.docm tidak bisa dikirim. Format yang diterima: JPG, PNG, …" atau "rekaman.mp4 terlalu besar. Batasnya 25 MB." Durasi video dicek server.
+- **HEIC/HEIF** dikenali dari isi file (`ftyp` brand `heic`, `heix`, `hevc`, `mif1`, `msf1`, dan sejenisnya), nama, atau MIME. Foto didekode dengan dekoder platform lewat `dart:ui` (Android 9+, iOS/macOS bila dekoder sistem tersedia, web di browser yang bisa membaca HEIC seperti Safari), diperkecil ke sisi terpanjang 3072 px, lalu di-encode JPEG kualitas 85 dengan paket `image` (Dart murni, MIT) di isolate terpisah. Metadata (termasuk lokasi) ikut terbuang. Di perangkat yang tidak bisa mendekode HEIC (Windows, Linux, Android lama, browser lain) muncul pesan "Foto HEIC belum bisa diubah ke JPEG di perangkat ini. Simpan foto sebagai JPEG, lalu kirim lagi."
+- **Saat mengirim**, composer menampilkan "Memeriksa file…" selama layanan `media` memindai antivirus dan memproses video (bisa beberapa detik).
+- **Format JSON lampiran** sesuai server: dokumen `{"bucket":"cs-documents","path":"rooms/<room>/<uid>/<acak>.<ext>","mime","name","size"}`, video `{"bucket":"cs-videos",...,"duration","width","height","thumbnail"}`. Nama asli dipotong 200 karakter.
+
 ## Unggahan lewat media gateway
 
 Mulai 1.2.0 semua unggahan nasabah lewat layanan `media`, bukan langsung ke Storage:
@@ -102,7 +118,8 @@ x-upsert: true            # hanya foto profil
 |---|---|---|---|
 | Gambar post | `attachments` | `posts/<user>/<uuid>.<ext>` | JPEG, PNG, WebP, GIF, maks 5 MB |
 | Gambar chat (termasuk chat CS) | `attachments` | `rooms/<room>/<user>/<uuid>.<ext>` | JPEG, PNG, WebP, GIF, maks 5 MB |
-| PDF chat CS | `cs-documents` | `rooms/<room>/<user>/<uuid>.pdf` | PDF, maks 10 MB |
+| Dokumen chat CS | `cs-documents` | `rooms/<room>/<user>/<uuid>.<ext>` | Sesuai daftar server (bawaan PDF, DOCX, XLSX, PPTX, TXT, CSV), maks 10 MB; server lama hanya PDF |
+| Video chat CS | `cs-videos` | `rooms/<room>/<user>/<uuid>.<ext>` | MP4, MOV, WebM, maks 25 MB dan 2 menit; respons menambah `duration`, `width`, `height`, `thumbnail` |
 | Foto profil | `avatars` | `<user>/avatar-<ms>.<ext>` | JPEG, PNG, WebP (GIF ditolak), maks 2 MB |
 
 Server membaca jenis file dari isinya, membuang metadata (EXIF/GPS dan sejenisnya), dan bisa mengganti ekstensi. Paket memakai `path` dan `mime` dari respons, juga `width`/`height` untuk gambar. Respons 401 memicu refresh sesi lalu satu kali percobaan ulang. Error dipetakan ke `CommunityException` (`kind` + `code` dari server) dan pesan terlokalisasi lewat `context.communityL10n.errorMessage(e)`:
@@ -110,9 +127,15 @@ Server membaca jenis file dari isinya, membuang metadata (EXIF/GPS dan sejenisny
 | Kode | Pesan (id) |
 |---|---|
 | `unsupported_type` | Jenis file tidak didukung … |
-| `file_too_large` | File terlalu besar. Batasnya 5 MB untuk gambar, 2 MB untuk foto profil, dan 10 MB untuk PDF. |
+| `file_too_large` | File terlalu besar. Batasnya 5 MB untuk gambar dan 2 MB untuk foto profil; batas dokumen dan video di chat CS diatur server. |
 | `invalid_image` / `image_too_large` | Gambar rusak … / Resolusi gambar terlalu besar … |
 | `invalid_pdf` / `pdf_encrypted` / `pdf_active_content` | PDF rusak … / PDF yang dikunci kata sandi … / PDF berisi skrip … |
+| `office_macro` / `office_unsafe` / `archive_bomb` | Dokumen berisi makro … / objek tertanam yang tidak aman … / isi dokumen tidak wajar … |
+| `invalid_text` | File teks atau CSV harus memakai UTF-8 … |
+| `invalid_video` / `video_too_long` | Video rusak atau formatnya tidak didukung … / Video terlalu panjang … |
+| `malware_detected` / `scanner_unavailable` | File ditolak karena pemindai antivirus … / Pemeriksaan file sedang tidak tersedia … |
+| `kind_disabled` / `policy_unavailable` | Jenis lampiran ini sedang tidak diterima di chat CS. / Daftar format lampiran belum bisa dimuat … |
+| `attachment_not_allowed` / `attachment_too_large` / `attachment_too_long` (dari database saat pesan dikirim) | Format lampiran ini tidak diterima di chat ini … / Lampiran melebihi batas ukuran … / Video melebihi batas durasi … |
 | `upload_forbidden` | Anda tidak diizinkan mengunggah file ke sini. |
 | `too_many_uploads` | Batas unggahan hari ini sudah tercapai … |
 | `busy` | Server unggahan sedang sibuk … |
@@ -281,7 +304,7 @@ const CommunityOfflineBanner();                          // banner "Anda sedang 
 
 - **Sinkron:** baris server menimpa baris cache (edit, hapus, reaksi, `moderation_status`). Pesan yang tidak lagi dikembalikan server dalam rentang halaman yang sama dihapus dari cache. Saat koneksi kembali, layar yang masih menampilkan data tersimpan memuat ulang sendiri.
 - **Outbox:** pesan teks yang dikirim saat offline atau gagal karena jaringan tampil "Menunggu dikirim" lalu dikirim ulang otomatis (backoff 2 detik sampai 1 menit, langsung saat koneksi kembali, aplikasi kembali ke foreground, atau realtime tersambung). Urutan per room dijaga; `client_id` membuat server menolak duplikat. Penolakan server (`content_blocked`, `dm_request_limit`, persetujuan dokumen, `slow_mode` setelah 3 percobaan, dll.) membuat pesan "Gagal terkirim" dengan alasannya dan tombol **Coba lagi** / **Hapus**.
-- **Lampiran:** gambar dan PDF butuh media gateway, jadi tidak masuk antrean. Saat offline paket menolak dengan pesan "Gambar dan dokumen hanya bisa dikirim saat online."
+- **Lampiran:** gambar, dokumen, dan video butuh media gateway, jadi tidak masuk antrean. Saat offline paket menolak dengan pesan "Gambar dan dokumen hanya bisa dikirim saat online."
 - **Status koneksi:** dinilai dari hasil request ke server dan status realtime (tanpa plugin konektivitas). Saat offline, paket memeriksa ulang lewat `get_client_config` (5 detik, naik sampai 1 menit). Banner offline tampil di daftar chat, room chat (builder `connectionBanner`, `CommunityConnectionDetails.offline`), dan feed.
 - **Buka aplikasi tanpa jaringan:** database dibuka bila token OLT dari `tokenProvider` milik user OLT yang sama dengan sesi terakhir (dicocokkan lewat hash SHA-256 `iss`+`sub`, tanpa jaringan). Token yang tidak bisa dibaca berarti tidak ada cache sampai online.
 - **Web:** cache dan outbox hanya di memori (hilang saat halaman dimuat ulang), sehingga host web tidak perlu menyediakan `sqlite3.wasm`.

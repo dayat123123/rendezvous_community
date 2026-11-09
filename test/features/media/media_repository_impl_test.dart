@@ -4,6 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rendezvous_community/src/core/network/media_gateway.dart';
 import 'package:rendezvous_community/src/features/media/data/repositories/media_repository_impl.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/document_type.dart';
 import 'package:rendezvous_community/src/features/profile/data/repositories/profile_repository_impl.dart';
 import 'package:rendezvous_community/src/shared/data/models/attachment_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
@@ -70,6 +72,77 @@ void main() {
       'width': null,
       'height': null,
     });
+  });
+
+  test('support videos go to the video bucket with duration and thumbnail', () async {
+    when(
+      () => api.upload(
+        any(),
+        any(),
+        any(),
+        contentType: any(named: 'contentType'),
+        upsert: any(named: 'upsert'),
+      ),
+    ).thenAnswer(
+      (invocation) async => UploadedObject(
+        bucket: 'cs-videos',
+        path: invocation.positionalArguments[1] as String,
+        mime: 'video/mp4',
+        size: 900,
+        width: 720,
+        height: 1280,
+        duration: 12.3,
+        thumbnail: 'rooms/r-1/u-1/t.jpg',
+      ),
+    );
+
+    final attachment = await MediaRepositoryImpl(api).uploadSupportFile(
+      'r-1',
+      Uint8List(900),
+      name: 'rekaman.mov',
+      kind: CommunityAttachmentKind.video,
+      format: const CommunityAttachmentFormat(code: 'mov', mime: 'video/quicktime', extension: 'mov'),
+    );
+
+    final captured = verify(
+      () => api.upload(captureAny(), captureAny(), any(), contentType: 'video/quicktime'),
+    ).captured;
+    expect(captured.first, 'cs-videos');
+    expect(captured.last as String, matches(RegExp(r'^rooms/r-1/u-1/[0-9a-f-]{36}\.mov$')));
+    expect(attachment.isVideo, isTrue);
+    expect(attachment.isDocument, isFalse);
+    expect(AttachmentModel.fromEntity(attachment).toJson(), {
+      'path': attachment.path,
+      'bucket': 'cs-videos',
+      'mime': 'video/mp4',
+      'name': 'rekaman.mov',
+      'size': 900,
+      'width': 720,
+      'height': 1280,
+      'duration': 12.3,
+      'thumbnail': 'rooms/r-1/u-1/t.jpg',
+    });
+  });
+
+  test('office documents keep their own type and extension', () async {
+    final attachment = await MediaRepositoryImpl(api).uploadSupportFile(
+      'r-1',
+      Uint8List(10),
+      name: 'Laporan.xlsx',
+      kind: CommunityAttachmentKind.document,
+      format: const CommunityAttachmentFormat(
+        code: 'xlsx',
+        mime: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        extension: 'xlsx',
+      ),
+    );
+
+    final captured = verify(
+      () => api.upload('cs-documents', captureAny(), any(), contentType: any(named: 'contentType')),
+    ).captured;
+    expect(captured.single as String, endsWith('.xlsx'));
+    expect(attachment.isDocument, isTrue);
+    expect(documentTypeOf(attachment), CommunityDocumentType.excel);
   });
 
   test('images use the path and type chosen by the media gateway', () async {

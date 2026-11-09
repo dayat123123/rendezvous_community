@@ -10,9 +10,11 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/message_i
 import 'package:rendezvous_community/src/features/chat/domain/entities/outgoing_file.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
 import 'package:rendezvous_community/src/features/message_requests/domain/entities/message_request.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/stocks/domain/entities/stock_info.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
 class CommunityMessageDetails {
@@ -103,6 +105,9 @@ class CommunityComposerDetails {
     this.onContentInserted,
     this.files = const [],
     this.onRemoveFile,
+    this.attachmentPolicy = CommunityAttachmentPolicy.imagesOnly,
+    this.attachLabel,
+    this.uploadingLabel,
   });
 
   final TextEditingController controller;
@@ -125,6 +130,9 @@ class CommunityComposerDetails {
   final ValueChanged<Uint8List>? onContentInserted;
   final List<ChatOutgoingFile> files;
   final ValueChanged<int>? onRemoveFile;
+  final CommunityAttachmentPolicy attachmentPolicy;
+  final String? attachLabel;
+  final String? uploadingLabel;
 
   bool get coolingDown => cooldown > Duration.zero;
 
@@ -581,4 +589,35 @@ class CommunityRequestActionsDetails {
   final VoidCallback? onAccept;
   final VoidCallback? onDecline;
   final VoidCallback? onBlock;
+}
+
+class CommunityVideoDetails {
+  const CommunityVideoDetails({
+    required this.attachment,
+    required this.name,
+    required this.durationLabel,
+    required this.sizeLabel,
+    required this.color,
+    required this.playsInApp,
+    required this.opening,
+    required this.semanticLabel,
+    this.thumbnail,
+    this.onPlay,
+  });
+
+  final Attachment attachment;
+  final String name;
+  final String durationLabel;
+  final String sizeLabel;
+  final Color color;
+  final bool playsInApp;
+  final bool opening;
+  final String semanticLabel;
+  final Widget? thumbnail;
+  final VoidCallback? onPlay;
+
+  Duration? get duration {
+    final seconds = attachment.duration;
+    return seconds == null ? null : Duration(milliseconds: (seconds * 1000).round());
+  }
 }

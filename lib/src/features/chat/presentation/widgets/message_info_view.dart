@@ -16,6 +16,7 @@ import 'package:rendezvous_community/src/features/chat/presentation/widgets/rece
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/image_viewer.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/video_attachments.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
@@ -335,11 +336,11 @@ class _MessagePreview extends StatelessWidget {
     final text = message.body?.trim() ?? '';
     final images = [
       for (final a in message.attachments)
-        if (!a.isDocument) a,
+        if (a.isImage) a,
     ];
     final documents = [
       for (final a in message.attachments)
-        if (a.isDocument) a,
+        if (!a.isImage) a,
     ];
     final summary = text.isNotEmpty
         ? text
@@ -383,7 +384,16 @@ class _MessagePreview extends StatelessWidget {
             if (documents.isNotEmpty)
               Padding(
                 padding: EdgeInsets.only(top: images.isEmpty ? 0 : spacing.xs),
-                child: DocumentAttachments(attachments: documents, color: t.onMyBubble),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    if (documents.any((a) => a.isVideo))
+                      VideoAttachments(attachments: [...documents.where((a) => a.isVideo)], color: t.onMyBubble),
+                    if (documents.any((a) => a.isDocument))
+                      DocumentAttachments(attachments: [...documents.where((a) => a.isDocument)], color: t.onMyBubble),
+                  ],
+                ),
               ),
             if (summary != null)
               Padding(

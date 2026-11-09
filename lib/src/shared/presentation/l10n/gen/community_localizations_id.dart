@@ -143,7 +143,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorAttachmentNotAllowed =>
-      'Lampiran ini tidak didukung. Chat CS menerima gambar dan PDF; chat lain hanya gambar.';
+      'Format lampiran ini tidak diterima di chat ini. Chat CS menerima format sesuai daftar dari server; chat lain hanya gambar.';
 
   @override
   String get composeRemoveImage => 'Hapus gambar';
@@ -774,11 +774,11 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorUnsupportedType =>
-      'Jenis file tidak didukung. Gunakan gambar JPEG, PNG, WebP, atau GIF (foto profil tanpa GIF), atau PDF di chat CS.';
+      'Jenis file tidak didukung. Gambar: JPEG, PNG, WebP, atau GIF (foto profil tanpa GIF). Chat CS juga menerima dokumen dan video sesuai daftar format dari server.';
 
   @override
   String get errorFileTooLarge =>
-      'File terlalu besar. Batasnya 5 MB untuk gambar, 2 MB untuk foto profil, dan 10 MB untuk PDF.';
+      'File terlalu besar. Batasnya 5 MB untuk gambar dan 2 MB untuk foto profil; batas dokumen dan video di chat CS diatur server.';
 
   @override
   String get errorEmptyFile => 'File kosong. Pilih file lain.';
@@ -1933,4 +1933,115 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorHelpQuery => 'Kata pencarian harus 2–100 karakter.';
+
+  @override
+  String get documentTypePdf => 'PDF';
+
+  @override
+  String get documentTypeWord => 'Word';
+
+  @override
+  String get documentTypeExcel => 'Excel';
+
+  @override
+  String get documentTypePowerPoint => 'PowerPoint';
+
+  @override
+  String get documentTypeCsv => 'CSV';
+
+  @override
+  String get documentTypeText => 'Teks';
+
+  @override
+  String get documentTypeOther => 'Dokumen';
+
+  @override
+  String get video => 'Video';
+
+  @override
+  String videoPlay(String duration) {
+    return 'Putar video $duration';
+  }
+
+  @override
+  String get videoOpenExternal => 'Buka di pemutar video';
+
+  @override
+  String get videoPlayFailed => 'Video tidak bisa diputar di sini. Coba lagi atau buka di pemutar video perangkat.';
+
+  @override
+  String get videoOpenFailed => 'Video tidak bisa dibuka. Coba lagi.';
+
+  @override
+  String get videoPause => 'Jeda';
+
+  @override
+  String get videoResume => 'Putar';
+
+  @override
+  String get attachmentChecking => 'Memeriksa file…';
+
+  @override
+  String get composeAttachFiles => 'Lampirkan foto, video, atau dokumen';
+
+  @override
+  String get attachmentGroupImages => 'Foto';
+
+  @override
+  String get attachmentGroupVideos => 'Video';
+
+  @override
+  String get attachmentGroupDocuments => 'Dokumen';
+
+  @override
+  String attachmentFormatRejected(String name, String formats) {
+    return '$name tidak bisa dikirim. Format yang diterima: $formats.';
+  }
+
+  @override
+  String attachmentFileTooLarge(String name, String limit) {
+    return '$name terlalu besar. Batasnya $limit.';
+  }
+
+  @override
+  String get heicUnsupported =>
+      'Foto HEIC belum bisa diubah ke JPEG di perangkat ini. Simpan foto sebagai JPEG, lalu kirim lagi.';
+
+  @override
+  String get errorAttachmentTooLarge => 'Lampiran melebihi batas ukuran untuk chat ini.';
+
+  @override
+  String get errorAttachmentTooLong => 'Video melebihi batas durasi. Kirim video yang lebih pendek.';
+
+  @override
+  String get errorKindDisabled => 'Jenis lampiran ini sedang tidak diterima di chat CS.';
+
+  @override
+  String get errorPolicyUnavailable => 'Daftar format lampiran belum bisa dimuat. Coba lagi sebentar lagi.';
+
+  @override
+  String get errorOfficeMacro =>
+      'Dokumen berisi makro dan ditolak demi keamanan. Simpan ulang sebagai .docx, .xlsx, atau .pptx tanpa makro.';
+
+  @override
+  String get errorOfficeUnsafe => 'Dokumen berisi objek tertanam yang tidak aman sehingga ditolak.';
+
+  @override
+  String get errorArchiveBomb =>
+      'Isi dokumen tidak wajar (terlalu banyak atau terlalu besar saat dibuka) sehingga ditolak.';
+
+  @override
+  String get errorInvalidText => 'File teks atau CSV harus memakai UTF-8 dan tidak boleh berisi data biner.';
+
+  @override
+  String get errorInvalidVideo => 'Video rusak atau formatnya tidak didukung. Gunakan MP4 (H.264), MOV, atau WebM.';
+
+  @override
+  String get errorVideoTooLong => 'Video terlalu panjang. Potong videonya, lalu kirim lagi.';
+
+  @override
+  String get errorMalwareDetected => 'File ditolak karena pemindai antivirus mendeteksi isi berbahaya.';
+
+  @override
+  String get errorScannerUnavailable => 'Pemeriksaan file sedang tidak tersedia. Coba kirim lagi sebentar lagi.';
 }

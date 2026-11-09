@@ -6,6 +6,7 @@ import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/core/logging/community_logger.dart';
 import 'package:rendezvous_community/src/features/help/domain/entities/help_article.dart';
 import 'package:rendezvous_community/src/features/help/domain/repositories/help_repository.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 import 'package:rendezvous_community/src/features/support/domain/repositories/support_repository.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
@@ -32,6 +33,7 @@ abstract class SupportState with _$SupportState {
     String? suggesting,
     String? suggestionTopic,
     @Default(<HelpArticle>[]) List<HelpArticle> suggestions,
+    CommunityAttachmentPolicy? attachmentPolicy,
   }) = _SupportState;
 
   const SupportState._();
@@ -75,10 +77,20 @@ class SupportCubit extends Cubit<SupportState> {
       final home = results[0] as SupportHome;
       emit(state.copyWith(status: LoadStatus.ready, home: home, topics: results[1] as List<SupportTopic>));
       _watch(home.roomId);
+      unawaited(loadAttachmentPolicy());
       final initialTopic = topic;
       if (!home.active && initialTopic != null) await start(initialTopic);
     } catch (e) {
       if (!isClosed) emit(state.copyWith(status: LoadStatus.failure, error: e));
+    }
+  }
+
+  Future<void> loadAttachmentPolicy() async {
+    try {
+      final policy = await _support.attachmentPolicy();
+      if (!isClosed) emit(state.copyWith(attachmentPolicy: policy));
+    } catch (e) {
+      CommunityLoggers.support.warning('Could not load the attachment policy; keeping the previous one', e);
     }
   }
 

@@ -14,6 +14,8 @@ _AttachmentModel _$AttachmentModelFromJson(Map<String, dynamic> json) => _Attach
   size: (json['size'] as num?)?.toInt(),
   width: (json['width'] as num?)?.toInt(),
   height: (json['height'] as num?)?.toInt(),
+  duration: (json['duration'] as num?)?.toDouble(),
+  thumbnail: json['thumbnail'] as String?,
 );
 
 Map<String, dynamic> _$AttachmentModelToJson(_AttachmentModel instance) => <String, dynamic>{
@@ -24,4 +26,6 @@ Map<String, dynamic> _$AttachmentModelToJson(_AttachmentModel instance) => <Stri
   'size': ?instance.size,
   'width': instance.width,
   'height': instance.height,
+  'duration': ?instance.duration,
+  'thumbnail': ?instance.thumbnail,
 };

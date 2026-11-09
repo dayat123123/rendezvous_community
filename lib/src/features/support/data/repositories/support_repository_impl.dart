@@ -1,11 +1,13 @@
 import 'dart:async';
 
 import 'package:logging/logging.dart';
+import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/logging/community_logger.dart';
 import 'package:rendezvous_community/src/core/network/realtime_gateway.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
 import 'package:rendezvous_community/src/features/chat/data/models/chat_models.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
+import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/app_notification.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:rendezvous_community/src/features/support/data/models/support_models.dart';
@@ -99,6 +101,20 @@ class SupportRepositoryImpl implements SupportRepository {
       masked: result['masked'] == true || result['requests_secret'] == true,
       kinds: [for (final k in result['kinds'] as List<Object?>? ?? const []) '$k'],
     );
+  }
+
+  @override
+  Future<CommunityAttachmentPolicy> attachmentPolicy() async {
+    try {
+      final value = await _cs.rpcValue('attachment_policy');
+      if (value is Map<String, dynamic>) return CommunityAttachmentPolicy.fromJson(value);
+      CommunityLoggers.support.warning('Attachment policy response was not an object; using the legacy policy');
+      return CommunityAttachmentPolicy.legacy;
+    } on CommunityException catch (e) {
+      if (e.code != 'PGRST202' && e.kind != CommunityErrorKind.notFound) rethrow;
+      CommunityLoggers.support.info('Server has no attachment policy endpoint; using the legacy policy');
+      return CommunityAttachmentPolicy.legacy;
+    }
   }
 
   @override
