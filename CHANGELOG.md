@@ -1,5 +1,41 @@
 ## Belum dirilis
 
+Server: fitur bantuan lanjutan butuh migrasi `0134`–`0136`. Di server lama semuanya mundur ke perilaku 1.9.0 (tanpa form, banner, survei, saran balasan, dan perkiraan waktu tunggu); transkrip butuh `0136`.
+
+* **Bantuan lanjutan di chat CS** (diatur dari Hub, lihat [doc/features.md](doc/features.md#bantuan-lanjutan-di-chat-cs-server-migrasi-01340136)).
+  * **Pertanyaan awal per topik**: setelah memilih topik (dan setelah saran artikel), topik yang punya isian
+    menampilkan form singkat (teks, angka, tanggal lewat pemilih tanggal, pilihan; wajib/opsional) dengan validasi
+    sama seperti server. Jawaban dikirim sebagai `p_intake` ke `cs_api.open_ticket`; galat `intake_required` dan
+    `invalid_intake_answers` tampil dengan pesan yang jelas. Topik tanpa isian tetap langsung membuat tiket.
+  * **Banner gangguan layanan** di chat CS, halaman pilih topik, dan Pusat Bantuan: warna per tingkat (`info`,
+    `warning`, `critical`), tombol **Selengkapnya** ke artikel FAQ terkait, bisa ditutup per sesi, dan hilang saat
+    server tidak lagi mengirimnya.
+  * **Di luar jam layanan**: setelah memilih topik tampil jam buka berikutnya, saran artikel FAQ topik itu, dan tombol
+    **Tinggalkan pesan** yang tetap membuat tiket.
+  * **Survei kepuasan dari server**: pertanyaan, skala 3 (tiga wajah = 1, 3, 5) atau 5 (bintang), dan chip alasan
+    untuk nilai rendah yang dikirim sebagai `p_reasons` ke `cs_api.rate_ticket`. Tanpa survei, dialog lama.
+  * **Saran balasan nasabah**: chip di atas kolom ketik selama tiket aktif; diketuk = dikirim lewat composer biasa.
+  * **Perkiraan waktu tunggu**: "Perkiraan menunggu ± N menit" di samping posisi antrean.
+  * **Unduh transkrip** (TXT) untuk tiket selesai/ditutup dari **Tiket saya** (`cs_api.ticket_transcript`): nomor
+    tiket, topik, waktu lokal, label pengirim, dan nama lampiran. Dialog simpan di desktop, lembar bagikan di
+    Android/iOS, unduhan di web. **Tiket saya** tetap ada di menu ••• chat CS, juga sebelum ada tiket.
+  * Builder baru di `CommunitySupportBuilders`: `incidentBanner` (`CommunitySupportIncidentDetails`), `intakeForm`
+    (`CommunitySupportIntakeDetails`), `intakeField` (`CommunitySupportIntakeFieldDetails`), `surveyReasons`
+    (`CommunitySupportSurveyReasonsDetails`), `replySuggestions` (`CommunitySupportReplySuggestionsDetails`).
+    `CommunitySupportRatingDetails` mendapat `survey`, `values`, `faces`, `ratingLabels`, `asksReasons`,
+    `selectedReasons`, `onToggleReason`, `reasons`; `CommunitySupportPageHeaderDetails` mendapat `downloadLabel`,
+    `onDownload`, `downloading`, `canDownload`; `CommunityHelpSuggestionsDetails` mendapat `notice` dan `outOfHours`.
+  * API: `SupportIntakeField`, `SupportIntakeOption`, `SupportIntakeType`, `SupportTopic.intake`/`hasIntake`,
+    `SupportIncident`, `SupportIncidentLevel`, `SupportSurvey`, `SupportSurveyReason`, `SupportHome.incidents`,
+    `SupportHome.surveys` + `survey(bahasa)`, `SupportTicket.etaMinutes` dan `quickReplies`, `SupportTranscript`,
+    `SupportTranscriptMessage`, `SupportTranscriptSender`, validasi `validateSupportIntake`,
+    `checkSupportIntakeAnswer`, `supportIntakePayload`, `SupportIntakeProblem`, format `formatSupportTranscript`,
+    `SupportTranscriptLabels`, `SupportTranscriptFile`, `CommunityTranscriptSaver`, `saveSupportTranscript`,
+    `supportTranscriptFile`, `CommunitySupportTickets(transcriptSaver:)`, `CommunityHelpCenter(support:)`.
+  * Antarmuka yang berubah (implementasi host perlu ikut menyesuaikan, `Fake`/`Mock` tidak terpengaruh):
+    `SupportRepository.openTicket(..., intake)`, `rateTicket(..., reasons)`, metode baru `serviceStatus()` dan
+    `transcript()`.
+
 Server: daftar format lampiran butuh migrasi `0131` dan layanan `media` yang sudah memeriksa dokumen Office dan video. Di server lama (tanpa `cs_api.attachment_policy`) chat CS tetap menerima gambar dan PDF seperti 1.9.0.
 
 * **Lampiran dokumen lain dan video di chat CS** (format dan batas diatur Super Admin dari Hub, dibaca dari server).
