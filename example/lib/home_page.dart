@@ -242,6 +242,11 @@ class _HomePageState extends State<HomePage> {
     ];
 
     final actions = [
+      IconButton(
+        tooltip: 'Pusat Bantuan',
+        onPressed: () => openCommunityHelpCenter(context),
+        icon: const Icon(Icons.help_outline),
+      ),
       IconButton(tooltip: 'Jelajah fitur 1.3', onPressed: _explore, icon: const Icon(Icons.explore_outlined)),
       IconButton(
         tooltip: 'Tema terang/gelap',
