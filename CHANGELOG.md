@@ -1,5 +1,25 @@
 ## Belum dirilis
 
+* **Pusat Bantuan / FAQ** (server migrasi `0129`, gambar jawaban `0130`): `CommunityHelpCenter` dan
+  `openCommunityHelpCenter(context)` menampilkan kategori, pencarian, dan artikel bantuan dua bahasa yang diatur dari
+  Hub (Bantuan / FAQ). Jawaban memakai Markdown terbatas (tebal, miring, daftar, judul, tautan hanya `https`, gambar
+  hanya dari bucket `faq-images`) lewat `CommunityHelpMarkdown`, tanpa paket tambahan dan tanpa HTML.
+  * "Apakah ini membantu?" **Ya**/**Tidak** dengan komentar opsional (maks. 500 huruf); pilihan sebelumnya tampil
+    lagi saat artikel dibuka.
+  * Tombol "Masih butuh bantuan? **Chat CS**" membuka chat CS dengan topik artikel (`openCommunitySupport(topic: ...,
+    screen: 'help_center')`), atau `onContactSupport` milik host. `openCommunityHelpArticle(context, article)` membuka
+    satu artikel langsung.
+  * Di halaman pilih topik chat CS, setelah topik dipilih, maks. 3 artikel teratas topik itu tampil di bawah
+    **"Mungkin ini membantu"** dengan pilihan **Lanjut chat dengan CS** atau **Pilih topik lain**. Bila tidak ada
+    artikel, permintaan gagal, atau lebih dari 4 detik, tiket langsung dibuat seperti sebelumnya.
+  * Offline: respons FAQ terakhir disimpan per bahasa di cache lokal user, jadi Pusat Bantuan tetap terbuka (dengan
+    pemberitahuan kecil dan tombol **Coba lagi**); pencarian memakai isi tersimpan.
+  * Builder baru `CommunityBuilders.help` (`CommunityHelpBuilders`: `searchField`, `categoryTile`, `articleTile`,
+    `articleDetail`, `feedback`, `contact`, `offlineNotice`, `topicSuggestions`, `loading`, `empty`, `error`).
+  * API: `HelpRepository` (`RendezvousCommunity.instance.help`), entitas `HelpCenterContent`, `HelpCategory`,
+    `HelpArticle`, `HelpFeedback`, serta `CommunityHelpScope`/`CommunityHelpDependencies` untuk host dan tes.
+    `CommunitySupportScope.maybeOf` ditambahkan.
+
 * **Pengaturan geser untuk membalas oleh host:** `CommunitySwipeToReplyScope` dengan `CommunitySwipeToReplySettings`
   (`enabled`, `threshold` dalam px, arah `mine`/`others` berupa `CommunitySwipeDirection.right`/`left`, `haptic`).
   Bawaan tetap: aktif, 56 px, kanan untuk semua pesan, dengan getar. Contoh gaya WhatsApp iOS:

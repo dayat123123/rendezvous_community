@@ -3355,6 +3355,150 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Email disalin'**
   String get contactEmailCopied;
+
+  /// No description provided for @helpTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pusat Bantuan'**
+  String get helpTitle;
+
+  /// No description provided for @helpSearchHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Cari pertanyaan, misalnya: lupa PIN'**
+  String get helpSearchHint;
+
+  /// No description provided for @helpSearchClear.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus pencarian'**
+  String get helpSearchClear;
+
+  /// No description provided for @helpCategoryCount.
+  ///
+  /// In id, this message translates to:
+  /// **'{count} artikel'**
+  String helpCategoryCount(int count);
+
+  /// No description provided for @helpEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada artikel bantuan.'**
+  String get helpEmpty;
+
+  /// No description provided for @helpSearchEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada artikel yang cocok dengan “{query}”.'**
+  String helpSearchEmpty(String query);
+
+  /// No description provided for @helpSearchSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Hasil dari Pusat Bantuan yang tersimpan.'**
+  String get helpSearchSaved;
+
+  /// No description provided for @helpOffline.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda sedang offline. Menampilkan Pusat Bantuan yang tersimpan.'**
+  String get helpOffline;
+
+  /// No description provided for @helpUpdated.
+  ///
+  /// In id, this message translates to:
+  /// **'Diperbarui {date}'**
+  String helpUpdated(String date);
+
+  /// No description provided for @helpWasHelpful.
+  ///
+  /// In id, this message translates to:
+  /// **'Apakah ini membantu?'**
+  String get helpWasHelpful;
+
+  /// No description provided for @helpYes.
+  ///
+  /// In id, this message translates to:
+  /// **'Ya'**
+  String get helpYes;
+
+  /// No description provided for @helpNo.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak'**
+  String get helpNo;
+
+  /// No description provided for @helpFeedbackThanks.
+  ///
+  /// In id, this message translates to:
+  /// **'Terima kasih atas masukan Anda.'**
+  String get helpFeedbackThanks;
+
+  /// No description provided for @helpFeedbackComment.
+  ///
+  /// In id, this message translates to:
+  /// **'Ceritakan lebih lanjut (opsional)'**
+  String get helpFeedbackComment;
+
+  /// No description provided for @helpFeedbackSend.
+  ///
+  /// In id, this message translates to:
+  /// **'Kirim'**
+  String get helpFeedbackSend;
+
+  /// No description provided for @helpFeedbackCommentSent.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar Anda sudah terkirim.'**
+  String get helpFeedbackCommentSent;
+
+  /// No description provided for @helpStillNeedHelp.
+  ///
+  /// In id, this message translates to:
+  /// **'Masih butuh bantuan?'**
+  String get helpStillNeedHelp;
+
+  /// No description provided for @helpChatCs.
+  ///
+  /// In id, this message translates to:
+  /// **'Chat CS'**
+  String get helpChatCs;
+
+  /// No description provided for @helpSuggestionsTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Mungkin ini membantu'**
+  String get helpSuggestionsTitle;
+
+  /// No description provided for @helpSuggestionsHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Artikel untuk topik {topic}. Bila belum terjawab, lanjutkan ke chat CS.'**
+  String helpSuggestionsHint(String topic);
+
+  /// No description provided for @helpContinueChat.
+  ///
+  /// In id, this message translates to:
+  /// **'Lanjut chat dengan CS'**
+  String get helpContinueChat;
+
+  /// No description provided for @helpPickAnotherTopic.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih topik lain'**
+  String get helpPickAnotherTopic;
+
+  /// No description provided for @errorHelpArticleNotFound.
+  ///
+  /// In id, this message translates to:
+  /// **'Artikel ini sudah tidak tersedia.'**
+  String get errorHelpArticleNotFound;
+
+  /// No description provided for @errorHelpQuery.
+  ///
+  /// In id, this message translates to:
+  /// **'Kata pencarian harus 2–100 karakter.'**
+  String get errorHelpQuery;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

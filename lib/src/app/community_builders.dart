@@ -3,6 +3,7 @@ import 'package:rendezvous_community/src/features/account/presentation/builders/
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/config/presentation/builders/community_system_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
+import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_builders.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/builders/community_notification_builders.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/builders/community_profile_builders.dart';
 import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_builders.dart';
@@ -22,6 +23,7 @@ class CommunityBuilders {
     this.support = const CommunitySupportBuilders(),
     this.settings = const CommunitySettingsBuilders(),
     this.system = const CommunitySystemBuilders(),
+    this.help = const CommunityHelpBuilders(),
   });
 
   final CommunityChatBuilders chat;
@@ -34,6 +36,7 @@ class CommunityBuilders {
   final CommunitySupportBuilders support;
   final CommunitySettingsBuilders settings;
   final CommunitySystemBuilders system;
+  final CommunityHelpBuilders help;
 
   static CommunityBuilders of(BuildContext context, {bool listen = true}) => CommunityBuilders(
     chat: CommunityChatBuilders.of(context, listen: listen),
@@ -46,6 +49,7 @@ class CommunityBuilders {
     support: CommunitySupportBuilders.of(context, listen: listen),
     settings: CommunitySettingsBuilders.of(context, listen: listen),
     system: CommunitySystemBuilders.of(context, listen: listen),
+    help: CommunityHelpBuilders.of(context, listen: listen),
   );
 
   CommunityBuilders merge(CommunityBuilders? other) {
@@ -61,6 +65,7 @@ class CommunityBuilders {
       support: support.merge(other.support),
       settings: settings.merge(other.settings),
       system: system.merge(other.system),
+      help: help.merge(other.help),
     );
   }
 
@@ -82,7 +87,10 @@ class CommunityBuilders {
                   builders: support,
                   child: CommunitySettingsBuildersScope(
                     builders: settings,
-                    child: CommunitySystemBuildersScope(builders: system, child: child),
+                    child: CommunitySystemBuildersScope(
+                      builders: system,
+                      child: CommunityHelpBuildersScope(builders: help, child: child),
+                    ),
                   ),
                 ),
               ),
@@ -119,7 +127,8 @@ class _CommunityBuildersScopeState extends State<CommunityBuildersScope> {
       identical(a.discovery, b.discovery) &&
       identical(a.support, b.support) &&
       identical(a.settings, b.settings) &&
-      identical(a.system, b.system);
+      identical(a.system, b.system) &&
+      identical(a.help, b.help);
 
   @override
   Widget build(BuildContext context) {

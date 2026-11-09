@@ -7,6 +7,7 @@ import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/app/community_account_scope.dart';
 import 'package:rendezvous_community/src/app/community_dependencies.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/app/community_help_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
 import 'package:rendezvous_community/src/core/auth/auth_bridge_client.dart';
@@ -60,6 +61,8 @@ import 'package:rendezvous_community/src/features/feed/data/local/feed_local_cac
 import 'package:rendezvous_community/src/features/feed/data/repositories/feed_repository_impl.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_cache_repository.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
+import 'package:rendezvous_community/src/features/help/data/repositories/help_repository_impl.dart';
+import 'package:rendezvous_community/src/features/help/domain/repositories/help_repository.dart';
 import 'package:rendezvous_community/src/features/legal/data/repositories/legal_repository_impl.dart';
 import 'package:rendezvous_community/src/features/legal/domain/entities/legal_document.dart';
 import 'package:rendezvous_community/src/features/legal/domain/services/community_consent.dart';
@@ -117,6 +120,7 @@ class RendezvousCommunity
     implements
         CommunityDependencies,
         CommunitySupportDependencies,
+        CommunityHelpDependencies,
         CommunityAccountDependencies,
         CommunityFeatureDependencies,
         CommunityPromoPopupDependencies,
@@ -136,6 +140,7 @@ class RendezvousCommunity
     required this.media,
     required this.support,
     required this.supportChat,
+    required this.help,
     required this._push,
     required this.consent,
     required this._account,
@@ -356,6 +361,7 @@ class RendezvousCommunity
           ];
         },
       ),
+      help: HelpRepositoryImpl(cs: cs, cache: localValues),
       push: PushRegistrar(PushRepositoryImpl(api), currentUserId: () => tokens.currentSession?.user.id),
       consent: CommunityConsent(LegalRepositoryImpl(api)),
       account: AccountRepositoryImpl(api, currentUsername: () => tokens.currentSession?.user.username),
@@ -558,6 +564,8 @@ class RendezvousCommunity
   final SupportRepository support;
   @override
   final ChatRepository supportChat;
+  @override
+  final HelpRepository help;
   @override
   final CommunityConsent consent;
   late final OfficialAccounts officialAccounts = OfficialAccounts(profiles.officialAccountIds);

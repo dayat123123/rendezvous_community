@@ -1853,4 +1853,84 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get contactEmailCopied => 'Email disalin';
+
+  @override
+  String get helpTitle => 'Pusat Bantuan';
+
+  @override
+  String get helpSearchHint => 'Cari pertanyaan, misalnya: lupa PIN';
+
+  @override
+  String get helpSearchClear => 'Hapus pencarian';
+
+  @override
+  String helpCategoryCount(int count) {
+    return '$count artikel';
+  }
+
+  @override
+  String get helpEmpty => 'Belum ada artikel bantuan.';
+
+  @override
+  String helpSearchEmpty(String query) {
+    return 'Tidak ada artikel yang cocok dengan “$query”.';
+  }
+
+  @override
+  String get helpSearchSaved => 'Hasil dari Pusat Bantuan yang tersimpan.';
+
+  @override
+  String get helpOffline => 'Anda sedang offline. Menampilkan Pusat Bantuan yang tersimpan.';
+
+  @override
+  String helpUpdated(String date) {
+    return 'Diperbarui $date';
+  }
+
+  @override
+  String get helpWasHelpful => 'Apakah ini membantu?';
+
+  @override
+  String get helpYes => 'Ya';
+
+  @override
+  String get helpNo => 'Tidak';
+
+  @override
+  String get helpFeedbackThanks => 'Terima kasih atas masukan Anda.';
+
+  @override
+  String get helpFeedbackComment => 'Ceritakan lebih lanjut (opsional)';
+
+  @override
+  String get helpFeedbackSend => 'Kirim';
+
+  @override
+  String get helpFeedbackCommentSent => 'Komentar Anda sudah terkirim.';
+
+  @override
+  String get helpStillNeedHelp => 'Masih butuh bantuan?';
+
+  @override
+  String get helpChatCs => 'Chat CS';
+
+  @override
+  String get helpSuggestionsTitle => 'Mungkin ini membantu';
+
+  @override
+  String helpSuggestionsHint(String topic) {
+    return 'Artikel untuk topik $topic. Bila belum terjawab, lanjutkan ke chat CS.';
+  }
+
+  @override
+  String get helpContinueChat => 'Lanjut chat dengan CS';
+
+  @override
+  String get helpPickAnotherTopic => 'Pilih topik lain';
+
+  @override
+  String get errorHelpArticleNotFound => 'Artikel ini sudah tidak tersedia.';
+
+  @override
+  String get errorHelpQuery => 'Kata pencarian harus 2–100 karakter.';
 }

@@ -24,6 +24,7 @@ Daftar semua widget visual di `lib/src/shared/presentation/widgets` dan `lib/src
 | `CommunitySupportBuilders` (`support`) | `CommunitySupportBuildersScope` | **B** | chat CS, tiket, rating (16 slot, tahap 2 sudah) |
 | `CommunitySettingsBuilders` (`settings`) | `CommunitySettingsBuildersScope` | **B** | pengaturan akun & notifikasi, kebijakan DM, dokumen hukum, banding, laporan (13 slot, tahap 2 sudah) |
 | `CommunitySystemBuilders` (`system`) | `CommunitySystemBuildersScope` | **B** | banner konfigurasi, kill switch, offline, banner persetujuan, popup promo (5 slot, tahap 2 sudah) |
+| `CommunityHelpBuilders` (`help`) | `CommunityHelpBuildersScope` | – | Pusat Bantuan/FAQ dan saran artikel di pilih topik CS (11 slot, lihat [customization.md](customization.md#pusat-bantuan)) |
 
 Keempat set baru sudah tersambung ke `CommunityBuilders` (`discovery`, `support`, `settings`, `system`: field, `of`, `merge`, `wrap`, `_same`) dan diekspor. Tahap 2 cukup menambah field slot ke file set miliknya sendiri, lengkap dengan `merge` per field (diawasi `test/tool/merge_completeness_test.dart`; tambahkan `'<Set>.merge'` ke daftar tes begitu set punya field). File `*_details.dart` dibuat di folder `builders/` fitur yang sama. Agen A tidak menyentuh set milik B dan sebaliknya; `community_builders.dart` dan `rendezvous_community.dart` tidak perlu diubah lagi kecuali untuk ekspor file details baru (tambahkan satu baris, urut abjad).
 

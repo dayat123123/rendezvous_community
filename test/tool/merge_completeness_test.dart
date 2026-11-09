@@ -94,6 +94,7 @@ void main() {
         'CommunitySettingsBuilders.merge',
         'CommunitySystemBuilders.merge',
         'CommunitySupportBuilders.merge',
+        'CommunityHelpBuilders.merge',
         'CommunityDiscoveryBuilders.merge',
         'CommunityStyle.copyWith',
         'CommunityStyle.lerp',

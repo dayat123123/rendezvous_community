@@ -48,7 +48,7 @@ Lazy load, kirim ulang otomatis, indikator mengetik, dan tanda terima tetap diur
 
 ### Pasang semua sekaligus
 
-`CommunityBuilders` menggabungkan semua set builder: `chat`, `feed`, `notifications`, `profile`, `badges`, dan sejak 1.7.0 `shared` (komponen bersama, lihat [di bawah](#komponen-bersama-170)), `discovery` (pencarian & trending), `support` (chat CS), `settings` (pengaturan, hukum, banding, laporan), `system` (banner, kill switch, offline). Pasang sekali di `MaterialApp.builder` supaya berlaku di semua halaman, termasuk halaman yang dibuka package:
+`CommunityBuilders` menggabungkan semua set builder: `chat`, `feed`, `notifications`, `profile`, `badges`, dan sejak 1.7.0 `shared` (komponen bersama, lihat [di bawah](#komponen-bersama-170)), `discovery` (pencarian & trending), `support` (chat CS), `settings` (pengaturan, hukum, banding, laporan), `system` (banner, kill switch, offline), dan `help` (Pusat Bantuan/FAQ). Pasang sekali di `MaterialApp.builder` supaya berlaku di semua halaman, termasuk halaman yang dibuka package:
 
 ```dart
 MaterialApp(
@@ -66,7 +66,7 @@ MaterialApp(
 
 Slot `discovery`, `support`, `settings`, dan `system` diisi bertahap (lihat [builders.md](builders.md)); set yang belum punya slot boleh dibiarkan bawaan.
 
-`CommunityBuildersScope` boleh bersarang: scope di dalam hanya menimpa bagian yang diisinya, sisanya diwarisi dari scope di atasnya (`merge` mencakup semua field; dijaga oleh `test/tool/merge_completeness_test.dart`). Builder per widget (`CommunityFeedList(builders: ...)`, `CommunityStreamFeed(builders: ...)`, `CommunityNotificationList(builders: ...)`, `CommunityUserProfile(builders: ...)`, `CommunityChatList/CommunityChatRoom(builders: ...)`) juga digabung dengan cara yang sama. Scope per set (`CommunityChatBuildersScope`, `CommunityFeedBuildersScope`, `CommunityNotificationBuildersScope`, `CommunityProfileBuildersScope`, `CommunityBadgeBuildersScope`, `CommunitySharedBuildersScope`, `CommunityDiscoveryBuildersScope`, `CommunitySupportBuildersScope`, `CommunitySettingsBuildersScope`, `CommunitySystemBuildersScope`) mengganti set itu seluruhnya.
+`CommunityBuildersScope` boleh bersarang: scope di dalam hanya menimpa bagian yang diisinya, sisanya diwarisi dari scope di atasnya (`merge` mencakup semua field; dijaga oleh `test/tool/merge_completeness_test.dart`). Builder per widget (`CommunityFeedList(builders: ...)`, `CommunityStreamFeed(builders: ...)`, `CommunityNotificationList(builders: ...)`, `CommunityUserProfile(builders: ...)`, `CommunityChatList/CommunityChatRoom(builders: ...)`) juga digabung dengan cara yang sama. Scope per set (`CommunityChatBuildersScope`, `CommunityFeedBuildersScope`, `CommunityNotificationBuildersScope`, `CommunityProfileBuildersScope`, `CommunityBadgeBuildersScope`, `CommunitySharedBuildersScope`, `CommunityDiscoveryBuildersScope`, `CommunitySupportBuildersScope`, `CommunitySettingsBuildersScope`, `CommunitySystemBuildersScope`, `CommunityHelpBuildersScope`) mengganti set itu seluruhnya.
 
 ### Komponen bersama (1.7.0)
 
@@ -472,6 +472,49 @@ CommunityBuildersScope(
 | `loading` / `empty` / `error` | `CommunityListLoadingDetails` / `CommunityListEmptyDetails` / `CommunityListErrorDetails` | status awal chat CS dan daftar "Tiket saya" |
 
 Dialog konfirmasi (akhiri chat, keluhan) memakai `shared.confirmDialog`. Dialog dibuka di rute baru, jadi builder `support` yang dipasang di bawah `MaterialApp` ikut terbawa ke `ratingDialog` dan `fakeCsWarning`.
+
+### Pusat Bantuan
+
+Semua bagian Pusat Bantuan (`CommunityHelpCenter`, `openCommunityHelpCenter`, `openCommunityHelpArticle`) dan langkah saran artikel di halaman pilih topik chat CS bisa diganti lewat `CommunityBuilders(help: CommunityHelpBuilders(...))`. Warna, huruf, dan mode gelap mengikuti `CommunityStyle` seperti bagian lain.
+
+```dart
+CommunityBuildersScope(
+  builders: CommunityBuilders(
+    help: CommunityHelpBuilders(
+      categoryTile: (context, d, fallback) => ListTile(
+        leading: Icon(d.icon),
+        title: Text(d.title),
+        subtitle: Text(d.countLabel),
+        onTap: d.onOpen,
+      ),
+      contact: (context, d, fallback) => FilledButton.icon(
+        onPressed: d.onContact,
+        icon: const Icon(Icons.support_agent),
+        label: Text('${d.title} ${d.actionLabel}'),
+      ),
+      articleDetail: (context, d, fallback) => ListView(
+        padding: const EdgeInsets.all(16),
+        children: [Text(d.title, style: const TextStyle(fontSize: 20)), d.body, d.feedback, d.contact],
+      ),
+    ),
+  ),
+  child: const CommunityHelpCenter(),
+)
+```
+
+| Slot | Details | Isi |
+|---|---|---|
+| `searchField` | `CommunityHelpSearchDetails` | `controller`, `hintText`, `clearLabel`, `searching`; `onChanged(teks)`, `onClear` |
+| `categoryTile` | `CommunityHelpCategoryDetails` | `category` (`HelpCategory`: `code`, `name`, kunci `icon`, `articles`), `icon` sebagai `IconData`, `title`, `countLabel` ("2 artikel"), `code`, `articleCount`; `onOpen` |
+| `articleTile` | `CommunityHelpArticleTileDetails` | `article` (`HelpArticle`), `title` (pertanyaan), `subtitle` (nama kategori di hasil pencarian); `onOpen` |
+| `articleDetail` | `CommunityHelpArticleDetails` | `article`, `title`, `answer`, `topic`, `categoryName`, `updatedLabel` ("Diperbarui 3 November 2026"), `loading`, `offline`, dan widget siap pakai `body` (jawaban yang sudah dirender), `feedback`, `contact` |
+| `feedback` | `CommunityHelpFeedbackDetails` | `question`, `yesLabel`, `noLabel`, `thanksLabel`, `commentLabel`, `submitLabel`, `commentSentLabel`, `controller` (komentar), `maxCommentLength` (500), `feedback`/`helpful`/`voted` (pilihan tersimpan), `busy`, `commentSent`; `onVote(bool)` (null saat mengirim), `onSubmitComment` (null sebelum memilih) |
+| `contact` | `CommunityHelpContactDetails` | `title` ("Masih butuh bantuan?"), `actionLabel` ("Chat CS"), `topic` (topik chat CS artikel, bisa null); `onContact` |
+| `offlineNotice` | `CommunityHelpOfflineDetails` | `message`, `retryLabel`, `savedAt` (waktu isi tersimpan); `onRetry` |
+| `topicSuggestions` | `CommunityHelpSuggestionsDetails` | langkah "Mungkin ini membantu" di chat CS: `topicCode`, `topic` (`SupportTopic`), `title`, `hint`, `articles` (maks. 3), `continueLabel`, `backLabel`, `busy`; `onOpenArticle(article)`, `onContinue` (buat tiket), `onBack` (kembali ke daftar topik) |
+| `loading` / `empty` / `error` | `CommunityListLoadingDetails` / `CommunityListEmptyDetails` / `CommunityListErrorDetails` | status awal, FAQ atau hasil pencarian kosong, dan galat (termasuk artikel yang sudah tidak terbit) |
+
+Untuk merender jawaban di tampilan sendiri, pakai `CommunityHelpMarkdown(article.answer)`: aturan Markdown dan keamanan tautan/gambar sama dengan bawaan (`onLinkTap` dan `imageBuilder` opsional untuk mengganti cara membuka tautan dan menampilkan gambar). Host yang tidak memakai `RendezvousCommunity.initialize` (misalnya tes) memasang `CommunityHelpScope(dependencies: ...)` dengan `HelpRepository` sendiri; tanpa scope dan tanpa inisialisasi, halaman pilih topik CS tetap berjalan seperti sebelumnya tanpa saran artikel.
 
 ### Pengaturan, moderasi, dan dokumen hukum (1.7.0)
 

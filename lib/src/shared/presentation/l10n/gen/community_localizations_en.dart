@@ -1866,4 +1866,85 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get contactEmailCopied => 'Email copied';
+
+  @override
+  String get helpTitle => 'Help Center';
+
+  @override
+  String get helpSearchHint => 'Search questions, e.g. forgot PIN';
+
+  @override
+  String get helpSearchClear => 'Clear search';
+
+  @override
+  String helpCategoryCount(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count articles', one: '1 article');
+    return '$_temp0';
+  }
+
+  @override
+  String get helpEmpty => 'No help articles yet.';
+
+  @override
+  String helpSearchEmpty(String query) {
+    return 'No articles match “$query”.';
+  }
+
+  @override
+  String get helpSearchSaved => 'Results from the saved Help Center.';
+
+  @override
+  String get helpOffline => 'You\'re offline. Showing the saved Help Center.';
+
+  @override
+  String helpUpdated(String date) {
+    return 'Updated $date';
+  }
+
+  @override
+  String get helpWasHelpful => 'Was this helpful?';
+
+  @override
+  String get helpYes => 'Yes';
+
+  @override
+  String get helpNo => 'No';
+
+  @override
+  String get helpFeedbackThanks => 'Thanks for your feedback.';
+
+  @override
+  String get helpFeedbackComment => 'Tell us more (optional)';
+
+  @override
+  String get helpFeedbackSend => 'Send';
+
+  @override
+  String get helpFeedbackCommentSent => 'Your comment has been sent.';
+
+  @override
+  String get helpStillNeedHelp => 'Still need help?';
+
+  @override
+  String get helpChatCs => 'Chat with CS';
+
+  @override
+  String get helpSuggestionsTitle => 'This might help';
+
+  @override
+  String helpSuggestionsHint(String topic) {
+    return 'Articles for $topic. If they don\'t answer your question, continue to CS chat.';
+  }
+
+  @override
+  String get helpContinueChat => 'Continue to CS chat';
+
+  @override
+  String get helpPickAnotherTopic => 'Choose another topic';
+
+  @override
+  String get errorHelpArticleNotFound => 'This article is no longer available.';
+
+  @override
+  String get errorHelpQuery => 'Search must be 2–100 characters.';
 }

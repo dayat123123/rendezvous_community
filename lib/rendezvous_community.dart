@@ -6,6 +6,7 @@ export 'src/app/community_account_scope.dart';
 export 'src/app/community_builders.dart' show CommunityBuilders, CommunityBuildersScope;
 export 'src/app/community_dependencies.dart';
 export 'src/app/community_feature_scope.dart';
+export 'src/app/community_help_scope.dart';
 export 'src/app/community_image_scope.dart';
 export 'src/app/community_official_scope.dart';
 export 'src/app/community_offline_scope.dart';
@@ -132,6 +133,16 @@ export 'src/features/feed/presentation/builders/community_feed_details.dart';
 export 'src/features/feed/presentation/widgets/community_feed_list.dart' show CommunityFeedList;
 export 'src/features/feed/presentation/widgets/community_stream_feed.dart' show CommunityFeedTab, CommunityStreamFeed;
 export 'src/features/feed/presentation/widgets/sentiment_badge.dart';
+export 'src/features/help/domain/entities/help_article.dart';
+export 'src/features/help/domain/repositories/help_repository.dart';
+export 'src/features/help/presentation/builders/community_help_builders.dart'
+    show CommunityHelpBuilders, CommunityHelpBuildersScope;
+export 'src/features/help/presentation/builders/community_help_details.dart';
+export 'src/features/help/presentation/widgets/community_help_article.dart'
+    show CommunityHelpArticleView, CommunityHelpContactCallback, openCommunityHelpArticle;
+export 'src/features/help/presentation/widgets/community_help_center.dart'
+    show CommunityHelpCenter, openCommunityHelpCenter;
+export 'src/features/help/presentation/widgets/community_help_markdown.dart';
 export 'src/features/legal/domain/entities/legal_document.dart';
 export 'src/features/legal/domain/repositories/legal_repository.dart';
 export 'src/features/legal/domain/services/community_consent.dart';

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_details.dart';
+import 'package:rendezvous_community/src/features/help/presentation/widgets/community_help_article.dart';
+import 'package:rendezvous_community/src/features/help/presentation/widgets/help_parts.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_details.dart';
@@ -8,26 +11,9 @@ import 'package:rendezvous_community/src/features/support/presentation/widgets/s
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_card.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/content_icons.dart';
 
-IconData supportTopicIconFor(SupportTopic topic) => switch (topic.icon) {
-  'account' => Icons.person_outline,
-  'wallet' => Icons.account_balance_wallet_outlined,
-  'receipt' => Icons.receipt_long_outlined,
-  'chart' => Icons.pie_chart_outline,
-  'tools' => Icons.build_outlined,
-  'shield' => Icons.gpp_maybe_outlined,
-  'help' => Icons.help_outline,
-  'document' => Icons.description_outlined,
-  'phone' => Icons.phone_outlined,
-  'card' => Icons.credit_card,
-  'chat' => Icons.chat_bubble_outline,
-  'star' => Icons.star_outline,
-  'bell' => Icons.notifications_none,
-  'lock' => Icons.lock_outline,
-  'globe' => Icons.public,
-  'gift' => Icons.card_giftcard,
-  _ => supportTopicIcon(topic.code),
-};
+IconData supportTopicIconFor(SupportTopic topic) => communityContentIcon(topic.icon) ?? supportTopicIcon(topic.code);
 
 IconData supportTopicIcon(String code) => switch (code) {
   'account' => Icons.person_outline,
@@ -49,12 +35,38 @@ class SupportTopicPicker extends StatelessWidget {
     final state = context.watch<SupportCubit>().state;
     final history = state.home?.roomId != null;
     final language = Localizations.localeOf(context).languageCode == 'en' ? 'en' : 'id';
+    final suggestionTopic = state.suggestionTopic;
+    if (state.showsSuggestions && suggestionTopic != null) {
+      final topic = state.topics.where((t) => t.code == suggestionTopic).firstOrNull;
+      return HelpTopicSuggestions(
+        details: CommunityHelpSuggestionsDetails(
+          topicCode: suggestionTopic,
+          topic: topic,
+          title: l10n.helpSuggestionsTitle,
+          hint: l10n.helpSuggestionsHint(topic?.name ?? suggestionTopic),
+          articles: state.suggestions,
+          continueLabel: l10n.helpContinueChat,
+          backLabel: l10n.helpPickAnotherTopic,
+          busy: state.busy,
+          onOpenArticle: (article) => openCommunityHelpArticle(
+            context,
+            article,
+            onContactSupport: (articleContext, _) {
+              Navigator.of(articleContext).pop();
+              cubit.start(suggestionTopic);
+            },
+          ),
+          onContinue: () => cubit.start(suggestionTopic),
+          onBack: cubit.dismissSuggestions,
+        ),
+      );
+    }
     final details = CommunitySupportTopicPickerDetails(
       topics: state.topics,
       title: state.home?.topicTitle(language) ?? l10n.supportPickTopic,
       hint: state.home?.topicHint(language) ?? l10n.supportPickTopicHint,
-      busy: state.busy,
-      onSelect: cubit.start,
+      busy: state.busy || state.suggesting != null,
+      onSelect: cubit.select,
       historyLabel: history ? l10n.supportHistory : null,
       onShowHistory: history ? cubit.showHistory : null,
     );

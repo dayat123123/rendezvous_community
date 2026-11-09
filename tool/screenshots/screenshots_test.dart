@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'chat_scenes.dart';
 import 'feed_scenes.dart';
+import 'help_scenes.dart';
 import 'screenshot_harness.dart';
 import 'settings_scenes.dart';
 import 'shared_scenes.dart';
@@ -12,6 +13,7 @@ import 'system_scenes.dart';
 final scenes = <ScreenshotScene>[
   ...sharedScenes,
   ...supportScenes,
+  ...helpScenes,
   ...settingsScenes,
   ...systemScenes,
   ...feedScenes,

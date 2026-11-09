@@ -2,6 +2,10 @@ import 'dart:async';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
+import 'package:rendezvous_community/src/core/logging/community_logger.dart';
+import 'package:rendezvous_community/src/features/help/domain/entities/help_article.dart';
+import 'package:rendezvous_community/src/features/help/domain/repositories/help_repository.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 import 'package:rendezvous_community/src/features/support/domain/repositories/support_repository.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
@@ -25,6 +29,9 @@ abstract class SupportState with _$SupportState {
     @Default(0) int actionErrorId,
     SupportNoticeKind? notice,
     @Default(0) int noticeId,
+    String? suggesting,
+    String? suggestionTopic,
+    @Default(<HelpArticle>[]) List<HelpArticle> suggestions,
   }) = _SupportState;
 
   const SupportState._();
@@ -35,12 +42,23 @@ abstract class SupportState with _$SupportState {
       (history && home?.roomId != null) || (!picking && (home?.showsConversation(now) ?? false));
 
   bool canRate(String ticketId) => ticket?.id == ticketId && (ticket?.canRate ?? false);
+
+  bool get showsSuggestions => suggestionTopic != null && suggestions.isNotEmpty;
 }
 
 class SupportCubit extends Cubit<SupportState> {
-  SupportCubit({required this._support, this.topic, this.screen, this.language = 'id'}) : super(const SupportState());
+  SupportCubit({
+    required this._support,
+    this._help,
+    this.topic,
+    this.screen,
+    this.language = 'id',
+    this.suggestionTimeout = const Duration(seconds: 4),
+  }) : super(const SupportState());
 
   final SupportRepository _support;
+  final HelpRepository? _help;
+  final Duration suggestionTimeout;
   final String? topic;
   final String? screen;
   final String language;
@@ -80,14 +98,41 @@ class SupportCubit extends Cubit<SupportState> {
     } catch (_) {}
   }
 
-  void pickTopic() => emit(state.copyWith(picking: true, history: false));
+  void pickTopic() => emit(state.copyWith(picking: true, history: false, suggestionTopic: null, suggestions: const []));
 
   void showHistory() => emit(state.copyWith(picking: false, history: true));
+
+  Future<void> select(String topic) async {
+    final help = _help;
+    if (help == null) return start(topic);
+    if (state.busy || state.suggesting != null) return;
+    emit(state.copyWith(suggesting: topic));
+    var articles = const <HelpArticle>[];
+    try {
+      articles = await help.articlesForTopic(topic, language: language).timeout(suggestionTimeout);
+    } catch (e) {
+      CommunityLoggers.support.event(
+        Level.FINE,
+        'Help suggestions unavailable',
+        fields: {'topic': topic, 'errorType': e.runtimeType.toString()},
+      );
+    }
+    if (isClosed) return;
+    if (articles.isEmpty) {
+      emit(state.copyWith(suggesting: null));
+      return start(topic);
+    }
+    emit(state.copyWith(suggesting: null, suggestionTopic: topic, suggestions: articles));
+  }
+
+  void dismissSuggestions() => emit(state.copyWith(suggestionTopic: null, suggestions: const []));
 
   Future<void> start(String topic) => _act(() async {
     await _support.openTicket(topic: topic, language: language, screen: screen);
     await refresh();
-    if (!isClosed) emit(state.copyWith(picking: false, history: false));
+    if (!isClosed) {
+      emit(state.copyWith(picking: false, history: false, suggestionTopic: null, suggestions: const []));
+    }
   });
 
   Future<void> closeTicket() => _act(() async {

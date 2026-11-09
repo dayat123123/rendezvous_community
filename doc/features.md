@@ -228,6 +228,33 @@ MaterialApp(
 - **Kontrak server:** objek di `banners` mendapat `display` (`strip`/`popup`, tak ada → `strip`), `image_url` (URL `http(s)` publik atau null; selain itu diabaikan), `cta_label` (null/kosong → label bawaan), `frequency` (`once`/`daily`/`every_open`). Backend tanpa field ini: semua banner tetap strip seperti sebelumnya; tanpa RPC `record_banner_event`: popup tetap jalan, event tidak tercatat.
 - **Manual:** `showCommunityPromoPopup(context, banner)` menampilkan satu banner sebagai popup (tanpa aturan frekuensi), mis. untuk pratinjau di aplikasi admin; hasilnya `CommunityBannerEvent.click` atau `dismiss`.
 
+## Pusat Bantuan / FAQ (server migrasi `0129`, gambar `0130`)
+
+Artikel bantuan dua bahasa yang diatur tim Konten Layanan dari Hub (menu **Bantuan / FAQ**). Nasabah membukanya dari menu aplikasi host:
+
+```dart
+await openCommunityHelpCenter(context);   // halaman Pusat Bantuan (kategori, cari, artikel)
+
+// atau ditanam di layar host
+const CommunityHelpCenter();
+CommunityHelpCenter(onContactSupport: (context, topic) => bukaPanelCs(topic));
+
+// buka satu artikel langsung (misalnya dari notifikasi)
+await openCommunityHelpArticle(context, article);
+```
+
+| Bagian | Perilaku |
+|---|---|
+| Kategori | Hanya kategori aktif yang punya artikel terbit, urut sesuai Hub, dengan ikon dari server (`account`, `wallet`, `shield`, dan seterusnya; sama dengan ikon topik chat CS) dan jumlah artikel. Ketuk kategori membuka daftar pertanyaannya |
+| Pencarian | Mulai dari 2 huruf (maks. 100), dikirim 350 ms setelah berhenti mengetik ke `cs_api.faq_search` (maks. 20 hasil, urut kecocokan judul dan nilai membantu). Pencarian tanpa hasil dicatat server tanpa data pribadi sebagai bahan artikel baru. Batas laju server 30 per menit; bila terlampaui tampil pesan galat biasa |
+| Artikel | Jawaban memakai Markdown terbatas: paragraf, **tebal**, *miring*, daftar berbutir dan bernomor, judul `#`, tautan `[teks](https://...)`, dan gambar `![alt](URL)` di baris sendiri. Tautan selain `https` tampil sebagai teks biasa; tautan dibuka lewat dialog konfirmasi domain yang sama dengan tautan di chat. Gambar hanya dimuat dari bucket publik `faq-images` (`/storage/v1/object/public/faq-images/<uuid>.jpg/png/webp`), tampil dengan sudut membulat (tinggi maks. 360 px), label aksesibilitas = teks alt, tidak bisa diketuk, dan diganti ikon gambar rusak bila gagal dimuat. HTML tidak pernah ditafsirkan. Membuka artikel memanggil `cs_api.faq_article`, yang mencatat jumlah dibaca untuk statistik Hub |
+| "Apakah ini membantu?" | Tombol **Ya**/**Tidak** langsung tersimpan (satu suara per nasabah per artikel, bisa diganti). Setelah memilih, muncul kolom komentar opsional (maks. 500 huruf). Pilihan sebelumnya tampil lagi saat artikel dibuka. Batas laju server 20 per jam |
+| "Masih butuh bantuan? Chat CS" | Ada di bawah setiap artikel, daftar kategori, dan hasil pencarian. Bawaannya membuka `openCommunitySupport(topic: <topik artikel>, screen: 'help_center')`, jadi tiket langsung dibuat dengan topik terkait (tanpa topik: halaman pilih topik). Host dengan panel CS sendiri mengisi `onContactSupport` |
+| Saran sebelum chat | Di halaman pilih topik chat CS, setelah nasabah memilih topik, paket mengambil maks. 3 artikel teratas topik itu (`cs_api.faq_for_topic`, urut nilai membantu lalu jumlah dibaca) dan menampilkannya di bawah judul **"Mungkin ini membantu"** dengan tombol **Lanjut chat dengan CS** dan **Pilih topik lain**. Bila topik belum punya artikel, permintaan gagal, atau server tidak menjawab dalam 4 detik, tiket langsung dibuat seperti sebelumnya. Topik yang dikirim host lewat `openCommunitySupport(topic: ...)` tidak melewati langkah ini |
+| Offline | Respons `cs_api.faq` terakhir yang berhasil disimpan per bahasa di cache lokal milik user (lihat [Offline](#offline-cache--outbox-130)). Saat dibuka, isi tersimpan tampil seketika lalu diganti data server. Bila server tidak terjangkau, isi tersimpan tetap dipakai dengan pemberitahuan kecil "Anda sedang offline…" dan tombol **Coba lagi**; pencarian dan artikel memakai isi tersimpan (tanpa umpan balik baru sampai online) |
+
+Teks ID/EN mengikuti locale aplikasi; isi artikel mengikuti bahasa itu (`p_language`). Semua bagian bisa diganti lewat `CommunityHelpBuilders` (lihat [customization.md](customization.md#pusat-bantuan)).
+
 ## Offline: cache & outbox (1.3.0)
 
 Bawaannya aktif. Paket menyimpan data terakhir di database lokal milik user komunitas yang sedang masuk, lalu menampilkannya seketika saat layar dibuka; data server dimuat di latar belakang dan menggantikannya (server tetap sumber kebenaran).
@@ -250,6 +277,7 @@ const CommunityOfflineBanner();                          // banner "Anda sedang 
 | Pesan | baris `get_messages` yang pernah dimuat, pesan terkirim | `offlineMessageLimit` per room, yang terlama dipangkas |
 | Feed | halaman pertama Terbaru, Mengikuti, dan feed saham | 20 feed saham terakhir; profil, hashtag, bookmark tidak |
 | Outbox | pesan teks yang belum terkirim (`client_id`, isi, balasan) | sampai terkirim, dihapus user, atau logout |
+| Pusat Bantuan | respons `cs_api.faq` terakhir per bahasa (kategori dan artikel terbit, tanpa umpan balik) | satu salinan per bahasa, ditimpa tiap kali berhasil dimuat |
 
 - **Sinkron:** baris server menimpa baris cache (edit, hapus, reaksi, `moderation_status`). Pesan yang tidak lagi dikembalikan server dalam rentang halaman yang sama dihapus dari cache. Saat koneksi kembali, layar yang masih menampilkan data tersimpan memuat ulang sendiri.
 - **Outbox:** pesan teks yang dikirim saat offline atau gagal karena jaringan tampil "Menunggu dikirim" lalu dikirim ulang otomatis (backoff 2 detik sampai 1 menit, langsung saat koneksi kembali, aplikasi kembali ke foreground, atau realtime tersambung). Urutan per room dijaga; `client_id` membuat server menolak duplikat. Penolakan server (`content_blocked`, `dm_request_limit`, persetujuan dokumen, `slow_mode` setelah 3 percobaan, dll.) membuat pesan "Gagal terkirim" dengan alasannya dan tombol **Coba lagi** / **Hapus**.

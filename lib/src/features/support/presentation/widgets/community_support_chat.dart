@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
+import 'package:rendezvous_community/src/app/community_help_scope.dart';
 import 'package:rendezvous_community/src/app/community_image_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
@@ -34,7 +35,13 @@ class CommunitySupportChat extends StatelessWidget {
     final support = CommunitySupportScope.of(context).support;
     final language = Localizations.localeOf(context).languageCode == 'en' ? 'en' : 'id';
     return BlocProvider(
-      create: (_) => SupportCubit(support: support, topic: topic, screen: screen, language: language)..load(),
+      create: (_) => SupportCubit(
+        support: support,
+        help: CommunityHelpScope.maybeOf(context)?.help,
+        topic: topic,
+        screen: screen,
+        language: language,
+      )..load(),
       child: _SupportView(onClose: onClose),
     );
   }

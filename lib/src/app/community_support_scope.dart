@@ -17,6 +17,10 @@ class CommunitySupportScope extends InheritedWidget {
   static CommunitySupportDependencies of(BuildContext context) =>
       context.getInheritedWidgetOfExactType<CommunitySupportScope>()?.dependencies ?? RendezvousCommunity.instance;
 
+  static CommunitySupportDependencies? maybeOf(BuildContext context) =>
+      context.getInheritedWidgetOfExactType<CommunitySupportScope>()?.dependencies ??
+      (RendezvousCommunity.isInitialized ? RendezvousCommunity.instance : null);
+
   @override
   bool updateShouldNotify(CommunitySupportScope oldWidget) => !identical(dependencies, oldWidget.dependencies);
 }

@@ -40,6 +40,7 @@ Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · mod
 | 💬 **Komentar** | Thread berantai dengan indentasi per level, "Lanjutkan thread", collapse per cabang, mention `@user` dan `$KODE` |
 | 🗨️ **Chat** | DM, grup, dan room saham realtime; centang ala WhatsApp; balas, reaksi, kartu saham; indikator mengetik; lazy load per 30 pesan; isi celah otomatis setelah koneksi putus |
 | 🎧 **Chat CS** | Room CS resmi disematkan paling atas, lampiran gambar + PDF, riwayat tiket, rating |
+| ❓ **Pusat Bantuan** | FAQ dua bahasa dari Hub: kategori, pencarian, "Apakah ini membantu?", saran artikel sebelum chat CS, tetap terbuka saat offline |
 | 🔔 **Notifikasi** | Kotak notifikasi + badge, push komunitas dan push transaksi OLT, preferensi per jenis dan jam tenang |
 | 🛡️ **Keamanan & moderasi** | Konten ditahan/disembunyikan dengan banding, permintaan DM dari orang asing, slow mode room saham, persetujuan dokumen hukum |
 | 📴 **Offline** | Cache lokal per user (feed, daftar chat, pesan) dan outbox pesan teks yang dikirim ulang otomatis |
@@ -143,6 +144,7 @@ Semua widget berupa konten tanpa `Scaffold`, jadi AppBar, navigasi, dan layout t
 | Ikon lonceng | `CommunityNotificationBadge(child: ...)` → `const CommunityNotificationList()` |
 | Bantuan / Chat CS | Windows: `CommunitySupportChat(onClose: ...)` sebagai panel samping ±420 px. Android: `openCommunitySupport(context)` |
 | Ikon "Bantuan" | `CommunitySupportBadge(child: Icon(Icons.support_agent_outlined))` |
+| Menu "Pusat Bantuan" | `openCommunityHelpCenter(context)` (atau `CommunityHelpCenter(onContactSupport: ...)` di panel host) |
 | Pengaturan → Privasi & akun komunitas | `openCommunityAccountSettings(context, onAccountDeleted: ...)` |
 | Profil sosial / deep link post | `CommunityUserProfile(userId: id)` / `CommunityPostDetail(postId: id)` |
 | Pencarian, trending, bookmark | `CommunitySearch()`, `CommunityTrending()`, `CommunityBookmarks()` |

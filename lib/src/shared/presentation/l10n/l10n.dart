@@ -64,6 +64,8 @@ extension CommunityErrorText on CommunityLocalizations {
       'invalid_reason' => errorAppealReason,
       'query_too_short' => errorQueryTooShort,
       'query_too_long' => errorQueryTooLong,
+      'invalid_query' => errorHelpQuery,
+      'article_not_found' => errorHelpArticleNotFound,
       'share_not_allowed' => errorShareNotAllowed,
       'reactions_not_supported' => featureUnavailable,
       'request_not_found' => errorRequestNotFound,
