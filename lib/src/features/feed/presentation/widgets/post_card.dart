@@ -84,6 +84,8 @@ class PostCard extends StatelessWidget {
       onComment: onToggleComments ?? onOpen,
       commentsExpanded: commentsExpanded,
       onToggleComments: onToggleComments,
+      topComment: post.topComment,
+      onOpenComments: onToggleComments ?? onOpen,
       onOpenAuthor: () => CommunityNavigator.openUser(context, post.author),
       onOpenStock: (code) => CommunityNavigator.openStock(context, code, source: source),
       onOpenHashtag: (tag) => CommunityNavigator.openHashtag(context, tag),
@@ -249,6 +251,8 @@ class _DefaultPostCard extends StatelessWidget {
             padding: EdgeInsetsDirectional.only(start: spacing.sm + spacing.xs, end: spacing.xs),
             child: buildCommunityPart(builders.actionBar, context, d, PostActionBar(details: d)),
           ),
+          if (!expanded && !d.commentsExpanded && d.topComment?.body != null && d.onOpenComments != null)
+            buildCommunityPart(builders.topComment, context, d, PostTopCommentPreview(details: d)),
         ] else
           SizedBox(height: spacing.md),
       ],
@@ -260,6 +264,105 @@ class _DefaultPostCard extends StatelessWidget {
     return Material(
       color: style.surface,
       child: expanded || d.onOpen == null ? padded : InkWell(onTap: d.onOpen, child: padded),
+    );
+  }
+}
+
+class PostTopCommentPreview extends StatelessWidget {
+  const PostTopCommentPreview({super.key, required this.details});
+
+  final CommunityPostDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final comment = details.topComment;
+    final author = comment?.author;
+    final body = comment?.body;
+    final open = details.onOpenComments;
+    if (comment == null || author == null || body == null || open == null) return const SizedBox.shrink();
+    final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final meta = style.typography.meta.copyWith(color: style.textSecondary);
+    final count = details.post.commentCount;
+    return Padding(
+      padding: EdgeInsetsDirectional.fromSTEB(spacing.lg, 0, spacing.lg, spacing.md),
+      child: Semantics(
+        button: true,
+        label: l10n.viewAllComments(count),
+        child: InkWell(
+          key: ValueKey('top-comment-${details.post.id}'),
+          onTap: open,
+          borderRadius: style.radii.controlRadius,
+          child: Ink(
+            padding: EdgeInsets.all(spacing.sm + spacing.xxs),
+            decoration: BoxDecoration(
+              color: style.background,
+              borderRadius: style.radii.controlRadius,
+              border: Border.fromBorderSide(style.borderSide),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    CommunityAvatar(user: author, radius: 13),
+                    SizedBox(width: spacing.sm),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Expanded(
+                                child: Text.rich(
+                                  TextSpan(
+                                    text: author.name,
+                                    style: style.typography.label.copyWith(color: style.textPrimary),
+                                    children: [
+                                      TextSpan(text: ' · ${l10n.relativeTime(comment.createdAt)}', style: meta),
+                                    ],
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                              if (comment.likeCount > 0) ...[
+                                Icon(Icons.favorite, size: 13, color: style.textTertiary),
+                                SizedBox(width: spacing.xxs),
+                                Text(communityCountText(context, comment.likeCount), style: meta),
+                              ],
+                            ],
+                          ),
+                          SizedBox(height: spacing.xxs),
+                          SocialText(
+                            body,
+                            maxLines: 2,
+                            links: false,
+                            source: details.source,
+                            style: style.typography.body.copyWith(fontSize: 14, height: 1.4),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                if (count > 1) ...[
+                  SizedBox(height: spacing.xs),
+                  Padding(
+                    padding: EdgeInsetsDirectional.only(start: 26 + spacing.sm),
+                    child: Text(
+                      l10n.viewAllComments(count),
+                      style: style.typography.label.copyWith(color: style.accent),
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

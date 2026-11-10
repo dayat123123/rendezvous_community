@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
+import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/moderation_status.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
@@ -29,6 +30,7 @@ abstract class Post with _$Post {
     @Default(false) bool isBot,
     @Default(false) bool authorIsOfficial,
     ModerationStatus? moderationStatus,
+    ThreadComment? topComment,
   }) = _Post;
 
   const Post._();
@@ -47,6 +49,12 @@ sealed class FeedScope with _$FeedScope {
   const factory FeedScope.stock(String code) = StockFeedScope;
 
   const factory FeedScope.user(String userId) = UserFeedScope;
+
+  const factory FeedScope.stocks(List<String> codes) = StocksFeedScope;
+
+  const factory FeedScope.official() = OfficialFeedScope;
+
+  const factory FeedScope.forYou() = ForYouFeedScope;
 }
 
 sealed class PostChange {

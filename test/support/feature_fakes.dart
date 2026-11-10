@@ -225,8 +225,25 @@ class FakeSearchRepository extends Fake implements SearchRepository {
       trending;
 }
 
-class FakeTrendingRepository extends Fake implements TrendingRepository {
+class FakeTrendingRepository extends Fake implements TrendingRepository, TrendingInsightsRepository {
   StockSentiment sentiment = const StockSentiment(code: 'BBCA');
+  Map<TrendWindow, SentimentBreakdown> market = const {};
+  Map<String, StockStats> stats = const {};
+  final marketRequests = <TrendWindow>[];
+  final statsRequests = <List<String>>[];
+
+  @override
+  Future<SentimentBreakdown> marketSentiment({TrendWindow window = TrendWindow.day}) async {
+    marketRequests.add(window);
+    return market[window] ?? const SentimentBreakdown();
+  }
+
+  @override
+  Future<Map<String, StockStats>> stockStats(List<String> codes) async {
+    statsRequests.add(codes);
+    return {for (final code in codes) code: ?stats[code]};
+  }
+
   TrendingSnapshot Function(TrendWindow window) snapshot = (window) => TrendingSnapshot(window: window);
 
   @override

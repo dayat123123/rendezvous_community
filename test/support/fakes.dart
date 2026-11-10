@@ -340,6 +340,7 @@ class FakeDependencies implements CommunityDependencies {
     NotificationRepository? notifications,
     StockRepository? stocks,
     MediaRepository? mediaRepository,
+    this._profiles,
     this.callbacks = const CommunityCallbacks(),
   }) : _media = mediaRepository,
        feed = feed ?? FakeFeedRepository(),
@@ -351,6 +352,7 @@ class FakeDependencies implements CommunityDependencies {
 
   final _unused = _Unused();
   final MediaRepository? _media;
+  final ProfileRepository? _profiles;
 
   @override
   final FakeFeedRepository feed;
@@ -361,7 +363,7 @@ class FakeDependencies implements CommunityDependencies {
   @override
   final ChatRepository chat;
   @override
-  ProfileRepository get profiles => _unused;
+  ProfileRepository get profiles => _profiles ?? _unused;
   @override
   final StockRepository stocks;
   @override

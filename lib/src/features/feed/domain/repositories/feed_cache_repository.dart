@@ -9,4 +9,7 @@ String? feedCacheKey(FeedScope scope) => switch (scope) {
   FollowingFeedScope() => 'following',
   StockFeedScope(:final code) => 'stock:${code.toUpperCase()}',
   UserFeedScope() => null,
+  StocksFeedScope(:final codes) => 'stocks:${([for (final c in codes) c.toUpperCase()]..sort()).join(',')}',
+  OfficialFeedScope() => 'official',
+  ForYouFeedScope() => 'for_you',
 };

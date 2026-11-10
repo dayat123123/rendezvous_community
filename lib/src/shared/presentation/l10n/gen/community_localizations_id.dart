@@ -2356,4 +2356,97 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String guestErrorInvalidMessage(int max) {
     return 'Pesan 1–$max karakter.';
   }
+
+  @override
+  String get feedForYou => 'Untuk Anda';
+
+  @override
+  String get feedTop => 'Teratas';
+
+  @override
+  String get feedMedia => 'Grafik & media';
+
+  @override
+  String get feedOfficial => 'Resmi';
+
+  @override
+  String get feedForYouEmpty => 'Belum ada rekomendasi. Ikuti akun atau saham agar feed ini makin pas.';
+
+  @override
+  String get feedOfficialEmpty => 'Belum ada post dari akun resmi.';
+
+  @override
+  String get feedMediaEmpty => 'Belum ada grafik atau gambar di sini.';
+
+  @override
+  String get feedWatchlistEmpty => 'Belum ada diskusi untuk saham di watchlist Anda.';
+
+  @override
+  String get whoToFollow => 'Akun untuk diikuti';
+
+  @override
+  String get whoToFollowEmpty => 'Belum ada saran akun saat ini.';
+
+  @override
+  String followedByMutual(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Diikuti $count akun yang Anda ikuti',
+      one: 'Diikuti 1 akun yang Anda ikuti',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get officialAccount => 'Akun resmi';
+
+  @override
+  String get marketMoodTitle => 'Mood pasar';
+
+  @override
+  String get marketMoodBullish => 'Cenderung bullish';
+
+  @override
+  String get marketMoodBearish => 'Cenderung bearish';
+
+  @override
+  String get marketMoodMixed => 'Berimbang';
+
+  @override
+  String postsToday(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count post hari ini',
+      one: '1 post hari ini',
+      zero: 'Belum ada post hari ini',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bullishShare(int pct) {
+    return '$pct% bullish';
+  }
+
+  @override
+  String viewAllComments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Lihat semua $count komentar',
+      one: 'Lihat 1 komentar',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeQuickImage => 'Gambar';
+
+  @override
+  String get composeQuickPoll => 'Polling';
+
+  @override
+  String get composeQuickCashtag => 'Saham';
 }

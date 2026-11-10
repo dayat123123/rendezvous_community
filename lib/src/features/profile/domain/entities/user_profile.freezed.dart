@@ -313,4 +313,288 @@ $UserSummaryCopyWith<$Res> get user {
 }
 }
 
+/// @nodoc
+mixin _$SuggestedUser {
+
+ UserSummary get user; int get followerCount; int get mutualCount; bool get isOfficial;
+/// Create a copy of SuggestedUser
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$SuggestedUserCopyWith<SuggestedUser> get copyWith => _$SuggestedUserCopyWithImpl<SuggestedUser>(this as SuggestedUser, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuggestedUser&&(identical(other.user, user) || other.user == user)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.mutualCount, mutualCount) || other.mutualCount == mutualCount)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,user,followerCount,mutualCount,isOfficial);
+
+@override
+String toString() {
+  return 'SuggestedUser(user: $user, followerCount: $followerCount, mutualCount: $mutualCount, isOfficial: $isOfficial)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $SuggestedUserCopyWith<$Res>  {
+  factory $SuggestedUserCopyWith(SuggestedUser value, $Res Function(SuggestedUser) _then) = _$SuggestedUserCopyWithImpl;
+@useResult
+$Res call({
+ UserSummary user, int followerCount, int mutualCount, bool isOfficial
+});
+
+
+$UserSummaryCopyWith<$Res> get user;
+
+}
+/// @nodoc
+class _$SuggestedUserCopyWithImpl<$Res>
+    implements $SuggestedUserCopyWith<$Res> {
+  _$SuggestedUserCopyWithImpl(this._self, this._then);
+
+  final SuggestedUser _self;
+  final $Res Function(SuggestedUser) _then;
+
+/// Create a copy of SuggestedUser
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? followerCount = null,Object? mutualCount = null,Object? isOfficial = null,}) {
+  return _then(_self.copyWith(
+user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as UserSummary,followerCount: null == followerCount ? _self.followerCount : followerCount // ignore: cast_nullable_to_non_nullable
+as int,mutualCount: null == mutualCount ? _self.mutualCount : mutualCount // ignore: cast_nullable_to_non_nullable
+as int,isOfficial: null == isOfficial ? _self.isOfficial : isOfficial // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+/// Create a copy of SuggestedUser
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserSummaryCopyWith<$Res> get user {
+  
+  return $UserSummaryCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [SuggestedUser].
+extension SuggestedUserPatterns on SuggestedUser {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _SuggestedUser value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _SuggestedUser() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _SuggestedUser value)  $default,){
+final _that = this;
+switch (_that) {
+case _SuggestedUser():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _SuggestedUser value)?  $default,){
+final _that = this;
+switch (_that) {
+case _SuggestedUser() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserSummary user,  int followerCount,  int mutualCount,  bool isOfficial)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _SuggestedUser() when $default != null:
+return $default(_that.user,_that.followerCount,_that.mutualCount,_that.isOfficial);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserSummary user,  int followerCount,  int mutualCount,  bool isOfficial)  $default,) {final _that = this;
+switch (_that) {
+case _SuggestedUser():
+return $default(_that.user,_that.followerCount,_that.mutualCount,_that.isOfficial);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserSummary user,  int followerCount,  int mutualCount,  bool isOfficial)?  $default,) {final _that = this;
+switch (_that) {
+case _SuggestedUser() when $default != null:
+return $default(_that.user,_that.followerCount,_that.mutualCount,_that.isOfficial);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _SuggestedUser implements SuggestedUser {
+  const _SuggestedUser({required this.user, this.followerCount = 0, this.mutualCount = 0, this.isOfficial = false});
+  
+
+@override final  UserSummary user;
+@override@JsonKey() final  int followerCount;
+@override@JsonKey() final  int mutualCount;
+@override@JsonKey() final  bool isOfficial;
+
+/// Create a copy of SuggestedUser
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$SuggestedUserCopyWith<_SuggestedUser> get copyWith => __$SuggestedUserCopyWithImpl<_SuggestedUser>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SuggestedUser&&(identical(other.user, user) || other.user == user)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.mutualCount, mutualCount) || other.mutualCount == mutualCount)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,user,followerCount,mutualCount,isOfficial);
+
+@override
+String toString() {
+  return 'SuggestedUser(user: $user, followerCount: $followerCount, mutualCount: $mutualCount, isOfficial: $isOfficial)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$SuggestedUserCopyWith<$Res> implements $SuggestedUserCopyWith<$Res> {
+  factory _$SuggestedUserCopyWith(_SuggestedUser value, $Res Function(_SuggestedUser) _then) = __$SuggestedUserCopyWithImpl;
+@override @useResult
+$Res call({
+ UserSummary user, int followerCount, int mutualCount, bool isOfficial
+});
+
+
+@override $UserSummaryCopyWith<$Res> get user;
+
+}
+/// @nodoc
+class __$SuggestedUserCopyWithImpl<$Res>
+    implements _$SuggestedUserCopyWith<$Res> {
+  __$SuggestedUserCopyWithImpl(this._self, this._then);
+
+  final _SuggestedUser _self;
+  final $Res Function(_SuggestedUser) _then;
+
+/// Create a copy of SuggestedUser
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? user = null,Object? followerCount = null,Object? mutualCount = null,Object? isOfficial = null,}) {
+  return _then(_SuggestedUser(
+user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as UserSummary,followerCount: null == followerCount ? _self.followerCount : followerCount // ignore: cast_nullable_to_non_nullable
+as int,mutualCount: null == mutualCount ? _self.mutualCount : mutualCount // ignore: cast_nullable_to_non_nullable
+as int,isOfficial: null == isOfficial ? _self.isOfficial : isOfficial // ignore: cast_nullable_to_non_nullable
+as bool,
+  ));
+}
+
+/// Create a copy of SuggestedUser
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserSummaryCopyWith<$Res> get user {
+  
+  return $UserSummaryCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
+}
+
 // dart format on

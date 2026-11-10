@@ -1,4 +1,5 @@
 import 'package:rendezvous_community/src/core/paging/paged.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
@@ -26,4 +27,14 @@ abstract interface class FeedRepository {
   Future<void> unlikePost(String postId);
 
   Stream<PostChange> watchPosts({String? postId});
+}
+
+abstract interface class FeedQueryRepository {
+  Future<Paged<Post>> queryFeed(
+    FeedScope scope, {
+    CommunityFeedSort sort = CommunityFeedSort.latest,
+    bool mediaOnly = false,
+    String? cursor,
+    int limit = 20,
+  });
 }

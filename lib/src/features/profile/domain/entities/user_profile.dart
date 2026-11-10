@@ -18,3 +18,13 @@ abstract class UserProfile with _$UserProfile {
     required bool isBlocked,
   }) = _UserProfile;
 }
+
+@freezed
+abstract class SuggestedUser with _$SuggestedUser {
+  const factory SuggestedUser({
+    required UserSummary user,
+    @Default(0) int followerCount,
+    @Default(0) int mutualCount,
+    @Default(false) bool isOfficial,
+  }) = _SuggestedUser;
+}

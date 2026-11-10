@@ -10,6 +10,7 @@ import 'package:rendezvous_community/src/core/paging/paged.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/bookmarks/domain/repositories/bookmark_repository.dart';
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_cache_repository.dart';
@@ -50,6 +51,8 @@ class FeedCubit extends Cubit<FeedState> {
     this.removeOnUnbookmark = false,
     this._cache,
     this._connectivity,
+    this.sort = CommunityFeedSort.latest,
+    this.mediaOnly = false,
   }) : super(const FeedState());
 
   final FeedCacheRepository? _cache;
@@ -64,7 +67,11 @@ class FeedCubit extends Cubit<FeedState> {
   final BookmarkRepository? _bookmarks;
   final ContentEditRepository? _edits;
   final bool removeOnUnbookmark;
+  final CommunityFeedSort sort;
+  final bool mediaOnly;
   StreamSubscription<PostChange>? _changes;
+
+  bool get isFiltered => sort != CommunityFeedSort.latest || mediaOnly;
 
   bool get isCustomSource => _loader != null;
 
@@ -74,7 +81,11 @@ class FeedCubit extends Cubit<FeedState> {
 
   Future<Paged<Post>> _page({String? cursor}) {
     final loader = _loader;
-    return loader == null ? _feed.getFeed(scope, cursor: cursor, limit: pageSize) : loader(cursor, pageSize);
+    if (loader != null) return loader(cursor, pageSize);
+    if (_feed case final FeedQueryRepository feed when isFiltered) {
+      return feed.queryFeed(scope, sort: sort, mediaOnly: mediaOnly, cursor: cursor, limit: pageSize);
+    }
+    return _feed.getFeed(scope, cursor: cursor, limit: pageSize);
   }
 
   Future<void> load() async {
@@ -113,7 +124,7 @@ class FeedCubit extends Cubit<FeedState> {
 
   Future<void> _showCached() async {
     final cache = _cache;
-    if (cache == null || isCustomSource) return;
+    if (cache == null || isCustomSource || isFiltered) return;
     final posts = await cache.cachedFeed(scope);
     if (posts == null || posts.isEmpty || isClosed || state.status == LoadStatus.ready) return;
     emit(state.copyWith(status: LoadStatus.ready, posts: posts, nextCursor: null, stale: true));
@@ -133,7 +144,7 @@ class FeedCubit extends Cubit<FeedState> {
   }
 
   Future<List<PinnedPost>> _pinned() async {
-    if (isCustomSource) return const [];
+    if (isCustomSource || isFiltered) return const [];
     try {
       return await _feed.getPinned(scope);
     } catch (_) {
@@ -269,7 +280,8 @@ class FeedCubit extends Cubit<FeedState> {
   );
 
   void insertOwnPost(Post post) {
-    if (isCustomSource) return;
+    if (isCustomSource || sort == CommunityFeedSort.top) return;
+    if (mediaOnly && post.attachments.isEmpty) return;
     if (!_matchesScope(authorId: post.author.id, body: post.body)) return;
     if (state.posts.any((p) => p.id == post.id)) return;
     emit(state.copyWith(posts: [post, ...state.posts]));
@@ -292,7 +304,7 @@ class FeedCubit extends Cubit<FeedState> {
           if (isCustomSource) return;
           final mine = change.authorId == currentUserId?.call();
           final known = state.posts.any((p) => p.id == change.postId);
-          if (mine || known || scope is FollowingFeedScope) return;
+          if (mine || known || isFiltered || scope is FollowingFeedScope) return;
           if (_matchesScope(authorId: change.authorId, body: change.body)) {
             emit(state.copyWith(newPosts: state.newPosts + 1));
           }
@@ -322,6 +334,8 @@ class FeedCubit extends Cubit<FeedState> {
     FollowingFeedScope() => true,
     StockFeedScope(:final code) => extractCashtags(body).contains(code.toUpperCase()),
     UserFeedScope(:final userId) => authorId == userId,
+    StocksFeedScope(:final codes) => codes.any((c) => extractCashtags(body).contains(c.toUpperCase())),
+    OfficialFeedScope() || ForYouFeedScope() => false,
   };
 
   void _replace(Post post) {

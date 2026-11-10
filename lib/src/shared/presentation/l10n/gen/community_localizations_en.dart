@@ -2370,4 +2370,97 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String guestErrorInvalidMessage(int max) {
     return 'Messages must be 1–$max characters.';
   }
+
+  @override
+  String get feedForYou => 'For you';
+
+  @override
+  String get feedTop => 'Top';
+
+  @override
+  String get feedMedia => 'Charts & media';
+
+  @override
+  String get feedOfficial => 'Official';
+
+  @override
+  String get feedForYouEmpty => 'Nothing to recommend yet. Follow people or stocks to tune this feed.';
+
+  @override
+  String get feedOfficialEmpty => 'No posts from official accounts yet.';
+
+  @override
+  String get feedMediaEmpty => 'No charts or images here yet.';
+
+  @override
+  String get feedWatchlistEmpty => 'No discussions for your watchlist yet.';
+
+  @override
+  String get whoToFollow => 'Who to follow';
+
+  @override
+  String get whoToFollowEmpty => 'No suggestions right now.';
+
+  @override
+  String followedByMutual(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Followed by $count people you follow',
+      one: 'Followed by 1 person you follow',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get officialAccount => 'Official account';
+
+  @override
+  String get marketMoodTitle => 'Market mood';
+
+  @override
+  String get marketMoodBullish => 'Leaning bullish';
+
+  @override
+  String get marketMoodBearish => 'Leaning bearish';
+
+  @override
+  String get marketMoodMixed => 'Mixed';
+
+  @override
+  String postsToday(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: '$count posts today',
+      one: '1 post today',
+      zero: 'No posts today',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String bullishShare(int pct) {
+    return '$pct% bullish';
+  }
+
+  @override
+  String viewAllComments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'View all $count comments',
+      one: 'View 1 comment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get composeQuickImage => 'Image';
+
+  @override
+  String get composeQuickPoll => 'Poll';
+
+  @override
+  String get composeQuickCashtag => 'Stock';
 }

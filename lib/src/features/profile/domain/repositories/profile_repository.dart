@@ -22,3 +22,7 @@ abstract interface class ProfileRepository {
 
   Future<Set<String>> officialAccountIds();
 }
+
+abstract interface class SuggestedUsersRepository {
+  Future<List<SuggestedUser>> suggestedUsers({int limit = 5});
+}

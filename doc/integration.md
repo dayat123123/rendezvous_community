@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.13.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.14.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -160,7 +160,9 @@ Semua widget adalah konten tanpa `Scaffold`, sehingga OLT tetap memegang AppBar,
 |---|---|
 | Tab/menu "Stream" | `const CommunityStreamFeed()`. Komentar inline seperti Facebook/Instagram: `CommunityStreamFeed(postOpenMode: CommunityPostOpenMode.inlineComments)` (1.13.0) |
 | Halaman detail saham (tab "Diskusi") | `CommunityStockFeed(stockCode: code, showHeader: false)` (header disembunyikan karena OLT sudah menampilkan info saham). Bila header dipakai, isi `stockName` dari data OLT |
-| Tombol tulis post | `showCommunityComposer(context, initialStock: code)` atau `CommunityComposePost(...)` |
+| Tombol tulis post | `showCommunityComposer(context, initialStock: code)` atau `CommunityComposePost(...)`. Sejak 1.14.0 bisa langsung ke mode tertentu: `initialSentiment: Sentiment.bullish`, `initialAction: CommunityComposerAction.image` / `.poll` / `.cashtag`, dan `hintText` |
+| Kartu "Apa pendapat Anda…" di atas feed buatan sendiri | `CommunityComposePromptCard(initialStock: code)` (1.14.0, dengan tombol Bullish/Bearish/Gambar/Polling/Saham) |
+| Panel samping Stream | `CommunityMarketSentiment()` (mood pasar), `CommunitySuggestedUsers()` (akun untuk diikuti), `CommunityStockStatsBuilder(codes: watchlist, builder: ...)` ("14 post hari ini") (1.14.0) |
 | Menu "Chat" | `const CommunityChatList()` (otomatis multi-panel di Windows) |
 | Ikon menu/tab "Chat" | `CommunityChatBadge(child: Icon(Icons.chat_bubble_outline))` (jumlah chat yang punya pesan belum dibaca) |
 | Ikon lonceng | `CommunityNotificationBadge(child: Icon(Icons.notifications))` → `CommunityNotificationList()` |
@@ -192,6 +194,30 @@ CommunityUserProfile(userId: id, postOpenMode: CommunityPostOpenMode.inlineComme
 ```
 
 Deep link post dan notifikasi tetap membuka `CommunityPostDetail`. Pilihan urutan "Disarankan/Terbaru" butuh server migrasi `0142`; di server lama komentar inline tetap jalan dengan urutan dari yang terlama. Rinciannya di [customization.md](customization.md#komentar-inline-1130).
+
+**Halaman Stream lengkap (1.14.0, server migrasi `0143`).** OLT bisa menyusun halaman Stream sendiri dari bagian-bagian berikut. Contoh tiga kolomnya ada di `example/lib/stream_page.dart`.
+
+| Bagian | API |
+|---|---|
+| Sumber feed | `FeedScope.forYou()` (rekomendasi; di server tanpa peringkat kembali ke Terbaru), `FeedScope.global()`, `FeedScope.following()`, `FeedScope.official()` (akun resmi/riset), `FeedScope.stocks(watchlistCodes)` (gabungan watchlist, maks 50 kode), `FeedScope.stock(code)` |
+| Tab "Terbaru / Teratas / Grafik & media" | `CommunityFeedList(scope: ..., sort: CommunityFeedSort.latest` atau `.top, mediaOnly: true)`. Teratas = suka + 2 × komentar dalam 30 hari terakhir (profil: sepanjang waktu). Post yang disematkan dan pil "N post baru" hanya muncul di urutan Terbaru tanpa filter |
+| Kartu composer | `CommunityComposePromptCard()`; bila dipasang sebagai `header` `CommunityFeedList`, post baru langsung masuk ke feed |
+| Mood pasar | `CommunityMarketSentiment()` atau `insights.marketSentiment(window: TrendWindow.day)` → `SentimentBreakdown` (`posts`, `bullishPct`, `bearishPct`, `neutralPct`) |
+| Akun untuk diikuti | `CommunitySuggestedUsers(limit: 5)` atau `profiles.suggestedUsers(limit: 5)` → `SuggestedUser` (`user`, `mutualCount`, `followerCount`, `isOfficial`) |
+| Label watchlist "14 post hari ini" | `CommunityStockStatsBuilder(codes: [...], builder: (context, stats) => ...)` (memuat ulang tiap 5 menit) atau `insights.stockStats(codes)` → `Map<String, StockStats>` (`postsToday` sejak 00.00 WIB, `bullishPct` hari ini). Teks siap pakai: `l10n.postsToday(n)`, `l10n.bullishShare(pct)` |
+| Pratinjau komentar di kartu | otomatis dari `Post.topComment`; ganti tampilannya lewat builder `topComment` |
+
+```dart
+CommunityFeedList(
+  scope: FeedScope.stocks(watchlist),
+  sort: CommunityFeedSort.top,
+  emptyMessage: context.communityL10n.feedWatchlistEmpty,
+  postOpenMode: CommunityPostOpenMode.inlineComments,
+  header: const CommunityComposePromptCard(),
+);
+```
+
+Di server tanpa `0143`: `FeedScope.forYou()` tampil seperti Terbaru, urutan Teratas diabaikan, dan "Grafik & media" disaring di aplikasi; `FeedScope.stocks` dan `FeedScope.official` menampilkan pesan error. `CommunityMarketSentiment` dan `CommunitySuggestedUsers` tidak tampil bila repository buatan OLT tidak mengimplementasikan `TrendingInsightsRepository` / `SuggestedUsersRepository`.
 
 **Persetujuan dokumen hukum.** Dokumen diterbitkan staf Kepatuhan dari web CS. Paket menanganinya sendiri:
 - Feed menampilkan `CommunityConsentBanner` bila ada dokumen wajib yang belum disetujui.
@@ -354,6 +380,7 @@ Bila hanya tampilan yang ingin diganti, pakai builder (langkah 4) supaya logika 
 - `chat.getRooms(cursor: ..., limit: 30)` mengembalikan `Paged<ChatRoom>`; room CS selalu di halaman pertama. `chat.getRoom(roomId)` memuat satu room.
 - `chat.getMessages(roomId, cursor: ..., limit: 30)` memuat pesan dari yang terbaru per halaman. `chat.getMessagesAfter(roomId, cursor)` menyusulkan pesan baru; selama `nextCursor` tidak `null`, masih ada pesan berikutnya.
 - `comments.getThread(postId, maxDepth: 3)`.
+- `(feed as FeedQueryRepository).queryFeed(FeedScope.stocks(codes), sort: CommunityFeedSort.top, mediaOnly: true)`, `(trending as TrendingInsightsRepository).marketSentiment()` / `.stockStats(codes)`, dan `(profiles as SuggestedUsersRepository).suggestedUsers()` (1.14.0; implementasi bawaan mengimplementasikan semuanya).
 - `chat.connectRoom(roomId, me: user).events` adalah stream realtime room (pesan, mengetik, tanda terima, presence). Sejak 1.5.0 pesan datang sebagai Broadcast dari server di topik privat `room:<id>` (backend `0098`), dan room mengisi celah sendiri lewat `get_messages` saat tersambung, tiap 45 detik, dan saat aplikasi kembali ke depan.
 - `chat.watchRoomSignals({roomId, ...}, me: user)` memantau mengetik, tanda terima, dan presence banyak room sekaligus (untuk daftar chat buatan sendiri).
 - `polls.vote(postId, optionId)` memberi suara; data polling ada di `Post.poll`.

@@ -1,4 +1,6 @@
 import 'package:flutter/widgets.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
 import 'package:rendezvous_community/src/features/search/domain/entities/search_results.dart';
 import 'package:rendezvous_community/src/features/trending/domain/entities/trending.dart';
 import 'package:rendezvous_community/src/features/trending/presentation/widgets/community_trending.dart';
@@ -185,6 +187,74 @@ class CommunityStockSentimentDetails {
   final Object? error;
   final String? errorMessage;
   final String? basedOnLabel;
+
+  bool get hasData => breakdown?.hasLabels ?? false;
+}
+
+class CommunitySuggestedUserDetails {
+  const CommunitySuggestedUserDetails({
+    required this.suggestion,
+    required this.subtitle,
+    required this.following,
+    required this.pending,
+    required this.followLabel,
+    required this.followingLabel,
+    required this.onOpen,
+    required this.onToggleFollow,
+  });
+
+  final SuggestedUser suggestion;
+  final String subtitle;
+  final bool following;
+  final bool pending;
+  final String followLabel;
+  final String followingLabel;
+  final VoidCallback onOpen;
+  final VoidCallback onToggleFollow;
+
+  UserSummary get user => suggestion.user;
+}
+
+class CommunityMarketSentimentDetails {
+  const CommunityMarketSentimentDetails({
+    required this.title,
+    required this.window,
+    required this.windows,
+    required this.windowLabels,
+    required this.loading,
+    required this.noDataLabel,
+    required this.bullishLabel,
+    required this.neutralLabel,
+    required this.bearishLabel,
+    required this.onWindowChanged,
+    required this.onRetry,
+    required this.retryLabel,
+    this.breakdown,
+    this.mood,
+    this.headline,
+    this.basedOnLabel,
+    this.error,
+    this.errorMessage,
+  });
+
+  final String title;
+  final TrendWindow window;
+  final List<TrendWindow> windows;
+  final List<String> windowLabels;
+  final bool loading;
+  final String noDataLabel;
+  final String bullishLabel;
+  final String neutralLabel;
+  final String bearishLabel;
+  final ValueChanged<TrendWindow> onWindowChanged;
+  final VoidCallback onRetry;
+  final String retryLabel;
+  final SentimentBreakdown? breakdown;
+  final Sentiment? mood;
+  final String? headline;
+  final String? basedOnLabel;
+  final Object? error;
+  final String? errorMessage;
 
   bool get hasData => breakdown?.hasLabels ?? false;
 }

@@ -7,6 +7,7 @@ import 'fake_olt_auth.dart';
 import 'main.dart';
 import 'sample_chart.dart';
 import 'stock_directory.dart';
+import 'stream_page.dart';
 import 'support_notifications.dart';
 
 class HomePage extends StatefulWidget {
@@ -172,7 +173,7 @@ class _HomePageState extends State<HomePage> {
     }
 
     final page = switch (_index) {
-      0 => wide ? const _TwoPaneStream() : const CommunityStreamFeed(),
+      0 => const StreamPage(watchlist: _stocks),
       1 => Column(
         children: [
           Padding(
@@ -337,89 +338,4 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
-
-class _TwoPaneStream extends StatefulWidget {
-  const _TwoPaneStream();
-
-  @override
-  State<_TwoPaneStream> createState() => _TwoPaneStreamState();
-}
-
-class _TwoPaneStreamState extends State<_TwoPaneStream> {
-  String? _selectedPost;
-
-  @override
-  Widget build(BuildContext context) {
-    final base = RendezvousCommunity.instance;
-    return Row(
-      children: [
-        Expanded(
-          flex: 5,
-          child: CommunityScope(
-            dependencies: _PostTapOverride(base, (postId) => setState(() => _selectedPost = postId)),
-            child: const CommunityStreamFeed(),
-          ),
-        ),
-        const VerticalDivider(width: 1),
-        Expanded(
-          flex: 6,
-          child: _selectedPost == null
-              ? const DetailPlaceholder()
-              : CommunityPostDetail(key: ValueKey(_selectedPost), postId: _selectedPost!),
-        ),
-      ],
-    );
-  }
-}
-
-class _PostTapOverride implements CommunityDependencies {
-  _PostTapOverride(this._base, this._onPost);
-
-  final CommunityDependencies _base;
-  final ValueChanged<String> _onPost;
-
-  @override
-  CommunityCallbacks get callbacks => CommunityCallbacks(
-    onStockTap: _base.callbacks.onStockTap,
-    onUserTap: _base.callbacks.onUserTap,
-    onRoomTap: _base.callbacks.onRoomTap,
-    onPostTap: (_, postId) => _onPost(postId),
-    stockSearch: _base.callbacks.stockSearch,
-  );
-
-  @override
-  FeedRepository get feed => _base.feed;
-  @override
-  CommentRepository get comments => _base.comments;
-  @override
-  PollRepository get polls => _base.polls;
-  @override
-  ProfileRepository get profiles => _base.profiles;
-  @override
-  StockRepository get stocks => _base.stocks;
-  @override
-  ChatRepository get chat => _base.chat;
-  @override
-  NotificationRepository get notifications => _base.notifications;
-  @override
-  ModerationRepository get moderation => _base.moderation;
-  @override
-  MediaRepository get media => _base.media;
-  @override
-  UserSummary? get currentUser => _base.currentUser;
-  @override
-  Future<UserSummary> ensureSignedIn() => _base.ensureSignedIn();
-}
-
-class DetailPlaceholder extends StatelessWidget {
-  const DetailPlaceholder({super.key});
-
-  @override
-  Widget build(BuildContext context) => Center(
-    child: Text(
-      'Pilih post untuk melihat diskusinya',
-      style: Theme.of(context).textTheme.bodyLarge?.copyWith(color: Theme.of(context).colorScheme.outline),
-    ),
-  );
 }

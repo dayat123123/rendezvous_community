@@ -76,6 +76,11 @@ abstract class SentimentBreakdown with _$SentimentBreakdown {
 }
 
 @freezed
+abstract class StockStats with _$StockStats {
+  const factory StockStats({required String code, @Default(0) int postsToday, int? bullishPct}) = _StockStats;
+}
+
+@freezed
 abstract class StockSentiment with _$StockSentiment {
   const factory StockSentiment({
     required String code,

@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_banner_host.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
@@ -34,6 +35,9 @@ String feedScopeName(FeedScope scope) => switch (scope) {
   FollowingFeedScope() => 'following',
   StockFeedScope() => 'stock',
   UserFeedScope() => 'user',
+  StocksFeedScope() => 'stocks',
+  OfficialFeedScope() => 'official',
+  ForYouFeedScope() => 'for_you',
 };
 
 class CommunityFeedList extends StatelessWidget {
@@ -44,6 +48,8 @@ class CommunityFeedList extends StatelessWidget {
     this.header,
     this.builders,
     this.postOpenMode = CommunityPostOpenMode.navigate,
+    this.sort = CommunityFeedSort.latest,
+    this.mediaOnly = false,
   });
 
   final FeedScope scope;
@@ -52,6 +58,8 @@ class CommunityFeedList extends StatelessWidget {
   final Widget? header;
   final CommunityFeedBuilders? builders;
   final CommunityPostOpenMode postOpenMode;
+  final CommunityFeedSort sort;
+  final bool mediaOnly;
 
   @override
   Widget build(BuildContext context) {
@@ -63,10 +71,13 @@ class CommunityFeedList extends StatelessWidget {
       builders,
       CommunitySocialGate(
         child: BlocProvider(
+          key: ValueKey((scope, sort, mediaOnly)),
           create: (_) {
             context.trackCommunityEvent(CommunityAnalyticsEvent.feedOpen, {
               'scope': feedScopeName(scope),
               if (scope is StockFeedScope) 'stock_code': (scope as StockFeedScope).code,
+              if (sort != CommunityFeedSort.latest) 'sort': sort.wire,
+              if (mediaOnly) 'media_only': true,
             });
             return FeedCubit(
               feed: deps.feed,
@@ -76,12 +87,14 @@ class CommunityFeedList extends StatelessWidget {
               edits: features?.edits,
               cache: offline?.feedCache,
               connectivity: offline?.connectivity,
+              sort: sort,
+              mediaOnly: mediaOnly,
             )..load();
           },
           child: FeedPostList(
             emptyMessage: emptyMessage,
             header: header,
-            showBanners: scope is GlobalFeedScope || scope is FollowingFeedScope,
+            showBanners: scope is GlobalFeedScope || scope is FollowingFeedScope || scope is ForYouFeedScope,
             postOpenMode: postOpenMode,
           ),
         ),

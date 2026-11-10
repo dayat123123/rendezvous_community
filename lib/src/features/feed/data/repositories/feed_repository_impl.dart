@@ -1,9 +1,12 @@
+import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
+import 'package:rendezvous_community/src/core/logging/community_logger.dart';
 import 'package:rendezvous_community/src/core/network/realtime_gateway.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
 import 'package:rendezvous_community/src/core/paging/paged.dart';
 import 'package:rendezvous_community/src/features/feed/data/local/feed_local_cache.dart';
 import 'package:rendezvous_community/src/features/feed/data/models/feed_post_model.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
@@ -15,7 +18,7 @@ import 'package:uuid/uuid.dart';
 
 const _uuid = Uuid();
 
-class FeedRepositoryImpl implements FeedRepository {
+class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository {
   FeedRepositoryImpl(this._api, [this._realtime, this._cache]);
 
   final SocialRemoteDataSource _api;
@@ -23,23 +26,76 @@ class FeedRepositoryImpl implements FeedRepository {
   final FeedLocalCache? _cache;
 
   @override
-  Future<Paged<Post>> getFeed(FeedScope scope, {String? cursor, int limit = 20}) async {
-    final rows = await _api.rpcRows('get_feed', {
-      'p_scope': switch (scope) {
-        GlobalFeedScope() => 'global',
-        FollowingFeedScope() => 'following',
-        StockFeedScope() => 'stock',
-        UserFeedScope() => 'user',
-      },
-      'p_stock_code': scope is StockFeedScope ? scope.code : null,
-      'p_cursor': cursor,
-      'p_limit': limit,
-      'p_author_id': scope is UserFeedScope ? scope.userId : null,
-    });
+  Future<Paged<Post>> getFeed(FeedScope scope, {String? cursor, int limit = 20}) =>
+      queryFeed(scope, cursor: cursor, limit: limit);
+
+  @override
+  Future<Paged<Post>> queryFeed(
+    FeedScope scope, {
+    CommunityFeedSort sort = CommunityFeedSort.latest,
+    bool mediaOnly = false,
+    String? cursor,
+    int limit = 20,
+  }) async {
+    List<Map<String, dynamic>> rows;
+    try {
+      rows = await _api.rpcRows(
+        'get_feed',
+        _feedParams(scope, sort: sort, mediaOnly: mediaOnly, cursor: cursor, limit: limit),
+      );
+    } on CommunityException catch (e) {
+      final legacy = _legacyScope(scope);
+      if (legacy == null || (e.code != 'PGRST202' && e.code != 'invalid_scope')) rethrow;
+      CommunityLoggers.feed.event(
+        Level.INFO,
+        'Server does not support feed filters, using the legacy feed',
+        fields: {'scope': _scopeWire(scope), 'sort': sort.wire, 'media_only': mediaOnly, 'code': e.code},
+      );
+      rows = await _api.rpcRows('get_feed', _feedParams(legacy, cursor: cursor, limit: limit));
+      if (mediaOnly) rows = rows.where(_hasMedia).toList();
+    }
     final posts = [for (final row in rows) FeedPostModel.fromJson(row).toEntity()];
-    if (cursor == null) await _cache?.saveFirstPage(scope, rows);
+    if (cursor == null && sort == CommunityFeedSort.latest && !mediaOnly) await _cache?.saveFirstPage(scope, rows);
     return Paged(posts, nextCursor: posts.length < limit ? null : posts.last.cursor);
   }
+
+  static Map<String, Object?> _feedParams(
+    FeedScope scope, {
+    CommunityFeedSort sort = CommunityFeedSort.latest,
+    bool mediaOnly = false,
+    String? cursor,
+    required int limit,
+  }) => {
+    'p_scope': _scopeWire(scope),
+    'p_stock_code': scope is StockFeedScope ? scope.code : null,
+    'p_cursor': cursor,
+    'p_limit': limit,
+    'p_author_id': scope is UserFeedScope ? scope.userId : null,
+    if (sort != CommunityFeedSort.latest) 'p_sort': sort.wire,
+    if (mediaOnly) 'p_media_only': true,
+    if (scope is StocksFeedScope) 'p_stock_codes': [for (final code in scope.codes) code.toUpperCase()],
+  };
+
+  static String _scopeWire(FeedScope scope) => switch (scope) {
+    GlobalFeedScope() => 'global',
+    FollowingFeedScope() => 'following',
+    StockFeedScope() => 'stock',
+    UserFeedScope() => 'user',
+    StocksFeedScope() => 'stocks',
+    OfficialFeedScope() => 'official',
+    ForYouFeedScope() => 'for_you',
+  };
+
+  static FeedScope? _legacyScope(FeedScope scope) => switch (scope) {
+    ForYouFeedScope() => const FeedScope.global(),
+    StocksFeedScope() || OfficialFeedScope() => null,
+    _ => scope,
+  };
+
+  static bool _hasMedia(Map<String, dynamic> row) => switch (row['attachments']) {
+    final List<dynamic> items => items.any((a) => a is Map && a['path'] is String),
+    _ => false,
+  };
 
   @override
   Future<Post?> getPost(String postId) async {
@@ -50,7 +106,7 @@ class FeedRepositoryImpl implements FeedRepository {
   @override
   Future<List<PinnedPost>> getPinned(FeedScope scope) async {
     final params = switch (scope) {
-      GlobalFeedScope() => <String, Object?>{'p_scope': 'global'},
+      GlobalFeedScope() || ForYouFeedScope() => <String, Object?>{'p_scope': 'global'},
       StockFeedScope(:final code) => <String, Object?>{'p_scope': 'stock', 'p_stock_code': code},
       _ => null,
     };

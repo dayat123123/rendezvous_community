@@ -9,7 +9,7 @@ import 'package:rendezvous_community/src/features/profile/domain/repositories/pr
 import 'package:rendezvous_community/src/shared/data/models/user_summary_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
-class ProfileRepositoryImpl implements ProfileRepository {
+class ProfileRepositoryImpl implements ProfileRepository, SuggestedUsersRepository {
   ProfileRepositoryImpl(this._api);
 
   final SocialRemoteDataSource _api;
@@ -69,6 +69,20 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<void> unblock(String userId) async {
     final me = await _api.requireUserId();
     await _api.delete('blocks', {'blocker_id': me, 'blocked_id': userId});
+  }
+
+  @override
+  Future<List<SuggestedUser>> suggestedUsers({int limit = 5}) async {
+    final rows = await _api.rpcRows('get_suggested_users', {'p_limit': limit});
+    return [
+      for (final row in rows)
+        SuggestedUser(
+          user: UserSummaryModel.fromJson(row).toEntity(),
+          followerCount: (row['follower_count'] as num?)?.toInt() ?? 0,
+          mutualCount: (row['mutual_count'] as num?)?.toInt() ?? 0,
+          isOfficial: row['is_official'] == true,
+        ),
+    ];
   }
 
   @override

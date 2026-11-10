@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
@@ -18,12 +19,16 @@ class CommunityStreamFeed extends StatefulWidget {
     this.showComposePrompt = true,
     this.builders,
     this.postOpenMode = CommunityPostOpenMode.navigate,
+    this.sort = CommunityFeedSort.latest,
+    this.mediaOnly = false,
   });
 
   final CommunityFeedTab initialTab;
   final bool showComposePrompt;
   final CommunityFeedBuilders? builders;
   final CommunityPostOpenMode postOpenMode;
+  final CommunityFeedSort sort;
+  final bool mediaOnly;
 
   @override
   State<CommunityStreamFeed> createState() => _CommunityStreamFeedState();
@@ -60,10 +65,12 @@ class _CommunityStreamFeedState extends State<CommunityStreamFeed> {
           Expanded(
             child: CommunityFeedList(
               postOpenMode: widget.postOpenMode,
+              sort: widget.sort,
+              mediaOnly: widget.mediaOnly,
               key: ValueKey(_tab),
               scope: _tab == CommunityFeedTab.latest ? const FeedScope.global() : const FeedScope.following(),
               emptyMessage: _tab == CommunityFeedTab.latest ? l10n.feedEmpty : l10n.feedFollowingEmpty,
-              header: widget.showComposePrompt ? const ComposePromptCard() : null,
+              header: widget.showComposePrompt ? const CommunityComposePromptCard() : null,
               builders: widget.builders,
             ),
           ),

@@ -138,6 +138,28 @@ class _ScreenProfiles extends Fake implements ProfileRepository {
   Future<Set<String>> officialAccountIds() async => const {};
 }
 
+class _SuggestProfiles extends Fake implements ProfileRepository, SuggestedUsersRepository {
+  @override
+  Future<List<SuggestedUser>> suggestedUsers({int limit = 5}) async => const [
+    SuggestedUser(
+      user: UserSummary(id: 'u-res', username: 'rendezvous', displayName: 'Rendezvous Research'),
+      isOfficial: true,
+      followerCount: 12400,
+    ),
+    SuggestedUser(user: _rina, mutualCount: 3, followerCount: 860),
+    SuggestedUser(
+      user: UserSummary(id: 'u-ardi', username: 'ardiw', displayName: 'Ardi Wibowo'),
+      followerCount: 214,
+    ),
+  ];
+
+  @override
+  Future<void> follow(String userId) async {}
+
+  @override
+  Future<Set<String>> officialAccountIds() async => const {};
+}
+
 class _ScreenDeps extends FakeDependencies {
   _ScreenDeps({super.feed, this.profileRepository});
 
@@ -392,6 +414,95 @@ final feedScenes = <ScreenshotScene>[
         day: SentimentBreakdown(posts: 42, bullish: 28, bearish: 9, neutral: 5, bullishPct: 67, bearishPct: 21),
       ),
     ),
+  ),
+  ScreenshotScene('stream_sidebar', (context) {
+    final style = CommunityStyle.of(context);
+    final l10n = context.communityL10n;
+    Widget panel(Widget child) => Material(
+      color: style.surface,
+      clipBehavior: Clip.antiAlias,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16),
+        side: BorderSide(color: style.border),
+      ),
+      child: child,
+    );
+    return _scoped(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          panel(const CommunityMarketSentiment()),
+          const SizedBox(height: 12),
+          panel(const CommunitySuggestedUsers()),
+          const SizedBox(height: 12),
+          panel(
+            CommunityStockStatsBuilder(
+              codes: const ['BBCA', 'TLKM', 'GOTO'],
+              builder: (context, stats) => Column(
+                children: [
+                  for (final s in stats.values)
+                    ListTile(
+                      dense: true,
+                      title: Text('\$${s.code}', style: style.typography.label),
+                      trailing: Text(
+                        [
+                          l10n.postsToday(s.postsToday),
+                          if (s.bullishPct != null) l10n.bullishShare(s.bullishPct!),
+                        ].join(' · '),
+                        style: style.typography.badge.copyWith(color: style.textSecondary),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+      deps: FakeDependencies(profiles: _SuggestProfiles()),
+      setup: (features) => features.trending
+        ..market = const {
+          TrendWindow.day: SentimentBreakdown(posts: 1284, bullishPct: 62, bearishPct: 27, neutralPct: 11),
+        }
+        ..stats = const {
+          'BBCA': StockStats(code: 'BBCA', postsToday: 24, bullishPct: 70),
+          'TLKM': StockStats(code: 'TLKM', postsToday: 9, bullishPct: 34),
+          'GOTO': StockStats(code: 'GOTO', postsToday: 3),
+        },
+    );
+  }, width: 340),
+  ScreenshotScene(
+    'stream_compose_top_comment',
+    (context) => _scoped(
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          const CommunityComposePromptCard(),
+          SizedBox(height: CommunityStyle.of(context).sectionGap),
+          PostCard(
+            post: _analysis().copyWith(
+              topComment: ThreadComment(
+                id: 'k-1',
+                postId: 'p-1',
+                author: const UserSummary(id: 'u-ardi', username: 'ardiw', displayName: 'Ardi Wibowo'),
+                body: r'Setuju, support kuat di 9.800. Saya tambah sedikit kalau $BBCA tutup di atas MA20.',
+                depth: 0,
+                path: '000000000001',
+                likeCount: 86,
+                createdAt: _now.subtract(const Duration(minutes: 40)),
+                cursor: '1',
+              ),
+            ),
+            onLike: () {},
+            onOpen: () {},
+            onToggleBookmark: () {},
+            onShare: () {},
+          ),
+        ],
+      ),
+      deps: FakeDependencies(mediaRepository: _PendingMedia()),
+    ),
+    width: 600,
+    padding: EdgeInsets.zero,
   ),
 ];
 

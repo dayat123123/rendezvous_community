@@ -29,6 +29,7 @@ _FeedPostModel _$FeedPostModelFromJson(Map<String, dynamic> json) => _FeedPostMo
   isBot: json['is_bot'] as bool?,
   authorIsOfficial: json['author_is_official'] as bool?,
   moderationStatus: json['moderation_status'] as String?,
+  topComment: json['top_comment'] as Map<String, dynamic>?,
 );
 
 Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) => <String, dynamic>{
@@ -54,6 +55,7 @@ Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) => <String, 
   'is_bot': instance.isBot,
   'author_is_official': instance.authorIsOfficial,
   'moderation_status': instance.moderationStatus,
+  'top_comment': instance.topComment,
 };
 
 _PostRowModel _$PostRowModelFromJson(Map<String, dynamic> json) => _PostRowModel(

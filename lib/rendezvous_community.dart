@@ -102,6 +102,7 @@ export 'src/features/chat/presentation/widgets/shared_post_card.dart' show Share
 export 'src/features/chat/presentation/widgets/stock_cards.dart' show StockCardTile, StockCards, showStockCardPicker;
 export 'src/features/chat/presentation/widgets/swipe_to_reply.dart'
     show CommunitySwipeDirection, CommunitySwipeToReplyScope, CommunitySwipeToReplySettings;
+export 'src/features/compose/presentation/composer_action.dart';
 export 'src/features/compose/presentation/widgets/community_compose_post.dart'
     show CommunityComposePost, CommunityComposerImage, showCommunityComposer;
 export 'src/features/config/domain/entities/client_config.dart';
@@ -124,6 +125,7 @@ export 'src/features/drafts/domain/repositories/post_draft_repository.dart';
 export 'src/features/drafts/domain/services/community_drafts.dart';
 export 'src/features/drafts/presentation/widgets/community_post_drafts.dart';
 export 'src/features/edit/domain/repositories/content_edit_repository.dart';
+export 'src/features/feed/domain/entities/feed_sort.dart';
 export 'src/features/feed/domain/entities/pinned_post.dart';
 export 'src/features/feed/domain/entities/post.dart';
 export 'src/features/feed/domain/repositories/feed_cache_repository.dart' show FeedCacheRepository;
@@ -134,6 +136,7 @@ export 'src/features/feed/presentation/builders/community_feed_details.dart';
 export 'src/features/feed/presentation/post_open_mode.dart';
 export 'src/features/feed/presentation/widgets/community_feed_list.dart' show CommunityFeedList;
 export 'src/features/feed/presentation/widgets/community_stream_feed.dart' show CommunityFeedTab, CommunityStreamFeed;
+export 'src/features/feed/presentation/widgets/compose_prompt_card.dart' show CommunityComposePromptCard;
 export 'src/features/feed/presentation/widgets/sentiment_badge.dart';
 export 'src/features/guest_support/domain/entities/guest_support.dart';
 export 'src/features/guest_support/domain/repositories/guest_session_store.dart';
@@ -210,6 +213,8 @@ export 'src/features/profile/domain/repositories/profile_repository.dart';
 export 'src/features/profile/presentation/builders/community_profile_builders.dart'
     show CommunityProfileBuilders, CommunityProfileBuildersScope;
 export 'src/features/profile/presentation/builders/community_profile_details.dart';
+export 'src/features/profile/presentation/widgets/community_suggested_users.dart'
+    show CommunitySuggestedUsers, SuggestedFollowButton;
 export 'src/features/profile/presentation/widgets/community_user_profile.dart' show CommunityUserProfile;
 export 'src/features/push/domain/entities/community_push_message.dart';
 export 'src/features/push/presentation/open_community_push.dart' show isCommunityPush, isOltPush, openCommunityPush;
@@ -244,7 +249,10 @@ export 'src/features/support/presentation/widgets/support_message_actions.dart';
 export 'src/features/support/presentation/widgets/support_message_parts.dart' show OfficialBadge;
 export 'src/features/trending/domain/entities/trending.dart';
 export 'src/features/trending/domain/repositories/trending_repository.dart';
+export 'src/features/trending/presentation/widgets/community_market_sentiment.dart'
+    show CommunityMarketSentiment, marketMood;
 export 'src/features/trending/presentation/widgets/community_stock_sentiment.dart';
+export 'src/features/trending/presentation/widgets/community_stock_stats.dart';
 export 'src/features/trending/presentation/widgets/community_trending.dart'
     show CommunityTrending, CommunityTrendingTab, SentimentBar;
 export 'src/shared/domain/entities/attachment.dart';

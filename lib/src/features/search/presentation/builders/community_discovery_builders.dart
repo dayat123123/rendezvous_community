@@ -18,6 +18,9 @@ class CommunityDiscoveryBuilders {
     this.trendingStock,
     this.sentimentBar,
     this.stockSentiment,
+    this.suggestedUser,
+    this.suggestedFollowButton,
+    this.marketSentiment,
   });
 
   final CommunityPartBuilder<CommunitySearchFieldDetails>? searchField;
@@ -33,6 +36,9 @@ class CommunityDiscoveryBuilders {
   final CommunityPartBuilder<CommunityTrendingStockDetails>? trendingStock;
   final CommunityPartBuilder<CommunitySentimentBarDetails>? sentimentBar;
   final CommunityPartBuilder<CommunityStockSentimentDetails>? stockSentiment;
+  final CommunityPartBuilder<CommunitySuggestedUserDetails>? suggestedUser;
+  final CommunityPartBuilder<CommunitySuggestedUserDetails>? suggestedFollowButton;
+  final CommunityPartBuilder<CommunityMarketSentimentDetails>? marketSentiment;
 
   static CommunityDiscoveryBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -57,6 +63,9 @@ class CommunityDiscoveryBuilders {
       trendingStock: other.trendingStock ?? trendingStock,
       sentimentBar: other.sentimentBar ?? sentimentBar,
       stockSentiment: other.stockSentiment ?? stockSentiment,
+      suggestedUser: other.suggestedUser ?? suggestedUser,
+      suggestedFollowButton: other.suggestedFollowButton ?? suggestedFollowButton,
+      marketSentiment: other.marketSentiment ?? marketSentiment,
     );
   }
 }

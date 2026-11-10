@@ -1,6 +1,8 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/poll/data/models/poll_model.dart';
+import 'package:rendezvous_community/src/features/post/data/models/thread_comment_model.dart';
+import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
 import 'package:rendezvous_community/src/shared/data/models/attachment_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/moderation_status.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
@@ -35,6 +37,7 @@ abstract class FeedPostModel with _$FeedPostModel {
     bool? isBot,
     bool? authorIsOfficial,
     String? moderationStatus,
+    Map<String, dynamic>? topComment,
   }) = _FeedPostModel;
 
   const FeedPostModel._();
@@ -66,7 +69,18 @@ abstract class FeedPostModel with _$FeedPostModel {
     isBot: isBot ?? false,
     authorIsOfficial: authorIsOfficial ?? false,
     moderationStatus: parseModerationStatus(moderationStatus),
+    topComment: _parseTopComment(),
   );
+
+  ThreadComment? _parseTopComment() {
+    final json = topComment;
+    if (json == null) return null;
+    try {
+      return ThreadCommentModel.fromJson(json).toEntity();
+    } on Object {
+      return null;
+    }
+  }
 }
 
 @freezed

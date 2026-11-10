@@ -46,7 +46,7 @@ class CommunityStockFeed extends StatelessWidget {
           header: Column(
             children: [
               if (showHeader) _StockHeader(name: stockName),
-              ComposePromptCard(initialStock: code),
+              CommunityComposePromptCard(initialStock: code),
             ],
           ),
         ),

@@ -5,3 +5,9 @@ abstract interface class TrendingRepository {
 
   Future<StockSentiment> stockSentiment(String stockCode);
 }
+
+abstract interface class TrendingInsightsRepository {
+  Future<SentimentBreakdown> marketSentiment({TrendWindow window = TrendWindow.day});
+
+  Future<Map<String, StockStats>> stockStats(List<String> codes);
+}

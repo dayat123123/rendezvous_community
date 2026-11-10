@@ -8,6 +8,7 @@ import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
+import 'package:rendezvous_community/src/features/compose/presentation/composer_action.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/cubit/compose_cubit.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/widgets/poll_editor.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
@@ -40,6 +41,9 @@ Future<Post?> showCommunityComposer(
   String? initialStock,
   CommunityComposerImage? initialImage,
   PostDraft? draft,
+  Sentiment? initialSentiment,
+  CommunityComposerAction? initialAction,
+  String? hintText,
 }) {
   final deps = CommunityScope.of(context);
   final features = context.getInheritedWidgetOfExactType<CommunityFeatureScope>()?.dependencies;
@@ -60,6 +64,9 @@ Future<Post?> showCommunityComposer(
               initialStock: initialStock,
               initialImage: initialImage,
               draft: draft,
+              initialSentiment: initialSentiment,
+              initialAction: initialAction,
+              hintText: hintText,
               autofocus: true,
               onPosted: (post) => Navigator.pop(dialogContext, post),
             ),
@@ -79,6 +86,9 @@ Future<Post?> showCommunityComposer(
               initialStock: initialStock,
               initialImage: initialImage,
               draft: draft,
+              initialSentiment: initialSentiment,
+              initialAction: initialAction,
+              hintText: hintText,
               autofocus: true,
               onPosted: (post) => Navigator.pop(pageContext, post),
             ),
@@ -97,6 +107,9 @@ class CommunityComposePost extends StatelessWidget {
     this.onPosted,
     this.autofocus = false,
     this.draft,
+    this.initialSentiment,
+    this.initialAction,
+    this.hintText,
   });
 
   final String? initialStock;
@@ -104,6 +117,9 @@ class CommunityComposePost extends StatelessWidget {
   final ValueChanged<Post>? onPosted;
   final bool autofocus;
   final PostDraft? draft;
+  final Sentiment? initialSentiment;
+  final CommunityComposerAction? initialAction;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -123,6 +139,9 @@ class CommunityComposePost extends StatelessWidget {
           onPosted: onPosted,
           autofocus: autofocus,
           draft: draft,
+          initialSentiment: initialSentiment,
+          initialAction: initialAction,
+          hintText: hintText,
         ),
       ),
     );
@@ -130,13 +149,25 @@ class CommunityComposePost extends StatelessWidget {
 }
 
 class _ComposeView extends StatefulWidget {
-  const _ComposeView({this.initialStock, this.initialImage, this.onPosted, required this.autofocus, this.draft});
+  const _ComposeView({
+    this.initialStock,
+    this.initialImage,
+    this.onPosted,
+    required this.autofocus,
+    this.draft,
+    this.initialSentiment,
+    this.initialAction,
+    this.hintText,
+  });
 
   final String? initialStock;
   final CommunityComposerImage? initialImage;
   final ValueChanged<Post>? onPosted;
   final bool autofocus;
   final PostDraft? draft;
+  final Sentiment? initialSentiment;
+  final CommunityComposerAction? initialAction;
+  final String? hintText;
 
   @override
   State<_ComposeView> createState() => _ComposeViewState();
@@ -154,6 +185,25 @@ class _ComposeViewState extends State<_ComposeView> {
   void initState() {
     super.initState();
     _controller.addListener(() => context.read<ComposeCubit>().bodyChanged(_controller.text));
+    final sentiment = widget.initialSentiment;
+    if (sentiment != null) context.read<ComposeCubit>().setSentiment(sentiment);
+    switch (widget.initialAction) {
+      case CommunityComposerAction.poll:
+        context.read<ComposeCubit>().addPoll();
+      case CommunityComposerAction.cashtag:
+        final text = _controller.text;
+        final prefix = text.isEmpty || text.endsWith(' ') ? text : '$text ';
+        _controller.value = TextEditingValue(
+          text: '$prefix\$',
+          selection: TextSelection.collapsed(offset: prefix.length + 1),
+        );
+      case CommunityComposerAction.image:
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _pickImage();
+        });
+      case null:
+        break;
+    }
     final image = widget.initialImage;
     if (image != null) {
       WidgetsBinding.instance.addPostFrameCallback((_) async {
@@ -260,6 +310,51 @@ class _ComposeViewState extends State<_ComposeView> {
         final hint = style.typography.meta.copyWith(color: style.textSecondary);
         final user = CommunityScope.of(context).currentUser;
         final author = user == null ? null : CommunityComposeAuthorDetails(user: user, sentiment: state.sentiment);
+        final bodyStyle = style.typography.body;
+        final fieldHintStyle = bodyStyle.copyWith(color: style.textSecondary);
+        final fieldDecoration = InputDecoration(
+          border: InputBorder.none,
+          enabledBorder: InputBorder.none,
+          focusedBorder: InputBorder.none,
+          disabledBorder: InputBorder.none,
+          isCollapsed: true,
+          hintStyle: fieldHintStyle,
+          counterStyle: style.typography.meta,
+          contentPadding: EdgeInsets.symmetric(vertical: spacing.sm),
+        );
+        final hintText = widget.hintText ?? l10n.composeHint;
+        final minLines = poll == null ? 4 : 2;
+        Widget buildField({TextStyle? textStyle, TextStyle? hintStyle, InputDecoration? decoration}) {
+          final base = decoration ?? fieldDecoration;
+          return CommunityComposerField(
+            controller: _controller,
+            hintText: hintText,
+            maxLength: maxPostLength,
+            minLines: minLines,
+            maxLines: 12,
+            autofocus: widget.autofocus,
+            enabled: !state.submitting,
+            onSubmit: _submit,
+            style: textStyle ?? bodyStyle,
+            decoration: hintStyle == null ? base : base.copyWith(hintStyle: hintStyle),
+          );
+        }
+
+        final field = CommunityComposeFieldDetails(
+          controller: _controller,
+          hintText: hintText,
+          maxLength: maxPostLength,
+          minLines: minLines,
+          maxLines: 12,
+          enabled: !state.submitting,
+          autofocus: widget.autofocus,
+          onSubmit: _submit,
+          textStyle: bodyStyle,
+          hintStyle: fieldHintStyle,
+          decoration: fieldDecoration,
+          field: buildField(),
+          buildField: buildField,
+        );
         return SingleChildScrollView(
           padding: EdgeInsets.all(spacing.lg),
           child: Column(
@@ -270,26 +365,7 @@ class _ComposeViewState extends State<_ComposeView> {
                 buildFeedPart((b) => b.composeAuthor, context, author, _DefaultComposeAuthor(details: author)),
                 SizedBox(height: spacing.md),
               ],
-              CommunityComposerField(
-                controller: _controller,
-                hintText: l10n.composeHint,
-                maxLength: maxPostLength,
-                minLines: poll == null ? 4 : 2,
-                maxLines: 12,
-                autofocus: widget.autofocus,
-                enabled: !state.submitting,
-                onSubmit: _submit,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  enabledBorder: InputBorder.none,
-                  focusedBorder: InputBorder.none,
-                  disabledBorder: InputBorder.none,
-                  isCollapsed: true,
-                  hintStyle: style.typography.body.copyWith(color: style.textSecondary, fontSize: 17, height: 1.45),
-                  counterStyle: style.typography.meta,
-                  contentPadding: EdgeInsets.symmetric(vertical: spacing.sm),
-                ),
-              ),
+              buildFeedPart((b) => b.composeField, context, field, field.field),
               if (poll != null) ...[SizedBox(height: spacing.md), PollEditor(poll: poll, enabled: !state.submitting)],
               SizedBox(height: spacing.md),
               buildFeedPart(

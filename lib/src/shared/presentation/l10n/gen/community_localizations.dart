@@ -4255,6 +4255,138 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Pesan 1–{max} karakter.'**
   String guestErrorInvalidMessage(int max);
+
+  /// No description provided for @feedForYou.
+  ///
+  /// In id, this message translates to:
+  /// **'Untuk Anda'**
+  String get feedForYou;
+
+  /// No description provided for @feedTop.
+  ///
+  /// In id, this message translates to:
+  /// **'Teratas'**
+  String get feedTop;
+
+  /// No description provided for @feedMedia.
+  ///
+  /// In id, this message translates to:
+  /// **'Grafik & media'**
+  String get feedMedia;
+
+  /// No description provided for @feedOfficial.
+  ///
+  /// In id, this message translates to:
+  /// **'Resmi'**
+  String get feedOfficial;
+
+  /// No description provided for @feedForYouEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada rekomendasi. Ikuti akun atau saham agar feed ini makin pas.'**
+  String get feedForYouEmpty;
+
+  /// No description provided for @feedOfficialEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada post dari akun resmi.'**
+  String get feedOfficialEmpty;
+
+  /// No description provided for @feedMediaEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada grafik atau gambar di sini.'**
+  String get feedMediaEmpty;
+
+  /// No description provided for @feedWatchlistEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada diskusi untuk saham di watchlist Anda.'**
+  String get feedWatchlistEmpty;
+
+  /// No description provided for @whoToFollow.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun untuk diikuti'**
+  String get whoToFollow;
+
+  /// No description provided for @whoToFollowEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada saran akun saat ini.'**
+  String get whoToFollowEmpty;
+
+  /// No description provided for @followedByMutual.
+  ///
+  /// In id, this message translates to:
+  /// **'{count, plural, =1{Diikuti 1 akun yang Anda ikuti} other{Diikuti {count} akun yang Anda ikuti}}'**
+  String followedByMutual(int count);
+
+  /// No description provided for @officialAccount.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun resmi'**
+  String get officialAccount;
+
+  /// No description provided for @marketMoodTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Mood pasar'**
+  String get marketMoodTitle;
+
+  /// No description provided for @marketMoodBullish.
+  ///
+  /// In id, this message translates to:
+  /// **'Cenderung bullish'**
+  String get marketMoodBullish;
+
+  /// No description provided for @marketMoodBearish.
+  ///
+  /// In id, this message translates to:
+  /// **'Cenderung bearish'**
+  String get marketMoodBearish;
+
+  /// No description provided for @marketMoodMixed.
+  ///
+  /// In id, this message translates to:
+  /// **'Berimbang'**
+  String get marketMoodMixed;
+
+  /// No description provided for @postsToday.
+  ///
+  /// In id, this message translates to:
+  /// **'{count, plural, =0{Belum ada post hari ini} =1{1 post hari ini} other{{count} post hari ini}}'**
+  String postsToday(int count);
+
+  /// No description provided for @bullishShare.
+  ///
+  /// In id, this message translates to:
+  /// **'{pct}% bullish'**
+  String bullishShare(int pct);
+
+  /// No description provided for @viewAllComments.
+  ///
+  /// In id, this message translates to:
+  /// **'{count, plural, =1{Lihat 1 komentar} other{Lihat semua {count} komentar}}'**
+  String viewAllComments(int count);
+
+  /// No description provided for @composeQuickImage.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar'**
+  String get composeQuickImage;
+
+  /// No description provided for @composeQuickPoll.
+  ///
+  /// In id, this message translates to:
+  /// **'Polling'**
+  String get composeQuickPoll;
+
+  /// No description provided for @composeQuickCashtag.
+  ///
+  /// In id, this message translates to:
+  /// **'Saham'**
+  String get composeQuickCashtag;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

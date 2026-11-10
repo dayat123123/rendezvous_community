@@ -266,7 +266,7 @@ CommunityFeedBuilders(
 
 | Builder | `details` | Isi |
 |---|---|---|
-| `postCard`, `postAvatar`, `postHeader`, `postBody`, `attachments`, `stockTags`, `actionBar` | `CommunityPostDetails` | `post`, `isMine`, `timeLabel`, `edited`, `expanded`, `source`, `pinned`, `canVote`; `onLike`, `onOpen`, `onComment`, `onShare`, `onToggleBookmark`, `onEdit`, `onDelete` (dengan konfirmasi), `onReport`, `onBlock` (dengan konfirmasi), `onAppeal`, `onOpenAuthor`, `onOpenStock(code)`, `onOpenHashtag(tag)`; `commentsExpanded`, `onToggleComments` (1.13.0, hanya terisi pada mode komentar inline; `onComment` sama dengan `onToggleComments`) |
+| `postCard`, `postAvatar`, `postHeader`, `postBody`, `attachments`, `stockTags`, `actionBar` | `CommunityPostDetails` | `post`, `isMine`, `timeLabel`, `edited`, `expanded`, `source`, `pinned`, `canVote`; `onLike`, `onOpen`, `onComment`, `onShare`, `onToggleBookmark`, `onEdit`, `onDelete` (dengan konfirmasi), `onReport`, `onBlock` (dengan konfirmasi), `onAppeal`, `onOpenAuthor`, `onOpenStock(code)`, `onOpenHashtag(tag)`; `commentsExpanded`, `onToggleComments` (1.13.0, hanya terisi pada mode komentar inline; `onComment` sama dengan `onToggleComments`); `topComment`, `onOpenComments` (1.14.0, komentar teratas untuk pratinjau dan aksi membuka komentar) |
 | `linkPreview` | `CommunityLinkPreviewDetails` | `preview` (`title`, `description`, `siteName`, `imageUrl`, `domain`); `onOpen` (dengan dialog tautan bawaan). Berlaku di feed, komentar, dan chat |
 | `poll` | `CommunityPollDetails` | `poll`, `canVote`, `closed`, `showResults`, `summary` (teks suara & sisa waktu), `pendingOptionId`; `onVote(option)` (null bila tidak bisa memilih) |
 | `pinnedMarker` | `CommunityPinnedMarkerDetails` | `pinned`, `announcement`, `title`, `label` ("Pengumuman"/"Disematkan") |
@@ -321,11 +321,12 @@ CommunityFeedBuilders(
 | `postMenu` | `CommunityPostDetails` | menu "lainnya" di kanan header post |
 | `feedTabs` | `CommunityFeedTabsDetails` | `tabs`, `labels`, `selected`; `onSelect(tab)` (tab Terbaru/Mengikuti di `CommunityStreamFeed`) |
 | `newPosts` | `CommunityNewPostsDetails` | `count`, `label`; `onTap` (muat ulang dan gulir ke atas) |
-| `composePrompt` | `CommunityComposePromptDetails` | `user`, `hintText`; `onCompose` (buka composer, post baru masuk ke feed) |
+| `composePrompt` | `CommunityComposePromptDetails` | `user`, `hintText`; `onCompose` (buka composer, post baru masuk ke feed); `quickActions` (`CommunityComposeQuickAction`: `label`, `icon`, `sentiment` atau `action`) dan `onComposeWith(sentiment:, action:)` untuk tombol Bullish/Bearish/Gambar/Polling/Saham (1.14.0) |
 | `threadHeader` | `CommunityThreadHeaderDetails` | `post`, `commentCount`, `label` ("Komentar (7)") |
 | `threadContext` | `CommunityThreadContextDetails` | `root`, `label`, `actionLabel`, `comment` (tile komentar akar bawaan); `onOpenPost` |
 | `threadMore` | `CommunityThreadMoreDetails` | `kind` (`moreReplies`/`continueThread`/`moreComments`), `label`, `level`, `remaining`, `loading`; `onTap` (null saat memuat). Indentasi & garis thread tetap digambar package |
 | `replyComposer` | `CommunityReplyComposerDetails` | `controller`, `focusNode`, `field`, `hintText`, `replyTo`, `replyingLabel`, `sending`, `sendLabel`, `cancelLabel`; `onSend` (null saat mengirim), `onCancelReply` |
+| `composeField` | `CommunityComposeFieldDetails` | kolom teks composer post (1.14.0): `controller`, `hintText`, `maxLength`, `minLines`, `maxLines`, `enabled`, `autofocus`, `onSubmit`, `textStyle`, `hintStyle`, `decoration`, `field` (kolom bawaan); `buildField(textStyle:, hintStyle:, decoration:)` membuat kolom yang sama dengan gaya lain. Pakai `field` atau `buildField` agar saran `$KODE` dan `@username` tetap jalan |
 | `composeToolbar` | `CommunityComposeDetails` | `controller`, `posting`, `uploading`, `hasPoll`, `imageCount`, `canPost`, label; `onPost`, `onPickImage`, `onAddPoll` (null bila tidak bisa) |
 | `composeSentiment` | `CommunityComposeSentimentDetails` | `title`, `selected`, `options` (`bullish`, `bearish`, `neutral`, `null`), `labels`; `onChanged` |
 | `composeAuthor` | `CommunityComposeAuthorDetails` | `user` (user masuk), `sentiment` terpilih; header avatar + nama di atas field compose |
@@ -339,6 +340,7 @@ CommunityFeedBuilders(
 | `editDialog` | `CommunityEditDialogDetails` | `title`, `controller`, `field`, `maxLength`, `saveLabel`, `cancelLabel`; `onSave`, `onCancel`. Builder diambil dari context yang membuka dialog |
 | `inlineComments` | `CommunityInlineCommentsDetails` | `post`, `expanded`, `onToggle` (menutup), `child` (komentar bawaan `CommunityPostComments`). Wadah komentar inline di bawah kartu post (1.13.0) |
 | `commentSort` | `CommunityCommentSortDetails` | `title` ("Komentar"), `tooltip`, `selected`, `options` (`top`, `latest`), `labels` ("Disarankan", "Terbaru"), `selectedLabel`; `onSelect` (null saat memuat). Hanya tampil bila server mendukung urutan (migrasi `0142`) |
+| `topComment` | `CommunityPostDetails` | pratinjau komentar teratas di bawah tombol aksi kartu feed (1.14.0): `topComment`, `onOpenComments` (mode `navigate` membuka detail post, mode inline membuka komentar di bawah kartu), `post.commentCount`. Tidak tampil saat komentar inline sedang terbuka |
 
 #### Komentar inline (1.13.0)
 
@@ -406,6 +408,9 @@ CommunityBuilders(
 | `trendingStock` | `CommunityTrendingStockDetails` | `kind` (`trending`/`rising`), `rank`, `code`, `postsLabel`, `growthLabel`, `bullishPct`, `bearishPct`, `hasSentiment`; `onOpen` |
 | `sentimentBar` | `CommunitySentimentBarDetails` | `bullishPct`, `bearishPct`, `neutralPct`, `height` |
 | `stockSentiment` | `CommunityStockSentimentDetails` | `code`, `title`, `window`, `windows`, `windowLabels`, `loading`, `breakdown`, `hasData`, `error`, `errorMessage`, label; `onWindowChanged`, `onRetry` |
+| `marketSentiment` | `CommunityMarketSentimentDetails` | kartu `CommunityMarketSentiment` (1.14.0): `title`, `window`, `windows`, `windowLabels`, `loading`, `breakdown` (`posts`, persentase), `mood` (`bullish`/`bearish`/`neutral` = berimbang; selisih minimal 10 poin), `headline` ("Cenderung bullish"), `bullishLabel`, `neutralLabel`, `bearishLabel`, `basedOnLabel`, `error`, `errorMessage`; `onWindowChanged`, `onRetry` |
+| `suggestedUser` | `CommunitySuggestedUserDetails` | baris `CommunitySuggestedUsers` (1.14.0): `suggestion` (`user`, `mutualCount`, `followerCount`, `isOfficial`), `subtitle` ("Diikuti 2 akun yang Anda ikuti" / "Akun resmi" / "87 pengikut"), `following`, `pending`; `onOpen`, `onToggleFollow` |
+| `suggestedFollowButton` | `CommunitySuggestedUserDetails` | tombol Ikuti/Mengikuti di baris saran akun; `followLabel`, `followingLabel`, `pending` (tombol nonaktif saat menyimpan) |
 
 ### Notifikasi (1.4.0)
 

@@ -40,6 +40,8 @@ class CommunityFeedBuilders {
     this.editDialog,
     this.inlineComments,
     this.commentSort,
+    this.topComment,
+    this.composeField,
   });
 
   final CommunityPartBuilder<CommunityPostDetails>? postCard;
@@ -77,6 +79,8 @@ class CommunityFeedBuilders {
   final CommunityPartBuilder<CommunityEditDialogDetails>? editDialog;
   final CommunityPartBuilder<CommunityInlineCommentsDetails>? inlineComments;
   final CommunityPartBuilder<CommunityCommentSortDetails>? commentSort;
+  final CommunityPartBuilder<CommunityPostDetails>? topComment;
+  final CommunityPartBuilder<CommunityComposeFieldDetails>? composeField;
 
   static CommunityFeedBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -123,6 +127,8 @@ class CommunityFeedBuilders {
       editDialog: other.editDialog ?? editDialog,
       inlineComments: other.inlineComments ?? inlineComments,
       commentSort: other.commentSort ?? commentSort,
+      topComment: other.topComment ?? topComment,
+      composeField: other.composeField ?? composeField,
     );
   }
 }

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Post {
 
- String get id; UserSummary get author; String get body; Sentiment? get sentiment; List<Attachment> get attachments; int get likeCount; int get commentCount; List<String> get stockCodes; bool get likedByMe; Poll? get poll; DateTime? get editedAt; DateTime get createdAt; String get cursor; bool get isBookmarked; List<String> get hashtags; bool get isBot; bool get authorIsOfficial; ModerationStatus? get moderationStatus;
+ String get id; UserSummary get author; String get body; Sentiment? get sentiment; List<Attachment> get attachments; int get likeCount; int get commentCount; List<String> get stockCodes; bool get likedByMe; Poll? get poll; DateTime? get editedAt; DateTime get createdAt; String get cursor; bool get isBookmarked; List<String> get hashtags; bool get isBot; bool get authorIsOfficial; ModerationStatus? get moderationStatus; ThreadComment? get topComment;
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $PostCopyWith<Post> get copyWith => _$PostCopyWithImpl<Post>(this as Post, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Post&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Post&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&(identical(other.topComment, topComment) || other.topComment == topComment));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,author,body,sentiment,const DeepCollectionEquality().hash(attachments),likeCount,commentCount,const DeepCollectionEquality().hash(stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(hashtags),isBot,authorIsOfficial,moderationStatus);
+int get hashCode => Object.hashAll([runtimeType,id,author,body,sentiment,const DeepCollectionEquality().hash(attachments),likeCount,commentCount,const DeepCollectionEquality().hash(stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(hashtags),isBot,authorIsOfficial,moderationStatus,topComment]);
 
 @override
 String toString() {
-  return 'Post(id: $id, author: $author, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus)';
+  return 'Post(id: $id, author: $author, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $PostCopyWith<$Res>  {
   factory $PostCopyWith(Post value, $Res Function(Post) _then) = _$PostCopyWithImpl;
 @useResult
 $Res call({
- String id, UserSummary author, String body, Sentiment? sentiment, List<Attachment> attachments, int likeCount, int commentCount, List<String> stockCodes, bool likedByMe, Poll? poll, DateTime? editedAt, DateTime createdAt, String cursor, bool isBookmarked, List<String> hashtags, bool isBot, bool authorIsOfficial, ModerationStatus? moderationStatus
+ String id, UserSummary author, String body, Sentiment? sentiment, List<Attachment> attachments, int likeCount, int commentCount, List<String> stockCodes, bool likedByMe, Poll? poll, DateTime? editedAt, DateTime createdAt, String cursor, bool isBookmarked, List<String> hashtags, bool isBot, bool authorIsOfficial, ModerationStatus? moderationStatus, ThreadComment? topComment
 });
 
 
-$UserSummaryCopyWith<$Res> get author;$PollCopyWith<$Res>? get poll;
+$UserSummaryCopyWith<$Res> get author;$PollCopyWith<$Res>? get poll;$ThreadCommentCopyWith<$Res>? get topComment;
 
 }
 /// @nodoc
@@ -62,7 +62,7 @@ class _$PostCopyWithImpl<$Res>
 
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = null,Object? hashtags = null,Object? isBot = null,Object? authorIsOfficial = null,Object? moderationStatus = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = null,Object? hashtags = null,Object? isBot = null,Object? authorIsOfficial = null,Object? moderationStatus = freezed,Object? topComment = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -82,7 +82,8 @@ as bool,hashtags: null == hashtags ? _self.hashtags : hashtags // ignore: cast_n
 as List<String>,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nullable_to_non_nullable
 as bool,authorIsOfficial: null == authorIsOfficial ? _self.authorIsOfficial : authorIsOfficial // ignore: cast_nullable_to_non_nullable
 as bool,moderationStatus: freezed == moderationStatus ? _self.moderationStatus : moderationStatus // ignore: cast_nullable_to_non_nullable
-as ModerationStatus?,
+as ModerationStatus?,topComment: freezed == topComment ? _self.topComment : topComment // ignore: cast_nullable_to_non_nullable
+as ThreadComment?,
   ));
 }
 /// Create a copy of Post
@@ -105,6 +106,18 @@ $PollCopyWith<$Res>? get poll {
 
   return $PollCopyWith<$Res>(_self.poll!, (value) {
     return _then(_self.copyWith(poll: value));
+  });
+}/// Create a copy of Post
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ThreadCommentCopyWith<$Res>? get topComment {
+    if (_self.topComment == null) {
+    return null;
+  }
+
+  return $ThreadCommentCopyWith<$Res>(_self.topComment!, (value) {
+    return _then(_self.copyWith(topComment: value));
   });
 }
 }
@@ -188,10 +201,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus,  ThreadComment? topComment)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Post() when $default != null:
-return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus);case _:
+return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus,_that.topComment);case _:
   return orElse();
 
 }
@@ -209,10 +222,10 @@ return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachmen
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus,  ThreadComment? topComment)  $default,) {final _that = this;
 switch (_that) {
 case _Post():
-return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus);case _:
+return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus,_that.topComment);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -229,10 +242,10 @@ return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachmen
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus,  ThreadComment? topComment)?  $default,) {final _that = this;
 switch (_that) {
 case _Post() when $default != null:
-return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus);case _:
+return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus,_that.topComment);case _:
   return null;
 
 }
@@ -244,7 +257,7 @@ return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachmen
 
 
 class _Post extends Post {
-  const _Post({required this.id, required this.author, required this.body, this.sentiment, final  List<Attachment> attachments = const <Attachment>[], this.likeCount = 0, this.commentCount = 0, final  List<String> stockCodes = const <String>[], this.likedByMe = false, this.poll, this.editedAt, required this.createdAt, required this.cursor, this.isBookmarked = false, final  List<String> hashtags = const <String>[], this.isBot = false, this.authorIsOfficial = false, this.moderationStatus}): _attachments = attachments,_stockCodes = stockCodes,_hashtags = hashtags,super._();
+  const _Post({required this.id, required this.author, required this.body, this.sentiment, final  List<Attachment> attachments = const <Attachment>[], this.likeCount = 0, this.commentCount = 0, final  List<String> stockCodes = const <String>[], this.likedByMe = false, this.poll, this.editedAt, required this.createdAt, required this.cursor, this.isBookmarked = false, final  List<String> hashtags = const <String>[], this.isBot = false, this.authorIsOfficial = false, this.moderationStatus, this.topComment}): _attachments = attachments,_stockCodes = stockCodes,_hashtags = hashtags,super._();
   
 
 @override final  String id;
@@ -283,6 +296,7 @@ class _Post extends Post {
 @override@JsonKey() final  bool isBot;
 @override@JsonKey() final  bool authorIsOfficial;
 @override final  ModerationStatus? moderationStatus;
+@override final  ThreadComment? topComment;
 
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
@@ -294,16 +308,16 @@ _$PostCopyWith<_Post> get copyWith => __$PostCopyWithImpl<_Post>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Post&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other._stockCodes, _stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Post&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other._stockCodes, _stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&(identical(other.topComment, topComment) || other.topComment == topComment));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,author,body,sentiment,const DeepCollectionEquality().hash(_attachments),likeCount,commentCount,const DeepCollectionEquality().hash(_stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(_hashtags),isBot,authorIsOfficial,moderationStatus);
+int get hashCode => Object.hashAll([runtimeType,id,author,body,sentiment,const DeepCollectionEquality().hash(_attachments),likeCount,commentCount,const DeepCollectionEquality().hash(_stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(_hashtags),isBot,authorIsOfficial,moderationStatus,topComment]);
 
 @override
 String toString() {
-  return 'Post(id: $id, author: $author, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus)';
+  return 'Post(id: $id, author: $author, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment)';
 }
 
 
@@ -314,11 +328,11 @@ abstract mixin class _$PostCopyWith<$Res> implements $PostCopyWith<$Res> {
   factory _$PostCopyWith(_Post value, $Res Function(_Post) _then) = __$PostCopyWithImpl;
 @override @useResult
 $Res call({
- String id, UserSummary author, String body, Sentiment? sentiment, List<Attachment> attachments, int likeCount, int commentCount, List<String> stockCodes, bool likedByMe, Poll? poll, DateTime? editedAt, DateTime createdAt, String cursor, bool isBookmarked, List<String> hashtags, bool isBot, bool authorIsOfficial, ModerationStatus? moderationStatus
+ String id, UserSummary author, String body, Sentiment? sentiment, List<Attachment> attachments, int likeCount, int commentCount, List<String> stockCodes, bool likedByMe, Poll? poll, DateTime? editedAt, DateTime createdAt, String cursor, bool isBookmarked, List<String> hashtags, bool isBot, bool authorIsOfficial, ModerationStatus? moderationStatus, ThreadComment? topComment
 });
 
 
-@override $UserSummaryCopyWith<$Res> get author;@override $PollCopyWith<$Res>? get poll;
+@override $UserSummaryCopyWith<$Res> get author;@override $PollCopyWith<$Res>? get poll;@override $ThreadCommentCopyWith<$Res>? get topComment;
 
 }
 /// @nodoc
@@ -331,7 +345,7 @@ class __$PostCopyWithImpl<$Res>
 
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = null,Object? hashtags = null,Object? isBot = null,Object? authorIsOfficial = null,Object? moderationStatus = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = null,Object? hashtags = null,Object? isBot = null,Object? authorIsOfficial = null,Object? moderationStatus = freezed,Object? topComment = freezed,}) {
   return _then(_Post(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -351,7 +365,8 @@ as bool,hashtags: null == hashtags ? _self._hashtags : hashtags // ignore: cast_
 as List<String>,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nullable_to_non_nullable
 as bool,authorIsOfficial: null == authorIsOfficial ? _self.authorIsOfficial : authorIsOfficial // ignore: cast_nullable_to_non_nullable
 as bool,moderationStatus: freezed == moderationStatus ? _self.moderationStatus : moderationStatus // ignore: cast_nullable_to_non_nullable
-as ModerationStatus?,
+as ModerationStatus?,topComment: freezed == topComment ? _self.topComment : topComment // ignore: cast_nullable_to_non_nullable
+as ThreadComment?,
   ));
 }
 
@@ -375,6 +390,18 @@ $PollCopyWith<$Res>? get poll {
 
   return $PollCopyWith<$Res>(_self.poll!, (value) {
     return _then(_self.copyWith(poll: value));
+  });
+}/// Create a copy of Post
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ThreadCommentCopyWith<$Res>? get topComment {
+    if (_self.topComment == null) {
+    return null;
+  }
+
+  return $ThreadCommentCopyWith<$Res>(_self.topComment!, (value) {
+    return _then(_self.copyWith(topComment: value));
   });
 }
 }
@@ -423,14 +450,17 @@ extension FeedScopePatterns on FeedScope {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GlobalFeedScope value)?  global,TResult Function( FollowingFeedScope value)?  following,TResult Function( StockFeedScope value)?  stock,TResult Function( UserFeedScope value)?  user,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( GlobalFeedScope value)?  global,TResult Function( FollowingFeedScope value)?  following,TResult Function( StockFeedScope value)?  stock,TResult Function( UserFeedScope value)?  user,TResult Function( StocksFeedScope value)?  stocks,TResult Function( OfficialFeedScope value)?  official,TResult Function( ForYouFeedScope value)?  forYou,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case GlobalFeedScope() when global != null:
 return global(_that);case FollowingFeedScope() when following != null:
 return following(_that);case StockFeedScope() when stock != null:
 return stock(_that);case UserFeedScope() when user != null:
-return user(_that);case _:
+return user(_that);case StocksFeedScope() when stocks != null:
+return stocks(_that);case OfficialFeedScope() when official != null:
+return official(_that);case ForYouFeedScope() when forYou != null:
+return forYou(_that);case _:
   return orElse();
 
 }
@@ -448,14 +478,17 @@ return user(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GlobalFeedScope value)  global,required TResult Function( FollowingFeedScope value)  following,required TResult Function( StockFeedScope value)  stock,required TResult Function( UserFeedScope value)  user,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( GlobalFeedScope value)  global,required TResult Function( FollowingFeedScope value)  following,required TResult Function( StockFeedScope value)  stock,required TResult Function( UserFeedScope value)  user,required TResult Function( StocksFeedScope value)  stocks,required TResult Function( OfficialFeedScope value)  official,required TResult Function( ForYouFeedScope value)  forYou,}){
 final _that = this;
 switch (_that) {
 case GlobalFeedScope():
 return global(_that);case FollowingFeedScope():
 return following(_that);case StockFeedScope():
 return stock(_that);case UserFeedScope():
-return user(_that);}
+return user(_that);case StocksFeedScope():
+return stocks(_that);case OfficialFeedScope():
+return official(_that);case ForYouFeedScope():
+return forYou(_that);}
 }
 /// A variant of `map` that fallback to returning `null`.
 ///
@@ -469,14 +502,17 @@ return user(_that);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GlobalFeedScope value)?  global,TResult? Function( FollowingFeedScope value)?  following,TResult? Function( StockFeedScope value)?  stock,TResult? Function( UserFeedScope value)?  user,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( GlobalFeedScope value)?  global,TResult? Function( FollowingFeedScope value)?  following,TResult? Function( StockFeedScope value)?  stock,TResult? Function( UserFeedScope value)?  user,TResult? Function( StocksFeedScope value)?  stocks,TResult? Function( OfficialFeedScope value)?  official,TResult? Function( ForYouFeedScope value)?  forYou,}){
 final _that = this;
 switch (_that) {
 case GlobalFeedScope() when global != null:
 return global(_that);case FollowingFeedScope() when following != null:
 return following(_that);case StockFeedScope() when stock != null:
 return stock(_that);case UserFeedScope() when user != null:
-return user(_that);case _:
+return user(_that);case StocksFeedScope() when stocks != null:
+return stocks(_that);case OfficialFeedScope() when official != null:
+return official(_that);case ForYouFeedScope() when forYou != null:
+return forYou(_that);case _:
   return null;
 
 }
@@ -493,13 +529,16 @@ return user(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  global,TResult Function()?  following,TResult Function( String code)?  stock,TResult Function( String userId)?  user,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  global,TResult Function()?  following,TResult Function( String code)?  stock,TResult Function( String userId)?  user,TResult Function( List<String> codes)?  stocks,TResult Function()?  official,TResult Function()?  forYou,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case GlobalFeedScope() when global != null:
 return global();case FollowingFeedScope() when following != null:
 return following();case StockFeedScope() when stock != null:
 return stock(_that.code);case UserFeedScope() when user != null:
-return user(_that.userId);case _:
+return user(_that.userId);case StocksFeedScope() when stocks != null:
+return stocks(_that.codes);case OfficialFeedScope() when official != null:
+return official();case ForYouFeedScope() when forYou != null:
+return forYou();case _:
   return orElse();
 
 }
@@ -517,13 +556,16 @@ return user(_that.userId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  global,required TResult Function()  following,required TResult Function( String code)  stock,required TResult Function( String userId)  user,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  global,required TResult Function()  following,required TResult Function( String code)  stock,required TResult Function( String userId)  user,required TResult Function( List<String> codes)  stocks,required TResult Function()  official,required TResult Function()  forYou,}) {final _that = this;
 switch (_that) {
 case GlobalFeedScope():
 return global();case FollowingFeedScope():
 return following();case StockFeedScope():
 return stock(_that.code);case UserFeedScope():
-return user(_that.userId);}
+return user(_that.userId);case StocksFeedScope():
+return stocks(_that.codes);case OfficialFeedScope():
+return official();case ForYouFeedScope():
+return forYou();}
 }
 /// A variant of `when` that fallback to returning `null`
 ///
@@ -537,13 +579,16 @@ return user(_that.userId);}
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  global,TResult? Function()?  following,TResult? Function( String code)?  stock,TResult? Function( String userId)?  user,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  global,TResult? Function()?  following,TResult? Function( String code)?  stock,TResult? Function( String userId)?  user,TResult? Function( List<String> codes)?  stocks,TResult? Function()?  official,TResult? Function()?  forYou,}) {final _that = this;
 switch (_that) {
 case GlobalFeedScope() when global != null:
 return global();case FollowingFeedScope() when following != null:
 return following();case StockFeedScope() when stock != null:
 return stock(_that.code);case UserFeedScope() when user != null:
-return user(_that.userId);case _:
+return user(_that.userId);case StocksFeedScope() when stocks != null:
+return stocks(_that.codes);case OfficialFeedScope() when official != null:
+return official();case ForYouFeedScope() when forYou != null:
+return forYou();case _:
   return null;
 
 }
@@ -746,5 +791,141 @@ as String,
 
 
 }
+
+/// @nodoc
+
+
+class StocksFeedScope implements FeedScope {
+  const StocksFeedScope(final  List<String> codes): _codes = codes;
+  
+
+ final  List<String> _codes;
+ List<String> get codes {
+  if (_codes is EqualUnmodifiableListView) return _codes;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_codes);
+}
+
+
+/// Create a copy of FeedScope
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$StocksFeedScopeCopyWith<StocksFeedScope> get copyWith => _$StocksFeedScopeCopyWithImpl<StocksFeedScope>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StocksFeedScope&&const DeepCollectionEquality().equals(other._codes, _codes));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_codes));
+
+@override
+String toString() {
+  return 'FeedScope.stocks(codes: $codes)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $StocksFeedScopeCopyWith<$Res> implements $FeedScopeCopyWith<$Res> {
+  factory $StocksFeedScopeCopyWith(StocksFeedScope value, $Res Function(StocksFeedScope) _then) = _$StocksFeedScopeCopyWithImpl;
+@useResult
+$Res call({
+ List<String> codes
+});
+
+
+
+
+}
+/// @nodoc
+class _$StocksFeedScopeCopyWithImpl<$Res>
+    implements $StocksFeedScopeCopyWith<$Res> {
+  _$StocksFeedScopeCopyWithImpl(this._self, this._then);
+
+  final StocksFeedScope _self;
+  final $Res Function(StocksFeedScope) _then;
+
+/// Create a copy of FeedScope
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? codes = null,}) {
+  return _then(StocksFeedScope(
+null == codes ? _self._codes : codes // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class OfficialFeedScope implements FeedScope {
+  const OfficialFeedScope();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OfficialFeedScope);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'FeedScope.official()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class ForYouFeedScope implements FeedScope {
+  const ForYouFeedScope();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ForYouFeedScope);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'FeedScope.forYou()';
+}
+
+
+}
+
+
+
 
 // dart format on

@@ -1,4 +1,5 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:rendezvous_community/src/features/compose/presentation/composer_action.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
@@ -34,6 +35,8 @@ class CommunityPostDetails {
     this.onAppeal,
     this.commentsExpanded = false,
     this.onToggleComments,
+    this.topComment,
+    this.onOpenComments,
   });
 
   final Post post;
@@ -57,6 +60,8 @@ class CommunityPostDetails {
   final VoidCallback? onAppeal;
   final bool commentsExpanded;
   final VoidCallback? onToggleComments;
+  final ThreadComment? topComment;
+  final VoidCallback? onOpenComments;
 
   bool get edited => post.editedAt != null;
 
@@ -207,11 +212,28 @@ class CommunityNewPostsDetails {
 }
 
 class CommunityComposePromptDetails {
-  const CommunityComposePromptDetails({required this.user, required this.hintText, required this.onCompose});
+  const CommunityComposePromptDetails({
+    required this.user,
+    required this.hintText,
+    required this.onCompose,
+    this.onComposeWith,
+    this.quickActions = const [],
+  });
 
   final UserSummary? user;
   final String hintText;
   final VoidCallback onCompose;
+  final void Function({Sentiment? sentiment, CommunityComposerAction? action})? onComposeWith;
+  final List<CommunityComposeQuickAction> quickActions;
+}
+
+class CommunityComposeQuickAction {
+  const CommunityComposeQuickAction({required this.label, required this.icon, this.sentiment, this.action});
+
+  final String label;
+  final IconData icon;
+  final Sentiment? sentiment;
+  final CommunityComposerAction? action;
 }
 
 class CommunityThreadHeaderDetails {
@@ -282,6 +304,41 @@ class CommunityThreadMoreDetails {
   final int? remaining;
   final bool loading;
   final VoidCallback? onTap;
+}
+
+typedef CommunityComposeFieldBuilder =
+    Widget Function({TextStyle? textStyle, TextStyle? hintStyle, InputDecoration? decoration});
+
+class CommunityComposeFieldDetails {
+  const CommunityComposeFieldDetails({
+    required this.controller,
+    required this.hintText,
+    required this.maxLength,
+    required this.minLines,
+    required this.maxLines,
+    required this.enabled,
+    required this.autofocus,
+    required this.onSubmit,
+    required this.textStyle,
+    required this.hintStyle,
+    required this.decoration,
+    required this.field,
+    required this.buildField,
+  });
+
+  final TextEditingController controller;
+  final String hintText;
+  final int maxLength;
+  final int minLines;
+  final int maxLines;
+  final bool enabled;
+  final bool autofocus;
+  final VoidCallback onSubmit;
+  final TextStyle textStyle;
+  final TextStyle hintStyle;
+  final InputDecoration decoration;
+  final Widget field;
+  final CommunityComposeFieldBuilder buildField;
 }
 
 class CommunityComposeDetails {
