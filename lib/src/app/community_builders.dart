@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/config/presentation/builders/community_system_builders.dart';
@@ -146,5 +147,7 @@ class _CommunityBuildersScopeState extends State<CommunityBuildersScope> {
 
 Widget Function(Widget child) carryCommunityBuilders(BuildContext context) {
   final builders = CommunityBuilders.of(context, listen: false);
-  return builders.wrap;
+  final scroll = CommunityScrollScope.maybeScoped(context);
+  if (scroll == null) return builders.wrap;
+  return (child) => CommunityScrollScope(settings: scroll, child: builders.wrap(child));
 }

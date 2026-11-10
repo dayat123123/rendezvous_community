@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
@@ -263,21 +264,23 @@ class _DefaultSearchTabs extends StatelessWidget {
           bottom: BorderSide(color: style.divider, width: style.borderWidth),
         ),
       ),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.xxs),
-        child: Row(
-          children: [
-            for (final (index, label) in labels.indexed)
-              Padding(
-                padding: EdgeInsets.symmetric(horizontal: spacing.xxs),
-                child: CommunityTag(
-                  label: label,
-                  selected: controller.index == index,
-                  onTap: () => controller.index = index,
+      child: CommunityScrollArea(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.xxs),
+          child: Row(
+            children: [
+              for (final (index, label) in labels.indexed)
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: spacing.xxs),
+                  child: CommunityTag(
+                    label: label,
+                    selected: controller.index == index,
+                    onTap: () => controller.index = index,
+                  ),
                 ),
-              ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -380,7 +383,7 @@ class _SearchBody extends StatelessWidget {
         if (n.metrics.extentAfter < 400 && state.hasMore) cubit.loadMore();
         return false;
       },
-      child: ListView(children: children),
+      child: CommunityScrollArea(child: ListView(children: children)),
     );
   }
 
@@ -537,38 +540,40 @@ class _TrendingHashtagsView extends StatelessWidget {
     return BlocBuilder<TrendingHashtagsCubit, TrendingHashtagsState>(
       builder: (context, state) {
         if (state.status != LoadStatus.ready || state.hashtags.isEmpty) return const SizedBox.shrink();
-        return ListView(
-          padding: EdgeInsets.only(top: spacing.sm, bottom: spacing.lg),
-          children: [
-            EditorialSectionHeader(title: l10n.trendingHashtags, icon: Icons.trending_up),
-            EditorialSection(
-              gap: false,
-              padding: EdgeInsets.fromLTRB(spacing.lg, spacing.sm, spacing.lg, spacing.md),
-              child: Wrap(
-                spacing: spacing.sm,
-                runSpacing: spacing.sm,
-                children: [
-                  for (final (index, hashtag) in state.hashtags.indexed)
-                    Builder(
-                      builder: (context) {
-                        final details = CommunityHashtagDetails(
-                          hashtag: hashtag,
-                          placement: CommunityHashtagPlacement.suggestion,
-                          rank: index + 1,
-                          onOpen: () => onHashtag(hashtag.tag),
-                        );
-                        return buildDiscoveryPart(
-                          (b) => b.hashtag,
-                          context,
-                          details,
-                          CommunityTag(label: hashtag.tag, icon: Icons.tag, onTap: details.onOpen),
-                        );
-                      },
-                    ),
-                ],
+        return CommunityScrollArea(
+          child: ListView(
+            padding: EdgeInsets.only(top: spacing.sm, bottom: spacing.lg),
+            children: [
+              EditorialSectionHeader(title: l10n.trendingHashtags, icon: Icons.trending_up),
+              EditorialSection(
+                gap: false,
+                padding: EdgeInsets.fromLTRB(spacing.lg, spacing.sm, spacing.lg, spacing.md),
+                child: Wrap(
+                  spacing: spacing.sm,
+                  runSpacing: spacing.sm,
+                  children: [
+                    for (final (index, hashtag) in state.hashtags.indexed)
+                      Builder(
+                        builder: (context) {
+                          final details = CommunityHashtagDetails(
+                            hashtag: hashtag,
+                            placement: CommunityHashtagPlacement.suggestion,
+                            rank: index + 1,
+                            onOpen: () => onHashtag(hashtag.tag),
+                          );
+                          return buildDiscoveryPart(
+                            (b) => b.hashtag,
+                            context,
+                            details,
+                            CommunityTag(label: hashtag.tag, icon: Icons.tag, onTap: details.onOpen),
+                          );
+                        },
+                      ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         );
       },
     );

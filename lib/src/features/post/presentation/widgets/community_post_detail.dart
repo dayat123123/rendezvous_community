@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
@@ -139,12 +140,14 @@ class _PostDetailView extends StatelessWidget {
               child: Column(
                 children: [
                   Expanded(
-                    child: ListView.builder(
-                      addAutomaticKeepAlives: false,
-                      padding: EdgeInsets.only(bottom: spacing.lg),
-                      itemCount: header.length + rows.length,
-                      itemBuilder: (context, index) =>
-                          index < header.length ? header[index] : row(index - header.length),
+                    child: CommunityScrollArea(
+                      child: ListView.builder(
+                        addAutomaticKeepAlives: false,
+                        padding: EdgeInsets.only(bottom: spacing.lg),
+                        itemCount: header.length + rows.length,
+                        itemBuilder: (context, index) =>
+                            index < header.length ? header[index] : row(index - header.length),
+                      ),
                     ),
                   ),
                   card(actionsOnly: true),

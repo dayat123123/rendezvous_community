@@ -3,6 +3,7 @@ import 'dart:math' as math;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
@@ -339,60 +340,62 @@ class _MessageListState extends State<MessageList> {
     CommunityLocalizations l10n,
     CommunitySpacing spacing,
   ) {
-    return ListView.builder(
-      addAutomaticKeepAlives: false,
-      controller: _scroll,
-      reverse: true,
-      padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
-      itemCount: state.messages.length + (state.loadingOlder ? 1 : 0),
-      itemBuilder: (context, i) {
-        if (i == state.messages.length) {
-          return buildChatPart(
-            builders.loading,
-            context,
-            const CommunityLoadingDetails(CommunityChatLoad.olderMessages),
-            const CommunityLoadingView(),
+    return CommunityScrollArea(
+      child: ListView.builder(
+        addAutomaticKeepAlives: false,
+        controller: _scroll,
+        reverse: true,
+        padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
+        itemCount: state.messages.length + (state.loadingOlder ? 1 : 0),
+        itemBuilder: (context, i) {
+          if (i == state.messages.length) {
+            return buildChatPart(
+              builders.loading,
+              context,
+              const CommunityLoadingDetails(CommunityChatLoad.olderMessages),
+              const CommunityLoadingView(),
+            );
+          }
+          final message = state.messages[i];
+          final older = i + 1 < state.messages.length ? state.messages[i + 1] : null;
+          final newer = i > 0 ? state.messages[i - 1] : null;
+          final newDay = older == null || !_sameDay(older.createdAt, message.createdAt);
+          final grouped = older != null && !newDay && _joins(older, message);
+          final continued = newer != null && _sameDay(message.createdAt, newer.createdAt) && _joins(message, newer);
+          final mine = state.isMine(message);
+          final type = state.room?.type;
+          final bubble = MessageBubble(
+            key: ValueKey(message.clientId ?? message.id),
+            message: message,
+            mine: mine,
+            receipt: state.receiptOf(message),
+            showSender: !grouped && type != RoomType.direct && !mine,
+            startsGroup: !grouped,
+            endsGroup: !continued,
+            showAvatar: !mine && (type == RoomType.group || type == RoomType.stock),
           );
-        }
-        final message = state.messages[i];
-        final older = i + 1 < state.messages.length ? state.messages[i + 1] : null;
-        final newer = i > 0 ? state.messages[i - 1] : null;
-        final newDay = older == null || !_sameDay(older.createdAt, message.createdAt);
-        final grouped = older != null && !newDay && _joins(older, message);
-        final continued = newer != null && _sameDay(message.createdAt, newer.createdAt) && _joins(message, newer);
-        final mine = state.isMine(message);
-        final type = state.room?.type;
-        final bubble = MessageBubble(
-          key: ValueKey(message.clientId ?? message.id),
-          message: message,
-          mine: mine,
-          receipt: state.receiptOf(message),
-          showSender: !grouped && type != RoomType.direct && !mine,
-          startsGroup: !grouped,
-          endsGroup: !continued,
-          showAvatar: !mine && (type == RoomType.group || type == RoomType.stock),
-        );
-        final anchored = MessageAnchor(
-          key: ValueKey('anchor-${message.clientId ?? message.id}'),
-          id: message.id,
-          index: i,
-          anchors: _anchors,
-          highlighted: _highlight,
-          child: bubble,
-        );
-        if (!newDay) return anchored;
-        final divider = buildChatPart(
-          builders.dayDivider,
-          context,
-          CommunityDayDetails(day: message.createdAt, label: l10n.dayLabel(message.createdAt)),
-          _DayDivider(time: message.createdAt),
-        );
-        return Column(
-          key: ValueKey('day-${message.clientId ?? message.id}'),
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [divider, anchored],
-        );
-      },
+          final anchored = MessageAnchor(
+            key: ValueKey('anchor-${message.clientId ?? message.id}'),
+            id: message.id,
+            index: i,
+            anchors: _anchors,
+            highlighted: _highlight,
+            child: bubble,
+          );
+          if (!newDay) return anchored;
+          final divider = buildChatPart(
+            builders.dayDivider,
+            context,
+            CommunityDayDetails(day: message.createdAt, label: l10n.dayLabel(message.createdAt)),
+            _DayDivider(time: message.createdAt),
+          );
+          return Column(
+            key: ValueKey('day-${message.clientId ?? message.id}'),
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [divider, anchored],
+          );
+        },
+      ),
     );
   }
 }

@@ -20,6 +20,9 @@ String get socialUrl {
 
 final exampleGuestSupport = CommunityGuestSupportClient.anonymous(supabaseUrl: socialUrl, anonKey: _anonKey);
 
+bool get _desktop =>
+    !kIsWeb && {TargetPlatform.windows, TargetPlatform.macOS, TargetPlatform.linux}.contains(defaultTargetPlatform);
+
 String? get autoLoginUser => kIsWeb ? Uri.base.queryParameters['user'] : null;
 
 String get dummyOltWsUrl => _dummyOltOverride.isNotEmpty
@@ -93,6 +96,7 @@ Future<void> _startSocial(FakeOltAuth auth) async {
     onOltNotificationTap: showOltNotification,
     onBannerLink: openPromoLink,
     appVersion: '1.3.0',
+    scroll: CommunityScrollSettings(behavior: const CommunityMouseDragScrollBehavior(), pullToRefresh: !_desktop),
   );
   await social.ensureSignedIn();
 }

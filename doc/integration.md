@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.14.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.15.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -218,6 +218,17 @@ CommunityFeedList(
 ```
 
 Di server tanpa `0143`: `FeedScope.forYou()` tampil seperti Terbaru, urutan Teratas diabaikan, dan "Grafik & media" disaring di aplikasi; `FeedScope.stocks` dan `FeedScope.official` menampilkan pesan error. `CommunityMarketSentiment` dan `CommunitySuggestedUsers` tidak tampil bila repository buatan OLT tidak mengimplementasikan `TrendingInsightsRepository` / `SuggestedUsersRepository`.
+
+**Scroll di desktop (1.15.0).** Agar daftar bisa digeser dengan mouse dan tarik-untuk-muat-ulang (beserta indikatornya) dimatikan di Windows, isi `scroll` saat `initialize(...)`:
+
+```dart
+scroll: CommunityScrollSettings(
+  behavior: const CommunityMouseDragScrollBehavior(),
+  pullToRefresh: defaultTargetPlatform == TargetPlatform.android,
+),
+```
+
+Untuk sebagian layar saja pakai `CommunityScrollScope`. Rinciannya di [customization.md](customization.md#scroll--tarik-untuk-muat-ulang-1150).
 
 **Persetujuan dokumen hukum.** Dokumen diterbitkan staf Kepatuhan dari web CS. Paket menanganinya sendiri:
 - Feed menampilkan `CommunityConsentBanner` bila ada dokumen wajib yang belum disetujui.

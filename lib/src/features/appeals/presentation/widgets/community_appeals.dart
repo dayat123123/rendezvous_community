@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
 import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
@@ -218,7 +219,7 @@ class _AppealsView extends StatelessWidget {
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
-                child: RefreshIndicator(
+                child: CommunityRefresh(
                   onRefresh: cubit.load,
                   child: ListView(
                     physics: const AlwaysScrollableScrollPhysics(),

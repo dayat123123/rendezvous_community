@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_actions.dart';
@@ -145,7 +146,7 @@ class _TrendingViewState extends State<_TrendingView> {
       separatorBuilder: (_, _) => CommunityDivider(indent: spacing.lg, endIndent: spacing.lg),
       itemBuilder: (_, index) => rows[index],
     );
-    return RefreshIndicator(
+    return CommunityRefresh(
       onRefresh: cubit.load,
       child: switch (_tab) {
         CommunityTrendingTab.stocks when snapshot.stocks.isEmpty => _scrollable(empty),

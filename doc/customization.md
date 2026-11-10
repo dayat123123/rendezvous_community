@@ -773,6 +773,36 @@ Badge CS resmi wajib tetap terlihat jelas: builder `supportOfficial`/`label` bol
 
 Contoh app (`example/`): tombol palet mengganti gaya chat, tombol `style` mengganti kartu post dan bentuk badge (`example/lib/custom_feed_style.dart`).
 
+## Scroll & tarik-untuk-muat-ulang (1.15.0)
+
+Atur sekali saat inisialisasi:
+
+```dart
+await RendezvousCommunity.initialize(
+  // ...
+  scroll: const CommunityScrollSettings(
+    behavior: CommunityMouseDragScrollBehavior(),   // daftar bisa digeser dengan mouse
+    pullToRefresh: false,                            // tanpa tarik-untuk-muat-ulang dan indikatornya
+  ),
+);
+```
+
+Atau hanya untuk sebagian layar. Scope terdekat didahulukan dan ikut ke halaman yang dibuka library (profil, detail post, room chat):
+
+```dart
+CommunityScrollScope(
+  settings: const CommunityScrollSettings(pullToRefresh: false),
+  child: const CommunityStreamFeed(),
+);
+```
+
+| Field | Bawaan | Keterangan |
+|---|---|---|
+| `behavior` | `null` (ikut `ScrollBehavior` aplikasi) | Dipasang sebagai `ScrollConfiguration` di daftar dan halaman library. Boleh `ScrollBehavior` buatan host, misalnya untuk menyembunyikan scrollbar |
+| `pullToRefresh` | `true` | `false` membuang `RefreshIndicator` dari feed, daftar chat, permintaan pesan, banding, draf, trending, dan Pusat Bantuan. Data tetap dimuat ulang otomatis (realtime, pil "N post baru", saat kembali online) |
+
+`CommunityMouseDragScrollBehavior` = `MaterialScrollBehavior` + mouse sebagai perangkat geser. Di desktop, menyeret dengan mouse di atas teks yang bisa diseleksi (pesan chat) tetap menyeleksi teks; geser dari area kosong atau kartu. Dialog dan bottom sheet kecil mengikuti `ScrollBehavior` aplikasi (`MaterialApp.scrollBehavior`).
+
 ## Gambar & cache disk (1.4.0)
 
 Avatar, lampiran gambar (post, chat, kartu post yang dibagikan), dan gambar link preview dimuat lewat `CommunityImageProvider`:

@@ -1,9 +1,12 @@
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_banner_host.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
@@ -183,53 +186,63 @@ class _FeedPostListState extends State<FeedPostList> {
             ),
             CommunityErrorView(error: state.error!, onRetry: cubit.load),
           ),
-          LoadStatus.ready => RefreshIndicator(
+          LoadStatus.ready => CommunityRefresh(
             onRefresh: cubit.refresh,
-            child: ListView.builder(
-              addAutomaticKeepAlives: false,
-              controller: _scroll,
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: EdgeInsets.only(top: style.sectionGap),
-              itemCount: posts.length + 2,
-              itemBuilder: (context, index) {
-                if (index == 0) {
-                  return Column(
-                    children: [
-                      if (widget.showBanners) const CommunityBannerHost(),
-                      if (widget.showConsentBanner) const CommunityConsentBanner(),
-                      ?widget.header,
-                      for (final pin in state.pinned)
-                        PinnedPostCard(
-                          pinned: pin,
-                          onLike: () => cubit.toggleLike(pin.post),
-                          onOpen: () => CommunityNavigator.openPost(context, pin.post.id),
-                          onToggleBookmark: cubit.canBookmark ? () => cubit.toggleBookmark(pin.post) : null,
-                        ),
-                      if (posts.isEmpty && state.pinned.isEmpty)
-                        buildCommunityPart(
-                          builders.empty,
-                          context,
-                          empty,
-                          CommunityEmptyView(message: widget.emptyMessage),
-                        ),
-                    ],
-                  );
-                }
-                if (index == posts.length + 1) {
-                  return state.loadingMore
-                      ? buildCommunityPart(
-                          builders.loading,
-                          context,
-                          const CommunityListLoadingDetails(more: true),
-                          const CommunityLoadingView(),
-                        )
-                      : SizedBox(height: spacing.xxl);
-                }
-                final post = posts[index - 1];
-                return Padding(
-                  key: ValueKey(post.id),
-                  padding: EdgeInsets.only(bottom: style.sectionGap),
-                  child: FeedPostCard(post: post, cubit: cubit, source: widget.source, openMode: widget.postOpenMode),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final side = math.max(0.0, (constraints.maxWidth - CommunityBreakpoints.contentMaxWidth) / 2);
+                return ListView.builder(
+                  addAutomaticKeepAlives: false,
+                  controller: _scroll,
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: EdgeInsets.fromLTRB(side, style.sectionGap, side, 0),
+                  itemCount: posts.length + 2,
+                  itemBuilder: (context, index) {
+                    if (index == 0) {
+                      return Column(
+                        children: [
+                          if (widget.showBanners) const CommunityBannerHost(),
+                          if (widget.showConsentBanner) const CommunityConsentBanner(),
+                          ?widget.header,
+                          for (final pin in state.pinned)
+                            PinnedPostCard(
+                              pinned: pin,
+                              onLike: () => cubit.toggleLike(pin.post),
+                              onOpen: () => CommunityNavigator.openPost(context, pin.post.id),
+                              onToggleBookmark: cubit.canBookmark ? () => cubit.toggleBookmark(pin.post) : null,
+                            ),
+                          if (posts.isEmpty && state.pinned.isEmpty)
+                            buildCommunityPart(
+                              builders.empty,
+                              context,
+                              empty,
+                              CommunityEmptyView(message: widget.emptyMessage),
+                            ),
+                        ],
+                      );
+                    }
+                    if (index == posts.length + 1) {
+                      return state.loadingMore
+                          ? buildCommunityPart(
+                              builders.loading,
+                              context,
+                              const CommunityListLoadingDetails(more: true),
+                              const CommunityLoadingView(),
+                            )
+                          : SizedBox(height: spacing.xxl);
+                    }
+                    final post = posts[index - 1];
+                    return Padding(
+                      key: ValueKey(post.id),
+                      padding: EdgeInsets.only(bottom: style.sectionGap),
+                      child: FeedPostCard(
+                        post: post,
+                        cubit: cubit,
+                        source: widget.source,
+                        openMode: widget.postOpenMode,
+                      ),
+                    );
+                  },
                 );
               },
             ),
@@ -244,12 +257,15 @@ class _FeedPostListState extends State<FeedPostList> {
                 color: style.background,
                 child: Stack(
                   children: [
-                    Center(
-                      child: ConstrainedBox(
-                        constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
-                        child: body,
+                    if (state.status == LoadStatus.ready)
+                      body
+                    else
+                      Center(
+                        child: ConstrainedBox(
+                          constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
+                          child: body,
+                        ),
                       ),
-                    ),
                     if (state.newPosts > 0)
                       Positioned(
                         top: 12,

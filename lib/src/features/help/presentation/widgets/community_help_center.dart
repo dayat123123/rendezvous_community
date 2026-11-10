@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_help_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
 import 'package:rendezvous_community/src/features/help/domain/entities/help_article.dart';
 import 'package:rendezvous_community/src/features/help/domain/repositories/help_repository.dart';
@@ -176,7 +177,7 @@ class _HelpCenterViewState extends State<_HelpCenterView> {
                         ),
                         if (state.searching) LinearProgressIndicator(minHeight: 2, color: style.accent),
                         Expanded(
-                          child: RefreshIndicator(
+                          child: CommunityRefresh(
                             onRefresh: cubit.load,
                             child: state.searchActive
                                 ? _results(context, state, content)
@@ -220,26 +221,28 @@ class _HelpCenterViewState extends State<_HelpCenterView> {
   Widget _categories(BuildContext context, HelpCenterContent content) {
     final l10n = context.communityL10n;
     final style = CommunityStyle.of(context);
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: _listPadding(style),
-      children: [
-        if (content.isEmpty)
-          _empty(context, l10n.helpEmpty)
-        else
-          for (final category in content.categories)
-            HelpCategoryTile(
-              details: CommunityHelpCategoryDetails(
-                category: category,
-                icon: helpCategoryIcon(category),
-                title: category.name,
-                countLabel: l10n.helpCategoryCount(category.articles.length),
-                onOpen: () => _openCategory(category, content),
+    return CommunityScrollArea(
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: _listPadding(style),
+        children: [
+          if (content.isEmpty)
+            _empty(context, l10n.helpEmpty)
+          else
+            for (final category in content.categories)
+              HelpCategoryTile(
+                details: CommunityHelpCategoryDetails(
+                  category: category,
+                  icon: helpCategoryIcon(category),
+                  title: category.name,
+                  countLabel: l10n.helpCategoryCount(category.articles.length),
+                  onOpen: () => _openCategory(category, content),
+                ),
               ),
-            ),
-        SizedBox(height: style.spacing.lg),
-        _contact(context),
-      ],
+          SizedBox(height: style.spacing.lg),
+          _contact(context),
+        ],
+      ),
     );
   }
 
@@ -249,41 +252,43 @@ class _HelpCenterViewState extends State<_HelpCenterView> {
     final cubit = context.read<HelpCenterCubit>();
     final error = state.searchError;
     final results = state.results;
-    return ListView(
-      physics: const AlwaysScrollableScrollPhysics(),
-      padding: _listPadding(style),
-      children: [
-        if (error != null)
-          buildHelpPart(
-            (b) => b.error,
-            context,
-            CommunityListErrorDetails(
-              error: error,
-              message: l10n.errorMessage(error),
-              onRetry: () => cubit.search(state.query),
-            ),
-            CommunityErrorView(error: error, onRetry: () => cubit.search(state.query)),
-          )
-        else if (results != null && results.isEmpty && !state.searching)
-          _empty(context, l10n.helpSearchEmpty(state.query.trim()), icon: Icons.search_off)
-        else if (results != null) ...[
-          if (state.savedResults) ...[
-            Text(l10n.helpSearchSaved, style: style.typography.meta),
-            SizedBox(height: style.spacing.sm),
-          ],
-          for (final article in results)
-            HelpArticleTile(
-              details: CommunityHelpArticleTileDetails(
-                article: article,
-                title: article.question,
-                subtitle: content.category(article.category)?.name,
-                onOpen: () => _openArticle(article, content),
+    return CommunityScrollArea(
+      child: ListView(
+        physics: const AlwaysScrollableScrollPhysics(),
+        padding: _listPadding(style),
+        children: [
+          if (error != null)
+            buildHelpPart(
+              (b) => b.error,
+              context,
+              CommunityListErrorDetails(
+                error: error,
+                message: l10n.errorMessage(error),
+                onRetry: () => cubit.search(state.query),
               ),
-            ),
+              CommunityErrorView(error: error, onRetry: () => cubit.search(state.query)),
+            )
+          else if (results != null && results.isEmpty && !state.searching)
+            _empty(context, l10n.helpSearchEmpty(state.query.trim()), icon: Icons.search_off)
+          else if (results != null) ...[
+            if (state.savedResults) ...[
+              Text(l10n.helpSearchSaved, style: style.typography.meta),
+              SizedBox(height: style.spacing.sm),
+            ],
+            for (final article in results)
+              HelpArticleTile(
+                details: CommunityHelpArticleTileDetails(
+                  article: article,
+                  title: article.question,
+                  subtitle: content.category(article.category)?.name,
+                  onOpen: () => _openArticle(article, content),
+                ),
+              ),
+          ],
+          SizedBox(height: style.spacing.lg),
+          _contact(context),
         ],
-        SizedBox(height: style.spacing.lg),
-        _contact(context),
-      ],
+      ),
     );
   }
 }
@@ -308,27 +313,29 @@ class _CategoryArticles extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
-          child: ListView(
-            padding: EdgeInsets.fromLTRB(spacing.lg, spacing.lg, spacing.lg, spacing.xl),
-            children: [
-              for (final article in category.articles)
-                HelpArticleTile(
-                  details: CommunityHelpArticleTileDetails(
-                    article: article,
-                    title: article.question,
-                    onOpen: () => onOpen(context, article),
+          child: CommunityScrollArea(
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(spacing.lg, spacing.lg, spacing.lg, spacing.xl),
+              children: [
+                for (final article in category.articles)
+                  HelpArticleTile(
+                    details: CommunityHelpArticleTileDetails(
+                      article: article,
+                      title: article.question,
+                      onOpen: () => onOpen(context, article),
+                    ),
+                  ),
+                SizedBox(height: spacing.lg),
+                HelpContactCard(
+                  details: CommunityHelpContactDetails(
+                    title: l10n.helpStillNeedHelp,
+                    actionLabel: l10n.helpChatCs,
+                    topic: topic,
+                    onContact: () => onContactSupport(context, topic),
                   ),
                 ),
-              SizedBox(height: spacing.lg),
-              HelpContactCard(
-                details: CommunityHelpContactDetails(
-                  title: l10n.helpStillNeedHelp,
-                  actionLabel: l10n.helpChatCs,
-                  topic: topic,
-                  onContact: () => onContactSupport(context, topic),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),

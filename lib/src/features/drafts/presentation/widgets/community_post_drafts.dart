@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/widgets/community_compose_post.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
 import 'package:rendezvous_community/src/features/drafts/presentation/cubit/post_drafts_cubit.dart';
@@ -70,7 +71,7 @@ class _DraftsView extends StatelessWidget {
           ),
           LoadStatus.ready => ColoredBox(
             color: style.surface,
-            child: RefreshIndicator(
+            child: CommunityRefresh(
               onRefresh: cubit.load,
               child: ListView.separated(
                 addAutomaticKeepAlives: false,

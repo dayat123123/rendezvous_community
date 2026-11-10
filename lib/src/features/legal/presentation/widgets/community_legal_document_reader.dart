@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
 import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
@@ -60,42 +61,44 @@ class _DefaultLegalReader extends StatelessWidget {
     final title = d.title;
     final changes = d.changes;
     return Scrollbar(
-      child: SingleChildScrollView(
-        padding: d.padding,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            if (title != null) Text(title, style: style.typography.title.copyWith(fontSize: 22)),
-            SizedBox(height: spacing.xs),
-            Text(d.meta, style: style.typography.meta),
-            if (changes != null) ...[
-              SizedBox(height: spacing.md),
-              DecoratedBox(
-                decoration: BoxDecoration(
-                  color: style.accentMuted,
-                  borderRadius: style.radii.cardRadius,
-                  border: Border(
-                    left: BorderSide(color: style.accent, width: spacing.xs - spacing.xxs / 2),
+      child: CommunityScrollArea(
+        child: SingleChildScrollView(
+          padding: d.padding,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              if (title != null) Text(title, style: style.typography.title.copyWith(fontSize: 22)),
+              SizedBox(height: spacing.xs),
+              Text(d.meta, style: style.typography.meta),
+              if (changes != null) ...[
+                SizedBox(height: spacing.md),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: style.accentMuted,
+                    borderRadius: style.radii.cardRadius,
+                    border: Border(
+                      left: BorderSide(color: style.accent, width: spacing.xs - spacing.xxs / 2),
+                    ),
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.all(spacing.md),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(d.changesLabel, style: style.typography.label.copyWith(color: style.accent)),
+                        SizedBox(height: spacing.xs),
+                        Text(changes, style: style.typography.body.copyWith(fontSize: 14)),
+                      ],
+                    ),
                   ),
                 ),
-                child: Padding(
-                  padding: EdgeInsets.all(spacing.md),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(d.changesLabel, style: style.typography.label.copyWith(color: style.accent)),
-                      SizedBox(height: spacing.xs),
-                      Text(changes, style: style.typography.body.copyWith(fontSize: 14)),
-                    ],
-                  ),
-                ),
-              ),
+              ],
+              SizedBox(height: spacing.lg),
+              const CommunityDivider(),
+              SizedBox(height: spacing.lg),
+              SelectableText(d.body, style: style.typography.body.copyWith(height: 1.6)),
             ],
-            SizedBox(height: spacing.lg),
-            const CommunityDivider(),
-            SizedBox(height: spacing.lg),
-            SelectableText(d.body, style: style.typography.body.copyWith(height: 1.6)),
-          ],
+          ),
         ),
       ),
     );

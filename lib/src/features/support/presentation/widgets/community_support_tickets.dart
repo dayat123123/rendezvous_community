@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_image_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/paging/paged.dart';
@@ -81,29 +82,31 @@ class _CommunitySupportTicketsState extends State<CommunitySupportTickets> {
         final indent = style.spacing.lg + 40 + style.spacing.md;
         return ColoredBox(
           color: style.surface,
-          child: ListView.separated(
-            addAutomaticKeepAlives: false,
-            itemCount: tickets.length,
-            separatorBuilder: (_, _) => CommunityDivider(indent: indent),
-            itemBuilder: (context, i) {
-              final ticket = tickets[i];
-              final day = l10n.dayLabel(ticket.createdAt);
-              final details = CommunitySupportTicketDetails(
-                ticket: ticket,
-                title: '${ticket.ticketNumber} · ${ticket.topicName ?? ticket.topic}',
-                statusLabel: supportStatusText(l10n, ticket),
-                meta: [day, if (ticket.rating != null) l10n.supportRating(ticket.rating!)].join(' · '),
-                timeLabel: day,
-                icon: supportTopicIcon(ticket.topic),
-                onOpen: () => _openTranscript(context, ticket),
-              );
-              return buildSupportPart(
-                (b) => b.ticketTile,
-                context,
-                details,
-                SupportTicketTile(key: ValueKey(ticket.id), details: details),
-              );
-            },
+          child: CommunityScrollArea(
+            child: ListView.separated(
+              addAutomaticKeepAlives: false,
+              itemCount: tickets.length,
+              separatorBuilder: (_, _) => CommunityDivider(indent: indent),
+              itemBuilder: (context, i) {
+                final ticket = tickets[i];
+                final day = l10n.dayLabel(ticket.createdAt);
+                final details = CommunitySupportTicketDetails(
+                  ticket: ticket,
+                  title: '${ticket.ticketNumber} · ${ticket.topicName ?? ticket.topic}',
+                  statusLabel: supportStatusText(l10n, ticket),
+                  meta: [day, if (ticket.rating != null) l10n.supportRating(ticket.rating!)].join(' · '),
+                  timeLabel: day,
+                  icon: supportTopicIcon(ticket.topic),
+                  onOpen: () => _openTranscript(context, ticket),
+                );
+                return buildSupportPart(
+                  (b) => b.ticketTile,
+                  context,
+                  details,
+                  SupportTicketTile(key: ValueKey(ticket.id), details: details),
+                );
+              },
+            ),
           ),
         );
       },

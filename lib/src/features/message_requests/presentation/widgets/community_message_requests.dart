@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
@@ -208,7 +209,7 @@ class _RequestsView extends StatelessWidget {
             child: Center(
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
-                child: RefreshIndicator(
+                child: CommunityRefresh(
                   onRefresh: cubit.load,
                   child: NotificationListener<ScrollEndNotification>(
                     onNotification: (n) {
@@ -386,10 +387,12 @@ class _RequestRoomView extends StatelessWidget {
                     child: switch (state.status) {
                       LoadStatus.initial || LoadStatus.loading => const CommunitySkeleton(itemCount: 3),
                       LoadStatus.failure => CommunityErrorView(error: state.error!, onRetry: cubit.load),
-                      LoadStatus.ready => ListView(
-                        reverse: true,
-                        padding: EdgeInsets.all(style.spacing.md),
-                        children: [for (final m in state.messages) _RequestBubble(message: m)],
+                      LoadStatus.ready => CommunityScrollArea(
+                        child: ListView(
+                          reverse: true,
+                          padding: EdgeInsets.all(style.spacing.md),
+                          children: [for (final m in state.messages) _RequestBubble(message: m)],
+                        ),
                       ),
                     },
                   ),

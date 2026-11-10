@@ -1,3 +1,12 @@
+## 1.15.0
+
+Tidak butuh migrasi server. Semua parameter baru opsional; host yang tidak memakainya tetap mendapat perilaku bawaan, kecuali perbaikan scroll feed di bawah.
+
+* **Pengaturan scroll:** `RendezvousCommunity.initialize(scroll: CommunityScrollSettings(...))` untuk seluruh library, atau `CommunityScrollScope(settings: ..., child: ...)` untuk sebagian layar (scope terdekat didahulukan dan ikut ke halaman yang dibuka library).
+  * `behavior`: `ScrollBehavior` untuk daftar dan halaman library (feed, profil, detail post, daftar dan room chat, notifikasi, cari, trending, chat CS, riwayat tiket, Pusat Bantuan, pengaturan, pengaduan tamu). `CommunityMouseDragScrollBehavior` membuat daftar bisa digeser dengan mouse di desktop, selain roda mouse dan touchpad.
+  * `pullToRefresh: false` mematikan tarik-untuk-muat-ulang beserta indikatornya di semua daftar library.
+* **Perbaikan scroll feed di layar lebar:** area scroll feed (Stream, feed saham, hashtag, profil) kini selebar halaman, sehingga roda mouse juga bekerja saat kursor di margin kiri/kanan kolom konten. Lebar kolom konten tetap 720 px.
+
 ## 1.14.0
 
 Server: bagian halaman Stream butuh migrasi `0143`. Semua API baru opsional; host yang tidak memakainya tidak perlu mengubah apa pun. Sedikit perubahan tampilan bawaan: kartu "Apa pendapat Anda…" kini punya tombol cepat, kartu feed menampilkan pratinjau komentar teratas, dan kolom composer post mengikuti `typography.body`.

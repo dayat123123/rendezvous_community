@@ -10,6 +10,7 @@ import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_guest_support_scope.dart';
 import 'package:rendezvous_community/src/app/community_help_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
 import 'package:rendezvous_community/src/core/auth/auth_bridge_client.dart';
 import 'package:rendezvous_community/src/core/auth/social_session.dart';
@@ -172,6 +173,7 @@ class RendezvousCommunity
     required this.feedCache,
     required this.outbox,
     required this.images,
+    required this.scroll,
     required bool trackDelivery,
   }) {
     if (trackDelivery) {
@@ -214,6 +216,7 @@ class RendezvousCommunity
     bool offlineCache = true,
     int offlineMessageLimit = 200,
     CommunityImageCacheConfig imageCache = const CommunityImageCacheConfig(),
+    CommunityScrollSettings scroll = CommunityScrollSettings.defaults,
     CommunityGuestSessionStore? guestSessionStore,
     http.Client? httpClient,
     CommunityLogHandler? logHandler,
@@ -242,6 +245,7 @@ class RendezvousCommunity
       offlineCache: offlineCache,
       offlineMessageLimit: offlineMessageLimit,
       imageCache: imageCache,
+      scroll: scroll,
       guestSessionStore: guestSessionStore,
       httpClient: httpClient,
     );
@@ -276,6 +280,7 @@ class RendezvousCommunity
     OfflineStoreFactory? offlineStores,
     CommunityImageCacheConfig imageCache = const CommunityImageCacheConfig(),
     ImageDiskCache? imageDiskCache,
+    CommunityScrollSettings scroll = CommunityScrollSettings.defaults,
     CommunityGuestSessionStore? guestSessionStore,
     http.Client? httpClient,
   }) {
@@ -408,6 +413,7 @@ class RendezvousCommunity
       feedCache: feedCache,
       outbox: offline == null ? null : MessageOutbox(chatImpl, OutboxRepositoryImpl(offline)),
       images: images,
+      scroll: scroll,
       trackDelivery: trackDelivery,
     );
 
@@ -499,6 +505,8 @@ class RendezvousCommunity
   final MessageOutbox? outbox;
 
   final CommunityImageLoader images;
+
+  final CommunityScrollSettings scroll;
 
   bool get offlineCacheEnabled => _offline != null;
 

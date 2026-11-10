@@ -6,6 +6,7 @@ import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
@@ -271,7 +272,7 @@ class _RoomListState extends State<_RoomList> {
         CommunityEmptyDetails(kind: CommunityChatEmpty.rooms, message: l10n.noChats),
         CommunityEmptyView(message: l10n.noChats, icon: Icons.chat_bubble_outline),
       ),
-      LoadStatus.ready => RefreshIndicator(
+      LoadStatus.ready => CommunityRefresh(
         onRefresh: () => _refresh(cubit),
         child: ListView.builder(
           addAutomaticKeepAlives: false,

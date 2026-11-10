@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_account_scope.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/error/error_mapper.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
@@ -143,84 +144,86 @@ class _AccountSettingsView extends StatelessWidget {
               constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
               child: ListTileTheme(
                 data: communitySettingsTileTheme(style),
-                child: ListView(
-                  children: [
-                    const CommunityConsentBanner(),
-                    CommunitySectionHeader(title: l10n.accountLegalSection),
-                    CommunitySettingsGroup(
-                      children: switch (state.status) {
-                        LoadStatus.initial || LoadStatus.loading => const [
-                          CommunitySettingsLoading(area: CommunitySettingsArea.legalDocuments),
-                        ],
-                        LoadStatus.failure => [
-                          CommunitySettingsError(
-                            area: CommunitySettingsArea.legalDocuments,
-                            error: state.error!,
-                            onRetry: () => cubit.load(refresh: true),
-                          ),
-                        ],
-                        LoadStatus.ready => [
-                          for (final document in state.documents)
-                            CommunityLegalDocumentTile(
-                              document: document,
-                              placement: CommunityLegalDocumentPlacement.accountSettings,
-                              onOpen: () => showCommunityLegalDocument(context, document),
+                child: CommunityScrollArea(
+                  child: ListView(
+                    children: [
+                      const CommunityConsentBanner(),
+                      CommunitySectionHeader(title: l10n.accountLegalSection),
+                      CommunitySettingsGroup(
+                        children: switch (state.status) {
+                          LoadStatus.initial || LoadStatus.loading => const [
+                            CommunitySettingsLoading(area: CommunitySettingsArea.legalDocuments),
+                          ],
+                          LoadStatus.failure => [
+                            CommunitySettingsError(
+                              area: CommunitySettingsArea.legalDocuments,
+                              error: state.error!,
+                              onRetry: () => cubit.load(refresh: true),
                             ),
-                        ],
-                      },
-                    ),
-                    if (features != null && social) ...[
-                      CommunitySectionHeader(title: l10n.accountMessagesSection),
-                      const CommunitySettingsGroup(children: [CommunityDmPolicySettings()]),
-                    ],
-                    if (features != null && social && context.communityFeature(CommunityFlags.notificationPrefs)) ...[
-                      CommunitySectionHeader(title: l10n.notificationSettings),
-                      const CommunitySettingsGroup(children: [CommunityNotificationSettings()]),
-                    ],
-                    if (features != null) ...[
-                      CommunitySectionHeader(title: l10n.accountAppealsSection),
+                          ],
+                          LoadStatus.ready => [
+                            for (final document in state.documents)
+                              CommunityLegalDocumentTile(
+                                document: document,
+                                placement: CommunityLegalDocumentPlacement.accountSettings,
+                                onOpen: () => showCommunityLegalDocument(context, document),
+                              ),
+                          ],
+                        },
+                      ),
+                      if (features != null && social) ...[
+                        CommunitySectionHeader(title: l10n.accountMessagesSection),
+                        const CommunitySettingsGroup(children: [CommunityDmPolicySettings()]),
+                      ],
+                      if (features != null && social && context.communityFeature(CommunityFlags.notificationPrefs)) ...[
+                        CommunitySectionHeader(title: l10n.notificationSettings),
+                        const CommunitySettingsGroup(children: [CommunityNotificationSettings()]),
+                      ],
+                      if (features != null) ...[
+                        CommunitySectionHeader(title: l10n.accountAppealsSection),
+                        CommunitySettingsGroup(
+                          children: [
+                            _AccountTile(
+                              details: CommunityAccountTileDetails(
+                                kind: CommunityAccountTileKind.appeals,
+                                icon: Icons.gavel_outlined,
+                                title: l10n.myAppeals,
+                                subtitle: l10n.accountAppealsHint,
+                                onTap: () => openCommunityAppeals(context),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                      CommunitySectionHeader(title: l10n.accountDataSection),
                       CommunitySettingsGroup(
                         children: [
                           _AccountTile(
                             details: CommunityAccountTileDetails(
-                              kind: CommunityAccountTileKind.appeals,
-                              icon: Icons.gavel_outlined,
-                              title: l10n.myAppeals,
-                              subtitle: l10n.accountAppealsHint,
-                              onTap: () => openCommunityAppeals(context),
+                              kind: CommunityAccountTileKind.exportData,
+                              icon: Icons.download_outlined,
+                              title: l10n.accountExport,
+                              subtitle: l10n.accountExportHint,
+                              busy: state.exporting,
+                              onTap: !state.exporting && !state.deleting ? () => _export(context) : null,
+                            ),
+                          ),
+                          _AccountTile(
+                            details: CommunityAccountTileDetails(
+                              kind: CommunityAccountTileKind.deleteAccount,
+                              icon: Icons.delete_forever_outlined,
+                              title: l10n.accountDelete,
+                              subtitle: l10n.accountDeleteHint,
+                              destructive: true,
+                              busy: state.deleting,
+                              onTap: !state.deleting ? () => _delete(context) : null,
                             ),
                           ),
                         ],
                       ),
+                      SizedBox(height: spacing.xl),
                     ],
-                    CommunitySectionHeader(title: l10n.accountDataSection),
-                    CommunitySettingsGroup(
-                      children: [
-                        _AccountTile(
-                          details: CommunityAccountTileDetails(
-                            kind: CommunityAccountTileKind.exportData,
-                            icon: Icons.download_outlined,
-                            title: l10n.accountExport,
-                            subtitle: l10n.accountExportHint,
-                            busy: state.exporting,
-                            onTap: !state.exporting && !state.deleting ? () => _export(context) : null,
-                          ),
-                        ),
-                        _AccountTile(
-                          details: CommunityAccountTileDetails(
-                            kind: CommunityAccountTileKind.deleteAccount,
-                            icon: Icons.delete_forever_outlined,
-                            title: l10n.accountDelete,
-                            subtitle: l10n.accountDeleteHint,
-                            destructive: true,
-                            busy: state.deleting,
-                            onTap: !state.deleting ? () => _delete(context) : null,
-                          ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: spacing.xl),
-                  ],
+                  ),
                 ),
               ),
             ),

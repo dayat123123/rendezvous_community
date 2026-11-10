@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_details.dart';
 import 'package:rendezvous_community/src/features/help/presentation/widgets/community_help_article.dart';
 import 'package:rendezvous_community/src/features/help/presentation/widgets/help_parts.dart';
@@ -107,35 +108,37 @@ class _DefaultTopicPicker extends StatelessWidget {
     final historyLabel = d.historyLabel;
     return ColoredBox(
       color: style.background,
-      child: ListView(
-        padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xl, spacing.lg, spacing.xl),
-        children: [
-          Semantics(header: true, child: Text(d.title, style: style.typography.title)),
-          SizedBox(height: spacing.xs),
-          Text(d.hint, style: style.typography.body.copyWith(color: style.textSecondary)),
-          if (onShowHistory != null && historyLabel != null) ...[
-            SizedBox(height: spacing.sm),
-            Align(
-              alignment: AlignmentDirectional.centerStart,
-              child: TextButton.icon(
-                style: TextButton.styleFrom(foregroundColor: style.accent, textStyle: style.typography.label),
-                onPressed: onShowHistory,
-                icon: const Icon(Icons.history, size: 18),
-                label: Text(historyLabel),
+      child: CommunityScrollArea(
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xl, spacing.lg, spacing.xl),
+          children: [
+            Semantics(header: true, child: Text(d.title, style: style.typography.title)),
+            SizedBox(height: spacing.xs),
+            Text(d.hint, style: style.typography.body.copyWith(color: style.textSecondary)),
+            if (onShowHistory != null && historyLabel != null) ...[
+              SizedBox(height: spacing.sm),
+              Align(
+                alignment: AlignmentDirectional.centerStart,
+                child: TextButton.icon(
+                  style: TextButton.styleFrom(foregroundColor: style.accent, textStyle: style.typography.label),
+                  onPressed: onShowHistory,
+                  icon: const Icon(Icons.history, size: 18),
+                  label: Text(historyLabel),
+                ),
               ),
-            ),
+            ],
+            SizedBox(height: spacing.lg),
+            for (final topic in d.topics)
+              SupportTopicTile(
+                details: CommunitySupportTopicDetails(
+                  topic: topic,
+                  icon: supportTopicIconFor(topic),
+                  busy: d.busy,
+                  onSelect: d.busy ? null : () => d.onSelect(topic.code),
+                ),
+              ),
           ],
-          SizedBox(height: spacing.lg),
-          for (final topic in d.topics)
-            SupportTopicTile(
-              details: CommunitySupportTopicDetails(
-                topic: topic,
-                icon: supportTopicIconFor(topic),
-                busy: d.busy,
-                onSelect: d.busy ? null : () => d.onSelect(topic.code),
-              ),
-            ),
-        ],
+        ),
       ),
     );
   }

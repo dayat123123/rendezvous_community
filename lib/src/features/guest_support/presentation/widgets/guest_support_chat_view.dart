@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
@@ -175,24 +176,26 @@ class _GuestMessageList extends StatelessWidget {
   Widget build(BuildContext context) {
     final spacing = CommunityStyle.of(context).spacing;
     final items = messages.reversed.toList();
-    return ListView.builder(
-      reverse: true,
-      addAutomaticKeepAlives: false,
-      padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.md),
-      itemCount: items.length + 1,
-      itemBuilder: (context, index) {
-        if (index == items.length) {
-          return Padding(
-            padding: EdgeInsets.only(bottom: spacing.md),
-            child: const GuestSecurityNote(compact: true),
+    return CommunityScrollArea(
+      child: ListView.builder(
+        reverse: true,
+        addAutomaticKeepAlives: false,
+        padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.md),
+        itemCount: items.length + 1,
+        itemBuilder: (context, index) {
+          if (index == items.length) {
+            return Padding(
+              padding: EdgeInsets.only(bottom: spacing.md),
+              child: const GuestSecurityNote(compact: true),
+            );
+          }
+          final message = items[index];
+          return KeyedSubtree(
+            key: ValueKey(message.clientId ?? message.id),
+            child: _GuestMessage(message: message),
           );
-        }
-        final message = items[index];
-        return KeyedSubtree(
-          key: ValueKey(message.clientId ?? message.id),
-          child: _GuestMessage(message: message),
-        );
-      },
+        },
+      ),
     );
   }
 }

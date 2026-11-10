@@ -12,6 +12,8 @@ export 'src/app/community_image_scope.dart';
 export 'src/app/community_official_scope.dart';
 export 'src/app/community_offline_scope.dart';
 export 'src/app/community_scope.dart';
+export 'src/app/community_scroll.dart'
+    show CommunityMouseDragScrollBehavior, CommunityScrollScope, CommunityScrollSettings;
 export 'src/app/community_support_scope.dart';
 export 'src/app/rendezvous_community.dart';
 export 'src/core/auth/social_session.dart';

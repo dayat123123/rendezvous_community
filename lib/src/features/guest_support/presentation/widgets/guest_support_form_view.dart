@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/guest_support/domain/services/guest_support_form.dart';
 import 'package:rendezvous_community/src/features/guest_support/presentation/builders/community_guest_support_details.dart';
 import 'package:rendezvous_community/src/features/guest_support/presentation/cubit/guest_support_cubit.dart';
@@ -196,107 +197,109 @@ class _DefaultGuestForm extends StatelessWidget {
     final problemError = d.errorFor(GuestSupportField.problem);
     return ColoredBox(
       color: style.background,
-      child: ListView(
-        padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xl, spacing.lg, spacing.xl),
-        children: [
-          Semantics(header: true, child: Text(d.title, style: style.typography.title)),
-          SizedBox(height: spacing.xs),
-          Text(d.hint, style: style.typography.body.copyWith(color: style.textSecondary)),
-          SizedBox(height: spacing.lg),
-          d.securityNote,
-          SizedBox(height: spacing.lg),
-          TextField(
-            key: const ValueKey('guest-name'),
-            controller: d.nameController,
-            enabled: !d.busy,
-            maxLength: d.nameMaxLength,
-            textCapitalization: TextCapitalization.words,
-            textInputAction: TextInputAction.next,
-            autofillHints: const [AutofillHints.name],
-            style: style.typography.body,
-            decoration: _decoration(style, d.nameLabel, error: d.errorFor(GuestSupportField.name)),
-          ),
-          SizedBox(height: spacing.sm),
-          TextField(
-            key: const ValueKey('guest-login-id'),
-            controller: d.loginIdController,
-            enabled: !d.busy,
-            maxLength: d.loginIdMaxLength,
-            textCapitalization: TextCapitalization.characters,
-            textInputAction: TextInputAction.next,
-            autocorrect: false,
-            enableSuggestions: false,
-            inputFormatters: const [GuestUpperCaseFormatter()],
-            style: style.typography.body,
-            decoration: _decoration(
-              style,
-              '${d.loginIdLabel} (${d.optionalLabel})',
-              hint: d.loginIdHint,
-              error: d.errorFor(GuestSupportField.loginId),
-            ),
-          ),
-          SizedBox(height: spacing.sm),
-          Text(d.problemLabel, style: style.typography.label),
-          SizedBox(height: spacing.xs),
-          Wrap(
-            spacing: spacing.xs,
-            runSpacing: spacing.xs,
-            children: [
-              for (final problem in d.problems)
-                ChoiceChip(
-                  key: ValueKey('guest-problem-${problem.code}'),
-                  label: Text(problem.label),
-                  selected: d.selectedProblem == problem.code,
-                  selectedColor: style.accentMuted,
-                  backgroundColor: style.surface,
-                  side: BorderSide(
-                    color: d.selectedProblem == problem.code ? style.accent : style.border,
-                    width: style.borderWidth,
-                  ),
-                  labelStyle: style.typography.label.copyWith(
-                    color: d.selectedProblem == problem.code ? style.accent : style.textPrimary,
-                  ),
-                  showCheckmark: false,
-                  onSelected: d.busy ? null : (_) => d.onSelectProblem(problem.code),
-                ),
-            ],
-          ),
-          if (problemError != null) ...[
+      child: CommunityScrollArea(
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xl, spacing.lg, spacing.xl),
+          children: [
+            Semantics(header: true, child: Text(d.title, style: style.typography.title)),
             SizedBox(height: spacing.xs),
-            Text(problemError, style: style.typography.meta.copyWith(color: Theme.of(context).colorScheme.error)),
-          ],
-          SizedBox(height: spacing.md),
-          TextField(
-            key: const ValueKey('guest-description'),
-            controller: d.descriptionController,
-            enabled: !d.busy,
-            minLines: 4,
-            maxLines: 8,
-            maxLength: d.descriptionMaxLength,
-            keyboardType: TextInputType.multiline,
-            textCapitalization: TextCapitalization.sentences,
-            style: style.typography.body,
-            decoration: _decoration(
-              style,
-              d.descriptionLabel,
-              hint: d.descriptionHint,
-              error: d.errorFor(GuestSupportField.description),
+            Text(d.hint, style: style.typography.body.copyWith(color: style.textSecondary)),
+            SizedBox(height: spacing.lg),
+            d.securityNote,
+            SizedBox(height: spacing.lg),
+            TextField(
+              key: const ValueKey('guest-name'),
+              controller: d.nameController,
+              enabled: !d.busy,
+              maxLength: d.nameMaxLength,
+              textCapitalization: TextCapitalization.words,
+              textInputAction: TextInputAction.next,
+              autofillHints: const [AutofillHints.name],
+              style: style.typography.body,
+              decoration: _decoration(style, d.nameLabel, error: d.errorFor(GuestSupportField.name)),
             ),
-          ),
-          SizedBox(height: spacing.md),
-          FilledButton.icon(
-            key: const ValueKey('guest-submit'),
-            style: style.primaryButtonStyle(),
-            onPressed: d.busy ? null : d.onSubmit,
-            icon: d.busy
-                ? SizedBox.square(
-                    dimension: 16,
-                    child: CircularProgressIndicator(strokeWidth: 2, color: style.onAccent),
-                  )
-                : const Icon(Icons.send_outlined, size: 18),
-            label: Text(d.submitLabel),
-          ),
-        ],
+            SizedBox(height: spacing.sm),
+            TextField(
+              key: const ValueKey('guest-login-id'),
+              controller: d.loginIdController,
+              enabled: !d.busy,
+              maxLength: d.loginIdMaxLength,
+              textCapitalization: TextCapitalization.characters,
+              textInputAction: TextInputAction.next,
+              autocorrect: false,
+              enableSuggestions: false,
+              inputFormatters: const [GuestUpperCaseFormatter()],
+              style: style.typography.body,
+              decoration: _decoration(
+                style,
+                '${d.loginIdLabel} (${d.optionalLabel})',
+                hint: d.loginIdHint,
+                error: d.errorFor(GuestSupportField.loginId),
+              ),
+            ),
+            SizedBox(height: spacing.sm),
+            Text(d.problemLabel, style: style.typography.label),
+            SizedBox(height: spacing.xs),
+            Wrap(
+              spacing: spacing.xs,
+              runSpacing: spacing.xs,
+              children: [
+                for (final problem in d.problems)
+                  ChoiceChip(
+                    key: ValueKey('guest-problem-${problem.code}'),
+                    label: Text(problem.label),
+                    selected: d.selectedProblem == problem.code,
+                    selectedColor: style.accentMuted,
+                    backgroundColor: style.surface,
+                    side: BorderSide(
+                      color: d.selectedProblem == problem.code ? style.accent : style.border,
+                      width: style.borderWidth,
+                    ),
+                    labelStyle: style.typography.label.copyWith(
+                      color: d.selectedProblem == problem.code ? style.accent : style.textPrimary,
+                    ),
+                    showCheckmark: false,
+                    onSelected: d.busy ? null : (_) => d.onSelectProblem(problem.code),
+                  ),
+              ],
+            ),
+            if (problemError != null) ...[
+              SizedBox(height: spacing.xs),
+              Text(problemError, style: style.typography.meta.copyWith(color: Theme.of(context).colorScheme.error)),
+            ],
+            SizedBox(height: spacing.md),
+            TextField(
+              key: const ValueKey('guest-description'),
+              controller: d.descriptionController,
+              enabled: !d.busy,
+              minLines: 4,
+              maxLines: 8,
+              maxLength: d.descriptionMaxLength,
+              keyboardType: TextInputType.multiline,
+              textCapitalization: TextCapitalization.sentences,
+              style: style.typography.body,
+              decoration: _decoration(
+                style,
+                d.descriptionLabel,
+                hint: d.descriptionHint,
+                error: d.errorFor(GuestSupportField.description),
+              ),
+            ),
+            SizedBox(height: spacing.md),
+            FilledButton.icon(
+              key: const ValueKey('guest-submit'),
+              style: style.primaryButtonStyle(),
+              onPressed: d.busy ? null : d.onSubmit,
+              icon: d.busy
+                  ? SizedBox.square(
+                      dimension: 16,
+                      child: CircularProgressIndicator(strokeWidth: 2, color: style.onAccent),
+                    )
+                  : const Icon(Icons.send_outlined, size: 18),
+              label: Text(d.submitLabel),
+            ),
+          ],
+        ),
       ),
     );
   }

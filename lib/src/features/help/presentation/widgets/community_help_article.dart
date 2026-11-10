@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_help_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
 import 'package:rendezvous_community/src/features/help/domain/entities/help_article.dart';
 import 'package:rendezvous_community/src/features/help/domain/repositories/help_repository.dart';
@@ -191,24 +192,26 @@ class _DefaultArticle extends StatelessWidget {
         alignment: Alignment.topCenter,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
-          child: ListView(
-            padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xl, spacing.lg, spacing.xl),
-            children: [
-              if (category != null && category.isNotEmpty) ...[
-                Text(category, style: style.typography.label.copyWith(color: style.accent)),
-                SizedBox(height: spacing.xs),
+          child: CommunityScrollArea(
+            child: ListView(
+              padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xl, spacing.lg, spacing.xl),
+              children: [
+                if (category != null && category.isNotEmpty) ...[
+                  Text(category, style: style.typography.label.copyWith(color: style.accent)),
+                  SizedBox(height: spacing.xs),
+                ],
+                Semantics(header: true, child: Text(d.title, style: style.typography.title.copyWith(fontSize: 22))),
+                if (updated != null) ...[SizedBox(height: spacing.xs), Text(updated, style: style.typography.meta)],
+                SizedBox(height: spacing.lg),
+                d.body,
+                SizedBox(height: spacing.xl),
+                const CommunityDivider(),
+                SizedBox(height: spacing.xl),
+                d.feedback,
+                SizedBox(height: spacing.md),
+                d.contact,
               ],
-              Semantics(header: true, child: Text(d.title, style: style.typography.title.copyWith(fontSize: 22))),
-              if (updated != null) ...[SizedBox(height: spacing.xs), Text(updated, style: style.typography.meta)],
-              SizedBox(height: spacing.lg),
-              d.body,
-              SizedBox(height: spacing.xl),
-              const CommunityDivider(),
-              SizedBox(height: spacing.xl),
-              d.feedback,
-              SizedBox(height: spacing.md),
-              d.contact,
-            ],
+            ),
           ),
         ),
       ),

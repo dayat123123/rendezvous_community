@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/appeals/presentation/widgets/community_appeals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_moderation.dart'
     show roomModerationTime;
@@ -176,25 +177,27 @@ class _NotificationRows extends StatelessWidget {
       );
     }
 
-    return ListView.builder(
-      addAutomaticKeepAlives: false,
-      itemCount: items.length + headers,
-      itemBuilder: (context, row) {
-        if (grouped && row == 0) return section(CommunityNotificationSection.newer);
-        if (earlier && row == split + 1) return section(CommunityNotificationSection.earlier);
-        final index = row - (grouped ? 1 : 0) - (earlier && row > split ? 1 : 0);
-        final last = index == items.length - 1 || (earlier && index == split - 1);
-        final tile = itemBuilder(context, items[index]);
-        if (last) return tile;
-        return Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            tile,
-            _NotificationSeparator(unread: !items[index].isRead && !items[index + 1].isRead),
-          ],
-        );
-      },
+    return CommunityScrollArea(
+      child: ListView.builder(
+        addAutomaticKeepAlives: false,
+        itemCount: items.length + headers,
+        itemBuilder: (context, row) {
+          if (grouped && row == 0) return section(CommunityNotificationSection.newer);
+          if (earlier && row == split + 1) return section(CommunityNotificationSection.earlier);
+          final index = row - (grouped ? 1 : 0) - (earlier && row > split ? 1 : 0);
+          final last = index == items.length - 1 || (earlier && index == split - 1);
+          final tile = itemBuilder(context, items[index]);
+          if (last) return tile;
+          return Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              tile,
+              _NotificationSeparator(unread: !items[index].isRead && !items[index + 1].isRead),
+            ],
+          );
+        },
+      ),
     );
   }
 }

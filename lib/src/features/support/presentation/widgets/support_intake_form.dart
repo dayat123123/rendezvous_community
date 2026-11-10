@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 import 'package:rendezvous_community/src/features/support/domain/services/support_intake.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
@@ -137,44 +138,46 @@ class _DefaultIntakeForm extends StatelessWidget {
     final notice = d.notice;
     return ColoredBox(
       color: style.background,
-      child: ListView(
-        padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xl, spacing.lg, spacing.xl),
-        children: [
-          Row(
-            children: [
-              if (icon != null) ...[
-                SupportIconCircle(icon: icon, color: style.accent, size: 28),
-                SizedBox(width: spacing.sm),
+      child: CommunityScrollArea(
+        child: ListView(
+          padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xl, spacing.lg, spacing.xl),
+          children: [
+            Row(
+              children: [
+                if (icon != null) ...[
+                  SupportIconCircle(icon: icon, color: style.accent, size: 28),
+                  SizedBox(width: spacing.sm),
+                ],
+                Expanded(
+                  child: Text(d.topic.name, style: style.typography.label.copyWith(color: style.textSecondary)),
+                ),
               ],
-              Expanded(
-                child: Text(d.topic.name, style: style.typography.label.copyWith(color: style.textSecondary)),
-              ),
-            ],
-          ),
-          SizedBox(height: spacing.md),
-          Semantics(header: true, child: Text(d.title, style: style.typography.title)),
-          SizedBox(height: spacing.xs),
-          Text(d.hint, style: style.typography.body.copyWith(color: style.textSecondary)),
-          if (notice != null) ...[
+            ),
             SizedBox(height: spacing.md),
-            SupportNoticeBox(message: notice, tone: CommunitySupportTone.warning, icon: Icons.schedule),
+            Semantics(header: true, child: Text(d.title, style: style.typography.title)),
+            SizedBox(height: spacing.xs),
+            Text(d.hint, style: style.typography.body.copyWith(color: style.textSecondary)),
+            if (notice != null) ...[
+              SizedBox(height: spacing.md),
+              SupportNoticeBox(message: notice, tone: CommunitySupportTone.warning, icon: Icons.schedule),
+            ],
+            SizedBox(height: spacing.lg),
+            for (final view in d.fieldViews) ...[view, SizedBox(height: spacing.md)],
+            SizedBox(height: spacing.sm),
+            FilledButton.icon(
+              style: style.primaryButtonStyle(),
+              onPressed: d.busy ? null : d.onSubmit,
+              icon: const Icon(Icons.chat_bubble_outline, size: 18),
+              label: Text(d.submitLabel),
+            ),
+            SizedBox(height: spacing.xs),
+            TextButton(
+              style: TextButton.styleFrom(foregroundColor: style.accent, textStyle: style.typography.label),
+              onPressed: d.busy ? null : d.onBack,
+              child: Text(d.backLabel),
+            ),
           ],
-          SizedBox(height: spacing.lg),
-          for (final view in d.fieldViews) ...[view, SizedBox(height: spacing.md)],
-          SizedBox(height: spacing.sm),
-          FilledButton.icon(
-            style: style.primaryButtonStyle(),
-            onPressed: d.busy ? null : d.onSubmit,
-            icon: const Icon(Icons.chat_bubble_outline, size: 18),
-            label: Text(d.submitLabel),
-          ),
-          SizedBox(height: spacing.xs),
-          TextButton(
-            style: TextButton.styleFrom(foregroundColor: style.accent, textStyle: style.typography.label),
-            onPressed: d.busy ? null : d.onBack,
-            child: Text(d.backLabel),
-          ),
-        ],
+        ),
       ),
     );
   }
