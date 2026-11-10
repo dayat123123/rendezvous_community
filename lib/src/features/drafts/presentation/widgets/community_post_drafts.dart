@@ -40,6 +40,9 @@ class CommunityPostDrafts extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (!CommunityScope.of(context).callbacks.postDrafts) {
+      return CommunityEmptyView(message: context.communityL10n.draftsEmpty, icon: Icons.drafts_outlined);
+    }
     final drafts = context.communityFeatures?.drafts;
     if (drafts == null) return const SizedBox.shrink();
     return BlocProvider(create: (_) => PostDraftsCubit(drafts)..load(), child: const _DraftsView());

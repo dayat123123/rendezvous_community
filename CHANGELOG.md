@@ -1,3 +1,10 @@
+## 1.15.2
+
+Tidak butuh migrasi server. Bawaannya draf tetap aktif; perubahan tampilan hanya: gambar di kartu post kini bisa diketuk untuk dilihat layar penuh.
+
+* **Matikan draf post:** `RendezvousCommunity.initialize(postDrafts: false)` (juga `CommunityCallbacks.postDrafts`). Composer tidak membuat, menyimpan, menyinkronkan, atau memuat draf: tanpa label "Draf tersimpan…", tanpa pemberitahuan batas draf, dan tanpa panggilan RPC draf. `CommunityPostDrafts` tampil kosong. Draf lama tidak dihapus otomatis; `RendezvousCommunity.instance.clearPostDrafts()` (dan `CommunityDrafts.clear()`) menghapus semua draf user di perangkat dan server. Bila server tidak terjangkau, error dilempar dan penghapusan server dicoba lagi saat daftar draf dimuat berikutnya.
+* **Pratinjau gambar post:** mengetuk gambar di kartu post bawaan (feed, detail post, profil, hashtag, cari) membuka penampil layar penuh di gambar itu, dengan nama penulis dan waktu post, tanpa tombol balas/reaksi. `CommunityPostDetails.onOpenImage(index)` untuk builder host. `showCommunityImageViewer`, `CommunityImageSaver`, `CommunityImageCopier`, `saveCommunityImage`, dan `copyCommunityImage` kini diekspor.
+
 ## 1.15.1
 
 Tidak butuh migrasi server. Bawaannya tidak berubah.

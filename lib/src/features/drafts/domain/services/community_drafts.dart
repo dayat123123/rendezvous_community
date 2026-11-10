@@ -83,6 +83,19 @@ class CommunityDrafts {
     } catch (_) {}
   }
 
+  Future<void> clear() async {
+    final (local, deleted) = await _local.load();
+    final ids = {...deleted, for (final d in local) d.clientDraftId};
+    await _local.write(const [], ids);
+    final remote = await _remote.list();
+    ids.addAll(remote.map((d) => d.clientDraftId));
+    await _local.write(const [], ids);
+    for (final id in ids) {
+      await _remote.delete(id);
+    }
+    await _local.write(const [], const {});
+  }
+
   Future<void> published(String clientDraftId) async {
     final (local, deleted) = await _local.load();
     await _local.write([

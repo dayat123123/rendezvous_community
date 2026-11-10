@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_info_view.dart';
-import 'package:rendezvous_community/src/features/media/presentation/widgets/image_viewer.dart';
 
 import '../../support/chat_app.dart';
 import '../../support/fakes.dart';

@@ -209,6 +209,7 @@ class RendezvousCommunity
     CommunityOltNotificationTapCallback? onOltNotificationTap,
     CommunityBannerLinkCallback? onBannerLink,
     bool chatStockCards = true,
+    bool postDrafts = true,
     String? appVersion,
     CommunityPlatform? platform,
     CommunityUpdateRequiredCallback? onUpdateRequired,
@@ -240,6 +241,7 @@ class RendezvousCommunity
       onOltNotificationTap: onOltNotificationTap,
       onBannerLink: onBannerLink,
       chatStockCards: chatStockCards,
+      postDrafts: postDrafts,
       appVersion: appVersion,
       platform: platform ?? defaultCommunityPlatform(),
       onUpdateRequired: onUpdateRequired,
@@ -274,6 +276,7 @@ class RendezvousCommunity
     CommunityOltNotificationTapCallback? onOltNotificationTap,
     CommunityBannerLinkCallback? onBannerLink,
     bool chatStockCards = true,
+    bool postDrafts = true,
     String? appVersion,
     CommunityPlatform? platform,
     CommunityUpdateRequiredCallback? onUpdateRequired,
@@ -357,6 +360,7 @@ class RendezvousCommunity
         onOltNotificationTap: onOltNotificationTap,
         onBannerLink: onBannerLink,
         chatStockCards: chatStockCards,
+        postDrafts: postDrafts,
       ),
       feed: FeedRepositoryImpl(api, realtime, feedCache),
       comments: CommentRepositoryImpl(api, realtime),
@@ -519,6 +523,11 @@ class RendezvousCommunity
 
   Future<void> reportNotificationTapped(Map<String, Object?> data) =>
       notificationReporter.tapped(NotificationSource.fromData(data));
+
+  Future<void> clearPostDrafts() async {
+    await ensureSignedIn();
+    await drafts.clear();
+  }
 
   Future<void> clearLocalCache() async {
     outbox?.reset();

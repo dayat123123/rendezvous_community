@@ -37,6 +37,7 @@ class CommunityPostDetails {
     this.onToggleComments,
     this.topComment,
     this.onOpenComments,
+    this.onOpenImage,
   });
 
   final Post post;
@@ -62,6 +63,7 @@ class CommunityPostDetails {
   final VoidCallback? onToggleComments;
   final ThreadComment? topComment;
   final VoidCallback? onOpenComments;
+  final ValueChanged<int>? onOpenImage;
 
   bool get edited => post.editedAt != null;
 

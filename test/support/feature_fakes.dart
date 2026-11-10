@@ -392,10 +392,12 @@ class FakePostDraftRepository implements PostDraftRepository {
   final deleted = <String>[];
   Object? saveError;
   Object? listError;
+  var listCalls = 0;
   DateTime Function() clock = () => DateTime.now().toUtc();
 
   @override
   Future<List<PostDraft>> list() async {
+    listCalls++;
     final failure = listError;
     if (failure != null) throw failure;
     return saved.values.toList();

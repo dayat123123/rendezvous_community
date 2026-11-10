@@ -177,6 +177,8 @@ export 'src/features/media/domain/repositories/media_repository.dart';
 export 'src/features/media/presentation/file_opener.dart'
     show CommunityFileOpener, DocumentOpener, communityOpensDownloadedFiles, communityVideoPlaysInApp;
 export 'src/features/media/presentation/widgets/attachment_grid.dart';
+export 'src/features/media/presentation/widgets/image_viewer.dart'
+    show CommunityImageCopier, CommunityImageSaver, copyCommunityImage, saveCommunityImage, showCommunityImageViewer;
 export 'src/features/media/presentation/widgets/video_player_page.dart'
     show CommunityVideoControllerFactory, CommunityVideoPlayerPage, showCommunityVideoPlayer;
 export 'src/features/message_requests/domain/entities/message_request.dart';

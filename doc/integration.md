@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.15.1            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.15.2            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -88,6 +88,7 @@ Future<void> onOltLoggedIn() async {
     onRoomTap: null,      // null = buka CommunityChatRoom
     onBannerLink: (context, uri, banner) => OltRouter.tryOpenDeepLink(context, uri), // opsional, true = ditangani OLT (bagian 5)
     chatStockCards: true, // false = sembunyikan tombol "Kirim kartu saham" di kolom chat (1.15.1)
+    postDrafts: true,     // false = composer tidak menyimpan/memuat draf post (1.15.2)
     logHandler: (record) => oltLog.write(record.level.name, record.loggerName, record.message),  // opsional
   );
 }
@@ -237,6 +238,10 @@ Untuk sebagian layar saja pakai `CommunityScrollScope`. Rinciannya di [customiza
 - OLT juga bisa memanggil `showCommunityConsent(context)` sendiri, misalnya saat pertama membuka menu komunitas.
 
 **Upload foto dan PDF** dikirim paket ke `/media/v1` (layanan `media` di server memeriksa isi file dan membuang EXIF/GPS). Server lama tanpa layanan ini menolak upload ("upload belum tersedia").
+
+**Draf post (1.15.2).** Bawaannya composer menyimpan draf otomatis ke perangkat dan server. Dengan `initialize(postDrafts: false)` composer tidak membuat, menyimpan, menyinkronkan, atau memuat draf (tanpa label "Draf tersimpan" dan tanpa panggilan RPC draf), dan `CommunityPostDrafts` tampil kosong. Draf lama tidak dihapus otomatis; hapus semua draf milik user (perangkat dan server) dengan `await RendezvousCommunity.instance.clearPostDrafts()`.
+
+**Gambar post (1.15.2).** Mengetuk gambar di kartu post membuka penampil layar penuh (`showCommunityImageViewer`, juga diekspor untuk UI host).
 
 Navigasi dari dalam widget sosial memakai callback dari langkah 3. Contohnya, mengetuk `$TLKM` di sebuah post memanggil `onStockTap(context, 'TLKM')`, sehingga OLT bisa membuka halaman sahamnya sendiri.
 

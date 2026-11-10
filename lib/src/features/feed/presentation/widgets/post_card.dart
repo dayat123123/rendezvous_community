@@ -10,6 +10,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/builders/com
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/sentiment_badge.dart';
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/image_viewer.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/moderation/presentation/widgets/moderation_actions.dart';
 import 'package:rendezvous_community/src/features/poll/presentation/widgets/community_poll_view.dart';
@@ -86,6 +87,15 @@ class PostCard extends StatelessWidget {
       onToggleComments: onToggleComments,
       topComment: post.topComment,
       onOpenComments: onToggleComments ?? onOpen,
+      onOpenImage: post.attachments.isEmpty
+          ? null
+          : (index) => showCommunityImageViewer(
+              context,
+              images: post.attachments,
+              initialIndex: index,
+              sender: post.author,
+              sentAt: post.createdAt,
+            ),
       onOpenAuthor: () => CommunityNavigator.openUser(context, post.author),
       onOpenStock: (code) => CommunityNavigator.openStock(context, code, source: source),
       onOpenHashtag: (tag) => CommunityNavigator.openHashtag(context, tag),
@@ -242,7 +252,7 @@ class _DefaultPostCard extends StatelessWidget {
             builders.attachments,
             context,
             d,
-            AttachmentGrid(attachments: post.attachments, edgeToEdge: true, maxHeight: 360),
+            AttachmentGrid(attachments: post.attachments, edgeToEdge: true, maxHeight: 360, onOpen: d.onOpenImage),
           ),
         ],
         if (showActions) ...[

@@ -124,21 +124,23 @@ class CommunityComposePost extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final deps = CommunityScope.of(context);
+    final drafts = deps.callbacks.postDrafts ? context.communityFeatures?.drafts : null;
+    final resumed = drafts == null ? null : draft;
     return CommunitySocialGate(
       child: BlocProvider(
         create: (_) => ComposeCubit(
           feed: deps.feed,
           media: deps.media,
           consent: communityConsentGate(context),
-          drafts: context.communityFeatures?.drafts,
-          draft: draft,
+          drafts: drafts,
+          draft: resumed,
         ),
         child: _ComposeView(
           initialStock: initialStock,
           initialImage: initialImage,
           onPosted: onPosted,
           autofocus: autofocus,
-          draft: draft,
+          draft: resumed,
           initialSentiment: initialSentiment,
           initialAction: initialAction,
           hintText: hintText,

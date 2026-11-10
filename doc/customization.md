@@ -266,7 +266,7 @@ CommunityFeedBuilders(
 
 | Builder | `details` | Isi |
 |---|---|---|
-| `postCard`, `postAvatar`, `postHeader`, `postBody`, `attachments`, `stockTags`, `actionBar` | `CommunityPostDetails` | `post`, `isMine`, `timeLabel`, `edited`, `expanded`, `source`, `pinned`, `canVote`; `onLike`, `onOpen`, `onComment`, `onShare`, `onToggleBookmark`, `onEdit`, `onDelete` (dengan konfirmasi), `onReport`, `onBlock` (dengan konfirmasi), `onAppeal`, `onOpenAuthor`, `onOpenStock(code)`, `onOpenHashtag(tag)`; `commentsExpanded`, `onToggleComments` (1.13.0, hanya terisi pada mode komentar inline; `onComment` sama dengan `onToggleComments`); `topComment`, `onOpenComments` (1.14.0, komentar teratas untuk pratinjau dan aksi membuka komentar) |
+| `postCard`, `postAvatar`, `postHeader`, `postBody`, `attachments`, `stockTags`, `actionBar` | `CommunityPostDetails` | `post`, `isMine`, `timeLabel`, `edited`, `expanded`, `source`, `pinned`, `canVote`; `onLike`, `onOpen`, `onComment`, `onShare`, `onToggleBookmark`, `onEdit`, `onDelete` (dengan konfirmasi), `onReport`, `onBlock` (dengan konfirmasi), `onAppeal`, `onOpenAuthor`, `onOpenStock(code)`, `onOpenHashtag(tag)`; `commentsExpanded`, `onToggleComments` (1.13.0, hanya terisi pada mode komentar inline; `onComment` sama dengan `onToggleComments`); `topComment`, `onOpenComments` (1.14.0, komentar teratas untuk pratinjau dan aksi membuka komentar); `onOpenImage(index)` (1.15.2, membuka penampil gambar layar penuh di gambar ke-`index`; `null` bila post tanpa gambar) |
 | `linkPreview` | `CommunityLinkPreviewDetails` | `preview` (`title`, `description`, `siteName`, `imageUrl`, `domain`); `onOpen` (dengan dialog tautan bawaan). Berlaku di feed, komentar, dan chat |
 | `poll` | `CommunityPollDetails` | `poll`, `canVote`, `closed`, `showResults`, `summary` (teks suara & sisa waktu), `pendingOptionId`; `onVote(option)` (null bila tidak bisa memilih) |
 | `pinnedMarker` | `CommunityPinnedMarkerDetails` | `pinned`, `announcement`, `title`, `label` ("Pengumuman"/"Disematkan") |
@@ -341,6 +341,16 @@ CommunityFeedBuilders(
 | `inlineComments` | `CommunityInlineCommentsDetails` | `post`, `expanded`, `onToggle` (menutup), `child` (komentar bawaan `CommunityPostComments`). Wadah komentar inline di bawah kartu post (1.13.0) |
 | `commentSort` | `CommunityCommentSortDetails` | `title` ("Komentar"), `tooltip`, `selected`, `options` (`top`, `latest`), `labels` ("Disarankan", "Terbaru"), `selectedLabel`; `onSelect` (null saat memuat). Hanya tampil bila server mendukung urutan (migrasi `0142`) |
 | `topComment` | `CommunityPostDetails` | pratinjau komentar teratas di bawah tombol aksi kartu feed (1.14.0): `topComment`, `onOpenComments` (mode `navigate` membuka detail post, mode inline membuka komentar di bawah kartu), `post.commentCount`. Tidak tampil saat komentar inline sedang terbuka |
+
+#### Gambar post (1.15.2)
+
+Mengetuk gambar di kartu post bawaan (feed, detail post, profil, hashtag, cari) membuka `showCommunityImageViewer` di gambar yang diketuk: zoom, geser antar gambar, nama penulis dan waktu post, dan Unduh, tanpa tombol balas/reaksi. Builder `attachments` buatan host bisa memakai `details.onOpenImage(index)`, atau memanggil viewer sendiri:
+
+```dart
+showCommunityImageViewer(context, images: post.attachments, initialIndex: 1, sender: post.author, sentAt: post.createdAt);
+```
+
+Tampilan viewer diganti lewat slot `shared.imageViewer`.
 
 #### Komentar inline (1.13.0)
 
