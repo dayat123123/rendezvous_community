@@ -38,6 +38,7 @@ class CommunityChatBuilders {
     this.requestActions,
     this.requestBubble,
     this.video,
+    this.officialNotice,
   });
 
   final CommunityPartBuilder<CommunityMessageDetails>? message;
@@ -74,6 +75,7 @@ class CommunityChatBuilders {
   final CommunityPartBuilder<CommunityRequestActionsDetails>? requestActions;
   final CommunityPartBuilder<CommunityMessageDetails>? requestBubble;
   final CommunityPartBuilder<CommunityVideoDetails>? video;
+  final CommunityPartBuilder<CommunityOfficialNoticeDetails>? officialNotice;
 
   static CommunityChatBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -119,6 +121,7 @@ class CommunityChatBuilders {
       requestActions: other.requestActions ?? requestActions,
       requestBubble: other.requestBubble ?? requestBubble,
       video: other.video ?? video,
+      officialNotice: other.officialNotice ?? officialNotice,
     );
   }
 }

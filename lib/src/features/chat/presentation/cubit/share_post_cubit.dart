@@ -3,6 +3,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_extras_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:uuid/uuid.dart';
 
@@ -23,9 +24,18 @@ abstract class SharePostState with _$SharePostState {
 }
 
 class SharePostCubit extends Cubit<SharePostState> {
-  SharePostCubit({required this._chat, required this._extras, required this.postId}) : super(const SharePostState());
+  SharePostCubit({
+    required this._chat,
+    required this._extras,
+    required this.postId,
+    bool Function(UserSummary user)? isOfficial,
+  }) : _isOfficial = isOfficial ?? _never,
+       super(const SharePostState());
+
+  static bool _never(UserSummary _) => false;
 
   final ChatRepository _chat;
+  final bool Function(UserSummary user) _isOfficial;
   final ChatExtrasRepository _extras;
   final String postId;
   final _clientIds = <String, String>{};
@@ -40,13 +50,18 @@ class SharePostCubit extends Cubit<SharePostState> {
           status: LoadStatus.ready,
           rooms: [
             for (final room in page.items)
-              if (room.type != RoomType.support) room,
+              if (room.type != RoomType.support && !_officialDirect(room)) room,
           ],
         ),
       );
     } catch (e) {
       if (!isClosed) emit(state.copyWith(status: LoadStatus.failure, error: e));
     }
+  }
+
+  bool _officialDirect(ChatRoom room) {
+    final other = room.otherUser;
+    return room.type == RoomType.direct && other != null && _isOfficial(other);
   }
 
   Future<bool> share(String roomId, {String? body}) async {

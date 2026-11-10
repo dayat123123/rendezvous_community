@@ -12,6 +12,7 @@ _UserSummaryModel _$UserSummaryModelFromJson(Map<String, dynamic> json) => _User
   displayName: json['display_name'] as String?,
   avatarUrl: json['avatar_url'] as String?,
   isVerified: json['is_verified'] as bool? ?? false,
+  isOfficial: json['is_official'] as bool? ?? false,
 );
 
 Map<String, dynamic> _$UserSummaryModelToJson(_UserSummaryModel instance) => <String, dynamic>{
@@ -20,4 +21,5 @@ Map<String, dynamic> _$UserSummaryModelToJson(_UserSummaryModel instance) => <St
   'display_name': instance.displayName,
   'avatar_url': instance.avatarUrl,
   'is_verified': instance.isVerified,
+  'is_official': instance.isOfficial,
 };

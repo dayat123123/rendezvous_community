@@ -183,6 +183,20 @@ class CommunityTypingDetails {
   final int count;
 }
 
+class CommunityOfficialNoticeDetails {
+  const CommunityOfficialNoticeDetails({
+    required this.user,
+    required this.message,
+    required this.contactLabel,
+    this.onContact,
+  });
+
+  final UserSummary user;
+  final String message;
+  final String contactLabel;
+  final VoidCallback? onContact;
+}
+
 class CommunityConnectionDetails {
   const CommunityConnectionDetails({required this.status, required this.label, this.offline = false});
 

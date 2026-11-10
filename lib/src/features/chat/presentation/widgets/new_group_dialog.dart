@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
+import 'package:rendezvous_community/src/app/community_official_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
@@ -54,7 +55,7 @@ class _NewGroupDialogState extends State<_NewGroupDialog> {
           setState(
             () => _results = [
               for (final u in users)
-                if (u.id != me) u,
+                if (u.id != me && !CommunityOfficialScope.isOfficial(context, u)) u,
             ],
           );
         }

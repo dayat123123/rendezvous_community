@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/app/community_official_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
@@ -21,6 +22,9 @@ Future<bool> showSharePostToChat(BuildContext context, Post post) async {
   if (features == null) return false;
   final deps = CommunityScope.of(context);
   final carry = carryCommunityBuilders(context);
+  final accounts = CommunityOfficialScope.maybeOf(context)?..ensureLoaded();
+  final me = deps.currentUser;
+  final meOfficial = me != null && (me.isOfficial || (accounts?.isOfficial(me.id) ?? false));
   final shared = await showModalBottomSheet<bool>(
     context: context,
     isScrollControlled: true,
@@ -30,7 +34,12 @@ Future<bool> showSharePostToChat(BuildContext context, Post post) async {
       CommunityScope(
         dependencies: deps,
         child: BlocProvider(
-          create: (_) => SharePostCubit(chat: deps.chat, extras: features.chatExtras, postId: post.id)..load(),
+          create: (_) => SharePostCubit(
+            chat: deps.chat,
+            extras: features.chatExtras,
+            postId: post.id,
+            isOfficial: meOfficial ? null : (user) => user.isOfficial || (accounts?.isOfficial(user.id) ?? false),
+          )..load(),
           child: const _SharePostSheet(),
         ),
       ),

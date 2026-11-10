@@ -1,6 +1,7 @@
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/app/community_official_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
@@ -85,14 +86,26 @@ class CommunityUserProfile extends StatelessWidget {
 class _ProfileHeader extends StatelessWidget {
   const _ProfileHeader();
 
+  static final _none = ValueNotifier<Set<String>>(const <String>{});
+
   @override
   Widget build(BuildContext context) {
+    final accounts = CommunityOfficialScope.maybeOf(context)?..ensureLoaded();
+    return ValueListenableBuilder<Set<String>>(
+      valueListenable: accounts ?? _none,
+      builder: (context, _, _) => _header(context),
+    );
+  }
+
+  Widget _header(BuildContext context) {
     final l10n = context.communityL10n;
+    final contact = CommunityScope.of(context).callbacks.onOfficialContact;
     return BlocBuilder<ProfileCubit, ProfileState>(
       builder: (context, state) {
         final cubit = context.read<ProfileCubit>();
         final profile = state.profile!;
         final user = profile.user;
+        final official = CommunityOfficialScope.isOfficial(context, user);
         final parts = CommunityProfileBuilders.of(context);
         final details = CommunityProfileDetails(
           profile: profile,
@@ -101,7 +114,9 @@ class _ProfileHeader extends StatelessWidget {
           followingLabel: l10n.followingCount(profile.followingCount),
           postsLabel: l10n.postsCount(profile.postCount),
           onToggleFollow: profile.isMe || profile.isBlocked ? null : cubit.toggleFollow,
-          onMessage: profile.isMe || profile.isBlocked
+          isOfficial: official,
+          onOfficialContact: official && !profile.isMe && contact != null ? () => contact(context, user) : null,
+          onMessage: profile.isMe || profile.isBlocked || official
               ? null
               : () async {
                   final roomId = await cubit.openDirectRoom();
@@ -135,12 +150,22 @@ class _ProfileHeader extends StatelessWidget {
             child: Text(l10n.followingLabel),
           )
         : FilledButton(style: style.primaryButtonStyle(), onPressed: details.onToggleFollow, child: Text(l10n.follow));
-    final message = OutlinedButton.icon(
-      style: style.secondaryButtonStyle(),
-      onPressed: details.onMessage,
-      icon: const Icon(Icons.chat_bubble_outline, size: 18),
-      label: Text(l10n.sendMessage),
-    );
+    final contact = details.onOfficialContact;
+    final Widget? message = details.isOfficial
+        ? contact == null
+              ? null
+              : OutlinedButton.icon(
+                  style: style.secondaryButtonStyle(),
+                  onPressed: contact,
+                  icon: const Icon(Icons.support_agent_outlined, size: 18),
+                  label: Text(l10n.officialContact),
+                )
+        : OutlinedButton.icon(
+            style: style.secondaryButtonStyle(),
+            onPressed: details.onMessage,
+            icon: const Icon(Icons.chat_bubble_outline, size: 18),
+            label: Text(l10n.sendMessage),
+          );
     return EditorialSection(
       padding: EdgeInsets.fromLTRB(spacing.lg, spacing.lg, spacing.lg, spacing.lg),
       child: Column(
@@ -211,8 +236,10 @@ class _ProfileHeader extends StatelessWidget {
             Row(
               children: [
                 Expanded(child: buildCommunityPart(parts.followButton, context, details, follow)),
-                SizedBox(width: spacing.sm),
-                Expanded(child: buildCommunityPart(parts.messageButton, context, details, message)),
+                if (message != null) ...[
+                  SizedBox(width: spacing.sm),
+                  Expanded(child: buildCommunityPart(parts.messageButton, context, details, message)),
+                ],
               ],
             ),
         ],

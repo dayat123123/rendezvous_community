@@ -10,6 +10,7 @@ abstract class UserSummary with _$UserSummary {
     String? displayName,
     String? avatarUrl,
     @Default(false) bool isVerified,
+    @Default(false) bool isOfficial,
   }) = _UserSummary;
 
   const UserSummary._();

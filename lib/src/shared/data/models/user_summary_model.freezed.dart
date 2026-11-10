@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$UserSummaryModel {
 
- String get id; String get username; String? get displayName; String? get avatarUrl; bool get isVerified;
+ String get id; String get username; String? get displayName; String? get avatarUrl; bool get isVerified; bool get isOfficial;
 /// Create a copy of UserSummaryModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $UserSummaryModelCopyWith<UserSummaryModel> get copyWith => _$UserSummaryModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,isVerified);
+int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,isVerified,isOfficial);
 
 @override
 String toString() {
-  return 'UserSummaryModel(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified)';
+  return 'UserSummaryModel(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified, isOfficial: $isOfficial)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $UserSummaryModelCopyWith<$Res>  {
   factory $UserSummaryModelCopyWith(UserSummaryModel value, $Res Function(UserSummaryModel) _then) = _$UserSummaryModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String username, String? displayName, String? avatarUrl, bool isVerified
+ String id, String username, String? displayName, String? avatarUrl, bool isVerified, bool isOfficial
 });
 
 
@@ -65,13 +65,14 @@ class _$UserSummaryModelCopyWithImpl<$Res>
 
 /// Create a copy of UserSummaryModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? isVerified = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? isVerified = null,Object? isOfficial = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
+as bool,isOfficial: null == isOfficial ? _self.isOfficial : isOfficial // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -157,10 +158,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String? displayName,  String? avatarUrl,  bool isVerified)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String? displayName,  String? avatarUrl,  bool isVerified,  bool isOfficial)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserSummaryModel() when $default != null:
-return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.isVerified);case _:
+return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.isVerified,_that.isOfficial);case _:
   return orElse();
 
 }
@@ -178,10 +179,10 @@ return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String? displayName,  String? avatarUrl,  bool isVerified)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String? displayName,  String? avatarUrl,  bool isVerified,  bool isOfficial)  $default,) {final _that = this;
 switch (_that) {
 case _UserSummaryModel():
-return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.isVerified);case _:
+return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.isVerified,_that.isOfficial);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +199,10 @@ return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String? displayName,  String? avatarUrl,  bool isVerified)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String? displayName,  String? avatarUrl,  bool isVerified,  bool isOfficial)?  $default,) {final _that = this;
 switch (_that) {
 case _UserSummaryModel() when $default != null:
-return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.isVerified);case _:
+return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.isVerified,_that.isOfficial);case _:
   return null;
 
 }
@@ -213,7 +214,7 @@ return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.
 @JsonSerializable()
 
 class _UserSummaryModel extends UserSummaryModel {
-  const _UserSummaryModel({required this.id, required this.username, this.displayName, this.avatarUrl, this.isVerified = false}): super._();
+  const _UserSummaryModel({required this.id, required this.username, this.displayName, this.avatarUrl, this.isVerified = false, this.isOfficial = false}): super._();
   factory _UserSummaryModel.fromJson(Map<String, dynamic> json) => _$UserSummaryModelFromJson(json);
 
 @override final  String id;
@@ -221,6 +222,7 @@ class _UserSummaryModel extends UserSummaryModel {
 @override final  String? displayName;
 @override final  String? avatarUrl;
 @override@JsonKey() final  bool isVerified;
+@override@JsonKey() final  bool isOfficial;
 
 /// Create a copy of UserSummaryModel
 /// with the given fields replaced by the non-null parameter values.
@@ -235,16 +237,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,isVerified);
+int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,isVerified,isOfficial);
 
 @override
 String toString() {
-  return 'UserSummaryModel(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified)';
+  return 'UserSummaryModel(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified, isOfficial: $isOfficial)';
 }
 
 
@@ -255,7 +257,7 @@ abstract mixin class _$UserSummaryModelCopyWith<$Res> implements $UserSummaryMod
   factory _$UserSummaryModelCopyWith(_UserSummaryModel value, $Res Function(_UserSummaryModel) _then) = __$UserSummaryModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String username, String? displayName, String? avatarUrl, bool isVerified
+ String id, String username, String? displayName, String? avatarUrl, bool isVerified, bool isOfficial
 });
 
 
@@ -272,13 +274,14 @@ class __$UserSummaryModelCopyWithImpl<$Res>
 
 /// Create a copy of UserSummaryModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? isVerified = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? isVerified = null,Object? isOfficial = null,}) {
   return _then(_UserSummaryModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
+as bool,isOfficial: null == isOfficial ? _self.isOfficial : isOfficial // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

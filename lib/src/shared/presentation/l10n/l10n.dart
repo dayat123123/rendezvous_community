@@ -68,6 +68,7 @@ extension CommunityErrorText on CommunityLocalizations {
       },
       'dm_not_allowed' => errorDmNotAllowed,
       'dm_request_limit' => errorDmRequestLimit,
+      'official_no_dm' => errorOfficialNoDm,
       'social_disabled' => errorSocialDisabled,
       'edit_window_expired' => errorEditWindowExpired,
       'poll_not_editable' => errorPollNotEditable,

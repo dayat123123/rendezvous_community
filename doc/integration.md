@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.15.2            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.16.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -89,6 +89,7 @@ Future<void> onOltLoggedIn() async {
     onBannerLink: (context, uri, banner) => OltRouter.tryOpenDeepLink(context, uri), // opsional, true = ditangani OLT (bagian 5)
     chatStockCards: true, // false = sembunyikan tombol "Kirim kartu saham" di kolom chat (1.15.1)
     postDrafts: true,     // false = composer tidak menyimpan/memuat draf post (1.15.2)
+    onOfficialContact: (context, user) => openCommunitySupport(context), // opsional, tombol "Hubungi CS" untuk akun resmi (1.16.0)
     logHandler: (record) => oltLog.write(record.level.name, record.loggerName, record.message),  // opsional
   );
 }
@@ -238,6 +239,12 @@ Untuk sebagian layar saja pakai `CommunityScrollScope`. Rinciannya di [customiza
 - OLT juga bisa memanggil `showCommunityConsent(context)` sendiri, misalnya saat pertama membuka menu komunitas.
 
 **Upload foto dan PDF** dikirim paket ke `/media/v1` (layanan `media` di server memeriksa isi file dan membuang EXIF/GPS). Server lama tanpa layanan ini menolak upload ("upload belum tersedia").
+
+**Akun resmi tidak menerima DM (1.16.0, server migrasi `0144`).** Server menolak DM dari user biasa ke akun resmi dengan kode `official_no_dm`; akun yang hanya terverifikasi tetap bisa di-DM. Library mengikutinya:
+- Profil akun resmi tidak punya tombol "Kirim pesan". Bila `onOfficialContact` diisi, tombolnya menjadi "Hubungi CS" yang memanggil callback itu (misalnya membuka `openCommunitySupport`); bila tidak, tombol pesan disembunyikan.
+- Room DM lama dengan akun resmi tetap menampilkan riwayat, tetapi kolom ketik diganti pemberitahuan "Akun resmi tidak menerima pesan. Hubungi CS untuk bantuan." dengan tombol "Hubungi CS" bila callback diisi. Akun resmi itu sendiri tetap bisa mengetik.
+- Dialog "Grup baru" tidak menampilkan akun resmi, dan "Kirim ke chat" tidak menawarkan DM dengan akun resmi.
+- Status resmi dibaca dari `is_official` di data profil server; untuk data yang belum membawanya (server lama, daftar room) dipakai daftar akun resmi (`OfficialAccounts`). Di server tanpa `0144`, DM ke akun resmi tetap dikirim seperti sebelumnya tetapi tombol di aplikasi sudah tersembunyi.
 
 **Draf post (1.15.2).** Bawaannya composer menyimpan draf otomatis ke perangkat dan server. Dengan `initialize(postDrafts: false)` composer tidak membuat, menyimpan, menyinkronkan, atau memuat draf (tanpa label "Draf tersimpan" dan tanpa panggilan RPC draf), dan `CommunityPostDrafts` tampil kosong. Draf lama tidak dihapus otomatis; hapus semua draf milik user (perangkat dan server) dengan `await RendezvousCommunity.instance.clearPostDrafts()`.
 

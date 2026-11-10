@@ -1790,6 +1790,24 @@ abstract class CommunityLocalizations {
   /// **'Tunggu sampai penerima menerima permintaan pesan Anda sebelum mengirim pesan lagi.'**
   String get errorDmRequestLimit;
 
+  /// No description provided for @errorOfficialNoDm.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun resmi tidak menerima pesan langsung. Hubungi CS untuk bantuan.'**
+  String get errorOfficialNoDm;
+
+  /// No description provided for @officialDmNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun resmi tidak menerima pesan. Hubungi CS untuk bantuan.'**
+  String get officialDmNotice;
+
+  /// No description provided for @officialContact.
+  ///
+  /// In id, this message translates to:
+  /// **'Hubungi CS'**
+  String get officialContact;
+
   /// No description provided for @errorSocialDisabled.
   ///
   /// In id, this message translates to:

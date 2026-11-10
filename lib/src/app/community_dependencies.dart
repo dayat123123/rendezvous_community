@@ -31,6 +31,8 @@ typedef CommunityStockSearch = Future<List<StockSuggestion>> Function(String que
 
 typedef CommunityStockInfoProvider = CommunityStockInfo? Function(String stockCode);
 
+typedef CommunityOfficialContactCallback = void Function(BuildContext context, UserSummary user);
+
 typedef CommunityBannerLinkCallback = FutureOr<bool> Function(BuildContext context, Uri uri, CommunityBanner banner);
 
 class CommunityCallbacks {
@@ -46,6 +48,7 @@ class CommunityCallbacks {
     this.onBannerLink,
     this.chatStockCards = true,
     this.postDrafts = true,
+    this.onOfficialContact,
   });
 
   final CommunityStockTapCallback? onStockTap;
@@ -59,6 +62,7 @@ class CommunityCallbacks {
   final CommunityBannerLinkCallback? onBannerLink;
   final bool chatStockCards;
   final bool postDrafts;
+  final CommunityOfficialContactCallback? onOfficialContact;
 }
 
 abstract interface class CommunityDependencies {

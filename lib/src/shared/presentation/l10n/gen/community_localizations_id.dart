@@ -988,6 +988,15 @@ class CommunityLocalizationsId extends CommunityLocalizations {
       'Tunggu sampai penerima menerima permintaan pesan Anda sebelum mengirim pesan lagi.';
 
   @override
+  String get errorOfficialNoDm => 'Akun resmi tidak menerima pesan langsung. Hubungi CS untuk bantuan.';
+
+  @override
+  String get officialDmNotice => 'Akun resmi tidak menerima pesan. Hubungi CS untuk bantuan.';
+
+  @override
+  String get officialContact => 'Hubungi CS';
+
+  @override
   String get errorSocialDisabled => 'Fitur komunitas sementara tidak tersedia. Chat CS tetap bisa dipakai.';
 
   @override

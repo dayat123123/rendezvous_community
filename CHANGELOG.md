@@ -1,3 +1,12 @@
+## 1.16.0
+
+Server: aturan "akun resmi tidak menerima DM" butuh migrasi `0144` (kode error `official_no_dm`). Di server lama perilaku tampilan sudah berlaku, tetapi server belum menolak pesan. Akun yang hanya terverifikasi (`isVerified`) tidak terpengaruh.
+
+* **Status akun resmi:** `UserSummary.isOfficial`, dibaca dari `is_official` di `get_profile` dan `search_profiles` (server `0144`); bila tidak ada, dipakai `OfficialAccounts.isOfficial(id)`. Helper `CommunityOfficialScope.isOfficial(context, user)` menggabungkan keduanya.
+* **Profil:** akun resmi tidak punya tombol "Kirim pesan" (`onMessage` null), kecuali dilihat oleh akun itu sendiri. `CommunityProfileDetails.isOfficial` dan `onOfficialContact`. `RendezvousCommunity.initialize(onOfficialContact: (context, user) {...})` (juga `CommunityCallbacks.onOfficialContact`) menampilkan tombol "Hubungi CS" sebagai pengganti tombol pesan; tanpa callback tombolnya disembunyikan.
+* **Chat:** room DM lama dengan akun resmi tetap menampilkan riwayat, kolom ketik diganti pemberitahuan "Akun resmi tidak menerima pesan. Hubungi CS untuk bantuan." dengan tombol "Hubungi CS" bila callback diisi. Slot builder baru `CommunityChatBuilders.officialNotice` (`CommunityOfficialNoticeDetails`). Dialog "Grup baru" menyembunyikan akun resmi, dan "Kirim ke chat" tidak menampilkan DM dengan akun resmi.
+* **Error:** `official_no_dm` dipetakan ke "Akun resmi tidak menerima pesan langsung. Hubungi CS untuk bantuan." / "Official accounts do not accept direct messages. Contact support for help."
+
 ## 1.15.2
 
 Tidak butuh migrasi server. Bawaannya draf tetap aktif; perubahan tampilan hanya: gambar di kartu post kini bisa diketuk untuk dilihat layar penuh.

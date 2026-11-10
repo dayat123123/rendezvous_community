@@ -14,6 +14,8 @@ class CommunityProfileDetails {
     this.onReport,
     this.onBlock,
     this.onUnblock,
+    this.isOfficial = false,
+    this.onOfficialContact,
   });
 
   final UserProfile profile;
@@ -27,6 +29,8 @@ class CommunityProfileDetails {
   final VoidCallback? onReport;
   final VoidCallback? onBlock;
   final VoidCallback? onUnblock;
+  final bool isOfficial;
+  final VoidCallback? onOfficialContact;
 
   bool get isMe => profile.isMe;
 

@@ -95,6 +95,7 @@ Future<void> _startSocial(FakeOltAuth auth) async {
     stockInfo: (code) => stockNames.containsKey(code) ? CommunityStockInfo(name: stockNames[code]) : null,
     onOltNotificationTap: showOltNotification,
     onBannerLink: openPromoLink,
+    onOfficialContact: (context, user) => openCommunitySupport(context),
     appVersion: '1.3.0',
     scroll: CommunityScrollSettings(behavior: const CommunityMouseDragScrollBehavior(), pullToRefresh: !_desktop),
   );

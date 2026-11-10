@@ -12,12 +12,19 @@ abstract class UserSummaryModel with _$UserSummaryModel {
     String? displayName,
     String? avatarUrl,
     @Default(false) bool isVerified,
+    @Default(false) bool isOfficial,
   }) = _UserSummaryModel;
 
   const UserSummaryModel._();
 
   factory UserSummaryModel.fromJson(Map<String, dynamic> json) => _$UserSummaryModelFromJson(json);
 
-  UserSummary toEntity() =>
-      UserSummary(id: id, username: username, displayName: displayName, avatarUrl: avatarUrl, isVerified: isVerified);
+  UserSummary toEntity() => UserSummary(
+    id: id,
+    username: username,
+    displayName: displayName,
+    avatarUrl: avatarUrl,
+    isVerified: isVerified,
+    isOfficial: isOfficial,
+  );
 }

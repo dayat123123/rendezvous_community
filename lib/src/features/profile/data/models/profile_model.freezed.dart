@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ProfileModel {
 
- String get id; String get username; String? get displayName; String? get avatarUrl; String? get bio; bool get isVerified; int get followerCount; int get followingCount; int get postCount; DateTime get createdAt; bool get isMe; bool get isFollowing; bool get followsMe; bool get isBlocked;
+ String get id; String get username; String? get displayName; String? get avatarUrl; String? get bio; bool get isVerified; bool get isOfficial; int get followerCount; int get followingCount; int get postCount; DateTime get createdAt; bool get isMe; bool get isFollowing; bool get followsMe; bool get isBlocked;
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -28,16 +28,16 @@ $ProfileModelCopyWith<ProfileModel> get copyWith => _$ProfileModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.followingCount, followingCount) || other.followingCount == followingCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.isBlocked, isBlocked) || other.isBlocked == isBlocked));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.followingCount, followingCount) || other.followingCount == followingCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.isBlocked, isBlocked) || other.isBlocked == isBlocked));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,bio,isVerified,followerCount,followingCount,postCount,createdAt,isMe,isFollowing,followsMe,isBlocked);
+int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,bio,isVerified,isOfficial,followerCount,followingCount,postCount,createdAt,isMe,isFollowing,followsMe,isBlocked);
 
 @override
 String toString() {
-  return 'ProfileModel(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, bio: $bio, isVerified: $isVerified, followerCount: $followerCount, followingCount: $followingCount, postCount: $postCount, createdAt: $createdAt, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, isBlocked: $isBlocked)';
+  return 'ProfileModel(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, bio: $bio, isVerified: $isVerified, isOfficial: $isOfficial, followerCount: $followerCount, followingCount: $followingCount, postCount: $postCount, createdAt: $createdAt, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, isBlocked: $isBlocked)';
 }
 
 
@@ -48,7 +48,7 @@ abstract mixin class $ProfileModelCopyWith<$Res>  {
   factory $ProfileModelCopyWith(ProfileModel value, $Res Function(ProfileModel) _then) = _$ProfileModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String username, String? displayName, String? avatarUrl, String? bio, bool isVerified, int followerCount, int followingCount, int postCount, DateTime createdAt, bool isMe, bool isFollowing, bool followsMe, bool isBlocked
+ String id, String username, String? displayName, String? avatarUrl, String? bio, bool isVerified, bool isOfficial, int followerCount, int followingCount, int postCount, DateTime createdAt, bool isMe, bool isFollowing, bool followsMe, bool isBlocked
 });
 
 
@@ -65,7 +65,7 @@ class _$ProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? isVerified = null,Object? followerCount = null,Object? followingCount = null,Object? postCount = null,Object? createdAt = null,Object? isMe = null,Object? isFollowing = null,Object? followsMe = null,Object? isBlocked = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? isVerified = null,Object? isOfficial = null,Object? followerCount = null,Object? followingCount = null,Object? postCount = null,Object? createdAt = null,Object? isMe = null,Object? isFollowing = null,Object? followsMe = null,Object? isBlocked = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
@@ -73,6 +73,7 @@ as String,displayName: freezed == displayName ? _self.displayName : displayName 
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
+as bool,isOfficial: null == isOfficial ? _self.isOfficial : isOfficial // ignore: cast_nullable_to_non_nullable
 as bool,followerCount: null == followerCount ? _self.followerCount : followerCount // ignore: cast_nullable_to_non_nullable
 as int,followingCount: null == followingCount ? _self.followingCount : followingCount // ignore: cast_nullable_to_non_nullable
 as int,postCount: null == postCount ? _self.postCount : postCount // ignore: cast_nullable_to_non_nullable
@@ -166,10 +167,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String? displayName,  String? avatarUrl,  String? bio,  bool isVerified,  int followerCount,  int followingCount,  int postCount,  DateTime createdAt,  bool isMe,  bool isFollowing,  bool followsMe,  bool isBlocked)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String username,  String? displayName,  String? avatarUrl,  String? bio,  bool isVerified,  bool isOfficial,  int followerCount,  int followingCount,  int postCount,  DateTime createdAt,  bool isMe,  bool isFollowing,  bool followsMe,  bool isBlocked)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ProfileModel() when $default != null:
-return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.bio,_that.isVerified,_that.followerCount,_that.followingCount,_that.postCount,_that.createdAt,_that.isMe,_that.isFollowing,_that.followsMe,_that.isBlocked);case _:
+return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.bio,_that.isVerified,_that.isOfficial,_that.followerCount,_that.followingCount,_that.postCount,_that.createdAt,_that.isMe,_that.isFollowing,_that.followsMe,_that.isBlocked);case _:
   return orElse();
 
 }
@@ -187,10 +188,10 @@ return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String? displayName,  String? avatarUrl,  String? bio,  bool isVerified,  int followerCount,  int followingCount,  int postCount,  DateTime createdAt,  bool isMe,  bool isFollowing,  bool followsMe,  bool isBlocked)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String username,  String? displayName,  String? avatarUrl,  String? bio,  bool isVerified,  bool isOfficial,  int followerCount,  int followingCount,  int postCount,  DateTime createdAt,  bool isMe,  bool isFollowing,  bool followsMe,  bool isBlocked)  $default,) {final _that = this;
 switch (_that) {
 case _ProfileModel():
-return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.bio,_that.isVerified,_that.followerCount,_that.followingCount,_that.postCount,_that.createdAt,_that.isMe,_that.isFollowing,_that.followsMe,_that.isBlocked);case _:
+return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.bio,_that.isVerified,_that.isOfficial,_that.followerCount,_that.followingCount,_that.postCount,_that.createdAt,_that.isMe,_that.isFollowing,_that.followsMe,_that.isBlocked);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -207,10 +208,10 @@ return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String? displayName,  String? avatarUrl,  String? bio,  bool isVerified,  int followerCount,  int followingCount,  int postCount,  DateTime createdAt,  bool isMe,  bool isFollowing,  bool followsMe,  bool isBlocked)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String username,  String? displayName,  String? avatarUrl,  String? bio,  bool isVerified,  bool isOfficial,  int followerCount,  int followingCount,  int postCount,  DateTime createdAt,  bool isMe,  bool isFollowing,  bool followsMe,  bool isBlocked)?  $default,) {final _that = this;
 switch (_that) {
 case _ProfileModel() when $default != null:
-return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.bio,_that.isVerified,_that.followerCount,_that.followingCount,_that.postCount,_that.createdAt,_that.isMe,_that.isFollowing,_that.followsMe,_that.isBlocked);case _:
+return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.bio,_that.isVerified,_that.isOfficial,_that.followerCount,_that.followingCount,_that.postCount,_that.createdAt,_that.isMe,_that.isFollowing,_that.followsMe,_that.isBlocked);case _:
   return null;
 
 }
@@ -222,7 +223,7 @@ return $default(_that.id,_that.username,_that.displayName,_that.avatarUrl,_that.
 @JsonSerializable()
 
 class _ProfileModel extends ProfileModel {
-  const _ProfileModel({required this.id, required this.username, this.displayName, this.avatarUrl, this.bio, this.isVerified = false, this.followerCount = 0, this.followingCount = 0, this.postCount = 0, required this.createdAt, this.isMe = false, this.isFollowing = false, this.followsMe = false, this.isBlocked = false}): super._();
+  const _ProfileModel({required this.id, required this.username, this.displayName, this.avatarUrl, this.bio, this.isVerified = false, this.isOfficial = false, this.followerCount = 0, this.followingCount = 0, this.postCount = 0, required this.createdAt, this.isMe = false, this.isFollowing = false, this.followsMe = false, this.isBlocked = false}): super._();
   factory _ProfileModel.fromJson(Map<String, dynamic> json) => _$ProfileModelFromJson(json);
 
 @override final  String id;
@@ -231,6 +232,7 @@ class _ProfileModel extends ProfileModel {
 @override final  String? avatarUrl;
 @override final  String? bio;
 @override@JsonKey() final  bool isVerified;
+@override@JsonKey() final  bool isOfficial;
 @override@JsonKey() final  int followerCount;
 @override@JsonKey() final  int followingCount;
 @override@JsonKey() final  int postCount;
@@ -253,16 +255,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.followingCount, followingCount) || other.followingCount == followingCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.isBlocked, isBlocked) || other.isBlocked == isBlocked));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProfileModel&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.followingCount, followingCount) || other.followingCount == followingCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.isBlocked, isBlocked) || other.isBlocked == isBlocked));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,bio,isVerified,followerCount,followingCount,postCount,createdAt,isMe,isFollowing,followsMe,isBlocked);
+int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,bio,isVerified,isOfficial,followerCount,followingCount,postCount,createdAt,isMe,isFollowing,followsMe,isBlocked);
 
 @override
 String toString() {
-  return 'ProfileModel(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, bio: $bio, isVerified: $isVerified, followerCount: $followerCount, followingCount: $followingCount, postCount: $postCount, createdAt: $createdAt, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, isBlocked: $isBlocked)';
+  return 'ProfileModel(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, bio: $bio, isVerified: $isVerified, isOfficial: $isOfficial, followerCount: $followerCount, followingCount: $followingCount, postCount: $postCount, createdAt: $createdAt, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, isBlocked: $isBlocked)';
 }
 
 
@@ -273,7 +275,7 @@ abstract mixin class _$ProfileModelCopyWith<$Res> implements $ProfileModelCopyWi
   factory _$ProfileModelCopyWith(_ProfileModel value, $Res Function(_ProfileModel) _then) = __$ProfileModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String username, String? displayName, String? avatarUrl, String? bio, bool isVerified, int followerCount, int followingCount, int postCount, DateTime createdAt, bool isMe, bool isFollowing, bool followsMe, bool isBlocked
+ String id, String username, String? displayName, String? avatarUrl, String? bio, bool isVerified, bool isOfficial, int followerCount, int followingCount, int postCount, DateTime createdAt, bool isMe, bool isFollowing, bool followsMe, bool isBlocked
 });
 
 
@@ -290,7 +292,7 @@ class __$ProfileModelCopyWithImpl<$Res>
 
 /// Create a copy of ProfileModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? isVerified = null,Object? followerCount = null,Object? followingCount = null,Object? postCount = null,Object? createdAt = null,Object? isMe = null,Object? isFollowing = null,Object? followsMe = null,Object? isBlocked = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? bio = freezed,Object? isVerified = null,Object? isOfficial = null,Object? followerCount = null,Object? followingCount = null,Object? postCount = null,Object? createdAt = null,Object? isMe = null,Object? isFollowing = null,Object? followsMe = null,Object? isBlocked = null,}) {
   return _then(_ProfileModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
@@ -298,6 +300,7 @@ as String,displayName: freezed == displayName ? _self.displayName : displayName 
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,isVerified: null == isVerified ? _self.isVerified : isVerified // ignore: cast_nullable_to_non_nullable
+as bool,isOfficial: null == isOfficial ? _self.isOfficial : isOfficial // ignore: cast_nullable_to_non_nullable
 as bool,followerCount: null == followerCount ? _self.followerCount : followerCount // ignore: cast_nullable_to_non_nullable
 as int,followingCount: null == followingCount ? _self.followingCount : followingCount // ignore: cast_nullable_to_non_nullable
 as int,postCount: null == postCount ? _self.postCount : postCount // ignore: cast_nullable_to_non_nullable

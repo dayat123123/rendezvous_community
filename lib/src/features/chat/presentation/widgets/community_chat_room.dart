@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/app/community_official_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/network/realtime_status.dart';
@@ -130,13 +131,87 @@ class _ChatRoomView extends StatelessWidget {
                   ),
                   const _TypingIndicator(),
                   const CommunityDivider(),
-                  composer ?? const MessageComposer(),
+                  _OfficialGate(child: composer ?? const MessageComposer()),
                 ],
               ),
             ),
           ),
         };
       },
+    );
+  }
+}
+
+class _OfficialGate extends StatelessWidget {
+  const _OfficialGate({required this.child});
+
+  final Widget child;
+
+  static final _none = ValueNotifier<Set<String>>(const <String>{});
+
+  @override
+  Widget build(BuildContext context) {
+    final room = context.select((ChatRoomCubit c) => c.state.room);
+    final other = room?.type == RoomType.direct ? room?.otherUser : null;
+    if (other == null) return child;
+    final accounts = CommunityOfficialScope.maybeOf(context)?..ensureLoaded();
+    return ValueListenableBuilder<Set<String>>(
+      valueListenable: accounts ?? _none,
+      builder: (context, ids, _) {
+        final me = CommunityScope.of(context).currentUser;
+        final meOfficial = me != null && (me.isOfficial || ids.contains(me.id));
+        if (meOfficial || !CommunityOfficialScope.isOfficial(context, other)) return child;
+        final l10n = context.communityL10n;
+        final contact = CommunityScope.of(context).callbacks.onOfficialContact;
+        final details = CommunityOfficialNoticeDetails(
+          user: other,
+          message: l10n.officialDmNotice,
+          contactLabel: l10n.officialContact,
+          onContact: contact == null ? null : () => contact(context, other),
+        );
+        return buildChatPart(
+          CommunityChatBuilders.of(context).officialNotice,
+          context,
+          details,
+          _DefaultOfficialNotice(details: details),
+        );
+      },
+    );
+  }
+}
+
+class _DefaultOfficialNotice extends StatelessWidget {
+  const _DefaultOfficialNotice({required this.details});
+
+  final CommunityOfficialNoticeDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final contact = details.onContact;
+    return SafeArea(
+      top: false,
+      child: Padding(
+        padding: EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.md),
+        child: Row(
+          children: [
+            Icon(Icons.info_outline, size: 20, color: style.textSecondary),
+            SizedBox(width: spacing.sm),
+            Expanded(
+              child: Text(details.message, style: style.typography.meta.copyWith(color: style.textSecondary)),
+            ),
+            if (contact != null) ...[
+              SizedBox(width: spacing.sm),
+              TextButton.icon(
+                onPressed: contact,
+                icon: const Icon(Icons.support_agent_outlined, size: 18),
+                label: Text(details.contactLabel),
+              ),
+            ],
+          ],
+        ),
+      ),
     );
   }
 }

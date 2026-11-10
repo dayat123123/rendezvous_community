@@ -996,6 +996,15 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
       'Wait until the recipient accepts your message request before sending more messages.';
 
   @override
+  String get errorOfficialNoDm => 'Official accounts do not accept direct messages. Contact support for help.';
+
+  @override
+  String get officialDmNotice => 'Official accounts do not receive messages. Contact support for help.';
+
+  @override
+  String get officialContact => 'Contact support';
+
+  @override
   String get errorSocialDisabled =>
       'Community features are temporarily unavailable. Customer support chat still works.';
 
