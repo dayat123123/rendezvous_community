@@ -6,6 +6,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/cubit/compose_cubit.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/widgets/poll_editor.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/cubit/feed_cubit.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_skeletons.dart';
 
@@ -110,6 +112,18 @@ class _ScreenFeed extends FakeFeedRepository {
 
   @override
   Future<List<PinnedPost>> getPinned(FeedScope scope) async => pinned;
+}
+
+class _SortedComments extends FakeCommentRepository implements SortedCommentRepository {
+  @override
+  Future<List<ThreadComment>> getSortedThread(
+    String postId, {
+    required CommunityCommentSort sort,
+    String? cursor,
+    int maxDepth = 3,
+    int limit = 20,
+    int repliesLimit = 3,
+  }) => getThread(postId, maxDepth: maxDepth, cursor: cursor, limit: limit, repliesLimit: repliesLimit);
 }
 
 class _ScreenProfiles extends Fake implements ProfileRepository {
@@ -229,6 +243,22 @@ final feedScenes = <ScreenshotScene>[
     ),
     padding: EdgeInsets.zero,
   ),
+  ScreenshotScene('feed_inline_comments', (context) {
+    final deps = FakeDependencies(feed: _ScreenFeed([_analysis()]), comments: _SortedComments());
+    return _sized(
+      1150,
+      _scoped(
+        BlocProvider(
+          create: (_) => FeedCubit(feed: deps.feed, scope: const FeedScope.user('u-rina'))
+            ..load()
+            ..toggleComments('p-1')
+            ..commentsFocused('p-1'),
+          child: const FeedPostList(emptyMessage: '', postOpenMode: CommunityPostOpenMode.inlineComments),
+        ),
+        deps: deps,
+      ),
+    );
+  }, padding: EdgeInsets.zero),
   ScreenshotScene(
     'post_thread',
     (context) => _sized(1100, _scoped(const CommunityPostDetail(postId: 'p-1'))),

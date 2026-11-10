@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/post_open_mode.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/compose_prompt_card.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
@@ -16,11 +17,13 @@ class CommunityStreamFeed extends StatefulWidget {
     this.initialTab = CommunityFeedTab.latest,
     this.showComposePrompt = true,
     this.builders,
+    this.postOpenMode = CommunityPostOpenMode.navigate,
   });
 
   final CommunityFeedTab initialTab;
   final bool showComposePrompt;
   final CommunityFeedBuilders? builders;
+  final CommunityPostOpenMode postOpenMode;
 
   @override
   State<CommunityStreamFeed> createState() => _CommunityStreamFeedState();
@@ -56,6 +59,7 @@ class _CommunityStreamFeedState extends State<CommunityStreamFeed> {
           ),
           Expanded(
             child: CommunityFeedList(
+              postOpenMode: widget.postOpenMode,
               key: ValueKey(_tab),
               scope: _tab == CommunityFeedTab.latest ? const FeedScope.global() : const FeedScope.following(),
               emptyMessage: _tab == CommunityFeedTab.latest ? l10n.feedEmpty : l10n.feedFollowingEmpty,

@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/features/config/domain/entities/client_
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/cubit/feed_cubit.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/post_open_mode.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
 import 'package:rendezvous_community/src/features/search/domain/entities/search_results.dart';
 import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_builders.dart';
@@ -14,10 +15,16 @@ import 'package:rendezvous_community/src/features/search/presentation/builders/c
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 
 class CommunityHashtagFeed extends StatelessWidget {
-  const CommunityHashtagFeed({super.key, required this.tag, this.header});
+  const CommunityHashtagFeed({
+    super.key,
+    required this.tag,
+    this.header,
+    this.postOpenMode = CommunityPostOpenMode.navigate,
+  });
 
   final String tag;
   final Widget? header;
+  final CommunityPostOpenMode postOpenMode;
 
   @override
   Widget build(BuildContext context) {
@@ -48,6 +55,7 @@ class CommunityHashtagFeed extends StatelessWidget {
           ),
           showConsentBanner: false,
           source: 'hashtag',
+          postOpenMode: postOpenMode,
         ),
       ),
     );

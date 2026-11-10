@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$FeedState {
 
- LoadStatus get status; List<Post> get posts; List<PinnedPost> get pinned; String? get nextCursor; bool get loadingMore; int get newPosts; Object? get error; Object? get actionError; int get actionErrorId; bool get stale;
+ LoadStatus get status; List<Post> get posts; List<PinnedPost> get pinned; String? get nextCursor; bool get loadingMore; int get newPosts; Object? get error; Object? get actionError; int get actionErrorId; bool get stale; Set<String> get openComments; String? get focusComments;
 /// Create a copy of FeedState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $FeedStateCopyWith<FeedState> get copyWith => _$FeedStateCopyWithImpl<FeedState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.posts, posts)&&const DeepCollectionEquality().equals(other.pinned, pinned)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.newPosts, newPosts) || other.newPosts == newPosts)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stale, stale) || other.stale == stale));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.posts, posts)&&const DeepCollectionEquality().equals(other.pinned, pinned)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.newPosts, newPosts) || other.newPosts == newPosts)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stale, stale) || other.stale == stale)&&const DeepCollectionEquality().equals(other.openComments, openComments)&&(identical(other.focusComments, focusComments) || other.focusComments == focusComments));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(posts),const DeepCollectionEquality().hash(pinned),nextCursor,loadingMore,newPosts,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stale);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(posts),const DeepCollectionEquality().hash(pinned),nextCursor,loadingMore,newPosts,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stale,const DeepCollectionEquality().hash(openComments),focusComments);
 
 @override
 String toString() {
-  return 'FeedState(status: $status, posts: $posts, pinned: $pinned, nextCursor: $nextCursor, loadingMore: $loadingMore, newPosts: $newPosts, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stale: $stale)';
+  return 'FeedState(status: $status, posts: $posts, pinned: $pinned, nextCursor: $nextCursor, loadingMore: $loadingMore, newPosts: $newPosts, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stale: $stale, openComments: $openComments, focusComments: $focusComments)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $FeedStateCopyWith<$Res>  {
   factory $FeedStateCopyWith(FeedState value, $Res Function(FeedState) _then) = _$FeedStateCopyWithImpl;
 @useResult
 $Res call({
- LoadStatus status, List<Post> posts, List<PinnedPost> pinned, String? nextCursor, bool loadingMore, int newPosts, Object? error, Object? actionError, int actionErrorId, bool stale
+ LoadStatus status, List<Post> posts, List<PinnedPost> pinned, String? nextCursor, bool loadingMore, int newPosts, Object? error, Object? actionError, int actionErrorId, bool stale, Set<String> openComments, String? focusComments
 });
 
 
@@ -62,7 +62,7 @@ class _$FeedStateCopyWithImpl<$Res>
 
 /// Create a copy of FeedState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? posts = null,Object? pinned = null,Object? nextCursor = freezed,Object? loadingMore = null,Object? newPosts = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? stale = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? posts = null,Object? pinned = null,Object? nextCursor = freezed,Object? loadingMore = null,Object? newPosts = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? stale = null,Object? openComments = null,Object? focusComments = freezed,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
@@ -72,7 +72,9 @@ as String?,loadingMore: null == loadingMore ? _self.loadingMore : loadingMore //
 as bool,newPosts: null == newPosts ? _self.newPosts : newPosts // ignore: cast_nullable_to_non_nullable
 as int,error: freezed == error ? _self.error : error ,actionError: freezed == actionError ? _self.actionError : actionError ,actionErrorId: null == actionErrorId ? _self.actionErrorId : actionErrorId // ignore: cast_nullable_to_non_nullable
 as int,stale: null == stale ? _self.stale : stale // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,openComments: null == openComments ? _self.openComments : openComments // ignore: cast_nullable_to_non_nullable
+as Set<String>,focusComments: freezed == focusComments ? _self.focusComments : focusComments // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -157,10 +159,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( LoadStatus status,  List<Post> posts,  List<PinnedPost> pinned,  String? nextCursor,  bool loadingMore,  int newPosts,  Object? error,  Object? actionError,  int actionErrorId,  bool stale)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( LoadStatus status,  List<Post> posts,  List<PinnedPost> pinned,  String? nextCursor,  bool loadingMore,  int newPosts,  Object? error,  Object? actionError,  int actionErrorId,  bool stale,  Set<String> openComments,  String? focusComments)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _FeedState() when $default != null:
-return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loadingMore,_that.newPosts,_that.error,_that.actionError,_that.actionErrorId,_that.stale);case _:
+return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loadingMore,_that.newPosts,_that.error,_that.actionError,_that.actionErrorId,_that.stale,_that.openComments,_that.focusComments);case _:
   return orElse();
 
 }
@@ -178,10 +180,10 @@ return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loa
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( LoadStatus status,  List<Post> posts,  List<PinnedPost> pinned,  String? nextCursor,  bool loadingMore,  int newPosts,  Object? error,  Object? actionError,  int actionErrorId,  bool stale)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( LoadStatus status,  List<Post> posts,  List<PinnedPost> pinned,  String? nextCursor,  bool loadingMore,  int newPosts,  Object? error,  Object? actionError,  int actionErrorId,  bool stale,  Set<String> openComments,  String? focusComments)  $default,) {final _that = this;
 switch (_that) {
 case _FeedState():
-return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loadingMore,_that.newPosts,_that.error,_that.actionError,_that.actionErrorId,_that.stale);case _:
+return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loadingMore,_that.newPosts,_that.error,_that.actionError,_that.actionErrorId,_that.stale,_that.openComments,_that.focusComments);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -198,10 +200,10 @@ return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loa
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( LoadStatus status,  List<Post> posts,  List<PinnedPost> pinned,  String? nextCursor,  bool loadingMore,  int newPosts,  Object? error,  Object? actionError,  int actionErrorId,  bool stale)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( LoadStatus status,  List<Post> posts,  List<PinnedPost> pinned,  String? nextCursor,  bool loadingMore,  int newPosts,  Object? error,  Object? actionError,  int actionErrorId,  bool stale,  Set<String> openComments,  String? focusComments)?  $default,) {final _that = this;
 switch (_that) {
 case _FeedState() when $default != null:
-return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loadingMore,_that.newPosts,_that.error,_that.actionError,_that.actionErrorId,_that.stale);case _:
+return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loadingMore,_that.newPosts,_that.error,_that.actionError,_that.actionErrorId,_that.stale,_that.openComments,_that.focusComments);case _:
   return null;
 
 }
@@ -213,7 +215,7 @@ return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loa
 
 
 class _FeedState implements FeedState {
-  const _FeedState({this.status = LoadStatus.initial, final  List<Post> posts = const <Post>[], final  List<PinnedPost> pinned = const <PinnedPost>[], this.nextCursor, this.loadingMore = false, this.newPosts = 0, this.error, this.actionError, this.actionErrorId = 0, this.stale = false}): _posts = posts,_pinned = pinned;
+  const _FeedState({this.status = LoadStatus.initial, final  List<Post> posts = const <Post>[], final  List<PinnedPost> pinned = const <PinnedPost>[], this.nextCursor, this.loadingMore = false, this.newPosts = 0, this.error, this.actionError, this.actionErrorId = 0, this.stale = false, final  Set<String> openComments = const <String>{}, this.focusComments}): _posts = posts,_pinned = pinned,_openComments = openComments;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -238,6 +240,14 @@ class _FeedState implements FeedState {
 @override final  Object? actionError;
 @override@JsonKey() final  int actionErrorId;
 @override@JsonKey() final  bool stale;
+ final  Set<String> _openComments;
+@override@JsonKey() Set<String> get openComments {
+  if (_openComments is EqualUnmodifiableSetView) return _openComments;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableSetView(_openComments);
+}
+
+@override final  String? focusComments;
 
 /// Create a copy of FeedState
 /// with the given fields replaced by the non-null parameter values.
@@ -249,16 +259,16 @@ _$FeedStateCopyWith<_FeedState> get copyWith => __$FeedStateCopyWithImpl<_FeedSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._posts, _posts)&&const DeepCollectionEquality().equals(other._pinned, _pinned)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.newPosts, newPosts) || other.newPosts == newPosts)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stale, stale) || other.stale == stale));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._posts, _posts)&&const DeepCollectionEquality().equals(other._pinned, _pinned)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.newPosts, newPosts) || other.newPosts == newPosts)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stale, stale) || other.stale == stale)&&const DeepCollectionEquality().equals(other._openComments, _openComments)&&(identical(other.focusComments, focusComments) || other.focusComments == focusComments));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_pinned),nextCursor,loadingMore,newPosts,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stale);
+int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_pinned),nextCursor,loadingMore,newPosts,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stale,const DeepCollectionEquality().hash(_openComments),focusComments);
 
 @override
 String toString() {
-  return 'FeedState(status: $status, posts: $posts, pinned: $pinned, nextCursor: $nextCursor, loadingMore: $loadingMore, newPosts: $newPosts, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stale: $stale)';
+  return 'FeedState(status: $status, posts: $posts, pinned: $pinned, nextCursor: $nextCursor, loadingMore: $loadingMore, newPosts: $newPosts, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stale: $stale, openComments: $openComments, focusComments: $focusComments)';
 }
 
 
@@ -269,7 +279,7 @@ abstract mixin class _$FeedStateCopyWith<$Res> implements $FeedStateCopyWith<$Re
   factory _$FeedStateCopyWith(_FeedState value, $Res Function(_FeedState) _then) = __$FeedStateCopyWithImpl;
 @override @useResult
 $Res call({
- LoadStatus status, List<Post> posts, List<PinnedPost> pinned, String? nextCursor, bool loadingMore, int newPosts, Object? error, Object? actionError, int actionErrorId, bool stale
+ LoadStatus status, List<Post> posts, List<PinnedPost> pinned, String? nextCursor, bool loadingMore, int newPosts, Object? error, Object? actionError, int actionErrorId, bool stale, Set<String> openComments, String? focusComments
 });
 
 
@@ -286,7 +296,7 @@ class __$FeedStateCopyWithImpl<$Res>
 
 /// Create a copy of FeedState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? posts = null,Object? pinned = null,Object? nextCursor = freezed,Object? loadingMore = null,Object? newPosts = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? stale = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? posts = null,Object? pinned = null,Object? nextCursor = freezed,Object? loadingMore = null,Object? newPosts = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? stale = null,Object? openComments = null,Object? focusComments = freezed,}) {
   return _then(_FeedState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,posts: null == posts ? _self._posts : posts // ignore: cast_nullable_to_non_nullable
@@ -296,7 +306,9 @@ as String?,loadingMore: null == loadingMore ? _self.loadingMore : loadingMore //
 as bool,newPosts: null == newPosts ? _self.newPosts : newPosts // ignore: cast_nullable_to_non_nullable
 as int,error: freezed == error ? _self.error : error ,actionError: freezed == actionError ? _self.actionError : actionError ,actionErrorId: null == actionErrorId ? _self.actionErrorId : actionErrorId // ignore: cast_nullable_to_non_nullable
 as int,stale: null == stale ? _self.stale : stale // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,openComments: null == openComments ? _self._openComments : openComments // ignore: cast_nullable_to_non_nullable
+as Set<String>,focusComments: freezed == focusComments ? _self.focusComments : focusComments // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

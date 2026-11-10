@@ -488,6 +488,42 @@ abstract class CommunityLocalizations {
   /// **'Lanjutkan thread'**
   String get continueThread;
 
+  /// No description provided for @commentSortTop.
+  ///
+  /// In id, this message translates to:
+  /// **'Disarankan'**
+  String get commentSortTop;
+
+  /// No description provided for @commentSortLatest.
+  ///
+  /// In id, this message translates to:
+  /// **'Terbaru'**
+  String get commentSortLatest;
+
+  /// No description provided for @commentSortTooltip.
+  ///
+  /// In id, this message translates to:
+  /// **'Urutkan komentar'**
+  String get commentSortTooltip;
+
+  /// No description provided for @commentsFirst.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadilah yang pertama berkomentar'**
+  String get commentsFirst;
+
+  /// No description provided for @viewMoreComments.
+  ///
+  /// In id, this message translates to:
+  /// **'{count, plural, =1{Lihat 1 komentar lainnya} other{Lihat {count} komentar lainnya}}'**
+  String viewMoreComments(int count);
+
+  /// No description provided for @addComment.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambahkan komentar…'**
+  String get addComment;
+
   /// No description provided for @threadContext.
   ///
   /// In id, this message translates to:

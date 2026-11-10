@@ -2,11 +2,12 @@ import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/network/realtime_gateway.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
 import 'package:rendezvous_community/src/features/post/data/models/thread_comment_model.dart';
+import 'package:rendezvous_community/src/features/post/domain/entities/comment_sort.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
 import 'package:rendezvous_community/src/features/post/domain/repositories/comment_repository.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-class CommentRepositoryImpl implements CommentRepository {
+class CommentRepositoryImpl implements CommentRepository, SortedCommentRepository {
   CommentRepositoryImpl(this._api, [this._realtime]);
 
   final SocialRemoteDataSource _api;
@@ -30,6 +31,26 @@ class CommentRepositoryImpl implements CommentRepository {
       'p_limit': limit,
       'p_replies_limit': repliesLimit,
       'p_include_root': includeRoot,
+    });
+    return [for (final row in rows) ThreadCommentModel.fromJson(row).toEntity()];
+  }
+
+  @override
+  Future<List<ThreadComment>> getSortedThread(
+    String postId, {
+    required CommunityCommentSort sort,
+    String? cursor,
+    int maxDepth = 3,
+    int limit = 20,
+    int repliesLimit = 3,
+  }) async {
+    final rows = await _api.rpcRows('get_comment_thread', {
+      'p_post_id': postId,
+      'p_max_depth': maxDepth,
+      'p_cursor': cursor,
+      'p_limit': limit,
+      'p_replies_limit': repliesLimit,
+      'p_sort': sort.wire,
     });
     return [for (final row in rows) ThreadCommentModel.fromJson(row).toEntity()];
   }

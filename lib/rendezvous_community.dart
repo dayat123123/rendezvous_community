@@ -131,6 +131,7 @@ export 'src/features/feed/domain/repositories/feed_repository.dart';
 export 'src/features/feed/presentation/builders/community_feed_builders.dart'
     show CommunityFeedBuilders, CommunityFeedBuildersScope;
 export 'src/features/feed/presentation/builders/community_feed_details.dart';
+export 'src/features/feed/presentation/post_open_mode.dart';
 export 'src/features/feed/presentation/widgets/community_feed_list.dart' show CommunityFeedList;
 export 'src/features/feed/presentation/widgets/community_stream_feed.dart' show CommunityFeedTab, CommunityStreamFeed;
 export 'src/features/feed/presentation/widgets/sentiment_badge.dart';
@@ -198,8 +199,11 @@ export 'src/features/offline/presentation/widgets/community_offline_banner.dart'
 export 'src/features/poll/domain/entities/poll.dart';
 export 'src/features/poll/domain/repositories/poll_repository.dart';
 export 'src/features/poll/presentation/widgets/community_poll_view.dart' show CommunityPollView;
+export 'src/features/post/domain/entities/comment_sort.dart';
 export 'src/features/post/domain/entities/thread_comment.dart';
 export 'src/features/post/domain/repositories/comment_repository.dart';
+export 'src/features/post/presentation/widgets/comment_tree.dart' show ThreadLinesPainter;
+export 'src/features/post/presentation/widgets/community_post_comments.dart';
 export 'src/features/post/presentation/widgets/community_post_detail.dart' show CommunityPostDetail;
 export 'src/features/profile/domain/entities/user_profile.dart';
 export 'src/features/profile/domain/repositories/profile_repository.dart';

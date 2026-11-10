@@ -1,0 +1,1 @@
+enum CommunityPostOpenMode { navigate, inlineComments }

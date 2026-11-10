@@ -266,11 +266,11 @@ CommunityFeedBuilders(
 
 | Builder | `details` | Isi |
 |---|---|---|
-| `postCard`, `postAvatar`, `postHeader`, `postBody`, `attachments`, `stockTags`, `actionBar` | `CommunityPostDetails` | `post`, `isMine`, `timeLabel`, `edited`, `expanded`, `source`, `pinned`, `canVote`; `onLike`, `onOpen`, `onComment`, `onShare`, `onToggleBookmark`, `onEdit`, `onDelete` (dengan konfirmasi), `onReport`, `onBlock` (dengan konfirmasi), `onAppeal`, `onOpenAuthor`, `onOpenStock(code)`, `onOpenHashtag(tag)` |
+| `postCard`, `postAvatar`, `postHeader`, `postBody`, `attachments`, `stockTags`, `actionBar` | `CommunityPostDetails` | `post`, `isMine`, `timeLabel`, `edited`, `expanded`, `source`, `pinned`, `canVote`; `onLike`, `onOpen`, `onComment`, `onShare`, `onToggleBookmark`, `onEdit`, `onDelete` (dengan konfirmasi), `onReport`, `onBlock` (dengan konfirmasi), `onAppeal`, `onOpenAuthor`, `onOpenStock(code)`, `onOpenHashtag(tag)`; `commentsExpanded`, `onToggleComments` (1.13.0, hanya terisi pada mode komentar inline; `onComment` sama dengan `onToggleComments`) |
 | `linkPreview` | `CommunityLinkPreviewDetails` | `preview` (`title`, `description`, `siteName`, `imageUrl`, `domain`); `onOpen` (dengan dialog tautan bawaan). Berlaku di feed, komentar, dan chat |
 | `poll` | `CommunityPollDetails` | `poll`, `canVote`, `closed`, `showResults`, `summary` (teks suara & sisa waktu), `pendingOptionId`; `onVote(option)` (null bila tidak bisa memilih) |
 | `pinnedMarker` | `CommunityPinnedMarkerDetails` | `pinned`, `announcement`, `title`, `label` ("Pengumuman"/"Disematkan") |
-| `comment` | `CommunityCommentDetails` | `comment`, `isMine`, `collapsed`, `timeLabel`, `edited`; `onLike`, `onReply`, `onToggleCollapse`, `onOpenAuthor`, `onEdit`, `onDelete`, `onReport`, `onBlock`, `onAppeal`; `level` (0 = tingkat atas, 1.7.0) |
+| `comment` | `CommunityCommentDetails` | `comment`, `isMine`, `collapsed`, `timeLabel`, `edited`; `onLike`, `onReply`, `onToggleCollapse`, `onOpenAuthor`, `onEdit`, `onDelete`, `onReport`, `onBlock`, `onAppeal`; `level` (0 = tingkat atas, 1.7.0); `replyCount`, `hasVisibleReplies` (balasan atau tombol "Lihat balasan" tampil di bawahnya), `isLastSibling` (komentar terakhir di cabangnya) untuk menggambar garis utas sendiri (1.13.0; `ThreadLinesPainter` juga diekspor) |
 | `loading` / `empty` / `error` | `CommunityListLoadingDetails` (`more`) / `CommunityListEmptyDetails` (`message`) / `CommunityListErrorDetails` (`error`, `message`, `onRetry`) | status daftar feed |
 
 `postCard` menerima `fallback` berupa kartu bawaan yang sudah memakai builder bagian (`postHeader`, `postBody`, dan seterusnya), jadi host bisa mengganti kartu utuh untuk sebagian post saja. Sejak 1.7.0 `stockTags` bawaan kosong di feed (kode saham sudah tampil di isi) dan di detail post menjadi baris chip topik di atas judul (`$KODE`, `#hashtag` bila pencarian aktif, "+N" setelah tiga chip). Label moderasi milik sendiri ("Menunggu tinjauan", "Ajukan banding") tetap digambar package di kartu bawaan; kartu kustom bisa memakai `ModerationNotice(status: d.post.moderationStatus, onAppeal: d.onAppeal)`.
@@ -337,6 +337,34 @@ CommunityFeedBuilders(
 | `draftTile` | `CommunityDraftDetails` | `draft`, `preview`, `timeLabel`, `subtitle`, `synced`, `deleteLabel`; `onOpen`, `onDelete` |
 | `stockHeader` | `CommunityStockHeaderDetails` | `code`, `name`, `subtitle`, `found`, `loaded`, `watching`, `joining`, `watchLabel`, `discussionLabel`; `onToggleWatch`, `onOpenDiscussion` |
 | `editDialog` | `CommunityEditDialogDetails` | `title`, `controller`, `field`, `maxLength`, `saveLabel`, `cancelLabel`; `onSave`, `onCancel`. Builder diambil dari context yang membuka dialog |
+| `inlineComments` | `CommunityInlineCommentsDetails` | `post`, `expanded`, `onToggle` (menutup), `child` (komentar bawaan `CommunityPostComments`). Wadah komentar inline di bawah kartu post (1.13.0) |
+| `commentSort` | `CommunityCommentSortDetails` | `title` ("Komentar"), `tooltip`, `selected`, `options` (`top`, `latest`), `labels` ("Disarankan", "Terbaru"), `selectedLabel`; `onSelect` (null saat memuat). Hanya tampil bila server mendukung urutan (migrasi `0142`) |
+
+#### Komentar inline (1.13.0)
+
+`postOpenMode: CommunityPostOpenMode.inlineComments` di `CommunityStreamFeed`, `CommunityStockFeed`, `CommunityHashtagFeed`, `CommunityUserProfile`, atau `CommunityFeedList` membuat tombol komentar membuka komentar tepat di bawah kartu post, seperti Facebook/Instagram, tanpa pindah halaman. Bawaannya tetap `navigate` (membuka `CommunityPostDetail`).
+
+- Isinya kolom "Tambahkan komentar…" (langsung fokus), header "Komentar · Disarankan ▾", tiga komentar teratas beserta balasan ringkas, lalu "Lihat N komentar lainnya" yang memuat halaman berikutnya di tempat. Esc di desktop atau tombol komentar lagi menutupnya.
+- Status terbuka disimpan per post selama feed hidup, jadi tetap terbuka saat digulir dan memuat halaman berikutnya. Mengetuk kartu tidak membuka detail; "Baca lebih lanjut" membentangkan teks di tempat.
+- Perilakunya sama dengan detail post: kirim langsung tampil, realtime, persetujuan dokumen hukum, kata terlarang, edit/hapus, lapor/blokir, banding, dan balasan bertingkat sampai `maxThreadIndentLevels`. "Lanjutkan thread" tetap membuka `CommunityPostDetail` (atau `onOpenThread` milik host).
+- Deep link, notifikasi, dan `onPostTap` tetap memakai `CommunityPostDetail`. Postingan yang disematkan tetap membuka detail.
+
+```dart
+CommunityStreamFeed(postOpenMode: CommunityPostOpenMode.inlineComments)
+
+CommunityBuilders(
+  feed: CommunityFeedBuilders(
+    inlineComments: (context, d, fallback) => Card(margin: const EdgeInsets.all(8), child: d.child),
+    commentSort: (context, d, fallback) => SegmentedButton<CommunityCommentSort>(
+      segments: [for (final (i, o) in d.options.indexed) ButtonSegment(value: o, label: Text(d.labels[i]))],
+      selected: {d.selected},
+      onSelectionChanged: d.onSelect == null ? null : (s) => d.onSelect!(s.first),
+    ),
+  ),
+)
+```
+
+Untuk menanam komentar di tempat lain (panel samping, dialog), pakai `CommunityPostComments(postId: id)`: `initialTopLevel` (bawaan 3), `sort` (`CommunityCommentSort.top`/`latest`), `showComposer`, `autofocusComposer`, `inline` (bawaan `true`: menyusut sesuai isi dan tidak menggulir sendiri, aman di dalam `ListView`; `false` = punya scroll sendiri), `commentCount` (untuk label "Lihat N komentar lainnya"), `onOpenThread(rootCommentId)`, `onCommentCountChanged(delta)`, dan `builders`. Urutan Disarankan (suka + balasan terbanyak) dan Terbaru butuh server migrasi `0142`; di server lama komentar tampil dari yang terlama dan pilihan urutan disembunyikan.
 
 ### Pencarian, hashtag, dan trending (1.7.0)
 

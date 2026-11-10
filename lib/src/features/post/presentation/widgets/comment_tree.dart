@@ -111,19 +111,28 @@ class _StemPainter extends CustomPainter {
 }
 
 class ThreadRowView extends StatelessWidget {
-  const ThreadRowView({super.key, required this.row, required this.postId});
+  const ThreadRowView({super.key, required this.row, required this.postId, this.moreCommentsLabel, this.onOpenThread});
 
   final ThreadRow row;
   final String postId;
+  final String? moreCommentsLabel;
+  final ValueChanged<String>? onOpenThread;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
     final cubit = context.read<CommentThreadCubit>();
+    final openThread = onOpenThread;
     return switch (row) {
-      CommentRow(:final comment, :final collapsed) => _Indented(
+      CommentRow(:final comment, :final collapsed, :final hasVisibleReplies, :final isLastSibling) => _Indented(
         level: row.level,
-        child: CommentTile(comment: comment, collapsed: collapsed, level: row.level),
+        child: CommentTile(
+          comment: comment,
+          collapsed: collapsed,
+          level: row.level,
+          hasVisibleReplies: hasVisibleReplies,
+          isLastSibling: isLastSibling,
+        ),
       ),
       MoreRepliesRow(:final parentId, :final remaining, :final loading) => _Indented(
         level: row.level,
@@ -145,14 +154,16 @@ class ThreadRowView extends StatelessWidget {
             kind: CommunityThreadMoreKind.continueThread,
             label: '${l10n.continueThread} →',
             level: row.level,
-            onTap: () => CommunityNavigator.openPost(context, postId, rootCommentId: comment.id),
+            onTap: openThread != null
+                ? () => openThread(comment.id)
+                : () => CommunityNavigator.openPost(context, postId, rootCommentId: comment.id),
           ),
         ),
       ),
       MoreTopLevelRow(:final loading) => _ThreadMore(
         details: CommunityThreadMoreDetails(
           kind: CommunityThreadMoreKind.moreComments,
-          label: l10n.loadMoreComments,
+          label: moreCommentsLabel ?? l10n.loadMoreComments,
           level: row.level,
           loading: loading,
           onTap: loading ? null : cubit.loadMoreTop,
@@ -226,12 +237,16 @@ class CommentTile extends StatefulWidget {
     this.collapsed = false,
     this.showCollapse = true,
     this.level = 0,
+    this.hasVisibleReplies = false,
+    this.isLastSibling = false,
   });
 
   final ThreadComment comment;
   final bool collapsed;
   final bool showCollapse;
   final int level;
+  final bool hasVisibleReplies;
+  final bool isLastSibling;
 
   @override
   State<CommentTile> createState() => _CommentTileState();
@@ -268,6 +283,8 @@ class _CommentTileState extends State<CommentTile> {
       collapsed: widget.collapsed,
       timeLabel: l10n.relativeTime(c.createdAt),
       level: widget.level,
+      hasVisibleReplies: widget.hasVisibleReplies,
+      isLastSibling: widget.isLastSibling,
       onLike: c.isDeleted ? null : () => cubit.toggleLike(c),
       onReply: c.isDeleted ? null : () => cubit.setReplyTo(c),
       onToggleCollapse: widget.showCollapse && c.replyCount > 0 ? () => cubit.toggleCollapse(c.id) : null,

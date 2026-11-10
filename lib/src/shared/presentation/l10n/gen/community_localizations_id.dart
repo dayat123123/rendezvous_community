@@ -234,6 +234,32 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get continueThread => 'Lanjutkan thread';
 
   @override
+  String get commentSortTop => 'Disarankan';
+
+  @override
+  String get commentSortLatest => 'Terbaru';
+
+  @override
+  String get commentSortTooltip => 'Urutkan komentar';
+
+  @override
+  String get commentsFirst => 'Jadilah yang pertama berkomentar';
+
+  @override
+  String viewMoreComments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Lihat $count komentar lainnya',
+      one: 'Lihat 1 komentar lainnya',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get addComment => 'Tambahkan komentar…';
+
+  @override
   String get threadContext => 'Melanjutkan thread';
 
   @override

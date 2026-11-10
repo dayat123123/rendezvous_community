@@ -4,6 +4,7 @@ import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/post_open_mode.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/compose_prompt_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/editorial_section.dart';
@@ -13,9 +14,17 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 class CommunityStockFeed extends StatelessWidget {
-  const CommunityStockFeed({super.key, required this.stockCode, this.stockName, this.showHeader = true});
+  const CommunityStockFeed({
+    super.key,
+    required this.stockCode,
+    this.stockName,
+    this.showHeader = true,
+    this.postOpenMode = CommunityPostOpenMode.navigate,
+  });
 
   final String stockCode;
+
+  final CommunityPostOpenMode postOpenMode;
 
   final String? stockName;
 
@@ -32,6 +41,7 @@ class CommunityStockFeed extends StatelessWidget {
         listener: (context, state) => showCommunityError(context, state.error!),
         child: CommunityFeedList(
           scope: FeedScope.stock(code),
+          postOpenMode: postOpenMode,
           emptyMessage: context.communityL10n.stockFeedEmpty(code),
           header: Column(
             children: [

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
-import 'package:rendezvous_community/src/features/post/presentation/widgets/comment_tree.dart';
 
 import '../../support/fakes.dart';
 

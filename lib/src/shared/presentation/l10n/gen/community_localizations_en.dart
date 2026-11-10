@@ -233,6 +233,32 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get continueThread => 'Continue thread';
 
   @override
+  String get commentSortTop => 'Most relevant';
+
+  @override
+  String get commentSortLatest => 'Newest';
+
+  @override
+  String get commentSortTooltip => 'Sort comments';
+
+  @override
+  String get commentsFirst => 'Be the first to comment';
+
+  @override
+  String viewMoreComments(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'View $count more comments',
+      one: 'View 1 more comment',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get addComment => 'Add a comment…';
+
+  @override
   String get threadContext => 'Continuing thread';
 
   @override

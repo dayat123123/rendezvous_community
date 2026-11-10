@@ -42,10 +42,16 @@ class PostCard extends StatelessWidget {
     this.pinned,
     this.showActions = true,
     this.actionsOnly = false,
+    this.commentsExpanded = false,
+    this.onToggleComments,
+    this.readMoreInPlace = false,
   });
 
   final Post post;
   final VoidCallback onLike;
+  final bool commentsExpanded;
+  final VoidCallback? onToggleComments;
+  final bool readMoreInPlace;
 
   final VoidCallback? onOpen;
   final VoidCallback? onDelete;
@@ -75,7 +81,9 @@ class PostCard extends StatelessWidget {
       pinned: pinned,
       onLike: onLike,
       onOpen: onOpen,
-      onComment: onOpen,
+      onComment: onToggleComments ?? onOpen,
+      commentsExpanded: commentsExpanded,
+      onToggleComments: onToggleComments,
       onOpenAuthor: () => CommunityNavigator.openUser(context, post.author),
       onOpenStock: (code) => CommunityNavigator.openStock(context, code, source: source),
       onOpenHashtag: (tag) => CommunityNavigator.openHashtag(context, tag),
@@ -106,7 +114,12 @@ class PostCard extends StatelessWidget {
       builders.postCard,
       context,
       details,
-      _DefaultPostCard(details: details, builders: builders, showActions: showActions),
+      _DefaultPostCard(
+        details: details,
+        builders: builders,
+        showActions: showActions,
+        readMoreInPlace: readMoreInPlace,
+      ),
     );
   }
 }
@@ -122,11 +135,17 @@ class PostCard extends StatelessWidget {
 }
 
 class _DefaultPostCard extends StatelessWidget {
-  const _DefaultPostCard({required this.details, required this.builders, required this.showActions});
+  const _DefaultPostCard({
+    required this.details,
+    required this.builders,
+    required this.showActions,
+    this.readMoreInPlace = false,
+  });
 
   final CommunityPostDetails details;
   final CommunityFeedBuilders builders;
   final bool showActions;
+  final bool readMoreInPlace;
 
   @override
   Widget build(BuildContext context) {
@@ -189,7 +208,9 @@ class _DefaultPostCard extends StatelessWidget {
             builders.postBody,
             context,
             d,
-            expanded || d.onOpen == null
+            readMoreInPlace && !expanded
+                ? _InPlaceReadMore(text: body, validStockCodes: codes, style: bodyStyle, source: d.source)
+                : expanded || d.onOpen == null
                 ? SocialText(body, validStockCodes: codes, style: bodyStyle, source: d.source)
                 : PostReadMore(
                     text: body,
@@ -241,6 +262,33 @@ class _DefaultPostCard extends StatelessWidget {
       child: expanded || d.onOpen == null ? padded : InkWell(onTap: d.onOpen, child: padded),
     );
   }
+}
+
+class _InPlaceReadMore extends StatefulWidget {
+  const _InPlaceReadMore({required this.text, required this.style, this.validStockCodes, this.source});
+
+  final String text;
+  final TextStyle style;
+  final Set<String>? validStockCodes;
+  final String? source;
+
+  @override
+  State<_InPlaceReadMore> createState() => _InPlaceReadMoreState();
+}
+
+class _InPlaceReadMoreState extends State<_InPlaceReadMore> {
+  bool _open = false;
+
+  @override
+  Widget build(BuildContext context) => _open
+      ? SocialText(widget.text, validStockCodes: widget.validStockCodes, style: widget.style, source: widget.source)
+      : PostReadMore(
+          text: widget.text,
+          validStockCodes: widget.validStockCodes,
+          style: widget.style,
+          source: widget.source,
+          onOpen: () => setState(() => _open = true),
+        );
 }
 
 class _StickyActions extends StatelessWidget {
@@ -480,6 +528,8 @@ class PostActionBar extends StatelessWidget {
         ),
         CommunityActionButton(
           icon: Icons.mode_comment_outlined,
+          activeIcon: Icons.mode_comment,
+          active: details.commentsExpanded,
           tooltip: l10n.comment,
           count: post.commentCount,
           onPressed: details.onComment,

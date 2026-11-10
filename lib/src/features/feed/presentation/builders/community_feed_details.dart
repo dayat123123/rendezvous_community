@@ -6,6 +6,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/widgets/comm
 import 'package:rendezvous_community/src/features/link_preview/domain/entities/link_preview.dart';
 import 'package:rendezvous_community/src/features/media/domain/entities/document_type.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
+import 'package:rendezvous_community/src/features/post/domain/entities/comment_sort.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
@@ -31,6 +32,8 @@ class CommunityPostDetails {
     this.onReport,
     this.onBlock,
     this.onAppeal,
+    this.commentsExpanded = false,
+    this.onToggleComments,
   });
 
   final Post post;
@@ -52,6 +55,8 @@ class CommunityPostDetails {
   final VoidCallback? onReport;
   final VoidCallback? onBlock;
   final VoidCallback? onAppeal;
+  final bool commentsExpanded;
+  final VoidCallback? onToggleComments;
 
   bool get edited => post.editedAt != null;
 
@@ -114,6 +119,8 @@ class CommunityCommentDetails {
     this.onBlock,
     this.onAppeal,
     this.level = 0,
+    this.hasVisibleReplies = false,
+    this.isLastSibling = false,
   });
 
   final ThreadComment comment;
@@ -130,8 +137,49 @@ class CommunityCommentDetails {
   final VoidCallback? onBlock;
   final VoidCallback? onAppeal;
   final int level;
+  final bool hasVisibleReplies;
+  final bool isLastSibling;
+
+  int get replyCount => comment.replyCount;
 
   bool get edited => comment.editedAt != null && !comment.isDeleted;
+}
+
+class CommunityInlineCommentsDetails {
+  const CommunityInlineCommentsDetails({
+    required this.post,
+    required this.expanded,
+    required this.onToggle,
+    required this.child,
+  });
+
+  final Post post;
+  final bool expanded;
+  final VoidCallback onToggle;
+  final Widget child;
+}
+
+class CommunityCommentSortDetails {
+  const CommunityCommentSortDetails({
+    required this.title,
+    required this.tooltip,
+    required this.selected,
+    required this.options,
+    required this.labels,
+    this.onSelect,
+  });
+
+  final String title;
+  final String tooltip;
+  final CommunityCommentSort selected;
+  final List<CommunityCommentSort> options;
+  final List<String> labels;
+  final ValueChanged<CommunityCommentSort>? onSelect;
+
+  String get selectedLabel {
+    final index = options.indexOf(selected);
+    return labels[index < 0 ? 0 : index];
+  }
 }
 
 enum CommunityThreadMoreKind { moreReplies, continueThread, moreComments }

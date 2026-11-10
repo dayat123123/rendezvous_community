@@ -1,13 +1,16 @@
 import 'dart:async';
 import 'dart:math' as math;
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/features/bookmarks/domain/repositories/bookmark_repository.dart';
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
 import 'package:rendezvous_community/src/features/legal/domain/services/consent_gate.dart';
+import 'package:rendezvous_community/src/features/post/domain/entities/comment_sort.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
 import 'package:rendezvous_community/src/features/post/domain/repositories/comment_repository.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
@@ -33,6 +36,9 @@ abstract class ThreadState with _$ThreadState {
     Object? error,
     Object? actionError,
     @Default(0) int actionErrorId,
+    @Default(CommunityCommentSort.oldest) CommunityCommentSort sort,
+    @Default(true) bool sortSupported,
+    @Default(0) int topOffset,
   }) = _ThreadState;
 
   const ThreadState._();
@@ -56,7 +62,11 @@ class CommentThreadCubit extends Cubit<ThreadState> {
     this._consent,
     this._bookmarks,
     this._edits,
-  }) : super(const ThreadState());
+    CommunityCommentSort sort = CommunityCommentSort.oldest,
+    this.firstPageSize,
+    this.fetchPost = true,
+    this.onCommentCountChanged,
+  }) : super(ThreadState(sort: sort));
 
   final FeedRepository _feed;
   final CommentRepository _comments;
@@ -73,54 +83,107 @@ class CommentThreadCubit extends Cubit<ThreadState> {
   final int maxLevels;
   final int pageSize;
   final int repliesPerBranch;
+  final int? firstPageSize;
+  final bool fetchPost;
+  final ValueChanged<int>? onCommentCountChanged;
+
+  bool _sortMissing = false;
+
+  bool _ordered(ThreadState s) => !_sortMissing && rootCommentId == null && s.sort != CommunityCommentSort.oldest;
 
   StreamSubscription<String>? _commentEvents;
   StreamSubscription<PostChange>? _postEvents;
 
   Future<void> load() async {
     emit(state.copyWith(status: LoadStatus.loading, error: null));
+    final limit = firstPageSize ?? pageSize;
     try {
       final results = await Future.wait([
-        _feed.getPost(postId),
-        _comments.getThread(
-          postId,
-          rootCommentId: rootCommentId,
-          maxDepth: maxLevels - 1,
-          limit: pageSize,
-          repliesLimit: repliesPerBranch,
-          includeRoot: rootCommentId != null,
-        ),
+        if (fetchPost) _feed.getPost(postId) else Future<Post?>.value(state.post),
+        _fetchPage(limit: limit, includeRoot: rootCommentId != null),
       ]);
       if (isClosed) return;
       final post = results[0] as Post?;
       final list = results[1]! as List<ThreadComment>;
       final root = rootCommentId == null ? null : list.where((c) => c.id == rootCommentId).firstOrNull;
-      var next = ThreadState(status: LoadStatus.ready, post: post, root: root);
+      var next = ThreadState(
+        status: LoadStatus.ready,
+        post: post,
+        root: root,
+        sort: state.sort,
+        sortSupported: !_sortMissing,
+      );
       next = _merge(next, list);
       final top = _topLevelOf(next, list);
-      emit(next.copyWith(topCursor: top.lastOrNull?.cursor, hasMoreTop: top.length >= pageSize));
+      emit(next.copyWith(topCursor: top.lastOrNull?.cursor, topOffset: top.length, hasMoreTop: top.length >= limit));
       _listen();
     } catch (e) {
       if (!isClosed) emit(state.copyWith(status: LoadStatus.failure, error: e));
     }
   }
 
+  Future<void> setSort(CommunityCommentSort sort) async {
+    if (sort == state.sort || rootCommentId != null) return;
+    emit(
+      state.copyWith(
+        sort: sort,
+        comments: const {},
+        children: const {},
+        collapsed: const {},
+        loadingBranches: const {},
+        topCursor: null,
+        topOffset: 0,
+        hasMoreTop: false,
+        replyTo: null,
+      ),
+    );
+    await load();
+  }
+
+  Future<List<ThreadComment>> _fetchPage({String? cursor, required int limit, bool includeRoot = false}) async {
+    if (_comments case final SortedCommentRepository repository when _ordered(state)) {
+      try {
+        return await repository.getSortedThread(
+          postId,
+          sort: state.sort,
+          cursor: cursor,
+          maxDepth: maxLevels - 1,
+          limit: limit,
+          repliesLimit: repliesPerBranch,
+        );
+      } on CommunityException catch (e) {
+        if (e.code != 'PGRST202' || cursor != null) rethrow;
+        _sortMissing = true;
+        if (!isClosed) emit(state.copyWith(sortSupported: false));
+      }
+    }
+    return _comments.getThread(
+      postId,
+      rootCommentId: state.root?.id ?? rootCommentId,
+      cursor: cursor,
+      maxDepth: maxLevels - 1,
+      limit: limit,
+      repliesLimit: repliesPerBranch,
+      includeRoot: includeRoot,
+    );
+  }
+
   Future<void> loadMoreTop() async {
     if (!state.hasMoreTop || state.loadingBranches.contains(topLevelKey)) return;
     _setLoading(topLevelKey, true);
     try {
-      final list = await _comments.getThread(
-        postId,
-        rootCommentId: state.root?.id,
-        cursor: state.topCursor,
-        maxDepth: maxLevels - 1,
-        limit: pageSize,
-        repliesLimit: repliesPerBranch,
-      );
+      final byOffset = _ordered(state) && state.sort == CommunityCommentSort.top;
+      final list = await _fetchPage(cursor: byOffset ? '${state.topOffset}' : state.topCursor, limit: pageSize);
       if (isClosed) return;
       final next = _merge(state, list);
       final top = _topLevelOf(next, list);
-      emit(next.copyWith(topCursor: top.lastOrNull?.cursor ?? state.topCursor, hasMoreTop: top.length >= pageSize));
+      emit(
+        next.copyWith(
+          topCursor: top.lastOrNull?.cursor ?? state.topCursor,
+          topOffset: state.topOffset + top.length,
+          hasMoreTop: top.length >= pageSize,
+        ),
+      );
     } catch (e) {
       _fail(e);
     } finally {
@@ -169,8 +232,9 @@ class CommentThreadCubit extends Cubit<ThreadState> {
       final created = await _consent.guard(
         () => _comments.createComment(postId: postId, parentId: parentId, body: text),
       );
+      onCommentCountChanged?.call(1);
       if (isClosed) return true;
-      var next = _merge(state, [created]);
+      var next = _merge(state, [created], prepend: true);
       next = _bumpReplyCount(next, parentId, 1);
       final post = next.post;
       final collapsed = {...next.collapsed}..remove(parentId);
@@ -207,9 +271,11 @@ class CommentThreadCubit extends Cubit<ThreadState> {
     _replace(before.copyWith(isDeleted: true, body: null, author: null));
     final post = state.post;
     if (post != null) emit(state.copyWith(post: post.copyWith(commentCount: math.max(0, post.commentCount - 1))));
+    onCommentCountChanged?.call(-1);
     try {
       await _comments.deleteComment(comment.id);
     } catch (e) {
+      onCommentCountChanged?.call(1);
       _replace(before);
       if (post != null && !isClosed) emit(state.copyWith(post: post));
       _fail(e);
@@ -332,7 +398,8 @@ class CommentThreadCubit extends Cubit<ThreadState> {
       final parentKey = comment.parentId ?? topLevelKey;
       if (parentKey == topLevelKey || parentKey == state.rootKey) {
         if (state.root != null && parentKey != state.rootKey) return;
-        if (!state.hasMoreTop) emit(_merge(state, [comment]));
+        final newest = _ordered(state) && state.sort == CommunityCommentSort.latest;
+        if (newest || !state.hasMoreTop) emit(_merge(state, [comment], prepend: newest));
         return;
       }
       final parent = state.comments[parentKey];
@@ -343,21 +410,28 @@ class CommentThreadCubit extends Cubit<ThreadState> {
     } catch (_) {}
   }
 
-  ThreadState _merge(ThreadState base, List<ThreadComment> list) {
+  ThreadState _merge(ThreadState base, List<ThreadComment> list, {bool prepend = false}) {
     final comments = {...base.comments};
     final children = {
       for (final e in base.children.entries) e.key: [...e.value],
     };
     final rootId = base.root?.id;
+    final ordered = _ordered(base);
     for (final c in list) {
       comments[c.id] = c;
       if (c.id == rootId) continue;
       final key = c.parentId ?? topLevelKey;
       final siblings = children.putIfAbsent(key, () => []);
-      if (!siblings.contains(c.id)) siblings.add(c.id);
+      if (siblings.contains(c.id)) continue;
+      if (ordered && prepend && key == base.rootKey) {
+        siblings.insert(0, c.id);
+      } else {
+        siblings.add(c.id);
+      }
     }
-    for (final siblings in children.values) {
-      siblings.sort((a, b) => comments[a]!.path.compareTo(comments[b]!.path));
+    for (final entry in children.entries) {
+      if (ordered && entry.key == base.rootKey) continue;
+      entry.value.sort((a, b) => comments[a]!.path.compareTo(comments[b]!.path));
     }
     return base.copyWith(comments: comments, children: children);
   }
@@ -406,9 +480,17 @@ sealed class ThreadRow {
 }
 
 class CommentRow extends ThreadRow {
-  const CommentRow(this.comment, super.level, {required this.collapsed});
+  const CommentRow(
+    this.comment,
+    super.level, {
+    required this.collapsed,
+    this.hasVisibleReplies = false,
+    this.isLastSibling = false,
+  });
   final ThreadComment comment;
   final bool collapsed;
+  final bool hasVisibleReplies;
+  final bool isLastSibling;
 }
 
 class MoreRepliesRow extends ThreadRow {
@@ -431,29 +513,32 @@ class MoreTopLevelRow extends ThreadRow {
 List<ThreadRow> buildThreadRows(ThreadState state, {required int maxLevels}) {
   final rows = <ThreadRow>[];
 
-  void visit(String id, int level) {
+  void visit(String id, int level, {required bool last}) {
     final c = state.comments[id];
     if (c == null) return;
     final collapsed = state.collapsed.contains(id);
-    rows.add(CommentRow(c, level, collapsed: collapsed));
+    final kids = state.children[id] ?? const [];
+    final deep = level + 1 >= maxLevels;
+    final remaining = c.replyCount - kids.length;
+    final visibleReplies = !collapsed && (deep ? c.replyCount > 0 : kids.isNotEmpty || remaining > 0);
+    rows.add(CommentRow(c, level, collapsed: collapsed, hasVisibleReplies: visibleReplies, isLastSibling: last));
     if (collapsed) return;
 
-    final kids = state.children[id] ?? const [];
-    if (level + 1 >= maxLevels) {
+    if (deep) {
       if (c.replyCount > 0) rows.add(ContinueThreadRow(c, level + 1));
       return;
     }
-    for (final k in kids) {
-      visit(k, level + 1);
+    for (final (index, k) in kids.indexed) {
+      visit(k, level + 1, last: index == kids.length - 1 && remaining <= 0);
     }
-    final remaining = c.replyCount - kids.length;
     if (remaining > 0) {
       rows.add(MoreRepliesRow(id, level + 1, remaining: remaining, loading: state.loadingBranches.contains(id)));
     }
   }
 
-  for (final id in state.children[state.rootKey] ?? const <String>[]) {
-    visit(id, 0);
+  final top = state.children[state.rootKey] ?? const <String>[];
+  for (final (index, id) in top.indexed) {
+    visit(id, 0, last: index == top.length - 1 && !state.hasMoreTop);
   }
   if (state.hasMoreTop) rows.add(MoreTopLevelRow(loading: state.loadingBranches.contains(topLevelKey)));
   return rows;

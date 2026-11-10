@@ -33,6 +33,8 @@ abstract class FeedState with _$FeedState {
     Object? actionError,
     @Default(0) int actionErrorId,
     @Default(false) bool stale,
+    @Default(<String>{}) Set<String> openComments,
+    String? focusComments,
   }) = _FeedState;
 }
 
@@ -240,6 +242,26 @@ class FeedCubit extends Cubit<FeedState> {
   }
 
   void replacePost(Post post) => _replace(post);
+
+  void toggleComments(String postId) {
+    final open = {...state.openComments};
+    final opening = open.add(postId);
+    if (!opening) open.remove(postId);
+    emit(state.copyWith(openComments: open, focusComments: opening ? postId : null));
+  }
+
+  void commentsFocused(String postId) {
+    if (state.focusComments == postId && !isClosed) emit(state.copyWith(focusComments: null));
+  }
+
+  void adjustCommentCount(String postId, int delta) {
+    final index = state.posts.indexWhere((p) => p.id == postId);
+    final pinned = state.pinned.where((pin) => pin.post.id == postId).firstOrNull;
+    final post = index >= 0 ? state.posts[index] : pinned?.post;
+    if (post == null) return;
+    final count = post.commentCount + delta;
+    _replace(post.copyWith(commentCount: count < 0 ? 0 : count));
+  }
 
   Post _find(Post post) => state.posts.firstWhere(
     (p) => p.id == post.id,

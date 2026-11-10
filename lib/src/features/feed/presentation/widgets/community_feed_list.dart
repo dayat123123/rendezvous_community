@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
@@ -10,18 +11,21 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/cubit/feed_cubit.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/post_open_mode.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/pinned_post_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_actions.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_skeletons.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_consent_banner.dart';
 import 'package:rendezvous_community/src/features/offline/presentation/widgets/community_offline_banner.dart';
+import 'package:rendezvous_community/src/features/post/presentation/widgets/community_post_comments.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_list_state_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -33,13 +37,21 @@ String feedScopeName(FeedScope scope) => switch (scope) {
 };
 
 class CommunityFeedList extends StatelessWidget {
-  const CommunityFeedList({super.key, required this.scope, required this.emptyMessage, this.header, this.builders});
+  const CommunityFeedList({
+    super.key,
+    required this.scope,
+    required this.emptyMessage,
+    this.header,
+    this.builders,
+    this.postOpenMode = CommunityPostOpenMode.navigate,
+  });
 
   final FeedScope scope;
   final String emptyMessage;
 
   final Widget? header;
   final CommunityFeedBuilders? builders;
+  final CommunityPostOpenMode postOpenMode;
 
   @override
   Widget build(BuildContext context) {
@@ -70,6 +82,7 @@ class CommunityFeedList extends StatelessWidget {
             emptyMessage: emptyMessage,
             header: header,
             showBanners: scope is GlobalFeedScope || scope is FollowingFeedScope,
+            postOpenMode: postOpenMode,
           ),
         ),
       ),
@@ -85,6 +98,7 @@ class FeedPostList extends StatefulWidget {
     this.showConsentBanner = true,
     this.source = 'feed',
     this.showBanners = false,
+    this.postOpenMode = CommunityPostOpenMode.navigate,
   });
 
   final String emptyMessage;
@@ -92,6 +106,7 @@ class FeedPostList extends StatefulWidget {
   final bool showConsentBanner;
   final String source;
   final bool showBanners;
+  final CommunityPostOpenMode postOpenMode;
 
   @override
   State<FeedPostList> createState() => _FeedPostListState();
@@ -201,7 +216,7 @@ class _FeedPostListState extends State<FeedPostList> {
                 return Padding(
                   key: ValueKey(post.id),
                   padding: EdgeInsets.only(bottom: style.sectionGap),
-                  child: FeedPostCard(post: post, cubit: cubit, source: widget.source),
+                  child: FeedPostCard(post: post, cubit: cubit, source: widget.source, openMode: widget.postOpenMode),
                 );
               },
             ),
@@ -257,23 +272,88 @@ class _FeedPostListState extends State<FeedPostList> {
 }
 
 class FeedPostCard extends StatelessWidget {
-  const FeedPostCard({super.key, required this.post, required this.cubit, this.source = 'feed'});
+  const FeedPostCard({
+    super.key,
+    required this.post,
+    required this.cubit,
+    this.source = 'feed',
+    this.openMode = CommunityPostOpenMode.navigate,
+  });
 
   final Post post;
   final FeedCubit cubit;
   final String source;
+  final CommunityPostOpenMode openMode;
 
   @override
-  Widget build(BuildContext context) => PostCard(
-    post: post,
-    source: source,
-    onLike: () => cubit.toggleLike(post),
-    onOpen: () => CommunityNavigator.openPost(context, post.id),
-    onDelete: () => cubit.delete(post),
-    onAuthorBlocked: () => cubit.hideAuthor(post.author.id),
-    onEdit: editPostAction(context, post, cubit.canEdit ? cubit.editPost : null),
-    onToggleBookmark: bookmarkPostAction(context, cubit.canBookmark ? () => cubit.toggleBookmark(post) : null),
-    onShare: sharePostAction(context, post),
-    onAppeal: appealPostAction(context, post),
-  );
+  Widget build(BuildContext context) {
+    final inline = openMode == CommunityPostOpenMode.inlineComments;
+    final expanded = inline && cubit.state.openComments.contains(post.id);
+    void toggle() => cubit.toggleComments(post.id);
+    final card = PostCard(
+      post: post,
+      source: source,
+      onLike: () => cubit.toggleLike(post),
+      onOpen: inline ? null : () => CommunityNavigator.openPost(context, post.id),
+      onDelete: () => cubit.delete(post),
+      onAuthorBlocked: () => cubit.hideAuthor(post.author.id),
+      onEdit: editPostAction(context, post, cubit.canEdit ? cubit.editPost : null),
+      onToggleBookmark: bookmarkPostAction(context, cubit.canBookmark ? () => cubit.toggleBookmark(post) : null),
+      onShare: sharePostAction(context, post),
+      onAppeal: appealPostAction(context, post),
+      commentsExpanded: expanded,
+      onToggleComments: inline ? toggle : null,
+      readMoreInPlace: inline,
+    );
+    if (!expanded) return card;
+    final focus = cubit.state.focusComments == post.id;
+    if (focus) WidgetsBinding.instance.addPostFrameCallback((_) => cubit.commentsFocused(post.id));
+    final details = CommunityInlineCommentsDetails(
+      post: post,
+      expanded: true,
+      onToggle: toggle,
+      child: CommunityPostComments(
+        postId: post.id,
+        commentCount: post.commentCount,
+        autofocusComposer: focus,
+        onCommentCountChanged: (delta) => cubit.adjustCommentCount(post.id, delta),
+      ),
+    );
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        card,
+        buildFeedPart((b) => b.inlineComments, context, details, _DefaultInlineComments(details: details)),
+      ],
+    );
+  }
+}
+
+class _DefaultInlineComments extends StatelessWidget {
+  const _DefaultInlineComments({required this.details});
+
+  final CommunityInlineCommentsDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return CallbackShortcuts(
+      bindings: {const SingleActivator(LogicalKeyboardKey.escape): details.onToggle},
+      child: Material(
+        color: style.surface,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: spacing.md),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CommunityDivider(indent: spacing.lg, endIndent: spacing.lg),
+              SizedBox(height: spacing.xs),
+              details.child,
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }

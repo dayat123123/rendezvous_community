@@ -1,3 +1,16 @@
+## 1.13.0
+
+Server: urutan komentar "Disarankan/Terbaru" butuh migrasi `0142`. Di server lama komentar inline tetap jalan dari yang terlama dan pilihan urutan disembunyikan. Tidak ada perubahan yang wajib diikuti host; semua parameter baru opsional dan perilaku bawaan tetap sama.
+
+* **Komentar inline di feed** seperti Facebook/Instagram/Quora: `postOpenMode: CommunityPostOpenMode.inlineComments` di `CommunityStreamFeed`, `CommunityStockFeed`, `CommunityHashtagFeed`, `CommunityUserProfile`, dan `CommunityFeedList` (bawaan `navigate`).
+  * Tombol komentar membuka dan menutup komentar tepat di bawah kartu, tanpa navigasi. Status terbuka disimpan per post selama feed hidup, kolom komentar langsung fokus, dan Esc di desktop menutupnya. Mengetuk kartu tidak membuka detail; "Baca lebih lanjut" membentangkan teks di tempat.
+  * Isinya kolom "Tambahkan komentar…", header "Komentar · Disarankan ▾", tiga komentar teratas dengan balasan ringkas, dan "Lihat N komentar lainnya" yang memuat halaman berikutnya di tempat. Jumlah komentar di kartu ikut bertambah/berkurang.
+  * Logikanya sama dengan detail post: kirim langsung tampil, realtime, persetujuan dokumen hukum, kata terlarang, batas laju, moderasi dan banding, edit/hapus, lapor/blokir, suka, dan balasan bertingkat.
+  * Deep link, notifikasi, dan `onPostTap` tetap memakai `CommunityPostDetail`.
+* **`CommunityPostComments`** untuk menanam komentar sebuah post di mana saja: `postId`, `initialTopLevel`, `sort`, `showComposer`, `autofocusComposer`, `inline`, `commentCount`, `onOpenThread`, `onCommentCountChanged`, `builders`.
+* **Urutan komentar** `CommunityCommentSort` (`top` = suka + balasan terbanyak, `latest`, `oldest`). `CommentRepositoryImpl` kini juga mengimplementasikan `SortedCommentRepository`; repository komentar buatan host tidak perlu diubah (tanpa itu komentar tampil dari yang terlama).
+* Builder baru di `CommunityFeedBuilders`: `inlineComments` (`CommunityInlineCommentsDetails`) dan `commentSort` (`CommunityCommentSortDetails`). `CommunityPostDetails` mendapat `commentsExpanded` dan `onToggleComments`; `CommunityCommentDetails` mendapat `replyCount`, `hasVisibleReplies`, dan `isLastSibling`; `ThreadLinesPainter` diekspor. Kolom komentar inline memakai builder `replyComposer` yang sama.
+
 ## 1.12.1
 
 Tidak ada perubahan yang wajib diikuti host; field baru bersifat opsional.

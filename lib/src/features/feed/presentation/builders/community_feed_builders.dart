@@ -38,6 +38,8 @@ class CommunityFeedBuilders {
     this.draftTile,
     this.stockHeader,
     this.editDialog,
+    this.inlineComments,
+    this.commentSort,
   });
 
   final CommunityPartBuilder<CommunityPostDetails>? postCard;
@@ -73,6 +75,8 @@ class CommunityFeedBuilders {
   final CommunityPartBuilder<CommunityDraftDetails>? draftTile;
   final CommunityPartBuilder<CommunityStockHeaderDetails>? stockHeader;
   final CommunityPartBuilder<CommunityEditDialogDetails>? editDialog;
+  final CommunityPartBuilder<CommunityInlineCommentsDetails>? inlineComments;
+  final CommunityPartBuilder<CommunityCommentSortDetails>? commentSort;
 
   static CommunityFeedBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -117,6 +121,8 @@ class CommunityFeedBuilders {
       draftTile: other.draftTile ?? draftTile,
       stockHeader: other.stockHeader ?? stockHeader,
       editDialog: other.editDialog ?? editDialog,
+      inlineComments: other.inlineComments ?? inlineComments,
+      commentSort: other.commentSort ?? commentSort,
     );
   }
 }

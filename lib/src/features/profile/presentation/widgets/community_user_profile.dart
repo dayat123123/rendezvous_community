@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/post_open_mode.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/editorial_section.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_skeletons.dart';
@@ -25,12 +26,18 @@ import 'package:rendezvous_community/src/shared/presentation/widgets/social_text
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
 class CommunityUserProfile extends StatelessWidget {
-  const CommunityUserProfile({super.key, this.userId, this.username, this.builders})
-    : assert(userId != null || username != null, 'Either userId or username is required');
+  const CommunityUserProfile({
+    super.key,
+    this.userId,
+    this.username,
+    this.builders,
+    this.postOpenMode = CommunityPostOpenMode.navigate,
+  }) : assert(userId != null || username != null, 'Either userId or username is required');
 
   final String? userId;
   final String? username;
   final CommunityProfileBuilders? builders;
+  final CommunityPostOpenMode postOpenMode;
 
   @override
   Widget build(BuildContext context) {
@@ -63,6 +70,7 @@ class CommunityUserProfile extends StatelessWidget {
                 if (profile.isBlocked) return const _ProfileHeader();
                 return CommunityFeedList(
                   scope: FeedScope.user(profile.user.id),
+                  postOpenMode: postOpenMode,
                   emptyMessage: l10n.userFeedEmpty,
                   header: const _ProfileHeader(),
                 );

@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.12.1            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.13.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -158,7 +158,7 @@ Semua widget adalah konten tanpa `Scaffold`, sehingga OLT tetap memegang AppBar,
 
 | Lokasi di OLT | Widget |
 |---|---|
-| Tab/menu "Stream" | `const CommunityStreamFeed()` |
+| Tab/menu "Stream" | `const CommunityStreamFeed()`. Komentar inline seperti Facebook/Instagram: `CommunityStreamFeed(postOpenMode: CommunityPostOpenMode.inlineComments)` (1.13.0) |
 | Halaman detail saham (tab "Diskusi") | `CommunityStockFeed(stockCode: code, showHeader: false)` (header disembunyikan karena OLT sudah menampilkan info saham). Bila header dipakai, isi `stockName` dari data OLT |
 | Tombol tulis post | `showCommunityComposer(context, initialStock: code)` atau `CommunityComposePost(...)` |
 | Menu "Chat" | `const CommunityChatList()` (otomatis multi-panel di Windows) |
@@ -182,6 +182,16 @@ TabBarView(children: [
   CommunityStockFeed(stockCode: code, showHeader: false),
 ]);
 ```
+
+**Komentar inline (1.13.0).** Bawaannya mengetuk post atau tombol komentar membuka halaman `CommunityPostDetail`. Agar komentar terbuka di bawah kartu tanpa pindah halaman, isi `postOpenMode` di widget feed yang dipakai:
+
+```dart
+CommunityStreamFeed(postOpenMode: CommunityPostOpenMode.inlineComments);
+CommunityStockFeed(stockCode: code, showHeader: false, postOpenMode: CommunityPostOpenMode.inlineComments);
+CommunityUserProfile(userId: id, postOpenMode: CommunityPostOpenMode.inlineComments);
+```
+
+Deep link post dan notifikasi tetap membuka `CommunityPostDetail`. Pilihan urutan "Disarankan/Terbaru" butuh server migrasi `0142`; di server lama komentar inline tetap jalan dengan urutan dari yang terlama. Rinciannya di [customization.md](customization.md#komentar-inline-1130).
 
 **Persetujuan dokumen hukum.** Dokumen diterbitkan staf Kepatuhan dari web CS. Paket menanganinya sendiri:
 - Feed menampilkan `CommunityConsentBanner` bila ada dokumen wajib yang belum disetujui.
