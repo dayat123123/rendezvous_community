@@ -1,3 +1,11 @@
+## 1.12.1
+
+Tidak ada perubahan yang wajib diikuti host; field baru bersifat opsional.
+
+* **Composer pengaduan tamu memakai gaya dan builder `chat.composer` yang sama dengan chat CS.** Kolom ketik pil tanpa garis tepi, tombol kirim bulat yang berwarna aksen saat ada teks, Enter mengirim di desktop dan Shift+Enter membuat baris baru. Tamu tetap hanya bisa mengirim teks (1–2.000 karakter) tanpa saran `$saham`/`@user`, dan key `guest-composer`/`guest-send` tetap ada.
+* `CommunityComposerDetails` mendapat `enabled`, `enableAutocomplete`, `fieldKey`, dan `sendKey`. Composer bawaan menyembunyikan tombol lampiran bila `onPickImage` null. Di chat CS `onPickImage` kini tetap terisi selama unggah berlangsung; builder host sebaiknya menonaktifkan tombol lampiran saat `uploading`.
+* `CommunityComposerField` mendapat `fieldKey` untuk `TextField` di dalamnya.
+
 ## 1.12.0
 
 

@@ -108,6 +108,10 @@ class CommunityComposerDetails {
     this.attachmentPolicy = CommunityAttachmentPolicy.imagesOnly,
     this.attachLabel,
     this.uploadingLabel,
+    this.enabled = true,
+    this.enableAutocomplete = true,
+    this.fieldKey,
+    this.sendKey,
   });
 
   final TextEditingController controller;
@@ -133,6 +137,10 @@ class CommunityComposerDetails {
   final CommunityAttachmentPolicy attachmentPolicy;
   final String? attachLabel;
   final String? uploadingLabel;
+  final bool enabled;
+  final bool enableAutocomplete;
+  final Key? fieldKey;
+  final Key? sendKey;
 
   bool get coolingDown => cooldown > Duration.zero;
 

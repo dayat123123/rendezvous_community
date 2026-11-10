@@ -134,6 +134,7 @@ class _MessageComposerState extends State<MessageComposer> {
   }
 
   Future<void> _pickImage() async {
+    if (context.read<ChatRoomCubit>().state.uploading) return;
     final l10n = context.communityL10n;
     final policy = widget.policy;
     final groups = attachmentTypeGroups(policy, l10n);
@@ -210,7 +211,7 @@ class _MessageComposerState extends State<MessageComposer> {
           replyToName: replyName,
           replyPreview: replyTo == null ? null : '$replyName: ${replyTo.body ?? l10n.attachment}',
           onCancelReply: replyTo == null ? null : () => context.read<ChatRoomCubit>().setReplyTo(null),
-          onPickImage: state.uploading ? null : _pickImage,
+          onPickImage: _pickImage,
           allowsDocuments: widget.allowDocuments,
           attachmentPolicy: widget.policy,
           attachLabel: _attachLabel(l10n),
@@ -224,14 +225,14 @@ class _MessageComposerState extends State<MessageComposer> {
           files: List.unmodifiable(_files),
           onRemoveFile: _removeFile,
         );
-        return buildChatPart(builder, context, details, _DefaultComposer(details: details));
+        return buildChatPart(builder, context, details, DefaultMessageComposer(details: details));
       },
     );
   }
 }
 
-class _DefaultComposer extends StatelessWidget {
-  const _DefaultComposer({required this.details});
+class DefaultMessageComposer extends StatelessWidget {
+  const DefaultMessageComposer({super.key, required this.details});
 
   final CommunityComposerDetails details;
 
@@ -262,7 +263,7 @@ class _DefaultComposer extends StatelessWidget {
                   child: IconButton(
                     tooltip: l10n.stockCardSend,
                     color: style.textSecondary,
-                    onPressed: d.onSendStockCard,
+                    onPressed: d.enabled ? d.onSendStockCard : null,
                     icon: const Icon(Icons.candlestick_chart_outlined),
                   ),
                 ),
@@ -295,30 +296,36 @@ class _DefaultComposer extends StatelessWidget {
                       Row(
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          SizedBox.square(
-                            dimension: _controlSize,
-                            child: IconButton(
-                              tooltip:
-                                  d.attachLabel ??
-                                  (d.allowsDocuments ? l10n.composeAddImageOrPdf : l10n.composeAddImage),
-                              color: style.textSecondary,
-                              onPressed: d.onPickImage,
-                              icon: d.uploading
-                                  ? SizedBox.square(
-                                      dimension: 18,
-                                      child: CircularProgressIndicator(strokeWidth: 2, color: style.accent),
-                                    )
-                                  : Icon(d.allowsDocuments ? Icons.attach_file : Icons.add_photo_alternate_outlined),
+                          if (d.onPickImage == null)
+                            SizedBox(width: spacing.md)
+                          else
+                            SizedBox.square(
+                              dimension: _controlSize,
+                              child: IconButton(
+                                tooltip:
+                                    d.attachLabel ??
+                                    (d.allowsDocuments ? l10n.composeAddImageOrPdf : l10n.composeAddImage),
+                                color: style.textSecondary,
+                                onPressed: d.uploading || !d.enabled ? null : d.onPickImage,
+                                icon: d.uploading
+                                    ? SizedBox.square(
+                                        dimension: 18,
+                                        child: CircularProgressIndicator(strokeWidth: 2, color: style.accent),
+                                      )
+                                    : Icon(d.allowsDocuments ? Icons.attach_file : Icons.add_photo_alternate_outlined),
+                              ),
                             ),
-                          ),
                           Expanded(
                             child: CommunityComposerField(
+                              fieldKey: d.fieldKey,
                               controller: d.controller,
                               focusNode: d.focusNode,
+                              enabled: d.enabled,
+                              enableAutocomplete: d.enableAutocomplete,
                               hintText: d.hintText,
                               maxLength: d.maxLength,
                               maxLines: 5,
-                              onSubmit: d.onSend,
+                              onSubmit: d.enabled ? d.onSend : null,
                               onPaste: d.onPaste,
                               onContentInserted: d.onContentInserted,
                               style: text,
@@ -387,13 +394,14 @@ class _SendButton extends StatelessWidget {
       builder: (context, value, _) {
         final empty = value.text.trim().isEmpty && d.files.isEmpty;
         return IconButton.filled(
+          key: d.sendKey,
           tooltip: l10n.composeSubmit,
           style: IconButton.styleFrom(
             backgroundColor: empty ? style.pill : style.accent,
             foregroundColor: empty ? style.textTertiary : style.onAccent,
             fixedSize: const Size.square(_controlSize),
           ),
-          onPressed: d.onSend,
+          onPressed: d.enabled ? d.onSend : null,
           icon: const Icon(Icons.send, size: 22),
         );
       },

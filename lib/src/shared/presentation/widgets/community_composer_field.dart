@@ -18,6 +18,7 @@ class CommunityComposerField extends StatefulWidget {
     super.key,
     required this.controller,
     required this.hintText,
+    this.fieldKey,
     this.onSubmit,
     this.focusNode,
     this.maxLength,
@@ -34,6 +35,7 @@ class CommunityComposerField extends StatefulWidget {
 
   final TextEditingController controller;
   final String hintText;
+  final Key? fieldKey;
   final VoidCallback? onSubmit;
   final FocusNode? focusNode;
   final int? maxLength;
@@ -263,6 +265,7 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
         Theme(
           data: _standardDensity(Theme.of(context)),
           child: TextField(
+            key: widget.fieldKey,
             controller: widget.controller,
             focusNode: _focusNode,
             enabled: widget.enabled,

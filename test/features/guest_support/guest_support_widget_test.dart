@@ -1,4 +1,6 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
@@ -253,6 +255,104 @@ void main() {
     await tester.pump();
     expect(repo.starts.single['problem'], 'password');
     expect(find.text('HEADER CS-20261109-0042 true'), findsOneWidget);
+    await _leave(tester);
+  });
+
+  testWidgets('the guest composer has the CS chat look: pill field, round send button and no attach button', (
+    tester,
+  ) async {
+    final repo = FakeGuestSupportRepository();
+    await _pump(tester, repo);
+    await _startChat(tester, repo);
+
+    final style = CommunityStyle.of(tester.element(find.byKey(const ValueKey('guest-composer'))));
+    final field = tester.widget<TextField>(find.byKey(const ValueKey('guest-composer')));
+    expect(
+      find.ancestor(of: find.byKey(const ValueKey('guest-composer')), matching: find.byType(CommunityComposerField)),
+      findsOneWidget,
+    );
+    expect(field.decoration!.border, InputBorder.none);
+    expect(field.maxLines, 5);
+    expect(field.maxLength, guestMessageMaxLength);
+    expect(find.byIcon(Icons.add_photo_alternate_outlined), findsNothing);
+    expect(find.byIcon(Icons.attach_file), findsNothing);
+    expect(find.byIcon(Icons.send), findsOneWidget);
+
+    Color? sendColor() =>
+        tester.widget<IconButton>(find.byKey(const ValueKey('guest-send'))).style!.backgroundColor!.resolve({});
+    expect(sendColor(), style.pill);
+    await tester.enterText(find.byKey(const ValueKey('guest-composer')), 'Halo');
+    await tester.pump();
+    expect(sendColor(), style.accent);
+    await _leave(tester);
+  });
+
+  testWidgets('Enter sends from the guest composer on desktop and Shift+Enter does not', (tester) async {
+    debugDefaultTargetPlatformOverride = TargetPlatform.windows;
+    try {
+      final repo = FakeGuestSupportRepository();
+      await _pump(tester, repo);
+      await _startChat(tester, repo);
+
+      await tester.enterText(find.byKey(const ValueKey('guest-composer')), 'Baris pertama');
+      await tester.sendKeyDownEvent(LogicalKeyboardKey.shiftLeft);
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.sendKeyUpEvent(LogicalKeyboardKey.shiftLeft);
+      await tester.pump();
+      expect(repo.sent, isEmpty);
+
+      await tester.sendKeyEvent(LogicalKeyboardKey.enter);
+      await tester.pump();
+      await tester.pump();
+      expect(repo.sent, ['Baris pertama']);
+      await _leave(tester);
+    } finally {
+      debugDefaultTargetPlatformOverride = null;
+    }
+  });
+
+  testWidgets('a custom chat.composer builder also replaces the guest composer', (tester) async {
+    final repo = FakeGuestSupportRepository();
+    CommunityComposerDetails? seen;
+    await _pump(
+      tester,
+      repo,
+      builders: CommunityBuilders(
+        chat: CommunityChatBuilders(
+          composer: (context, d, fallback) {
+            seen = d;
+            return TextButton(
+              onPressed: () {
+                d.controller.text = 'Dari composer host';
+                d.onSend();
+              },
+              child: const Text('HOST COMPOSER'),
+            );
+          },
+        ),
+      ),
+    );
+    await _startChat(tester, repo);
+
+    final d = seen!;
+    expect(d.hintText, 'Tulis pesan…');
+    expect(d.maxLength, guestMessageMaxLength);
+    expect(d.onPickImage, isNull);
+    expect(d.files, isEmpty);
+    expect(d.attachmentPolicy, CommunityAttachmentPolicy.imagesOnly);
+    expect(d.enabled, isTrue);
+    expect(d.enableAutocomplete, isFalse);
+    expect(d.uploading, isFalse);
+
+    await tester.tap(find.text('HOST COMPOSER'));
+    await tester.pump();
+    await tester.pump();
+    expect(repo.sent, ['Dari composer host']);
+
+    seen!.controller.text = ' ';
+    seen!.onSend();
+    await tester.pump();
+    expect(repo.sent, ['Dari composer host']);
     await _leave(tester);
   });
 }

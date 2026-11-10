@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_composer.dart';
 import 'package:rendezvous_community/src/features/guest_support/domain/services/guest_support_form.dart';
 import 'package:rendezvous_community/src/features/guest_support/presentation/builders/community_guest_support_details.dart';
 import 'package:rendezvous_community/src/features/guest_support/presentation/cubit/guest_support_cubit.dart';
@@ -318,16 +321,12 @@ class _GuestComposer extends StatefulWidget {
 
 class _GuestComposerState extends State<_GuestComposer> {
   final _controller = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _controller.addListener(() => setState(() {}));
-  }
+  final _focus = FocusNode();
 
   @override
   void dispose() {
     _controller.dispose();
+    _focus.dispose();
     super.dispose();
   }
 
@@ -335,6 +334,7 @@ class _GuestComposerState extends State<_GuestComposer> {
     final cubit = context.read<GuestSupportCubit>();
     final text = _controller.text;
     if (!cubit.state.canSend || cubit.state.sending || !isGuestMessageValid(text)) return;
+    _focus.requestFocus();
     _controller.clear();
     await cubit.send(text);
   }
@@ -342,58 +342,24 @@ class _GuestComposerState extends State<_GuestComposer> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final style = CommunityStyle.of(context);
-    final spacing = style.spacing;
     final state = context.watch<GuestSupportCubit>().state;
-    final enabled = state.canSend;
-    final canSend = enabled && !state.sending && isGuestMessageValid(_controller.text);
-    return SafeArea(
-      top: false,
-      child: Container(
-        decoration: BoxDecoration(
-          color: style.surface,
-          border: Border(
-            top: BorderSide(color: style.divider, width: style.borderWidth),
-          ),
-        ),
-        padding: EdgeInsets.fromLTRB(spacing.md, spacing.sm, spacing.sm, spacing.sm),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              child: TextField(
-                key: const ValueKey('guest-composer'),
-                controller: _controller,
-                enabled: enabled,
-                minLines: 1,
-                maxLines: 5,
-                maxLength: guestMessageMaxLength,
-                keyboardType: TextInputType.multiline,
-                textCapitalization: TextCapitalization.sentences,
-                style: style.typography.body,
-                decoration: InputDecoration(
-                  hintText: l10n.messageHint,
-                  counterText: '',
-                  isDense: true,
-                  filled: true,
-                  fillColor: style.background,
-                  contentPadding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm + spacing.xxs),
-                  border: OutlineInputBorder(borderRadius: style.radii.pillRadius, borderSide: style.borderSide),
-                  enabledBorder: OutlineInputBorder(borderRadius: style.radii.pillRadius, borderSide: style.borderSide),
-                ),
-              ),
-            ),
-            SizedBox(width: spacing.xs),
-            IconButton(
-              key: const ValueKey('guest-send'),
-              tooltip: l10n.sendMessage,
-              onPressed: canSend ? _send : null,
-              color: style.accent,
-              icon: const Icon(Icons.send_rounded),
-            ),
-          ],
-        ),
-      ),
+    final details = CommunityComposerDetails(
+      controller: _controller,
+      focusNode: _focus,
+      hintText: l10n.messageHint,
+      maxLength: guestMessageMaxLength,
+      uploading: state.sending,
+      onSend: _send,
+      enabled: state.canSend,
+      enableAutocomplete: false,
+      fieldKey: const ValueKey('guest-composer'),
+      sendKey: const ValueKey('guest-send'),
+    );
+    return buildChatPart(
+      CommunityChatBuilders.of(context).composer,
+      context,
+      details,
+      DefaultMessageComposer(details: details),
     );
   }
 }
