@@ -154,4 +154,65 @@ void main() {
     await tester.pumpAndSettle();
     expect(picked, ['BBCA', 'TLKM']);
   });
+
+  group('chatStockCards option', () {
+    final stockMessage = ChatMessage(
+      id: 'm-stock',
+      roomId: 'dm',
+      senderId: alice.id,
+      sender: alice,
+      stockCodes: const ['BBCA'],
+      createdAt: chatStart.add(const Duration(minutes: 1)),
+    );
+
+    Future<void> pumpRoom(WidgetTester tester, {CommunityCallbacks callbacks = const CommunityCallbacks()}) async {
+      final features = FakeFeatureDependencies(config: loadedConfig());
+      addTearDown(features.dispose);
+      final chat = FakeChatRepository(rooms: [directRoom()], members: directMembers(), messages: [stockMessage]);
+      addTearDown(chat.dispose);
+      await pumpFeatureApp(
+        tester,
+        const CommunityChatRoom(roomId: 'dm'),
+        dependencies: FakeDependencies(chat: chat, callbacks: callbacks),
+        features: features,
+      );
+      await tester.pumpAndSettle();
+    }
+
+    final stockButton = find.widgetWithIcon(IconButton, Icons.candlestick_chart_outlined);
+
+    testWidgets('the composer shows the stock card button by default', (tester) async {
+      await pumpRoom(tester);
+
+      expect(stockButton, findsOneWidget);
+    });
+
+    testWidgets('chatStockCards false hides the button and keeps received cards', (tester) async {
+      await pumpRoom(tester, callbacks: const CommunityCallbacks(chatStockCards: false));
+
+      expect(stockButton, findsNothing);
+      expect(find.byType(StockCards), findsOneWidget);
+      expect(find.text(r'$BBCA'), findsOneWidget);
+    });
+
+    test('the room cubit refuses stock cards when the option is off', () async {
+      final extras = _Extras();
+      final chat = FakeChatRepository(rooms: [directRoom()], members: directMembers());
+      addTearDown(chat.dispose);
+      final cubit = ChatRoomCubit(
+        chat: chat,
+        media: _NoMedia(),
+        me: () async => me,
+        roomId: 'dm',
+        extras: extras,
+        stockCards: false,
+      );
+      addTearDown(cubit.close);
+      await cubit.load();
+
+      expect(cubit.canSendStockCards, isFalse);
+      await cubit.sendStockCards(['BBCA']);
+      expect(extras.sent, isEmpty);
+    });
+  });
 }

@@ -44,6 +44,7 @@ class CommunityCallbacks {
     this.onOltNotificationTap,
     this.stockInfo,
     this.onBannerLink,
+    this.chatStockCards = true,
   });
 
   final CommunityStockTapCallback? onStockTap;
@@ -55,6 +56,7 @@ class CommunityCallbacks {
   final CommunityOltNotificationTapCallback? onOltNotificationTap;
   final CommunityStockInfoProvider? stockInfo;
   final CommunityBannerLinkCallback? onBannerLink;
+  final bool chatStockCards;
 }
 
 abstract interface class CommunityDependencies {

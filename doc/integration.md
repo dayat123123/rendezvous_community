@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.15.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.15.1            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -87,6 +87,7 @@ Future<void> onOltLoggedIn() async {
     onPostTap: null,      // null = buka CommunityPostDetail
     onRoomTap: null,      // null = buka CommunityChatRoom
     onBannerLink: (context, uri, banner) => OltRouter.tryOpenDeepLink(context, uri), // opsional, true = ditangani OLT (bagian 5)
+    chatStockCards: true, // false = sembunyikan tombol "Kirim kartu saham" di kolom chat (1.15.1)
     logHandler: (record) => oltLog.write(record.level.name, record.loggerName, record.message),  // opsional
   );
 }

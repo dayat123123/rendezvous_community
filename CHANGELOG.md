@@ -1,3 +1,9 @@
+## 1.15.1
+
+Tidak butuh migrasi server. Bawaannya tidak berubah.
+
+* **Sembunyikan tombol kartu saham:** `RendezvousCommunity.initialize(chatStockCards: false)` (juga `CommunityCallbacks.chatStockCards`) menyembunyikan tombol "Kirim kartu saham" di kolom chat DM, grup, dan room saham, dan `ChatRoomCubit.canSendStockCards` menjadi `false`. Kartu saham yang sudah diterima tetap tampil; "Kirim ke chat", reaksi, dan fitur chat lain tidak terpengaruh.
+
 ## 1.15.0
 
 Tidak butuh migrasi server. Semua parameter baru opsional; host yang tidak memakainya tetap mendapat perilaku bawaan, kecuali perbaikan scroll feed di bawah.

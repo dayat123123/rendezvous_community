@@ -68,6 +68,7 @@ class CommunityChatRoom extends StatelessWidget {
           cache: cached?.chatCache,
           outbox: cached?.outbox,
           connectivity: offline?.connectivity,
+          stockCards: deps.callbacks.chatStockCards,
         )..load(),
         child: _ChatRoomView(showHeader: showHeader, header: header, composer: composer),
       ),

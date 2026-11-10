@@ -164,12 +164,14 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     this.reconnectJitter = const Duration(seconds: 5),
     this.gapRecheckDelay = const Duration(seconds: 5),
     this._random,
+    this.stockCards = true,
   }) : _meProvider = me,
        _clock = clock ?? DateTime.now,
        super(const ChatRoomState());
 
   final ChatRepository _chat;
   final MediaRepository _media;
+  final bool stockCards;
   final ConsentGate? _consent;
   final ChatExtrasRepository? _extras;
   final CommunityAnalytics? _analytics;
@@ -790,7 +792,8 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     await _deliver(local);
   }
 
-  bool get canSendStockCards => _extras != null && state.room != null && state.room!.type != RoomType.support;
+  bool get canSendStockCards =>
+      stockCards && _extras != null && state.room != null && state.room!.type != RoomType.support;
 
   Future<void> sendStockCards(Iterable<String> codes) async {
     final me = state.me;
