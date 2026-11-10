@@ -1,3 +1,17 @@
+## 1.14.0
+
+Server: bagian halaman Stream butuh migrasi `0143`. Semua API baru opsional; host yang tidak memakainya tidak perlu mengubah apa pun. Sedikit perubahan tampilan bawaan: kartu "Apa pendapat Anda…" kini punya tombol cepat, kartu feed menampilkan pratinjau komentar teratas, dan kolom composer post mengikuti `typography.body`.
+
+* **Sumber feed baru:** `FeedScope.stocks(codes)` (gabungan watchlist, tanpa duplikat), `FeedScope.official()` (akun resmi/riset), dan `FeedScope.forYou()` (rekomendasi: suka + komentar dengan bobot akun dan akun yang diikuti, meluruh menurut umur; kembali ke Terbaru bila belum ada peringkat). Host yang melakukan `switch` lengkap pada `FeedScope` perlu menambah tiga kasus ini.
+* **Urutan dan filter feed:** `CommunityFeedList(sort: CommunityFeedSort.top, mediaOnly: true)` untuk tab "Terbaru / Teratas / Grafik & media", juga di `CommunityStreamFeed`. Repository: `FeedQueryRepository.queryFeed` (diimplementasikan `FeedRepositoryImpl`). Di server lama urutan Teratas diabaikan, Untuk Anda menjadi Terbaru, dan media disaring di aplikasi.
+* **Akun untuk diikuti:** `CommunitySuggestedUsers` dengan builder `suggestedUser` dan `suggestedFollowButton`; `SuggestedUsersRepository.suggestedUsers({limit})` → `SuggestedUser` (`user`, `mutualCount`, `followerCount`, `isOfficial`). Diurutkan dari teman yang mengikuti, akun resmi, lalu penulis aktif; tanpa diri sendiri, akun yang sudah diikuti, diblokir, di-mute, staf, tamu, atau yang di-ban.
+* **Mood pasar:** `CommunityMarketSentiment` dengan builder `marketSentiment`; `TrendingInsightsRepository.marketSentiment({window})` → `SentimentBreakdown` (termasuk `posts`). Fungsi `marketMood(breakdown)` menentukan cenderung bullish/bearish/berimbang.
+* **Statistik saham watchlist:** `TrendingInsightsRepository.stockStats(codes)` → `Map<String, StockStats>` (`postsToday` sejak 00.00 WIB, `bullishPct`), plus `CommunityStockStatsBuilder` yang memuat ulang tiap 5 menit. Teks `postsToday` dan `bullishShare` tersedia di lokalisasi.
+* **Pratinjau komentar di kartu feed:** `Post.topComment` (komentar tingkat atas dengan suka + balasan terbanyak), `CommunityPostDetails.topComment` dan `onOpenComments`, builder `topComment`.
+* **Composer:** `showCommunityComposer` dan `CommunityComposePost` menerima `initialSentiment`, `initialAction` (`CommunityComposerAction.image` / `.poll` / `.cashtag`), dan `hintText`. `CommunityComposePromptCard` kini publik, dengan tombol Bullish/Bearish/Gambar/Polling/Saham (`quickActions`, `onComposeWith`, parameter `showQuickActions` dan `onPosted`).
+* **Gaya kolom composer:** ukuran hint 17 px yang terkunci dihapus; teks dan hint mengikuti `typography.body`. Builder baru `composeField` (`CommunityComposeFieldDetails`, dengan `buildField(textStyle:, hintStyle:, decoration:)`) untuk membungkus atau mengganti gaya kolom tanpa kehilangan saran `$KODE`/`@username`.
+* Repost ditunda ke rilis berikutnya.
+
 ## 1.13.0
 
 Server: urutan komentar "Disarankan/Terbaru" butuh migrasi `0142`. Di server lama komentar inline tetap jalan dari yang terlama dan pilihan urutan disembunyikan. Tidak ada perubahan yang wajib diikuti host; semua parameter baru opsional dan perilaku bawaan tetap sama.
