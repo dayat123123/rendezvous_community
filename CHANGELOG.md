@@ -1,3 +1,9 @@
+## 1.16.1
+
+Tidak butuh migrasi server. Perubahan tampilan saja.
+
+* **Pemilih reaksi chat lebih jelas dan ringkas:** emoji di menu reaksi hover (desktop/web) sebelumnya tampil pudar karena dibungkus item menu nonaktif; kini tampil dengan warna penuh dan memilih emoji langsung menutup menu lalu mengirim reaksi. Ukuran pemilih (menu hover dan lembar aksi pesan) diperkecil: emoji 20 px di sel 36 px (sebelumnya 24 px di sel 48 px).
+
 ## 1.16.0
 
 Server: aturan "akun resmi tidak menerima DM" butuh migrasi `0144` (kode error `official_no_dm`). Di server lama perilaku tampilan sudah berlaku, tetapi server belum menolak pesan. Akun yang hanya terverifikasi (`isVerified`) tidak terpengaruh.

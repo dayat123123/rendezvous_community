@@ -644,17 +644,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
                       icon: const Icon(Icons.add_reaction_outlined),
                       onSelected: d.onReact,
                       itemBuilder: (_) => [
-                        PopupMenuItem<String>(
-                          enabled: false,
-                          child: ReactionPicker(
-                            choices: d.reactionChoices,
-                            selected: myReaction(d.reactions),
-                            onSelected: (emoji) {
-                              Navigator.pop(context);
-                              d.onReact!(emoji);
-                            },
-                          ),
-                        ),
+                        _ReactionMenuEntry(choices: d.reactionChoices, selected: myReaction(d.reactions)),
                       ],
                     ),
                   if (d.onReply != null)
@@ -850,6 +840,36 @@ class ReactionPicker extends StatelessWidget {
   }
 }
 
+class _ReactionMenuEntry extends PopupMenuEntry<String> {
+  const _ReactionMenuEntry({required this.choices, this.selected});
+
+  final List<String> choices;
+  final String? selected;
+
+  @override
+  double get height => _reactionCellSize;
+
+  @override
+  bool represents(String? value) => false;
+
+  @override
+  State<_ReactionMenuEntry> createState() => _ReactionMenuEntryState();
+}
+
+class _ReactionMenuEntryState extends State<_ReactionMenuEntry> {
+  @override
+  Widget build(BuildContext context) => Padding(
+    padding: EdgeInsets.symmetric(horizontal: CommunityStyle.of(context).spacing.sm),
+    child: ReactionPicker(
+      choices: widget.choices,
+      selected: widget.selected,
+      onSelected: (emoji) => Navigator.pop(context, emoji),
+    ),
+  );
+}
+
+const _reactionCellSize = 36.0;
+
 class _DefaultReactionPicker extends StatelessWidget {
   const _DefaultReactionPicker({required this.details});
 
@@ -859,7 +879,7 @@ class _DefaultReactionPicker extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = CommunityStyle.of(context);
     return Wrap(
-      spacing: style.spacing.xs,
+      spacing: style.spacing.xxs,
       alignment: WrapAlignment.center,
       children: [
         for (final emoji in details.choices)
@@ -867,10 +887,10 @@ class _DefaultReactionPicker extends StatelessWidget {
             button: true,
             selected: emoji == details.selected,
             child: InkResponse(
-              radius: style.minTouchTarget / 2,
+              radius: _reactionCellSize / 2,
               onTap: () => details.onSelected(emoji),
               child: SizedBox.square(
-                dimension: style.minTouchTarget,
+                dimension: _reactionCellSize,
                 child: DecoratedBox(
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
@@ -879,7 +899,9 @@ class _DefaultReactionPicker extends StatelessWidget {
                         ? Border.all(color: style.accent.withValues(alpha: 0.4), width: style.borderWidth)
                         : null,
                   ),
-                  child: Center(child: Text(emoji, style: const TextStyle(fontSize: 24))),
+                  child: Center(
+                    child: Text(emoji, style: TextStyle(fontSize: 20, height: 1, color: style.textPrimary)),
+                  ),
                 ),
               ),
             ),
