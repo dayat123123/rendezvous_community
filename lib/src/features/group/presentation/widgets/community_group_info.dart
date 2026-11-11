@@ -12,6 +12,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
+import 'package:rendezvous_community/src/features/group/domain/entities/group_event.dart';
 import 'package:rendezvous_community/src/features/group/presentation/cubit/group_info_cubit.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
@@ -85,15 +86,21 @@ class _GroupInfoView extends StatelessWidget {
               if (state.isAdmin) ...[
                 const CommunityDivider(),
                 _SectionTitle(l10n.groupSettings),
-                SwitchListTile(
-                  title: Text(l10n.groupOnlyAdminsSend, style: style.typography.body),
-                  value: room.onlyAdminsSend,
-                  onChanged: cubit.setOnlyAdminsSend,
+                _GroupSettingTile(
+                  details: CommunityGroupSettingDetails(
+                    kind: GroupSetting.onlyAdminsSend,
+                    title: l10n.groupOnlyAdminsSend,
+                    value: room.onlyAdminsSend,
+                    onChanged: cubit.setOnlyAdminsSend,
+                  ),
                 ),
-                SwitchListTile(
-                  title: Text(l10n.groupOnlyAdminsEdit, style: style.typography.body),
-                  value: room.onlyAdminsEdit,
-                  onChanged: cubit.setOnlyAdminsEdit,
+                _GroupSettingTile(
+                  details: CommunityGroupSettingDetails(
+                    kind: GroupSetting.onlyAdminsEdit,
+                    title: l10n.groupOnlyAdminsEdit,
+                    value: room.onlyAdminsEdit,
+                    onChanged: cubit.setOnlyAdminsEdit,
+                  ),
                 ),
               ],
               const CommunityDivider(),
@@ -127,17 +134,37 @@ class _GroupInfoView extends StatelessWidget {
 
   Future<void> _addMembers(BuildContext context, GroupInfoState state) async {
     final cubit = context.read<GroupInfoCubit>();
+    final deps = CommunityScope.of(context);
+    final carry = carryCommunityBuilders(context);
     final ids = await showDialog<List<String>>(
       context: context,
-      builder: (_) => carryCommunityBuilders(context)(
+      builder: (_) => carry(
         CommunityScope(
-          dependencies: CommunityScope.of(context),
+          dependencies: deps,
           child: _AddMembersDialog(existing: {for (final m in state.members) m.user.id}),
         ),
       ),
     );
     if (ids != null && ids.isNotEmpty) await cubit.addMembers(ids);
   }
+}
+
+class _GroupSettingTile extends StatelessWidget {
+  const _GroupSettingTile({required this.details});
+
+  final CommunityGroupSettingDetails details;
+
+  @override
+  Widget build(BuildContext context) => buildChatPart(
+    CommunityChatBuilders.of(context).groupSetting,
+    context,
+    details,
+    SwitchListTile(
+      title: Text(details.title, style: CommunityStyle.of(context).typography.body),
+      value: details.value,
+      onChanged: details.onChanged,
+    ),
+  );
 }
 
 class _SectionTitle extends StatelessWidget {
@@ -233,9 +260,16 @@ class _GroupHeader extends StatelessWidget {
 
   Future<void> _editInfo(BuildContext context, ChatRoom room) async {
     final cubit = context.read<GroupInfoCubit>();
+    final deps = CommunityScope.of(context);
+    final carry = carryCommunityBuilders(context);
     final result = await showDialog<(String, String)>(
       context: context,
-      builder: (_) => _EditInfoDialog(name: room.name ?? '', description: room.description ?? ''),
+      builder: (_) => carry(
+        CommunityScope(
+          dependencies: deps,
+          child: _EditInfoDialog(name: room.name ?? '', description: room.description ?? ''),
+        ),
+      ),
     );
     if (result != null) await cubit.updateInfo(name: result.$1, description: result.$2);
   }
@@ -254,6 +288,13 @@ class _EditInfoDialog extends StatefulWidget {
 class _EditInfoDialogState extends State<_EditInfoDialog> {
   late final _name = TextEditingController(text: widget.name);
   late final _description = TextEditingController(text: widget.description);
+  late bool _canSave = _name.text.trim().isNotEmpty;
+
+  @override
+  void initState() {
+    super.initState();
+    _name.addListener(_onNameChanged);
+  }
 
   @override
   void dispose() {
@@ -262,47 +303,77 @@ class _EditInfoDialogState extends State<_EditInfoDialog> {
     super.dispose();
   }
 
+  void _onNameChanged() {
+    final canSave = _name.text.trim().isNotEmpty;
+    if (canSave != _canSave) setState(() => _canSave = canSave);
+  }
+
+  void _save() => Navigator.pop(context, (_name.text.trim(), _description.text.trim()));
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
+    final details = CommunityGroupEditDetails(
+      nameController: _name,
+      descriptionController: _description,
+      nameMaxLength: 80,
+      descriptionMaxLength: 500,
+      title: l10n.groupEditInfo,
+      nameLabel: l10n.groupName,
+      descriptionLabel: l10n.groupDescription,
+      saveLabel: l10n.save,
+      cancelLabel: l10n.cancel,
+      onCancel: () => Navigator.pop(context),
+      onSave: _canSave ? _save : null,
+    );
+    return buildChatPart(
+      CommunityChatBuilders.of(context).groupEditDialog,
+      context,
+      details,
+      _DefaultEditInfoDialog(details: details),
+    );
+  }
+}
+
+class _DefaultEditInfoDialog extends StatelessWidget {
+  const _DefaultEditInfoDialog({required this.details});
+
+  final CommunityGroupEditDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
     final style = CommunityStyle.of(context);
     return AlertDialog(
       backgroundColor: style.surface,
-      title: Text(l10n.groupEditInfo, style: style.typography.title),
+      title: Text(d.title, style: style.typography.title),
       content: SizedBox(
         width: 420,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              controller: _name,
-              maxLength: 80,
-              decoration: InputDecoration(labelText: l10n.groupName),
-              onChanged: (_) => setState(() {}),
+              controller: d.nameController,
+              maxLength: d.nameMaxLength,
+              decoration: InputDecoration(labelText: d.nameLabel),
             ),
             TextField(
-              controller: _description,
-              maxLength: 500,
+              controller: d.descriptionController,
+              maxLength: d.descriptionMaxLength,
               minLines: 2,
               maxLines: 5,
-              decoration: InputDecoration(labelText: l10n.groupDescription),
+              decoration: InputDecoration(labelText: d.descriptionLabel),
             ),
           ],
         ),
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: d.onCancel,
           style: TextButton.styleFrom(foregroundColor: style.textSecondary),
-          child: Text(l10n.cancel),
+          child: Text(d.cancelLabel),
         ),
-        FilledButton(
-          style: style.primaryButtonStyle(),
-          onPressed: _name.text.trim().isEmpty
-              ? null
-              : () => Navigator.pop(context, (_name.text.trim(), _description.text.trim())),
-          child: Text(l10n.save),
-        ),
+        FilledButton(style: style.primaryButtonStyle(), onPressed: d.onSave, child: Text(d.saveLabel)),
       ],
     );
   }
@@ -341,17 +412,35 @@ class _MemberTile extends StatelessWidget {
     final cubit = context.read<GroupInfoCubit>();
     final l10n = context.communityL10n;
     final user = member.user;
-    final actions = <(IconData, String, Future<void> Function())>[
-      (Icons.person_outline, l10n.groupViewProfile, () async => CommunityNavigator.openUser(context, user)),
+    final deps = CommunityScope.of(context);
+    final carry = carryCommunityBuilders(context);
+    final actions = <_MemberAction>[
+      (
+        kind: CommunityGroupMemberActionKind.viewProfile,
+        label: l10n.groupViewProfile,
+        destructive: false,
+        run: () async => CommunityNavigator.openUser(context, user),
+      ),
       if (state.canPromote(member))
-        (Icons.admin_panel_settings_outlined, l10n.groupMakeAdmin, () => cubit.setAdmin(user.id, admin: true)),
+        (
+          kind: CommunityGroupMemberActionKind.makeAdmin,
+          label: l10n.groupMakeAdmin,
+          destructive: false,
+          run: () => cubit.setAdmin(user.id, admin: true),
+        ),
       if (state.canDemote(member))
-        (Icons.remove_moderator_outlined, l10n.groupDismissAdmin, () => cubit.setAdmin(user.id, admin: false)),
+        (
+          kind: CommunityGroupMemberActionKind.dismissAdmin,
+          label: l10n.groupDismissAdmin,
+          destructive: false,
+          run: () => cubit.setAdmin(user.id, admin: false),
+        ),
       if (state.canTransfer(member))
         (
-          Icons.workspace_premium_outlined,
-          l10n.groupMakeOwner,
-          () async {
+          kind: CommunityGroupMemberActionKind.makeOwner,
+          label: l10n.groupMakeOwner,
+          destructive: true,
+          run: () async {
             if (await confirmCommunityAction(
               context,
               l10n.groupMakeOwnerConfirm(user.name),
@@ -363,9 +452,10 @@ class _MemberTile extends StatelessWidget {
         ),
       if (state.canRemove(member))
         (
-          Icons.person_remove_outlined,
-          l10n.groupRemoveMember,
-          () async {
+          kind: CommunityGroupMemberActionKind.remove,
+          label: l10n.groupRemoveMember,
+          destructive: true,
+          run: () async {
             if (await confirmCommunityAction(
               context,
               l10n.groupRemoveConfirm(user.name),
@@ -378,23 +468,86 @@ class _MemberTile extends StatelessWidget {
     ];
     final chosen = await showModalBottomSheet<Future<void> Function()>(
       context: context,
-      builder: (sheet) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: CommunityAvatar(user: user, radius: 18),
-              title: Text(user.name, style: CommunityStyle.of(sheet).typography.author),
-              subtitle: Text('@${user.username}', style: CommunityStyle.of(sheet).typography.meta),
-            ),
-            const CommunityDivider(),
-            for (final (icon, label, action) in actions)
-              ListTile(leading: Icon(icon), title: Text(label), onTap: () => Navigator.pop(sheet, action)),
-          ],
+      builder: (_) => carry(
+        CommunityScope(
+          dependencies: deps,
+          child: _MemberActionsSheet(member: member, actions: actions),
         ),
       ),
     );
     if (chosen != null && context.mounted) await chosen();
+  }
+}
+
+typedef _MemberAction = ({
+  CommunityGroupMemberActionKind kind,
+  String label,
+  bool destructive,
+  Future<void> Function() run,
+});
+
+class _MemberActionsSheet extends StatelessWidget {
+  const _MemberActionsSheet({required this.member, required this.actions});
+
+  final RoomMember member;
+  final List<_MemberAction> actions;
+
+  @override
+  Widget build(BuildContext context) {
+    final details = CommunityGroupMemberActionsDetails(
+      member: member,
+      actions: [
+        for (final action in actions)
+          CommunityGroupMemberAction(
+            kind: action.kind,
+            label: action.label,
+            destructive: action.destructive,
+            onSelected: () => Navigator.pop(context, action.run),
+          ),
+      ],
+      onDismiss: () => Navigator.pop(context),
+    );
+    return buildChatPart(
+      CommunityChatBuilders.of(context).groupMemberActions,
+      context,
+      details,
+      _DefaultMemberActions(details: details),
+    );
+  }
+}
+
+class _DefaultMemberActions extends StatelessWidget {
+  const _DefaultMemberActions({required this.details});
+
+  final CommunityGroupMemberActionsDetails details;
+
+  static IconData _icon(CommunityGroupMemberActionKind kind) => switch (kind) {
+    CommunityGroupMemberActionKind.viewProfile => Icons.person_outline,
+    CommunityGroupMemberActionKind.makeAdmin => Icons.admin_panel_settings_outlined,
+    CommunityGroupMemberActionKind.dismissAdmin => Icons.remove_moderator_outlined,
+    CommunityGroupMemberActionKind.makeOwner => Icons.workspace_premium_outlined,
+    CommunityGroupMemberActionKind.remove => Icons.person_remove_outlined,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final user = details.member.user;
+    return SafeArea(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ListTile(
+            leading: CommunityAvatar(user: user, radius: 18),
+            title: Text(user.name, style: style.typography.author),
+            subtitle: Text('@${user.username}', style: style.typography.meta),
+          ),
+          const CommunityDivider(),
+          for (final action in details.actions)
+            ListTile(leading: Icon(_icon(action.kind)), title: Text(action.label), onTap: action.onSelected),
+        ],
+      ),
+    );
   }
 }
 
@@ -434,6 +587,7 @@ class _AddMembersDialog extends StatefulWidget {
 }
 
 class _AddMembersDialogState extends State<_AddMembersDialog> {
+  final _query = TextEditingController();
   final _selected = <String, UserSummary>{};
   List<UserSummary> _results = const [];
   Timer? _debounce;
@@ -441,6 +595,7 @@ class _AddMembersDialogState extends State<_AddMembersDialog> {
   @override
   void dispose() {
     _debounce?.cancel();
+    _query.dispose();
     super.dispose();
   }
 
@@ -464,16 +619,47 @@ class _AddMembersDialogState extends State<_AddMembersDialog> {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
+    final details = CommunityGroupAddMembersDetails(
+      queryController: _query,
+      results: _results,
+      selected: List.unmodifiable(_selected.values),
+      onQueryChanged: _search,
+      onToggle: (u, v) => setState(() => v ? _selected[u.id] = u : _selected.remove(u.id)),
+      title: l10n.groupAddMembers,
+      addLabel: l10n.groupAdd,
+      cancelLabel: l10n.cancel,
+      onCancel: () => Navigator.pop(context),
+      onAdd: _selected.isEmpty ? null : () => Navigator.pop(context, _selected.keys.toList()),
+    );
+    return buildChatPart(
+      CommunityChatBuilders.of(context).groupAddMembersDialog,
+      context,
+      details,
+      _DefaultAddMembersDialog(details: details),
+    );
+  }
+}
+
+class _DefaultAddMembersDialog extends StatelessWidget {
+  const _DefaultAddMembersDialog({required this.details});
+
+  final CommunityGroupAddMembersDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final l10n = context.communityL10n;
     final style = CommunityStyle.of(context);
     return AlertDialog(
       backgroundColor: style.surface,
-      title: Text(l10n.groupAddMembers, style: style.typography.title),
+      title: Text(d.title, style: style.typography.title),
       content: SizedBox(
         width: 420,
         height: 420,
         child: Column(
           children: [
             TextField(
+              controller: d.queryController,
               autofocus: true,
               decoration: InputDecoration(
                 prefixIcon: Icon(Icons.search, color: style.textSecondary),
@@ -483,20 +669,20 @@ class _AddMembersDialogState extends State<_AddMembersDialog> {
                 border: OutlineInputBorder(borderRadius: style.radii.pillRadius, borderSide: BorderSide.none),
                 isDense: true,
               ),
-              onChanged: _search,
+              onChanged: d.onQueryChanged,
             ),
             SizedBox(height: style.spacing.xs),
             Expanded(
               child: ListView(
                 children: [
-                  for (final u in {..._selected.values, ..._results})
+                  for (final u in {...d.selected, ...d.results})
                     CheckboxListTile(
-                      value: _selected.containsKey(u.id),
+                      value: d.isSelected(u),
                       contentPadding: EdgeInsets.zero,
                       secondary: CommunityAvatar(user: u, radius: 16),
                       title: Text(u.name, style: style.typography.author),
                       subtitle: Text('@${u.username}', style: style.typography.meta),
-                      onChanged: (v) => setState(() => (v ?? false) ? _selected[u.id] = u : _selected.remove(u.id)),
+                      onChanged: (v) => d.onToggle(u, v ?? false),
                     ),
                 ],
               ),
@@ -506,15 +692,11 @@ class _AddMembersDialogState extends State<_AddMembersDialog> {
       ),
       actions: [
         TextButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: d.onCancel,
           style: TextButton.styleFrom(foregroundColor: style.textSecondary),
-          child: Text(l10n.cancel),
+          child: Text(d.cancelLabel),
         ),
-        FilledButton(
-          style: style.primaryButtonStyle(),
-          onPressed: _selected.isEmpty ? null : () => Navigator.pop(context, _selected.keys.toList()),
-          child: Text(l10n.groupAdd),
-        ),
+        FilledButton(style: style.primaryButtonStyle(), onPressed: d.onAdd, child: Text(d.addLabel)),
       ],
     );
   }

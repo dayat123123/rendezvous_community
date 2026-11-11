@@ -1,3 +1,13 @@
+## 1.18.0
+
+Tidak butuh migrasi server. Tampilan bawaan tidak berubah bila slot baru tidak diisi.
+
+* **Builder halaman Info grup:** slot baru di `CommunityChatBuilders`, semuanya ikut terbawa ke dialog dan bottom sheet:
+  * `groupEditDialog` (`CommunityGroupEditDetails`) mengganti dialog ubah info grup.
+  * `groupAddMembersDialog` (`CommunityGroupAddMembersDetails`) mengganti dialog tambah anggota. Saringan anggota yang sudah ada dan akun resmi tetap di library.
+  * `groupMemberActions` (`CommunityGroupMemberActionsDetails`, `CommunityGroupMemberAction`, `CommunityGroupMemberActionKind`) mengganti isi bottom sheet aksi anggota. Konfirmasi aksi tetap di library.
+  * `groupSetting` (`CommunityGroupSettingDetails`) mengganti sakelar pengaturan grup.
+
 ## 1.17.0
 
 Server: butuh migrasi `0146` (RPC kelola grup, kolom info grup, pesan sistem `group_event`). Di server lama halaman Info grup terbuka, tetapi aksinya gagal.

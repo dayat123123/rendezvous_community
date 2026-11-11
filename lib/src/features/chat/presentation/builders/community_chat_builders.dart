@@ -42,6 +42,10 @@ class CommunityChatBuilders {
     this.groupEvent,
     this.groupNotice,
     this.groupMember,
+    this.groupEditDialog,
+    this.groupAddMembersDialog,
+    this.groupMemberActions,
+    this.groupSetting,
   });
 
   final CommunityPartBuilder<CommunityMessageDetails>? message;
@@ -82,6 +86,10 @@ class CommunityChatBuilders {
   final CommunityPartBuilder<CommunityGroupEventDetails>? groupEvent;
   final CommunityPartBuilder<CommunityGroupNoticeDetails>? groupNotice;
   final CommunityPartBuilder<CommunityGroupMemberDetails>? groupMember;
+  final CommunityPartBuilder<CommunityGroupEditDetails>? groupEditDialog;
+  final CommunityPartBuilder<CommunityGroupAddMembersDetails>? groupAddMembersDialog;
+  final CommunityPartBuilder<CommunityGroupMemberActionsDetails>? groupMemberActions;
+  final CommunityPartBuilder<CommunityGroupSettingDetails>? groupSetting;
 
   static CommunityChatBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -131,6 +139,10 @@ class CommunityChatBuilders {
       groupEvent: other.groupEvent ?? groupEvent,
       groupNotice: other.groupNotice ?? groupNotice,
       groupMember: other.groupMember ?? groupMember,
+      groupEditDialog: other.groupEditDialog ?? groupEditDialog,
+      groupAddMembersDialog: other.groupAddMembersDialog ?? groupAddMembersDialog,
+      groupMemberActions: other.groupMemberActions ?? groupMemberActions,
+      groupSetting: other.groupSetting ?? groupSetting,
     );
   }
 }

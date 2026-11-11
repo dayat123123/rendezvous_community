@@ -230,6 +230,104 @@ class CommunityGroupMemberDetails {
   final VoidCallback? onTap;
 }
 
+class CommunityGroupEditDetails {
+  const CommunityGroupEditDetails({
+    required this.nameController,
+    required this.descriptionController,
+    required this.nameMaxLength,
+    required this.descriptionMaxLength,
+    required this.title,
+    required this.nameLabel,
+    required this.descriptionLabel,
+    required this.saveLabel,
+    required this.cancelLabel,
+    required this.onCancel,
+    this.onSave,
+  });
+
+  final TextEditingController nameController;
+  final TextEditingController descriptionController;
+  final int nameMaxLength;
+  final int descriptionMaxLength;
+  final String title;
+  final String nameLabel;
+  final String descriptionLabel;
+  final String saveLabel;
+  final String cancelLabel;
+  final VoidCallback onCancel;
+  final VoidCallback? onSave;
+
+  bool get canSave => onSave != null;
+}
+
+class CommunityGroupAddMembersDetails {
+  const CommunityGroupAddMembersDetails({
+    required this.queryController,
+    required this.results,
+    required this.selected,
+    required this.onQueryChanged,
+    required this.onToggle,
+    required this.title,
+    required this.addLabel,
+    required this.cancelLabel,
+    required this.onCancel,
+    this.onAdd,
+  });
+
+  final TextEditingController queryController;
+  final List<UserSummary> results;
+  final List<UserSummary> selected;
+  final ValueChanged<String> onQueryChanged;
+  final void Function(UserSummary user, bool selected) onToggle;
+  final String title;
+  final String addLabel;
+  final String cancelLabel;
+  final VoidCallback onCancel;
+  final VoidCallback? onAdd;
+
+  bool get canAdd => onAdd != null;
+
+  bool isSelected(UserSummary user) => selected.any((u) => u.id == user.id);
+}
+
+enum CommunityGroupMemberActionKind { viewProfile, makeAdmin, dismissAdmin, makeOwner, remove }
+
+class CommunityGroupMemberAction {
+  const CommunityGroupMemberAction({
+    required this.kind,
+    required this.label,
+    required this.onSelected,
+    this.destructive = false,
+  });
+
+  final CommunityGroupMemberActionKind kind;
+  final String label;
+  final bool destructive;
+  final VoidCallback onSelected;
+}
+
+class CommunityGroupMemberActionsDetails {
+  const CommunityGroupMemberActionsDetails({required this.member, required this.actions, required this.onDismiss});
+
+  final RoomMember member;
+  final List<CommunityGroupMemberAction> actions;
+  final VoidCallback onDismiss;
+}
+
+class CommunityGroupSettingDetails {
+  const CommunityGroupSettingDetails({
+    required this.kind,
+    required this.title,
+    required this.value,
+    required this.onChanged,
+  });
+
+  final GroupSetting kind;
+  final String title;
+  final bool value;
+  final ValueChanged<bool> onChanged;
+}
+
 class CommunityConnectionDetails {
   const CommunityConnectionDetails({required this.status, required this.label, this.offline = false});
 
