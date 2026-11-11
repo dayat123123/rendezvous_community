@@ -518,7 +518,7 @@ class PostCardHeader extends StatelessWidget {
     final l10n = context.communityL10n;
     final d = details;
     final post = d.post;
-    final meta = ['@${post.author.username}', d.timeLabel, if (d.edited) l10n.edited].join(' · ');
+    final meta = [post.author.handle, d.timeLabel, if (d.edited) l10n.edited].join(' · ');
     return Row(
       children: [
         Expanded(

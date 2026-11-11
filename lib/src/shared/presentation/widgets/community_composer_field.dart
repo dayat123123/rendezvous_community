@@ -199,7 +199,7 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
     if (token == null) return;
     final insert = switch (suggestion) {
       _StockSuggestion(:final stock) => '\$${stock.code} ',
-      _UserSuggestion(:final user) => '@${user.username} ',
+      _UserSuggestion(:final user) => '${user.handle} ',
     };
     final text = widget.controller.text;
     final updated = text.replaceRange(token.start, token.end, insert);
@@ -243,7 +243,7 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
                     },
                     subtitle: switch (s) {
                       _StockSuggestion(:final stock) => stock.name,
-                      _UserSuggestion(:final user) => '@${user.username}',
+                      _UserSuggestion(:final user) => user.handle,
                     },
                     leading: switch (s) {
                       _StockSuggestion() => Icon(Icons.show_chart, color: style.textSecondary),

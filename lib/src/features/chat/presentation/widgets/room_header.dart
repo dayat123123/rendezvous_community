@@ -9,6 +9,7 @@ import 'package:rendezvous_community/src/features/chat/presentation/builders/com
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/typing_text.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
@@ -42,7 +43,7 @@ class RoomHeader extends StatelessWidget {
               ? typingText(l10n, state.typing.values, direct: room.type == RoomType.direct, others: state.typingOthers)
               : switch (room.type) {
                   RoomType.direct when state.otherOnline => l10n.online,
-                  RoomType.direct => '@${otherUser?.username ?? ''}',
+                  RoomType.direct => communityHandle(otherUser?.username ?? ''),
                   RoomType.group => l10n.members(state.members.length),
                   RoomType.stock => '${room.name ?? ''} · ${l10n.members(state.members.length)}',
                   RoomType.support => l10n.supportOfficialChannel,

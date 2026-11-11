@@ -134,9 +134,14 @@ class _ProfileHeader extends StatelessWidget {
                 },
           onUnblock: profile.isMe || !profile.isBlocked ? null : cubit.unblock,
           onOpenFollowers: canOpenLists
-              ? () => CommunityNavigator.openFollowList(context, user, FollowListKind.followers)
+              ? () => CommunityNavigator.openFollowList(
+                  context,
+                  user,
+                  FollowListKind.followers,
+                  kinds: official ? const [FollowListKind.followers] : FollowListKind.values,
+                )
               : null,
-          onOpenFollowing: canOpenLists
+          onOpenFollowing: canOpenLists && !official
               ? () => CommunityNavigator.openFollowList(context, user, FollowListKind.following)
               : null,
         );
@@ -206,7 +211,7 @@ class _ProfileHeader extends StatelessWidget {
                       runSpacing: spacing.xs,
                       crossAxisAlignment: WrapCrossAlignment.center,
                       children: [
-                        Text('@${user.username}', style: style.typography.meta),
+                        Text(user.handle, style: style.typography.meta),
                         if (profile.followsMe)
                           DecoratedBox(
                             decoration: BoxDecoration(color: style.pill, borderRadius: style.radii.badgeRadius),
@@ -354,12 +359,13 @@ class _ProfileStats extends StatelessWidget {
           semanticLabel: details.followersLabel,
           onTap: details.onOpenFollowers,
         ),
-        _ProfileStat(
-          count: profile.followingCount,
-          label: l10n.followingLabel,
-          semanticLabel: details.followingLabel,
-          onTap: details.onOpenFollowing,
-        ),
+        if (!details.isOfficial)
+          _ProfileStat(
+            count: profile.followingCount,
+            label: l10n.followingLabel,
+            semanticLabel: details.followingLabel,
+            onTap: details.onOpenFollowing,
+          ),
       ],
     );
   }

@@ -434,7 +434,7 @@ class _UserTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final details = CommunityUserResultDetails(
       result: result,
-      subtitle: '@${result.user.username} · ${context.communityL10n.followers(result.followerCount)}',
+      subtitle: '${result.user.handle} · ${context.communityL10n.followers(result.followerCount)}',
       onOpen: () => CommunityNavigator.openUser(context, result.user),
     );
     final style = CommunityStyle.of(context);

@@ -21,6 +21,7 @@ class _Profiles extends Fake implements ProfileRepository, FollowListRepository 
   Object? listError;
   Object? followError;
   bool blocked = false;
+  bool official = false;
 
   @override
   Future<Paged<FollowListEntry>> followList(
@@ -52,7 +53,7 @@ class _Profiles extends Fake implements ProfileRepository, FollowListRepository 
 
   @override
   Future<UserProfile?> getProfile({String? userId, String? username}) async => UserProfile(
-    user: alice,
+    user: alice.copyWith(isOfficial: official),
     followerCount: 3,
     followingCount: 2,
     postCount: 0,
@@ -359,6 +360,88 @@ void main() {
       expect(dodi.followsMe, isTrue);
       expect(dodi.onToggleFollow, isNotNull);
       expect(seen.firstWhere((d) => d.isMe).onToggleFollow, isNull);
+    });
+  });
+
+  group('kinds', () {
+    testWidgets('a single kind shows only that list without tabs', (tester) async {
+      final profiles = _Profiles()..pages['followers:u-a:-'] = Paged([_entry(_cici)]);
+      await _pump(
+        tester,
+        const CommunityFollowList(userId: 'u-a', kinds: [FollowListKind.followers]),
+        profiles: profiles,
+      );
+
+      expect(find.byType(TabBar), findsNothing);
+      expect(find.byType(Tab), findsNothing);
+      expect(find.text('Cici'), findsOneWidget);
+      expect(profiles.calls, ['followers:u-a:-']);
+    });
+
+    testWidgets('falls back to the first allowed kind when initialKind is not allowed', (tester) async {
+      final profiles = _Profiles()..pages['followers:u-a:-'] = Paged([_entry(_cici)]);
+      await _pump(
+        tester,
+        const CommunityFollowList(
+          userId: 'u-a',
+          kinds: [FollowListKind.followers],
+          initialKind: FollowListKind.following,
+        ),
+        profiles: profiles,
+      );
+
+      expect(profiles.calls, ['followers:u-a:-']);
+      expect(find.text('Cici'), findsOneWidget);
+    });
+
+    testWidgets('the default still shows both tabs', (tester) async {
+      await _pump(tester, const CommunityFollowList(userId: 'u-a'), profiles: _Profiles());
+
+      expect(find.byType(Tab), findsNWidgets(2));
+    });
+  });
+
+  group('official accounts', () {
+    testWidgets('the header hides the following count', (tester) async {
+      await _pump(tester, const CommunityUserProfile(userId: 'u-a'), profiles: _Profiles()..official = true);
+
+      expect(find.text('Pengikut'), findsOneWidget);
+      expect(find.text('Mengikuti'), findsNothing);
+    });
+
+    testWidgets('the follower count opens a followers-only list', (tester) async {
+      final profiles = _Profiles()
+        ..official = true
+        ..pages['followers:u-a:-'] = Paged([_entry(_cici)]);
+      await _pump(tester, const CommunityUserProfile(userId: 'u-a'), profiles: profiles);
+
+      await tester.tap(find.text('Pengikut'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CommunityFollowList), findsOneWidget);
+      expect(find.byType(Tab), findsNothing);
+      expect(find.text('Cici'), findsOneWidget);
+      expect(profiles.calls, ['followers:u-a:-']);
+    });
+
+    testWidgets('the details offer no following list', (tester) async {
+      CommunityProfileDetails? seen;
+      await _pump(
+        tester,
+        CommunityUserProfile(
+          userId: 'u-a',
+          builders: CommunityProfileBuilders(
+            header: (context, d, fallback) {
+              seen = d;
+              return fallback;
+            },
+          ),
+        ),
+        profiles: _Profiles()..official = true,
+      );
+
+      expect(seen!.onOpenFollowers, isNotNull);
+      expect(seen!.onOpenFollowing, isNull);
     });
   });
 

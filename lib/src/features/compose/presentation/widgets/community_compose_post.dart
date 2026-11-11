@@ -605,7 +605,7 @@ class _DefaultComposeAuthor extends StatelessWidget {
             children: [
               CommunityUserName(user: user, showUsername: false),
               SizedBox(height: style.spacing.xxs),
-              Text('@${user.username}', maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.meta),
+              Text(user.handle, maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.meta),
             ],
           ),
         ),

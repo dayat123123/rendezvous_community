@@ -80,7 +80,7 @@ class _SocialTextState extends State<SocialText> {
             recognizer: _recognizer(() => CommunityNavigator.openStock(context, code, source: widget.source)),
           ),
           MentionSegment(:final username) => TextSpan(
-            text: segment.text,
+            text: segment.text.toLowerCase(),
             style: link,
             mouseCursor: SystemMouseCursors.click,
             recognizer: _recognizer(() => CommunityNavigator.openUsername(context, username)),

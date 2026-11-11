@@ -33,6 +33,7 @@ import 'package:rendezvous_community/src/features/media/presentation/widgets/vid
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/moderation/presentation/widgets/moderation_actions.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_message_parts.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
@@ -170,7 +171,7 @@ class _MessageBubbleState extends State<MessageBubble> {
       return context.communityL10n.you;
     }
     if (sender != null) return sender.name;
-    return username == null ? null : '@$username';
+    return username == null ? null : communityHandle(username);
   }
 
   VoidCallback? _revealReply(BuildContext context) {

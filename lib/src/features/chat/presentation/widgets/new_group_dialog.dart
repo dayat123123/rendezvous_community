@@ -171,7 +171,7 @@ class _DefaultNewGroupDialog extends StatelessWidget {
                       contentPadding: EdgeInsets.zero,
                       secondary: CommunityAvatar(user: u, radius: 16),
                       title: Text(u.name, style: style.typography.author),
-                      subtitle: Text('@${u.username}', style: style.typography.meta),
+                      subtitle: Text(u.handle, style: style.typography.meta),
                       onChanged: (v) => d.onToggle(u, v ?? false),
                     ),
                 ],

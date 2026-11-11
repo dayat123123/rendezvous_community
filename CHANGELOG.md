@@ -1,3 +1,12 @@
+## 1.22.0
+
+Tidak butuh migrasi server.
+
+* **Mention huruf kecil:** memilih saran akun di `CommunityComposerField` kini menyisipkan `@username` dalam huruf kecil, dan mention di `SocialText` (postingan, komentar, bio) serta gelembung chat ditampilkan dalam huruf kecil. Teks yang tersimpan tidak diubah, dan membuka profil tetap bekerja karena server mencocokkan username tanpa membedakan huruf besar kecil.
+* **Handle @username huruf kecil di semua widget:** profil, kartu postingan, nama pengguna dengan username, hasil pencarian, daftar pengikut, info dan anggota grup, buat grup, header chat langsung, kutipan balasan chat, judul halaman profil dan daftar pengikut, serta saran mention kini menampilkan `@username` dalam huruf kecil. Host bisa memakai `UserSummary.handle` atau `communityHandle(username)` untuk hal yang sama. Data username tidak diubah.
+* **`CommunityFollowList(kinds: ...)`:** menentukan daftar yang ditampilkan. Satu jenis saja, misalnya `[FollowListKind.followers]`, menampilkan daftar itu tanpa tab; `initialKind` di luar `kinds` jatuh ke jenis pertama. `CommunityNavigator.openFollowList` menerima `kinds` yang sama.
+* **Akun resmi:** header profil bawaan tidak menampilkan angka Mengikuti, angka Pengikut membuka daftar pengikut saja, dan `CommunityProfileDetails.onOpenFollowing` bernilai null.
+
 ## 1.21.0
 
 Butuh migrasi server `0148` untuk daftarnya; dengan server lama halaman daftar menampilkan pesan galat dan profil tetap seperti biasa.

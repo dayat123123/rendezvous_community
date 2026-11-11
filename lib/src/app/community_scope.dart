@@ -44,13 +44,18 @@ abstract final class CommunityNavigator {
     if (callback != null) return callback(context, user);
     _push(
       context,
-      '@${user.username}',
+      user.handle,
       CommunityUserProfile(userId: user.id.isEmpty ? null : user.id, username: user.username),
     );
   }
 
-  static void openFollowList(BuildContext context, UserSummary user, FollowListKind kind) {
-    _push<void>(context, '@${user.username}', CommunityFollowList(userId: user.id, initialKind: kind));
+  static void openFollowList(
+    BuildContext context,
+    UserSummary user,
+    FollowListKind kind, {
+    List<FollowListKind> kinds = FollowListKind.values,
+  }) {
+    _push<void>(context, user.handle, CommunityFollowList(userId: user.id, initialKind: kind, kinds: kinds));
   }
 
   static void openUsername(BuildContext context, String username) {

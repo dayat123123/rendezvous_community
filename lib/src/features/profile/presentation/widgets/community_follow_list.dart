@@ -21,11 +21,13 @@ class CommunityFollowList extends StatelessWidget {
     super.key,
     required this.userId,
     this.initialKind = FollowListKind.followers,
+    this.kinds = FollowListKind.values,
     this.builders,
   });
 
   final String userId;
   final FollowListKind initialKind;
+  final List<FollowListKind> kinds;
   final CommunityProfileBuilders? builders;
 
   @override
@@ -35,12 +37,19 @@ class CommunityFollowList extends StatelessWidget {
     final lists = profiles as FollowListRepository;
     final l10n = context.communityL10n;
     final style = CommunityStyle.of(context);
+    final shown = kinds.isEmpty ? FollowListKind.values : kinds.toSet().toList();
+    Widget tab(FollowListKind kind) =>
+        _FollowListTab(key: ValueKey(kind), lists: lists, profiles: profiles, userId: userId, kind: kind);
+    if (shown.length == 1) {
+      return withProfileBuilders(context, builders, ColoredBox(color: style.surface, child: tab(shown.single)));
+    }
+    final initial = shown.indexOf(initialKind);
     return withProfileBuilders(
       context,
       builders,
       DefaultTabController(
-        length: FollowListKind.values.length,
-        initialIndex: initialKind.index,
+        length: shown.length,
+        initialIndex: initial < 0 ? 0 : initial,
         child: ColoredBox(
           color: style.surface,
           child: Column(
@@ -51,18 +60,16 @@ class CommunityFollowList extends StatelessWidget {
                 indicatorColor: style.accent,
                 labelStyle: style.typography.label,
                 tabs: [
-                  Tab(text: l10n.profileStatFollowers),
-                  Tab(text: l10n.followingLabel),
+                  for (final kind in shown)
+                    Tab(
+                      text: switch (kind) {
+                        FollowListKind.followers => l10n.profileStatFollowers,
+                        FollowListKind.following => l10n.followingLabel,
+                      },
+                    ),
                 ],
               ),
-              Expanded(
-                child: TabBarView(
-                  children: [
-                    for (final kind in FollowListKind.values)
-                      _FollowListTab(key: ValueKey(kind), lists: lists, profiles: profiles, userId: userId, kind: kind),
-                  ],
-                ),
-              ),
+              Expanded(child: TabBarView(children: [for (final kind in shown) tab(kind)])),
             ],
           ),
         ),
@@ -221,7 +228,7 @@ class _DefaultFollowListEntry extends StatelessWidget {
                     crossAxisAlignment: WrapCrossAlignment.center,
                     children: [
                       Text(
-                        '@${user.username}',
+                        user.handle,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: style.typography.meta.copyWith(color: style.textSecondary),

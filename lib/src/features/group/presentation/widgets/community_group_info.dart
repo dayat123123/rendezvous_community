@@ -597,7 +597,7 @@ class _DefaultMemberActions extends StatelessWidget {
           ListTile(
             leading: CommunityAvatar(user: user, radius: 18),
             title: Text(user.name, style: style.typography.author),
-            subtitle: Text('@${user.username}', style: style.typography.meta),
+            subtitle: Text(user.handle, style: style.typography.meta),
           ),
           const CommunityDivider(),
           for (final action in details.actions)
@@ -623,7 +623,7 @@ class _DefaultMemberTile extends StatelessWidget {
       child: ListTile(
         leading: CommunityAvatar(user: user, radius: 20),
         title: Text(details.title, style: style.typography.author),
-        subtitle: Text('@${user.username}', style: style.typography.meta),
+        subtitle: Text(user.handle, style: style.typography.meta),
         trailing: role == null
             ? null
             : Container(
@@ -741,7 +741,7 @@ class _DefaultAddMembersDialog extends StatelessWidget {
                       contentPadding: EdgeInsets.zero,
                       secondary: CommunityAvatar(user: u, radius: 16),
                       title: Text(u.name, style: style.typography.author),
-                      subtitle: Text('@${u.username}', style: style.typography.meta),
+                      subtitle: Text(u.handle, style: style.typography.meta),
                       onChanged: (v) => d.onToggle(u, v ?? false),
                     ),
                 ],

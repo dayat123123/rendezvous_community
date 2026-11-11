@@ -38,7 +38,7 @@ class CommunityUserNameDetails {
   bool get verified => user.isVerified;
 
   String? get usernameLabel =>
-      showUsername && user.displayName != null && user.displayName!.isNotEmpty ? '@${user.username}' : null;
+      showUsername && user.displayName != null && user.displayName!.isNotEmpty ? user.handle : null;
 }
 
 class CommunityCardDetails {
