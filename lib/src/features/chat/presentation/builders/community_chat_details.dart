@@ -328,6 +328,64 @@ class CommunityGroupSettingDetails {
   final ValueChanged<bool> onChanged;
 }
 
+class CommunityGroupInfoPageDetails {
+  const CommunityGroupInfoPageDetails({
+    required this.room,
+    required this.title,
+    required this.memberCount,
+    required this.membersLabel,
+    required this.descriptionEmptyLabel,
+    required this.avatar,
+    required this.buildAvatar,
+    required this.canEditInfo,
+    required this.isAdmin,
+    required this.hasPhoto,
+    required this.busy,
+    required this.editInfoLabel,
+    required this.changePhotoLabel,
+    required this.removePhotoLabel,
+    required this.settingsTitle,
+    required this.settings,
+    required this.membersTitle,
+    required this.members,
+    required this.addMembersLabel,
+    required this.onLeave,
+    required this.leaveLabel,
+    this.description,
+    this.onEditInfo,
+    this.onChangePhoto,
+    this.onRemovePhoto,
+    this.onAddMembers,
+  });
+
+  final ChatRoom room;
+  final String title;
+  final int memberCount;
+  final String membersLabel;
+  final String? description;
+  final String descriptionEmptyLabel;
+  final Widget avatar;
+  final Widget Function({required double radius}) buildAvatar;
+  final bool canEditInfo;
+  final bool isAdmin;
+  final bool hasPhoto;
+  final bool busy;
+  final VoidCallback? onEditInfo;
+  final VoidCallback? onChangePhoto;
+  final VoidCallback? onRemovePhoto;
+  final String editInfoLabel;
+  final String changePhotoLabel;
+  final String removePhotoLabel;
+  final String settingsTitle;
+  final List<Widget> settings;
+  final String membersTitle;
+  final List<Widget> members;
+  final VoidCallback? onAddMembers;
+  final String addMembersLabel;
+  final VoidCallback onLeave;
+  final String leaveLabel;
+}
+
 class CommunityConnectionDetails {
   const CommunityConnectionDetails({required this.status, required this.label, this.offline = false});
 

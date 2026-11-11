@@ -74,181 +74,78 @@ class _GroupInfoView extends StatelessWidget {
         }
         if (room == null) return const CommunityLoadingView();
         final l10n = context.communityL10n;
-        final style = CommunityStyle.of(context);
-        final spacing = style.spacing;
-        final danger = Theme.of(context).colorScheme.error;
+        final hasPhoto = room.avatarUrl != null;
+        final membersLabel = l10n.members(state.members.length);
+        final details = CommunityGroupInfoPageDetails(
+          room: room,
+          title: roomTitle(room),
+          memberCount: state.members.length,
+          membersLabel: membersLabel,
+          description: room.description,
+          descriptionEmptyLabel: l10n.groupDescriptionEmpty,
+          avatar: roomAvatar(context, room, radius: 44),
+          buildAvatar: ({required double radius}) => roomAvatar(context, room, radius: radius),
+          canEditInfo: state.canEditInfo,
+          isAdmin: state.isAdmin,
+          hasPhoto: hasPhoto,
+          busy: state.busy,
+          onEditInfo: state.canEditInfo ? () => _editInfo(context, room) : null,
+          onChangePhoto: state.canEditInfo ? () => _pickPhoto(cubit) : null,
+          onRemovePhoto: state.canEditInfo && hasPhoto ? cubit.removePhoto : null,
+          editInfoLabel: l10n.groupEditInfo,
+          changePhotoLabel: l10n.groupChangePhoto,
+          removePhotoLabel: l10n.groupRemovePhoto,
+          settingsTitle: l10n.groupSettings,
+          settings: state.isAdmin
+              ? [
+                  _GroupSettingTile(
+                    key: const ValueKey(GroupSetting.onlyAdminsSend),
+                    details: CommunityGroupSettingDetails(
+                      kind: GroupSetting.onlyAdminsSend,
+                      title: l10n.groupOnlyAdminsSend,
+                      value: room.onlyAdminsSend,
+                      onChanged: cubit.setOnlyAdminsSend,
+                    ),
+                  ),
+                  _GroupSettingTile(
+                    key: const ValueKey(GroupSetting.onlyAdminsEdit),
+                    details: CommunityGroupSettingDetails(
+                      kind: GroupSetting.onlyAdminsEdit,
+                      title: l10n.groupOnlyAdminsEdit,
+                      value: room.onlyAdminsEdit,
+                      onChanged: cubit.setOnlyAdminsEdit,
+                    ),
+                  ),
+                ]
+              : const [],
+          membersTitle: membersLabel,
+          members: [
+            for (final member in state.members)
+              _MemberTile(key: ValueKey(member.user.id), member: member, state: state),
+          ],
+          onAddMembers: state.isAdmin ? () => _addMembers(context, state) : null,
+          addMembersLabel: l10n.groupAddMembers,
+          onLeave: () => _leave(context, cubit),
+          leaveLabel: l10n.groupLeave,
+        );
         return AbsorbPointer(
           absorbing: state.busy,
-          child: ListView(
-            padding: EdgeInsets.symmetric(vertical: spacing.lg),
-            children: [
-              _GroupHeader(state: state),
-              if (state.isAdmin) ...[
-                const CommunityDivider(),
-                _SectionTitle(l10n.groupSettings),
-                _GroupSettingTile(
-                  details: CommunityGroupSettingDetails(
-                    kind: GroupSetting.onlyAdminsSend,
-                    title: l10n.groupOnlyAdminsSend,
-                    value: room.onlyAdminsSend,
-                    onChanged: cubit.setOnlyAdminsSend,
-                  ),
-                ),
-                _GroupSettingTile(
-                  details: CommunityGroupSettingDetails(
-                    kind: GroupSetting.onlyAdminsEdit,
-                    title: l10n.groupOnlyAdminsEdit,
-                    value: room.onlyAdminsEdit,
-                    onChanged: cubit.setOnlyAdminsEdit,
-                  ),
-                ),
-              ],
-              const CommunityDivider(),
-              _SectionTitle(l10n.members(state.members.length)),
-              if (state.isAdmin)
-                ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: style.accentMuted,
-                    child: Icon(Icons.person_add_alt, color: style.accent),
-                  ),
-                  title: Text(l10n.groupAddMembers, style: style.typography.author),
-                  onTap: () => _addMembers(context, state),
-                ),
-              for (final member in state.members) _MemberTile(member: member, state: state),
-              const CommunityDivider(),
-              ListTile(
-                leading: Icon(Icons.logout, color: danger),
-                title: Text(l10n.groupLeave, style: style.typography.body.copyWith(color: danger)),
-                onTap: () async {
-                  if (await confirmCommunityAction(context, l10n.groupLeaveConfirm, confirmLabel: l10n.leaveRoom)) {
-                    await cubit.leave();
-                  }
-                },
-              ),
-            ],
+          child: buildChatPart(
+            CommunityChatBuilders.of(context).groupInfoPage,
+            context,
+            details,
+            _DefaultGroupInfoPage(details: details),
           ),
         );
       },
     );
   }
 
-  Future<void> _addMembers(BuildContext context, GroupInfoState state) async {
-    final cubit = context.read<GroupInfoCubit>();
-    final deps = CommunityScope.of(context);
-    final carry = carryCommunityBuilders(context);
-    final ids = await showDialog<List<String>>(
-      context: context,
-      builder: (_) => carry(
-        CommunityScope(
-          dependencies: deps,
-          child: _AddMembersDialog(existing: {for (final m in state.members) m.user.id}),
-        ),
-      ),
-    );
-    if (ids != null && ids.isNotEmpty) await cubit.addMembers(ids);
-  }
-}
-
-class _GroupSettingTile extends StatelessWidget {
-  const _GroupSettingTile({required this.details});
-
-  final CommunityGroupSettingDetails details;
-
-  @override
-  Widget build(BuildContext context) => buildChatPart(
-    CommunityChatBuilders.of(context).groupSetting,
-    context,
-    details,
-    SwitchListTile(
-      title: Text(details.title, style: CommunityStyle.of(context).typography.body),
-      value: details.value,
-      onChanged: details.onChanged,
-    ),
-  );
-}
-
-class _SectionTitle extends StatelessWidget {
-  const _SectionTitle(this.text);
-
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    final style = CommunityStyle.of(context);
-    return Padding(
-      padding: EdgeInsets.fromLTRB(style.spacing.lg, style.spacing.md, style.spacing.lg, style.spacing.xs),
-      child: Text(text, style: style.typography.meta.copyWith(fontWeight: FontWeight.w600)),
-    );
-  }
-}
-
-class _GroupHeader extends StatelessWidget {
-  const _GroupHeader({required this.state});
-
-  final GroupInfoState state;
-
-  @override
-  Widget build(BuildContext context) {
-    final room = state.room!;
-    final cubit = context.read<GroupInfoCubit>();
+  Future<void> _leave(BuildContext context, GroupInfoCubit cubit) async {
     final l10n = context.communityL10n;
-    final style = CommunityStyle.of(context);
-    final spacing = style.spacing;
-    final description = room.description;
-    final avatar = roomAvatar(context, room, radius: 44);
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: spacing.lg),
-      child: Column(
-        children: [
-          if (state.canEditInfo)
-            PopupMenuButton<VoidCallback>(
-              tooltip: l10n.groupChangePhoto,
-              onSelected: (action) => action(),
-              itemBuilder: (_) => [
-                PopupMenuItem(value: () => _pickPhoto(cubit), child: Text(l10n.groupChangePhoto)),
-                if (room.avatarUrl != null) PopupMenuItem(value: cubit.removePhoto, child: Text(l10n.groupRemovePhoto)),
-              ],
-              child: Stack(
-                children: [
-                  avatar,
-                  PositionedDirectional(
-                    end: 0,
-                    bottom: 0,
-                    child: CircleAvatar(
-                      radius: 14,
-                      backgroundColor: style.accent,
-                      child: Icon(Icons.photo_camera_outlined, size: 16, color: style.onAccent),
-                    ),
-                  ),
-                ],
-              ),
-            )
-          else
-            avatar,
-          SizedBox(height: spacing.md),
-          Text(roomTitle(room), textAlign: TextAlign.center, style: style.typography.title),
-          SizedBox(height: spacing.xxs),
-          Text(l10n.members(state.members.length), style: style.typography.meta),
-          SizedBox(height: spacing.md),
-          Text(
-            description ?? l10n.groupDescriptionEmpty,
-            textAlign: TextAlign.center,
-            style: description == null
-                ? style.typography.meta.copyWith(fontStyle: FontStyle.italic)
-                : style.typography.body,
-          ),
-          if (state.canEditInfo)
-            Padding(
-              padding: EdgeInsets.only(top: spacing.sm),
-              child: TextButton.icon(
-                onPressed: () => _editInfo(context, room),
-                icon: const Icon(Icons.edit_outlined, size: 18),
-                label: Text(l10n.groupEditInfo),
-              ),
-            ),
-        ],
-      ),
-    );
+    if (await confirmCommunityAction(context, l10n.groupLeaveConfirm, confirmLabel: l10n.leaveRoom)) {
+      await cubit.leave();
+    }
   }
 
   Future<void> _pickPhoto(GroupInfoCubit cubit) async {
@@ -272,6 +169,166 @@ class _GroupHeader extends StatelessWidget {
       ),
     );
     if (result != null) await cubit.updateInfo(name: result.$1, description: result.$2);
+  }
+
+  Future<void> _addMembers(BuildContext context, GroupInfoState state) async {
+    final cubit = context.read<GroupInfoCubit>();
+    final deps = CommunityScope.of(context);
+    final carry = carryCommunityBuilders(context);
+    final ids = await showDialog<List<String>>(
+      context: context,
+      builder: (_) => carry(
+        CommunityScope(
+          dependencies: deps,
+          child: _AddMembersDialog(existing: {for (final m in state.members) m.user.id}),
+        ),
+      ),
+    );
+    if (ids != null && ids.isNotEmpty) await cubit.addMembers(ids);
+  }
+}
+
+class _DefaultGroupInfoPage extends StatelessWidget {
+  const _DefaultGroupInfoPage({required this.details});
+
+  final CommunityGroupInfoPageDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final style = CommunityStyle.of(context);
+    final danger = Theme.of(context).colorScheme.error;
+    final onAddMembers = d.onAddMembers;
+    return ListView(
+      padding: EdgeInsets.symmetric(vertical: style.spacing.lg),
+      children: [
+        _DefaultGroupHeader(details: d),
+        if (d.settings.isNotEmpty) ...[const CommunityDivider(), _SectionTitle(d.settingsTitle), ...d.settings],
+        const CommunityDivider(),
+        _SectionTitle(d.membersTitle),
+        if (onAddMembers != null)
+          ListTile(
+            leading: CircleAvatar(
+              backgroundColor: style.accentMuted,
+              child: Icon(Icons.person_add_alt, color: style.accent),
+            ),
+            title: Text(d.addMembersLabel, style: style.typography.author),
+            onTap: onAddMembers,
+          ),
+        ...d.members,
+        const CommunityDivider(),
+        ListTile(
+          leading: Icon(Icons.logout, color: danger),
+          title: Text(d.leaveLabel, style: style.typography.body.copyWith(color: danger)),
+          onTap: d.onLeave,
+        ),
+      ],
+    );
+  }
+}
+
+class _GroupSettingTile extends StatelessWidget {
+  const _GroupSettingTile({super.key, required this.details});
+
+  final CommunityGroupSettingDetails details;
+
+  @override
+  Widget build(BuildContext context) => buildChatPart(
+    CommunityChatBuilders.of(context).groupSetting,
+    context,
+    details,
+    Material(
+      type: MaterialType.transparency,
+      child: SwitchListTile(
+        title: Text(details.title, style: CommunityStyle.of(context).typography.body),
+        value: details.value,
+        onChanged: details.onChanged,
+      ),
+    ),
+  );
+}
+
+class _SectionTitle extends StatelessWidget {
+  const _SectionTitle(this.text);
+
+  final String text;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    return Padding(
+      padding: EdgeInsets.fromLTRB(style.spacing.lg, style.spacing.md, style.spacing.lg, style.spacing.xs),
+      child: Text(text, style: style.typography.meta.copyWith(fontWeight: FontWeight.w600)),
+    );
+  }
+}
+
+class _DefaultGroupHeader extends StatelessWidget {
+  const _DefaultGroupHeader({required this.details});
+
+  final CommunityGroupInfoPageDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final d = details;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final description = d.description;
+    final onChangePhoto = d.onChangePhoto;
+    final onRemovePhoto = d.onRemovePhoto;
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: spacing.lg),
+      child: Column(
+        children: [
+          if (onChangePhoto != null)
+            PopupMenuButton<VoidCallback>(
+              tooltip: d.changePhotoLabel,
+              onSelected: (action) => action(),
+              itemBuilder: (_) => [
+                PopupMenuItem(value: onChangePhoto, child: Text(d.changePhotoLabel)),
+                if (onRemovePhoto != null) PopupMenuItem(value: onRemovePhoto, child: Text(d.removePhotoLabel)),
+              ],
+              child: Stack(
+                children: [
+                  d.avatar,
+                  PositionedDirectional(
+                    end: 0,
+                    bottom: 0,
+                    child: CircleAvatar(
+                      radius: 14,
+                      backgroundColor: style.accent,
+                      child: Icon(Icons.photo_camera_outlined, size: 16, color: style.onAccent),
+                    ),
+                  ),
+                ],
+              ),
+            )
+          else
+            d.avatar,
+          SizedBox(height: spacing.md),
+          Text(d.title, textAlign: TextAlign.center, style: style.typography.title),
+          SizedBox(height: spacing.xxs),
+          Text(d.membersLabel, style: style.typography.meta),
+          SizedBox(height: spacing.md),
+          Text(
+            description ?? d.descriptionEmptyLabel,
+            textAlign: TextAlign.center,
+            style: description == null
+                ? style.typography.meta.copyWith(fontStyle: FontStyle.italic)
+                : style.typography.body,
+          ),
+          if (d.onEditInfo != null)
+            Padding(
+              padding: EdgeInsets.only(top: spacing.sm),
+              child: TextButton.icon(
+                onPressed: d.onEditInfo,
+                icon: const Icon(Icons.edit_outlined, size: 18),
+                label: Text(d.editInfoLabel),
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
 
@@ -380,7 +437,7 @@ class _DefaultEditInfoDialog extends StatelessWidget {
 }
 
 class _MemberTile extends StatelessWidget {
-  const _MemberTile({required this.member, required this.state});
+  const _MemberTile({super.key, required this.member, required this.state});
 
   final RoomMember member;
   final GroupInfoState state;
@@ -561,18 +618,21 @@ class _DefaultMemberTile extends StatelessWidget {
     final style = CommunityStyle.of(context);
     final role = details.roleLabel;
     final user = details.member.user;
-    return ListTile(
-      leading: CommunityAvatar(user: user, radius: 20),
-      title: Text(details.title, style: style.typography.author),
-      subtitle: Text('@${user.username}', style: style.typography.meta),
-      trailing: role == null
-          ? null
-          : Container(
-              padding: EdgeInsets.symmetric(horizontal: style.spacing.sm, vertical: style.spacing.xxs),
-              decoration: BoxDecoration(color: style.accentMuted, borderRadius: style.radii.pillRadius),
-              child: Text(role, style: style.typography.meta.copyWith(color: style.accent)),
-            ),
-      onTap: details.onTap,
+    return Material(
+      type: MaterialType.transparency,
+      child: ListTile(
+        leading: CommunityAvatar(user: user, radius: 20),
+        title: Text(details.title, style: style.typography.author),
+        subtitle: Text('@${user.username}', style: style.typography.meta),
+        trailing: role == null
+            ? null
+            : Container(
+                padding: EdgeInsets.symmetric(horizontal: style.spacing.sm, vertical: style.spacing.xxs),
+                decoration: BoxDecoration(color: style.accentMuted, borderRadius: style.radii.pillRadius),
+                child: Text(role, style: style.typography.meta.copyWith(color: style.accent)),
+              ),
+        onTap: details.onTap,
+      ),
     );
   }
 }

@@ -62,6 +62,7 @@ void main() {
       groupAddMembersDialog: host,
       groupMemberActions: host,
       groupSetting: host,
+      groupInfoPage: host,
     );
     final kept = hostSet.merge(const CommunityChatBuilders());
     final replaced = hostSet.merge(
@@ -91,6 +92,7 @@ void main() {
         groupAddMembersDialog: nested,
         groupMemberActions: nested,
         groupSetting: nested,
+        groupInfoPage: nested,
       ),
     );
     List<Object?> slots(CommunityChatBuilders b) => [
@@ -119,6 +121,7 @@ void main() {
       b.groupAddMembersDialog,
       b.groupMemberActions,
       b.groupSetting,
+      b.groupInfoPage,
     ];
     expect(slots(kept), everyElement(same(host)));
     expect(slots(replaced), everyElement(same(nested)));

@@ -1,3 +1,9 @@
+## 1.19.0
+
+Tidak butuh migrasi server. Tampilan bawaan tidak berubah bila slot baru tidak diisi.
+
+* **Builder seluruh halaman Info grup:** slot baru `CommunityChatBuilders.groupInfoPage` (`CommunityGroupInfoPageDetails`) untuk menyusun sendiri seluruh isi halaman. `settings` dan `members` adalah daftar widget yang sudah memakai slot `groupSetting` dan `groupMember`, dan bisa ditaruh di `Column` milik host. Pemilihan foto, dialog edit dan tambah anggota, konfirmasi keluar grup, aturan peran, serta pemblokiran sentuhan saat `busy` tetap di library.
+
 ## 1.18.0
 
 Tidak butuh migrasi server. Tampilan bawaan tidak berubah bila slot baru tidak diisi.
