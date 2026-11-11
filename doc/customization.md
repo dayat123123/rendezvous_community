@@ -760,7 +760,9 @@ CommunityUserProfile(
 )
 ```
 
-`header`, `stats`, `followButton`, `messageButton` (1.7.0, tombol Kirim pesan), dan `menu` (1.7.0, menu laporkan/blokir di header) menerima `CommunityProfileDetails`: `profile`, `busy`, `isMe`, `isFollowing`, label statistik terlokalisasi; `onToggleFollow`, `onMessage`, `onEdit` (dialog edit bawaan), `onReport`, `onBlock`, `onUnblock`; `isOfficial` dan `onOfficialContact` (1.16.0). Untuk akun resmi `onMessage` selalu null; tombol bawaan di slot `messageButton` menjadi "Hubungi CS" (memanggil `onOfficialContact`) atau disembunyikan bila callback itu tidak diisi.
+`header`, `stats`, `followButton`, `messageButton` (1.7.0, tombol Kirim pesan), dan `menu` (1.7.0, menu laporkan/blokir di header) menerima `CommunityProfileDetails`: `profile`, `busy`, `isMe`, `isFollowing`, label statistik terlokalisasi; `onToggleFollow`, `onMessage`, `onEdit` (dialog edit bawaan), `onReport`, `onBlock`, `onUnblock`; `isOfficial` dan `onOfficialContact` (1.16.0). Untuk akun resmi `onMessage` selalu null; tombol bawaan di slot `messageButton` menjadi "Hubungi CS" (memanggil `onOfficialContact`) atau disembunyikan bila callback itu tidak diisi. Sejak 1.21.0 ada juga `onOpenFollowers` dan `onOpenFollowing` (membuka daftar pengikut atau yang diikuti; null untuk profil yang diblokir atau bila repository host tidak mengimplementasikan `FollowListRepository`), jadi builder `stats` sendiri bisa tetap membuka daftar.
+
+`followListEntry` (1.21.0) mengganti tiap baris di `CommunityFollowList` dan menerima `CommunityFollowListEntryDetails`: `entry` (`FollowListEntry`), `user`, `kind` (`FollowListKind.followers`/`following`), `isMe`, `following`, `followsMe`, `pending` (permintaan ikuti sedang berjalan), `buttonLabel` ("Ikuti", "Ikuti balik", "Mengikuti", atau kosong untuk baris diri sendiri), label `followLabel`, `followingLabel`, `followBackLabel`, `followsYouLabel`; `onOpen` (membuka profil) dan `onToggleFollow` (null untuk baris diri sendiri).
 
 ### Badge (1.4.0)
 

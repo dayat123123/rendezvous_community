@@ -12,6 +12,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/widgets/post
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/moderation/presentation/widgets/moderation_actions.dart';
 import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
+import 'package:rendezvous_community/src/features/profile/domain/repositories/profile_repository.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/builders/community_profile_builders.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/builders/community_profile_details.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/cubit/profile_cubit.dart';
@@ -107,6 +108,8 @@ class _ProfileHeader extends StatelessWidget {
         final user = profile.user;
         final official = CommunityOfficialScope.isOfficial(context, user);
         final parts = CommunityProfileBuilders.of(context);
+        final canOpenLists =
+            !profile.isBlocked && user.id.isNotEmpty && CommunityScope.of(context).profiles is FollowListRepository;
         final details = CommunityProfileDetails(
           profile: profile,
           busy: state.busy,
@@ -130,6 +133,12 @@ class _ProfileHeader extends StatelessWidget {
                   if (await blockUserWithConfirm(context, user)) await cubit.load();
                 },
           onUnblock: profile.isMe || !profile.isBlocked ? null : cubit.unblock,
+          onOpenFollowers: canOpenLists
+              ? () => CommunityNavigator.openFollowList(context, user, FollowListKind.followers)
+              : null,
+          onOpenFollowing: canOpenLists
+              ? () => CommunityNavigator.openFollowList(context, user, FollowListKind.following)
+              : null,
         );
         return buildCommunityPart(parts.header, context, details, _defaultHeader(context, details, parts));
       },
@@ -343,40 +352,60 @@ class _ProfileStats extends StatelessWidget {
           count: profile.followerCount,
           label: l10n.profileStatFollowers,
           semanticLabel: details.followersLabel,
+          onTap: details.onOpenFollowers,
         ),
-        _ProfileStat(count: profile.followingCount, label: l10n.followingLabel, semanticLabel: details.followingLabel),
+        _ProfileStat(
+          count: profile.followingCount,
+          label: l10n.followingLabel,
+          semanticLabel: details.followingLabel,
+          onTap: details.onOpenFollowing,
+        ),
       ],
     );
   }
 }
 
 class _ProfileStat extends StatelessWidget {
-  const _ProfileStat({required this.count, required this.label, required this.semanticLabel});
+  const _ProfileStat({required this.count, required this.label, required this.semanticLabel, this.onTap});
 
   final int count;
   final String label;
   final String semanticLabel;
+  final VoidCallback? onTap;
 
   @override
   Widget build(BuildContext context) {
     final style = CommunityStyle.of(context);
+    final content = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text(
+          communityCountText(context, count),
+          maxLines: 1,
+          style: style.typography.title.copyWith(fontSize: 18, height: 1.2),
+        ),
+        SizedBox(height: style.spacing.xxs),
+        Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.meta),
+      ],
+    );
+    final tap = onTap;
     return Expanded(
       child: Semantics(
         container: true,
+        button: tap != null,
         label: semanticLabel,
+        onTap: tap,
         child: ExcludeSemantics(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text(
-                communityCountText(context, count),
-                maxLines: 1,
-                style: style.typography.title.copyWith(fontSize: 18, height: 1.2),
-              ),
-              SizedBox(height: style.spacing.xxs),
-              Text(label, maxLines: 1, overflow: TextOverflow.ellipsis, style: style.typography.meta),
-            ],
-          ),
+          child: tap == null
+              ? content
+              : InkWell(
+                  onTap: tap,
+                  borderRadius: style.radii.badgeRadius,
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(vertical: style.spacing.xxs),
+                    child: content,
+                  ),
+                ),
         ),
       ),
     );

@@ -2653,4 +2653,13 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String notifTypeWatchlistDigestHintAt(String hour, String minute) {
     return 'Daily at $hour:$minute WIB';
   }
+
+  @override
+  String get followBack => 'Follow back';
+
+  @override
+  String get followersEmpty => 'No followers yet.';
+
+  @override
+  String get followingEmpty => 'Not following anyone yet.';
 }

@@ -792,5 +792,8 @@
   "errorGroupAdminsOnlyEdit": "Only admins can edit group info.",
   "errorGroupMemberNotFound": "This person is no longer in the group.",
   "notifTypeWatchlistDigestHintAt": "Daily at {hour}:{minute} WIB",
-  "@notifTypeWatchlistDigestHintAt": { "placeholders": { "hour": { "type": "String" }, "minute": { "type": "String" } } }
+  "@notifTypeWatchlistDigestHintAt": { "placeholders": { "hour": { "type": "String" }, "minute": { "type": "String" } } },
+  "followBack": "Follow back",
+  "followersEmpty": "No followers yet.",
+  "followingEmpty": "Not following anyone yet."
 }

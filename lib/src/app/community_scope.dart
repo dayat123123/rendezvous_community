@@ -7,6 +7,8 @@ import 'package:rendezvous_community/src/features/analytics/domain/entities/anal
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/community_chat_room.dart';
 import 'package:rendezvous_community/src/features/group/presentation/widgets/community_group_info.dart';
 import 'package:rendezvous_community/src/features/post/presentation/widgets/community_post_detail.dart';
+import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
+import 'package:rendezvous_community/src/features/profile/presentation/widgets/community_follow_list.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/widgets/community_user_profile.dart';
 import 'package:rendezvous_community/src/features/search/presentation/widgets/community_hashtag_feed.dart';
 import 'package:rendezvous_community/src/features/stocks/presentation/widgets/community_stock_feed.dart';
@@ -45,6 +47,10 @@ abstract final class CommunityNavigator {
       '@${user.username}',
       CommunityUserProfile(userId: user.id.isEmpty ? null : user.id, username: user.username),
     );
+  }
+
+  static void openFollowList(BuildContext context, UserSummary user, FollowListKind kind) {
+    _push<void>(context, '@${user.username}', CommunityFollowList(userId: user.id, initialKind: kind));
   }
 
   static void openUsername(BuildContext context, String username) {

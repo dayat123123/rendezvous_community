@@ -221,6 +221,7 @@ export 'src/features/profile/domain/repositories/profile_repository.dart';
 export 'src/features/profile/presentation/builders/community_profile_builders.dart'
     show CommunityProfileBuilders, CommunityProfileBuildersScope;
 export 'src/features/profile/presentation/builders/community_profile_details.dart';
+export 'src/features/profile/presentation/widgets/community_follow_list.dart' show CommunityFollowList;
 export 'src/features/profile/presentation/widgets/community_suggested_users.dart'
     show CommunitySuggestedUsers, SuggestedFollowButton;
 export 'src/features/profile/presentation/widgets/community_user_profile.dart' show CommunityUserProfile;

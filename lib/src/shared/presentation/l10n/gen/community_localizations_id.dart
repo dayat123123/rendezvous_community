@@ -2639,4 +2639,13 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String notifTypeWatchlistDigestHintAt(String hour, String minute) {
     return 'Setiap hari pukul $hour.$minute WIB';
   }
+
+  @override
+  String get followBack => 'Ikuti balik';
+
+  @override
+  String get followersEmpty => 'Belum ada pengikut.';
+
+  @override
+  String get followingEmpty => 'Belum mengikuti siapa pun.';
 }

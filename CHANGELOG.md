@@ -1,3 +1,11 @@
+## 1.21.0
+
+Butuh migrasi server `0148` untuk daftarnya; dengan server lama halaman daftar menampilkan pesan galat dan profil tetap seperti biasa.
+
+* **Daftar pengikut dan yang diikuti:** angka Pengikut dan Mengikuti di `CommunityUserProfile` kini bisa diketuk dan membuka halaman daftar dengan tab Pengikut dan Mengikuti (`CommunityNavigator.openFollowList`, widget `CommunityFollowList`). Tiap baris berisi foto, nama, @username, penanda "Mengikuti Anda", serta tombol Ikuti, Ikuti balik, atau Mengikuti; ketuk baris membuka profil. Daftar dimuat per halaman saat digulir.
+* `FollowListRepository.followList()` (`FollowListEntry`, `FollowListKind`) diimplementasikan repository bawaan. Repository profil milik host yang tidak mengimplementasikannya tetap jalan; angka profil saja yang tidak bisa diketuk.
+* Builder: slot `CommunityProfileBuilders.followListEntry` (`CommunityFollowListEntryDetails`) untuk mengganti tiap baris, dan `CommunityProfileDetails.onOpenFollowers`/`onOpenFollowing` untuk builder `stats` atau `header` milik host.
+
 ## 1.20.0
 
 Memakai migrasi server `0147` bila ada; dengan server lama tampilan tidak berubah.

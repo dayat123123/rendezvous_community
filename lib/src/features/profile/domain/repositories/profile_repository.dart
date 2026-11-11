@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:rendezvous_community/src/core/paging/paged.dart';
 import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
@@ -25,4 +26,8 @@ abstract interface class ProfileRepository {
 
 abstract interface class SuggestedUsersRepository {
   Future<List<SuggestedUser>> suggestedUsers({int limit = 5});
+}
+
+abstract interface class FollowListRepository {
+  Future<Paged<FollowListEntry>> followList(String userId, FollowListKind kind, {String? cursor, int limit = 30});
 }

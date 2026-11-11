@@ -910,5 +910,8 @@
   "errorGroupAdminsOnlyEdit": "Hanya admin yang bisa mengubah info grup.",
   "errorGroupMemberNotFound": "Orang ini bukan lagi anggota grup.",
   "notifTypeWatchlistDigestHintAt": "Setiap hari pukul {hour}.{minute} WIB",
-  "@notifTypeWatchlistDigestHintAt": { "placeholders": { "hour": { "type": "String" }, "minute": { "type": "String" } } }
+  "@notifTypeWatchlistDigestHintAt": { "placeholders": { "hour": { "type": "String" }, "minute": { "type": "String" } } },
+  "followBack": "Ikuti balik",
+  "followersEmpty": "Belum ada pengikut.",
+  "followingEmpty": "Belum mengikuti siapa pun."
 }

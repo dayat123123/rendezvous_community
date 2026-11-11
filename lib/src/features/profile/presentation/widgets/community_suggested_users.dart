@@ -5,6 +5,7 @@ import 'package:rendezvous_community/src/features/config/presentation/widgets/co
 import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
 import 'package:rendezvous_community/src/features/profile/domain/repositories/profile_repository.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/cubit/suggested_users_cubit.dart';
+import 'package:rendezvous_community/src/features/profile/presentation/widgets/follow_toggle_button.dart';
 import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_builders.dart';
 import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
@@ -188,41 +189,12 @@ class SuggestedFollowButton extends StatelessWidget {
   final CommunitySuggestedUserDetails details;
 
   @override
-  Widget build(BuildContext context) {
-    final style = CommunityStyle.of(context);
-    final onPressed = details.pending ? null : details.onToggleFollow;
-    const density = VisualDensity.compact;
-    final padding = EdgeInsets.symmetric(horizontal: style.spacing.md);
-    final label = details.following ? details.followingLabel : details.followLabel;
-    return Semantics(
-      label: '$label ${details.user.name}',
-      container: true,
-      button: true,
-      excludeSemantics: true,
-      child: details.following
-          ? OutlinedButton(
-              onPressed: onPressed,
-              style: OutlinedButton.styleFrom(
-                visualDensity: density,
-                padding: padding,
-                foregroundColor: style.textPrimary,
-                side: style.borderSide,
-                shape: const StadiumBorder(),
-                textStyle: style.typography.label,
-              ),
-              child: Text(label),
-            )
-          : FilledButton(
-              onPressed: onPressed,
-              style: style.primaryButtonStyle().copyWith(
-                visualDensity: density,
-                padding: WidgetStatePropertyAll(padding),
-                textStyle: WidgetStatePropertyAll(style.typography.label),
-              ),
-              child: Text(label),
-            ),
-    );
-  }
+  Widget build(BuildContext context) => FollowToggleButton(
+    label: details.following ? details.followingLabel : details.followLabel,
+    following: details.following,
+    semanticName: details.user.name,
+    onPressed: details.pending ? null : details.onToggleFollow,
+  );
 }
 
 class _SuggestedUserSkeleton extends StatelessWidget {

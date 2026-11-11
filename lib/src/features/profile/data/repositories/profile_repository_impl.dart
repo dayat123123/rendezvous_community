@@ -5,13 +5,14 @@ import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/logging/community_logger.dart';
 import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
+import 'package:rendezvous_community/src/core/paging/paged.dart';
 import 'package:rendezvous_community/src/features/profile/data/models/profile_model.dart';
 import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
 import 'package:rendezvous_community/src/features/profile/domain/repositories/profile_repository.dart';
 import 'package:rendezvous_community/src/shared/data/models/user_summary_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
-class ProfileRepositoryImpl implements ProfileRepository, SuggestedUsersRepository {
+class ProfileRepositoryImpl implements ProfileRepository, SuggestedUsersRepository, FollowListRepository {
   ProfileRepositoryImpl(this._api, {this.onMyProfileChanged});
 
   final SocialRemoteDataSource _api;
@@ -102,6 +103,33 @@ class ProfileRepositoryImpl implements ProfileRepository, SuggestedUsersReposito
           isOfficial: row['is_official'] == true,
         ),
     ];
+  }
+
+  @override
+  Future<Paged<FollowListEntry>> followList(
+    String userId,
+    FollowListKind kind, {
+    String? cursor,
+    int limit = 30,
+  }) async {
+    final rows = await _api.rpcRows('get_follow_list', {
+      'p_user_id': userId,
+      'p_kind': kind.name,
+      'p_cursor': cursor,
+      'p_limit': limit,
+    });
+    final items = [
+      for (final row in rows)
+        FollowListEntry(
+          user: UserSummaryModel.fromJson(row).toEntity(),
+          isMe: row['is_me'] == true,
+          isFollowing: row['is_following'] == true,
+          followsMe: row['follows_me'] == true,
+          followedAt: DateTime.tryParse(row['followed_at'] as String? ?? '')?.toUtc(),
+          cursor: row['cursor'] as String?,
+        ),
+    ];
+    return Paged(items, nextCursor: rows.length < limit ? null : items.lastOrNull?.cursor);
   }
 
   @override

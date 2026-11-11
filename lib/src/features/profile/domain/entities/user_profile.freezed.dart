@@ -597,4 +597,294 @@ $UserSummaryCopyWith<$Res> get user {
 }
 }
 
+/// @nodoc
+mixin _$FollowListEntry {
+
+ UserSummary get user; bool get isMe; bool get isFollowing; bool get followsMe; DateTime? get followedAt; String? get cursor;
+/// Create a copy of FollowListEntry
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$FollowListEntryCopyWith<FollowListEntry> get copyWith => _$FollowListEntryCopyWithImpl<FollowListEntry>(this as FollowListEntry, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FollowListEntry&&(identical(other.user, user) || other.user == user)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.followedAt, followedAt) || other.followedAt == followedAt)&&(identical(other.cursor, cursor) || other.cursor == cursor));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,user,isMe,isFollowing,followsMe,followedAt,cursor);
+
+@override
+String toString() {
+  return 'FollowListEntry(user: $user, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, followedAt: $followedAt, cursor: $cursor)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $FollowListEntryCopyWith<$Res>  {
+  factory $FollowListEntryCopyWith(FollowListEntry value, $Res Function(FollowListEntry) _then) = _$FollowListEntryCopyWithImpl;
+@useResult
+$Res call({
+ UserSummary user, bool isMe, bool isFollowing, bool followsMe, DateTime? followedAt, String? cursor
+});
+
+
+$UserSummaryCopyWith<$Res> get user;
+
+}
+/// @nodoc
+class _$FollowListEntryCopyWithImpl<$Res>
+    implements $FollowListEntryCopyWith<$Res> {
+  _$FollowListEntryCopyWithImpl(this._self, this._then);
+
+  final FollowListEntry _self;
+  final $Res Function(FollowListEntry) _then;
+
+/// Create a copy of FollowListEntry
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? isMe = null,Object? isFollowing = null,Object? followsMe = null,Object? followedAt = freezed,Object? cursor = freezed,}) {
+  return _then(_self.copyWith(
+user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as UserSummary,isMe: null == isMe ? _self.isMe : isMe // ignore: cast_nullable_to_non_nullable
+as bool,isFollowing: null == isFollowing ? _self.isFollowing : isFollowing // ignore: cast_nullable_to_non_nullable
+as bool,followsMe: null == followsMe ? _self.followsMe : followsMe // ignore: cast_nullable_to_non_nullable
+as bool,followedAt: freezed == followedAt ? _self.followedAt : followedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,cursor: freezed == cursor ? _self.cursor : cursor // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+/// Create a copy of FollowListEntry
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserSummaryCopyWith<$Res> get user {
+  
+  return $UserSummaryCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
+}
+
+
+/// Adds pattern-matching-related methods to [FollowListEntry].
+extension FollowListEntryPatterns on FollowListEntry {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _FollowListEntry value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _FollowListEntry() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _FollowListEntry value)  $default,){
+final _that = this;
+switch (_that) {
+case _FollowListEntry():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _FollowListEntry value)?  $default,){
+final _that = this;
+switch (_that) {
+case _FollowListEntry() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( UserSummary user,  bool isMe,  bool isFollowing,  bool followsMe,  DateTime? followedAt,  String? cursor)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _FollowListEntry() when $default != null:
+return $default(_that.user,_that.isMe,_that.isFollowing,_that.followsMe,_that.followedAt,_that.cursor);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( UserSummary user,  bool isMe,  bool isFollowing,  bool followsMe,  DateTime? followedAt,  String? cursor)  $default,) {final _that = this;
+switch (_that) {
+case _FollowListEntry():
+return $default(_that.user,_that.isMe,_that.isFollowing,_that.followsMe,_that.followedAt,_that.cursor);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( UserSummary user,  bool isMe,  bool isFollowing,  bool followsMe,  DateTime? followedAt,  String? cursor)?  $default,) {final _that = this;
+switch (_that) {
+case _FollowListEntry() when $default != null:
+return $default(_that.user,_that.isMe,_that.isFollowing,_that.followsMe,_that.followedAt,_that.cursor);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _FollowListEntry implements FollowListEntry {
+  const _FollowListEntry({required this.user, this.isMe = false, this.isFollowing = false, this.followsMe = false, this.followedAt, this.cursor});
+  
+
+@override final  UserSummary user;
+@override@JsonKey() final  bool isMe;
+@override@JsonKey() final  bool isFollowing;
+@override@JsonKey() final  bool followsMe;
+@override final  DateTime? followedAt;
+@override final  String? cursor;
+
+/// Create a copy of FollowListEntry
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$FollowListEntryCopyWith<_FollowListEntry> get copyWith => __$FollowListEntryCopyWithImpl<_FollowListEntry>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FollowListEntry&&(identical(other.user, user) || other.user == user)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.followedAt, followedAt) || other.followedAt == followedAt)&&(identical(other.cursor, cursor) || other.cursor == cursor));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,user,isMe,isFollowing,followsMe,followedAt,cursor);
+
+@override
+String toString() {
+  return 'FollowListEntry(user: $user, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, followedAt: $followedAt, cursor: $cursor)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$FollowListEntryCopyWith<$Res> implements $FollowListEntryCopyWith<$Res> {
+  factory _$FollowListEntryCopyWith(_FollowListEntry value, $Res Function(_FollowListEntry) _then) = __$FollowListEntryCopyWithImpl;
+@override @useResult
+$Res call({
+ UserSummary user, bool isMe, bool isFollowing, bool followsMe, DateTime? followedAt, String? cursor
+});
+
+
+@override $UserSummaryCopyWith<$Res> get user;
+
+}
+/// @nodoc
+class __$FollowListEntryCopyWithImpl<$Res>
+    implements _$FollowListEntryCopyWith<$Res> {
+  __$FollowListEntryCopyWithImpl(this._self, this._then);
+
+  final _FollowListEntry _self;
+  final $Res Function(_FollowListEntry) _then;
+
+/// Create a copy of FollowListEntry
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? user = null,Object? isMe = null,Object? isFollowing = null,Object? followsMe = null,Object? followedAt = freezed,Object? cursor = freezed,}) {
+  return _then(_FollowListEntry(
+user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
+as UserSummary,isMe: null == isMe ? _self.isMe : isMe // ignore: cast_nullable_to_non_nullable
+as bool,isFollowing: null == isFollowing ? _self.isFollowing : isFollowing // ignore: cast_nullable_to_non_nullable
+as bool,followsMe: null == followsMe ? _self.followsMe : followsMe // ignore: cast_nullable_to_non_nullable
+as bool,followedAt: freezed == followedAt ? _self.followedAt : followedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,cursor: freezed == cursor ? _self.cursor : cursor // ignore: cast_nullable_to_non_nullable
+as String?,
+  ));
+}
+
+/// Create a copy of FollowListEntry
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$UserSummaryCopyWith<$Res> get user {
+  
+  return $UserSummaryCopyWith<$Res>(_self.user, (value) {
+    return _then(_self.copyWith(user: value));
+  });
+}
+}
+
 // dart format on

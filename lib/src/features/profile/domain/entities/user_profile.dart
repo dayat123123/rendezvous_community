@@ -28,3 +28,17 @@ abstract class SuggestedUser with _$SuggestedUser {
     @Default(false) bool isOfficial,
   }) = _SuggestedUser;
 }
+
+enum FollowListKind { followers, following }
+
+@freezed
+abstract class FollowListEntry with _$FollowListEntry {
+  const factory FollowListEntry({
+    required UserSummary user,
+    @Default(false) bool isMe,
+    @Default(false) bool isFollowing,
+    @Default(false) bool followsMe,
+    DateTime? followedAt,
+    String? cursor,
+  }) = _FollowListEntry;
+}

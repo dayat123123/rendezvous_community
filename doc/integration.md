@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.20.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.21.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -170,6 +170,7 @@ Semua widget adalah konten tanpa `Scaffold`, sehingga OLT tetap memegang AppBar,
 | Ikon menu/tab "Chat" | `CommunityChatBadge(child: Icon(Icons.chat_bubble_outline))` (jumlah chat yang punya pesan belum dibaca) |
 | Ikon lonceng | `CommunityNotificationBadge(child: Icon(Icons.notifications))` → `CommunityNotificationList()` |
 | Halaman profil sosial | `CommunityUserProfile(userId: id)` |
+| Daftar pengikut / yang diikuti (1.21.0, server `0148`) | `CommunityFollowList(userId: id, initialKind: FollowListKind.following)` atau `CommunityNavigator.openFollowList(context, user, kind)`; data mentah lewat `(profiles as FollowListRepository).followList(id, kind, cursor: ...)` → `Paged<FollowListEntry>`. Angka Pengikut/Mengikuti di profil membukanya otomatis |
 | Deep link post | `CommunityPostDetail(postId: id)` |
 | Menu "Bantuan / Chat CS" | Windows: `CommunitySupportChat(onClose: ...)` sebagai panel samping (lebar ±420). Android: `openCommunitySupport(context)` (layar penuh dengan tombol kembali) |
 | Ikon menu "Bantuan" | `CommunitySupportBadge(child: Icon(Icons.support_agent_outlined))` (balasan CS yang belum dibaca) |

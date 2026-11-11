@@ -4687,6 +4687,24 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Setiap hari pukul {hour}.{minute} WIB'**
   String notifTypeWatchlistDigestHintAt(String hour, String minute);
+
+  /// No description provided for @followBack.
+  ///
+  /// In id, this message translates to:
+  /// **'Ikuti balik'**
+  String get followBack;
+
+  /// No description provided for @followersEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada pengikut.'**
+  String get followersEmpty;
+
+  /// No description provided for @followingEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum mengikuti siapa pun.'**
+  String get followingEmpty;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {
