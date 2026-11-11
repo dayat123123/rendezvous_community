@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.16.1            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.17.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -245,6 +245,14 @@ Untuk sebagian layar saja pakai `CommunityScrollScope`. Rinciannya di [customiza
 - Room DM lama dengan akun resmi tetap menampilkan riwayat, tetapi kolom ketik diganti pemberitahuan "Akun resmi tidak menerima pesan. Hubungi CS untuk bantuan." dengan tombol "Hubungi CS" bila callback diisi. Akun resmi itu sendiri tetap bisa mengetik.
 - Dialog "Grup baru" tidak menampilkan akun resmi, dan "Kirim ke chat" tidak menawarkan DM dengan akun resmi.
 - Status resmi dibaca dari `is_official` di data profil server; untuk data yang belum membawanya (server lama, daftar room) dipakai daftar akun resmi (`OfficialAccounts`). Di server tanpa `0144`, DM ke akun resmi tetap dikirim seperti sebelumnya tetapi tombol di aplikasi sudah tersembunyi.
+
+**Kelola grup ala WhatsApp (1.17.0, server migrasi `0146`).** Mengetuk header room grup membuka halaman **Info grup** (`CommunityGroupInfo(roomId: ...)`, juga lewat `CommunityNavigator.openGroupInfo(context, roomId)`). Pembuat grup adalah pemilik (owner):
+- Owner dan admin bisa menambah anggota, menjadikan anggota admin, dan mengeluarkan anggota biasa. Hanya owner yang bisa mencabut status admin, mengeluarkan admin, dan memindahkan kepemilikan (owner lama menjadi admin). Owner yang keluar digantikan admin paling lama, atau anggota paling lama bila tidak ada admin.
+- Info grup: nama, deskripsi (maks. 500 karakter), dan foto grup (JPG/PNG/WebP, diunggah ke folder avatar milik pengunggah). Bawaannya hanya admin yang bisa mengubahnya; admin bisa mengizinkan semua anggota.
+- Pengaturan admin: "Hanya admin yang bisa mengirim pesan" (kolom ketik anggota biasa diganti pemberitahuan, server menolak dengan `group_admins_only`) dan "Hanya admin yang bisa mengubah info grup" (`group_admins_only_edit`).
+- Setiap perubahan muncul di chat sebagai pesan sistem di tengah ("Alice menjadikan Bob admin", "Anda dikeluarkan" tampil sebagai "Alice mengeluarkan Anda") dalam bahasa aplikasi, tanpa push notification. Room dan anggota dimuat ulang otomatis; anggota yang dikeluarkan melihat "Anda bukan lagi anggota grup ini." menggantikan kolom ketik.
+- Untuk UI sendiri: `RendezvousCommunity.instance.groups` (`GroupRepository`: `addMembers`, `removeMember`, `setMemberRole`, `transferOwnership`, `updateInfo`, `uploadPhoto`, `removePhoto`, `updateSettings`), `ChatRoom.description`/`avatarUrl`/`onlyAdminsSend`/`onlyAdminsEdit`/`canSend`/`canEditGroupInfo`, serta `GroupEvent.fromMessage(message)` dan `groupEventText(l10n, message, meId: ...)` untuk pesan `MessageKind.groupEvent`.
+- Server tanpa `0146` tidak mengenal RPC ini; halaman Info grup tetap terbuka, tetapi aksinya gagal dengan pesan error umum.
 
 **Draf post (1.15.2).** Bawaannya composer menyimpan draf otomatis ke perangkat dan server. Dengan `initialize(postDrafts: false)` composer tidak membuat, menyimpan, menyinkronkan, atau memuat draf (tanpa label "Draf tersimpan" dan tanpa panggilan RPC draf), dan `CommunityPostDrafts` tampil kosong. Draf lama tidak dihapus otomatis; hapus semua draf milik user (perangkat dan server) dengan `await RendezvousCommunity.instance.clearPostDrafts()`.
 

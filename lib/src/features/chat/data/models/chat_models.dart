@@ -28,6 +28,7 @@ const _messageKinds = {
   'help_link': MessageKind.helpLink,
   'identity_request': MessageKind.identityRequest,
   'csat': MessageKind.csat,
+  'group_event': MessageKind.groupEvent,
 };
 
 MessageKind parseMessageKind(String? value) => _messageKinds[value] ?? MessageKind.text;
@@ -247,6 +248,10 @@ abstract class RoomSummaryModel with _$RoomSummaryModel {
     String? otherAvatarUrl,
     @Default(false) bool otherIsVerified,
     String? cursor,
+    String? description,
+    String? avatarUrl,
+    bool? onlyAdminsSend,
+    bool? onlyAdminsEdit,
   }) = _RoomSummaryModel;
 
   const RoomSummaryModel._();
@@ -277,6 +282,10 @@ abstract class RoomSummaryModel with _$RoomSummaryModel {
             avatarUrl: otherAvatarUrl,
             isVerified: otherIsVerified,
           ),
+    description: description,
+    avatarUrl: avatarUrl,
+    onlyAdminsSend: onlyAdminsSend ?? false,
+    onlyAdminsEdit: onlyAdminsEdit ?? true,
   );
 }
 

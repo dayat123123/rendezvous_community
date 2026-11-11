@@ -1,3 +1,14 @@
+## 1.17.0
+
+Server: butuh migrasi `0146` (RPC kelola grup, kolom info grup, pesan sistem `group_event`). Di server lama halaman Info grup terbuka, tetapi aksinya gagal.
+
+* **Info grup:** mengetuk header room grup membuka `CommunityGroupInfo` (juga `CommunityNavigator.openGroupInfo`) dengan foto, nama, deskripsi, pengaturan, dan daftar anggota berlabel Pemilik grup/Admin. Owner/admin bisa menambah anggota, menjadikan admin, dan mengeluarkan anggota biasa; hanya owner yang bisa mencabut admin, mengeluarkan admin, dan memindahkan kepemilikan. Semua aksi berbahaya memakai konfirmasi.
+* **Info & pengaturan grup:** nama, deskripsi, dan foto grup (foto tampil juga di daftar chat dan header). Pengaturan "Hanya admin yang bisa mengirim pesan" dan "Hanya admin yang bisa mengubah info grup"; anggota biasa di grup hanya-admin melihat pemberitahuan sebagai pengganti kolom ketik.
+* **Pesan sistem grup:** `MessageKind.groupEvent` tampil di tengah chat ("Alice menjadikan Bob admin", "Alice mengeluarkan Anda") dalam bahasa aplikasi lewat `GroupEventNotice`/`groupEventText`. Room dan anggota dimuat ulang otomatis saat event masuk; anggota yang dikeluarkan melihat "Anda bukan lagi anggota grup ini.".
+* **API:** `GroupRepository` (`RendezvousCommunity.instance.groups`), `GroupEvent`, `ChatRoom.description`/`avatarUrl`/`onlyAdminsSend`/`onlyAdminsEdit`/`canSend`/`canEditGroupInfo`/`isGroupAdmin`. `ChatMessage.isSystem` kini juga benar untuk pesan sistem grup. `CommunityFeatureDependencies` bertambah `groups` (implementasi sendiri perlu menambahkannya).
+* **Builder:** slot baru `CommunityChatBuilders.groupEvent`, `groupNotice`, dan `groupMember`.
+* **Error:** `group_admins_only`, `group_admins_only_edit`, dan `member_not_found` punya pesan sendiri (id/en).
+
 ## 1.16.2
 
 Tidak butuh migrasi server. API publik tidak berubah.

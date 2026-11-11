@@ -2472,4 +2472,180 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get composeQuickCashtag => 'Stock';
+
+  @override
+  String get groupEventYou => 'You';
+
+  @override
+  String get groupEventYouObject => 'you';
+
+  @override
+  String groupEventAdded(String actor, String targets) {
+    return '$actor added $targets';
+  }
+
+  @override
+  String groupEventMore(String names, int count) {
+    return '$names and $count others';
+  }
+
+  @override
+  String groupEventRemoved(String actor, String target) {
+    return '$actor removed $target';
+  }
+
+  @override
+  String groupEventLeft(String actor) {
+    return '$actor left';
+  }
+
+  @override
+  String groupEventLeftNewOwner(String actor, String owner) {
+    return '$actor left. $owner is now the group owner';
+  }
+
+  @override
+  String groupEventPromoted(String actor, String target) {
+    return '$actor made $target an admin';
+  }
+
+  @override
+  String groupEventDemoted(String actor, String target) {
+    return '$actor dismissed $target as admin';
+  }
+
+  @override
+  String groupEventOwnerChanged(String actor, String target) {
+    return '$actor made $target the group owner';
+  }
+
+  @override
+  String groupEventRenamed(String actor, String name) {
+    return '$actor renamed the group to \"$name\"';
+  }
+
+  @override
+  String groupEventDescriptionChanged(String actor) {
+    return '$actor changed the group description';
+  }
+
+  @override
+  String groupEventDescriptionRemoved(String actor) {
+    return '$actor removed the group description';
+  }
+
+  @override
+  String groupEventPhotoChanged(String actor) {
+    return '$actor changed the group photo';
+  }
+
+  @override
+  String groupEventPhotoRemoved(String actor) {
+    return '$actor removed the group photo';
+  }
+
+  @override
+  String groupEventOnlyAdminsSend(String actor) {
+    return '$actor allowed only admins to send messages';
+  }
+
+  @override
+  String groupEventAllSend(String actor) {
+    return '$actor allowed all members to send messages';
+  }
+
+  @override
+  String groupEventOnlyAdminsEdit(String actor) {
+    return '$actor allowed only admins to edit group info';
+  }
+
+  @override
+  String groupEventAllEdit(String actor) {
+    return '$actor allowed all members to edit group info';
+  }
+
+  @override
+  String get groupInfo => 'Group info';
+
+  @override
+  String get groupDescription => 'Description';
+
+  @override
+  String get groupDescriptionEmpty => 'No group description yet';
+
+  @override
+  String get groupEditInfo => 'Edit group info';
+
+  @override
+  String get groupChangePhoto => 'Change group photo';
+
+  @override
+  String get groupRemovePhoto => 'Remove group photo';
+
+  @override
+  String get groupSettings => 'Group settings';
+
+  @override
+  String get groupOnlyAdminsSend => 'Only admins can send messages';
+
+  @override
+  String get groupOnlyAdminsEdit => 'Only admins can edit group info';
+
+  @override
+  String get groupAddMembers => 'Add members';
+
+  @override
+  String get groupAdd => 'Add';
+
+  @override
+  String get groupRoleOwner => 'Group owner';
+
+  @override
+  String get groupRoleAdmin => 'Admin';
+
+  @override
+  String get groupMakeAdmin => 'Make admin';
+
+  @override
+  String get groupDismissAdmin => 'Dismiss as admin';
+
+  @override
+  String get groupRemoveMember => 'Remove from group';
+
+  @override
+  String get groupMakeOwner => 'Make group owner';
+
+  @override
+  String get groupViewProfile => 'View profile';
+
+  @override
+  String groupRemoveConfirm(String name) {
+    return 'Remove $name from the group?';
+  }
+
+  @override
+  String groupMakeOwnerConfirm(String name) {
+    return 'Make $name the group owner? You will become an admin.';
+  }
+
+  @override
+  String get groupLeave => 'Leave group';
+
+  @override
+  String get groupLeaveConfirm => 'Leave this group?';
+
+  @override
+  String get groupAdminsOnlyNotice => 'Only admins can send messages in this group.';
+
+  @override
+  String get groupRemovedNotice => 'You are no longer a member of this group.';
+
+  @override
+  String get errorGroupAdminsOnly => 'Only admins can send messages in this group.';
+
+  @override
+  String get errorGroupAdminsOnlyEdit => 'Only admins can edit group info.';
+
+  @override
+  String get errorGroupMemberNotFound => 'This person is no longer in the group.';
 }

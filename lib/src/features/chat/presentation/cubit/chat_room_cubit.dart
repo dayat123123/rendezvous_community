@@ -33,6 +33,7 @@ import 'package:rendezvous_community/src/features/chat/domain/repositories/messa
 import 'package:rendezvous_community/src/features/chat/domain/services/message_gap_fill.dart';
 import 'package:rendezvous_community/src/features/chat/domain/services/message_outbox.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/gap_fill_schedule.dart';
+import 'package:rendezvous_community/src/features/group/domain/entities/group_event.dart';
 import 'package:rendezvous_community/src/features/legal/domain/services/consent_gate.dart';
 import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
 import 'package:rendezvous_community/src/features/media/domain/repositories/media_repository.dart';
@@ -77,6 +78,7 @@ abstract class ChatRoomState with _$ChatRoomState {
     @Default(false) bool dmRequestLimited,
     DmRequestState? dmRequest,
     @Default(false) bool stale,
+    @Default(false) bool removedFromGroup,
   }) = _ChatRoomState;
 
   const ChatRoomState._();
@@ -533,7 +535,9 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     if (isClosed) return;
     switch (event) {
       case MessageUpserted(:final message):
+        final known = state.messages.any((m) => m.id == message.id);
         _upsert(_resolve(message));
+        if (message.isGroupEvent && !known) unawaited(_onGroupEvent(message));
         if (!state.isMine(message)) {
           _removeTyping(message.senderId);
           _scheduleMarkRead();
@@ -652,6 +656,29 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
   }
 
   static int _newestFirst(ChatMessage a, ChatMessage b) => b.createdAt.compareTo(a.createdAt);
+
+  Future<void> _onGroupEvent(ChatMessage message) async {
+    if (GroupEvent.fromMessage(message).removes(state.me?.id)) {
+      emit(state.copyWith(removedFromGroup: true));
+      return;
+    }
+    await refreshGroup();
+  }
+
+  Future<void> refreshGroup() async {
+    try {
+      final room = await _chat.getRoom(roomId);
+      if (isClosed) return;
+      if (room == null) {
+        if (state.room?.type == RoomType.group) emit(state.copyWith(removedFromGroup: true));
+        return;
+      }
+      emit(state.copyWith(room: room));
+    } catch (_) {
+      return;
+    }
+    await _reloadMembers();
+  }
 
   Future<void> _reloadMembers() async {
     try {

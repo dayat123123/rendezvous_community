@@ -5,11 +5,13 @@ import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/community_chat_room.dart';
+import 'package:rendezvous_community/src/features/group/presentation/widgets/community_group_info.dart';
 import 'package:rendezvous_community/src/features/post/presentation/widgets/community_post_detail.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/widgets/community_user_profile.dart';
 import 'package:rendezvous_community/src/features/search/presentation/widgets/community_hashtag_feed.dart';
 import 'package:rendezvous_community/src/features/stocks/presentation/widgets/community_stock_feed.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
+import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 
 class CommunityScope extends InheritedWidget {
   const CommunityScope({super.key, required this.dependencies, required super.child});
@@ -67,12 +69,15 @@ abstract final class CommunityNavigator {
     _push(context, null, CommunityChatRoom(roomId: roomId));
   }
 
-  static void _push(BuildContext context, String? title, Widget body) {
+  static Future<bool?> openGroupInfo(BuildContext context, String roomId) =>
+      _push<bool>(context, context.communityL10n.groupInfo, CommunityGroupInfo(roomId: roomId));
+
+  static Future<T?> _push<T>(BuildContext context, String? title, Widget body) {
     final dependencies = CommunityScope.of(context);
     final features = context.getInheritedWidgetOfExactType<CommunityFeatureScope>()?.dependencies;
     final carry = carryCommunityBuilders(context);
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(
+    return Navigator.of(context).push(
+      MaterialPageRoute<T>(
         builder: (_) {
           Widget page = CommunityScope(
             dependencies: dependencies,

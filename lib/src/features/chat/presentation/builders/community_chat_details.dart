@@ -10,6 +10,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/message_i
 import 'package:rendezvous_community/src/features/chat/domain/entities/outgoing_file.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
+import 'package:rendezvous_community/src/features/group/domain/entities/group_event.dart';
 import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
 import 'package:rendezvous_community/src/features/message_requests/domain/entities/message_request.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
@@ -195,6 +196,38 @@ class CommunityOfficialNoticeDetails {
   final String message;
   final String contactLabel;
   final VoidCallback? onContact;
+}
+
+class CommunityGroupEventDetails {
+  const CommunityGroupEventDetails({required this.message, required this.event, required this.text});
+
+  final ChatMessage message;
+  final GroupEvent event;
+  final String text;
+}
+
+class CommunityGroupNoticeDetails {
+  const CommunityGroupNoticeDetails({required this.room, required this.message, required this.removed});
+
+  final ChatRoom room;
+  final String message;
+  final bool removed;
+}
+
+class CommunityGroupMemberDetails {
+  const CommunityGroupMemberDetails({
+    required this.member,
+    required this.isMe,
+    required this.title,
+    this.roleLabel,
+    this.onTap,
+  });
+
+  final RoomMember member;
+  final bool isMe;
+  final String title;
+  final String? roleLabel;
+  final VoidCallback? onTap;
 }
 
 class CommunityConnectionDetails {

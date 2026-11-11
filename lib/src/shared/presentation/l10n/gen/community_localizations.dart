@@ -4405,6 +4405,282 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Saham'**
   String get composeQuickCashtag;
+
+  /// No description provided for @groupEventYou.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda'**
+  String get groupEventYou;
+
+  /// No description provided for @groupEventYouObject.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda'**
+  String get groupEventYouObject;
+
+  /// No description provided for @groupEventAdded.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} menambahkan {targets}'**
+  String groupEventAdded(String actor, String targets);
+
+  /// No description provided for @groupEventMore.
+  ///
+  /// In id, this message translates to:
+  /// **'{names} dan {count} lainnya'**
+  String groupEventMore(String names, int count);
+
+  /// No description provided for @groupEventRemoved.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} mengeluarkan {target}'**
+  String groupEventRemoved(String actor, String target);
+
+  /// No description provided for @groupEventLeft.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} keluar'**
+  String groupEventLeft(String actor);
+
+  /// No description provided for @groupEventLeftNewOwner.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} keluar. {owner} sekarang pemilik grup'**
+  String groupEventLeftNewOwner(String actor, String owner);
+
+  /// No description provided for @groupEventPromoted.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} menjadikan {target} admin'**
+  String groupEventPromoted(String actor, String target);
+
+  /// No description provided for @groupEventDemoted.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} mencabut status admin {target}'**
+  String groupEventDemoted(String actor, String target);
+
+  /// No description provided for @groupEventOwnerChanged.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} menjadikan {target} pemilik grup'**
+  String groupEventOwnerChanged(String actor, String target);
+
+  /// No description provided for @groupEventRenamed.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} mengubah nama grup menjadi \"{name}\"'**
+  String groupEventRenamed(String actor, String name);
+
+  /// No description provided for @groupEventDescriptionChanged.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} mengubah deskripsi grup'**
+  String groupEventDescriptionChanged(String actor);
+
+  /// No description provided for @groupEventDescriptionRemoved.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} menghapus deskripsi grup'**
+  String groupEventDescriptionRemoved(String actor);
+
+  /// No description provided for @groupEventPhotoChanged.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} mengubah foto grup'**
+  String groupEventPhotoChanged(String actor);
+
+  /// No description provided for @groupEventPhotoRemoved.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} menghapus foto grup'**
+  String groupEventPhotoRemoved(String actor);
+
+  /// No description provided for @groupEventOnlyAdminsSend.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} mengizinkan hanya admin mengirim pesan'**
+  String groupEventOnlyAdminsSend(String actor);
+
+  /// No description provided for @groupEventAllSend.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} mengizinkan semua anggota mengirim pesan'**
+  String groupEventAllSend(String actor);
+
+  /// No description provided for @groupEventOnlyAdminsEdit.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} mengizinkan hanya admin mengubah info grup'**
+  String groupEventOnlyAdminsEdit(String actor);
+
+  /// No description provided for @groupEventAllEdit.
+  ///
+  /// In id, this message translates to:
+  /// **'{actor} mengizinkan semua anggota mengubah info grup'**
+  String groupEventAllEdit(String actor);
+
+  /// No description provided for @groupInfo.
+  ///
+  /// In id, this message translates to:
+  /// **'Info grup'**
+  String get groupInfo;
+
+  /// No description provided for @groupDescription.
+  ///
+  /// In id, this message translates to:
+  /// **'Deskripsi'**
+  String get groupDescription;
+
+  /// No description provided for @groupDescriptionEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada deskripsi grup'**
+  String get groupDescriptionEmpty;
+
+  /// No description provided for @groupEditInfo.
+  ///
+  /// In id, this message translates to:
+  /// **'Ubah info grup'**
+  String get groupEditInfo;
+
+  /// No description provided for @groupChangePhoto.
+  ///
+  /// In id, this message translates to:
+  /// **'Ganti foto grup'**
+  String get groupChangePhoto;
+
+  /// No description provided for @groupRemovePhoto.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus foto grup'**
+  String get groupRemovePhoto;
+
+  /// No description provided for @groupSettings.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaturan grup'**
+  String get groupSettings;
+
+  /// No description provided for @groupOnlyAdminsSend.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya admin yang bisa mengirim pesan'**
+  String get groupOnlyAdminsSend;
+
+  /// No description provided for @groupOnlyAdminsEdit.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya admin yang bisa mengubah info grup'**
+  String get groupOnlyAdminsEdit;
+
+  /// No description provided for @groupAddMembers.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambah anggota'**
+  String get groupAddMembers;
+
+  /// No description provided for @groupAdd.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambah'**
+  String get groupAdd;
+
+  /// No description provided for @groupRoleOwner.
+  ///
+  /// In id, this message translates to:
+  /// **'Pemilik grup'**
+  String get groupRoleOwner;
+
+  /// No description provided for @groupRoleAdmin.
+  ///
+  /// In id, this message translates to:
+  /// **'Admin'**
+  String get groupRoleAdmin;
+
+  /// No description provided for @groupMakeAdmin.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadikan admin'**
+  String get groupMakeAdmin;
+
+  /// No description provided for @groupDismissAdmin.
+  ///
+  /// In id, this message translates to:
+  /// **'Cabut status admin'**
+  String get groupDismissAdmin;
+
+  /// No description provided for @groupRemoveMember.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluarkan dari grup'**
+  String get groupRemoveMember;
+
+  /// No description provided for @groupMakeOwner.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadikan pemilik grup'**
+  String get groupMakeOwner;
+
+  /// No description provided for @groupViewProfile.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat profil'**
+  String get groupViewProfile;
+
+  /// No description provided for @groupRemoveConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluarkan {name} dari grup?'**
+  String groupRemoveConfirm(String name);
+
+  /// No description provided for @groupMakeOwnerConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Jadikan {name} pemilik grup? Anda akan menjadi admin.'**
+  String groupMakeOwnerConfirm(String name);
+
+  /// No description provided for @groupLeave.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluar dari grup'**
+  String get groupLeave;
+
+  /// No description provided for @groupLeaveConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluar dari grup ini?'**
+  String get groupLeaveConfirm;
+
+  /// No description provided for @groupAdminsOnlyNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya admin yang bisa mengirim pesan di grup ini.'**
+  String get groupAdminsOnlyNotice;
+
+  /// No description provided for @groupRemovedNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda bukan lagi anggota grup ini.'**
+  String get groupRemovedNotice;
+
+  /// No description provided for @errorGroupAdminsOnly.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya admin yang bisa mengirim pesan di grup ini.'**
+  String get errorGroupAdminsOnly;
+
+  /// No description provided for @errorGroupAdminsOnlyEdit.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya admin yang bisa mengubah info grup.'**
+  String get errorGroupAdminsOnlyEdit;
+
+  /// No description provided for @errorGroupMemberNotFound.
+  ///
+  /// In id, this message translates to:
+  /// **'Orang ini bukan lagi anggota grup.'**
+  String get errorGroupMemberNotFound;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

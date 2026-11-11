@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
@@ -265,6 +267,52 @@ class FakeBannerEventRepository implements BannerEventRepository {
   }
 }
 
+class FakeGroupRepository implements GroupRepository {
+  final calls = <String>[];
+  Object? error;
+  void Function(String call)? onCall;
+
+  Future<void> _record(String call) async {
+    calls.add(call);
+    final failure = error;
+    if (failure != null) throw failure;
+    onCall?.call(call);
+  }
+
+  @override
+  Future<int> addMembers(String roomId, List<String> userIds) async {
+    await _record('add $roomId ${userIds.join(',')}');
+    return userIds.length;
+  }
+
+  @override
+  Future<void> removeMember(String roomId, String userId) => _record('remove $roomId $userId');
+
+  @override
+  Future<void> setMemberRole(String roomId, String userId, MemberRole role) =>
+      _record('role $roomId $userId ${role.name}');
+
+  @override
+  Future<void> transferOwnership(String roomId, String userId) => _record('owner $roomId $userId');
+
+  @override
+  Future<void> updateInfo(String roomId, {String? name, String? description}) =>
+      _record('info $roomId $name $description');
+
+  @override
+  Future<String> uploadPhoto(String roomId, Uint8List bytes, {required String mimeType}) async {
+    await _record('photo $roomId $mimeType');
+    return 'https://cdn.test/avatars/$roomId.png';
+  }
+
+  @override
+  Future<void> removePhoto(String roomId) => _record('photo-remove $roomId');
+
+  @override
+  Future<void> updateSettings(String roomId, {bool? onlyAdminsSend, bool? onlyAdminsEdit}) =>
+      _record('settings $roomId $onlyAdminsSend $onlyAdminsEdit');
+}
+
 class FakeFeatureDependencies implements CommunityFeatureDependencies, CommunityPromoPopupDependencies {
   FakeFeatureDependencies({
     ClientConfig config = const ClientConfig(),
@@ -291,6 +339,8 @@ class FakeFeatureDependencies implements CommunityFeatureDependencies, Community
   late final CommunityAnalytics analytics;
   @override
   late final LinkPreviewLoader linkPreviews;
+  @override
+  final FakeGroupRepository groups = FakeGroupRepository();
   @override
   final FakeSearchRepository search = FakeSearchRepository();
   @override

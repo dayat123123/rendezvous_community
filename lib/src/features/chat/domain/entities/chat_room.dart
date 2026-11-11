@@ -26,6 +26,10 @@ abstract class ChatRoom with _$ChatRoom {
     @Default(0) int unreadCount,
     @Default(0) int memberCount,
     UserSummary? otherUser,
+    String? description,
+    String? avatarUrl,
+    @Default(false) bool onlyAdminsSend,
+    @Default(true) bool onlyAdminsEdit,
   }) = _ChatRoom;
 
   const ChatRoom._();
@@ -35,6 +39,12 @@ abstract class ChatRoom with _$ChatRoom {
   bool get tracksReceipts => type != RoomType.stock;
 
   bool get pinned => type == RoomType.support;
+
+  bool get isGroupAdmin => type == RoomType.group && myRole != MemberRole.member;
+
+  bool get canSend => type != RoomType.group || !onlyAdminsSend || isGroupAdmin;
+
+  bool get canEditGroupInfo => type == RoomType.group && (isGroupAdmin || !onlyAdminsEdit);
 
   int compareListOrder(ChatRoom other) {
     if (pinned != other.pinned) return pinned ? -1 : 1;

@@ -9,7 +9,7 @@ part 'chat_message.freezed.dart';
 
 enum MessageStatus { sending, sent, failed, pending }
 
-enum MessageKind { text, system, quickReply, helpLink, identityRequest, csat }
+enum MessageKind { text, system, quickReply, helpLink, identityRequest, csat, groupEvent }
 
 enum SenderRole { customer, agent, supervisor, system }
 
@@ -47,7 +47,9 @@ abstract class ChatMessage with _$ChatMessage {
 
   bool get isLocal => id.startsWith('local-');
 
-  bool get isSystem => senderRole == SenderRole.system;
+  bool get isSystem => senderRole == SenderRole.system || isGroupEvent;
+
+  bool get isGroupEvent => kind == MessageKind.groupEvent;
 
   bool get isOfficial => senderRole == SenderRole.agent || senderRole == SenderRole.supervisor;
 

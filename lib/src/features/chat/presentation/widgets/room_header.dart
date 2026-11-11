@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
@@ -24,6 +26,7 @@ class RoomHeader extends StatelessWidget {
           a.typing != b.typing ||
           a.typingOthers != b.typingOthers ||
           a.members.length != b.members.length ||
+          a.removedFromGroup != b.removedFromGroup ||
           a.online != b.online,
       builder: (context, state) {
         final room = state.room;
@@ -52,9 +55,19 @@ class RoomHeader extends StatelessWidget {
               ? () => CommunityNavigator.openUser(context, otherUser)
               : room.type == RoomType.stock && stockCode != null
               ? () => CommunityNavigator.openStock(context, stockCode)
+              : room.type == RoomType.group && !state.removedFromGroup
+              ? () async {
+                  final left = await CommunityNavigator.openGroupInfo(context, room.id);
+                  if (!context.mounted) return;
+                  if (left ?? false) {
+                    await Navigator.of(context).maybePop();
+                  } else {
+                    unawaited(cubit.refreshGroup());
+                  }
+                }
               : null,
           onToggleMute: room.type == RoomType.support ? null : () => cubit.setMuted(!room.muted),
-          onLeave: room.type == RoomType.direct || room.type == RoomType.support
+          onLeave: room.type == RoomType.direct || room.type == RoomType.support || state.removedFromGroup
               ? null
               : () async {
                   if (await cubit.leave() && context.mounted) await Navigator.of(context).maybePop();

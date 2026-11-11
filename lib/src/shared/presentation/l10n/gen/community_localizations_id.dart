@@ -2458,4 +2458,180 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get composeQuickCashtag => 'Saham';
+
+  @override
+  String get groupEventYou => 'Anda';
+
+  @override
+  String get groupEventYouObject => 'Anda';
+
+  @override
+  String groupEventAdded(String actor, String targets) {
+    return '$actor menambahkan $targets';
+  }
+
+  @override
+  String groupEventMore(String names, int count) {
+    return '$names dan $count lainnya';
+  }
+
+  @override
+  String groupEventRemoved(String actor, String target) {
+    return '$actor mengeluarkan $target';
+  }
+
+  @override
+  String groupEventLeft(String actor) {
+    return '$actor keluar';
+  }
+
+  @override
+  String groupEventLeftNewOwner(String actor, String owner) {
+    return '$actor keluar. $owner sekarang pemilik grup';
+  }
+
+  @override
+  String groupEventPromoted(String actor, String target) {
+    return '$actor menjadikan $target admin';
+  }
+
+  @override
+  String groupEventDemoted(String actor, String target) {
+    return '$actor mencabut status admin $target';
+  }
+
+  @override
+  String groupEventOwnerChanged(String actor, String target) {
+    return '$actor menjadikan $target pemilik grup';
+  }
+
+  @override
+  String groupEventRenamed(String actor, String name) {
+    return '$actor mengubah nama grup menjadi \"$name\"';
+  }
+
+  @override
+  String groupEventDescriptionChanged(String actor) {
+    return '$actor mengubah deskripsi grup';
+  }
+
+  @override
+  String groupEventDescriptionRemoved(String actor) {
+    return '$actor menghapus deskripsi grup';
+  }
+
+  @override
+  String groupEventPhotoChanged(String actor) {
+    return '$actor mengubah foto grup';
+  }
+
+  @override
+  String groupEventPhotoRemoved(String actor) {
+    return '$actor menghapus foto grup';
+  }
+
+  @override
+  String groupEventOnlyAdminsSend(String actor) {
+    return '$actor mengizinkan hanya admin mengirim pesan';
+  }
+
+  @override
+  String groupEventAllSend(String actor) {
+    return '$actor mengizinkan semua anggota mengirim pesan';
+  }
+
+  @override
+  String groupEventOnlyAdminsEdit(String actor) {
+    return '$actor mengizinkan hanya admin mengubah info grup';
+  }
+
+  @override
+  String groupEventAllEdit(String actor) {
+    return '$actor mengizinkan semua anggota mengubah info grup';
+  }
+
+  @override
+  String get groupInfo => 'Info grup';
+
+  @override
+  String get groupDescription => 'Deskripsi';
+
+  @override
+  String get groupDescriptionEmpty => 'Belum ada deskripsi grup';
+
+  @override
+  String get groupEditInfo => 'Ubah info grup';
+
+  @override
+  String get groupChangePhoto => 'Ganti foto grup';
+
+  @override
+  String get groupRemovePhoto => 'Hapus foto grup';
+
+  @override
+  String get groupSettings => 'Pengaturan grup';
+
+  @override
+  String get groupOnlyAdminsSend => 'Hanya admin yang bisa mengirim pesan';
+
+  @override
+  String get groupOnlyAdminsEdit => 'Hanya admin yang bisa mengubah info grup';
+
+  @override
+  String get groupAddMembers => 'Tambah anggota';
+
+  @override
+  String get groupAdd => 'Tambah';
+
+  @override
+  String get groupRoleOwner => 'Pemilik grup';
+
+  @override
+  String get groupRoleAdmin => 'Admin';
+
+  @override
+  String get groupMakeAdmin => 'Jadikan admin';
+
+  @override
+  String get groupDismissAdmin => 'Cabut status admin';
+
+  @override
+  String get groupRemoveMember => 'Keluarkan dari grup';
+
+  @override
+  String get groupMakeOwner => 'Jadikan pemilik grup';
+
+  @override
+  String get groupViewProfile => 'Lihat profil';
+
+  @override
+  String groupRemoveConfirm(String name) {
+    return 'Keluarkan $name dari grup?';
+  }
+
+  @override
+  String groupMakeOwnerConfirm(String name) {
+    return 'Jadikan $name pemilik grup? Anda akan menjadi admin.';
+  }
+
+  @override
+  String get groupLeave => 'Keluar dari grup';
+
+  @override
+  String get groupLeaveConfirm => 'Keluar dari grup ini?';
+
+  @override
+  String get groupAdminsOnlyNotice => 'Hanya admin yang bisa mengirim pesan di grup ini.';
+
+  @override
+  String get groupRemovedNotice => 'Anda bukan lagi anggota grup ini.';
+
+  @override
+  String get errorGroupAdminsOnly => 'Hanya admin yang bisa mengirim pesan di grup ini.';
+
+  @override
+  String get errorGroupAdminsOnlyEdit => 'Hanya admin yang bisa mengubah info grup.';
+
+  @override
+  String get errorGroupMemberNotFound => 'Orang ini bukan lagi anggota grup.';
 }

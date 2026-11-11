@@ -309,6 +309,22 @@ Nasabah yang tidak bisa masuk (lupa password/PIN, akun terkunci) bisa membuat pe
 
 Semua panggilan memakai **anon key** (`Authorization: Bearer <ANON_KEY>`, skema `cs_api`), tidak pernah token sosial, dan tidak memicu penukaran token OLT, meskipun `RendezvousCommunity` sudah diinisialisasi. Token tamu tidak pernah ditulis ke log. Di server lama tanpa `0140` (`cs_api.guest_config` belum ada) halaman menampilkan *"Pengaduan tanpa login sedang tidak tersedia…"*, sama seperti saat Super Admin mematikan `guest.enabled` dari Hub.
 
+## Kelola grup (1.17.0, server migrasi `0146`)
+
+Grup memakai peran `owner` (pembuat), `admin`, dan `member`. Header room grup membuka **Info grup**: foto, nama, deskripsi, pengaturan (khusus admin), daftar anggota dengan label peran, tambah anggota, dan keluar grup. Menu tiap anggota menyesuaikan peran:
+
+| Aksi | Owner | Admin | Member |
+|---|---|---|---|
+| Tambah anggota, jadikan admin | ya | ya | tidak |
+| Keluarkan anggota biasa | ya | ya | tidak |
+| Keluarkan admin, cabut status admin | ya | tidak | tidak |
+| Pindahkan kepemilikan | ya | tidak | tidak |
+| Ubah nama/deskripsi/foto | ya | ya | bila "Hanya admin yang bisa mengubah info grup" dimatikan |
+| Pengaturan grup | ya | ya | tidak |
+| Kirim pesan | ya | ya | bila "Hanya admin yang bisa mengirim pesan" dimatikan |
+
+Setiap perubahan tercatat sebagai pesan sistem (`MessageKind.groupEvent`) yang tampil di tengah chat dalam bahasa aplikasi dan tidak mengirim push notification. Anggota yang dikeluarkan langsung kehilangan akses ke riwayat grup.
+
 ## Offline: cache & outbox (1.3.0)
 
 Bawaannya aktif. Paket menyimpan data terakhir di database lokal milik user komunitas yang sedang masuk, lalu menampilkannya seketika saat layar dibuka; data server dimuat di latar belakang dan menggantikannya (server tetap sumber kebenaran).

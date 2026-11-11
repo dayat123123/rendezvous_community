@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 
@@ -43,6 +44,13 @@ class _DefaultRoomAvatar extends StatelessWidget {
     final radius = details.radius;
     if (room.type == RoomType.direct) {
       return CommunityAvatar(user: room.otherUser, online: details.online, radius: radius);
+    }
+    final photo = room.avatarUrl;
+    if (room.type == RoomType.group && photo != null) {
+      return CommunityAvatar(
+        user: UserSummary(id: room.id, username: room.name ?? '', avatarUrl: photo),
+        radius: radius,
+      );
     }
     final style = CommunityStyle.of(context);
     final (icon, background, foreground) = switch (room.type) {

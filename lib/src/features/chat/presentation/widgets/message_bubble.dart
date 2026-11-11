@@ -24,6 +24,7 @@ import 'package:rendezvous_community/src/features/chat/presentation/widgets/shar
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/stock_cards.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/swipe_to_reply.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
+import 'package:rendezvous_community/src/features/group/presentation/widgets/group_event_notice.dart';
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
@@ -84,6 +85,9 @@ class _MessageBubbleState extends State<MessageBubble> {
 
   @override
   Widget build(BuildContext context) {
+    if (message.isGroupEvent) {
+      return GroupEventNotice(message: message, meId: context.read<ChatRoomCubit>().state.me?.id);
+    }
     final details = _details(context);
     final fallback = message.isSystem
         ? SupportSystemNotice(message: message)

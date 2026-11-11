@@ -173,6 +173,10 @@ _RoomSummaryModel _$RoomSummaryModelFromJson(Map<String, dynamic> json) => _Room
   otherAvatarUrl: json['other_avatar_url'] as String?,
   otherIsVerified: json['other_is_verified'] as bool? ?? false,
   cursor: json['cursor'] as String?,
+  description: json['description'] as String?,
+  avatarUrl: json['avatar_url'] as String?,
+  onlyAdminsSend: json['only_admins_send'] as bool?,
+  onlyAdminsEdit: json['only_admins_edit'] as bool?,
 );
 
 Map<String, dynamic> _$RoomSummaryModelToJson(_RoomSummaryModel instance) => <String, dynamic>{
@@ -196,6 +200,10 @@ Map<String, dynamic> _$RoomSummaryModelToJson(_RoomSummaryModel instance) => <St
   'other_avatar_url': instance.otherAvatarUrl,
   'other_is_verified': instance.otherIsVerified,
   'cursor': instance.cursor,
+  'description': instance.description,
+  'avatar_url': instance.avatarUrl,
+  'only_admins_send': instance.onlyAdminsSend,
+  'only_admins_edit': instance.onlyAdminsEdit,
 };
 
 _RoomMemberModel _$RoomMemberModelFromJson(Map<String, dynamic> json) => _RoomMemberModel(

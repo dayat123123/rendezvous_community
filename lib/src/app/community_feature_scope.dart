@@ -10,6 +10,7 @@ import 'package:rendezvous_community/src/features/config/domain/services/client_
 import 'package:rendezvous_community/src/features/config/domain/services/community_promo_popups.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/services/community_drafts.dart';
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
+import 'package:rendezvous_community/src/features/group/domain/repositories/group_repository.dart';
 import 'package:rendezvous_community/src/features/link_preview/domain/services/link_preview_loader.dart';
 import 'package:rendezvous_community/src/features/message_requests/domain/repositories/message_request_repository.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/repositories/notification_preferences_repository.dart';
@@ -32,6 +33,7 @@ abstract interface class CommunityFeatureDependencies {
   NotificationReporter get notificationReporter;
   BannerDismissals get bannerDismissals;
   CommunityDrafts get drafts;
+  GroupRepository get groups;
 }
 
 abstract interface class CommunityPromoPopupDependencies {

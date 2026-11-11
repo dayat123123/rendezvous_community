@@ -55,6 +55,9 @@ void main() {
       requestIntro: host,
       requestActions: host,
       requestBubble: host,
+      groupEvent: host,
+      groupNotice: host,
+      groupMember: host,
     );
     final kept = hostSet.merge(const CommunityChatBuilders());
     final replaced = hostSet.merge(
@@ -77,6 +80,9 @@ void main() {
         requestIntro: nested,
         requestActions: nested,
         requestBubble: nested,
+        groupEvent: nested,
+        groupNotice: nested,
+        groupMember: nested,
       ),
     );
     List<Object?> slots(CommunityChatBuilders b) => [
@@ -98,6 +104,9 @@ void main() {
       b.requestIntro,
       b.requestActions,
       b.requestBubble,
+      b.groupEvent,
+      b.groupNotice,
+      b.groupMember,
     ];
     expect(slots(kept), everyElement(same(host)));
     expect(slots(replaced), everyElement(same(nested)));

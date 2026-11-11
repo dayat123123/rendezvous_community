@@ -64,6 +64,8 @@ import 'package:rendezvous_community/src/features/feed/data/local/feed_local_cac
 import 'package:rendezvous_community/src/features/feed/data/repositories/feed_repository_impl.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_cache_repository.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
+import 'package:rendezvous_community/src/features/group/data/repositories/group_repository_impl.dart';
+import 'package:rendezvous_community/src/features/group/domain/repositories/group_repository.dart';
 import 'package:rendezvous_community/src/features/guest_support/data/repositories/guest_support_repository_impl.dart';
 import 'package:rendezvous_community/src/features/guest_support/domain/repositories/guest_session_store.dart';
 import 'package:rendezvous_community/src/features/guest_support/domain/repositories/guest_support_repository.dart';
@@ -169,6 +171,7 @@ class RendezvousCommunity
     required this.bannerDismissals,
     required this.promoPopups,
     required this.drafts,
+    required this.groups,
     required this.connectivity,
     required this._offline,
     required this.chatCache,
@@ -414,6 +417,7 @@ class RendezvousCommunity
         currentUserId: () => tokens.currentUserId,
       ),
       drafts: CommunityDrafts(PostDraftRepositoryImpl(api), PostDraftStoreImpl(localValues)),
+      groups: GroupRepositoryImpl(api),
       analytics: CommunityAnalytics(
         AnalyticsRepositoryImpl(api),
         enabled: () => configService.current.feature(CommunityFlags.analytics),
@@ -509,6 +513,8 @@ class RendezvousCommunity
   final CommunityPromoPopups promoPopups;
   @override
   final CommunityDrafts drafts;
+  @override
+  final GroupRepository groups;
   @override
   final CommunityConnectivity connectivity;
   @override

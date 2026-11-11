@@ -131,13 +131,41 @@ class _ChatRoomView extends StatelessWidget {
                   ),
                   const _TypingIndicator(),
                   const CommunityDivider(),
-                  _OfficialGate(child: composer ?? const MessageComposer()),
+                  _GroupGate(child: _OfficialGate(child: composer ?? const MessageComposer())),
                 ],
               ),
             ),
           ),
         };
       },
+    );
+  }
+}
+
+class _GroupGate extends StatelessWidget {
+  const _GroupGate({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final room = context.select((ChatRoomCubit c) => c.state.room);
+    final removed = context.select((ChatRoomCubit c) => c.state.removedFromGroup);
+    if (room == null || room.type != RoomType.group || (!removed && room.canSend)) return child;
+    final l10n = context.communityL10n;
+    final details = CommunityGroupNoticeDetails(
+      room: room,
+      message: removed ? l10n.groupRemovedNotice : l10n.groupAdminsOnlyNotice,
+      removed: removed,
+    );
+    return buildChatPart(
+      CommunityChatBuilders.of(context).groupNotice,
+      context,
+      details,
+      SafeArea(
+        top: false,
+        child: ChatStrip(icon: removed ? Icons.block : Icons.campaign_outlined, message: details.message),
+      ),
     );
   }
 }

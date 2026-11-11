@@ -140,6 +140,10 @@ export 'src/features/feed/presentation/widgets/community_feed_list.dart' show Co
 export 'src/features/feed/presentation/widgets/community_stream_feed.dart' show CommunityFeedTab, CommunityStreamFeed;
 export 'src/features/feed/presentation/widgets/compose_prompt_card.dart' show CommunityComposePromptCard;
 export 'src/features/feed/presentation/widgets/sentiment_badge.dart';
+export 'src/features/group/domain/entities/group_event.dart';
+export 'src/features/group/domain/repositories/group_repository.dart';
+export 'src/features/group/presentation/widgets/community_group_info.dart' show CommunityGroupInfo;
+export 'src/features/group/presentation/widgets/group_event_notice.dart' show GroupEventNotice, groupEventText;
 export 'src/features/guest_support/domain/entities/guest_support.dart';
 export 'src/features/guest_support/domain/repositories/guest_session_store.dart';
 export 'src/features/guest_support/domain/repositories/guest_support_repository.dart';

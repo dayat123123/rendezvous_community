@@ -1312,7 +1312,7 @@ as String?,
 /// @nodoc
 mixin _$RoomSummaryModel {
 
- String get id; String get type; String? get name; String? get stockCode; DateTime? get lastMessageAt; String? get lastMessagePreview; String? get lastMessageSenderId; String? get lastMessageStatus; DateTime get createdAt; String? get myRole; bool get muted; DateTime get lastReadAt; int get unreadCount; int get memberCount; String? get otherUserId; String? get otherUsername; String? get otherDisplayName; String? get otherAvatarUrl; bool get otherIsVerified; String? get cursor;
+ String get id; String get type; String? get name; String? get stockCode; DateTime? get lastMessageAt; String? get lastMessagePreview; String? get lastMessageSenderId; String? get lastMessageStatus; DateTime get createdAt; String? get myRole; bool get muted; DateTime get lastReadAt; int get unreadCount; int get memberCount; String? get otherUserId; String? get otherUsername; String? get otherDisplayName; String? get otherAvatarUrl; bool get otherIsVerified; String? get cursor; String? get description; String? get avatarUrl; bool? get onlyAdminsSend; bool? get onlyAdminsEdit;
 /// Create a copy of RoomSummaryModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -1325,16 +1325,16 @@ $RoomSummaryModelCopyWith<RoomSummaryModel> get copyWith => _$RoomSummaryModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoomSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.name, name) || other.name == name)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageSenderId, lastMessageSenderId) || other.lastMessageSenderId == lastMessageSenderId)&&(identical(other.lastMessageStatus, lastMessageStatus) || other.lastMessageStatus == lastMessageStatus)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.myRole, myRole) || other.myRole == myRole)&&(identical(other.muted, muted) || other.muted == muted)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.otherUserId, otherUserId) || other.otherUserId == otherUserId)&&(identical(other.otherUsername, otherUsername) || other.otherUsername == otherUsername)&&(identical(other.otherDisplayName, otherDisplayName) || other.otherDisplayName == otherDisplayName)&&(identical(other.otherAvatarUrl, otherAvatarUrl) || other.otherAvatarUrl == otherAvatarUrl)&&(identical(other.otherIsVerified, otherIsVerified) || other.otherIsVerified == otherIsVerified)&&(identical(other.cursor, cursor) || other.cursor == cursor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoomSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.name, name) || other.name == name)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageSenderId, lastMessageSenderId) || other.lastMessageSenderId == lastMessageSenderId)&&(identical(other.lastMessageStatus, lastMessageStatus) || other.lastMessageStatus == lastMessageStatus)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.myRole, myRole) || other.myRole == myRole)&&(identical(other.muted, muted) || other.muted == muted)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.otherUserId, otherUserId) || other.otherUserId == otherUserId)&&(identical(other.otherUsername, otherUsername) || other.otherUsername == otherUsername)&&(identical(other.otherDisplayName, otherDisplayName) || other.otherDisplayName == otherDisplayName)&&(identical(other.otherAvatarUrl, otherAvatarUrl) || other.otherAvatarUrl == otherAvatarUrl)&&(identical(other.otherIsVerified, otherIsVerified) || other.otherIsVerified == otherIsVerified)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.onlyAdminsSend, onlyAdminsSend) || other.onlyAdminsSend == onlyAdminsSend)&&(identical(other.onlyAdminsEdit, onlyAdminsEdit) || other.onlyAdminsEdit == onlyAdminsEdit));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,type,name,stockCode,lastMessageAt,lastMessagePreview,lastMessageSenderId,lastMessageStatus,createdAt,myRole,muted,lastReadAt,unreadCount,memberCount,otherUserId,otherUsername,otherDisplayName,otherAvatarUrl,otherIsVerified,cursor]);
+int get hashCode => Object.hashAll([runtimeType,id,type,name,stockCode,lastMessageAt,lastMessagePreview,lastMessageSenderId,lastMessageStatus,createdAt,myRole,muted,lastReadAt,unreadCount,memberCount,otherUserId,otherUsername,otherDisplayName,otherAvatarUrl,otherIsVerified,cursor,description,avatarUrl,onlyAdminsSend,onlyAdminsEdit]);
 
 @override
 String toString() {
-  return 'RoomSummaryModel(id: $id, type: $type, name: $name, stockCode: $stockCode, lastMessageAt: $lastMessageAt, lastMessagePreview: $lastMessagePreview, lastMessageSenderId: $lastMessageSenderId, lastMessageStatus: $lastMessageStatus, createdAt: $createdAt, myRole: $myRole, muted: $muted, lastReadAt: $lastReadAt, unreadCount: $unreadCount, memberCount: $memberCount, otherUserId: $otherUserId, otherUsername: $otherUsername, otherDisplayName: $otherDisplayName, otherAvatarUrl: $otherAvatarUrl, otherIsVerified: $otherIsVerified, cursor: $cursor)';
+  return 'RoomSummaryModel(id: $id, type: $type, name: $name, stockCode: $stockCode, lastMessageAt: $lastMessageAt, lastMessagePreview: $lastMessagePreview, lastMessageSenderId: $lastMessageSenderId, lastMessageStatus: $lastMessageStatus, createdAt: $createdAt, myRole: $myRole, muted: $muted, lastReadAt: $lastReadAt, unreadCount: $unreadCount, memberCount: $memberCount, otherUserId: $otherUserId, otherUsername: $otherUsername, otherDisplayName: $otherDisplayName, otherAvatarUrl: $otherAvatarUrl, otherIsVerified: $otherIsVerified, cursor: $cursor, description: $description, avatarUrl: $avatarUrl, onlyAdminsSend: $onlyAdminsSend, onlyAdminsEdit: $onlyAdminsEdit)';
 }
 
 
@@ -1345,7 +1345,7 @@ abstract mixin class $RoomSummaryModelCopyWith<$Res>  {
   factory $RoomSummaryModelCopyWith(RoomSummaryModel value, $Res Function(RoomSummaryModel) _then) = _$RoomSummaryModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String type, String? name, String? stockCode, DateTime? lastMessageAt, String? lastMessagePreview, String? lastMessageSenderId, String? lastMessageStatus, DateTime createdAt, String? myRole, bool muted, DateTime lastReadAt, int unreadCount, int memberCount, String? otherUserId, String? otherUsername, String? otherDisplayName, String? otherAvatarUrl, bool otherIsVerified, String? cursor
+ String id, String type, String? name, String? stockCode, DateTime? lastMessageAt, String? lastMessagePreview, String? lastMessageSenderId, String? lastMessageStatus, DateTime createdAt, String? myRole, bool muted, DateTime lastReadAt, int unreadCount, int memberCount, String? otherUserId, String? otherUsername, String? otherDisplayName, String? otherAvatarUrl, bool otherIsVerified, String? cursor, String? description, String? avatarUrl, bool? onlyAdminsSend, bool? onlyAdminsEdit
 });
 
 
@@ -1362,7 +1362,7 @@ class _$RoomSummaryModelCopyWithImpl<$Res>
 
 /// Create a copy of RoomSummaryModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? name = freezed,Object? stockCode = freezed,Object? lastMessageAt = freezed,Object? lastMessagePreview = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageStatus = freezed,Object? createdAt = null,Object? myRole = freezed,Object? muted = null,Object? lastReadAt = null,Object? unreadCount = null,Object? memberCount = null,Object? otherUserId = freezed,Object? otherUsername = freezed,Object? otherDisplayName = freezed,Object? otherAvatarUrl = freezed,Object? otherIsVerified = null,Object? cursor = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? name = freezed,Object? stockCode = freezed,Object? lastMessageAt = freezed,Object? lastMessagePreview = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageStatus = freezed,Object? createdAt = null,Object? myRole = freezed,Object? muted = null,Object? lastReadAt = null,Object? unreadCount = null,Object? memberCount = null,Object? otherUserId = freezed,Object? otherUsername = freezed,Object? otherDisplayName = freezed,Object? otherAvatarUrl = freezed,Object? otherIsVerified = null,Object? cursor = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? onlyAdminsSend = freezed,Object? onlyAdminsEdit = freezed,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -1384,7 +1384,11 @@ as String?,otherDisplayName: freezed == otherDisplayName ? _self.otherDisplayNam
 as String?,otherAvatarUrl: freezed == otherAvatarUrl ? _self.otherAvatarUrl : otherAvatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,otherIsVerified: null == otherIsVerified ? _self.otherIsVerified : otherIsVerified // ignore: cast_nullable_to_non_nullable
 as bool,cursor: freezed == cursor ? _self.cursor : cursor // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,onlyAdminsSend: freezed == onlyAdminsSend ? _self.onlyAdminsSend : onlyAdminsSend // ignore: cast_nullable_to_non_nullable
+as bool?,onlyAdminsEdit: freezed == onlyAdminsEdit ? _self.onlyAdminsEdit : onlyAdminsEdit // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 
@@ -1469,10 +1473,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  String? lastMessageStatus,  DateTime createdAt,  String? myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  String? otherUserId,  String? otherUsername,  String? otherDisplayName,  String? otherAvatarUrl,  bool otherIsVerified,  String? cursor)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  String? lastMessageStatus,  DateTime createdAt,  String? myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  String? otherUserId,  String? otherUsername,  String? otherDisplayName,  String? otherAvatarUrl,  bool otherIsVerified,  String? cursor,  String? description,  String? avatarUrl,  bool? onlyAdminsSend,  bool? onlyAdminsEdit)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _RoomSummaryModel() when $default != null:
-return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUserId,_that.otherUsername,_that.otherDisplayName,_that.otherAvatarUrl,_that.otherIsVerified,_that.cursor);case _:
+return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUserId,_that.otherUsername,_that.otherDisplayName,_that.otherAvatarUrl,_that.otherIsVerified,_that.cursor,_that.description,_that.avatarUrl,_that.onlyAdminsSend,_that.onlyAdminsEdit);case _:
   return orElse();
 
 }
@@ -1490,10 +1494,10 @@ return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessage
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  String? lastMessageStatus,  DateTime createdAt,  String? myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  String? otherUserId,  String? otherUsername,  String? otherDisplayName,  String? otherAvatarUrl,  bool otherIsVerified,  String? cursor)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  String? lastMessageStatus,  DateTime createdAt,  String? myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  String? otherUserId,  String? otherUsername,  String? otherDisplayName,  String? otherAvatarUrl,  bool otherIsVerified,  String? cursor,  String? description,  String? avatarUrl,  bool? onlyAdminsSend,  bool? onlyAdminsEdit)  $default,) {final _that = this;
 switch (_that) {
 case _RoomSummaryModel():
-return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUserId,_that.otherUsername,_that.otherDisplayName,_that.otherAvatarUrl,_that.otherIsVerified,_that.cursor);case _:
+return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUserId,_that.otherUsername,_that.otherDisplayName,_that.otherAvatarUrl,_that.otherIsVerified,_that.cursor,_that.description,_that.avatarUrl,_that.onlyAdminsSend,_that.onlyAdminsEdit);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -1510,10 +1514,10 @@ return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessage
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  String? lastMessageStatus,  DateTime createdAt,  String? myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  String? otherUserId,  String? otherUsername,  String? otherDisplayName,  String? otherAvatarUrl,  bool otherIsVerified,  String? cursor)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  String? lastMessageStatus,  DateTime createdAt,  String? myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  String? otherUserId,  String? otherUsername,  String? otherDisplayName,  String? otherAvatarUrl,  bool otherIsVerified,  String? cursor,  String? description,  String? avatarUrl,  bool? onlyAdminsSend,  bool? onlyAdminsEdit)?  $default,) {final _that = this;
 switch (_that) {
 case _RoomSummaryModel() when $default != null:
-return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUserId,_that.otherUsername,_that.otherDisplayName,_that.otherAvatarUrl,_that.otherIsVerified,_that.cursor);case _:
+return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUserId,_that.otherUsername,_that.otherDisplayName,_that.otherAvatarUrl,_that.otherIsVerified,_that.cursor,_that.description,_that.avatarUrl,_that.onlyAdminsSend,_that.onlyAdminsEdit);case _:
   return null;
 
 }
@@ -1525,7 +1529,7 @@ return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessage
 @JsonSerializable()
 
 class _RoomSummaryModel extends RoomSummaryModel {
-  const _RoomSummaryModel({required this.id, required this.type, this.name, this.stockCode, this.lastMessageAt, this.lastMessagePreview, this.lastMessageSenderId, this.lastMessageStatus, required this.createdAt, this.myRole, this.muted = false, required this.lastReadAt, this.unreadCount = 0, this.memberCount = 0, this.otherUserId, this.otherUsername, this.otherDisplayName, this.otherAvatarUrl, this.otherIsVerified = false, this.cursor}): super._();
+  const _RoomSummaryModel({required this.id, required this.type, this.name, this.stockCode, this.lastMessageAt, this.lastMessagePreview, this.lastMessageSenderId, this.lastMessageStatus, required this.createdAt, this.myRole, this.muted = false, required this.lastReadAt, this.unreadCount = 0, this.memberCount = 0, this.otherUserId, this.otherUsername, this.otherDisplayName, this.otherAvatarUrl, this.otherIsVerified = false, this.cursor, this.description, this.avatarUrl, this.onlyAdminsSend, this.onlyAdminsEdit}): super._();
   factory _RoomSummaryModel.fromJson(Map<String, dynamic> json) => _$RoomSummaryModelFromJson(json);
 
 @override final  String id;
@@ -1548,6 +1552,10 @@ class _RoomSummaryModel extends RoomSummaryModel {
 @override final  String? otherAvatarUrl;
 @override@JsonKey() final  bool otherIsVerified;
 @override final  String? cursor;
+@override final  String? description;
+@override final  String? avatarUrl;
+@override final  bool? onlyAdminsSend;
+@override final  bool? onlyAdminsEdit;
 
 /// Create a copy of RoomSummaryModel
 /// with the given fields replaced by the non-null parameter values.
@@ -1562,16 +1570,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoomSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.name, name) || other.name == name)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageSenderId, lastMessageSenderId) || other.lastMessageSenderId == lastMessageSenderId)&&(identical(other.lastMessageStatus, lastMessageStatus) || other.lastMessageStatus == lastMessageStatus)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.myRole, myRole) || other.myRole == myRole)&&(identical(other.muted, muted) || other.muted == muted)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.otherUserId, otherUserId) || other.otherUserId == otherUserId)&&(identical(other.otherUsername, otherUsername) || other.otherUsername == otherUsername)&&(identical(other.otherDisplayName, otherDisplayName) || other.otherDisplayName == otherDisplayName)&&(identical(other.otherAvatarUrl, otherAvatarUrl) || other.otherAvatarUrl == otherAvatarUrl)&&(identical(other.otherIsVerified, otherIsVerified) || other.otherIsVerified == otherIsVerified)&&(identical(other.cursor, cursor) || other.cursor == cursor));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoomSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.name, name) || other.name == name)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageSenderId, lastMessageSenderId) || other.lastMessageSenderId == lastMessageSenderId)&&(identical(other.lastMessageStatus, lastMessageStatus) || other.lastMessageStatus == lastMessageStatus)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.myRole, myRole) || other.myRole == myRole)&&(identical(other.muted, muted) || other.muted == muted)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.otherUserId, otherUserId) || other.otherUserId == otherUserId)&&(identical(other.otherUsername, otherUsername) || other.otherUsername == otherUsername)&&(identical(other.otherDisplayName, otherDisplayName) || other.otherDisplayName == otherDisplayName)&&(identical(other.otherAvatarUrl, otherAvatarUrl) || other.otherAvatarUrl == otherAvatarUrl)&&(identical(other.otherIsVerified, otherIsVerified) || other.otherIsVerified == otherIsVerified)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.onlyAdminsSend, onlyAdminsSend) || other.onlyAdminsSend == onlyAdminsSend)&&(identical(other.onlyAdminsEdit, onlyAdminsEdit) || other.onlyAdminsEdit == onlyAdminsEdit));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,type,name,stockCode,lastMessageAt,lastMessagePreview,lastMessageSenderId,lastMessageStatus,createdAt,myRole,muted,lastReadAt,unreadCount,memberCount,otherUserId,otherUsername,otherDisplayName,otherAvatarUrl,otherIsVerified,cursor]);
+int get hashCode => Object.hashAll([runtimeType,id,type,name,stockCode,lastMessageAt,lastMessagePreview,lastMessageSenderId,lastMessageStatus,createdAt,myRole,muted,lastReadAt,unreadCount,memberCount,otherUserId,otherUsername,otherDisplayName,otherAvatarUrl,otherIsVerified,cursor,description,avatarUrl,onlyAdminsSend,onlyAdminsEdit]);
 
 @override
 String toString() {
-  return 'RoomSummaryModel(id: $id, type: $type, name: $name, stockCode: $stockCode, lastMessageAt: $lastMessageAt, lastMessagePreview: $lastMessagePreview, lastMessageSenderId: $lastMessageSenderId, lastMessageStatus: $lastMessageStatus, createdAt: $createdAt, myRole: $myRole, muted: $muted, lastReadAt: $lastReadAt, unreadCount: $unreadCount, memberCount: $memberCount, otherUserId: $otherUserId, otherUsername: $otherUsername, otherDisplayName: $otherDisplayName, otherAvatarUrl: $otherAvatarUrl, otherIsVerified: $otherIsVerified, cursor: $cursor)';
+  return 'RoomSummaryModel(id: $id, type: $type, name: $name, stockCode: $stockCode, lastMessageAt: $lastMessageAt, lastMessagePreview: $lastMessagePreview, lastMessageSenderId: $lastMessageSenderId, lastMessageStatus: $lastMessageStatus, createdAt: $createdAt, myRole: $myRole, muted: $muted, lastReadAt: $lastReadAt, unreadCount: $unreadCount, memberCount: $memberCount, otherUserId: $otherUserId, otherUsername: $otherUsername, otherDisplayName: $otherDisplayName, otherAvatarUrl: $otherAvatarUrl, otherIsVerified: $otherIsVerified, cursor: $cursor, description: $description, avatarUrl: $avatarUrl, onlyAdminsSend: $onlyAdminsSend, onlyAdminsEdit: $onlyAdminsEdit)';
 }
 
 
@@ -1582,7 +1590,7 @@ abstract mixin class _$RoomSummaryModelCopyWith<$Res> implements $RoomSummaryMod
   factory _$RoomSummaryModelCopyWith(_RoomSummaryModel value, $Res Function(_RoomSummaryModel) _then) = __$RoomSummaryModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String type, String? name, String? stockCode, DateTime? lastMessageAt, String? lastMessagePreview, String? lastMessageSenderId, String? lastMessageStatus, DateTime createdAt, String? myRole, bool muted, DateTime lastReadAt, int unreadCount, int memberCount, String? otherUserId, String? otherUsername, String? otherDisplayName, String? otherAvatarUrl, bool otherIsVerified, String? cursor
+ String id, String type, String? name, String? stockCode, DateTime? lastMessageAt, String? lastMessagePreview, String? lastMessageSenderId, String? lastMessageStatus, DateTime createdAt, String? myRole, bool muted, DateTime lastReadAt, int unreadCount, int memberCount, String? otherUserId, String? otherUsername, String? otherDisplayName, String? otherAvatarUrl, bool otherIsVerified, String? cursor, String? description, String? avatarUrl, bool? onlyAdminsSend, bool? onlyAdminsEdit
 });
 
 
@@ -1599,7 +1607,7 @@ class __$RoomSummaryModelCopyWithImpl<$Res>
 
 /// Create a copy of RoomSummaryModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? name = freezed,Object? stockCode = freezed,Object? lastMessageAt = freezed,Object? lastMessagePreview = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageStatus = freezed,Object? createdAt = null,Object? myRole = freezed,Object? muted = null,Object? lastReadAt = null,Object? unreadCount = null,Object? memberCount = null,Object? otherUserId = freezed,Object? otherUsername = freezed,Object? otherDisplayName = freezed,Object? otherAvatarUrl = freezed,Object? otherIsVerified = null,Object? cursor = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? name = freezed,Object? stockCode = freezed,Object? lastMessageAt = freezed,Object? lastMessagePreview = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageStatus = freezed,Object? createdAt = null,Object? myRole = freezed,Object? muted = null,Object? lastReadAt = null,Object? unreadCount = null,Object? memberCount = null,Object? otherUserId = freezed,Object? otherUsername = freezed,Object? otherDisplayName = freezed,Object? otherAvatarUrl = freezed,Object? otherIsVerified = null,Object? cursor = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? onlyAdminsSend = freezed,Object? onlyAdminsEdit = freezed,}) {
   return _then(_RoomSummaryModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -1621,7 +1629,11 @@ as String?,otherDisplayName: freezed == otherDisplayName ? _self.otherDisplayNam
 as String?,otherAvatarUrl: freezed == otherAvatarUrl ? _self.otherAvatarUrl : otherAvatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,otherIsVerified: null == otherIsVerified ? _self.otherIsVerified : otherIsVerified // ignore: cast_nullable_to_non_nullable
 as bool,cursor: freezed == cursor ? _self.cursor : cursor // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,description: freezed == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
+as String?,onlyAdminsSend: freezed == onlyAdminsSend ? _self.onlyAdminsSend : onlyAdminsSend // ignore: cast_nullable_to_non_nullable
+as bool?,onlyAdminsEdit: freezed == onlyAdminsEdit ? _self.onlyAdminsEdit : onlyAdminsEdit // ignore: cast_nullable_to_non_nullable
+as bool?,
   ));
 }
 
