@@ -1,3 +1,11 @@
+## 1.16.2
+
+Tidak butuh migrasi server. API publik tidak berubah.
+
+* **`currentUser` ikut berubah setelah edit profil sendiri:** sebelumnya `RendezvousCommunity.currentUser` tetap berisi nama dan foto saat sesi dibuat, karena data user di sesi tidak diperbarui setelah profil disimpan. Kini, setelah nama/bio disimpan atau foto profil diunggah, library mengambil ulang profil (`get_profile`) lalu memperbarui user di sesi aktif tanpa mengganti token. `userChanges` memancarkan user baru. Bila pengambilan ulang gagal, penyimpanan tetap dianggap berhasil dan `currentUser` baru ikut berubah pada pengambilan berikutnya.
+* **Refresh token tidak mengembalikan data lama:** auth-bridge menyimpan identitas per token OLT selama `VERIFY_CACHE_TTL` (bawaan 60 detik), sehingga refresh tepat setelah edit bisa mengembalikan nama/foto sebelum diedit. Data hasil edit dipertahankan selama bridge masih mengirim data lama itu; begitu bridge mengirim data lain (misalnya hasil edit atau perubahan dari moderasi), data bridge kembali dipakai.
+* **Tampilan yang sedang terbuka ikut berubah:** kartu "Tulis post" di feed, author di composer post, dan avatar di kolom balasan komentar kini mengikuti `userChanges`, jadi langsung memakai nama dan foto baru tanpa dibuka ulang.
+
 ## 1.16.1
 
 Tidak butuh migrasi server. Perubahan tampilan saja.

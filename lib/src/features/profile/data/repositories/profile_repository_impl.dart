@@ -1,6 +1,8 @@
 import 'dart:typed_data';
 
+import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
+import 'package:rendezvous_community/src/core/logging/community_logger.dart';
 import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
 import 'package:rendezvous_community/src/features/profile/data/models/profile_model.dart';
@@ -10,9 +12,10 @@ import 'package:rendezvous_community/src/shared/data/models/user_summary_model.d
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
 class ProfileRepositoryImpl implements ProfileRepository, SuggestedUsersRepository {
-  ProfileRepositoryImpl(this._api);
+  ProfileRepositoryImpl(this._api, {this.onMyProfileChanged});
 
   final SocialRemoteDataSource _api;
+  final void Function(UserSummary user)? onMyProfileChanged;
 
   @override
   Future<UserProfile?> getProfile({String? userId, String? username}) async {
@@ -26,6 +29,22 @@ class ProfileRepositoryImpl implements ProfileRepository, SuggestedUsersReposito
     final values = <String, Object?>{'display_name': ?displayName, 'bio': ?bio, 'avatar_url': ?avatarUrl};
     if (values.isEmpty) return;
     await _api.update('profiles', values, {'id': me});
+    await _reportMyProfile(me);
+  }
+
+  Future<void> _reportMyProfile(String me) async {
+    final report = onMyProfileChanged;
+    if (report == null) return;
+    try {
+      final profile = await getProfile(userId: me);
+      if (profile != null) report(profile.user);
+    } catch (e) {
+      CommunityLoggers.account.event(
+        Level.WARNING,
+        'Reloading the saved profile failed',
+        fields: {'errorType': e.runtimeType.toString()},
+      );
+    }
   }
 
   @override

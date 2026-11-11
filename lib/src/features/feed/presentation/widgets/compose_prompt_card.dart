@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/app/community_current_user.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/composer_action.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/widgets/community_compose_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
@@ -8,6 +8,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/builders/com
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/cubit/feed_cubit.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/editorial_section.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
@@ -21,7 +22,9 @@ class CommunityComposePromptCard extends StatelessWidget {
   final ValueChanged<Post>? onPosted;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) => CommunityCurrentUserBuilder(builder: _build);
+
+  Widget _build(BuildContext context, UserSummary? user) {
     final l10n = context.communityL10n;
     Future<void> compose({Sentiment? sentiment, CommunityComposerAction? action}) async {
       final post = await showCommunityComposer(
@@ -40,7 +43,7 @@ class CommunityComposePromptCard extends StatelessWidget {
     }
 
     final details = CommunityComposePromptDetails(
-      user: CommunityScope.of(context).currentUser,
+      user: user,
       hintText: l10n.composePrompt,
       onCompose: compose,
       onComposeWith: compose,

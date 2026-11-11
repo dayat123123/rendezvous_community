@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/app/community_current_user.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
@@ -310,8 +311,6 @@ class _ComposeViewState extends State<_ComposeView> {
           onAddPoll: state.busy || !state.canAddPoll ? null : cubit.addPoll,
         );
         final hint = style.typography.meta.copyWith(color: style.textSecondary);
-        final user = CommunityScope.of(context).currentUser;
-        final author = user == null ? null : CommunityComposeAuthorDetails(user: user, sentiment: state.sentiment);
         final bodyStyle = style.typography.body;
         final fieldHintStyle = bodyStyle.copyWith(color: style.textSecondary);
         final fieldDecoration = InputDecoration(
@@ -363,10 +362,21 @@ class _ComposeViewState extends State<_ComposeView> {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              if (author != null) ...[
-                buildFeedPart((b) => b.composeAuthor, context, author, _DefaultComposeAuthor(details: author)),
-                SizedBox(height: spacing.md),
-              ],
+              CommunityCurrentUserBuilder(
+                builder: (context, user) {
+                  if (user == null) return const SizedBox.shrink();
+                  final author = CommunityComposeAuthorDetails(user: user, sentiment: state.sentiment);
+                  return Padding(
+                    padding: EdgeInsets.only(bottom: spacing.md),
+                    child: buildFeedPart(
+                      (b) => b.composeAuthor,
+                      context,
+                      author,
+                      _DefaultComposeAuthor(details: author),
+                    ),
+                  );
+                },
+              ),
               buildFeedPart((b) => b.composeField, context, field, field.field),
               if (poll != null) ...[SizedBox(height: spacing.md), PollEditor(poll: poll, enabled: !state.submitting)],
               SizedBox(height: spacing.md),

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rendezvous_community/src/app/community_current_user.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
-import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
@@ -140,9 +140,8 @@ class _DefaultReplyComposer extends StatelessWidget {
               children: [
                 Padding(
                   padding: EdgeInsets.only(bottom: spacing.sm),
-                  child: CommunityAvatar(
-                    user: CommunityScope.of(context).currentUser,
-                    radius: style.avatarSizes.comment / 2,
+                  child: CommunityCurrentUserBuilder(
+                    builder: (context, user) => CommunityAvatar(user: user, radius: style.avatarSizes.comment / 2),
                   ),
                 ),
                 SizedBox(width: spacing.sm),

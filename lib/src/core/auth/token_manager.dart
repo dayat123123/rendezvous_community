@@ -8,6 +8,7 @@ import 'package:rendezvous_community/src/core/auth/social_session.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/error/error_mapper.dart';
 import 'package:rendezvous_community/src/core/logging/community_logger.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
 class TokenManager implements SessionTokens {
   TokenManager({
@@ -26,6 +27,8 @@ class TokenManager implements SessionTokens {
 
   final _changes = StreamController<SocialSession?>.broadcast();
   SocialSession? _session;
+  UserSummary? _editedUser;
+  UserSummary? _replacedUser;
   String? _hostKey;
   Future<SocialSession>? _inflight;
   Timer? _timer;
@@ -86,7 +89,7 @@ class TokenManager implements SessionTokens {
         'Token provider returned no token because the user is not signed in to the host app',
       );
     }
-    final session = await _bridge.exchange(token);
+    final session = _keepEditedProfile(await _bridge.exchange(token));
     if (_disposed) return session;
     _hostKey = hostIdentityKey(token);
     _session = session;
@@ -119,9 +122,39 @@ class TokenManager implements SessionTokens {
 
   bool _expiringSoon(SocialSession s) => !_clock().isBefore(s.expiresAt.subtract(refreshMargin ~/ 2));
 
+  void updateSessionUser(UserSummary user) {
+    final session = _session;
+    if (_disposed || session == null || session.user.id != user.id) return;
+    _replacedUser ??= session.user;
+    _editedUser = user;
+    final updated = session.copyWith(user: user);
+    _session = updated;
+    _changes.add(updated);
+  }
+
+  SocialSession _keepEditedProfile(SocialSession session) {
+    final edited = _editedUser;
+    final replaced = _replacedUser;
+    if (edited == null || replaced == null) return session;
+    final user = session.user;
+    if (user.id == edited.id && _sameProfile(user, replaced) && !_sameProfile(user, edited)) {
+      CommunityLoggers.auth.event(Level.FINE, 'Auth-bridge returned a stale profile, keeping the edited one');
+      return session.copyWith(
+        user: user.copyWith(displayName: edited.displayName, avatarUrl: edited.avatarUrl),
+      );
+    }
+    _editedUser = null;
+    _replacedUser = null;
+    return session;
+  }
+
+  bool _sameProfile(UserSummary a, UserSummary b) => a.displayName == b.displayName && a.avatarUrl == b.avatarUrl;
+
   void clear() {
     _timer?.cancel();
     _session = null;
+    _editedUser = null;
+    _replacedUser = null;
     _hostKey = null;
     if (!_disposed) _changes.add(null);
   }

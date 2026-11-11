@@ -5,6 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/app/community_account_scope.dart';
+import 'package:rendezvous_community/src/app/community_current_user.dart';
 import 'package:rendezvous_community/src/app/community_dependencies.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_guest_support_scope.dart';
@@ -130,7 +131,8 @@ class RendezvousCommunity
         CommunityAccountDependencies,
         CommunityFeatureDependencies,
         CommunityPromoPopupDependencies,
-        CommunityOfflineDependencies {
+        CommunityOfflineDependencies,
+        CommunityUserChanges {
   RendezvousCommunity._({
     required this.client,
     required this._tokens,
@@ -369,7 +371,7 @@ class RendezvousCommunity
       feed: FeedRepositoryImpl(api, realtime, feedCache),
       comments: CommentRepositoryImpl(api, realtime),
       polls: PollRepositoryImpl(api),
-      profiles: ProfileRepositoryImpl(api),
+      profiles: ProfileRepositoryImpl(api, onMyProfileChanged: tokens.updateSessionUser),
       stocks: StockRepositoryImpl(api),
       notifications: notifications,
       moderation: ModerationRepositoryImpl(api),
@@ -614,7 +616,8 @@ class RendezvousCommunity
   @override
   UserSummary? get currentUser => _tokens.currentSession?.user;
 
-  Stream<UserSummary?> get userChanges => _tokens.sessionChanges.map((s) => s?.user);
+  @override
+  late final Stream<UserSummary?> userChanges = _tokens.sessionChanges.map((s) => s?.user);
 
   @override
   Future<UserSummary> ensureSignedIn() async {
