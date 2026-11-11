@@ -908,5 +908,7 @@
   "groupRemovedNotice": "Anda bukan lagi anggota grup ini.",
   "errorGroupAdminsOnly": "Hanya admin yang bisa mengirim pesan di grup ini.",
   "errorGroupAdminsOnlyEdit": "Hanya admin yang bisa mengubah info grup.",
-  "errorGroupMemberNotFound": "Orang ini bukan lagi anggota grup."
+  "errorGroupMemberNotFound": "Orang ini bukan lagi anggota grup.",
+  "notifTypeWatchlistDigestHintAt": "Setiap hari pukul {hour}.{minute} WIB",
+  "@notifTypeWatchlistDigestHintAt": { "placeholders": { "hour": { "type": "String" }, "minute": { "type": "String" } } }
 }

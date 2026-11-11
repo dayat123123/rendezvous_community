@@ -1,3 +1,10 @@
+## 1.20.0
+
+Memakai migrasi server `0147` bila ada; dengan server lama tampilan tidak berubah.
+
+* **Jam ringkasan saham pantauan dari server:** keterangan jenis `watchlist_digest` di `CommunityNotificationSettings` kini mengikuti jam yang diatur Super Admin di Hub (mis. "Setiap hari pukul 06.30 WIB"), juga di `description` untuk builder `notificationType`. Server tanpa `0147` tetap menampilkan 17.05 WIB.
+* `NotificationPreferences.watchlistDigestTime` (`String?`, `HH:MM` WIB) dibaca dari `get_notification_prefs`; `null` bila server tidak mengirimnya atau formatnya salah.
+
 ## 1.19.0
 
 Tidak butuh migrasi server. Tampilan bawaan tidak berubah bila slot baru tidak diisi.

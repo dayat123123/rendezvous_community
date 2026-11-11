@@ -10,6 +10,10 @@ const notificationPromoType = 'olt.promo';
 
 bool isOltNotificationType(String type) => type.startsWith('olt.');
 
+final _digestTimePattern = RegExp(r'^([01][0-9]|2[0-3]):[0-5][0-9]$');
+
+bool isValidDigestTime(Object? value) => value is String && _digestTimePattern.hasMatch(value);
+
 @freezed
 abstract class NotificationTypePreference with _$NotificationTypePreference {
   const factory NotificationTypePreference({
@@ -41,6 +45,7 @@ abstract class NotificationPreferences with _$NotificationPreferences {
     @Default(<NotificationTypePreference>[]) List<NotificationTypePreference> types,
     @Default(QuietHours()) QuietHours quietHours,
     @Default(60) int aggregateMinutes,
+    String? watchlistDigestTime,
   }) = _NotificationPreferences;
 
   const NotificationPreferences._();

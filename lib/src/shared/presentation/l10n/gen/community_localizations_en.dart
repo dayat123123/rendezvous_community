@@ -2648,4 +2648,9 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorGroupMemberNotFound => 'This person is no longer in the group.';
+
+  @override
+  String notifTypeWatchlistDigestHintAt(String hour, String minute) {
+    return 'Daily at $hour:$minute WIB';
+  }
 }

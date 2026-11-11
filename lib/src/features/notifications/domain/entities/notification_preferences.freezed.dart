@@ -546,7 +546,7 @@ as String,
 /// @nodoc
 mixin _$NotificationPreferences {
 
- List<NotificationTypePreference> get types; QuietHours get quietHours; int get aggregateMinutes;
+ List<NotificationTypePreference> get types; QuietHours get quietHours; int get aggregateMinutes; String? get watchlistDigestTime;
 /// Create a copy of NotificationPreferences
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -557,16 +557,16 @@ $NotificationPreferencesCopyWith<NotificationPreferences> get copyWith => _$Noti
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPreferences&&const DeepCollectionEquality().equals(other.types, types)&&(identical(other.quietHours, quietHours) || other.quietHours == quietHours)&&(identical(other.aggregateMinutes, aggregateMinutes) || other.aggregateMinutes == aggregateMinutes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPreferences&&const DeepCollectionEquality().equals(other.types, types)&&(identical(other.quietHours, quietHours) || other.quietHours == quietHours)&&(identical(other.aggregateMinutes, aggregateMinutes) || other.aggregateMinutes == aggregateMinutes)&&(identical(other.watchlistDigestTime, watchlistDigestTime) || other.watchlistDigestTime == watchlistDigestTime));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(types),quietHours,aggregateMinutes);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(types),quietHours,aggregateMinutes,watchlistDigestTime);
 
 @override
 String toString() {
-  return 'NotificationPreferences(types: $types, quietHours: $quietHours, aggregateMinutes: $aggregateMinutes)';
+  return 'NotificationPreferences(types: $types, quietHours: $quietHours, aggregateMinutes: $aggregateMinutes, watchlistDigestTime: $watchlistDigestTime)';
 }
 
 
@@ -577,7 +577,7 @@ abstract mixin class $NotificationPreferencesCopyWith<$Res>  {
   factory $NotificationPreferencesCopyWith(NotificationPreferences value, $Res Function(NotificationPreferences) _then) = _$NotificationPreferencesCopyWithImpl;
 @useResult
 $Res call({
- List<NotificationTypePreference> types, QuietHours quietHours, int aggregateMinutes
+ List<NotificationTypePreference> types, QuietHours quietHours, int aggregateMinutes, String? watchlistDigestTime
 });
 
 
@@ -594,12 +594,13 @@ class _$NotificationPreferencesCopyWithImpl<$Res>
 
 /// Create a copy of NotificationPreferences
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? types = null,Object? quietHours = null,Object? aggregateMinutes = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? types = null,Object? quietHours = null,Object? aggregateMinutes = null,Object? watchlistDigestTime = freezed,}) {
   return _then(_self.copyWith(
 types: null == types ? _self.types : types // ignore: cast_nullable_to_non_nullable
 as List<NotificationTypePreference>,quietHours: null == quietHours ? _self.quietHours : quietHours // ignore: cast_nullable_to_non_nullable
 as QuietHours,aggregateMinutes: null == aggregateMinutes ? _self.aggregateMinutes : aggregateMinutes // ignore: cast_nullable_to_non_nullable
-as int,
+as int,watchlistDigestTime: freezed == watchlistDigestTime ? _self.watchlistDigestTime : watchlistDigestTime // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 /// Create a copy of NotificationPreferences
@@ -693,10 +694,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<NotificationTypePreference> types,  QuietHours quietHours,  int aggregateMinutes)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( List<NotificationTypePreference> types,  QuietHours quietHours,  int aggregateMinutes,  String? watchlistDigestTime)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _NotificationPreferences() when $default != null:
-return $default(_that.types,_that.quietHours,_that.aggregateMinutes);case _:
+return $default(_that.types,_that.quietHours,_that.aggregateMinutes,_that.watchlistDigestTime);case _:
   return orElse();
 
 }
@@ -714,10 +715,10 @@ return $default(_that.types,_that.quietHours,_that.aggregateMinutes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<NotificationTypePreference> types,  QuietHours quietHours,  int aggregateMinutes)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( List<NotificationTypePreference> types,  QuietHours quietHours,  int aggregateMinutes,  String? watchlistDigestTime)  $default,) {final _that = this;
 switch (_that) {
 case _NotificationPreferences():
-return $default(_that.types,_that.quietHours,_that.aggregateMinutes);case _:
+return $default(_that.types,_that.quietHours,_that.aggregateMinutes,_that.watchlistDigestTime);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -734,10 +735,10 @@ return $default(_that.types,_that.quietHours,_that.aggregateMinutes);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<NotificationTypePreference> types,  QuietHours quietHours,  int aggregateMinutes)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( List<NotificationTypePreference> types,  QuietHours quietHours,  int aggregateMinutes,  String? watchlistDigestTime)?  $default,) {final _that = this;
 switch (_that) {
 case _NotificationPreferences() when $default != null:
-return $default(_that.types,_that.quietHours,_that.aggregateMinutes);case _:
+return $default(_that.types,_that.quietHours,_that.aggregateMinutes,_that.watchlistDigestTime);case _:
   return null;
 
 }
@@ -749,7 +750,7 @@ return $default(_that.types,_that.quietHours,_that.aggregateMinutes);case _:
 
 
 class _NotificationPreferences extends NotificationPreferences {
-  const _NotificationPreferences({final  List<NotificationTypePreference> types = const <NotificationTypePreference>[], this.quietHours = const QuietHours(), this.aggregateMinutes = 60}): _types = types,super._();
+  const _NotificationPreferences({final  List<NotificationTypePreference> types = const <NotificationTypePreference>[], this.quietHours = const QuietHours(), this.aggregateMinutes = 60, this.watchlistDigestTime}): _types = types,super._();
   
 
  final  List<NotificationTypePreference> _types;
@@ -761,6 +762,7 @@ class _NotificationPreferences extends NotificationPreferences {
 
 @override@JsonKey() final  QuietHours quietHours;
 @override@JsonKey() final  int aggregateMinutes;
+@override final  String? watchlistDigestTime;
 
 /// Create a copy of NotificationPreferences
 /// with the given fields replaced by the non-null parameter values.
@@ -772,16 +774,16 @@ _$NotificationPreferencesCopyWith<_NotificationPreferences> get copyWith => __$N
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationPreferences&&const DeepCollectionEquality().equals(other._types, _types)&&(identical(other.quietHours, quietHours) || other.quietHours == quietHours)&&(identical(other.aggregateMinutes, aggregateMinutes) || other.aggregateMinutes == aggregateMinutes));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationPreferences&&const DeepCollectionEquality().equals(other._types, _types)&&(identical(other.quietHours, quietHours) || other.quietHours == quietHours)&&(identical(other.aggregateMinutes, aggregateMinutes) || other.aggregateMinutes == aggregateMinutes)&&(identical(other.watchlistDigestTime, watchlistDigestTime) || other.watchlistDigestTime == watchlistDigestTime));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_types),quietHours,aggregateMinutes);
+int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_types),quietHours,aggregateMinutes,watchlistDigestTime);
 
 @override
 String toString() {
-  return 'NotificationPreferences(types: $types, quietHours: $quietHours, aggregateMinutes: $aggregateMinutes)';
+  return 'NotificationPreferences(types: $types, quietHours: $quietHours, aggregateMinutes: $aggregateMinutes, watchlistDigestTime: $watchlistDigestTime)';
 }
 
 
@@ -792,7 +794,7 @@ abstract mixin class _$NotificationPreferencesCopyWith<$Res> implements $Notific
   factory _$NotificationPreferencesCopyWith(_NotificationPreferences value, $Res Function(_NotificationPreferences) _then) = __$NotificationPreferencesCopyWithImpl;
 @override @useResult
 $Res call({
- List<NotificationTypePreference> types, QuietHours quietHours, int aggregateMinutes
+ List<NotificationTypePreference> types, QuietHours quietHours, int aggregateMinutes, String? watchlistDigestTime
 });
 
 
@@ -809,12 +811,13 @@ class __$NotificationPreferencesCopyWithImpl<$Res>
 
 /// Create a copy of NotificationPreferences
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? types = null,Object? quietHours = null,Object? aggregateMinutes = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? types = null,Object? quietHours = null,Object? aggregateMinutes = null,Object? watchlistDigestTime = freezed,}) {
   return _then(_NotificationPreferences(
 types: null == types ? _self._types : types // ignore: cast_nullable_to_non_nullable
 as List<NotificationTypePreference>,quietHours: null == quietHours ? _self.quietHours : quietHours // ignore: cast_nullable_to_non_nullable
 as QuietHours,aggregateMinutes: null == aggregateMinutes ? _self.aggregateMinutes : aggregateMinutes // ignore: cast_nullable_to_non_nullable
-as int,
+as int,watchlistDigestTime: freezed == watchlistDigestTime ? _self.watchlistDigestTime : watchlistDigestTime // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 

@@ -75,17 +75,22 @@ String notificationTypeLabel(CommunityLocalizations l10n, String type) => switch
   _ => type,
 };
 
-String? notificationTypeDescription(CommunityLocalizations l10n, String type) => switch (type) {
-  notificationTradeType => l10n.notifTypeTradeHint,
-  notificationFundsType => l10n.notifTypeFundsHint,
-  notificationMarketType => l10n.notifTypeMarketHint,
-  notificationOltInfoType => l10n.notifTypeOltInfoHint,
-  notificationPromoType => l10n.notifTypePromoHint,
-  'followed_post' => l10n.notifTypeFollowedPostHint,
-  'watchlist_digest' => l10n.notifTypeWatchlistDigestHint,
-  'moderation' => l10n.notifTypeModerationHint,
-  _ => null,
-};
+String? notificationTypeDescription(CommunityLocalizations l10n, String type, {String? watchlistDigestTime}) =>
+    switch (type) {
+      notificationTradeType => l10n.notifTypeTradeHint,
+      notificationFundsType => l10n.notifTypeFundsHint,
+      notificationMarketType => l10n.notifTypeMarketHint,
+      notificationOltInfoType => l10n.notifTypeOltInfoHint,
+      notificationPromoType => l10n.notifTypePromoHint,
+      'followed_post' => l10n.notifTypeFollowedPostHint,
+      'watchlist_digest' when isValidDigestTime(watchlistDigestTime) => l10n.notifTypeWatchlistDigestHintAt(
+        watchlistDigestTime!.substring(0, 2),
+        watchlistDigestTime.substring(3),
+      ),
+      'watchlist_digest' => l10n.notifTypeWatchlistDigestHint,
+      'moderation' => l10n.notifTypeModerationHint,
+      _ => null,
+    };
 
 String? _formatTime(TimeOfDay? time) =>
     time == null ? null : '${time.hour.toString().padLeft(2, '0')}:${time.minute.toString().padLeft(2, '0')}';
@@ -101,9 +106,10 @@ TimeOfDay? _parseTime(String? value) {
 const double _channelWidth = 72;
 
 class _TypeRow extends StatelessWidget {
-  const _TypeRow({required this.preference});
+  const _TypeRow({required this.preference, this.watchlistDigestTime});
 
   final NotificationTypePreference preference;
+  final String? watchlistDigestTime;
 
   @override
   Widget build(BuildContext context) {
@@ -113,7 +119,7 @@ class _TypeRow extends StatelessWidget {
     final details = CommunityNotificationTypeDetails(
       preference: pref,
       label: notificationTypeLabel(l10n, pref.type),
-      description: notificationTypeDescription(l10n, pref.type),
+      description: notificationTypeDescription(l10n, pref.type, watchlistDigestTime: watchlistDigestTime),
       inAppLabel: l10n.notifInApp,
       pushLabel: l10n.notifPush,
       onInAppChanged: pref.supportsInApp && !pref.inAppLocked
@@ -233,7 +239,7 @@ class _SettingsView extends StatelessWidget {
               ),
             ),
             for (final pref in state.preferences.types)
-              if (!pref.isOlt) _TypeRow(preference: pref),
+              if (!pref.isOlt) _TypeRow(preference: pref, watchlistDigestTime: state.preferences.watchlistDigestTime),
             Padding(
               padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xs, spacing.lg, spacing.sm),
               child: Text(l10n.notifSupportAlwaysOn, style: muted),

@@ -4681,6 +4681,12 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Orang ini bukan lagi anggota grup.'**
   String get errorGroupMemberNotFound;
+
+  /// No description provided for @notifTypeWatchlistDigestHintAt.
+  ///
+  /// In id, this message translates to:
+  /// **'Setiap hari pukul {hour}.{minute} WIB'**
+  String notifTypeWatchlistDigestHintAt(String hour, String minute);
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

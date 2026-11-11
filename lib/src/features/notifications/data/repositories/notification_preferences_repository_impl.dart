@@ -36,6 +36,7 @@ class NotificationPreferencesRepositoryImpl implements NotificationPreferencesRe
 NotificationPreferences parseNotificationPreferences(Object? value) {
   final json = jsonMap(value);
   final quiet = jsonMap(json['quiet_hours']);
+  final digestTime = jsonMap(json['watchlist_digest'])['time'];
   return NotificationPreferences(
     types: [
       for (final row in jsonList(json['types']))
@@ -54,5 +55,6 @@ NotificationPreferences parseNotificationPreferences(Object? value) {
       timezone: quiet['timezone'] as String? ?? 'Asia/Jakarta',
     ),
     aggregateMinutes: (json['aggregate_minutes'] as num?)?.toInt() ?? 60,
+    watchlistDigestTime: isValidDigestTime(digestTime) ? digestTime as String : null,
   );
 }

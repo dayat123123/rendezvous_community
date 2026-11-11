@@ -790,5 +790,7 @@
   "groupRemovedNotice": "You are no longer a member of this group.",
   "errorGroupAdminsOnly": "Only admins can send messages in this group.",
   "errorGroupAdminsOnlyEdit": "Only admins can edit group info.",
-  "errorGroupMemberNotFound": "This person is no longer in the group."
+  "errorGroupMemberNotFound": "This person is no longer in the group.",
+  "notifTypeWatchlistDigestHintAt": "Daily at {hour}:{minute} WIB",
+  "@notifTypeWatchlistDigestHintAt": { "placeholders": { "hour": { "type": "String" }, "minute": { "type": "String" } } }
 }
