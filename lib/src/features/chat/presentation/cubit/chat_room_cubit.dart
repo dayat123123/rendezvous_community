@@ -188,6 +188,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     this.gapRecheckDelay = const Duration(seconds: 5),
     this._random,
     this.stockCards = true,
+    this.closeOnAccessLoss = true,
   }) : _meProvider = me,
        _clock = clock ?? DateTime.now,
        super(const ChatRoomState());
@@ -195,6 +196,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
   final ChatRepository _chat;
   final MediaRepository _media;
   final bool stockCards;
+  final bool closeOnAccessLoss;
   final ConsentGate? _consent;
   final ChatExtrasRepository? _extras;
   final CommunityAnalytics? _analytics;
@@ -280,9 +282,20 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
       unawaited(loadStockRoomState());
       unawaited(loadDmRequestState());
     } catch (e) {
-      if (isClosed || (state.status == LoadStatus.ready && state.stale)) return;
+      if (isClosed) return;
+      if (_lostAccess(e)) {
+        _close(RoomRemovalReason.left);
+        return;
+      }
+      if (state.status == LoadStatus.ready && state.stale) return;
       emit(state.copyWith(status: LoadStatus.failure, error: e));
     }
+  }
+
+  bool _lostAccess(Object error) {
+    if (!closeOnAccessLoss || state.room?.type == RoomType.support) return false;
+    final code = mapError(error).code;
+    return code == 'not_member' || code == 'forbidden';
   }
 
   Future<void> _showCached() async {
@@ -1244,6 +1257,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
   Future<bool> leave() async {
     try {
       await _chat.leaveRoom(roomId);
+      _close(RoomRemovalReason.left);
       return true;
     } catch (e) {
       _fail(e);

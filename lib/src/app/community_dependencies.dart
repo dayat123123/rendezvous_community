@@ -21,7 +21,7 @@ typedef CommunityUserTapCallback = void Function(BuildContext context, UserSumma
 
 typedef CommunityPostTapCallback = void Function(BuildContext context, String postId);
 
-typedef CommunityRoomTapCallback = void Function(BuildContext context, String roomId);
+typedef CommunityRoomTapCallback = FutureOr<void> Function(BuildContext context, String roomId);
 
 typedef CommunityHashtagTapCallback = void Function(BuildContext context, String tag);
 

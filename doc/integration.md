@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.25.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.25.1            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -85,7 +85,7 @@ Future<void> onOltLoggedIn() async {
     stockSearch: (query) => OltStockDirectory.search(query),             // saran $KODE dari daftar saham OLT
     onUserTap: null,      // null = pakai halaman profil bawaan rendezvous_community
     onPostTap: null,      // null = buka CommunityPostDetail
-    onRoomTap: null,      // null = buka CommunityChatRoom
+    onRoomTap: null,      // null = buka CommunityChatRoom; boleh async, daftar chat menunggu lalu refresh (1.25.1)
     onBannerLink: (context, uri, banner) => OltRouter.tryOpenDeepLink(context, uri), // opsional, true = ditangani OLT (bagian 5)
     chatStockCards: true, // false = sembunyikan tombol "Kirim kartu saham" di kolom chat (1.15.1)
     postDrafts: true,     // false = composer tidak menyimpan/memuat draf post (1.15.2)
@@ -170,6 +170,7 @@ Semua widget adalah konten tanpa `Scaffold`, sehingga OLT tetap memegang AppBar,
 | Ikon menu/tab "Chat" | `CommunityChatBadge(child: Icon(Icons.chat_bubble_outline))` (jumlah chat yang punya pesan belum dibaca) |
 | Ikon lonceng | `CommunityNotificationBadge(child: Icon(Icons.notifications))` → `CommunityNotificationList()` |
 | Halaman profil sosial | `CommunityUserProfile(userId: id)` |
+| Halaman room milik OLT (1.25.1) | Bila OLT membuka room sendiri lewat `onRoomTap`, buat callback-nya async dan selesai saat halaman room ditutup, lalu isi `CommunityChatRoom(onClosed: ...)` untuk menutup halaman itu. `onClosed` dipanggil saat pengguna keluar, menghapus chat, grupnya dihapus, atau ternyata bukan anggota lagi. Tanpa `onClosed`, room menampilkan pesan dan tombol kembali bila halaman tidak punya `AppBar`. `CommunityNavigator.pushRoom(context, roomId)` membuka halaman room bawaan yang menutup dirinya sendiri |
 | Menu "Indeks" (1.24.0, server `0150`) | `CommunityIndexList()` (daftar indeks, ketuk membuka stream) dan `CommunityIndexFeed(indexCode: code)` (stream satu indeks bergaya `CommunityStockFeed`, header dengan label Indeks, alias, Pantau, dan Diskusi). Ketukan `$KODE` indeks memanggil `onIndexTap` (fallback `onStockTap`). Daftar indeks dikelola dari Hub, jadi `stockSearch` OLT tidak perlu memuat indeks. Data mentah: `CommunityInstruments.of(context)` (`instruments`, `isIndex`, `canonical`) |
 | Tab filter Stream (1.24.0, server `0149`) | `CommunityFeedFilters.load(context)` → `List<FeedFilter>` untuk bar tab milik OLT, lalu `CommunityFeedList(scope: ..., filter: filter.key)` atau `CommunityStreamFeed(filter: key)`. Siap pakai: `CommunityStreamFeed(showFilterTabs: true)` atau `CommunityFeedFilterTabs(selected: key, onSelected: ...)`. Label: `filter.label(Localizations.localeOf(context))` |
 | Daftar pengikut / yang diikuti (1.21.0, server `0148`) | `CommunityFollowList(userId: id, initialKind: FollowListKind.following)` (`kinds: [FollowListKind.followers]` untuk hanya daftar pengikut tanpa tab, 1.22.0) atau `CommunityNavigator.openFollowList(context, user, kind)`; data mentah lewat `(profiles as FollowListRepository).followList(id, kind, cursor: ...)` → `Paged<FollowListEntry>`. Angka Pengikut/Mengikuti di profil membukanya otomatis |

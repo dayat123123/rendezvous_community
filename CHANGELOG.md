@@ -1,3 +1,14 @@
+## 1.25.1
+
+Lanjutan 1.25.0. Tidak butuh migrasi server. Migrasi server `0157` opsional: perangkat lain milik pengguna ikut membuang room setelah ia keluar.
+
+* **Room yang ditinggalkan langsung hilang:** setelah `leaveRoom`, `hideRoom`, dan `deleteGroup` berhasil, repository bawaan langsung memancarkan `RoomRemoval` lokal di `watchRoomRemovals()` tanpa menunggu realtime. Daftar chat membuang room itu, dan room yang sedang terbuka ditutup. Alasan baru: `RoomRemovalReason.left`, dengan pesan "Anda sudah keluar dari chat ini.". Server `0157` juga mengirim `room_removed` dengan alasan `left` ke sesi lain pengguna yang sama.
+* **Room yang sudah tidak bisa diakses:** bila room gagal dimuat karena pengguna bukan anggota lagi (`not_member` atau `forbidden`), room ditutup dengan alasan `left`, bukan menampilkan error. `onClosed` dipanggil sehingga host bisa menutup halaman. Room CS dan room dengan `repository` sendiri tidak terpengaruh. Bisa diatur lewat `CommunityChatRoom(closeOnAccessLoss: ...)`.
+* **Selalu ada jalan kembali:** tampilan error dan room tertutup menampilkan header room (bila ada) dan tombol kembali bila halaman bisa di-pop dan tidak punya `AppBar`.
+* **`onRoomTap` boleh async:** `CommunityRoomTapCallback` kini `FutureOr<void> Function(BuildContext, String)`, kompatibel dengan callback lama. Daftar chat menunggu callback selesai lalu memuat ulang daftar, sama seperti jalur bawaan.
+* **Halaman room bawaan menutup dirinya sendiri:** `CommunityNavigator.pushRoom(context, roomId)` (dipakai `openRoom` dan daftar chat) membuka room dan menghapus route-nya saat room ditutup, termasuk ketika keluar dari halaman Info grup.
+* Header room tidak lagi menutup halaman sendiri setelah "Keluar"; penutupan lewat alur room tertutup di atas.
+
 ## 1.25.0
 
 Butuh migrasi server `0154` (hapus chat, hapus grup, edit pesan) dan `0155` (komentar dihapus tanpa jejak). Room CS tetap terkunci di server: tidak bisa dihapus, disembunyikan, dikosongkan, ditinggalkan, maupun diedit.

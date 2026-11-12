@@ -939,5 +939,6 @@
   "errorNotGroup": "Hanya grup yang bisa dihapus.",
   "errorSupportMessageLocked": "Pesan di chat CS tidak bisa diubah atau dihapus.",
   "errorNotEditable": "Pesan ini tidak bisa diedit.",
-  "errorEditWindowClosed": "Batas waktu edit pesan sudah lewat."
+  "errorEditWindowClosed": "Batas waktu edit pesan sudah lewat.",
+  "chatLeftNotice": "Anda sudah keluar dari chat ini."
 }

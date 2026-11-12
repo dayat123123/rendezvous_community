@@ -40,6 +40,7 @@ class CommunityChatRoom extends StatelessWidget {
     this.composer,
     this.builders,
     this.onClosed,
+    this.closeOnAccessLoss,
   });
 
   final String roomId;
@@ -49,6 +50,7 @@ class CommunityChatRoom extends StatelessWidget {
   final Widget? composer;
   final CommunityChatBuilders? builders;
   final VoidCallback? onClosed;
+  final bool? closeOnAccessLoss;
 
   @override
   Widget build(BuildContext context) {
@@ -73,6 +75,7 @@ class CommunityChatRoom extends StatelessWidget {
           outbox: cached?.outbox,
           connectivity: offline?.connectivity,
           stockCards: deps.callbacks.chatStockCards,
+          closeOnAccessLoss: closeOnAccessLoss ?? repository == null,
         )..load(),
         child: _ChatRoomView(showHeader: showHeader, header: header, composer: composer, onClosed: onClosed),
       ),
@@ -93,6 +96,7 @@ class _ChatRoomView extends StatelessWidget {
     final actor = state.closedBy;
     return switch (state.closed) {
       RoomRemovalReason.hidden => l10n.chatHiddenNotice,
+      RoomRemovalReason.left => l10n.chatLeftNotice,
       RoomRemovalReason.groupDeleted when actor != null && actor.isNotEmpty => l10n.groupDeletedBy(actor),
       _ => l10n.groupDeletedNotice,
     };
@@ -116,9 +120,15 @@ class _ChatRoomView extends StatelessWidget {
         final cubit = context.read<ChatRoomCubit>();
         if (state.roomClosed) {
           return _RoomSurface(
-            child: CommunityEmptyView(
-              message: closedMessage(context, state),
-              icon: state.closed == RoomRemovalReason.hidden ? Icons.delete_outline : Icons.group_off_outlined,
+            child: _WithBack(
+              child: CommunityEmptyView(
+                message: closedMessage(context, state),
+                icon: switch (state.closed) {
+                  RoomRemovalReason.hidden => Icons.delete_outline,
+                  RoomRemovalReason.left => Icons.logout,
+                  _ => Icons.group_off_outlined,
+                },
+              ),
             ),
           );
         }
@@ -129,15 +139,26 @@ class _ChatRoomView extends StatelessWidget {
             const CommunityLoadingDetails(CommunityChatLoad.messages),
             const CommunitySkeleton(itemCount: 6),
           ),
-          LoadStatus.failure => buildChatPart(
-            builders.error,
-            context,
-            CommunityErrorDetails(
-              error: state.error!,
-              message: context.communityL10n.errorMessage(state.error!),
-              onRetry: cubit.load,
+          LoadStatus.failure => _RoomSurface(
+            child: Column(
+              children: [
+                if (header != null) header! else if (showHeader) const RoomHeader(),
+                Expanded(
+                  child: _WithBack(
+                    child: buildChatPart(
+                      builders.error,
+                      context,
+                      CommunityErrorDetails(
+                        error: state.error!,
+                        message: context.communityL10n.errorMessage(state.error!),
+                        onRetry: cubit.load,
+                      ),
+                      CommunityErrorView(error: state.error!, onRetry: cubit.load),
+                    ),
+                  ),
+                ),
+              ],
             ),
-            CommunityErrorView(error: state.error!, onRetry: cubit.load),
           ),
           LoadStatus.ready => _gate(
             state,
@@ -269,6 +290,27 @@ class _DefaultOfficialNotice extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+}
+
+class _WithBack extends StatelessWidget {
+  const _WithBack({required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    final hasBar = Scaffold.maybeOf(context)?.hasAppBar ?? false;
+    if (hasBar || !Navigator.canPop(context)) return child;
+    return Column(
+      children: [
+        Align(
+          alignment: AlignmentDirectional.centerStart,
+          child: BackButton(onPressed: () => Navigator.maybePop(context)),
+        ),
+        Expanded(child: child),
+      ],
     );
   }
 }

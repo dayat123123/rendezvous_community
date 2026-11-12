@@ -44,6 +44,7 @@ class ChatRepositoryImpl
   late final SharedStream<RoomRemoval> _removals = SharedStream(_createRemovalStream);
   late final SharedStream<RoomMuteNotice> _muteNotices = SharedStream(_createMuteNoticeStream);
   final _unreadChanges = StreamController<void>.broadcast();
+  final _localRemovals = StreamController<RoomRemoval>.broadcast();
 
   @override
   Future<Paged<ChatRoom>> getRooms({String? cursor, int limit = 30}) async {
@@ -195,6 +196,7 @@ class ChatRepositoryImpl
     await _api.rpcValue('leave_room', {'p_room_id': roomId});
     await _cache?.forgetRoom(roomId);
     _unreadChanged();
+    _removedLocally(roomId, RoomRemovalReason.left);
   }
 
   @override
@@ -202,6 +204,7 @@ class ChatRepositoryImpl
     await _api.rpcValue('hide_room', {'p_room_id': roomId});
     await _cache?.forgetRoom(roomId);
     _unreadChanged();
+    _removedLocally(roomId, RoomRemovalReason.hidden);
   }
 
   @override
@@ -209,6 +212,11 @@ class ChatRepositoryImpl
     await _api.rpcValue('delete_group', {'p_room_id': roomId});
     await _cache?.forgetRoom(roomId);
     _unreadChanged();
+    _removedLocally(roomId, RoomRemovalReason.groupDeleted);
+  }
+
+  void _removedLocally(String roomId, RoomRemovalReason reason) {
+    if (!_localRemovals.isClosed) _localRemovals.add(RoomRemoval(roomId: roomId, reason: reason));
   }
 
   @override
@@ -248,7 +256,13 @@ class ChatRepositoryImpl
   Stream<RoomActivity> watchRoomActivity() => _realtime == null ? const Stream.empty() : _activity.stream;
 
   @override
-  Stream<RoomRemoval> watchRoomRemovals() => _realtime == null ? const Stream.empty() : _removals.stream;
+  Stream<RoomRemoval> watchRoomRemovals() => Stream.multi((multi) {
+    final subscriptions = [
+      _localRemovals.stream.listen(multi.add, onError: multi.addError),
+      if (_realtime != null) _removals.stream.listen(multi.add, onError: multi.addError),
+    ];
+    multi.onCancel = () => Future.wait([for (final s in subscriptions) s.cancel()]);
+  });
 
   @override
   Stream<RoomSignal> watchRoomSignals(Set<String> roomIds, {required UserSummary me}) {
@@ -260,6 +274,7 @@ class ChatRepositoryImpl
   Future<void> dispose() async {
     await _activity.close();
     await _removals.close();
+    await _localRemovals.close();
     await _muteNotices.close();
     await _unreadChanges.close();
   }

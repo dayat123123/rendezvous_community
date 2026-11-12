@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_dependencies.dart';
@@ -92,31 +94,51 @@ abstract final class CommunityNavigator {
 
   static void openRoom(BuildContext context, String roomId) {
     final callback = CommunityScope.of(context).callbacks.onRoomTap;
-    if (callback != null) return callback(context, roomId);
-    _push(context, null, CommunityChatRoom(roomId: roomId));
+    if (callback != null) {
+      unawaited(Future.sync(() => callback(context, roomId)));
+      return;
+    }
+    unawaited(pushRoom(context, roomId));
+  }
+
+  static Future<void> pushRoom(BuildContext context, String roomId, {String? title}) {
+    final navigator = Navigator.of(context);
+    late final Route<void> route;
+    route = _route<void>(
+      context,
+      title,
+      CommunityChatRoom(
+        roomId: roomId,
+        onClosed: () {
+          if (route.isActive) navigator.removeRoute(route);
+        },
+      ),
+    );
+    return navigator.push(route);
   }
 
   static Future<bool?> openGroupInfo(BuildContext context, String roomId) =>
       _push<bool>(context, context.communityL10n.groupInfo, CommunityGroupInfo(roomId: roomId));
 
-  static Future<T?> _push<T>(BuildContext context, String? title, Widget body) {
+  static Future<T?> _push<T>(BuildContext context, String? title, Widget body) =>
+      Navigator.of(context).push(_route<T>(context, title, body));
+
+  static Route<T> _route<T>(BuildContext context, String? title, Widget body) {
     final dependencies = CommunityScope.of(context);
     final features = context.getInheritedWidgetOfExactType<CommunityFeatureScope>()?.dependencies;
     final carry = carryCommunityBuilders(context);
-    return Navigator.of(context).push(
-      MaterialPageRoute<T>(
-        builder: (_) {
-          Widget page = CommunityScope(
-            dependencies: dependencies,
-            child: Scaffold(
-              appBar: AppBar(title: title == null ? null : Text(title)),
-              body: SafeArea(top: false, child: body),
-            ),
-          );
-          if (features != null) page = CommunityFeatureScope(dependencies: features, child: page);
-          return carry(page);
-        },
-      ),
+    return MaterialPageRoute<T>(
+      builder: (_) {
+        Widget page = CommunityScope(
+          dependencies: dependencies,
+          child: Scaffold(
+            appBar: AppBar(title: title == null ? null : Text(title)),
+            body: SafeArea(top: false, child: body),
+          ),
+        );
+        if (features != null) page = CommunityFeatureScope(dependencies: features, child: page);
+        return carry(page);
+      },
     );
   }
 }

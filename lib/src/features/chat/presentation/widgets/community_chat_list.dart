@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
@@ -131,29 +130,13 @@ class _ChatListLayoutState extends State<_ChatListLayout> {
       await cubit.refresh();
       return;
     }
-    final deps = CommunityScope.of(context);
-    final callback = deps.callbacks.onRoomTap;
-    if (callback != null) return callback(context, roomId);
-    final carry = carryCommunityBuilders(context);
-    await Navigator.of(context).push(
-      MaterialPageRoute<void>(
-        builder: (_) => carry(
-          CommunityScope(
-            dependencies: deps,
-            child: Scaffold(
-              appBar: AppBar(),
-              body: Builder(
-                builder: (routeContext) => SafeArea(
-                  top: false,
-                  child: CommunityChatRoom(roomId: roomId, onClosed: () => Navigator.of(routeContext).maybePop()),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-    await cubit.refresh();
+    final callback = CommunityScope.of(context).callbacks.onRoomTap;
+    if (callback != null) {
+      await callback(context, roomId);
+    } else {
+      await CommunityNavigator.pushRoom(context, roomId);
+    }
+    if (!cubit.isClosed) await cubit.refresh();
   }
 
   @override

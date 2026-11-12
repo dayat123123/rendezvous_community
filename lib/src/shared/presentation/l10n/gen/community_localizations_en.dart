@@ -2737,4 +2737,7 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorEditWindowClosed => 'The time to edit this message has passed.';
+
+  @override
+  String get chatLeftNotice => 'You left this chat.';
 }

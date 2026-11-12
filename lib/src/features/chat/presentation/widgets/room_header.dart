@@ -62,20 +62,12 @@ class RoomHeader extends StatelessWidget {
               : room.type == RoomType.group && !state.removedFromGroup
               ? () async {
                   final left = await CommunityNavigator.openGroupInfo(context, room.id);
-                  if (!context.mounted) return;
-                  if (left ?? false) {
-                    await Navigator.of(context).maybePop();
-                  } else {
-                    unawaited(cubit.refreshGroup());
-                  }
+                  if (!context.mounted || (left ?? false)) return;
+                  unawaited(cubit.refreshGroup());
                 }
               : null,
           onToggleMute: room.type == RoomType.support ? null : () => cubit.setMuted(!room.muted),
-          onLeave: !open || !room.canLeave || state.removedFromGroup
-              ? null
-              : () async {
-                  if (await cubit.leave() && context.mounted) await Navigator.of(context).maybePop();
-                },
+          onLeave: !open || !room.canLeave || state.removedFromGroup ? null : cubit.leave,
           onHide: open && room.canHide
               ? () async {
                   if (await confirmCommunityAction(context, l10n.hideChatConfirm, confirmLabel: l10n.hideChat)) {

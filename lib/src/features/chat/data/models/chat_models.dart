@@ -416,6 +416,7 @@ RoomRemoval? parseRoomRemoval(Map<String, dynamic> json) {
   final reason = switch (json['reason']) {
     'hidden' => RoomRemovalReason.hidden,
     'group_deleted' => RoomRemovalReason.groupDeleted,
+    'left' => RoomRemovalReason.left,
     _ => null,
   };
   if (reason == null) return null;

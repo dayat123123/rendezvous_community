@@ -821,5 +821,6 @@
   "errorNotGroup": "Only groups can be deleted.",
   "errorSupportMessageLocked": "Messages in support chats cannot be changed or deleted.",
   "errorNotEditable": "This message cannot be edited.",
-  "errorEditWindowClosed": "The time to edit this message has passed."
+  "errorEditWindowClosed": "The time to edit this message has passed.",
+  "chatLeftNotice": "You left this chat."
 }

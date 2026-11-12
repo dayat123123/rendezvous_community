@@ -4837,6 +4837,12 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Batas waktu edit pesan sudah lewat.'**
   String get errorEditWindowClosed;
+
+  /// No description provided for @chatLeftNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda sudah keluar dari chat ini.'**
+  String get chatLeftNotice;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

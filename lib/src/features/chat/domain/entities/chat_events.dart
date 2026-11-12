@@ -161,7 +161,7 @@ class RoomClosed extends ChatRoomEvent {
   final String? actorName;
 }
 
-enum RoomRemovalReason { hidden, groupDeleted }
+enum RoomRemovalReason { hidden, groupDeleted, left }
 
 class RoomRemoval {
   const RoomRemoval({required this.roomId, required this.reason, this.actorId, this.actorName});

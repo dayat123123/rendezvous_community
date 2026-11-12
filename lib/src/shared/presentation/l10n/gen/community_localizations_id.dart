@@ -2722,4 +2722,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorEditWindowClosed => 'Batas waktu edit pesan sudah lewat.';
+
+  @override
+  String get chatLeftNotice => 'Anda sudah keluar dari chat ini.';
 }

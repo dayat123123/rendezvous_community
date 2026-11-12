@@ -234,6 +234,7 @@ class FakeChatRepository extends Fake implements ChatRepository {
     final error = roomActionError;
     if (error != null) throw error;
     hiddenRooms.add(roomId);
+    removals.add(RoomRemoval(roomId: roomId, reason: RoomRemovalReason.hidden));
   }
 
   @override
@@ -241,6 +242,7 @@ class FakeChatRepository extends Fake implements ChatRepository {
     final error = roomActionError;
     if (error != null) throw error;
     deletedGroups.add(roomId);
+    removals.add(RoomRemoval(roomId: roomId, reason: RoomRemovalReason.groupDeleted));
   }
 
   @override
@@ -248,6 +250,7 @@ class FakeChatRepository extends Fake implements ChatRepository {
     final error = roomActionError;
     if (error != null) throw error;
     leftRooms.add(roomId);
+    removals.add(RoomRemoval(roomId: roomId, reason: RoomRemovalReason.left));
   }
 
   @override
