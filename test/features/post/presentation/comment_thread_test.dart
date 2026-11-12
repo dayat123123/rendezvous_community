@@ -57,9 +57,10 @@ void main() {
     expect(find.text('Lanjutkan thread →'), findsOneWidget);
   });
 
-  testWidgets('shows deleted comments as [komentar dihapus]', (tester) async {
+  testWidgets('never shows a deleted comment placeholder', (tester) async {
     await pumpDetail(tester);
-    expect(find.text('[komentar dihapus]'), findsOneWidget);
+    expect(find.text('Balasan B'), findsOneWidget);
+    expect(find.text('[komentar dihapus]'), findsNothing);
   });
 
   testWidgets('"Lihat N balasan lainnya" loads the next replies from the last cursor', (tester) async {

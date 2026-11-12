@@ -2,6 +2,8 @@ import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
+import 'package:rendezvous_community/src/features/analytics/domain/services/community_analytics.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
 import 'package:rendezvous_community/src/features/group/domain/repositories/group_repository.dart';
@@ -32,6 +34,8 @@ abstract class GroupInfoState with _$GroupInfoState {
 
   bool get canEditInfo => room?.canEditGroupInfo ?? false;
 
+  bool get canDeleteGroup => room?.canDeleteGroup ?? false;
+
   bool isMe(RoomMember m) => m.user.id == meId;
 
   bool canPromote(RoomMember m) => isAdmin && !isMe(m) && m.role == MemberRole.member;
@@ -50,10 +54,11 @@ abstract class GroupInfoState with _$GroupInfoState {
 }
 
 class GroupInfoCubit extends Cubit<GroupInfoState> {
-  GroupInfoCubit({required this._chat, required this._groups, required this.roomId, required this._me})
+  GroupInfoCubit({required this._chat, required this._groups, required this.roomId, required this._me, this._analytics})
     : super(const GroupInfoState());
 
   final ChatRepository _chat;
+  final CommunityAnalytics? _analytics;
   final GroupRepository _groups;
   final Future<UserSummary> Function() _me;
   final String roomId;
@@ -111,6 +116,20 @@ class GroupInfoCubit extends Cubit<GroupInfoState> {
     emit(state.copyWith(busy: true));
     try {
       await _chat.leaveRoom(roomId);
+      if (!isClosed) emit(state.copyWith(busy: false, left: true));
+      return true;
+    } catch (e) {
+      _fail(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteGroup() async {
+    if (!state.canDeleteGroup) return false;
+    emit(state.copyWith(busy: true));
+    try {
+      await _chat.deleteGroup(roomId);
+      _analytics?.record(CommunityAnalyticsEvent.deleteGroup, {'room_id': roomId, 'type': 'group'});
       if (!isClosed) emit(state.copyWith(busy: false, left: true));
       return true;
     } catch (e) {

@@ -47,6 +47,7 @@ class CommunityChatBuilders {
     this.groupMemberActions,
     this.groupSetting,
     this.groupInfoPage,
+    this.roomActions,
   });
 
   final CommunityPartBuilder<CommunityMessageDetails>? message;
@@ -92,6 +93,7 @@ class CommunityChatBuilders {
   final CommunityPartBuilder<CommunityGroupMemberActionsDetails>? groupMemberActions;
   final CommunityPartBuilder<CommunityGroupSettingDetails>? groupSetting;
   final CommunityPartBuilder<CommunityGroupInfoPageDetails>? groupInfoPage;
+  final CommunityPartBuilder<CommunityRoomActionsDetails>? roomActions;
 
   static CommunityChatBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -146,6 +148,7 @@ class CommunityChatBuilders {
       groupMemberActions: other.groupMemberActions ?? groupMemberActions,
       groupSetting: other.groupSetting ?? groupSetting,
       groupInfoPage: other.groupInfoPage ?? groupInfoPage,
+      roomActions: other.roomActions ?? roomActions,
     );
   }
 }

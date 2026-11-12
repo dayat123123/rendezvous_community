@@ -49,6 +49,8 @@ class CommunityMessageDetails {
     this.onReplyTap,
     this.onCopy,
     this.onInfo,
+    this.onEdit,
+    this.editedLabel,
   });
 
   final ChatMessage message;
@@ -80,6 +82,10 @@ class CommunityMessageDetails {
   final VoidCallback? onReplyTap;
   final VoidCallback? onCopy;
   final VoidCallback? onInfo;
+  final VoidCallback? onEdit;
+  final String? editedLabel;
+
+  bool get edited => message.editedAt != null && !message.isDeleted;
 
   bool get hasModeration => onHide != null || onMuteSender != null || onEscalate != null;
 }
@@ -113,6 +119,9 @@ class CommunityComposerDetails {
     this.enableAutocomplete = true,
     this.fieldKey,
     this.sendKey,
+    this.editing,
+    this.editingLabel,
+    this.onCancelEdit,
   });
 
   final TextEditingController controller;
@@ -142,6 +151,11 @@ class CommunityComposerDetails {
   final bool enableAutocomplete;
   final Key? fieldKey;
   final Key? sendKey;
+  final ChatMessage? editing;
+  final String? editingLabel;
+  final VoidCallback? onCancelEdit;
+
+  bool get isEditing => editing != null;
 
   bool get coolingDown => cooldown > Duration.zero;
 
@@ -162,6 +176,7 @@ class CommunityRoomHeaderDetails {
     this.onTap,
     this.onToggleMute,
     this.onLeave,
+    this.onHide,
   });
 
   final ChatRoom room;
@@ -174,6 +189,7 @@ class CommunityRoomHeaderDetails {
   final VoidCallback? onTap;
   final VoidCallback? onToggleMute;
   final VoidCallback? onLeave;
+  final VoidCallback? onHide;
 }
 
 class CommunityTypingDetails {
@@ -352,6 +368,8 @@ class CommunityGroupInfoPageDetails {
     required this.onLeave,
     required this.leaveLabel,
     this.description,
+    this.onDeleteGroup,
+    this.deleteGroupLabel = '',
     this.onEditInfo,
     this.onChangePhoto,
     this.onRemovePhoto,
@@ -384,6 +402,8 @@ class CommunityGroupInfoPageDetails {
   final String addMembersLabel;
   final VoidCallback onLeave;
   final String leaveLabel;
+  final VoidCallback? onDeleteGroup;
+  final String deleteGroupLabel;
 }
 
 class CommunityConnectionDetails {
@@ -413,6 +433,10 @@ class CommunityRoomTileDetails {
     this.preview,
     this.typingText,
     this.lastMessageReceipt,
+    this.onHide,
+    this.onLeave,
+    this.onDeleteGroup,
+    this.onShowActions,
   });
 
   final ChatRoom room;
@@ -425,6 +449,38 @@ class CommunityRoomTileDetails {
   final String? preview;
   final String? typingText;
   final ReceiptStatus? lastMessageReceipt;
+  final VoidCallback? onHide;
+  final VoidCallback? onLeave;
+  final VoidCallback? onDeleteGroup;
+  final VoidCallback? onShowActions;
+
+  bool get hasActions => onHide != null || onLeave != null || onDeleteGroup != null;
+}
+
+enum CommunityRoomActionKind { hide, leave, deleteGroup }
+
+class CommunityRoomAction {
+  const CommunityRoomAction({
+    required this.kind,
+    required this.icon,
+    required this.label,
+    required this.onSelected,
+    this.destructive = false,
+  });
+
+  final CommunityRoomActionKind kind;
+  final IconData icon;
+  final String label;
+  final bool destructive;
+  final VoidCallback onSelected;
+}
+
+class CommunityRoomActionsDetails {
+  const CommunityRoomActionsDetails({required this.room, required this.actions, required this.onDismiss});
+
+  final CommunityRoomTileDetails room;
+  final List<CommunityRoomAction> actions;
+  final VoidCallback onDismiss;
 }
 
 class CommunityChatListHeaderDetails {

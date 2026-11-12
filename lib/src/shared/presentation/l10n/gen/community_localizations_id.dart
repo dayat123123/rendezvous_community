@@ -2678,4 +2678,48 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorFeedFilter => 'Tab feed ini sedang tidak tersedia.';
+
+  @override
+  String get hideChat => 'Hapus chat';
+
+  @override
+  String get hideChatConfirm => 'Chat dan riwayatnya akan dihapus dari perangkat Anda. Anggota lain tidak terpengaruh.';
+
+  @override
+  String get deleteGroup => 'Hapus grup';
+
+  @override
+  String get deleteGroupConfirm => 'Grup akan dihapus untuk semua anggota dan tidak bisa dikembalikan.';
+
+  @override
+  String get chatHiddenNotice => 'Chat ini sudah dihapus dari daftar Anda.';
+
+  @override
+  String get groupDeletedNotice => 'Grup ini sudah dihapus.';
+
+  @override
+  String groupDeletedBy(String name) {
+    return '$name menghapus grup ini.';
+  }
+
+  @override
+  String get editingMessage => 'Mengedit pesan';
+
+  @override
+  String get cancelEdit => 'Batal edit';
+
+  @override
+  String get errorCannotHideSupport => 'Chat CS tidak bisa dihapus.';
+
+  @override
+  String get errorNotGroup => 'Hanya grup yang bisa dihapus.';
+
+  @override
+  String get errorSupportMessageLocked => 'Pesan di chat CS tidak bisa diubah atau dihapus.';
+
+  @override
+  String get errorNotEditable => 'Pesan ini tidak bisa diedit.';
+
+  @override
+  String get errorEditWindowClosed => 'Batas waktu edit pesan sudah lewat.';
 }

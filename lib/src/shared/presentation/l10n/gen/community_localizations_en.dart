@@ -2692,4 +2692,49 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorFeedFilter => 'This feed tab is not available right now.';
+
+  @override
+  String get hideChat => 'Delete chat';
+
+  @override
+  String get hideChatConfirm =>
+      'The chat and its history will be removed from your device. Other members are not affected.';
+
+  @override
+  String get deleteGroup => 'Delete group';
+
+  @override
+  String get deleteGroupConfirm => 'The group will be deleted for all members and cannot be restored.';
+
+  @override
+  String get chatHiddenNotice => 'This chat was removed from your list.';
+
+  @override
+  String get groupDeletedNotice => 'This group has been deleted.';
+
+  @override
+  String groupDeletedBy(String name) {
+    return '$name deleted this group.';
+  }
+
+  @override
+  String get editingMessage => 'Editing message';
+
+  @override
+  String get cancelEdit => 'Cancel edit';
+
+  @override
+  String get errorCannotHideSupport => 'Support chats cannot be deleted.';
+
+  @override
+  String get errorNotGroup => 'Only groups can be deleted.';
+
+  @override
+  String get errorSupportMessageLocked => 'Messages in support chats cannot be changed or deleted.';
+
+  @override
+  String get errorNotEditable => 'This message cannot be edited.';
+
+  @override
+  String get errorEditWindowClosed => 'The time to edit this message has passed.';
 }

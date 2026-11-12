@@ -5,6 +5,7 @@ import 'package:rendezvous_community/src/app/community_official_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/network/realtime_status.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/chat_events.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
@@ -38,6 +39,7 @@ class CommunityChatRoom extends StatelessWidget {
     this.header,
     this.composer,
     this.builders,
+    this.onClosed,
   });
 
   final String roomId;
@@ -46,6 +48,7 @@ class CommunityChatRoom extends StatelessWidget {
   final Widget? header;
   final Widget? composer;
   final CommunityChatBuilders? builders;
+  final VoidCallback? onClosed;
 
   @override
   Widget build(BuildContext context) {
@@ -71,28 +74,54 @@ class CommunityChatRoom extends StatelessWidget {
           connectivity: offline?.connectivity,
           stockCards: deps.callbacks.chatStockCards,
         )..load(),
-        child: _ChatRoomView(showHeader: showHeader, header: header, composer: composer),
+        child: _ChatRoomView(showHeader: showHeader, header: header, composer: composer, onClosed: onClosed),
       ),
     );
   }
 }
 
 class _ChatRoomView extends StatelessWidget {
-  const _ChatRoomView({required this.showHeader, this.header, this.composer});
+  const _ChatRoomView({required this.showHeader, this.header, this.composer, this.onClosed});
 
   final bool showHeader;
   final Widget? header;
   final Widget? composer;
+  final VoidCallback? onClosed;
+
+  static String closedMessage(BuildContext context, ChatRoomState state) {
+    final l10n = context.communityL10n;
+    final actor = state.closedBy;
+    return switch (state.closed) {
+      RoomRemovalReason.hidden => l10n.chatHiddenNotice,
+      RoomRemovalReason.groupDeleted when actor != null && actor.isNotEmpty => l10n.groupDeletedBy(actor),
+      _ => l10n.groupDeletedNotice,
+    };
+  }
 
   @override
   Widget build(BuildContext context) {
     final builders = CommunityChatBuilders.of(context);
     return BlocConsumer<ChatRoomCubit, ChatRoomState>(
-      listenWhen: (a, b) => a.actionErrorId != b.actionErrorId,
-      listener: (context, state) => showCommunityError(context, state.actionError!),
-      buildWhen: (a, b) => a.status != b.status,
+      listenWhen: (a, b) => a.actionErrorId != b.actionErrorId || (!a.roomClosed && b.roomClosed),
+      listener: (context, state) {
+        if (state.roomClosed) {
+          showCommunityMessage(context, closedMessage(context, state));
+          onClosed?.call();
+          return;
+        }
+        showCommunityError(context, state.actionError!);
+      },
+      buildWhen: (a, b) => a.status != b.status || a.roomClosed != b.roomClosed,
       builder: (context, state) {
         final cubit = context.read<ChatRoomCubit>();
+        if (state.roomClosed) {
+          return _RoomSurface(
+            child: CommunityEmptyView(
+              message: closedMessage(context, state),
+              icon: state.closed == RoomRemovalReason.hidden ? Icons.delete_outline : Icons.group_off_outlined,
+            ),
+          );
+        }
         return switch (state.status) {
           LoadStatus.initial || LoadStatus.loading => buildChatPart(
             builders.loading,

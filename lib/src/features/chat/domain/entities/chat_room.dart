@@ -46,6 +46,12 @@ abstract class ChatRoom with _$ChatRoom {
 
   bool get canEditGroupInfo => type == RoomType.group && (isGroupAdmin || !onlyAdminsEdit);
 
+  bool get canHide => type != RoomType.support;
+
+  bool get canLeave => type == RoomType.group || type == RoomType.stock;
+
+  bool get canDeleteGroup => type == RoomType.group && myRole == MemberRole.owner;
+
   int compareListOrder(ChatRoom other) {
     if (pinned != other.pinned) return pinned ? -1 : 1;
     final time = other.sortTime.compareTo(sortTime);

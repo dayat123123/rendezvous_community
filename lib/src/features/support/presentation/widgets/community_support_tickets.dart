@@ -290,6 +290,9 @@ class _TranscriptRepository implements ChatRepository {
   Stream<RoomActivity> watchRoomActivity() => const Stream.empty();
 
   @override
+  Stream<RoomRemoval> watchRoomRemovals() => const Stream.empty();
+
+  @override
   Stream<RoomSignal> watchRoomSignals(Set<String> roomIds, {required UserSummary me}) => const Stream.empty();
 
   @override
@@ -305,6 +308,9 @@ class _TranscriptRepository implements ChatRepository {
   Future<void> deleteMessage(String messageId) => Future.error(_readOnly);
 
   @override
+  Future<ChatMessage> editMessage(String messageId, String body) => Future.error(_readOnly);
+
+  @override
   Future<String> getOrCreateDirectRoom(String otherUserId) => Future.error(_readOnly);
 
   @override
@@ -315,6 +321,12 @@ class _TranscriptRepository implements ChatRepository {
 
   @override
   Future<void> leaveRoom(String roomId) => Future.error(_readOnly);
+
+  @override
+  Future<void> hideRoom(String roomId) => Future.error(_readOnly);
+
+  @override
+  Future<void> deleteGroup(String roomId) => Future.error(_readOnly);
 
   @override
   Future<void> setMuted(String roomId, {required bool muted}) => Future.error(_readOnly);

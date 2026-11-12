@@ -267,17 +267,31 @@ class CommentThreadCubit extends Cubit<ThreadState> {
   }
 
   Future<void> deleteComment(ThreadComment comment) async {
-    final before = state.comments[comment.id] ?? comment;
-    _replace(before.copyWith(isDeleted: true, body: null, author: null));
-    final post = state.post;
-    if (post != null) emit(state.copyWith(post: post.copyWith(commentCount: math.max(0, post.commentCount - 1))));
+    final before = state;
+    if (!before.comments.containsKey(comment.id) && before.root?.id != comment.id) return;
+    final post = before.post;
+    emit(
+      _liftDeletedComment(
+        before,
+        comment.id,
+      ).copyWith(post: post?.copyWith(commentCount: math.max(0, post.commentCount - 1))),
+    );
     onCommentCountChanged?.call(-1);
     try {
       await _comments.deleteComment(comment.id);
     } catch (e) {
       onCommentCountChanged?.call(1);
-      _replace(before);
-      if (post != null && !isClosed) emit(state.copyWith(post: post));
+      if (!isClosed) {
+        emit(
+          state.copyWith(
+            comments: before.comments,
+            children: before.children,
+            root: before.root,
+            collapsed: before.collapsed,
+            post: before.post,
+          ),
+        );
+      }
       _fail(e);
     }
   }
@@ -388,6 +402,10 @@ class CommentThreadCubit extends Cubit<ThreadState> {
       );
       final comment = rows.where((c) => c.id == commentId).firstOrNull;
       if (comment == null || isClosed) return;
+      if (comment.isDeleted) {
+        if (state.comments.containsKey(commentId)) emit(_liftDeletedComment(state, commentId));
+        return;
+      }
 
       final known = state.comments[commentId];
       if (known != null) {
@@ -407,6 +425,10 @@ class CommentThreadCubit extends Cubit<ThreadState> {
       final loadedAll = (state.children[parentKey]?.length ?? 0) >= parent.replyCount;
       final withCount = _bumpReplyCount(state, parentKey, 1);
       emit(loadedAll && state.levelOf(comment) < maxLevels ? _merge(withCount, [comment]) : withCount);
+    } on CommunityException catch (e) {
+      if (!isClosed && e.code == 'comment_not_found' && state.comments.containsKey(commentId)) {
+        emit(_liftDeletedComment(state, commentId));
+      }
     } catch (_) {}
   }
 
@@ -433,7 +455,15 @@ class CommentThreadCubit extends Cubit<ThreadState> {
       if (ordered && entry.key == base.rootKey) continue;
       entry.value.sort((a, b) => comments[a]!.path.compareTo(comments[b]!.path));
     }
-    return base.copyWith(comments: comments, children: children);
+    var merged = base.copyWith(comments: comments, children: children);
+    final deleted = [
+      for (final c in list)
+        if (c.isDeleted) c,
+    ]..sort((a, b) => b.depth.compareTo(a.depth));
+    for (final c in deleted) {
+      merged = _liftDeletedComment(merged, c.id, adjustCounts: false);
+    }
+    return merged;
   }
 
   List<ThreadComment> _topLevelOf(ThreadState s, List<ThreadComment> list) => [
@@ -471,6 +501,60 @@ class CommentThreadCubit extends Cubit<ThreadState> {
     await _postEvents?.cancel();
     return super.close();
   }
+}
+
+ThreadState _liftDeletedComment(ThreadState s, String commentId, {bool adjustCounts = true}) {
+  final gone = s.comments[commentId] ?? (s.root?.id == commentId ? s.root : null);
+  if (gone == null) return s;
+  final prefix = '${gone.path}.';
+  final cut = gone.path.lastIndexOf('.');
+  final parentPath = cut < 0 ? null : gone.path.substring(0, cut);
+  final isRoot = s.root?.id == commentId;
+  final comments = <String, ThreadComment>{};
+  for (final entry in s.comments.entries) {
+    final c = entry.value;
+    if (c.id == commentId) continue;
+    if (!c.path.startsWith(prefix)) {
+      comments[entry.key] = c;
+      continue;
+    }
+    final rest = c.path.substring(prefix.length);
+    comments[entry.key] = c.copyWith(
+      parentId: c.parentId == commentId ? gone.parentId : c.parentId,
+      path: parentPath == null ? rest : '$parentPath.$rest',
+      depth: math.max(0, c.depth - 1),
+    );
+  }
+  final parentKey = isRoot ? topLevelKey : gone.parentId ?? topLevelKey;
+  final kids = s.children[commentId] ?? const <String>[];
+  final children = <String, List<String>>{
+    for (final e in s.children.entries)
+      if (e.key != commentId) e.key: [...e.value],
+  };
+  final siblings = children.putIfAbsent(isRoot ? topLevelKey : parentKey, () => []);
+  final at = siblings.indexOf(commentId);
+  if (at >= 0) {
+    siblings
+      ..removeAt(at)
+      ..insertAll(at, kids.where((k) => !siblings.contains(k)));
+  } else {
+    siblings.addAll(kids.where((k) => !siblings.contains(k)));
+  }
+  final sortSiblings = s.sort == CommunityCommentSort.oldest || parentKey != s.rootKey;
+  if (sortSiblings) siblings.sort((a, b) => (comments[a]?.path ?? '').compareTo(comments[b]?.path ?? ''));
+  final parent = comments[gone.parentId];
+  if (adjustCounts && parent != null) {
+    comments[parent.id] = parent.copyWith(replyCount: math.max(0, parent.replyCount - 1 + gone.replyCount));
+  }
+  final root = isRoot ? null : (s.root == null ? null : comments[s.root!.id] ?? s.root);
+  return s.copyWith(
+    comments: comments,
+    children: children,
+    root: root,
+    collapsed: {...s.collapsed}..remove(commentId),
+    loadingBranches: {...s.loadingBranches}..remove(commentId),
+    replyTo: s.replyTo?.id == commentId ? null : s.replyTo,
+  );
 }
 
 sealed class ThreadRow {

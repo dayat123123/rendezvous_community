@@ -7,8 +7,23 @@ abstract final class CommunityAnalyticsEvent {
   static const orderTap = 'order_tap';
   static const search = 'search';
   static const shareChart = 'share_chart';
+  static const hideRoom = 'hide_room';
+  static const deleteGroup = 'delete_group';
+  static const editMessage = 'edit_message';
 
-  static const all = {feedOpen, postCreate, commentCreate, messageSend, stockTap, orderTap, search, shareChart};
+  static const all = {
+    feedOpen,
+    postCreate,
+    commentCreate,
+    messageSend,
+    stockTap,
+    orderTap,
+    search,
+    shareChart,
+    hideRoom,
+    deleteGroup,
+    editMessage,
+  };
 }
 
 class AnalyticsEvent {

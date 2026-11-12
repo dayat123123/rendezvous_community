@@ -23,6 +23,7 @@ import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
 class CommunityChatList extends StatelessWidget {
@@ -44,6 +45,7 @@ class CommunityChatList extends StatelessWidget {
           me: deps.ensureSignedIn,
           cache: offline?.chatCache,
           connectivity: offline?.connectivity,
+          analytics: context.communityFeatures?.analytics,
         )..load(),
         child: _ListVisibility(child: _ChatListLayout(initialRoomId: initialRoomId)),
       ),
@@ -140,7 +142,12 @@ class _ChatListLayoutState extends State<_ChatListLayout> {
             dependencies: deps,
             child: Scaffold(
               appBar: AppBar(),
-              body: SafeArea(top: false, child: CommunityChatRoom(roomId: roomId)),
+              body: Builder(
+                builder: (routeContext) => SafeArea(
+                  top: false,
+                  child: CommunityChatRoom(roomId: roomId, onClosed: () => Navigator.of(routeContext).maybePop()),
+                ),
+              ),
             ),
           ),
         ),
@@ -157,6 +164,9 @@ class _ChatListLayoutState extends State<_ChatListLayout> {
         final list = _RoomList(
           selectedRoomId: wide ? _selected : null,
           onOpen: (room) => _open(context, room, wide: wide),
+          onRemoved: (roomId) {
+            if (_selected == roomId) setState(() => _selected = null);
+          },
         );
         if (!wide) return list;
         return Row(
@@ -188,10 +198,11 @@ class _ChatListLayoutState extends State<_ChatListLayout> {
 final _defaultConfig = ValueNotifier(const ClientConfig());
 
 class _RoomList extends StatefulWidget {
-  const _RoomList({required this.selectedRoomId, required this.onOpen});
+  const _RoomList({required this.selectedRoomId, required this.onOpen, required this.onRemoved});
 
   final String? selectedRoomId;
   final ValueChanged<ChatRoom> onOpen;
+  final ValueChanged<String> onRemoved;
 
   @override
   State<_RoomList> createState() => _RoomListState();
@@ -230,12 +241,35 @@ class _RoomListState extends State<_RoomList> {
     if (room != null) widget.onOpen(room);
   }
 
+  Future<void> _hide(BuildContext context, ChatListCubit cubit, ChatRoom room) async {
+    final l10n = context.communityL10n;
+    if (!await confirmCommunityAction(context, l10n.hideChatConfirm, confirmLabel: l10n.hideChat)) return;
+    if (await cubit.hideRoom(room)) widget.onRemoved(room.id);
+  }
+
+  Future<void> _leave(BuildContext context, ChatListCubit cubit, ChatRoom room) async {
+    final l10n = context.communityL10n;
+    if (room.type == RoomType.group &&
+        !await confirmCommunityAction(context, l10n.groupLeaveConfirm, confirmLabel: l10n.leaveRoom)) {
+      return;
+    }
+    if (await cubit.leaveRoom(room)) widget.onRemoved(room.id);
+  }
+
+  Future<void> _deleteGroup(BuildContext context, ChatListCubit cubit, ChatRoom room) async {
+    final l10n = context.communityL10n;
+    if (!await confirmCommunityAction(context, l10n.deleteGroupConfirm, confirmLabel: l10n.deleteGroup)) return;
+    if (await cubit.deleteGroup(room)) widget.onRemoved(room.id);
+  }
+
   @override
   Widget build(BuildContext context) {
     final features = context.communityFeatures;
     return ValueListenableBuilder<ClientConfig>(
       valueListenable: features?.configService.listenable ?? _defaultConfig,
-      builder: (context, config, _) => BlocBuilder<ChatListCubit, ChatListState>(
+      builder: (context, config, _) => BlocConsumer<ChatListCubit, ChatListState>(
+        listenWhen: (a, b) => a.actionErrorId != b.actionErrorId && b.actionError != null,
+        listener: (context, state) => showCommunityError(context, state.actionError!),
         builder: (context, state) => _build(context, state, social: config.socialEnabled),
       ),
     );
@@ -299,6 +333,9 @@ class _RoomListState extends State<_RoomList> {
               typing: state.typingIn(room.id),
               selected: room.id == widget.selectedRoomId,
               onTap: () => widget.onOpen(room),
+              onHide: () => _hide(context, cubit, room),
+              onLeave: () => _leave(context, cubit, room),
+              onDeleteGroup: () => _deleteGroup(context, cubit, room),
             );
           },
         ),

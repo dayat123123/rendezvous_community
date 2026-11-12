@@ -80,6 +80,9 @@ class SupportChatRepository implements ChatRepository, MessageInfoRepository {
   Future<void> deleteMessage(String messageId) => Future.error(_locked);
 
   @override
+  Future<ChatMessage> editMessage(String messageId, String body) => Future.error(_locked);
+
+  @override
   Future<void> markRoomRead(String roomId) async {
     await _cs.rpcValue('mark_read', {'p_room_id': roomId});
     if (!_unreadChanges.isClosed) _unreadChanges.add(null);
@@ -108,6 +111,12 @@ class SupportChatRepository implements ChatRepository, MessageInfoRepository {
 
   @override
   Future<void> leaveRoom(String roomId) => Future.error(_locked);
+
+  @override
+  Future<void> hideRoom(String roomId) => Future.error(_locked);
+
+  @override
+  Future<void> deleteGroup(String roomId) => Future.error(_locked);
 
   @override
   Future<void> setMuted(String roomId, {required bool muted}) => Future.error(_locked);
@@ -140,6 +149,9 @@ class SupportChatRepository implements ChatRepository, MessageInfoRepository {
 
   @override
   Stream<RoomActivity> watchRoomActivity() => const Stream.empty();
+
+  @override
+  Stream<RoomRemoval> watchRoomRemovals() => const Stream.empty();
 
   @override
   Stream<RoomSignal> watchRoomSignals(Set<String> roomIds, {required UserSummary me}) {

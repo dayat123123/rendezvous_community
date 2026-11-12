@@ -74,6 +74,10 @@ class SupabaseRoomConnection implements ChatRoomConnection {
           _emit(StockRoomStateChanged(state));
         case RoomMessageHidden(:final messageId, :final userId):
           _emit(MessageHidden(messageId, userId: userId));
+        case RoomDeleted(:final actorName):
+          _emit(RoomClosed(RoomRemovalReason.groupDeleted, actorName: actorName));
+        case RoomPreviewEdited():
+          break;
       }
     });
   }

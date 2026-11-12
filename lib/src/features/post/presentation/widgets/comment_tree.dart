@@ -366,10 +366,7 @@ class _CommentTileState extends State<CommentTile> {
           children: [
             ?name,
             if (name != null) SizedBox(height: spacing.xxs),
-            if (c.isDeleted)
-              Text(l10n.commentDeleted, style: style.typography.meta.copyWith(fontStyle: FontStyle.italic))
-            else
-              SocialText(c.body ?? '', source: 'comment', style: bodyStyle),
+            SocialText(c.body ?? '', source: 'comment', style: bodyStyle),
           ],
         ),
       ),
@@ -401,12 +398,7 @@ class _CommentTileState extends State<CommentTile> {
         if (!c.isDeleted && likeCount > 0) _CommentLikes(count: likeCount, active: c.likedByMe),
       ],
     );
-    final metaRow = c.isDeleted
-        ? Padding(
-            padding: EdgeInsets.only(top: spacing.xs, bottom: spacing.sm),
-            child: metaLine,
-          )
-        : Transform.translate(offset: Offset(0, -spacing.sm), child: metaLine);
+    final metaRow = Transform.translate(offset: Offset(0, -spacing.sm), child: metaLine);
     final toggle = d.onToggleCollapse;
     final bubbleRow = Row(
       crossAxisAlignment: CrossAxisAlignment.start,

@@ -83,6 +83,32 @@ void main() {
     ),
   );
 
+  group('delete group', () {
+    testWidgets('only the owner sees Hapus grup and it asks before deleting', (tester) async {
+      await pump(tester, _group(), const CommunityChatBuilders());
+      await tester.scrollUntilVisible(find.text('Hapus grup'), 200);
+      await tester.tap(find.text('Hapus grup'));
+      await tester.pumpAndSettle();
+      expect(find.text('Grup akan dihapus untuk semua anggota dan tidak bisa dikembalikan.'), findsOneWidget);
+      await tester.tap(find.widgetWithText(FilledButton, 'Hapus grup'));
+      await tester.pumpAndSettle();
+      expect(chat.deletedGroups, ['g']);
+    });
+
+    for (final role in [MemberRole.admin, MemberRole.member]) {
+      testWidgets('a ${role.name} does not get Hapus grup', (tester) async {
+        await pump(tester, _group(role: role), capture());
+        expect(details.onDeleteGroup, isNull);
+      });
+    }
+
+    testWidgets('the owner gets the delete handler in the details', (tester) async {
+      await pump(tester, _group(), capture());
+      expect(details.onDeleteGroup, isNotNull);
+      expect(details.deleteGroupLabel, 'Hapus grup');
+    });
+  });
+
   group('details', () {
     testWidgets('replace the whole page and give an owner everything', (tester) async {
       await pump(tester, _group(photo: _photo, description: 'Diskusi saham'), capture());

@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChatRoomState {
 
- LoadStatus get status; ChatRoom? get room; UserSummary? get me; List<ChatMessage> get messages; String? get nextCursor; bool get loadingOlder; Map<String, RoomMember> get members; Map<String, UserSummary> get typing; int get typingOthers; Set<String> get online; RealtimeStatus get connection; ChatMessage? get replyTo; bool get uploading; Object? get error; Object? get actionError; int get actionErrorId; StockRoomState? get stockRoom; DateTime? get cooldownUntil; bool get dmRequestLimited; DmRequestState? get dmRequest; bool get stale; bool get removedFromGroup;
+ LoadStatus get status; ChatRoom? get room; UserSummary? get me; List<ChatMessage> get messages; String? get nextCursor; bool get loadingOlder; Map<String, RoomMember> get members; Map<String, UserSummary> get typing; int get typingOthers; Set<String> get online; RealtimeStatus get connection; ChatMessage? get replyTo; bool get uploading; Object? get error; Object? get actionError; int get actionErrorId; StockRoomState? get stockRoom; DateTime? get cooldownUntil; bool get dmRequestLimited; DmRequestState? get dmRequest; bool get stale; bool get removedFromGroup; ChatMessage? get editing; RoomRemovalReason? get closed; String? get closedBy;
 /// Create a copy of ChatRoomState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $ChatRoomStateCopyWith<ChatRoomState> get copyWith => _$ChatRoomStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatRoomState&&(identical(other.status, status) || other.status == status)&&(identical(other.room, room) || other.room == room)&&(identical(other.me, me) || other.me == me)&&const DeepCollectionEquality().equals(other.messages, messages)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingOlder, loadingOlder) || other.loadingOlder == loadingOlder)&&const DeepCollectionEquality().equals(other.members, members)&&const DeepCollectionEquality().equals(other.typing, typing)&&(identical(other.typingOthers, typingOthers) || other.typingOthers == typingOthers)&&const DeepCollectionEquality().equals(other.online, online)&&(identical(other.connection, connection) || other.connection == connection)&&(identical(other.replyTo, replyTo) || other.replyTo == replyTo)&&(identical(other.uploading, uploading) || other.uploading == uploading)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stockRoom, stockRoom) || other.stockRoom == stockRoom)&&(identical(other.cooldownUntil, cooldownUntil) || other.cooldownUntil == cooldownUntil)&&(identical(other.dmRequestLimited, dmRequestLimited) || other.dmRequestLimited == dmRequestLimited)&&(identical(other.dmRequest, dmRequest) || other.dmRequest == dmRequest)&&(identical(other.stale, stale) || other.stale == stale)&&(identical(other.removedFromGroup, removedFromGroup) || other.removedFromGroup == removedFromGroup));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatRoomState&&(identical(other.status, status) || other.status == status)&&(identical(other.room, room) || other.room == room)&&(identical(other.me, me) || other.me == me)&&const DeepCollectionEquality().equals(other.messages, messages)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingOlder, loadingOlder) || other.loadingOlder == loadingOlder)&&const DeepCollectionEquality().equals(other.members, members)&&const DeepCollectionEquality().equals(other.typing, typing)&&(identical(other.typingOthers, typingOthers) || other.typingOthers == typingOthers)&&const DeepCollectionEquality().equals(other.online, online)&&(identical(other.connection, connection) || other.connection == connection)&&(identical(other.replyTo, replyTo) || other.replyTo == replyTo)&&(identical(other.uploading, uploading) || other.uploading == uploading)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stockRoom, stockRoom) || other.stockRoom == stockRoom)&&(identical(other.cooldownUntil, cooldownUntil) || other.cooldownUntil == cooldownUntil)&&(identical(other.dmRequestLimited, dmRequestLimited) || other.dmRequestLimited == dmRequestLimited)&&(identical(other.dmRequest, dmRequest) || other.dmRequest == dmRequest)&&(identical(other.stale, stale) || other.stale == stale)&&(identical(other.removedFromGroup, removedFromGroup) || other.removedFromGroup == removedFromGroup)&&(identical(other.editing, editing) || other.editing == editing)&&(identical(other.closed, closed) || other.closed == closed)&&(identical(other.closedBy, closedBy) || other.closedBy == closedBy));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,status,room,me,const DeepCollectionEquality().hash(messages),nextCursor,loadingOlder,const DeepCollectionEquality().hash(members),const DeepCollectionEquality().hash(typing),typingOthers,const DeepCollectionEquality().hash(online),connection,replyTo,uploading,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stockRoom,cooldownUntil,dmRequestLimited,dmRequest,stale,removedFromGroup]);
+int get hashCode => Object.hashAll([runtimeType,status,room,me,const DeepCollectionEquality().hash(messages),nextCursor,loadingOlder,const DeepCollectionEquality().hash(members),const DeepCollectionEquality().hash(typing),typingOthers,const DeepCollectionEquality().hash(online),connection,replyTo,uploading,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stockRoom,cooldownUntil,dmRequestLimited,dmRequest,stale,removedFromGroup,editing,closed,closedBy]);
 
 @override
 String toString() {
-  return 'ChatRoomState(status: $status, room: $room, me: $me, messages: $messages, nextCursor: $nextCursor, loadingOlder: $loadingOlder, members: $members, typing: $typing, typingOthers: $typingOthers, online: $online, connection: $connection, replyTo: $replyTo, uploading: $uploading, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stockRoom: $stockRoom, cooldownUntil: $cooldownUntil, dmRequestLimited: $dmRequestLimited, dmRequest: $dmRequest, stale: $stale, removedFromGroup: $removedFromGroup)';
+  return 'ChatRoomState(status: $status, room: $room, me: $me, messages: $messages, nextCursor: $nextCursor, loadingOlder: $loadingOlder, members: $members, typing: $typing, typingOthers: $typingOthers, online: $online, connection: $connection, replyTo: $replyTo, uploading: $uploading, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stockRoom: $stockRoom, cooldownUntil: $cooldownUntil, dmRequestLimited: $dmRequestLimited, dmRequest: $dmRequest, stale: $stale, removedFromGroup: $removedFromGroup, editing: $editing, closed: $closed, closedBy: $closedBy)';
 }
 
 
@@ -45,11 +45,11 @@ abstract mixin class $ChatRoomStateCopyWith<$Res>  {
   factory $ChatRoomStateCopyWith(ChatRoomState value, $Res Function(ChatRoomState) _then) = _$ChatRoomStateCopyWithImpl;
 @useResult
 $Res call({
- LoadStatus status, ChatRoom? room, UserSummary? me, List<ChatMessage> messages, String? nextCursor, bool loadingOlder, Map<String, RoomMember> members, Map<String, UserSummary> typing, int typingOthers, Set<String> online, RealtimeStatus connection, ChatMessage? replyTo, bool uploading, Object? error, Object? actionError, int actionErrorId, StockRoomState? stockRoom, DateTime? cooldownUntil, bool dmRequestLimited, DmRequestState? dmRequest, bool stale, bool removedFromGroup
+ LoadStatus status, ChatRoom? room, UserSummary? me, List<ChatMessage> messages, String? nextCursor, bool loadingOlder, Map<String, RoomMember> members, Map<String, UserSummary> typing, int typingOthers, Set<String> online, RealtimeStatus connection, ChatMessage? replyTo, bool uploading, Object? error, Object? actionError, int actionErrorId, StockRoomState? stockRoom, DateTime? cooldownUntil, bool dmRequestLimited, DmRequestState? dmRequest, bool stale, bool removedFromGroup, ChatMessage? editing, RoomRemovalReason? closed, String? closedBy
 });
 
 
-$ChatRoomCopyWith<$Res>? get room;$UserSummaryCopyWith<$Res>? get me;$ChatMessageCopyWith<$Res>? get replyTo;$StockRoomStateCopyWith<$Res>? get stockRoom;$DmRequestStateCopyWith<$Res>? get dmRequest;
+$ChatRoomCopyWith<$Res>? get room;$UserSummaryCopyWith<$Res>? get me;$ChatMessageCopyWith<$Res>? get replyTo;$StockRoomStateCopyWith<$Res>? get stockRoom;$DmRequestStateCopyWith<$Res>? get dmRequest;$ChatMessageCopyWith<$Res>? get editing;
 
 }
 /// @nodoc
@@ -62,7 +62,7 @@ class _$ChatRoomStateCopyWithImpl<$Res>
 
 /// Create a copy of ChatRoomState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? room = freezed,Object? me = freezed,Object? messages = null,Object? nextCursor = freezed,Object? loadingOlder = null,Object? members = null,Object? typing = null,Object? typingOthers = null,Object? online = null,Object? connection = null,Object? replyTo = freezed,Object? uploading = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? stockRoom = freezed,Object? cooldownUntil = freezed,Object? dmRequestLimited = null,Object? dmRequest = freezed,Object? stale = null,Object? removedFromGroup = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? room = freezed,Object? me = freezed,Object? messages = null,Object? nextCursor = freezed,Object? loadingOlder = null,Object? members = null,Object? typing = null,Object? typingOthers = null,Object? online = null,Object? connection = null,Object? replyTo = freezed,Object? uploading = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? stockRoom = freezed,Object? cooldownUntil = freezed,Object? dmRequestLimited = null,Object? dmRequest = freezed,Object? stale = null,Object? removedFromGroup = null,Object? editing = freezed,Object? closed = freezed,Object? closedBy = freezed,}) {
   return _then(_self.copyWith(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,room: freezed == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
@@ -84,7 +84,10 @@ as DateTime?,dmRequestLimited: null == dmRequestLimited ? _self.dmRequestLimited
 as bool,dmRequest: freezed == dmRequest ? _self.dmRequest : dmRequest // ignore: cast_nullable_to_non_nullable
 as DmRequestState?,stale: null == stale ? _self.stale : stale // ignore: cast_nullable_to_non_nullable
 as bool,removedFromGroup: null == removedFromGroup ? _self.removedFromGroup : removedFromGroup // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,editing: freezed == editing ? _self.editing : editing // ignore: cast_nullable_to_non_nullable
+as ChatMessage?,closed: freezed == closed ? _self.closed : closed // ignore: cast_nullable_to_non_nullable
+as RoomRemovalReason?,closedBy: freezed == closedBy ? _self.closedBy : closedBy // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 /// Create a copy of ChatRoomState
@@ -146,6 +149,18 @@ $DmRequestStateCopyWith<$Res>? get dmRequest {
 
   return $DmRequestStateCopyWith<$Res>(_self.dmRequest!, (value) {
     return _then(_self.copyWith(dmRequest: value));
+  });
+}/// Create a copy of ChatRoomState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ChatMessageCopyWith<$Res>? get editing {
+    if (_self.editing == null) {
+    return null;
+  }
+
+  return $ChatMessageCopyWith<$Res>(_self.editing!, (value) {
+    return _then(_self.copyWith(editing: value));
   });
 }
 }
@@ -229,10 +244,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( LoadStatus status,  ChatRoom? room,  UserSummary? me,  List<ChatMessage> messages,  String? nextCursor,  bool loadingOlder,  Map<String, RoomMember> members,  Map<String, UserSummary> typing,  int typingOthers,  Set<String> online,  RealtimeStatus connection,  ChatMessage? replyTo,  bool uploading,  Object? error,  Object? actionError,  int actionErrorId,  StockRoomState? stockRoom,  DateTime? cooldownUntil,  bool dmRequestLimited,  DmRequestState? dmRequest,  bool stale,  bool removedFromGroup)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( LoadStatus status,  ChatRoom? room,  UserSummary? me,  List<ChatMessage> messages,  String? nextCursor,  bool loadingOlder,  Map<String, RoomMember> members,  Map<String, UserSummary> typing,  int typingOthers,  Set<String> online,  RealtimeStatus connection,  ChatMessage? replyTo,  bool uploading,  Object? error,  Object? actionError,  int actionErrorId,  StockRoomState? stockRoom,  DateTime? cooldownUntil,  bool dmRequestLimited,  DmRequestState? dmRequest,  bool stale,  bool removedFromGroup,  ChatMessage? editing,  RoomRemovalReason? closed,  String? closedBy)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChatRoomState() when $default != null:
-return $default(_that.status,_that.room,_that.me,_that.messages,_that.nextCursor,_that.loadingOlder,_that.members,_that.typing,_that.typingOthers,_that.online,_that.connection,_that.replyTo,_that.uploading,_that.error,_that.actionError,_that.actionErrorId,_that.stockRoom,_that.cooldownUntil,_that.dmRequestLimited,_that.dmRequest,_that.stale,_that.removedFromGroup);case _:
+return $default(_that.status,_that.room,_that.me,_that.messages,_that.nextCursor,_that.loadingOlder,_that.members,_that.typing,_that.typingOthers,_that.online,_that.connection,_that.replyTo,_that.uploading,_that.error,_that.actionError,_that.actionErrorId,_that.stockRoom,_that.cooldownUntil,_that.dmRequestLimited,_that.dmRequest,_that.stale,_that.removedFromGroup,_that.editing,_that.closed,_that.closedBy);case _:
   return orElse();
 
 }
@@ -250,10 +265,10 @@ return $default(_that.status,_that.room,_that.me,_that.messages,_that.nextCursor
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( LoadStatus status,  ChatRoom? room,  UserSummary? me,  List<ChatMessage> messages,  String? nextCursor,  bool loadingOlder,  Map<String, RoomMember> members,  Map<String, UserSummary> typing,  int typingOthers,  Set<String> online,  RealtimeStatus connection,  ChatMessage? replyTo,  bool uploading,  Object? error,  Object? actionError,  int actionErrorId,  StockRoomState? stockRoom,  DateTime? cooldownUntil,  bool dmRequestLimited,  DmRequestState? dmRequest,  bool stale,  bool removedFromGroup)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( LoadStatus status,  ChatRoom? room,  UserSummary? me,  List<ChatMessage> messages,  String? nextCursor,  bool loadingOlder,  Map<String, RoomMember> members,  Map<String, UserSummary> typing,  int typingOthers,  Set<String> online,  RealtimeStatus connection,  ChatMessage? replyTo,  bool uploading,  Object? error,  Object? actionError,  int actionErrorId,  StockRoomState? stockRoom,  DateTime? cooldownUntil,  bool dmRequestLimited,  DmRequestState? dmRequest,  bool stale,  bool removedFromGroup,  ChatMessage? editing,  RoomRemovalReason? closed,  String? closedBy)  $default,) {final _that = this;
 switch (_that) {
 case _ChatRoomState():
-return $default(_that.status,_that.room,_that.me,_that.messages,_that.nextCursor,_that.loadingOlder,_that.members,_that.typing,_that.typingOthers,_that.online,_that.connection,_that.replyTo,_that.uploading,_that.error,_that.actionError,_that.actionErrorId,_that.stockRoom,_that.cooldownUntil,_that.dmRequestLimited,_that.dmRequest,_that.stale,_that.removedFromGroup);case _:
+return $default(_that.status,_that.room,_that.me,_that.messages,_that.nextCursor,_that.loadingOlder,_that.members,_that.typing,_that.typingOthers,_that.online,_that.connection,_that.replyTo,_that.uploading,_that.error,_that.actionError,_that.actionErrorId,_that.stockRoom,_that.cooldownUntil,_that.dmRequestLimited,_that.dmRequest,_that.stale,_that.removedFromGroup,_that.editing,_that.closed,_that.closedBy);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -270,10 +285,10 @@ return $default(_that.status,_that.room,_that.me,_that.messages,_that.nextCursor
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( LoadStatus status,  ChatRoom? room,  UserSummary? me,  List<ChatMessage> messages,  String? nextCursor,  bool loadingOlder,  Map<String, RoomMember> members,  Map<String, UserSummary> typing,  int typingOthers,  Set<String> online,  RealtimeStatus connection,  ChatMessage? replyTo,  bool uploading,  Object? error,  Object? actionError,  int actionErrorId,  StockRoomState? stockRoom,  DateTime? cooldownUntil,  bool dmRequestLimited,  DmRequestState? dmRequest,  bool stale,  bool removedFromGroup)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( LoadStatus status,  ChatRoom? room,  UserSummary? me,  List<ChatMessage> messages,  String? nextCursor,  bool loadingOlder,  Map<String, RoomMember> members,  Map<String, UserSummary> typing,  int typingOthers,  Set<String> online,  RealtimeStatus connection,  ChatMessage? replyTo,  bool uploading,  Object? error,  Object? actionError,  int actionErrorId,  StockRoomState? stockRoom,  DateTime? cooldownUntil,  bool dmRequestLimited,  DmRequestState? dmRequest,  bool stale,  bool removedFromGroup,  ChatMessage? editing,  RoomRemovalReason? closed,  String? closedBy)?  $default,) {final _that = this;
 switch (_that) {
 case _ChatRoomState() when $default != null:
-return $default(_that.status,_that.room,_that.me,_that.messages,_that.nextCursor,_that.loadingOlder,_that.members,_that.typing,_that.typingOthers,_that.online,_that.connection,_that.replyTo,_that.uploading,_that.error,_that.actionError,_that.actionErrorId,_that.stockRoom,_that.cooldownUntil,_that.dmRequestLimited,_that.dmRequest,_that.stale,_that.removedFromGroup);case _:
+return $default(_that.status,_that.room,_that.me,_that.messages,_that.nextCursor,_that.loadingOlder,_that.members,_that.typing,_that.typingOthers,_that.online,_that.connection,_that.replyTo,_that.uploading,_that.error,_that.actionError,_that.actionErrorId,_that.stockRoom,_that.cooldownUntil,_that.dmRequestLimited,_that.dmRequest,_that.stale,_that.removedFromGroup,_that.editing,_that.closed,_that.closedBy);case _:
   return null;
 
 }
@@ -285,7 +300,7 @@ return $default(_that.status,_that.room,_that.me,_that.messages,_that.nextCursor
 
 
 class _ChatRoomState extends ChatRoomState {
-  const _ChatRoomState({this.status = LoadStatus.initial, this.room, this.me, final  List<ChatMessage> messages = const <ChatMessage>[], this.nextCursor, this.loadingOlder = false, final  Map<String, RoomMember> members = const <String, RoomMember>{}, final  Map<String, UserSummary> typing = const <String, UserSummary>{}, this.typingOthers = 0, final  Set<String> online = const <String>{}, this.connection = RealtimeStatus.connecting, this.replyTo, this.uploading = false, this.error, this.actionError, this.actionErrorId = 0, this.stockRoom, this.cooldownUntil, this.dmRequestLimited = false, this.dmRequest, this.stale = false, this.removedFromGroup = false}): _messages = messages,_members = members,_typing = typing,_online = online,super._();
+  const _ChatRoomState({this.status = LoadStatus.initial, this.room, this.me, final  List<ChatMessage> messages = const <ChatMessage>[], this.nextCursor, this.loadingOlder = false, final  Map<String, RoomMember> members = const <String, RoomMember>{}, final  Map<String, UserSummary> typing = const <String, UserSummary>{}, this.typingOthers = 0, final  Set<String> online = const <String>{}, this.connection = RealtimeStatus.connecting, this.replyTo, this.uploading = false, this.error, this.actionError, this.actionErrorId = 0, this.stockRoom, this.cooldownUntil, this.dmRequestLimited = false, this.dmRequest, this.stale = false, this.removedFromGroup = false, this.editing, this.closed, this.closedBy}): _messages = messages,_members = members,_typing = typing,_online = online,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -334,6 +349,9 @@ class _ChatRoomState extends ChatRoomState {
 @override final  DmRequestState? dmRequest;
 @override@JsonKey() final  bool stale;
 @override@JsonKey() final  bool removedFromGroup;
+@override final  ChatMessage? editing;
+@override final  RoomRemovalReason? closed;
+@override final  String? closedBy;
 
 /// Create a copy of ChatRoomState
 /// with the given fields replaced by the non-null parameter values.
@@ -345,16 +363,16 @@ _$ChatRoomStateCopyWith<_ChatRoomState> get copyWith => __$ChatRoomStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatRoomState&&(identical(other.status, status) || other.status == status)&&(identical(other.room, room) || other.room == room)&&(identical(other.me, me) || other.me == me)&&const DeepCollectionEquality().equals(other._messages, _messages)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingOlder, loadingOlder) || other.loadingOlder == loadingOlder)&&const DeepCollectionEquality().equals(other._members, _members)&&const DeepCollectionEquality().equals(other._typing, _typing)&&(identical(other.typingOthers, typingOthers) || other.typingOthers == typingOthers)&&const DeepCollectionEquality().equals(other._online, _online)&&(identical(other.connection, connection) || other.connection == connection)&&(identical(other.replyTo, replyTo) || other.replyTo == replyTo)&&(identical(other.uploading, uploading) || other.uploading == uploading)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stockRoom, stockRoom) || other.stockRoom == stockRoom)&&(identical(other.cooldownUntil, cooldownUntil) || other.cooldownUntil == cooldownUntil)&&(identical(other.dmRequestLimited, dmRequestLimited) || other.dmRequestLimited == dmRequestLimited)&&(identical(other.dmRequest, dmRequest) || other.dmRequest == dmRequest)&&(identical(other.stale, stale) || other.stale == stale)&&(identical(other.removedFromGroup, removedFromGroup) || other.removedFromGroup == removedFromGroup));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatRoomState&&(identical(other.status, status) || other.status == status)&&(identical(other.room, room) || other.room == room)&&(identical(other.me, me) || other.me == me)&&const DeepCollectionEquality().equals(other._messages, _messages)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingOlder, loadingOlder) || other.loadingOlder == loadingOlder)&&const DeepCollectionEquality().equals(other._members, _members)&&const DeepCollectionEquality().equals(other._typing, _typing)&&(identical(other.typingOthers, typingOthers) || other.typingOthers == typingOthers)&&const DeepCollectionEquality().equals(other._online, _online)&&(identical(other.connection, connection) || other.connection == connection)&&(identical(other.replyTo, replyTo) || other.replyTo == replyTo)&&(identical(other.uploading, uploading) || other.uploading == uploading)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stockRoom, stockRoom) || other.stockRoom == stockRoom)&&(identical(other.cooldownUntil, cooldownUntil) || other.cooldownUntil == cooldownUntil)&&(identical(other.dmRequestLimited, dmRequestLimited) || other.dmRequestLimited == dmRequestLimited)&&(identical(other.dmRequest, dmRequest) || other.dmRequest == dmRequest)&&(identical(other.stale, stale) || other.stale == stale)&&(identical(other.removedFromGroup, removedFromGroup) || other.removedFromGroup == removedFromGroup)&&(identical(other.editing, editing) || other.editing == editing)&&(identical(other.closed, closed) || other.closed == closed)&&(identical(other.closedBy, closedBy) || other.closedBy == closedBy));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,status,room,me,const DeepCollectionEquality().hash(_messages),nextCursor,loadingOlder,const DeepCollectionEquality().hash(_members),const DeepCollectionEquality().hash(_typing),typingOthers,const DeepCollectionEquality().hash(_online),connection,replyTo,uploading,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stockRoom,cooldownUntil,dmRequestLimited,dmRequest,stale,removedFromGroup]);
+int get hashCode => Object.hashAll([runtimeType,status,room,me,const DeepCollectionEquality().hash(_messages),nextCursor,loadingOlder,const DeepCollectionEquality().hash(_members),const DeepCollectionEquality().hash(_typing),typingOthers,const DeepCollectionEquality().hash(_online),connection,replyTo,uploading,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stockRoom,cooldownUntil,dmRequestLimited,dmRequest,stale,removedFromGroup,editing,closed,closedBy]);
 
 @override
 String toString() {
-  return 'ChatRoomState(status: $status, room: $room, me: $me, messages: $messages, nextCursor: $nextCursor, loadingOlder: $loadingOlder, members: $members, typing: $typing, typingOthers: $typingOthers, online: $online, connection: $connection, replyTo: $replyTo, uploading: $uploading, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stockRoom: $stockRoom, cooldownUntil: $cooldownUntil, dmRequestLimited: $dmRequestLimited, dmRequest: $dmRequest, stale: $stale, removedFromGroup: $removedFromGroup)';
+  return 'ChatRoomState(status: $status, room: $room, me: $me, messages: $messages, nextCursor: $nextCursor, loadingOlder: $loadingOlder, members: $members, typing: $typing, typingOthers: $typingOthers, online: $online, connection: $connection, replyTo: $replyTo, uploading: $uploading, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stockRoom: $stockRoom, cooldownUntil: $cooldownUntil, dmRequestLimited: $dmRequestLimited, dmRequest: $dmRequest, stale: $stale, removedFromGroup: $removedFromGroup, editing: $editing, closed: $closed, closedBy: $closedBy)';
 }
 
 
@@ -365,11 +383,11 @@ abstract mixin class _$ChatRoomStateCopyWith<$Res> implements $ChatRoomStateCopy
   factory _$ChatRoomStateCopyWith(_ChatRoomState value, $Res Function(_ChatRoomState) _then) = __$ChatRoomStateCopyWithImpl;
 @override @useResult
 $Res call({
- LoadStatus status, ChatRoom? room, UserSummary? me, List<ChatMessage> messages, String? nextCursor, bool loadingOlder, Map<String, RoomMember> members, Map<String, UserSummary> typing, int typingOthers, Set<String> online, RealtimeStatus connection, ChatMessage? replyTo, bool uploading, Object? error, Object? actionError, int actionErrorId, StockRoomState? stockRoom, DateTime? cooldownUntil, bool dmRequestLimited, DmRequestState? dmRequest, bool stale, bool removedFromGroup
+ LoadStatus status, ChatRoom? room, UserSummary? me, List<ChatMessage> messages, String? nextCursor, bool loadingOlder, Map<String, RoomMember> members, Map<String, UserSummary> typing, int typingOthers, Set<String> online, RealtimeStatus connection, ChatMessage? replyTo, bool uploading, Object? error, Object? actionError, int actionErrorId, StockRoomState? stockRoom, DateTime? cooldownUntil, bool dmRequestLimited, DmRequestState? dmRequest, bool stale, bool removedFromGroup, ChatMessage? editing, RoomRemovalReason? closed, String? closedBy
 });
 
 
-@override $ChatRoomCopyWith<$Res>? get room;@override $UserSummaryCopyWith<$Res>? get me;@override $ChatMessageCopyWith<$Res>? get replyTo;@override $StockRoomStateCopyWith<$Res>? get stockRoom;@override $DmRequestStateCopyWith<$Res>? get dmRequest;
+@override $ChatRoomCopyWith<$Res>? get room;@override $UserSummaryCopyWith<$Res>? get me;@override $ChatMessageCopyWith<$Res>? get replyTo;@override $StockRoomStateCopyWith<$Res>? get stockRoom;@override $DmRequestStateCopyWith<$Res>? get dmRequest;@override $ChatMessageCopyWith<$Res>? get editing;
 
 }
 /// @nodoc
@@ -382,7 +400,7 @@ class __$ChatRoomStateCopyWithImpl<$Res>
 
 /// Create a copy of ChatRoomState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? room = freezed,Object? me = freezed,Object? messages = null,Object? nextCursor = freezed,Object? loadingOlder = null,Object? members = null,Object? typing = null,Object? typingOthers = null,Object? online = null,Object? connection = null,Object? replyTo = freezed,Object? uploading = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? stockRoom = freezed,Object? cooldownUntil = freezed,Object? dmRequestLimited = null,Object? dmRequest = freezed,Object? stale = null,Object? removedFromGroup = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? status = null,Object? room = freezed,Object? me = freezed,Object? messages = null,Object? nextCursor = freezed,Object? loadingOlder = null,Object? members = null,Object? typing = null,Object? typingOthers = null,Object? online = null,Object? connection = null,Object? replyTo = freezed,Object? uploading = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? stockRoom = freezed,Object? cooldownUntil = freezed,Object? dmRequestLimited = null,Object? dmRequest = freezed,Object? stale = null,Object? removedFromGroup = null,Object? editing = freezed,Object? closed = freezed,Object? closedBy = freezed,}) {
   return _then(_ChatRoomState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,room: freezed == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
@@ -404,7 +422,10 @@ as DateTime?,dmRequestLimited: null == dmRequestLimited ? _self.dmRequestLimited
 as bool,dmRequest: freezed == dmRequest ? _self.dmRequest : dmRequest // ignore: cast_nullable_to_non_nullable
 as DmRequestState?,stale: null == stale ? _self.stale : stale // ignore: cast_nullable_to_non_nullable
 as bool,removedFromGroup: null == removedFromGroup ? _self.removedFromGroup : removedFromGroup // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,editing: freezed == editing ? _self.editing : editing // ignore: cast_nullable_to_non_nullable
+as ChatMessage?,closed: freezed == closed ? _self.closed : closed // ignore: cast_nullable_to_non_nullable
+as RoomRemovalReason?,closedBy: freezed == closedBy ? _self.closedBy : closedBy // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -467,6 +488,18 @@ $DmRequestStateCopyWith<$Res>? get dmRequest {
 
   return $DmRequestStateCopyWith<$Res>(_self.dmRequest!, (value) {
     return _then(_self.copyWith(dmRequest: value));
+  });
+}/// Create a copy of ChatRoomState
+/// with the given fields replaced by the non-null parameter values.
+@override
+@pragma('vm:prefer-inline')
+$ChatMessageCopyWith<$Res>? get editing {
+    if (_self.editing == null) {
+    return null;
+  }
+
+  return $ChatMessageCopyWith<$Res>(_self.editing!, (value) {
+    return _then(_self.copyWith(editing: value));
   });
 }
 }

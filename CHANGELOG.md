@@ -1,3 +1,25 @@
+## 1.25.0
+
+Butuh migrasi server `0154` (hapus chat, hapus grup, edit pesan) dan `0155` (komentar dihapus tanpa jejak). Room CS tetap terkunci di server: tidak bisa dihapus, disembunyikan, dikosongkan, ditinggalkan, maupun diedit.
+
+* **Breaking untuk repository chat milik host:** `ChatRepository` mendapat `hideRoom(roomId)`, `deleteGroup(roomId)`, `editMessage(messageId, body)` (mengembalikan `ChatMessage` terbaru), dan `watchRoomRemovals()` (`Stream<RoomRemoval>`). Implementasi sendiri wajib menambahkannya. `SupportChatRepository` dan repository transkrip CS menolak ketiga aksi dengan error yang sama seperti `deleteMessage`.
+* **Hapus chat untuk saya:**
+  * Tile room bawaan membuka menu lewat klik kanan (desktop/web) dan tekan lama (mobile).
+  * `CommunityRoomTileDetails` mendapat `onHide`, `onLeave`, `onDeleteGroup`, `onShowActions`, dan `hasActions`. Callback hanya terisi bila diizinkan: CS tanpa aksi, DM hanya Hapus chat, room saham Hapus chat dan Keluar, grup Hapus chat dan Keluar, ditambah Hapus grup khusus owner. Getter baru di `ChatRoom`: `canHide`, `canLeave`, `canDeleteGroup`.
+  * Slot builder baru `CommunityChatBuilders.roomActions` (`CommunityRoomActionsDetails`, `CommunityRoomAction`, `CommunityRoomActionKind`) untuk mengganti tampilan menu.
+  * Header room mendapat "Hapus chat" (`CommunityRoomHeaderDetails.onHide`).
+  * Room langsung hilang dari daftar (optimistic) dan kembali bila server menolak. Room muncul lagi saat ada pesan baru, dengan riwayat lama tetap kosong.
+* **Hapus grup:** tombol "Hapus grup" di halaman Info grup khusus owner (`CommunityGroupInfoPageDetails.onDeleteGroup`, `deleteGroupLabel`). Grup hilang dari daftar semua anggota lewat realtime.
+* **Room ditutup:** room yang sedang terbuka lalu dihapus (dari perangkat lain) atau dibubarkan pemiliknya ditutup dengan pesan "Chat ini sudah dihapus dari daftar Anda." atau "{nama} menghapus grup ini.". `CommunityChatRoom(onClosed: ...)` dipanggil saat itu. Daftar chat bawaan menutup halaman room yang dibukanya sendiri. `ChatRoomState` mendapat `closed` (`RoomRemovalReason`), `closedBy`, dan `roomClosed`.
+* **Edit pesan:**
+  * Menu pesan menampilkan "Edit" hanya untuk pesan teks milik sendiri tanpa lampiran dalam batas waktu edit (setelan yang sama dengan edit komentar). Tidak pernah tampil di chat CS.
+  * Composer masuk mode edit: banner "Mengedit pesan" dengan tombol batal, Esc membatalkan, dan teks lama terisi. Simpanan tampil langsung dan dikembalikan bila server menolak, lalu error ditampilkan.
+  * Pesan yang diedit memakai label "(diedit)". `CommunityMessageDetails` mendapat `onEdit`, `edited`, dan `editedLabel`. `CommunityComposerDetails` mendapat `editing`, `editingLabel`, `isEditing`, dan `onCancelEdit`. `ChatRoomCubit` mendapat `startEditing`, `cancelEditing`, `saveEdit`, dan `ChatRoomState.canEdit`.
+  * Preview daftar chat ikut berubah bila yang diedit pesan terakhir.
+* **Komentar Stream tanpa jejak:** komentar yang dihapus dikeluarkan dari state, tidak lagi ditandai `isDeleted`. Balasannya naik ke induk terdekat, atau menjadi komentar tingkat atas bila tidak ada induk, sama dengan server. Tile bawaan tidak lagi merender placeholder `commentDeleted`. Field `ThreadComment.isDeleted` tetap ada supaya kompatibel, dan baris terhapus dari server lama juga tidak sampai ke UI.
+* **Analitik:** event baru `hide_room`, `delete_group`, dan `edit_message` (`room_id`, `type`).
+* **Error baru:** `cannot_hide_support`, `not_group`, `support_message_locked`, `not_editable`, dan `edit_window_closed`.
+
 ## 1.24.0
 
 Butuh migrasi server `0149`–`0152` untuk tab filter dan indeks. Dengan server lama, tab filter memakai tab bawaan Terbaru/Teratas/Grafik & Media dan indeks tidak terdaftar. Semua widget lama tetap jalan.

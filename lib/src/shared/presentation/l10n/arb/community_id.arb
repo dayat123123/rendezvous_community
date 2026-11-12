@@ -924,5 +924,20 @@
   "indexBullishPct": "{pct}% bullish",
   "@indexBullishPct": {"placeholders": {"pct": {"type": "int"}}},
   "errorRoomDisabled": "Room diskusi untuk kode ini sedang ditutup.",
-  "errorFeedFilter": "Tab feed ini sedang tidak tersedia."
+  "errorFeedFilter": "Tab feed ini sedang tidak tersedia.",
+  "hideChat": "Hapus chat",
+  "hideChatConfirm": "Chat dan riwayatnya akan dihapus dari perangkat Anda. Anggota lain tidak terpengaruh.",
+  "deleteGroup": "Hapus grup",
+  "deleteGroupConfirm": "Grup akan dihapus untuk semua anggota dan tidak bisa dikembalikan.",
+  "chatHiddenNotice": "Chat ini sudah dihapus dari daftar Anda.",
+  "groupDeletedNotice": "Grup ini sudah dihapus.",
+  "groupDeletedBy": "{name} menghapus grup ini.",
+  "@groupDeletedBy": {"placeholders": {"name": {"type": "String"}}},
+  "editingMessage": "Mengedit pesan",
+  "cancelEdit": "Batal edit",
+  "errorCannotHideSupport": "Chat CS tidak bisa dihapus.",
+  "errorNotGroup": "Hanya grup yang bisa dihapus.",
+  "errorSupportMessageLocked": "Pesan di chat CS tidak bisa diubah atau dihapus.",
+  "errorNotEditable": "Pesan ini tidak bisa diedit.",
+  "errorEditWindowClosed": "Batas waktu edit pesan sudah lewat."
 }

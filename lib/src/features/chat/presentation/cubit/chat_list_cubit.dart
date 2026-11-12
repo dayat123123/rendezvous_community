@@ -6,6 +6,8 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/network/community_connectivity.dart';
 import 'package:rendezvous_community/src/core/network/realtime_status.dart';
+import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
+import 'package:rendezvous_community/src/features/analytics/domain/services/community_analytics.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_events.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
@@ -31,6 +33,8 @@ abstract class ChatListState with _$ChatListState {
     UserSummary? me,
     Object? error,
     @Default(false) bool stale,
+    Object? actionError,
+    @Default(0) int actionErrorId,
   }) = _ChatListState;
 
   const ChatListState._();
@@ -55,9 +59,11 @@ class ChatListCubit extends Cubit<ChatListState> {
     this._connectivity,
     this._random,
     this._clock,
+    this._analytics,
   }) : super(const ChatListState());
 
   final ChatRepository _chat;
+  final CommunityAnalytics? _analytics;
   final Future<UserSummary> Function() _me;
   final ChatCacheRepository? _cache;
   final CommunityConnectivity? _connectivity;
@@ -78,6 +84,7 @@ class ChatListCubit extends Cubit<ChatListState> {
   bool _visible = false;
   bool _previewsUnsupported = false;
   StreamSubscription<RoomActivity>? _activity;
+  StreamSubscription<RoomRemoval>? _removals;
   StreamSubscription<RoomSignal>? _signals;
   Set<String> _watched = const {};
   final _channels = <String, RealtimeStatus>{};
@@ -103,6 +110,7 @@ class ChatListCubit extends Cubit<ChatListState> {
         state.copyWith(status: LoadStatus.ready, rooms: page.items, nextCursor: page.nextCursor, me: me, stale: false),
       );
       _activity ??= _chat.watchRoomActivity().listen(_onActivity, onError: (Object _) {});
+      _removals ??= _chat.watchRoomRemovals().listen((r) => _dropRoom(r.roomId), onError: (Object _) {});
       _watchRooms();
     } catch (e) {
       if (isClosed || (state.status == LoadStatus.ready && state.stale)) return;
@@ -167,6 +175,60 @@ class ChatListCubit extends Cubit<ChatListState> {
 
   void markOpened(String roomId) =>
       emit(state.copyWith(rooms: [for (final r in state.rooms) r.id == roomId ? r.copyWith(unreadCount: 0) : r]));
+
+  Future<bool> hideRoom(ChatRoom room) async {
+    if (!room.canHide) return false;
+    final ok = await _removeRoom(room, () => _chat.hideRoom(room.id));
+    if (ok) _analytics?.record(CommunityAnalyticsEvent.hideRoom, {'room_id': room.id, 'type': room.type.name});
+    return ok;
+  }
+
+  Future<bool> leaveRoom(ChatRoom room) async =>
+      room.canLeave && await _removeRoom(room, () => _chat.leaveRoom(room.id));
+
+  Future<bool> deleteGroup(ChatRoom room) async {
+    if (!room.canDeleteGroup) return false;
+    final ok = await _removeRoom(room, () => _chat.deleteGroup(room.id));
+    if (ok) _analytics?.record(CommunityAnalyticsEvent.deleteGroup, {'room_id': room.id, 'type': room.type.name});
+    return ok;
+  }
+
+  Future<bool> _removeRoom(ChatRoom room, Future<void> Function() action) async {
+    if (!state.rooms.any((r) => r.id == room.id)) return false;
+    _dropRoom(room.id);
+    try {
+      await action();
+      return true;
+    } catch (e) {
+      if (isClosed) return false;
+      final rooms = [...state.rooms.where((r) => r.id != room.id), room]..sort((a, b) => a.compareListOrder(b));
+      emit(state.copyWith(rooms: rooms, actionError: e, actionErrorId: state.actionErrorId + 1));
+      _watchRooms();
+      return false;
+    }
+  }
+
+  void _dropRoom(String roomId) {
+    if (isClosed || !state.rooms.any((r) => r.id == roomId)) return;
+    emit(
+      state.copyWith(
+        rooms: [
+          for (final r in state.rooms)
+            if (r.id != roomId) r,
+        ],
+      ),
+    );
+    _watchRooms();
+  }
+
+  void _applyEditedPreview(String roomId, String preview) {
+    if (!state.rooms.any((r) => r.id == roomId && r.lastMessagePreview != preview)) return;
+    emit(
+      state.copyWith(
+        rooms: [for (final r in state.rooms) r.id == roomId ? r.copyWith(lastMessagePreview: preview) : r],
+      ),
+    );
+  }
 
   void _onActivity(RoomActivity activity) {
     final sender = activity.senderId;
@@ -265,6 +327,10 @@ class ChatListCubit extends Cubit<ChatListState> {
         final previous = _channels[roomId];
         _channels[roomId] = status;
         if (status == RealtimeStatus.connected && previous != null && previous != status) _scheduleRefresh();
+      case RoomPreviewEdited(:final roomId, :final preview):
+        _applyEditedPreview(roomId, preview);
+      case RoomDeleted(:final roomId):
+        _dropRoom(roomId);
       case RoomReaction() || RoomStateSignal() || RoomMessageHidden() || RoomTypingSummary():
         return;
     }
@@ -318,6 +384,7 @@ class ChatListCubit extends Cubit<ChatListState> {
       timer.cancel();
     }
     await _activity?.cancel();
+    await _removals?.cancel();
     await _signals?.cancel();
     await _onlineChanges?.cancel();
     return super.close();

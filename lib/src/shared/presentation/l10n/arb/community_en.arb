@@ -806,5 +806,20 @@
   "indexBullishPct": "{pct}% bullish",
   "@indexBullishPct": {"placeholders": {"pct": {"type": "int"}}},
   "errorRoomDisabled": "The discussion room for this code is closed.",
-  "errorFeedFilter": "This feed tab is not available right now."
+  "errorFeedFilter": "This feed tab is not available right now.",
+  "hideChat": "Delete chat",
+  "hideChatConfirm": "The chat and its history will be removed from your device. Other members are not affected.",
+  "deleteGroup": "Delete group",
+  "deleteGroupConfirm": "The group will be deleted for all members and cannot be restored.",
+  "chatHiddenNotice": "This chat was removed from your list.",
+  "groupDeletedNotice": "This group has been deleted.",
+  "groupDeletedBy": "{name} deleted this group.",
+  "@groupDeletedBy": {"placeholders": {"name": {"type": "String"}}},
+  "editingMessage": "Editing message",
+  "cancelEdit": "Cancel edit",
+  "errorCannotHideSupport": "Support chats cannot be deleted.",
+  "errorNotGroup": "Only groups can be deleted.",
+  "errorSupportMessageLocked": "Messages in support chats cannot be changed or deleted.",
+  "errorNotEditable": "This message cannot be edited.",
+  "errorEditWindowClosed": "The time to edit this message has passed."
 }

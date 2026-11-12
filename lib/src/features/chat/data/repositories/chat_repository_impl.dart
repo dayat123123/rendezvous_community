@@ -41,6 +41,7 @@ class ChatRepositoryImpl
           presenceFor: _tracksPresence,
         );
   late final SharedStream<RoomActivity> _activity = SharedStream(_createActivityStream);
+  late final SharedStream<RoomRemoval> _removals = SharedStream(_createRemovalStream);
   late final SharedStream<RoomMuteNotice> _muteNotices = SharedStream(_createMuteNoticeStream);
   final _unreadChanges = StreamController<void>.broadcast();
 
@@ -144,6 +145,14 @@ class ChatRepositoryImpl
   Future<void> deleteMessage(String messageId) => _api.rpcValue('delete_message', {'p_message_id': messageId});
 
   @override
+  Future<ChatMessage> editMessage(String messageId, String body) async {
+    final rows = await _api.rpcRows('edit_message', {'p_message_id': messageId, 'p_body': body});
+    final edited = ChatMessageModel.fromJson(rows.first).toEntity();
+    await _cache?.saveMessages(edited.roomId, [rows.first], [edited]);
+    return edited;
+  }
+
+  @override
   Future<void> markRoomRead(String roomId) async {
     await _api.rpcValue('mark_room_read', {'p_room_id': roomId});
     _unreadChanged();
@@ -189,6 +198,20 @@ class ChatRepositoryImpl
   }
 
   @override
+  Future<void> hideRoom(String roomId) async {
+    await _api.rpcValue('hide_room', {'p_room_id': roomId});
+    await _cache?.forgetRoom(roomId);
+    _unreadChanged();
+  }
+
+  @override
+  Future<void> deleteGroup(String roomId) async {
+    await _api.rpcValue('delete_group', {'p_room_id': roomId});
+    await _cache?.forgetRoom(roomId);
+    _unreadChanged();
+  }
+
+  @override
   Future<void> setMuted(String roomId, {required bool muted}) async {
     final me = await _api.requireUserId();
     await _api.update('chat_members', {'muted': muted}, {'room_id': roomId, 'user_id': me});
@@ -225,6 +248,9 @@ class ChatRepositoryImpl
   Stream<RoomActivity> watchRoomActivity() => _realtime == null ? const Stream.empty() : _activity.stream;
 
   @override
+  Stream<RoomRemoval> watchRoomRemovals() => _realtime == null ? const Stream.empty() : _removals.stream;
+
+  @override
   Stream<RoomSignal> watchRoomSignals(Set<String> roomIds, {required UserSummary me}) {
     final hub = _hub;
     if (hub == null || roomIds.isEmpty) return const Stream.empty();
@@ -233,6 +259,7 @@ class ChatRepositoryImpl
 
   Future<void> dispose() async {
     await _activity.close();
+    await _removals.close();
     await _muteNotices.close();
     await _unreadChanges.close();
   }
@@ -244,6 +271,20 @@ class ChatRepositoryImpl
         .map(parseRoomActivity)
         .where((activity) => activity != null)
         .cast<RoomActivity>();
+  }
+
+  Stream<RoomRemoval> _createRemovalStream() async* {
+    final me = await _api.requireUserId();
+    yield* _realtime!
+        .serverBroadcasts('user:$me', event: 'room_removed')
+        .map(parseRoomRemoval)
+        .where((removal) => removal != null)
+        .cast<RoomRemoval>()
+        .asyncMap((removal) async {
+          await _cache?.forgetRoom(removal.roomId);
+          _unreadChanged();
+          return removal;
+        });
   }
 
   Stream<RoomMuteNotice> _createMuteNoticeStream() async* {

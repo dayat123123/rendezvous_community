@@ -4753,6 +4753,90 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Tab feed ini sedang tidak tersedia.'**
   String get errorFeedFilter;
+
+  /// No description provided for @hideChat.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus chat'**
+  String get hideChat;
+
+  /// No description provided for @hideChatConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Chat dan riwayatnya akan dihapus dari perangkat Anda. Anggota lain tidak terpengaruh.'**
+  String get hideChatConfirm;
+
+  /// No description provided for @deleteGroup.
+  ///
+  /// In id, this message translates to:
+  /// **'Hapus grup'**
+  String get deleteGroup;
+
+  /// No description provided for @deleteGroupConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Grup akan dihapus untuk semua anggota dan tidak bisa dikembalikan.'**
+  String get deleteGroupConfirm;
+
+  /// No description provided for @chatHiddenNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Chat ini sudah dihapus dari daftar Anda.'**
+  String get chatHiddenNotice;
+
+  /// No description provided for @groupDeletedNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Grup ini sudah dihapus.'**
+  String get groupDeletedNotice;
+
+  /// No description provided for @groupDeletedBy.
+  ///
+  /// In id, this message translates to:
+  /// **'{name} menghapus grup ini.'**
+  String groupDeletedBy(String name);
+
+  /// No description provided for @editingMessage.
+  ///
+  /// In id, this message translates to:
+  /// **'Mengedit pesan'**
+  String get editingMessage;
+
+  /// No description provided for @cancelEdit.
+  ///
+  /// In id, this message translates to:
+  /// **'Batal edit'**
+  String get cancelEdit;
+
+  /// No description provided for @errorCannotHideSupport.
+  ///
+  /// In id, this message translates to:
+  /// **'Chat CS tidak bisa dihapus.'**
+  String get errorCannotHideSupport;
+
+  /// No description provided for @errorNotGroup.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya grup yang bisa dihapus.'**
+  String get errorNotGroup;
+
+  /// No description provided for @errorSupportMessageLocked.
+  ///
+  /// In id, this message translates to:
+  /// **'Pesan di chat CS tidak bisa diubah atau dihapus.'**
+  String get errorSupportMessageLocked;
+
+  /// No description provided for @errorNotEditable.
+  ///
+  /// In id, this message translates to:
+  /// **'Pesan ini tidak bisa diedit.'**
+  String get errorNotEditable;
+
+  /// No description provided for @errorEditWindowClosed.
+  ///
+  /// In id, this message translates to:
+  /// **'Batas waktu edit pesan sudah lewat.'**
+  String get errorEditWindowClosed;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

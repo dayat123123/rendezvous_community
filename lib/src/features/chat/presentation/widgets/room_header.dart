@@ -13,6 +13,7 @@ import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 class RoomHeader extends StatelessWidget {
   const RoomHeader({super.key});
@@ -28,10 +29,12 @@ class RoomHeader extends StatelessWidget {
           a.typingOthers != b.typingOthers ||
           a.members.length != b.members.length ||
           a.removedFromGroup != b.removedFromGroup ||
+          a.closed != b.closed ||
           a.online != b.online,
       builder: (context, state) {
         final room = state.room;
         if (room == null) return const SizedBox.shrink();
+        final open = !state.roomClosed;
         final cubit = context.read<ChatRoomCubit>();
         final typing = state.anyoneTyping;
         final otherUser = room.otherUser;
@@ -68,11 +71,18 @@ class RoomHeader extends StatelessWidget {
                 }
               : null,
           onToggleMute: room.type == RoomType.support ? null : () => cubit.setMuted(!room.muted),
-          onLeave: room.type == RoomType.direct || room.type == RoomType.support || state.removedFromGroup
+          onLeave: !open || !room.canLeave || state.removedFromGroup
               ? null
               : () async {
                   if (await cubit.leave() && context.mounted) await Navigator.of(context).maybePop();
                 },
+          onHide: open && room.canHide
+              ? () async {
+                  if (await confirmCommunityAction(context, l10n.hideChatConfirm, confirmLabel: l10n.hideChat)) {
+                    await cubit.hideRoom();
+                  }
+                }
+              : null,
         );
         return buildChatPart(builder, context, details, _DefaultRoomHeader(details: details));
       },
@@ -93,6 +103,7 @@ class _DefaultRoomHeader extends StatelessWidget {
     final spacing = style.spacing;
     final onToggleMute = d.onToggleMute;
     final onLeave = d.onLeave;
+    final onHide = d.onHide;
     final radius = style.avatarSizes.medium / 2;
     return Material(
       color: style.surface,
@@ -137,6 +148,7 @@ class _DefaultRoomHeader extends StatelessWidget {
                   onSelected: (action) => action(),
                   itemBuilder: (_) => [
                     PopupMenuItem(value: onToggleMute, child: Text(d.room.muted ? l10n.unmute : l10n.mute)),
+                    if (onHide != null) PopupMenuItem(value: onHide, child: Text(l10n.hideChat)),
                     if (onLeave != null) PopupMenuItem(value: onLeave, child: Text(l10n.leaveRoom)),
                   ],
                 )

@@ -99,7 +99,9 @@ class _RoomChannel {
       ..onBroadcast(event: 'receipt', callback: _onReceipt)
       ..onBroadcast(event: 'reaction', callback: _onReaction)
       ..onBroadcast(event: 'room_state', callback: _onRoomState)
-      ..onBroadcast(event: 'message_hidden', callback: _onMessageHidden);
+      ..onBroadcast(event: 'message_hidden', callback: _onMessageHidden)
+      ..onBroadcast(event: 'message_edited', callback: _onMessageEdited)
+      ..onBroadcast(event: 'room_deleted', callback: _onRoomDeleted);
     if (presence) {
       channel.onPresenceSync((_) => _emit(RoomPresence(roomId, {for (final s in channel.presenceState()) s.key})));
     }
@@ -177,6 +179,20 @@ class _RoomChannel {
     final data = broadcastPayload(payload);
     if (!_forThisRoom(data)) return;
     _emit(RoomStateSignal(roomId, parseStockRoomState(data)));
+  }
+
+  void _onMessageEdited(Map<String, dynamic> payload) {
+    final data = broadcastPayload(payload);
+    final messageId = data['message_id'] as String?;
+    final preview = data['preview'] as String?;
+    if (messageId == null || preview == null || !_forThisRoom(data)) return;
+    _emit(RoomPreviewEdited(roomId, messageId: messageId, preview: preview));
+  }
+
+  void _onRoomDeleted(Map<String, dynamic> payload) {
+    final data = broadcastPayload(payload);
+    if (!_forThisRoom(data)) return;
+    _emit(RoomDeleted(roomId, actorName: data['actor_name'] as String?));
   }
 
   void _onMessageHidden(Map<String, dynamic> payload) {

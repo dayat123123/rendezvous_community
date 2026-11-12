@@ -24,6 +24,8 @@ abstract interface class ChatRepository {
 
   Future<void> deleteMessage(String messageId);
 
+  Future<ChatMessage> editMessage(String messageId, String body);
+
   Future<void> markRoomRead(String roomId);
 
   Future<int> markDelivered({List<String>? roomIds});
@@ -42,6 +44,10 @@ abstract interface class ChatRepository {
 
   Future<void> leaveRoom(String roomId);
 
+  Future<void> hideRoom(String roomId);
+
+  Future<void> deleteGroup(String roomId);
+
   Future<void> setMuted(String roomId, {required bool muted});
 
   Future<List<RoomMember>> getMembers(String roomId);
@@ -49,6 +55,8 @@ abstract interface class ChatRepository {
   ChatRoomConnection connectRoom(String roomId, {required UserSummary me});
 
   Stream<RoomActivity> watchRoomActivity();
+
+  Stream<RoomRemoval> watchRoomRemovals();
 
   Stream<RoomSignal> watchRoomSignals(Set<String> roomIds, {required UserSummary me});
 }

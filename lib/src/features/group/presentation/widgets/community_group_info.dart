@@ -38,6 +38,7 @@ class CommunityGroupInfo extends StatelessWidget {
         groups: CommunityFeatureScope.of(context).groups,
         roomId: roomId,
         me: deps.ensureSignedIn,
+        analytics: CommunityFeatureScope.of(context).analytics,
       )..load(),
       child: _GroupInfoView(onLeft: onLeft),
     );
@@ -127,6 +128,8 @@ class _GroupInfoView extends StatelessWidget {
           addMembersLabel: l10n.groupAddMembers,
           onLeave: () => _leave(context, cubit),
           leaveLabel: l10n.groupLeave,
+          onDeleteGroup: state.canDeleteGroup ? () => _deleteGroup(context, cubit) : null,
+          deleteGroupLabel: l10n.deleteGroup,
         );
         return AbsorbPointer(
           absorbing: state.busy,
@@ -145,6 +148,13 @@ class _GroupInfoView extends StatelessWidget {
     final l10n = context.communityL10n;
     if (await confirmCommunityAction(context, l10n.groupLeaveConfirm, confirmLabel: l10n.leaveRoom)) {
       await cubit.leave();
+    }
+  }
+
+  Future<void> _deleteGroup(BuildContext context, GroupInfoCubit cubit) async {
+    final l10n = context.communityL10n;
+    if (await confirmCommunityAction(context, l10n.deleteGroupConfirm, confirmLabel: l10n.deleteGroup)) {
+      await cubit.deleteGroup();
     }
   }
 
@@ -199,6 +209,7 @@ class _DefaultGroupInfoPage extends StatelessWidget {
     final style = CommunityStyle.of(context);
     final danger = Theme.of(context).colorScheme.error;
     final onAddMembers = d.onAddMembers;
+    final onDeleteGroup = d.onDeleteGroup;
     return ListView(
       padding: EdgeInsets.symmetric(vertical: style.spacing.lg),
       children: [
@@ -222,6 +233,12 @@ class _DefaultGroupInfoPage extends StatelessWidget {
           title: Text(d.leaveLabel, style: style.typography.body.copyWith(color: danger)),
           onTap: d.onLeave,
         ),
+        if (onDeleteGroup != null)
+          ListTile(
+            leading: Icon(Icons.delete_forever_outlined, color: danger),
+            title: Text(d.deleteGroupLabel, style: style.typography.body.copyWith(color: danger)),
+            onTap: onDeleteGroup,
+          ),
       ],
     );
   }

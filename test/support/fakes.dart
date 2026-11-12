@@ -94,7 +94,7 @@ class FakeCommentRepository extends Fake implements CommentRepository {
         body: 'Level 4',
         replyCount: 2,
       ),
-      comment('c2b', parentId: 'c1', depth: 1, path: '000000000001.000000000006', deleted: true),
+      comment('c2b', parentId: 'c1', depth: 1, path: '000000000001.000000000006', body: 'Balasan B'),
       comment('t2', depth: 0, path: '000000000007', body: 'Top kedua', author: alice),
     ];
   }
@@ -130,6 +130,13 @@ class FakeChatRepository extends Fake implements ChatRepository {
   final activity = StreamController<RoomActivity>.broadcast();
   final roomEvents = StreamController<ChatRoomEvent>.broadcast();
   final unreadChanges = StreamController<void>.broadcast();
+  final removals = StreamController<RoomRemoval>.broadcast();
+  final hiddenRooms = <String>[];
+  final deletedGroups = <String>[];
+  final leftRooms = <String>[];
+  final edits = <(String, String)>[];
+  Object? roomActionError;
+  Object? editError;
   final watchedRoomIds = <Set<String>>[];
   final delivered = <List<String>?>[];
   final readRooms = <String>[];
@@ -220,6 +227,39 @@ class FakeChatRepository extends Fake implements ChatRepository {
   Stream<RoomActivity> watchRoomActivity() => activity.stream;
 
   @override
+  Stream<RoomRemoval> watchRoomRemovals() => removals.stream;
+
+  @override
+  Future<void> hideRoom(String roomId) async {
+    final error = roomActionError;
+    if (error != null) throw error;
+    hiddenRooms.add(roomId);
+  }
+
+  @override
+  Future<void> deleteGroup(String roomId) async {
+    final error = roomActionError;
+    if (error != null) throw error;
+    deletedGroups.add(roomId);
+  }
+
+  @override
+  Future<void> leaveRoom(String roomId) async {
+    final error = roomActionError;
+    if (error != null) throw error;
+    leftRooms.add(roomId);
+  }
+
+  @override
+  Future<ChatMessage> editMessage(String messageId, String body) async {
+    final error = editError;
+    if (error != null) throw error;
+    edits.add((messageId, body));
+    final known = messages.firstWhere((m) => m.id == messageId);
+    return known.copyWith(body: body, editedAt: DateTime.now().toUtc());
+  }
+
+  @override
   Stream<RoomSignal> watchRoomSignals(Set<String> roomIds, {required UserSummary me}) {
     watchedRoomIds.add(roomIds);
     return signals.stream;
@@ -272,6 +312,7 @@ class FakeChatRepository extends Fake implements ChatRepository {
     await activity.close();
     await roomEvents.close();
     await unreadChanges.close();
+    await removals.close();
   }
 }
 

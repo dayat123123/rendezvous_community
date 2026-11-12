@@ -153,6 +153,8 @@ class _MessageBubbleState extends State<MessageBubble> {
       onInfo: cubit.canShowInfo(m)
           ? () => unawaited(showCommunityMessageInfo(context, m, anchor: _bubbleRect()))
           : null,
+      onEdit: room.canEdit(m) && context.communityConfig.canEdit(m.createdAt) ? () => cubit.startEditing(m) : null,
+      editedLabel: m.editedAt != null && !m.isDeleted ? context.communityL10n.edited : null,
     );
     return details;
   }
@@ -210,6 +212,7 @@ class _MessageBubbleState extends State<MessageBubble> {
             for (final (handler, icon, label) in [
               (details.onReply, Icons.reply, l10n.replyToMessage),
               (details.onCopy, Icons.copy_outlined, l10n.copyMessage),
+              (details.onEdit, Icons.edit_outlined, l10n.editAction),
               (details.onInfo, Icons.info_outline, l10n.messageInfo),
               (details.onDelete, Icons.delete_outline, l10n.delete),
               (details.onReport, Icons.flag_outlined, l10n.report),
@@ -384,7 +387,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
     final metaRow = Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (m.editedAt != null && !m.isDeleted) Text('${l10n.edited} ', style: meta),
+        if (d.edited) Text('${d.editedLabel ?? l10n.edited} ', style: meta),
         Text(d.timeLabel, style: meta),
         if (d.isMine) ...[
           SizedBox(width: spacing.xxs + 1),
@@ -616,6 +619,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
       for (final (handler, icon, label) in [
         (d.onReply, Icons.reply, l10n.replyToMessage),
         (d.onCopy, Icons.copy_outlined, l10n.copyMessage),
+        (d.onEdit, Icons.edit_outlined, l10n.editAction),
         (d.onInfo, Icons.info_outline, l10n.messageInfo),
         (d.onReport, Icons.flag_outlined, l10n.report),
         (d.onDelete, Icons.delete_outline, l10n.delete),

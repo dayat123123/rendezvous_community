@@ -1,8 +1,8 @@
 import 'dart:async';
-import 'dart:typed_data';
 
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/core/media/clipboard_image.dart';
 import 'package:rendezvous_community/src/core/media/pasted_image.dart';
@@ -105,6 +105,12 @@ class _MessageComposerState extends State<MessageComposer> {
   Future<void> _send() async {
     final cubit = context.read<ChatRoomCubit>();
     final text = _controller.text;
+    if (cubit.state.editing != null) {
+      if (text.trim().isEmpty) return;
+      _focus.requestFocus();
+      await cubit.saveEdit(text);
+      return;
+    }
     final files = List.of(_files);
     if (text.trim().isEmpty && files.isEmpty) return;
     if (cubit.state.cooldownLeft() > Duration.zero || cubit.state.uploading) return;
@@ -184,9 +190,22 @@ class _MessageComposerState extends State<MessageComposer> {
     final l10n = context.communityL10n;
     final builder = CommunityChatBuilders.of(context).composer;
     return BlocConsumer<ChatRoomCubit, ChatRoomState>(
-      listenWhen: (a, b) => a.replyTo?.id != b.replyTo?.id && b.replyTo != null,
-      listener: (_, _) => _focus.requestFocus(),
+      listenWhen: (a, b) => (a.replyTo?.id != b.replyTo?.id && b.replyTo != null) || a.editing?.id != b.editing?.id,
+      listener: (_, state) {
+        final editing = state.editing;
+        if (editing != null) {
+          final body = editing.body ?? '';
+          _controller.value = TextEditingValue(
+            text: body,
+            selection: TextSelection.collapsed(offset: body.length),
+          );
+        } else if (state.replyTo == null) {
+          _controller.clear();
+        }
+        _focus.requestFocus();
+      },
       buildWhen: (a, b) =>
+          a.editing != b.editing ||
           a.replyTo != b.replyTo ||
           a.uploading != b.uploading ||
           a.cooldownUntil != b.cooldownUntil ||
@@ -200,6 +219,8 @@ class _MessageComposerState extends State<MessageComposer> {
             : replyTo.sender?.name ?? l10n.someone;
         final cooldown = state.cooldownLeft();
         _syncTicker(cooldown);
+        final editing = state.editing;
+        final cubit = context.read<ChatRoomCubit>();
         final details = CommunityComposerDetails(
           controller: _controller,
           focusNode: _focus,
@@ -211,21 +232,29 @@ class _MessageComposerState extends State<MessageComposer> {
           replyToName: replyName,
           replyPreview: replyTo == null ? null : '$replyName: ${replyTo.body ?? l10n.attachment}',
           onCancelReply: replyTo == null ? null : () => context.read<ChatRoomCubit>().setReplyTo(null),
-          onPickImage: _pickImage,
+          onPickImage: editing == null ? _pickImage : null,
           allowsDocuments: widget.allowDocuments,
           attachmentPolicy: widget.policy,
           attachLabel: _attachLabel(l10n),
           uploadingLabel: state.uploading ? l10n.attachmentChecking : null,
           extraActions: widget.leading,
           cooldown: cooldown,
-          onSendStockCard: context.read<ChatRoomCubit>().canSendStockCards ? _pickStockCards : null,
+          onSendStockCard: editing == null && cubit.canSendStockCards ? _pickStockCards : null,
           mutedUntil: state.mutedUntil(),
           onPaste: _pasteImage,
           onContentInserted: (bytes) => unawaited(_stageImage(bytes)),
           files: List.unmodifiable(_files),
           onRemoveFile: _removeFile,
+          editing: editing,
+          editingLabel: editing == null ? null : l10n.editingMessage,
+          onCancelEdit: editing == null ? null : cubit.cancelEditing,
         );
-        return buildChatPart(builder, context, details, DefaultMessageComposer(details: details));
+        final composer = buildChatPart(builder, context, details, DefaultMessageComposer(details: details));
+        if (editing == null) return composer;
+        return CallbackShortcuts(
+          bindings: {const SingleActivator(LogicalKeyboardKey.escape): cubit.cancelEditing},
+          child: composer,
+        );
       },
     );
   }
@@ -274,6 +303,15 @@ class DefaultMessageComposer extends StatelessWidget {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
+                      if (d.editing case final editing?)
+                        Padding(
+                          padding: EdgeInsets.fromLTRB(spacing.xs + 2, spacing.xs + 2, spacing.xs + 2, 0),
+                          child: _EditingBanner(
+                            label: d.editingLabel ?? l10n.editingMessage,
+                            original: editing.body ?? '',
+                            onCancel: d.onCancelEdit,
+                          ),
+                        ),
                       if (replyTo != null)
                         Padding(
                           padding: EdgeInsets.fromLTRB(spacing.xs + 2, spacing.xs + 2, spacing.xs + 2, 0),
@@ -544,6 +582,78 @@ class _PendingFile extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class _EditingBanner extends StatelessWidget {
+  const _EditingBanner({required this.label, required this.original, this.onCancel});
+
+  final String label;
+  final String original;
+  final VoidCallback? onCancel;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final background = Color.alphaBlend(style.textPrimary.withValues(alpha: 0.06), style.pill);
+    return ClipRRect(
+      borderRadius: style.radii.controlRadius,
+      child: ColoredBox(
+        color: background,
+        child: IntrinsicHeight(
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              ColoredBox(color: style.accent, child: const SizedBox(width: 4)),
+              Expanded(
+                child: Padding(
+                  padding: EdgeInsets.fromLTRB(spacing.sm + spacing.xxs, spacing.sm, spacing.xs, spacing.sm),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.edit_outlined, size: 15, color: style.accent),
+                          SizedBox(width: spacing.xs),
+                          Flexible(
+                            child: Text(
+                              label,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: style.typography.label.copyWith(color: style.accent, fontWeight: FontWeight.w700),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: spacing.xxs),
+                      Text(
+                        original,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: style.typography.meta.copyWith(color: style.textSecondary),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+              Align(
+                alignment: Alignment.topCenter,
+                child: IconButton(
+                  tooltip: l10n.cancelEdit,
+                  visualDensity: VisualDensity.compact,
+                  color: style.textSecondary,
+                  onPressed: onCancel,
+                  icon: const Icon(Icons.close, size: 18),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

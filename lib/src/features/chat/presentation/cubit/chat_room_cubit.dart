@@ -79,6 +79,9 @@ abstract class ChatRoomState with _$ChatRoomState {
     DmRequestState? dmRequest,
     @Default(false) bool stale,
     @Default(false) bool removedFromGroup,
+    ChatMessage? editing,
+    RoomRemovalReason? closed,
+    String? closedBy,
   }) = _ChatRoomState;
 
   const ChatRoomState._();
@@ -90,6 +93,24 @@ abstract class ChatRoomState with _$ChatRoomState {
   bool get supportsDmRequests => room?.type == RoomType.direct;
 
   bool get isStockRoom => room?.type == RoomType.stock;
+
+  bool get roomClosed => closed != null;
+
+  bool canEdit(ChatMessage m) =>
+      room != null &&
+      room!.type != RoomType.support &&
+      isMine(m) &&
+      m.kind == MessageKind.text &&
+      m.status == MessageStatus.sent &&
+      !m.isLocal &&
+      !m.isDeleted &&
+      !m.isHidden &&
+      m.senderRole == null &&
+      m.ticketId == null &&
+      m.attachments.isEmpty &&
+      m.stockCodes.isEmpty &&
+      m.sharedPostId == null &&
+      (m.body?.trim().isNotEmpty ?? false);
 
   bool get anyoneTyping => typing.isNotEmpty || typingOthers > 0;
 
@@ -213,11 +234,13 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
 
   ChatRoomConnection? _connection;
   StreamSubscription<ChatRoomEvent>? _events;
+  StreamSubscription<RoomRemoval>? _removals;
   final _typingTimers = <String, Timer>{};
   Timer? _typingOthersTimer;
   Timer? _typingIdle;
   Timer? _readDebounce;
   bool _typingSent = false;
+  bool _savingEdit = false;
   bool _wasConnected = false;
   RealtimeStatus? _signals;
 
@@ -527,6 +550,10 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     final connection = _chat.connectRoom(roomId, me: me);
     _connection = connection;
     _events = connection.events.listen(_onEvent, onError: (Object _) {});
+    _removals ??= _chat
+        .watchRoomRemovals()
+        .where((r) => r.roomId == roomId)
+        .listen((r) => _close(r.reason, actorName: r.actorName), onError: (Object _) {});
     _resumes ??= _connectivity?.resumes.listen((_) => unawaited(_fillGap()));
     _gapSchedule.start();
   }
@@ -570,6 +597,8 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
         _applyStockRoomState(state);
       case MessageHidden(:final messageId):
         _applyHidden(messageId);
+      case RoomClosed(:final reason, :final actorName):
+        _close(reason, actorName: actorName);
       case OwnRoomMuteChanged(:final mutedUntil):
         _applyOwnMute(mutedUntil);
       case SignalsConnectionChanged(:final status):
@@ -781,7 +810,88 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     }
   }
 
-  void setReplyTo(ChatMessage? message) => emit(state.copyWith(replyTo: message));
+  void setReplyTo(ChatMessage? message) =>
+      emit(state.copyWith(replyTo: message, editing: message == null ? state.editing : null));
+
+  void startEditing(ChatMessage message) {
+    if (!state.canEdit(message)) return;
+    emit(state.copyWith(editing: message, replyTo: null));
+  }
+
+  void cancelEditing() {
+    if (state.editing != null) emit(state.copyWith(editing: null));
+  }
+
+  Future<bool> saveEdit(String text) async {
+    final target = state.editing;
+    final body = text.trim();
+    if (target == null || body.isEmpty || _savingEdit) return false;
+    if (body == target.body?.trim()) {
+      cancelEditing();
+      return true;
+    }
+    final original = state.messages.where((m) => m.id == target.id).firstOrNull ?? target;
+    _savingEdit = true;
+    emit(
+      state.copyWith(
+        messages: [for (final m in state.messages) m.id == target.id ? m.copyWith(body: body, editedAt: _now()) : m],
+      ),
+    );
+    try {
+      final edited = await _chat.editMessage(target.id, body);
+      if (isClosed) return true;
+      if (state.editing?.id == target.id) emit(state.copyWith(editing: null));
+      _upsert(edited);
+      final room = state.room;
+      _analytics?.record(CommunityAnalyticsEvent.editMessage, {
+        'room_id': roomId,
+        if (room != null) 'type': room.type.name,
+      });
+      return true;
+    } catch (e) {
+      if (!isClosed) {
+        emit(state.copyWith(messages: [for (final m in state.messages) m.id == original.id ? original : m]));
+      }
+      _fail(e);
+      return false;
+    } finally {
+      _savingEdit = false;
+    }
+  }
+
+  Future<bool> hideRoom() async {
+    final room = state.room;
+    if (room == null || !room.canHide) return false;
+    try {
+      await _chat.hideRoom(roomId);
+      _analytics?.record(CommunityAnalyticsEvent.hideRoom, {'room_id': roomId, 'type': room.type.name});
+      _close(RoomRemovalReason.hidden);
+      return true;
+    } catch (e) {
+      _fail(e);
+      return false;
+    }
+  }
+
+  Future<bool> deleteGroup() async {
+    final room = state.room;
+    if (room == null || !room.canDeleteGroup) return false;
+    try {
+      await _chat.deleteGroup(roomId);
+      _analytics?.record(CommunityAnalyticsEvent.deleteGroup, {'room_id': roomId, 'type': room.type.name});
+      _close(RoomRemovalReason.groupDeleted);
+      return true;
+    } catch (e) {
+      _fail(e);
+      return false;
+    }
+  }
+
+  void _close(RoomRemovalReason reason, {String? actorName}) {
+    if (isClosed || state.closed != null) return;
+    _gapSchedule.dispose();
+    emit(state.copyWith(closed: reason, closedBy: actorName, editing: null, replyTo: null));
+  }
 
   bool canShowInfo(ChatMessage m) =>
       _chat is MessageInfoRepository &&
@@ -1158,6 +1268,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
     }
     if (_typingSent) unawaited(_connection?.sendTyping(isTyping: false));
     await _events?.cancel();
+    await _removals?.cancel();
     await _outboxEvents?.cancel();
     await _onlineChanges?.cancel();
     await _connection?.close();

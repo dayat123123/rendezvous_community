@@ -65,6 +65,19 @@ class RoomMessageHidden extends RoomSignal {
   final String? userId;
 }
 
+class RoomPreviewEdited extends RoomSignal {
+  const RoomPreviewEdited(super.roomId, {required this.messageId, required this.preview});
+
+  final String messageId;
+  final String preview;
+}
+
+class RoomDeleted extends RoomSignal {
+  const RoomDeleted(super.roomId, {this.actorName});
+
+  final String? actorName;
+}
+
 sealed class ChatRoomEvent {
   const ChatRoomEvent();
 }
@@ -139,6 +152,24 @@ class SignalsConnectionChanged extends ChatRoomEvent {
   const SignalsConnectionChanged(this.status);
 
   final RealtimeStatus status;
+}
+
+class RoomClosed extends ChatRoomEvent {
+  const RoomClosed(this.reason, {this.actorName});
+
+  final RoomRemovalReason reason;
+  final String? actorName;
+}
+
+enum RoomRemovalReason { hidden, groupDeleted }
+
+class RoomRemoval {
+  const RoomRemoval({required this.roomId, required this.reason, this.actorId, this.actorName});
+
+  final String roomId;
+  final RoomRemovalReason reason;
+  final String? actorId;
+  final String? actorName;
 }
 
 class RoomActivity {

@@ -410,6 +410,23 @@ RoomActivity? parseRoomActivity(Map<String, dynamic> json) {
   );
 }
 
+RoomRemoval? parseRoomRemoval(Map<String, dynamic> json) {
+  final roomId = json['room_id'];
+  if (roomId is! String) return null;
+  final reason = switch (json['reason']) {
+    'hidden' => RoomRemovalReason.hidden,
+    'group_deleted' => RoomRemovalReason.groupDeleted,
+    _ => null,
+  };
+  if (reason == null) return null;
+  return RoomRemoval(
+    roomId: roomId,
+    reason: reason,
+    actorId: json['actor_id'] as String?,
+    actorName: json['actor_name'] as String?,
+  );
+}
+
 RoomTypingSummary? parseTypingSummary(String roomId, Map<String, dynamic> json) {
   final room = json['room_id'];
   final count = (json['count'] as num?)?.toInt() ?? 0;
