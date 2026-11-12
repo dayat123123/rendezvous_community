@@ -34,7 +34,8 @@ class AnalyticsResult {
 }
 
 final _uuid = RegExp(r'^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$');
-final _stockCode = RegExp(r'^[A-Z][A-Z0-9]{1,11}$');
+final _stockCode = RegExp(r'^(?=.{2,24}$)[A-Z][A-Z0-9]{0,19}(?:-[A-Z0-9]{1,19})*$');
+final _filterKey = RegExp(r'^[a-z][a-z0-9_]{1,31}$');
 final _hashtag = RegExp(r'^[a-z0-9_]{2,50}$');
 
 const _enumValues = <String, Set<String>>{
@@ -86,6 +87,8 @@ Map<String, Object> sanitizeAnalyticsProps(Map<String, Object?> props) {
       if (_stockCode.hasMatch(code)) clean[key] = code;
     } else if (_idKeys.contains(key) && value is String && _uuid.hasMatch(value)) {
       clean[key] = value.toLowerCase();
+    } else if (key == 'filter' && value is String && _filterKey.hasMatch(value)) {
+      clean[key] = value;
     } else if (key == 'hashtag' && value is String) {
       final tag = value.trim().replaceFirst('#', '').toLowerCase();
       if (_hashtag.hasMatch(tag)) clean[key] = tag;

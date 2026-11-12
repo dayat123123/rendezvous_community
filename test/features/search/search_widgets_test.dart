@@ -60,6 +60,8 @@ void main() {
     expect(find.text('\$GOTO'), findsOneWidget);
     expect(find.text('+350%'), findsOneWidget);
 
+    await tester.ensureVisible(find.widgetWithText(ChoiceChip, 'Hashtag'));
+    await tester.pumpAndSettle();
     await tester.tap(find.widgetWithText(ChoiceChip, 'Hashtag'));
     await tester.pumpAndSettle();
     expect(find.text('#dividen'), findsOneWidget);

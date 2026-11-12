@@ -1,3 +1,44 @@
+## 1.24.0
+
+Butuh migrasi server `0149`–`0152` untuk tab filter dan indeks. Dengan server lama, tab filter memakai tab bawaan Terbaru/Teratas/Grafik & Media dan indeks tidak terdaftar. Semua widget lama tetap jalan.
+
+* **Tab filter Stream dari server:** `FeedFilter` (`key`, `labelEn`, `labelId`, `sort`, `content`, `icon`, `position`, `label(locale)`, `matches(post)`) dan `FeedFilterRepository.getFeedFilters()` dari `get_feed_filters`. Hasilnya di-cache 5 menit, atau ambil lewat `CommunityFeedFilters.load(context)`. Tab bisa ditambah atau diurutkan dari Hub tanpa rilis aplikasi. Bawaannya Terbaru, Teratas, Grafik & Media, dan Polling.
+* `CommunityFeedList(filter: 'polls')` dan `CommunityStreamFeed(filter: ...)` memakai filter server. Filter menang bila `sort`/`mediaOnly` juga diisi, filter ikut kunci feed, dan analitik `feed_open` mengirim `filter`. `CommunityStreamFeed(showFilterTabs: true, onFilterChanged: ...)` menampilkan tab bawaan. Untuk bar tab sendiri ada `CommunityFeedFilterTabs` dengan slot builder `CommunityFeedBuilders.feedFilterTabs` (`CommunityFeedFilterTabsDetails`).
+* **Perilaku filter:**
+  * Halaman pertama feed berfilter tidak di-cache.
+  * Post baru realtime hanya menambah tombol "post baru" bila cocok dengan isi filter: `media` dari lampiran, `poll` dicek lewat `getPost`, isi lain yang belum dikenal tetap menampilkan tombolnya. Filter `top` tidak menampilkannya.
+  * Post sendiri hanya disisipkan bila cocok.
+* **Breaking untuk repository feed milik host:** `FeedQueryRepository.queryFeed` mendapat parameter `String? filter`. Repository bawaan mengirim `p_filter`. Di server lama, filter yang dikenal diturunkan ke `p_sort`/`p_media_only`, dan filter lain memakai feed terbaru tanpa filter (dicatat di log).
+* **Indeks:**
+  * `MarketInstrument`, `MarketInstrumentDirectory`, dan `CommunityInstruments.of(context)` memuat `get_market_instruments` sekali dan menyegarkannya tiap 10 menit.
+  * Direktori menyediakan `canonical(code)` (alias, mis. `$COMPOSITE`, ke `IHSG`), `find`, `isIndex`, dan `search`.
+  * `isStockCodeFormat`, `isPlainStockCode`, dan `normalizeStockCode` membantu host memeriksa kode.
+* **Kode berstrip:**
+  * `$SRI-KEHATI` dan `$IDXSMC-LIQ` kini dikenali di `SocialText`, `extractCashtags(resolve: ...)`, `parseSocialText(resolveCashtag: ...)`, saran composer, kartu saham chat, dan analitik.
+  * Kode berstrip yang tidak terdaftar jatuh ke bagian sebelum strip, jadi `$BBCA-nya` tetap `$BBCA`.
+  * Alias membuka kode utama.
+* **`CommunityIndexFeed(indexCode: ...)`:** stream indeks bergaya sama dengan `CommunityStockFeed`.
+  * Header menampilkan label "Indeks", nama, deskripsi, alias, tombol Pantau, dan Diskusi. Tombol Diskusi terkunci "Room ditutup" bila room ditutup dari Hub.
+  * Komposer langsung menandai indeks.
+  * Menerima `builders`, `filter`, dan `scrollController`. Slot builder header: `CommunityFeedBuilders.indexHeader` (`CommunityIndexHeaderDetails`).
+* **`CommunityIndexList`:** daftar indeks dengan jumlah post hari ini dan persentase bullish. Slot builder baris: `CommunityFeedBuilders.indexTile` (`CommunityIndexTileDetails`), dengan `onOpen` opsional.
+* **Navigasi:**
+  * `CommunityNavigator.openIndex` dan callback baru `onIndexTap` di `RendezvousCommunity.initialize`/`create` dan `CommunityCallbacks`. Tanpa `onIndexTap`, library jatuh ke `onStockTap`, lalu ke halaman bawaan.
+  * `openStock` mengarahkan kode indeks ke `openIndex`.
+* **Saran `$` di composer:** indeks yang cocok tampil lebih dulu dengan label "Indeks", lalu hasil `stockSearch` host tanpa duplikat alias. `StockSuggestion` mendapat field `kind` (`MarketInstrumentKind?`).
+* **Teks:**
+  * Teks "saham" yang juga berlaku untuk indeks kini netral, mis. "Kode saham atau indeks tidak valid", tab "Saham & Indeks", dan "Ringkasan pantauan".
+  * Error baru: `room_disabled` (room ditutup) dan `invalid_filter` (tab tidak tersedia).
+* **Pantau lewat alias:** `CommunityStockFeed` memakai kode utama dari server untuk pantau, berhenti pantau, dan bergabung ke room, jadi alias seperti `$JCI` tidak meninggalkan pantauan yatim.
+
+## 1.23.0
+
+Tidak butuh migrasi server.
+
+* **`scrollController` opsional untuk daftar post:** `CommunityFeedList`, `CommunityStreamFeed` (diteruskan ke daftar tab yang aktif, termasuk setelah pindah tab), dan `CommunityBookmarks` kini menerima `ScrollController? scrollController`. Controller dipasang ke `ListView` vertikal daftar post, sehingga host bisa membuat tombol "kembali ke atas" atau membaca posisi gulir tanpa bergantung pada `ScrollNotification` dan susunan widget internal. Memuat halaman berikutnya saat mendekati akhir dan tombol "post baru" tetap bekerja dengan controller dari host.
+* Controller dari host tidak pernah di-dispose oleh library; host tetap pemiliknya. Mengganti controller (atau beralih antara controller host dan bawaan) memindahkan listener ke controller baru. Saat daftar masih memuat, galat, atau kosong, controller bisa belum punya client.
+* Tanpa parameter ini perilakunya sama seperti sebelumnya.
+
 ## 1.22.0
 
 Tidak butuh migrasi server.

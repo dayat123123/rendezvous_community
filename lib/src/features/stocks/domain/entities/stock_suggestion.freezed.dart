@@ -14,7 +14,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$StockSuggestion {
 
- String get code; String? get name;
+ String get code; String? get name; MarketInstrumentKind? get kind;
 /// Create a copy of StockSuggestion
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -25,16 +25,16 @@ $StockSuggestionCopyWith<StockSuggestion> get copyWith => _$StockSuggestionCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockSuggestion&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockSuggestion&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.kind, kind) || other.kind == kind));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,name);
+int get hashCode => Object.hash(runtimeType,code,name,kind);
 
 @override
 String toString() {
-  return 'StockSuggestion(code: $code, name: $name)';
+  return 'StockSuggestion(code: $code, name: $name, kind: $kind)';
 }
 
 
@@ -45,7 +45,7 @@ abstract mixin class $StockSuggestionCopyWith<$Res>  {
   factory $StockSuggestionCopyWith(StockSuggestion value, $Res Function(StockSuggestion) _then) = _$StockSuggestionCopyWithImpl;
 @useResult
 $Res call({
- String code, String? name
+ String code, String? name, MarketInstrumentKind? kind
 });
 
 
@@ -62,11 +62,12 @@ class _$StockSuggestionCopyWithImpl<$Res>
 
 /// Create a copy of StockSuggestion
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? name = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? name = freezed,Object? kind = freezed,}) {
   return _then(_self.copyWith(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,kind: freezed == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
+as MarketInstrumentKind?,
   ));
 }
 
@@ -151,10 +152,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  String? name)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String code,  String? name,  MarketInstrumentKind? kind)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _StockSuggestion() when $default != null:
-return $default(_that.code,_that.name);case _:
+return $default(_that.code,_that.name,_that.kind);case _:
   return orElse();
 
 }
@@ -172,10 +173,10 @@ return $default(_that.code,_that.name);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  String? name)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String code,  String? name,  MarketInstrumentKind? kind)  $default,) {final _that = this;
 switch (_that) {
 case _StockSuggestion():
-return $default(_that.code,_that.name);case _:
+return $default(_that.code,_that.name,_that.kind);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -192,10 +193,10 @@ return $default(_that.code,_that.name);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  String? name)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String code,  String? name,  MarketInstrumentKind? kind)?  $default,) {final _that = this;
 switch (_that) {
 case _StockSuggestion() when $default != null:
-return $default(_that.code,_that.name);case _:
+return $default(_that.code,_that.name,_that.kind);case _:
   return null;
 
 }
@@ -207,11 +208,12 @@ return $default(_that.code,_that.name);case _:
 
 
 class _StockSuggestion implements StockSuggestion {
-  const _StockSuggestion({required this.code, this.name});
+  const _StockSuggestion({required this.code, this.name, this.kind});
   
 
 @override final  String code;
 @override final  String? name;
+@override final  MarketInstrumentKind? kind;
 
 /// Create a copy of StockSuggestion
 /// with the given fields replaced by the non-null parameter values.
@@ -223,16 +225,16 @@ _$StockSuggestionCopyWith<_StockSuggestion> get copyWith => __$StockSuggestionCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockSuggestion&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockSuggestion&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.kind, kind) || other.kind == kind));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,name);
+int get hashCode => Object.hash(runtimeType,code,name,kind);
 
 @override
 String toString() {
-  return 'StockSuggestion(code: $code, name: $name)';
+  return 'StockSuggestion(code: $code, name: $name, kind: $kind)';
 }
 
 
@@ -243,7 +245,7 @@ abstract mixin class _$StockSuggestionCopyWith<$Res> implements $StockSuggestion
   factory _$StockSuggestionCopyWith(_StockSuggestion value, $Res Function(_StockSuggestion) _then) = __$StockSuggestionCopyWithImpl;
 @override @useResult
 $Res call({
- String code, String? name
+ String code, String? name, MarketInstrumentKind? kind
 });
 
 
@@ -260,11 +262,12 @@ class __$StockSuggestionCopyWithImpl<$Res>
 
 /// Create a copy of StockSuggestion
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? name = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? code = null,Object? name = freezed,Object? kind = freezed,}) {
   return _then(_StockSuggestion(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
-as String?,
+as String?,kind: freezed == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
+as MarketInstrumentKind?,
   ));
 }
 

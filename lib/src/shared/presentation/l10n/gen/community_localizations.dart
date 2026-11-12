@@ -275,7 +275,7 @@ abstract class CommunityLocalizations {
   /// No description provided for @composeHint.
   ///
   /// In id, this message translates to:
-  /// **'Tulis analisis Anda. Gunakan \$KODE untuk menandai saham dan @username untuk menyebut user.'**
+  /// **'Tulis analisis Anda. Gunakan \$KODE untuk menandai saham atau indeks dan @username untuk menyebut user.'**
   String get composeHint;
 
   /// No description provided for @composeSubmit.
@@ -749,7 +749,7 @@ abstract class CommunityLocalizations {
   /// No description provided for @stockNotFound.
   ///
   /// In id, this message translates to:
-  /// **'Kode saham tidak valid.'**
+  /// **'Kode saham atau indeks tidak valid.'**
   String get stockNotFound;
 
   /// No description provided for @chats.
@@ -2453,7 +2453,7 @@ abstract class CommunityLocalizations {
   /// No description provided for @searchTabStocks.
   ///
   /// In id, this message translates to:
-  /// **'Saham'**
+  /// **'Saham & Indeks'**
   String get searchTabStocks;
 
   /// No description provided for @searchTabHashtags.
@@ -2507,7 +2507,7 @@ abstract class CommunityLocalizations {
   /// No description provided for @trendingStocks.
   ///
   /// In id, this message translates to:
-  /// **'Saham'**
+  /// **'Saham & Indeks'**
   String get trendingStocks;
 
   /// No description provided for @trendingRising.
@@ -2759,13 +2759,13 @@ abstract class CommunityLocalizations {
   /// No description provided for @stockCardSend.
   ///
   /// In id, this message translates to:
-  /// **'Kirim kartu saham'**
+  /// **'Kirim kartu saham/indeks'**
   String get stockCardSend;
 
   /// No description provided for @stockCardHint.
   ///
   /// In id, this message translates to:
-  /// **'Kode saham, mis. BBCA, TLKM'**
+  /// **'Kode saham atau indeks, mis. BBCA, LQ45, SRI-KEHATI'**
   String get stockCardHint;
 
   /// No description provided for @stockCardAdd.
@@ -2777,13 +2777,13 @@ abstract class CommunityLocalizations {
   /// No description provided for @stockCardInvalid.
   ///
   /// In id, this message translates to:
-  /// **'Kode saham tidak valid'**
+  /// **'Kode saham atau indeks tidak valid'**
   String get stockCardInvalid;
 
   /// No description provided for @stockCardLimit.
   ///
   /// In id, this message translates to:
-  /// **'Maksimal {count} saham per pesan'**
+  /// **'Maksimal {count} kode per pesan'**
   String stockCardLimit(int count);
 
   /// No description provided for @bannerOpen.
@@ -2891,13 +2891,13 @@ abstract class CommunityLocalizations {
   /// No description provided for @notifWatchlistDigest.
   ///
   /// In id, this message translates to:
-  /// **'Ringkasan saham pantauan'**
+  /// **'Ringkasan pantauan'**
   String get notifWatchlistDigest;
 
   /// No description provided for @notifWatchlistDigestBody.
   ///
   /// In id, this message translates to:
-  /// **'{count} postingan baru tentang {stocks}{others, plural, =0{} other{, dan {others} saham lainnya}}'**
+  /// **'{count} postingan baru tentang {stocks}{others, plural, =0{} other{, dan {others} kode lainnya}}'**
   String notifWatchlistDigestBody(int count, String stocks, int others);
 
   /// No description provided for @notifTargetPost.
@@ -2981,7 +2981,7 @@ abstract class CommunityLocalizations {
   /// No description provided for @notifTypeWatchlistDigest.
   ///
   /// In id, this message translates to:
-  /// **'Ringkasan saham pantauan'**
+  /// **'Ringkasan pantauan'**
   String get notifTypeWatchlistDigest;
 
   /// No description provided for @notifTypeWatchlistDigestHint.
@@ -4301,7 +4301,7 @@ abstract class CommunityLocalizations {
   /// No description provided for @feedForYouEmpty.
   ///
   /// In id, this message translates to:
-  /// **'Belum ada rekomendasi. Ikuti akun atau saham agar feed ini makin pas.'**
+  /// **'Belum ada rekomendasi. Ikuti akun, saham, atau indeks agar feed ini makin pas.'**
   String get feedForYouEmpty;
 
   /// No description provided for @feedOfficialEmpty.
@@ -4319,7 +4319,7 @@ abstract class CommunityLocalizations {
   /// No description provided for @feedWatchlistEmpty.
   ///
   /// In id, this message translates to:
-  /// **'Belum ada diskusi untuk saham di watchlist Anda.'**
+  /// **'Belum ada diskusi untuk saham atau indeks di watchlist Anda.'**
   String get feedWatchlistEmpty;
 
   /// No description provided for @whoToFollow.
@@ -4403,7 +4403,7 @@ abstract class CommunityLocalizations {
   /// No description provided for @composeQuickCashtag.
   ///
   /// In id, this message translates to:
-  /// **'Saham'**
+  /// **'Saham/Indeks'**
   String get composeQuickCashtag;
 
   /// No description provided for @groupEventYou.
@@ -4705,6 +4705,54 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Belum mengikuti siapa pun.'**
   String get followingEmpty;
+
+  /// No description provided for @indexLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Indeks'**
+  String get indexLabel;
+
+  /// No description provided for @indexFeedEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada diskusi tentang \${code}.'**
+  String indexFeedEmpty(String code);
+
+  /// No description provided for @indexAliases.
+  ///
+  /// In id, this message translates to:
+  /// **'Juga ditulis {aliases}'**
+  String indexAliases(String aliases);
+
+  /// No description provided for @indexRoomClosed.
+  ///
+  /// In id, this message translates to:
+  /// **'Room ditutup'**
+  String get indexRoomClosed;
+
+  /// No description provided for @indexListEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada indeks.'**
+  String get indexListEmpty;
+
+  /// No description provided for @indexBullishPct.
+  ///
+  /// In id, this message translates to:
+  /// **'{pct}% bullish'**
+  String indexBullishPct(int pct);
+
+  /// No description provided for @errorRoomDisabled.
+  ///
+  /// In id, this message translates to:
+  /// **'Room diskusi untuk kode ini sedang ditutup.'**
+  String get errorRoomDisabled;
+
+  /// No description provided for @errorFeedFilter.
+  ///
+  /// In id, this message translates to:
+  /// **'Tab feed ini sedang tidak tersedia.'**
+  String get errorFeedFilter;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

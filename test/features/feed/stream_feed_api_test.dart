@@ -47,6 +47,7 @@ class _QueryFeed extends FakeFeedRepository implements FeedQueryRepository {
     FeedScope scope, {
     CommunityFeedSort sort = CommunityFeedSort.latest,
     bool mediaOnly = false,
+    String? filter,
     String? cursor,
     int limit = 20,
   }) async {

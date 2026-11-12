@@ -38,6 +38,7 @@ typedef CommunityBannerLinkCallback = FutureOr<bool> Function(BuildContext conte
 class CommunityCallbacks {
   const CommunityCallbacks({
     this.onStockTap,
+    this.onIndexTap,
     this.onUserTap,
     this.onPostTap,
     this.onRoomTap,
@@ -52,6 +53,7 @@ class CommunityCallbacks {
   });
 
   final CommunityStockTapCallback? onStockTap;
+  final CommunityStockTapCallback? onIndexTap;
   final CommunityUserTapCallback? onUserTap;
   final CommunityPostTapCallback? onPostTap;
   final CommunityRoomTapCallback? onRoomTap;

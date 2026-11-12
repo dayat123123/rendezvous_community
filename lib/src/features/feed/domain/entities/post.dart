@@ -63,10 +63,17 @@ sealed class PostChange {
 }
 
 class PostInserted extends PostChange {
-  const PostInserted(super.postId, {required this.authorId, required this.body, required this.createdAt});
+  const PostInserted(
+    super.postId, {
+    required this.authorId,
+    required this.body,
+    required this.createdAt,
+    this.hasMedia = false,
+  });
   final String authorId;
   final String body;
   final DateTime createdAt;
+  final bool hasMedia;
 }
 
 class PostUpdated extends PostChange {

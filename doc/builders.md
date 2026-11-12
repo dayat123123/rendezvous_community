@@ -78,6 +78,7 @@ Status tahap 2: **sudah** untuk semua baris di bawah. Revisi gaya Quora: feed, d
 | `PostActionBar`, `_ActionButton` | tidak | ya (`feed.actionBar`) | sudah: `CommunityActionBar` + pil suka (`communityCountText`) + tombol komentar & simpan |
 | `_PostMenu` | tidak | ya (`feed.postMenu`) | sudah: `CommunityPostDetails`; ikon `more_horiz` |
 | `PinnedPostCard`, `_DefaultPinnedMarker` | tidak | ya (`feed.pinnedMarker`) | sudah: penanda di atas kartu |
+| `CommunityFeedFilterTabs`, `CommunityStreamFeed(showFilterTabs: true)` (1.24.0) | ya | ya (`feed.feedFilterTabs`) | sudah: `CommunityFeedFilterTabsDetails` (`filters`, `labels`, `selected`, `loading`; `onSelect`); fallback chip `CommunityTag` |
 | `CommunityStreamFeed` (tab) | ya | ya (`feed.feedTabs`) | sudah: `CommunityFeedTabsDetails` (`tabs`, `labels`, `selected`; `onSelect`); fallback chip `CommunityTag` |
 | `ComposePromptCard` | tidak | ya (`feed.composePrompt`) | sudah: `CommunityComposePromptDetails` (`user`, `hintText`; `onCompose`) |
 | `SentimentBadge`, `_DefaultSentimentBadge` | ya | ya (`badges.sentiment`) | sudah: token (pil, `typography.badge`) |
@@ -139,6 +140,8 @@ Status tahap 2: **sudah** untuk semua baris di bawah. Revisi gaya Quora: feed, d
 | `CommunityPostDrafts`, `openCommunityPostDrafts`, `_DraftsView` | ya | ya (`feed.draftTile`) | sudah: `CommunityDraftDetails` (`draft`, `preview`, `timeLabel`, `subtitle`, `synced`, `deleteLabel`; `onOpen`, `onDelete`) |
 | `CommunityUserProfile`, `_ProfileHeader` | ya | ya (`profile.header`, `profile.stats`, `profile.followButton`, `profile.messageButton`, `profile.menu`; `chat.officialNotice` 1.16.0) | sudah: gaya Instagram, avatar `profile` (80) kiri dan statistik ringkas (post/pengikut/mengikuti, angka `communityCountText`, semantik memakai label lengkap) di kanan; nama, @username, bio di bawah; tombol Ikuti/Pesan selebar setengah. Profil tidak punya tab, jadi tidak ditambah. Sejak 1.21.0 angka pengikut/mengikuti bisa diketuk |
 | `CommunityFollowList` (1.21.0) | ya | ya (`profile.followListEntry`) | tab Pengikut/Mengikuti, baris avatar + nama + @username + penanda "Mengikuti Anda" + tombol Ikuti/Ikuti balik/Mengikuti (tombol yang sama dengan saran akun) |
+| `CommunityIndexFeed`, `_IndexHeader` (1.24.0) | ya | ya (`feed.indexHeader`) | sudah: `CommunityIndexHeaderDetails` (`code`, `name`, `kindLabel`, `instrument`, `description`, `aliases`, `aliasesLabel`, `subtitle`, `found`, `loaded`, `watching`, `joining`, `roomEnabled`, `watchLabel`, `discussionLabel`, `roomClosedLabel`; `onToggleWatch`, `onOpenDiscussion` null bila room ditutup) |
+| `CommunityIndexList` (1.24.0) | ya | ya (`feed.indexTile`) | sudah: `CommunityIndexTileDetails` (`instrument`, `code`, `name`, `kindLabel`, `postsToday`, `bullishPct`, `statsLabel`; `onOpen`) |
 | `CommunityStockFeed`, `_StockHeader` | ya | ya (`feed.stockHeader`) | sudah: `CommunityStockHeaderDetails` (`code`, `name`, `subtitle`, `found`, `loaded`, `watching`, `joining`, `watchLabel`, `discussionLabel`; `onToggleWatch`, `onOpenDiscussion`) |
 | `showEditContentDialog`, `_EditContentDialog` | tidak | ya (`feed.editDialog`) | sudah: `CommunityEditDialogDetails` (`title`, `controller`, `maxLength`, `field`, `saveLabel`, `cancelLabel`; `onSave`, `onCancel`); builder diambil dari context pemanggil |
 

@@ -110,7 +110,7 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get composeTitle => 'New post';
 
   @override
-  String get composeHint => 'Share your analysis. Use \$CODE to tag stocks and @username to mention people.';
+  String get composeHint => 'Share your analysis. Use \$CODE to tag stocks or indices and @username to mention people.';
 
   @override
   String get composeSubmit => 'Post';
@@ -390,7 +390,7 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get stockDiscussion => 'Discuss';
 
   @override
-  String get stockNotFound => 'Invalid stock code.';
+  String get stockNotFound => 'Invalid stock or index code.';
 
   @override
   String get chats => 'Chats';
@@ -1347,7 +1347,7 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get searchTabUsers => 'Users';
 
   @override
-  String get searchTabStocks => 'Stocks';
+  String get searchTabStocks => 'Stocks & Indices';
 
   @override
   String get searchTabHashtags => 'Hashtags';
@@ -1382,7 +1382,7 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get trendingTitle => 'Trending';
 
   @override
-  String get trendingStocks => 'Stocks';
+  String get trendingStocks => 'Stocks & Indices';
 
   @override
   String get trendingRising => 'Rising';
@@ -1526,20 +1526,20 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get moderationRemoved => 'Removed by a moderator';
 
   @override
-  String get stockCardSend => 'Send stock card';
+  String get stockCardSend => 'Send stock/index card';
 
   @override
-  String get stockCardHint => 'Stock code, e.g. BBCA, TLKM';
+  String get stockCardHint => 'Stock or index code, e.g. BBCA, LQ45, SRI-KEHATI';
 
   @override
   String get stockCardAdd => 'Add';
 
   @override
-  String get stockCardInvalid => 'Invalid stock code';
+  String get stockCardInvalid => 'Invalid stock or index code';
 
   @override
   String stockCardLimit(int count) {
-    return 'Up to $count stocks per message';
+    return 'Up to $count codes per message';
   }
 
   @override
@@ -1609,8 +1609,8 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
     String _temp0 = intl.Intl.pluralLogic(
       others,
       locale: localeName,
-      other: ', and $others more stocks',
-      one: ', and 1 more stock',
+      other: ', and $others more codes',
+      one: ', and 1 more code',
       zero: '',
     );
     return '$count new posts about $stocks$_temp0';
@@ -2393,7 +2393,7 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get feedOfficial => 'Official';
 
   @override
-  String get feedForYouEmpty => 'Nothing to recommend yet. Follow people or stocks to tune this feed.';
+  String get feedForYouEmpty => 'Nothing to recommend yet. Follow people, stocks, or indices to tune this feed.';
 
   @override
   String get feedOfficialEmpty => 'No posts from official accounts yet.';
@@ -2662,4 +2662,34 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get followingEmpty => 'Not following anyone yet.';
+
+  @override
+  String get indexLabel => 'Index';
+
+  @override
+  String indexFeedEmpty(String code) {
+    return 'No discussion about \$$code yet.';
+  }
+
+  @override
+  String indexAliases(String aliases) {
+    return 'Also written as $aliases';
+  }
+
+  @override
+  String get indexRoomClosed => 'Room closed';
+
+  @override
+  String get indexListEmpty => 'No indices yet.';
+
+  @override
+  String indexBullishPct(int pct) {
+    return '$pct% bullish';
+  }
+
+  @override
+  String get errorRoomDisabled => 'The discussion room for this code is closed.';
+
+  @override
+  String get errorFeedFilter => 'This feed tab is not available right now.';
 }

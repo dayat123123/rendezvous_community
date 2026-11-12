@@ -1,6 +1,6 @@
 const maxStockCards = 3;
 
-final stockCardCodePattern = RegExp(r'^[A-Z][A-Z0-9]{1,11}$');
+final stockCardCodePattern = RegExp(r'^(?=.{2,24}$)[A-Z][A-Z0-9]{0,19}(?:-[A-Z0-9]{1,19})*$');
 
 String? normalizeStockCardCode(String raw) {
   final code = raw.replaceAll(RegExp(r'[\s$]'), '').toUpperCase();

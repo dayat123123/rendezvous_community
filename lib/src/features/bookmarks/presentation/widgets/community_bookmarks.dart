@@ -11,9 +11,10 @@ import 'package:rendezvous_community/src/features/feed/presentation/widgets/comm
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 
 class CommunityBookmarks extends StatelessWidget {
-  const CommunityBookmarks({super.key, this.header});
+  const CommunityBookmarks({super.key, this.header, this.scrollController});
 
   final Widget? header;
+  final ScrollController? scrollController;
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,7 @@ class CommunityBookmarks extends StatelessWidget {
           header: header,
           showConsentBanner: false,
           source: 'feed',
+          scrollController: scrollController,
         ),
       ),
     );

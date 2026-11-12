@@ -93,6 +93,7 @@ abstract class PostRowModel with _$PostRowModel {
     @Default(0) int commentCount,
     DateTime? deletedAt,
     required DateTime createdAt,
+    @Default(<Object?>[]) List<Object?> attachments,
   }) = _PostRowModel;
 
   factory PostRowModel.fromJson(Map<String, dynamic> json) => _$PostRowModelFromJson(json);

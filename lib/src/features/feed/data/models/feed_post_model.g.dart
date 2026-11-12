@@ -66,6 +66,7 @@ _PostRowModel _$PostRowModelFromJson(Map<String, dynamic> json) => _PostRowModel
   commentCount: (json['comment_count'] as num?)?.toInt() ?? 0,
   deletedAt: json['deleted_at'] == null ? null : DateTime.parse(json['deleted_at'] as String),
   createdAt: DateTime.parse(json['created_at'] as String),
+  attachments: json['attachments'] as List<dynamic>? ?? const <Object?>[],
 );
 
 Map<String, dynamic> _$PostRowModelToJson(_PostRowModel instance) => <String, dynamic>{
@@ -76,4 +77,5 @@ Map<String, dynamic> _$PostRowModelToJson(_PostRowModel instance) => <String, dy
   'comment_count': instance.commentCount,
   'deleted_at': instance.deletedAt?.toIso8601String(),
   'created_at': instance.createdAt.toIso8601String(),
+  'attachments': instance.attachments,
 };

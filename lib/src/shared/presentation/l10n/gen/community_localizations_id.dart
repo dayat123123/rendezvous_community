@@ -111,7 +111,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get composeHint =>
-      'Tulis analisis Anda. Gunakan \$KODE untuk menandai saham dan @username untuk menyebut user.';
+      'Tulis analisis Anda. Gunakan \$KODE untuk menandai saham atau indeks dan @username untuk menyebut user.';
 
   @override
   String get composeSubmit => 'Kirim';
@@ -391,7 +391,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get stockDiscussion => 'Diskusi';
 
   @override
-  String get stockNotFound => 'Kode saham tidak valid.';
+  String get stockNotFound => 'Kode saham atau indeks tidak valid.';
 
   @override
   String get chats => 'Chat';
@@ -1338,7 +1338,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get searchTabUsers => 'Pengguna';
 
   @override
-  String get searchTabStocks => 'Saham';
+  String get searchTabStocks => 'Saham & Indeks';
 
   @override
   String get searchTabHashtags => 'Hashtag';
@@ -1373,7 +1373,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get trendingTitle => 'Trending';
 
   @override
-  String get trendingStocks => 'Saham';
+  String get trendingStocks => 'Saham & Indeks';
 
   @override
   String get trendingRising => 'Naik daun';
@@ -1517,20 +1517,20 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get moderationRemoved => 'Dihapus moderator';
 
   @override
-  String get stockCardSend => 'Kirim kartu saham';
+  String get stockCardSend => 'Kirim kartu saham/indeks';
 
   @override
-  String get stockCardHint => 'Kode saham, mis. BBCA, TLKM';
+  String get stockCardHint => 'Kode saham atau indeks, mis. BBCA, LQ45, SRI-KEHATI';
 
   @override
   String get stockCardAdd => 'Tambah';
 
   @override
-  String get stockCardInvalid => 'Kode saham tidak valid';
+  String get stockCardInvalid => 'Kode saham atau indeks tidak valid';
 
   @override
   String stockCardLimit(int count) {
-    return 'Maksimal $count saham per pesan';
+    return 'Maksimal $count kode per pesan';
   }
 
   @override
@@ -1593,11 +1593,11 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   }
 
   @override
-  String get notifWatchlistDigest => 'Ringkasan saham pantauan';
+  String get notifWatchlistDigest => 'Ringkasan pantauan';
 
   @override
   String notifWatchlistDigestBody(int count, String stocks, int others) {
-    String _temp0 = intl.Intl.pluralLogic(others, locale: localeName, other: ', dan $others saham lainnya', zero: '');
+    String _temp0 = intl.Intl.pluralLogic(others, locale: localeName, other: ', dan $others kode lainnya', zero: '');
     return '$count postingan baru tentang $stocks$_temp0';
   }
 
@@ -1651,7 +1651,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get notifTypeFollowedPostHint => 'Push bawaan mati';
 
   @override
-  String get notifTypeWatchlistDigest => 'Ringkasan saham pantauan';
+  String get notifTypeWatchlistDigest => 'Ringkasan pantauan';
 
   @override
   String get notifTypeWatchlistDigestHint => 'Setiap hari pukul 17.05 WIB';
@@ -2379,7 +2379,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get feedOfficial => 'Resmi';
 
   @override
-  String get feedForYouEmpty => 'Belum ada rekomendasi. Ikuti akun atau saham agar feed ini makin pas.';
+  String get feedForYouEmpty => 'Belum ada rekomendasi. Ikuti akun, saham, atau indeks agar feed ini makin pas.';
 
   @override
   String get feedOfficialEmpty => 'Belum ada post dari akun resmi.';
@@ -2388,7 +2388,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get feedMediaEmpty => 'Belum ada grafik atau gambar di sini.';
 
   @override
-  String get feedWatchlistEmpty => 'Belum ada diskusi untuk saham di watchlist Anda.';
+  String get feedWatchlistEmpty => 'Belum ada diskusi untuk saham atau indeks di watchlist Anda.';
 
   @override
   String get whoToFollow => 'Akun untuk diikuti';
@@ -2457,7 +2457,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get composeQuickPoll => 'Polling';
 
   @override
-  String get composeQuickCashtag => 'Saham';
+  String get composeQuickCashtag => 'Saham/Indeks';
 
   @override
   String get groupEventYou => 'Anda';
@@ -2648,4 +2648,34 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get followingEmpty => 'Belum mengikuti siapa pun.';
+
+  @override
+  String get indexLabel => 'Indeks';
+
+  @override
+  String indexFeedEmpty(String code) {
+    return 'Belum ada diskusi tentang \$$code.';
+  }
+
+  @override
+  String indexAliases(String aliases) {
+    return 'Juga ditulis $aliases';
+  }
+
+  @override
+  String get indexRoomClosed => 'Room ditutup';
+
+  @override
+  String get indexListEmpty => 'Belum ada indeks.';
+
+  @override
+  String indexBullishPct(int pct) {
+    return '$pct% bullish';
+  }
+
+  @override
+  String get errorRoomDisabled => 'Room diskusi untuk kode ini sedang ditutup.';
+
+  @override
+  String get errorFeedFilter => 'Tab feed ini sedang tidak tersedia.';
 }

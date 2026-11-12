@@ -100,14 +100,14 @@ void main() {
       );
       await tester.pumpAndSettle();
 
-      expect(find.text('Ringkasan saham pantauan'), findsOneWidget);
-      expect(find.text(r'12 postingan baru tentang $BBCA, $TLKM, $ASII, dan 1 saham lainnya'), findsOneWidget);
+      expect(find.text('Ringkasan pantauan'), findsOneWidget);
+      expect(find.text(r'12 postingan baru tentang $BBCA, $TLKM, $ASII, dan 1 kode lainnya'), findsOneWidget);
       expect(find.text('Komentar Anda dihapus moderator'), findsOneWidget);
       expect(find.textContaining('mengajukan banding'), findsOneWidget);
       expect(find.text(r'Alice menyebut Anda di $BBCA'), findsOneWidget);
       expect(find.text('Alice membuat 3 postingan baru'), findsOneWidget);
 
-      await tester.tap(find.text('Ringkasan saham pantauan'));
+      await tester.tap(find.text('Ringkasan pantauan'));
       await tester.tap(find.text(r'Alice menyebut Anda di $BBCA'));
       await tester.tap(find.text('Alice membuat 3 postingan baru'));
       await tester.pumpAndSettle();

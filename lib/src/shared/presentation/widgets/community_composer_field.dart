@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
+import 'package:rendezvous_community/src/features/instruments/domain/entities/market_instrument.dart';
+import 'package:rendezvous_community/src/features/instruments/presentation/community_instruments.dart';
 import 'package:rendezvous_community/src/features/stocks/domain/entities/stock_suggestion.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';
+import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
@@ -172,12 +175,7 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
     final id = ++_requestId;
     try {
       final List<_Suggestion> results = token.trigger == r'$'
-          ? [
-              for (final s in (await deps.callbacks.stockSearch?.call(token.query) ?? const <StockSuggestion>[]).take(
-                6,
-              ))
-                _StockSuggestion(s),
-            ]
+          ? [for (final s in await _stockSuggestions(token.query)) _StockSuggestion(s)]
           : [for (final u in await deps.profiles.searchUsers(token.query, limit: 6)) _UserSuggestion(u)];
       if (!mounted || id != _requestId) return;
       setState(() {
@@ -185,6 +183,24 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
         _highlight = 0;
       });
     } catch (_) {}
+  }
+
+  Future<List<StockSuggestion>> _stockSuggestions(String query) async {
+    final instruments = CommunityInstruments.maybeOf(context);
+    final search = CommunityScope.of(context).callbacks.stockSearch;
+    final indexes = [
+      for (final item in instruments?.search(query, limit: 3) ?? const <MarketInstrument>[])
+        StockSuggestion(code: item.code, name: item.name, kind: item.kind),
+    ];
+    final hosted = await search?.call(query) ?? const <StockSuggestion>[];
+    final seen = {for (final s in indexes) s.code};
+    final results = [...indexes];
+    for (final s in hosted) {
+      final item = instruments?.find(s.code);
+      if (!seen.add(item?.code ?? s.code.toUpperCase())) continue;
+      results.add(item == null ? s : StockSuggestion(code: item.code, name: s.name ?? item.name, kind: item.kind));
+    }
+    return results.take(6).toList();
   }
 
   void _clearSuggestions() {
@@ -242,10 +258,18 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
                       _UserSuggestion(:final user) => user.name,
                     },
                     subtitle: switch (s) {
+                      _StockSuggestion(:final stock) when stock.kind == MarketInstrumentKind.stockIndex => [
+                        ?stock.name,
+                        context.communityL10n.indexLabel,
+                      ].join(' · '),
                       _StockSuggestion(:final stock) => stock.name,
                       _UserSuggestion(:final user) => user.handle,
                     },
                     leading: switch (s) {
+                      _StockSuggestion(:final stock) when stock.kind == MarketInstrumentKind.stockIndex => Icon(
+                        Icons.insights,
+                        color: style.textSecondary,
+                      ),
                       _StockSuggestion() => Icon(Icons.show_chart, color: style.textSecondary),
                       _UserSuggestion(:final user) => CommunityAvatar(user: user, radius: 14),
                     },

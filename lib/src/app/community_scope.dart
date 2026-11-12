@@ -6,6 +6,8 @@ import 'package:rendezvous_community/src/app/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/community_chat_room.dart';
 import 'package:rendezvous_community/src/features/group/presentation/widgets/community_group_info.dart';
+import 'package:rendezvous_community/src/features/instruments/presentation/community_instruments.dart';
+import 'package:rendezvous_community/src/features/instruments/presentation/widgets/community_index_feed.dart';
 import 'package:rendezvous_community/src/features/post/presentation/widgets/community_post_detail.dart';
 import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/widgets/community_follow_list.dart';
@@ -33,10 +35,24 @@ class CommunityScope extends InheritedWidget {
 
 abstract final class CommunityNavigator {
   static void openStock(BuildContext context, String code, {String? source}) {
+    final instruments = CommunityInstruments.maybeOf(context);
+    if (instruments?.isIndex(code) ?? false) return openIndex(context, code, source: source);
     context.trackCommunityEvent(CommunityAnalyticsEvent.stockTap, {'stock_code': code, 'source': source ?? 'other'});
     final callback = CommunityScope.of(context).callbacks.onStockTap;
     if (callback != null) return callback(context, code);
     _push(context, '\$$code', CommunityStockFeed(stockCode: code));
+  }
+
+  static void openIndex(BuildContext context, String code, {String? source}) {
+    final canonical = CommunityInstruments.maybeOf(context)?.canonicalOr(code) ?? code.trim().toUpperCase();
+    context.trackCommunityEvent(CommunityAnalyticsEvent.stockTap, {
+      'stock_code': canonical,
+      'source': source ?? 'other',
+    });
+    final callbacks = CommunityScope.of(context).callbacks;
+    final callback = callbacks.onIndexTap ?? callbacks.onStockTap;
+    if (callback != null) return callback(context, canonical);
+    _push(context, '\$$canonical', CommunityIndexFeed(indexCode: canonical));
   }
 
   static void openUser(BuildContext context, UserSummary user) {

@@ -396,7 +396,7 @@ $PollModelCopyWith<$Res>? get poll {
 /// @nodoc
 mixin _$PostRowModel {
 
- String get id; String get authorId; String get body; int get likeCount; int get commentCount; DateTime? get deletedAt; DateTime get createdAt;
+ String get id; String get authorId; String get body; int get likeCount; int get commentCount; DateTime? get deletedAt; DateTime get createdAt; List<Object?> get attachments;
 /// Create a copy of PostRowModel
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -409,16 +409,16 @@ $PostRowModelCopyWith<PostRowModel> get copyWith => _$PostRowModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.body, body) || other.body == body)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.body, body) || other.body == body)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other.attachments, attachments));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,authorId,body,likeCount,commentCount,deletedAt,createdAt);
+int get hashCode => Object.hash(runtimeType,id,authorId,body,likeCount,commentCount,deletedAt,createdAt,const DeepCollectionEquality().hash(attachments));
 
 @override
 String toString() {
-  return 'PostRowModel(id: $id, authorId: $authorId, body: $body, likeCount: $likeCount, commentCount: $commentCount, deletedAt: $deletedAt, createdAt: $createdAt)';
+  return 'PostRowModel(id: $id, authorId: $authorId, body: $body, likeCount: $likeCount, commentCount: $commentCount, deletedAt: $deletedAt, createdAt: $createdAt, attachments: $attachments)';
 }
 
 
@@ -429,7 +429,7 @@ abstract mixin class $PostRowModelCopyWith<$Res>  {
   factory $PostRowModelCopyWith(PostRowModel value, $Res Function(PostRowModel) _then) = _$PostRowModelCopyWithImpl;
 @useResult
 $Res call({
- String id, String authorId, String body, int likeCount, int commentCount, DateTime? deletedAt, DateTime createdAt
+ String id, String authorId, String body, int likeCount, int commentCount, DateTime? deletedAt, DateTime createdAt, List<Object?> attachments
 });
 
 
@@ -446,7 +446,7 @@ class _$PostRowModelCopyWithImpl<$Res>
 
 /// Create a copy of PostRowModel
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? authorId = null,Object? body = null,Object? likeCount = null,Object? commentCount = null,Object? deletedAt = freezed,Object? createdAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? authorId = null,Object? body = null,Object? likeCount = null,Object? commentCount = null,Object? deletedAt = freezed,Object? createdAt = null,Object? attachments = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
@@ -455,7 +455,8 @@ as String,likeCount: null == likeCount ? _self.likeCount : likeCount // ignore: 
 as int,commentCount: null == commentCount ? _self.commentCount : commentCount // ignore: cast_nullable_to_non_nullable
 as int,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,attachments: null == attachments ? _self.attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<Object?>,
   ));
 }
 
@@ -540,10 +541,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String authorId,  String body,  int likeCount,  int commentCount,  DateTime? deletedAt,  DateTime createdAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String authorId,  String body,  int likeCount,  int commentCount,  DateTime? deletedAt,  DateTime createdAt,  List<Object?> attachments)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _PostRowModel() when $default != null:
-return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.commentCount,_that.deletedAt,_that.createdAt);case _:
+return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.commentCount,_that.deletedAt,_that.createdAt,_that.attachments);case _:
   return orElse();
 
 }
@@ -561,10 +562,10 @@ return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.comment
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String authorId,  String body,  int likeCount,  int commentCount,  DateTime? deletedAt,  DateTime createdAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String authorId,  String body,  int likeCount,  int commentCount,  DateTime? deletedAt,  DateTime createdAt,  List<Object?> attachments)  $default,) {final _that = this;
 switch (_that) {
 case _PostRowModel():
-return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.commentCount,_that.deletedAt,_that.createdAt);case _:
+return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.commentCount,_that.deletedAt,_that.createdAt,_that.attachments);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -581,10 +582,10 @@ return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.comment
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String authorId,  String body,  int likeCount,  int commentCount,  DateTime? deletedAt,  DateTime createdAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String authorId,  String body,  int likeCount,  int commentCount,  DateTime? deletedAt,  DateTime createdAt,  List<Object?> attachments)?  $default,) {final _that = this;
 switch (_that) {
 case _PostRowModel() when $default != null:
-return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.commentCount,_that.deletedAt,_that.createdAt);case _:
+return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.commentCount,_that.deletedAt,_that.createdAt,_that.attachments);case _:
   return null;
 
 }
@@ -596,7 +597,7 @@ return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.comment
 @JsonSerializable()
 
 class _PostRowModel implements PostRowModel {
-  const _PostRowModel({required this.id, required this.authorId, this.body = '', this.likeCount = 0, this.commentCount = 0, this.deletedAt, required this.createdAt});
+  const _PostRowModel({required this.id, required this.authorId, this.body = '', this.likeCount = 0, this.commentCount = 0, this.deletedAt, required this.createdAt, final  List<Object?> attachments = const <Object?>[]}): _attachments = attachments;
   factory _PostRowModel.fromJson(Map<String, dynamic> json) => _$PostRowModelFromJson(json);
 
 @override final  String id;
@@ -606,6 +607,13 @@ class _PostRowModel implements PostRowModel {
 @override@JsonKey() final  int commentCount;
 @override final  DateTime? deletedAt;
 @override final  DateTime createdAt;
+ final  List<Object?> _attachments;
+@override@JsonKey() List<Object?> get attachments {
+  if (_attachments is EqualUnmodifiableListView) return _attachments;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_attachments);
+}
+
 
 /// Create a copy of PostRowModel
 /// with the given fields replaced by the non-null parameter values.
@@ -620,16 +628,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.body, body) || other.body == body)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.body, body) || other.body == body)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other._attachments, _attachments));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,authorId,body,likeCount,commentCount,deletedAt,createdAt);
+int get hashCode => Object.hash(runtimeType,id,authorId,body,likeCount,commentCount,deletedAt,createdAt,const DeepCollectionEquality().hash(_attachments));
 
 @override
 String toString() {
-  return 'PostRowModel(id: $id, authorId: $authorId, body: $body, likeCount: $likeCount, commentCount: $commentCount, deletedAt: $deletedAt, createdAt: $createdAt)';
+  return 'PostRowModel(id: $id, authorId: $authorId, body: $body, likeCount: $likeCount, commentCount: $commentCount, deletedAt: $deletedAt, createdAt: $createdAt, attachments: $attachments)';
 }
 
 
@@ -640,7 +648,7 @@ abstract mixin class _$PostRowModelCopyWith<$Res> implements $PostRowModelCopyWi
   factory _$PostRowModelCopyWith(_PostRowModel value, $Res Function(_PostRowModel) _then) = __$PostRowModelCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String authorId, String body, int likeCount, int commentCount, DateTime? deletedAt, DateTime createdAt
+ String id, String authorId, String body, int likeCount, int commentCount, DateTime? deletedAt, DateTime createdAt, List<Object?> attachments
 });
 
 
@@ -657,7 +665,7 @@ class __$PostRowModelCopyWithImpl<$Res>
 
 /// Create a copy of PostRowModel
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? body = null,Object? likeCount = null,Object? commentCount = null,Object? deletedAt = freezed,Object? createdAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? authorId = null,Object? body = null,Object? likeCount = null,Object? commentCount = null,Object? deletedAt = freezed,Object? createdAt = null,Object? attachments = null,}) {
   return _then(_PostRowModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
@@ -666,7 +674,8 @@ as String,likeCount: null == likeCount ? _self.likeCount : likeCount // ignore: 
 as int,commentCount: null == commentCount ? _self.commentCount : commentCount // ignore: cast_nullable_to_non_nullable
 as int,deletedAt: freezed == deletedAt ? _self.deletedAt : deletedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,attachments: null == attachments ? _self._attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<Object?>,
   ));
 }
 

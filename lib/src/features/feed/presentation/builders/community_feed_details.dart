@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/composer_action.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_stream_feed.dart';
+import 'package:rendezvous_community/src/features/instruments/domain/entities/market_instrument.dart';
 import 'package:rendezvous_community/src/features/link_preview/domain/entities/link_preview.dart';
 import 'package:rendezvous_community/src/features/media/domain/entities/document_type.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
@@ -203,6 +205,22 @@ class CommunityFeedTabsDetails {
   final List<String> labels;
   final CommunityFeedTab selected;
   final ValueChanged<CommunityFeedTab> onSelect;
+}
+
+class CommunityFeedFilterTabsDetails {
+  const CommunityFeedFilterTabsDetails({
+    required this.filters,
+    required this.labels,
+    required this.selected,
+    required this.onSelect,
+    this.loading = false,
+  });
+
+  final List<FeedFilter> filters;
+  final List<String> labels;
+  final String? selected;
+  final ValueChanged<FeedFilter> onSelect;
+  final bool loading;
 }
 
 class CommunityNewPostsDetails {
@@ -582,4 +600,68 @@ class CommunityEditDialogDetails {
   final Widget field;
   final VoidCallback onSave;
   final VoidCallback onCancel;
+}
+
+class CommunityIndexHeaderDetails {
+  const CommunityIndexHeaderDetails({
+    required this.code,
+    required this.name,
+    required this.kindLabel,
+    required this.found,
+    required this.loaded,
+    required this.watching,
+    required this.joining,
+    required this.roomEnabled,
+    required this.watchLabel,
+    required this.discussionLabel,
+    required this.roomClosedLabel,
+    this.instrument,
+    this.description,
+    this.aliases = const [],
+    this.aliasesLabel,
+    this.subtitle,
+    this.onToggleWatch,
+    this.onOpenDiscussion,
+  });
+
+  final String code;
+  final String name;
+  final String kindLabel;
+  final bool found;
+  final bool loaded;
+  final bool watching;
+  final bool joining;
+  final bool roomEnabled;
+  final String watchLabel;
+  final String discussionLabel;
+  final String roomClosedLabel;
+  final MarketInstrument? instrument;
+  final String? description;
+  final List<String> aliases;
+  final String? aliasesLabel;
+  final String? subtitle;
+  final VoidCallback? onToggleWatch;
+  final VoidCallback? onOpenDiscussion;
+}
+
+class CommunityIndexTileDetails {
+  const CommunityIndexTileDetails({
+    required this.instrument,
+    required this.code,
+    required this.name,
+    required this.kindLabel,
+    required this.onOpen,
+    this.postsToday,
+    this.bullishPct,
+    this.statsLabel,
+  });
+
+  final MarketInstrument instrument;
+  final String code;
+  final String name;
+  final String kindLabel;
+  final VoidCallback onOpen;
+  final int? postsToday;
+  final int? bullishPct;
+  final String? statsLabel;
 }

@@ -147,7 +147,7 @@ void main() {
     await tester.enterText(find.byType(TextField), '1X');
     await tester.testTextInput.receiveAction(TextInputAction.done);
     await tester.pumpAndSettle();
-    expect(find.text('Kode saham tidak valid'), findsOneWidget);
+    expect(find.text('Kode saham atau indeks tidak valid'), findsOneWidget);
 
     await tester.enterText(find.byType(TextField), 'bbca, tlkm');
     await tester.tap(find.text('Kirim'));

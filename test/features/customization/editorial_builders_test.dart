@@ -540,10 +540,10 @@ void main() {
       expect(find.text('saham BBCA true'), findsOneWidget);
       expect(find.text('tag bbca searchResult 2 post (7 hari)'), findsOneWidget);
 
-      await tester.tap(find.text('Saham false'));
+      await tester.tap(find.text('Saham & Indeks false'));
       await tester.pumpAndSettle();
       expect(features.search.queries.last.$2, SearchType.stocks);
-      expect(find.text('Saham true'), findsOneWidget);
+      expect(find.text('Saham & Indeks true'), findsOneWidget);
 
       field!.onClear();
       await tester.pumpAndSettle();
@@ -617,7 +617,7 @@ void main() {
         ),
       );
 
-      expect(find.text('tabs Saham,Naik daun,Populer,Hashtag 24 jam,7 hari'), findsOneWidget);
+      expect(find.text('tabs Saham & Indeks,Naik daun,Populer,Hashtag 24 jam,7 hari'), findsOneWidget);
       expect(find.text('tren 1 BBCA 5 post true'), findsOneWidget);
       expect(bars.last.neutralPct, 20);
       expect(find.byType(SentimentBar), findsOneWidget);

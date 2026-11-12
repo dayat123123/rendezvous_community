@@ -1,4 +1,5 @@
 import 'package:rendezvous_community/src/core/paging/paged.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
@@ -34,7 +35,12 @@ abstract interface class FeedQueryRepository {
     FeedScope scope, {
     CommunityFeedSort sort = CommunityFeedSort.latest,
     bool mediaOnly = false,
+    String? filter,
     String? cursor,
     int limit = 20,
   });
+}
+
+abstract interface class FeedFilterRepository {
+  Future<List<FeedFilter>> getFeedFilters({bool refresh = false});
 }

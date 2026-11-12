@@ -27,6 +27,7 @@ export 'src/core/paging/paged.dart';
 export 'src/core/storage/image_disk_cache.dart' show CommunityImageCacheConfig;
 export 'src/core/text/social_text_parser.dart'
     show
+        CashtagResolver,
         CashtagSegment,
         HashtagSegment,
         LinkSegment,
@@ -37,7 +38,8 @@ export 'src/core/text/social_text_parser.dart'
         extractHashtags,
         extractLinks,
         extractMentions,
-        parseSocialText;
+        parseSocialText,
+        resolveCashtagToken;
 export 'src/features/account/domain/entities/community_data_export.dart';
 export 'src/features/account/domain/repositories/account_repository.dart';
 export 'src/features/account/presentation/builders/community_settings_builders.dart'
@@ -127,6 +129,7 @@ export 'src/features/drafts/domain/repositories/post_draft_repository.dart';
 export 'src/features/drafts/domain/services/community_drafts.dart';
 export 'src/features/drafts/presentation/widgets/community_post_drafts.dart';
 export 'src/features/edit/domain/repositories/content_edit_repository.dart';
+export 'src/features/feed/domain/entities/feed_filter.dart';
 export 'src/features/feed/domain/entities/feed_sort.dart';
 export 'src/features/feed/domain/entities/pinned_post.dart';
 export 'src/features/feed/domain/entities/post.dart';
@@ -136,6 +139,8 @@ export 'src/features/feed/presentation/builders/community_feed_builders.dart'
     show CommunityFeedBuilders, CommunityFeedBuildersScope;
 export 'src/features/feed/presentation/builders/community_feed_details.dart';
 export 'src/features/feed/presentation/post_open_mode.dart';
+export 'src/features/feed/presentation/widgets/community_feed_filter_tabs.dart'
+    show CommunityFeedFilterTabs, CommunityFeedFilters;
 export 'src/features/feed/presentation/widgets/community_feed_list.dart' show CommunityFeedList;
 export 'src/features/feed/presentation/widgets/community_stream_feed.dart' show CommunityFeedTab, CommunityStreamFeed;
 export 'src/features/feed/presentation/widgets/compose_prompt_card.dart' show CommunityComposePromptCard;
@@ -161,6 +166,13 @@ export 'src/features/help/presentation/widgets/community_help_article.dart'
 export 'src/features/help/presentation/widgets/community_help_center.dart'
     show CommunityHelpCenter, openCommunityHelpCenter;
 export 'src/features/help/presentation/widgets/community_help_markdown.dart';
+export 'src/features/instruments/domain/entities/market_instrument.dart';
+export 'src/features/instruments/domain/repositories/market_instrument_repository.dart';
+export 'src/features/instruments/domain/services/market_instrument_directory.dart';
+export 'src/features/instruments/domain/services/stock_codes.dart';
+export 'src/features/instruments/presentation/community_instruments.dart';
+export 'src/features/instruments/presentation/widgets/community_index_feed.dart' show CommunityIndexFeed;
+export 'src/features/instruments/presentation/widgets/community_index_list.dart' show CommunityIndexList;
 export 'src/features/legal/domain/entities/legal_document.dart';
 export 'src/features/legal/domain/repositories/legal_repository.dart';
 export 'src/features/legal/domain/services/community_consent.dart';

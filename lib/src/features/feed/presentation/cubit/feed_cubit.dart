@@ -10,6 +10,7 @@ import 'package:rendezvous_community/src/core/paging/paged.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/bookmarks/domain/repositories/bookmark_repository.dart';
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
@@ -53,7 +54,11 @@ class FeedCubit extends Cubit<FeedState> {
     this._connectivity,
     this.sort = CommunityFeedSort.latest,
     this.mediaOnly = false,
-  }) : super(const FeedState());
+    this.filter,
+    FeedFilter? filterDef,
+    this.resolveCashtag,
+  }) : _filter = filterDef,
+       super(const FeedState());
 
   final FeedCacheRepository? _cache;
   final CommunityConnectivity? _connectivity;
@@ -69,9 +74,16 @@ class FeedCubit extends Cubit<FeedState> {
   final bool removeOnUnbookmark;
   final CommunityFeedSort sort;
   final bool mediaOnly;
+  final String? filter;
+  final CashtagResolver? resolveCashtag;
+  FeedFilter? _filter;
   StreamSubscription<PostChange>? _changes;
 
-  bool get isFiltered => sort != CommunityFeedSort.latest || mediaOnly;
+  FeedFilter? get filterDef => _filter;
+
+  bool get isFiltered => filter != null || sort != CommunityFeedSort.latest || mediaOnly;
+
+  bool get _plainFilter => filter != null && _filter?.sort == CommunityFeedSort.latest && _filter?.content == null;
 
   bool get isCustomSource => _loader != null;
 
@@ -83,6 +95,7 @@ class FeedCubit extends Cubit<FeedState> {
     final loader = _loader;
     if (loader != null) return loader(cursor, pageSize);
     if (_feed case final FeedQueryRepository feed when isFiltered) {
+      if (filter != null) return feed.queryFeed(scope, filter: filter, cursor: cursor, limit: pageSize);
       return feed.queryFeed(scope, sort: sort, mediaOnly: mediaOnly, cursor: cursor, limit: pageSize);
     }
     return _feed.getFeed(scope, cursor: cursor, limit: pageSize);
@@ -97,6 +110,7 @@ class FeedCubit extends Cubit<FeedState> {
       await _showCached();
     }
     try {
+      await _resolveFilter();
       final (page, pinned) = await (_page(), _pinned()).wait;
       if (isClosed) return;
       emit(
@@ -122,6 +136,16 @@ class FeedCubit extends Cubit<FeedState> {
     }
   }
 
+  Future<void> _resolveFilter() async {
+    final key = filter;
+    if (key == null || _filter != null) return;
+    if (_feed case final FeedFilterRepository filters) {
+      try {
+        _filter = (await filters.getFeedFilters()).where((f) => f.key == key).firstOrNull;
+      } catch (_) {}
+    }
+  }
+
   Future<void> _showCached() async {
     final cache = _cache;
     if (cache == null || isCustomSource || isFiltered) return;
@@ -144,7 +168,7 @@ class FeedCubit extends Cubit<FeedState> {
   }
 
   Future<List<PinnedPost>> _pinned() async {
-    if (isCustomSource || isFiltered) return const [];
+    if (isCustomSource || (isFiltered && !_plainFilter)) return const [];
     try {
       return await _feed.getPinned(scope);
     } catch (_) {
@@ -280,8 +304,14 @@ class FeedCubit extends Cubit<FeedState> {
   );
 
   void insertOwnPost(Post post) {
-    if (isCustomSource || sort == CommunityFeedSort.top) return;
-    if (mediaOnly && post.attachments.isEmpty) return;
+    if (isCustomSource) return;
+    if (filter != null) {
+      final def = _filter;
+      if (def == null || def.sort == CommunityFeedSort.top || !def.matches(post)) return;
+    } else {
+      if (sort == CommunityFeedSort.top) return;
+      if (mediaOnly && post.attachments.isEmpty) return;
+    }
     if (!_matchesScope(authorId: post.author.id, body: post.body)) return;
     if (state.posts.any((p) => p.id == post.id)) return;
     emit(state.copyWith(posts: [post, ...state.posts]));
@@ -304,7 +334,12 @@ class FeedCubit extends Cubit<FeedState> {
           if (isCustomSource) return;
           final mine = change.authorId == currentUserId?.call();
           final known = state.posts.any((p) => p.id == change.postId);
-          if (mine || known || isFiltered || scope is FollowingFeedScope) return;
+          if (mine || known || scope is FollowingFeedScope) return;
+          if (filter != null) {
+            unawaited(_filteredInsert(change));
+            return;
+          }
+          if (isFiltered) return;
           if (_matchesScope(authorId: change.authorId, body: change.body)) {
             emit(state.copyWith(newPosts: state.newPosts + 1));
           }
@@ -329,12 +364,39 @@ class FeedCubit extends Cubit<FeedState> {
     }, onError: (Object _) {});
   }
 
+  Future<void> _filteredInsert(PostInserted change) async {
+    final def = _filter;
+    if (def?.sort == CommunityFeedSort.top) return;
+    if (!_matchesScope(authorId: change.authorId, body: change.body)) return;
+    final matches = switch (def?.content) {
+      null when def != null => true,
+      FeedFilterContent.media => change.hasMedia,
+      FeedFilterContent.poll => await _hasPoll(change.postId),
+      _ => true,
+    };
+    if (matches && !isClosed && !state.posts.any((p) => p.id == change.postId)) {
+      emit(state.copyWith(newPosts: state.newPosts + 1));
+    }
+  }
+
+  Future<bool> _hasPoll(String postId) async {
+    try {
+      return (await _feed.getPost(postId))?.poll != null;
+    } catch (_) {
+      return false;
+    }
+  }
+
+  String _code(String code) => resolveCashtag?.call(code.toUpperCase()) ?? code.toUpperCase();
+
   bool _matchesScope({required String authorId, required String body}) => switch (scope) {
     GlobalFeedScope() => true,
     FollowingFeedScope() => true,
-    StockFeedScope(:final code) => extractCashtags(body).contains(code.toUpperCase()),
+    StockFeedScope(:final code) => extractCashtags(body, resolve: resolveCashtag).contains(_code(code)),
     UserFeedScope(:final userId) => authorId == userId,
-    StocksFeedScope(:final codes) => codes.any((c) => extractCashtags(body).contains(c.toUpperCase())),
+    StocksFeedScope(:final codes) => codes.any(
+      (c) => extractCashtags(body, resolve: resolveCashtag).contains(_code(c)),
+    ),
     OfficialFeedScope() || ForYouFeedScope() => false,
   };
 

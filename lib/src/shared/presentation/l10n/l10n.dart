@@ -91,6 +91,8 @@ extension CommunityErrorText on CommunityLocalizations {
       'invalid_quiet_hours' => errorInvalidQuietHours,
       'attachment_offline' => errorAttachmentOffline,
       'room_muted' => errorRoomMuted,
+      'room_disabled' => errorRoomDisabled,
+      'invalid_filter' => errorFeedFilter,
       'not_room_moderator' => errorNotRoomModerator,
       'room_moderator_suspended' => errorRoomModeratorSuspended,
       'protected_account' || 'moderator_target' || 'self_target' => errorRoomModTarget,

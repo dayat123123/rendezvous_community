@@ -20,6 +20,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/widgets/pinn
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_actions.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_skeletons.dart';
+import 'package:rendezvous_community/src/features/instruments/presentation/community_instruments.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_consent_banner.dart';
 import 'package:rendezvous_community/src/features/offline/presentation/widgets/community_offline_banner.dart';
 import 'package:rendezvous_community/src/features/post/presentation/widgets/community_post_comments.dart';
@@ -53,6 +54,8 @@ class CommunityFeedList extends StatelessWidget {
     this.postOpenMode = CommunityPostOpenMode.navigate,
     this.sort = CommunityFeedSort.latest,
     this.mediaOnly = false,
+    this.scrollController,
+    this.filter,
   });
 
   final FeedScope scope;
@@ -63,10 +66,13 @@ class CommunityFeedList extends StatelessWidget {
   final CommunityPostOpenMode postOpenMode;
   final CommunityFeedSort sort;
   final bool mediaOnly;
+  final ScrollController? scrollController;
+  final String? filter;
 
   @override
   Widget build(BuildContext context) {
     final deps = CommunityScope.of(context);
+    final instruments = CommunityInstruments.maybeOf(context);
     final features = context.communityFeatures;
     final offline = CommunityOfflineScope.maybeOf(context);
     return withFeedBuilders(
@@ -74,13 +80,14 @@ class CommunityFeedList extends StatelessWidget {
       builders,
       CommunitySocialGate(
         child: BlocProvider(
-          key: ValueKey((scope, sort, mediaOnly)),
+          key: ValueKey((scope, sort, mediaOnly, filter)),
           create: (_) {
             context.trackCommunityEvent(CommunityAnalyticsEvent.feedOpen, {
               'scope': feedScopeName(scope),
               if (scope is StockFeedScope) 'stock_code': (scope as StockFeedScope).code,
               if (sort != CommunityFeedSort.latest) 'sort': sort.wire,
               if (mediaOnly) 'media_only': true,
+              'filter': ?filter,
             });
             return FeedCubit(
               feed: deps.feed,
@@ -92,6 +99,8 @@ class CommunityFeedList extends StatelessWidget {
               connectivity: offline?.connectivity,
               sort: sort,
               mediaOnly: mediaOnly,
+              filter: filter,
+              resolveCashtag: instruments?.resolveCashtag,
             )..load();
           },
           child: FeedPostList(
@@ -99,6 +108,7 @@ class CommunityFeedList extends StatelessWidget {
             header: header,
             showBanners: scope is GlobalFeedScope || scope is FollowingFeedScope || scope is ForYouFeedScope,
             postOpenMode: postOpenMode,
+            scrollController: scrollController,
           ),
         ),
       ),
@@ -115,6 +125,7 @@ class FeedPostList extends StatefulWidget {
     this.source = 'feed',
     this.showBanners = false,
     this.postOpenMode = CommunityPostOpenMode.navigate,
+    this.scrollController,
   });
 
   final String emptyMessage;
@@ -123,26 +134,47 @@ class FeedPostList extends StatefulWidget {
   final String source;
   final bool showBanners;
   final CommunityPostOpenMode postOpenMode;
+  final ScrollController? scrollController;
 
   @override
   State<FeedPostList> createState() => _FeedPostListState();
 }
 
 class _FeedPostListState extends State<FeedPostList> {
-  final _scroll = ScrollController();
+  ScrollController? _owned;
+
+  ScrollController get _scroll => widget.scrollController ?? _owned!;
 
   @override
   void initState() {
     super.initState();
-    _scroll.addListener(() {
-      if (_scroll.position.extentAfter < 600) context.read<FeedCubit>().loadMore();
-    });
+    if (widget.scrollController == null) _owned = ScrollController();
+    _scroll.addListener(_onScroll);
+  }
+
+  @override
+  void didUpdateWidget(FeedPostList oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.scrollController == widget.scrollController) return;
+    final previous = oldWidget.scrollController ?? _owned!;
+    previous.removeListener(_onScroll);
+    if (oldWidget.scrollController == null) {
+      _owned = null;
+      WidgetsBinding.instance.addPostFrameCallback((_) => previous.dispose());
+    }
+    if (widget.scrollController == null) _owned = ScrollController();
+    _scroll.addListener(_onScroll);
   }
 
   @override
   void dispose() {
-    _scroll.dispose();
+    _scroll.removeListener(_onScroll);
+    _owned?.dispose();
     super.dispose();
+  }
+
+  void _onScroll() {
+    if (_scroll.position.extentAfter < 600) context.read<FeedCubit>().loadMore();
   }
 
   Future<void> _showNewPosts() async {

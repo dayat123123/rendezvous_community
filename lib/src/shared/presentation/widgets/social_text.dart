@@ -4,6 +4,8 @@ import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
+import 'package:rendezvous_community/src/features/instruments/domain/services/market_instrument_directory.dart';
+import 'package:rendezvous_community/src/features/instruments/presentation/community_instruments.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/link_opener.dart';
 
@@ -39,9 +41,24 @@ class SocialText extends StatefulWidget {
 
 class _SocialTextState extends State<SocialText> {
   final _recognizers = <TapGestureRecognizer>[];
+  MarketInstrumentDirectory? _instruments;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final instruments = widget.cashtags ? CommunityInstruments.maybeOf(context) : null;
+    if (identical(instruments, _instruments)) return;
+    _instruments?.removeListener(_instrumentsChanged);
+    _instruments = instruments?..addListener(_instrumentsChanged);
+  }
+
+  void _instrumentsChanged() {
+    if (mounted) setState(() {});
+  }
 
   @override
   void dispose() {
+    _instruments?.removeListener(_instrumentsChanged);
     _disposeRecognizers();
     super.dispose();
   }
@@ -63,6 +80,7 @@ class _SocialTextState extends State<SocialText> {
     final segments = parseSocialText(
       widget.text,
       validStockCodes: widget.validStockCodes,
+      resolveCashtag: _instruments?.resolveCashtag,
       hashtags: hashtagsActive,
       links: widget.links,
       contacts: widget.links && widget.contacts,

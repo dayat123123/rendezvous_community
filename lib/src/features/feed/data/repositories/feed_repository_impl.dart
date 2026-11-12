@@ -6,6 +6,7 @@ import 'package:rendezvous_community/src/core/network/social_remote_data_source.
 import 'package:rendezvous_community/src/core/paging/paged.dart';
 import 'package:rendezvous_community/src/features/feed/data/local/feed_local_cache.dart';
 import 'package:rendezvous_community/src/features/feed/data/models/feed_post_model.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
@@ -18,12 +19,72 @@ import 'package:uuid/uuid.dart';
 
 const _uuid = Uuid();
 
-class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository {
-  FeedRepositoryImpl(this._api, [this._realtime, this._cache]);
+class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository, FeedFilterRepository {
+  FeedRepositoryImpl(this._api, [this._realtime, this._cache, DateTime Function()? clock])
+    : _clock = clock ?? DateTime.now;
+
+  static const _filtersMaxAge = Duration(minutes: 5);
 
   final SocialRemoteDataSource _api;
   final RealtimeGateway? _realtime;
   final FeedLocalCache? _cache;
+  final DateTime Function() _clock;
+  List<FeedFilter>? _filters;
+  DateTime? _filtersAt;
+  Future<List<FeedFilter>>? _filtersLoading;
+
+  @override
+  Future<List<FeedFilter>> getFeedFilters({bool refresh = false}) {
+    final cached = _filters;
+    final at = _filtersAt;
+    if (!refresh && cached != null && at != null && _clock().difference(at) < _filtersMaxAge) {
+      return Future.value(cached);
+    }
+    return _filtersLoading ??= _loadFilters().whenComplete(() => _filtersLoading = null);
+  }
+
+  Future<List<FeedFilter>> _loadFilters() async {
+    List<FeedFilter> filters;
+    try {
+      final rows = await _api.rpcRows('get_feed_filters', const {});
+      filters = [for (final row in rows) ?_filterFromRow(row)];
+    } on CommunityException catch (e) {
+      if (e.code != 'PGRST202') rethrow;
+      CommunityLoggers.feed.event(
+        Level.INFO,
+        'Server has no feed filter tabs yet, using the built-in tabs',
+        fields: {'code': e.code},
+      );
+      filters = [
+        for (final f in builtInFeedFilters)
+          if (f.content != FeedFilterContent.poll) f,
+      ];
+    }
+    _filters = filters;
+    _filtersAt = _clock();
+    return filters;
+  }
+
+  static FeedFilter? _filterFromRow(Map<String, dynamic> row) {
+    final key = row['key'];
+    if (key is! String || key.isEmpty) return null;
+    return FeedFilter(
+      key: key,
+      labelEn: row['label_en'] as String? ?? key,
+      labelId: row['label_id'] as String? ?? row['label_en'] as String? ?? key,
+      sort: row['sort'] == CommunityFeedSort.top.wire ? CommunityFeedSort.top : CommunityFeedSort.latest,
+      content: row['content'] as String?,
+      icon: row['icon'] as String?,
+      position: (row['position'] as num?)?.toInt() ?? 0,
+    );
+  }
+
+  FeedFilter? _knownFilter(String key) {
+    for (final f in [...?_filters, ...builtInFeedFilters]) {
+      if (f.key == key) return f;
+    }
+    return null;
+  }
 
   @override
   Future<Paged<Post>> getFeed(FeedScope scope, {String? cursor, int limit = 20}) =>
@@ -34,9 +95,11 @@ class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository {
     FeedScope scope, {
     CommunityFeedSort sort = CommunityFeedSort.latest,
     bool mediaOnly = false,
+    String? filter,
     String? cursor,
     int limit = 20,
   }) async {
+    if (filter != null) return _queryFiltered(scope, filter, cursor: cursor, limit: limit);
     List<Map<String, dynamic>> rows;
     try {
       rows = await _api.rpcRows(
@@ -57,6 +120,36 @@ class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository {
     final posts = [for (final row in rows) FeedPostModel.fromJson(row).toEntity()];
     if (cursor == null && sort == CommunityFeedSort.latest && !mediaOnly) await _cache?.saveFirstPage(scope, rows);
     return Paged(posts, nextCursor: posts.length < limit ? null : posts.last.cursor);
+  }
+
+  Future<Paged<Post>> _queryFiltered(FeedScope scope, String filter, {String? cursor, required int limit}) async {
+    try {
+      final rows = await _api.rpcRows('get_feed', {
+        ..._feedParams(scope, cursor: cursor, limit: limit),
+        'p_filter': filter,
+      });
+      final posts = [for (final row in rows) FeedPostModel.fromJson(row).toEntity()];
+      return Paged(posts, nextCursor: posts.length < limit ? null : posts.last.cursor);
+    } on CommunityException catch (e) {
+      if (e.code != 'PGRST202') rethrow;
+      final known = _knownFilter(filter);
+      final derivable = known != null && (known.content == null || known.content == FeedFilterContent.media);
+      CommunityLoggers.feed.event(
+        Level.INFO,
+        derivable
+            ? 'Server does not support feed filter tabs, deriving sort and media from the filter'
+            : 'Server does not support this feed filter, using the latest feed',
+        fields: {'scope': _scopeWire(scope), 'filter': filter, 'code': e.code},
+      );
+      if (!derivable) return queryFeed(scope, cursor: cursor?.startsWith('o:') ?? false ? null : cursor, limit: limit);
+      return queryFeed(
+        scope,
+        sort: known.sort,
+        mediaOnly: known.content == FeedFilterContent.media,
+        cursor: cursor,
+        limit: limit,
+      );
+    }
   }
 
   static Map<String, Object?> _feedParams(
@@ -184,7 +277,13 @@ class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository {
       case PostgresChangeEvent.insert:
         final row = PostRowModel.fromJson(payload.newRecord);
         if (row.deletedAt != null) return null;
-        return PostInserted(row.id, authorId: row.authorId, body: row.body, createdAt: row.createdAt);
+        return PostInserted(
+          row.id,
+          authorId: row.authorId,
+          body: row.body,
+          createdAt: row.createdAt,
+          hasMedia: row.attachments.any((a) => a is Map && a['path'] is String),
+        );
       case PostgresChangeEvent.update:
         final row = PostRowModel.fromJson(payload.newRecord);
         return PostUpdated(

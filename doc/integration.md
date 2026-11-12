@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.22.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.24.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -161,7 +161,7 @@ Semua widget adalah konten tanpa `Scaffold`, sehingga OLT tetap memegang AppBar,
 
 | Lokasi di OLT | Widget |
 |---|---|
-| Tab/menu "Stream" | `const CommunityStreamFeed()`. Komentar inline seperti Facebook/Instagram: `CommunityStreamFeed(postOpenMode: CommunityPostOpenMode.inlineComments)` (1.13.0) |
+| Tab/menu "Stream" | `const CommunityStreamFeed()`. Komentar inline seperti Facebook/Instagram: `CommunityStreamFeed(postOpenMode: CommunityPostOpenMode.inlineComments)` (1.13.0). Tombol "kembali ke atas" milik OLT: berikan `ScrollController` sendiri lewat `CommunityStreamFeed(scrollController: controller)` (1.23.0, juga di `CommunityFeedList` dan `CommunityBookmarks`), lalu panggil `controller.animateTo(0, ...)` |
 | Halaman detail saham (tab "Diskusi") | `CommunityStockFeed(stockCode: code, showHeader: false)` (header disembunyikan karena OLT sudah menampilkan info saham). Bila header dipakai, isi `stockName` dari data OLT |
 | Tombol tulis post | `showCommunityComposer(context, initialStock: code)` atau `CommunityComposePost(...)`. Sejak 1.14.0 bisa langsung ke mode tertentu: `initialSentiment: Sentiment.bullish`, `initialAction: CommunityComposerAction.image` / `.poll` / `.cashtag`, dan `hintText` |
 | Kartu "Apa pendapat Anda…" di atas feed buatan sendiri | `CommunityComposePromptCard(initialStock: code)` (1.14.0, dengan tombol Bullish/Bearish/Gambar/Polling/Saham) |
@@ -170,6 +170,8 @@ Semua widget adalah konten tanpa `Scaffold`, sehingga OLT tetap memegang AppBar,
 | Ikon menu/tab "Chat" | `CommunityChatBadge(child: Icon(Icons.chat_bubble_outline))` (jumlah chat yang punya pesan belum dibaca) |
 | Ikon lonceng | `CommunityNotificationBadge(child: Icon(Icons.notifications))` → `CommunityNotificationList()` |
 | Halaman profil sosial | `CommunityUserProfile(userId: id)` |
+| Menu "Indeks" (1.24.0, server `0150`) | `CommunityIndexList()` (daftar indeks, ketuk membuka stream) dan `CommunityIndexFeed(indexCode: code)` (stream satu indeks bergaya `CommunityStockFeed`, header dengan label Indeks, alias, Pantau, dan Diskusi). Ketukan `$KODE` indeks memanggil `onIndexTap` (fallback `onStockTap`). Daftar indeks dikelola dari Hub, jadi `stockSearch` OLT tidak perlu memuat indeks. Data mentah: `CommunityInstruments.of(context)` (`instruments`, `isIndex`, `canonical`) |
+| Tab filter Stream (1.24.0, server `0149`) | `CommunityFeedFilters.load(context)` → `List<FeedFilter>` untuk bar tab milik OLT, lalu `CommunityFeedList(scope: ..., filter: filter.key)` atau `CommunityStreamFeed(filter: key)`. Siap pakai: `CommunityStreamFeed(showFilterTabs: true)` atau `CommunityFeedFilterTabs(selected: key, onSelected: ...)`. Label: `filter.label(Localizations.localeOf(context))` |
 | Daftar pengikut / yang diikuti (1.21.0, server `0148`) | `CommunityFollowList(userId: id, initialKind: FollowListKind.following)` (`kinds: [FollowListKind.followers]` untuk hanya daftar pengikut tanpa tab, 1.22.0) atau `CommunityNavigator.openFollowList(context, user, kind)`; data mentah lewat `(profiles as FollowListRepository).followList(id, kind, cursor: ...)` → `Paged<FollowListEntry>`. Angka Pengikut/Mengikuti di profil membukanya otomatis |
 | Deep link post | `CommunityPostDetail(postId: id)` |
 | Menu "Bantuan / Chat CS" | Windows: `CommunitySupportChat(onClose: ...)` sebagai panel samping (lebar ±420). Android: `openCommunitySupport(context)` (layar penuh dengan tombol kembali) |

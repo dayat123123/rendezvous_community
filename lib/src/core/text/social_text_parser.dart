@@ -1,4 +1,10 @@
-final cashtagPattern = RegExp(r'(?<![A-Za-z0-9_$])\$([A-Za-z][A-Za-z0-9]{1,11})(?![A-Za-z0-9_])');
+final cashtagPattern = RegExp(
+  r'(?<![A-Za-z0-9_$])\$([A-Za-z][A-Za-z0-9]{0,19}(?:-[A-Za-z0-9]{1,19})*)(?![A-Za-z0-9_])',
+);
+
+final _plainCashtag = RegExp(r'^[A-Z][A-Z0-9]{1,11}$');
+
+typedef CashtagResolver = String? Function(String token);
 
 final mentionPattern = RegExp(r'(?<![A-Za-z0-9_@])@([A-Za-z0-9_]{3,30})(?![A-Za-z0-9_])');
 
@@ -23,8 +29,22 @@ const maxTagsPerPost = 10;
 
 const maxLinksPerContent = 3;
 
-List<String> extractCashtags(String text) =>
-    _distinct(cashtagPattern.allMatches(text).map((m) => m.group(1)!.toUpperCase()));
+List<String> extractCashtags(String text, {CashtagResolver? resolve}) => _distinct([
+  for (final m in cashtagPattern.allMatches(text)) ?resolveCashtagToken(m.group(1)!, resolve: resolve)?.code,
+]);
+
+({String code, int length})? resolveCashtagToken(String token, {CashtagResolver? resolve, Set<String>? known}) {
+  var candidate = token.toUpperCase();
+  while (true) {
+    final code =
+        resolve?.call(candidate) ??
+        ((known?.contains(candidate) ?? false) || _plainCashtag.hasMatch(candidate) ? candidate : null);
+    if (code != null) return (code: code, length: candidate.length);
+    final dash = candidate.lastIndexOf('-');
+    if (dash < 0) return null;
+    candidate = candidate.substring(0, dash);
+  }
+}
 
 List<String> extractMentions(String text) =>
     _distinct(mentionPattern.allMatches(text).map((m) => m.group(1)!.toLowerCase()));
@@ -111,6 +131,7 @@ class LinkSegment extends SocialTextSegment {
 List<SocialTextSegment> parseSocialText(
   String text, {
   Set<String>? validStockCodes,
+  CashtagResolver? resolveCashtag,
   bool hashtags = false,
   bool links = false,
   bool contacts = false,
@@ -147,9 +168,11 @@ List<SocialTextSegment> parseSocialText(
   }
   if (cashtags) {
     for (final m in cashtagPattern.allMatches(text)) {
-      final code = m.group(1)!.toUpperCase();
-      if (validStockCodes != null && !validStockCodes.contains(code)) continue;
-      matches.add((start: m.start, end: m.end, segment: CashtagSegment(m.group(0)!, code)));
+      final resolved = resolveCashtagToken(m.group(1)!, resolve: resolveCashtag, known: validStockCodes);
+      if (resolved == null) continue;
+      if (validStockCodes != null && !validStockCodes.contains(resolved.code)) continue;
+      final end = m.start + 1 + resolved.length;
+      matches.add((start: m.start, end: end, segment: CashtagSegment(text.substring(m.start, end), resolved.code)));
     }
   }
   if (mentions) {
@@ -188,13 +211,13 @@ class ActiveToken {
   final int end;
 }
 
-final _activeTokenPattern = RegExp(r'(?:^|[^A-Za-z0-9_$@])([$@])([A-Za-z0-9_]{0,30})$');
+final _activeTokenPattern = RegExp(r'(?:^|[^A-Za-z0-9_$@])(?:(\$)([A-Za-z0-9-]{0,24})|(@)([A-Za-z0-9_]{0,30}))$');
 
 ActiveToken? findActiveToken(String text, int cursor) {
   if (cursor < 0 || cursor > text.length) return null;
   final match = _activeTokenPattern.firstMatch(text.substring(0, cursor));
   if (match == null) return null;
-  final trigger = match.group(1)!;
-  final query = match.group(2)!;
+  final trigger = match.group(1) ?? match.group(3)!;
+  final query = match.group(2) ?? match.group(4)!;
   return ActiveToken(trigger: trigger, query: query, start: cursor - query.length - 1, end: cursor);
 }

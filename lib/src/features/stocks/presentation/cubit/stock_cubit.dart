@@ -25,6 +25,8 @@ class StockCubit extends Cubit<StockState> {
   final ChatRepository _chat;
   final String code;
 
+  String get canonicalCode => state.stock?.code ?? code;
+
   Future<void> load() async {
     try {
       final stock = await _stocks.getStock(code);
@@ -44,7 +46,7 @@ class StockCubit extends Cubit<StockState> {
       ),
     );
     try {
-      watching ? await _stocks.watch(code) : await _stocks.unwatch(code);
+      watching ? await _stocks.watch(canonicalCode) : await _stocks.unwatch(canonicalCode);
     } catch (e) {
       if (!isClosed) emit(state.copyWith(watching: !watching, stock: stock, error: e, errorId: state.errorId + 1));
     }
@@ -53,7 +55,7 @@ class StockCubit extends Cubit<StockState> {
   Future<String?> joinDiscussion() async {
     emit(state.copyWith(joining: true));
     try {
-      return await _chat.joinStockRoom(code);
+      return await _chat.joinStockRoom(canonicalCode);
     } catch (e) {
       if (!isClosed) emit(state.copyWith(error: e, errorId: state.errorId + 1));
       return null;
