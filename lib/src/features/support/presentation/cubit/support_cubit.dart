@@ -83,10 +83,22 @@ class SupportCubit extends Cubit<SupportState> {
       if (isClosed) return;
       final home = await _localized(results[0] as SupportHome);
       if (isClosed) return;
-      emit(state.copyWith(status: LoadStatus.ready, home: home, topics: results[1] as List<SupportTopic>));
+      final initialTopic = topic;
+      final unreadClosed =
+          initialTopic == null &&
+          home.roomId != null &&
+          home.unreadCount > 0 &&
+          !home.showsConversation(DateTime.now());
+      emit(
+        state.copyWith(
+          status: LoadStatus.ready,
+          home: home,
+          topics: results[1] as List<SupportTopic>,
+          history: state.history || unreadClosed,
+        ),
+      );
       _watch(home.roomId);
       unawaited(loadAttachmentPolicy());
-      final initialTopic = topic;
       if (home.active || initialTopic == null) return;
       if (state.topicByCode(initialTopic)?.hasIntake ?? false) {
         emit(state.copyWith(picking: true, intakeTopic: initialTopic));

@@ -1,3 +1,9 @@
+## 1.25.2
+
+Tidak butuh migrasi server. Migrasi server `0158` disarankan: badge CS hanya menghitung pesan yang tampil ke nasabah (tidak termasuk pesan yang disembunyikan moderasi atau dari pengirim yang diblokir).
+
+* **Badge CS tidak tertinggal di tiket tertutup:** bila tiket terakhir sudah tertutup dan `SupportHome.unreadCount` lebih dari 0, panel CS membuka percakapan, bukan pemilih topik, sehingga room ditandai dibaca dan badge hilang. Tombol "Buat tiket baru" tetap tersedia. Panel yang dibuka dengan `topic` (bantuan kontekstual) tetap langsung membuat tiket baru.
+
 ## 1.25.1
 
 Lanjutan 1.25.0. Tidak butuh migrasi server. Migrasi server `0157` opsional: perangkat lain milik pengguna ikut membuang room setelah ia keluar.

@@ -126,6 +126,59 @@ void main() {
     await cubit.close();
   });
 
+  test('a closed ticket with unread replies opens its conversation so the badge can clear', () async {
+    final closed = ticket(status: SupportStatus.closed);
+    when(
+      () => support.home(),
+    ).thenAnswer((_) async => SupportHome(roomId: 'r-cs', supportName: 'CS OLT', ticket: closed, unreadCount: 1));
+    final cubit = SupportCubit(support: support);
+
+    await cubit.load();
+
+    expect(cubit.state.history, isTrue);
+    expect(cubit.state.showsConversation(DateTime.now()), isTrue);
+
+    cubit.pickTopic();
+    expect(cubit.state.showsConversation(DateTime.now()), isFalse);
+    await cubit.close();
+  });
+
+  test('a closed ticket without unread replies shows the topic picker', () async {
+    final closed = ticket(status: SupportStatus.closed);
+    when(
+      () => support.home(),
+    ).thenAnswer((_) async => SupportHome(roomId: 'r-cs', supportName: 'CS OLT', ticket: closed));
+    final cubit = SupportCubit(support: support);
+
+    await cubit.load();
+
+    expect(cubit.state.history, isFalse);
+    expect(cubit.state.showsConversation(DateTime.now()), isFalse);
+    await cubit.close();
+  });
+
+  test('the contextual help button skips unread closed tickets and starts the new topic', () async {
+    final closed = ticket(status: SupportStatus.closed);
+    when(
+      () => support.home(),
+    ).thenAnswer((_) async => SupportHome(roomId: 'r-cs', supportName: 'CS OLT', ticket: closed, unreadCount: 2));
+    when(
+      () => support.openTicket(
+        topic: any(named: 'topic'),
+        language: any(named: 'language'),
+        screen: any(named: 'screen'),
+        complaint: any(named: 'complaint'),
+      ),
+    ).thenAnswer((_) async => ticket(status: SupportStatus.open));
+    final cubit = SupportCubit(support: support, topic: 'orders');
+
+    await cubit.load();
+
+    verify(() => support.openTicket(topic: 'orders', language: 'id')).called(1);
+    expect(cubit.state.history, isFalse);
+    await cubit.close();
+  });
+
   test('shows the sensitive data warning after a typing pause', () async {
     when(() => support.home()).thenAnswer((_) async => home(current: ticket()));
     when(
