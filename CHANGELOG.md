@@ -1,3 +1,11 @@
+## 1.27.0
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Urutan komentar di halaman detail post:** `CommunityPostDetail` kini memakai header urutan yang sama dengan komentar inline: judul "Komentar" dan pilihan "Disarankan" / "Terbaru", lewat builder `commentSort`. Urutan bawaan halaman detail berubah dari kronologis menjadi "Disarankan", sama seperti komentar inline. Builder `threadHeader` tetap bisa menggantinya. Halaman lanjutan thread (`rootCommentId`), post tanpa komentar, dan server yang belum mendukung urutan tetap memakai header lama "Komentar (n)" dengan urutan kronologis.
+* **Image viewer bisa ditutup dengan klik area gelap:** klik di luar gambar menutup viewer, seperti WhatsApp. Klik pada gambar, geser, zoom, tombol navigasi, dan toolbar tidak terpengaruh.
+* **Popup menu image viewer mengikuti tema:** posisi menu "Lainnya" dan menu reaksi tidak lagi dipaksa `PopupMenuPosition.under`, jadi mengikuti `PopupMenuThemeData.position` milik app.
+
 ## 1.26.1
 
 Tidak butuh migrasi server. Data lama di server dan tampilan tidak diubah.

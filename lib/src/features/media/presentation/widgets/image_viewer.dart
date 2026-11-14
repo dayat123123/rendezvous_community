@@ -420,15 +420,30 @@ class _DefaultImageViewerState extends State<_DefaultImageViewer> {
                           itemCount: _count,
                           physics: zoomed ? const NeverScrollableScrollPhysics() : null,
                           onPageChanged: (index) => setState(() => _index = index),
-                          itemBuilder: (context, index) => Padding(
-                            padding: EdgeInsets.fromLTRB(multiple ? 72 : 24, 8, multiple ? 72 : 24, multiple ? 60 : 24),
-                            child: InteractiveViewer(
-                              transformationController: _controller(index),
-                              maxScale: _maxScale,
-                              child: Center(
-                                child: RotatedBox(
-                                  quarterTurns: _turns[index] ?? 0,
-                                  child: d.image(d.attachments[index]),
+                          itemBuilder: (context, index) => GestureDetector(
+                            key: ValueKey('image-viewer-backdrop-$index'),
+                            behavior: HitTestBehavior.opaque,
+                            onTap: d.onClose,
+                            child: Padding(
+                              padding: EdgeInsets.fromLTRB(
+                                multiple ? 72 : 24,
+                                8,
+                                multiple ? 72 : 24,
+                                multiple ? 60 : 24,
+                              ),
+                              child: InteractiveViewer(
+                                transformationController: _controller(index),
+                                maxScale: _maxScale,
+                                child: Center(
+                                  child: GestureDetector(
+                                    key: ValueKey('image-viewer-image-$index'),
+                                    behavior: HitTestBehavior.opaque,
+                                    onTap: () {},
+                                    child: RotatedBox(
+                                      quarterTurns: _turns[index] ?? 0,
+                                      child: d.image(d.attachments[index]),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -580,7 +595,6 @@ class _MoreButton extends StatelessWidget {
     iconSize: _iconSize,
     icon: Icon(CommunityStyle.of(context).icons.moreVertical),
     color: const Color(0xFF2D2E30),
-    position: PopupMenuPosition.under,
     onSelected: (action) => action(),
     itemBuilder: (menuContext) => [
       for (final (icon, label, action) in items)
@@ -602,7 +616,6 @@ class _ReactButton extends StatelessWidget {
     iconSize: _iconSize,
     icon: Icon(CommunityStyle.of(context).icons.react, size: 17),
     color: const Color(0xFF2D2E30),
-    position: PopupMenuPosition.under,
     onSelected: onReact,
     itemBuilder: (_) => [
       PopupMenuItem<String>(

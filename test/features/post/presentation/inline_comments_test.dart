@@ -208,7 +208,9 @@ void main() {
 
     expect(find.byType(CommunityPostDetail), findsOneWidget);
     expect(find.byType(CommunityPostComments), findsNothing);
-    expect(comments.sorted, isEmpty);
+    expect(comments.sorted.map((r) => r['sort']), [CommunityCommentSort.top]);
+    expect(find.byTooltip('Urutkan komentar'), findsOneWidget);
+    expect(find.text('Disarankan'), findsOneWidget);
   });
 
   test('an older server without comment sorting falls back to oldest first and hides the sort menu', () async {

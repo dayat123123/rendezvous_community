@@ -11,7 +11,9 @@ import 'package:rendezvous_community/src/features/feed/presentation/widgets/post
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_skeletons.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_consent_flow.dart';
+import 'package:rendezvous_community/src/features/post/domain/entities/comment_sort.dart';
 import 'package:rendezvous_community/src/features/post/presentation/cubit/comment_thread_cubit.dart';
+import 'package:rendezvous_community/src/features/post/presentation/widgets/comment_sort_header.dart';
 import 'package:rendezvous_community/src/features/post/presentation/widgets/comment_tree.dart';
 import 'package:rendezvous_community/src/features/post/presentation/widgets/reply_composer.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
@@ -42,6 +44,7 @@ class CommunityPostDetail extends StatelessWidget {
           postId: postId,
           rootCommentId: rootCommentId,
           maxLevels: maxLevels,
+          sort: rootCommentId == null ? CommunityCommentSort.top : CommunityCommentSort.oldest,
           consent: communityConsentGate(context),
           bookmarks: features?.bookmarks,
           edits: features?.edits,
@@ -79,6 +82,11 @@ class _PostDetailView extends StatelessWidget {
         }
         final post = state.post!;
         final rows = buildThreadRows(state, maxLevels: maxLevels);
+        final sortable =
+            state.root == null &&
+            state.sortSupported &&
+            state.sort != CommunityCommentSort.oldest &&
+            (rows.isNotEmpty || post.commentCount > 0);
         final threadHeader = CommunityThreadHeaderDetails(
           post: post,
           commentCount: post.commentCount,
@@ -111,7 +119,9 @@ class _PostDetailView extends StatelessWidget {
             (b) => b.threadHeader,
             context,
             threadHeader,
-            EditorialSectionHeader(title: threadHeader.label, icon: Icons.forum_outlined, divider: false),
+            sortable
+                ? CommentSortHeader(state: state, onSelect: cubit.setSort)
+                : EditorialSectionHeader(title: threadHeader.label, icon: Icons.forum_outlined, divider: false),
           ),
           if (rows.isEmpty) CommunityEmptyView(message: l10n.noComments, icon: Icons.chat_bubble_outline),
         ];

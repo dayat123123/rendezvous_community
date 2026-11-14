@@ -108,6 +108,23 @@ void main() {
     expect(find.byTooltip('Unduh'), findsNothing);
   });
 
+  testWidgets('tapping the dark area around the photo closes the viewer, tapping the photo does not', (tester) async {
+    await _pump(tester, FakeChatRepository(rooms: [directRoom()], members: directMembers()));
+    final context = tester.element(find.byType(CommunityChatRoom));
+    unawaited(showCommunityImageViewer(context, images: _photos));
+    await _settle(tester);
+    expect(find.byTooltip('Unduh'), findsOneWidget);
+
+    await tester.tap(find.byKey(const ValueKey('image-viewer-image-0')));
+    await _settle(tester);
+    expect(find.byTooltip('Unduh'), findsOneWidget);
+
+    final backdrop = tester.getRect(find.byKey(const ValueKey('image-viewer-backdrop-0')));
+    await tester.tapAt(backdrop.topLeft + const Offset(8, 8));
+    await _settle(tester);
+    expect(find.byTooltip('Unduh'), findsNothing);
+  });
+
   testWidgets('download saves the original image bytes with an image file name', (tester) async {
     await _pump(tester, FakeChatRepository(rooms: [directRoom()], members: directMembers()));
     final saved = <(String, String, int)>[];
