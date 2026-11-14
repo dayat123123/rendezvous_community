@@ -5,6 +5,7 @@ import 'package:rendezvous_community/src/app/community_help_scope.dart';
 import 'package:rendezvous_community/src/app/community_image_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/community_chat_room.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/cubit/support_cubit.dart';
@@ -123,7 +124,7 @@ class _Conversation extends StatelessWidget {
     final chat = CommunitySupportScope.of(context).supportChat;
     final deps = CommunityScope.of(context);
     return CommunitySupportMessageActions(
-      onQuickReply: (option) => chat.sendMessage(roomId, body: option, clientId: _uuid.v4()),
+      onQuickReply: (option) => chat.sendMessage(roomId, body: lowercaseMentions(option), clientId: _uuid.v4()),
       canRate: state.canRate,
       onRate: (ticketId) async {
         final language = Localizations.localeOf(context).languageCode == 'en' ? 'en' : 'id';

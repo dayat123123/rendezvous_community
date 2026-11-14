@@ -6,6 +6,7 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/logging/community_logger.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/guest_support/domain/entities/guest_support.dart';
 import 'package:rendezvous_community/src/features/guest_support/domain/repositories/guest_session_store.dart';
@@ -280,7 +281,7 @@ class GuestSupportCubit extends Cubit<GuestSupportState> {
   Future<bool> send(String body) async {
     final token = state.token;
     final ticket = state.ticket;
-    final text = body.trim();
+    final text = lowercaseMentions(body.trim());
     if (token == null || ticket == null || !state.canSend || state.sending || !isGuestMessageValid(text)) {
       return false;
     }

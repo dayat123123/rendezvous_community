@@ -49,6 +49,19 @@ List<String> extractCashtags(String text, {CashtagResolver? resolve}) => _distin
 List<String> extractMentions(String text) =>
     _distinct(mentionPattern.allMatches(text).map((m) => m.group(1)!.toLowerCase()));
 
+String lowercaseMentions(String text) {
+  if (!text.contains('@')) return text;
+  final protected = [
+    for (final m in linkPattern.allMatches(text)) (start: m.start, end: m.start + trimLinkMatch(m.group(0)!).length),
+    for (final m in _wwwLinkPattern.allMatches(text)) (start: m.start, end: m.end),
+    for (final m in _emailPattern.allMatches(text)) (start: m.start, end: m.end),
+  ];
+  return text.replaceAllMapped(mentionPattern, (m) {
+    final token = m.group(0)!;
+    return protected.any((p) => m.start >= p.start && m.start < p.end) ? token : token.toLowerCase();
+  });
+}
+
 List<String> extractHashtags(String text) =>
     _distinct(_withoutLinks(text, hashtagTextPattern).map((m) => m.group(1)!.toLowerCase()));
 

@@ -1,6 +1,7 @@
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/network/realtime_gateway.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/post/data/models/thread_comment_model.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/comment_sort.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
@@ -57,7 +58,11 @@ class CommentRepositoryImpl implements CommentRepository, SortedCommentRepositor
 
   @override
   Future<ThreadComment> createComment({required String postId, String? parentId, required String body}) async {
-    final rows = await _api.rpcRows('create_comment', {'p_post_id': postId, 'p_parent_id': parentId, 'p_body': body});
+    final rows = await _api.rpcRows('create_comment', {
+      'p_post_id': postId,
+      'p_parent_id': parentId,
+      'p_body': lowercaseMentions(body),
+    });
     if (rows.isEmpty) {
       throw const CommunityException(CommunityErrorKind.unknown, message: 'create_comment returned no rows');
     }

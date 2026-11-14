@@ -264,7 +264,7 @@ class FeedCubit extends Cubit<FeedState> {
 
   Future<bool> editPost(Post post, String body) async {
     final edits = _edits;
-    final text = body.trim();
+    final text = lowercaseMentions(body.trim());
     if (edits == null || text.isEmpty) return false;
     try {
       final updated = await edits.editPost(post.id, text);

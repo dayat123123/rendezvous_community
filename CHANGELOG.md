@@ -1,3 +1,10 @@
+## 1.26.1
+
+Tidak butuh migrasi server. Data lama di server dan tampilan tidak diubah.
+
+* **Mention selalu disimpan huruf kecil:** `@HIDAYAT2` yang diketik manual kini terkirim sebagai `@hidayat2`. Normalisasi dilakukan di repository bawaan tepat sebelum memanggil server, jadi pemanggil dari luar library (misalnya `ChatExtrasRepository.sharePost(body:)` dari app) juga tercakup: buat/edit post, simpan draf, buat/balas/edit komentar, kirim/balas/edit pesan chat, bagikan post ke chat, kartu saham dengan pesan, pesan Chat CS, serta deskripsi dan pesan pengaduan tamu. Cubit bawaan juga menormalkan teks sebelum menampilkan pesan lokal, sehingga tidak ada kedipan huruf besar.
+* Fungsi publik baru `lowercaseMentions(text)`: hanya token mention yang diubah; cashtag (`$BBCA`), hashtag, URL (termasuk `@` di dalam URL), email (`CS@OLT.CO.ID`), dan teks lain tetap apa adanya. Repository milik host bisa memakainya agar perilakunya sama.
+
 ## 1.26.0
 
 Tidak butuh migrasi server. Tidak ada breaking change: field baru di `CommunityStyle` punya nilai bawaan.

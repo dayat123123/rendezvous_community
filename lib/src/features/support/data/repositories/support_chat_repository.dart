@@ -4,6 +4,7 @@ import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/network/realtime_gateway.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
 import 'package:rendezvous_community/src/core/paging/paged.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/chat/data/models/chat_models.dart';
 import 'package:rendezvous_community/src/features/chat/data/realtime/room_channel_hub.dart';
 import 'package:rendezvous_community/src/features/chat/data/realtime/room_connection.dart';
@@ -68,7 +69,7 @@ class SupportChatRepository implements ChatRepository, MessageInfoRepository {
   }) async {
     final rows = await _cs.rpcRows('send_message', {
       'p_room_id': roomId,
-      'p_body': body,
+      'p_body': lowercaseMentions(body),
       'p_client_id': clientId,
       'p_reply_to_id': replyToId,
       'p_attachments': [for (final a in attachments) AttachmentModel.fromEntity(a).toJson()],

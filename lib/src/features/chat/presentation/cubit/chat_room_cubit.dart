@@ -12,6 +12,7 @@ import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/core/network/community_connectivity.dart';
 import 'package:rendezvous_community/src/core/network/realtime_status.dart';
 import 'package:rendezvous_community/src/core/paging/paged.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/services/community_analytics.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_events.dart';
@@ -837,7 +838,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
 
   Future<bool> saveEdit(String text) async {
     final target = state.editing;
-    final body = text.trim();
+    final body = lowercaseMentions(text.trim());
     if (target == null || body.isEmpty || _savingEdit) return false;
     if (body == target.body?.trim()) {
       cancelEditing();
@@ -917,7 +918,7 @@ class ChatRoomCubit extends Cubit<ChatRoomState> {
   Future<MessageInfo> messageInfo(ChatMessage m) => (_chat as MessageInfoRepository).getMessageInfo(m.id);
 
   Future<void> send(String text, {List<Attachment> attachments = const []}) async {
-    final body = text.trim();
+    final body = lowercaseMentions(text.trim());
     final me = state.me;
     if ((body.isEmpty && attachments.isEmpty) || me == null) return;
     if (state.mutedUntil(_now()) != null) return _fail(roomMutedError);

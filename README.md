@@ -37,7 +37,7 @@ Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · mod
 | | Fitur |
 |---|---|
 | 📰 **Feed** | Stream umum (Terbaru / Mengikuti), feed per saham, hashtag, trending, sentimen bullish/bearish, polling, bookmark, link preview, edit 15 menit, bagikan post ke chat |
-| 💬 **Komentar** | Thread berantai dengan indentasi per level, "Lanjutkan thread", collapse per cabang, mention `@user` dan `$KODE` |
+| 💬 **Komentar** | Thread berantai dengan indentasi per level, "Lanjutkan thread", collapse per cabang, mention `@user` (selalu disimpan huruf kecil) dan `$KODE` |
 | 🗨️ **Chat** | DM, grup, dan room saham realtime; centang ala WhatsApp; balas, reaksi, kartu saham; indikator mengetik; lazy load per 30 pesan; isi celah otomatis setelah koneksi putus |
 | 🎧 **Chat CS** | Room CS resmi disematkan paling atas, lampiran gambar + PDF, riwayat tiket, rating |
 | ❓ **Pusat Bantuan** | FAQ dua bahasa dari Hub: kategori, pencarian, "Apakah ini membantu?", saran artikel sebelum chat CS, tetap terbuka saat offline |
@@ -79,7 +79,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.26.0          # selalu pin ke tag rilis
+      ref: v1.26.1          # selalu pin ke tag rilis
 ```
 
 - **Laptop developer:** login GitHub sekali lewat Git Credential Manager (ikut terpasang bersama Git for Windows).

@@ -106,7 +106,7 @@ class ComposeCubit extends Cubit<ComposeState> {
     _draftDirty = false;
     final draft = PostDraft(
       clientDraftId: _clientId,
-      body: _body.trim(),
+      body: lowercaseMentions(_body.trim()),
       sentiment: state.sentiment,
       stocks: extractCashtags(_body).take(10).toList(),
       attachments: state.attachments,
@@ -203,7 +203,7 @@ class ComposeCubit extends Cubit<ComposeState> {
   }
 
   Future<Post?> submit(String body) async {
-    final text = body.trim();
+    final text = lowercaseMentions(body.trim());
     if (text.isEmpty || state.busy) return null;
     final poll = state.poll;
     if (poll != null && !poll.isValid) {

@@ -2,6 +2,7 @@ import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/logging/community_logger.dart';
 import 'package:rendezvous_community/src/core/network/anonymous_rpc.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/guest_support/data/models/guest_support_models.dart';
 import 'package:rendezvous_community/src/features/guest_support/domain/entities/guest_support.dart';
@@ -40,7 +41,7 @@ class GuestSupportRepositoryImpl implements GuestSupportRepository {
         'p_name': name.trim(),
         'p_login_id': normalizeGuestLoginId(loginId),
         'p_problem': problem,
-        'p_description': description.trim(),
+        'p_description': lowercaseMentions(description.trim()),
         'p_language': _language(language),
       }),
     );
@@ -62,8 +63,9 @@ class GuestSupportRepositoryImpl implements GuestSupportRepository {
       parseGuestSnapshot(await _rpc('guest_poll', {'p_token': token}));
 
   @override
-  Future<ChatMessage> send(String token, {required String body, required String clientId}) async =>
-      parseGuestMessage(await _rpc('guest_send', {'p_token': token, 'p_body': body.trim(), 'p_client_id': clientId}));
+  Future<ChatMessage> send(String token, {required String body, required String clientId}) async => parseGuestMessage(
+    await _rpc('guest_send', {'p_token': token, 'p_body': lowercaseMentions(body.trim()), 'p_client_id': clientId}),
+  );
 
   @override
   Future<SupportTicket?> end(String token) async {

@@ -4,6 +4,7 @@ import 'package:rendezvous_community/src/core/network/realtime_gateway.dart';
 import 'package:rendezvous_community/src/core/network/shared_stream.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
 import 'package:rendezvous_community/src/core/paging/paged.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/chat/data/local/chat_local_cache.dart';
 import 'package:rendezvous_community/src/features/chat/data/models/chat_models.dart';
 import 'package:rendezvous_community/src/features/chat/data/realtime/room_channel_hub.dart';
@@ -132,7 +133,7 @@ class ChatRepositoryImpl
   }) async {
     final rows = await _api.rpcRows('send_message', {
       'p_room_id': roomId,
-      'p_body': body,
+      'p_body': lowercaseMentions(body),
       'p_client_id': clientId,
       'p_reply_to_id': replyToId,
       'p_attachments': [for (final a in attachments) AttachmentModel.fromEntity(a).toJson()],
@@ -147,7 +148,7 @@ class ChatRepositoryImpl
 
   @override
   Future<ChatMessage> editMessage(String messageId, String body) async {
-    final rows = await _api.rpcRows('edit_message', {'p_message_id': messageId, 'p_body': body});
+    final rows = await _api.rpcRows('edit_message', {'p_message_id': messageId, 'p_body': lowercaseMentions(body)});
     final edited = ChatMessageModel.fromJson(rows.first).toEntity();
     await _cache?.saveMessages(edited.roomId, [rows.first], [edited]);
     return edited;

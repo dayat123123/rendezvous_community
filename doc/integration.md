@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.26.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.26.1            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -474,6 +474,8 @@ Bila hanya tampilan yang ingin diganti, pakai builder (langkah 4) supaya logika 
 - `chat.watchRoomSignals({roomId, ...}, me: user)` memantau mengetik, tanda terima, dan presence banyak room sekaligus (untuk daftar chat buatan sendiri).
 - `polls.vote(postId, optionId)` memberi suara; data polling ada di `Post.poll`.
 - `stocks.getStock(code)` mengembalikan kode, jumlah pemantau, dan status pantau user; `stocks.watch(code)` / `unwatch(code)` mengubahnya.
+
+**Mention huruf kecil (1.26.1).** Repository bawaan mengubah semua mention di teks yang dikirim menjadi huruf kecil (`@HIDAYAT2` → `@hidayat2`) tepat sebelum memanggil server: `feed.createPost`, edit post dan komentar, simpan draf, `comments.createComment`, `chat.sendMessage` / `editMessage`, `ChatExtrasRepository.sharePost(body:)` dan `sendStockCards`, pesan Chat CS, serta `start` / `send` pengaduan tamu. OLT tidak perlu menormalkan sendiri saat memanggil method itu. Bila OLT memakai repository sendiri, panggil `lowercaseMentions(text)` sebelum mengirim; fungsi ini tidak mengubah cashtag, hashtag, URL, email, maupun teks lain. Data lama di server tidak diubah.
 
 Kontrak lengkapnya ada di `lib/src/features/<fitur>/domain/repositories/` (mis. `features/chat/domain/repositories/chat_repository.dart`).
 

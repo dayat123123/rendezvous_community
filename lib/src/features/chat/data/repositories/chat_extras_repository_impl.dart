@@ -1,6 +1,7 @@
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/network/json_values.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/chat/data/models/chat_models.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_extras.dart';
@@ -25,7 +26,7 @@ class ChatExtrasRepositoryImpl implements ChatExtrasRepository {
 
   @override
   Future<ChatMessage> sharePost(String roomId, String postId, {String? body, String? clientId}) async {
-    final text = body?.trim();
+    final text = body == null ? null : lowercaseMentions(body.trim());
     final rows = await _api.rpcRows('share_post_to_chat', {
       'p_room_id': roomId,
       'p_post_id': postId,
@@ -47,7 +48,7 @@ class ChatExtrasRepositoryImpl implements ChatExtrasRepository {
   }) async {
     final rows = await _api.rpcRows('send_message', {
       'p_room_id': roomId,
-      'p_body': body?.trim() ?? '',
+      'p_body': lowercaseMentions(body?.trim() ?? ''),
       'p_client_id': clientId,
       'p_reply_to_id': null,
       'p_attachments': [

@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/bookmarks/domain/repositories/bookmark_repository.dart';
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
@@ -224,7 +225,7 @@ class CommentThreadCubit extends Cubit<ThreadState> {
   void setReplyTo(ThreadComment? comment) => emit(state.copyWith(replyTo: comment));
 
   Future<bool> send(String body) async {
-    final text = body.trim();
+    final text = lowercaseMentions(body.trim());
     if (text.isEmpty || state.sending) return false;
     final parentId = state.replyTo?.id ?? state.root?.id;
     emit(state.copyWith(sending: true));
@@ -334,7 +335,7 @@ class CommentThreadCubit extends Cubit<ThreadState> {
 
   Future<bool> editPost(Post post, String body) async {
     final edits = _edits;
-    final text = body.trim();
+    final text = lowercaseMentions(body.trim());
     if (edits == null || text.isEmpty) return false;
     try {
       final updated = await edits.editPost(post.id, text);
@@ -348,7 +349,7 @@ class CommentThreadCubit extends Cubit<ThreadState> {
 
   Future<bool> editComment(ThreadComment comment, String body) async {
     final edits = _edits;
-    final text = body.trim();
+    final text = lowercaseMentions(body.trim());
     if (edits == null || text.isEmpty) return false;
     try {
       final updated = await edits.editComment(comment.id, text);

@@ -38,6 +38,7 @@ export 'src/core/text/social_text_parser.dart'
         extractHashtags,
         extractLinks,
         extractMentions,
+        lowercaseMentions,
         parseSocialText,
         resolveCashtagToken;
 export 'src/features/account/domain/entities/community_data_export.dart';

@@ -4,6 +4,7 @@ import 'package:rendezvous_community/src/core/logging/community_logger.dart';
 import 'package:rendezvous_community/src/core/network/realtime_gateway.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
 import 'package:rendezvous_community/src/core/paging/paged.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/feed/data/local/feed_local_cache.dart';
 import 'package:rendezvous_community/src/features/feed/data/models/feed_post_model.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
@@ -226,7 +227,7 @@ class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository, FeedFil
     String? clientId,
   }) async {
     final rows = await _api.rpcRows('create_post', {
-      'p_body': body,
+      'p_body': lowercaseMentions(body),
       'p_sentiment': sentiment?.name,
       'p_attachments': [for (final a in attachments) AttachmentModel.fromEntity(a).toJson()],
       'p_client_id': clientId ?? _uuid.v4(),

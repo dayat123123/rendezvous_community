@@ -1,6 +1,7 @@
 import 'package:rendezvous_community/src/core/network/json_values.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
 import 'package:rendezvous_community/src/core/storage/local_values.dart';
+import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/drafts/data/repositories/post_draft_json.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/repositories/post_draft_repository.dart';
@@ -26,7 +27,7 @@ class PostDraftRepositoryImpl implements PostDraftRepository {
     final json = jsonMap(
       await _api.rpcValue('save_post_draft', {
         'p_client_draft_id': draft.clientDraftId,
-        'p_body': draft.body,
+        'p_body': lowercaseMentions(draft.body),
         'p_sentiment': draft.sentiment?.name,
         'p_stocks': draft.stocks,
         'p_attachments': [for (final a in draft.attachments) AttachmentModel.fromEntity(a).toJson()],
