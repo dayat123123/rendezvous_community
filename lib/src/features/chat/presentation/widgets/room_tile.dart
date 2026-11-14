@@ -75,6 +75,7 @@ class RoomTile extends StatelessWidget {
 
 Future<void> showRoomActions(BuildContext context, CommunityRoomTileDetails room) async {
   final l10n = context.communityL10n;
+  final icons = CommunityStyle.of(context).icons;
   final carry = carryCommunityBuilders(context);
   final action = await showModalBottomSheet<VoidCallback>(
     context: context,
@@ -98,13 +99,13 @@ Future<void> showRoomActions(BuildContext context, CommunityRoomTileDetails room
       final details = CommunityRoomActionsDetails(
         room: room,
         actions: [
-          if (hide != null) entry(CommunityRoomActionKind.hide, hide, Icons.delete_outlined, l10n.hideChat),
-          if (leave != null) entry(CommunityRoomActionKind.leave, leave, Icons.logout, l10n.leaveRoom),
+          if (hide != null) entry(CommunityRoomActionKind.hide, hide, icons.delete, l10n.hideChat),
+          if (leave != null) entry(CommunityRoomActionKind.leave, leave, icons.leave, l10n.leaveRoom),
           if (deleteGroup != null)
             entry(
               CommunityRoomActionKind.deleteGroup,
               deleteGroup,
-              Icons.delete_forever_outlined,
+              icons.deleteGroup,
               l10n.deleteGroup,
               destructive: true,
             ),

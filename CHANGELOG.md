@@ -1,3 +1,12 @@
+## 1.26.0
+
+Tidak butuh migrasi server. Tidak ada breaking change: field baru di `CommunityStyle` punya nilai bawaan.
+
+* **Popup menu seragam dengan app:** semua popup menu library (menu pesan, header room, info grup, profil, post, komentar, urutan komentar, header CS, image viewer) memakai helper baru `communityMenuItem`: tinggi item `CommunityStyle.menuItemHeight` (bawaan 36, sebelumnya 48), ikon `menuIconSize` (bawaan 17) berwarna `textSecondary`, jarak ikon ke label 10, label 12 berwarna `textPrimary`. Item tanpa ikon, misalnya pilihan urutan komentar, juga setinggi `menuItemHeight`. Item yang sebelumnya hanya teks kini punya ikon.
+* **Warna bahaya:** `CommunityStyle.danger` (bawaan `#D92D20`, `CommunityStyle.fallback` memakai `colorScheme.error`) untuk ikon dan label item hapus, blokir, keluar, hapus grup, hapus foto grup, dan akhiri chat CS.
+* **Ikon aksi bisa diganti:** `CommunityStyle.icons` (`CommunityIcons`, 31 field `IconData` dengan bawaan ikon Material yang dipakai sebelumnya) dipakai menu dan tombol aksi: hover dan bottom sheet aksi pesan, sheet aksi daftar chat, info grup, image viewer, post, komentar, profil, header CS, draf, permintaan pesan, notifikasi, unduh transkrip CS, dan salin tautan. App bisa mengisinya dengan FluentIcons tanpa library bergantung ke paket ikon itu. Contoh di `doc/integration.md`.
+* Bottom sheet aksi pesan di mobile tetap memakai baris setinggi target sentuh. Hanya popup menu desktop yang setinggi 36.
+
 ## 1.25.4
 
 Butuh migrasi server `0159` agar tiket benar-benar ditutup. Dengan server lama, tampilan tetap menunjukkan status Ditutup, tetapi tiket di server masih terbuka.

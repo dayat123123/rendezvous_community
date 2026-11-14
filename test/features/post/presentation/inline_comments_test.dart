@@ -160,7 +160,7 @@ void main() {
 
     await tester.tap(find.text('Disarankan'));
     await tester.pumpAndSettle();
-    await tester.tap(find.widgetWithText(CheckedPopupMenuItem<CommunityCommentSort>, 'Terbaru'));
+    await tester.tap(find.widgetWithText(PopupMenuItem<CommunityCommentSort>, 'Terbaru'));
     await tester.pumpAndSettle();
 
     expect(comments.sorted.last['sort'], CommunityCommentSort.latest);

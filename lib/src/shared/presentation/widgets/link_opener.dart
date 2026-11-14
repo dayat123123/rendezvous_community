@@ -94,7 +94,7 @@ class _ContactDialog extends StatelessWidget {
           title: Text(d.openLabel),
           onTap: d.onOpen,
         ),
-        ListTile(leading: const Icon(Icons.copy_outlined), title: Text(d.copyLabel), onTap: d.onCopy),
+        ListTile(leading: Icon(CommunityStyle.of(context).icons.copy), title: Text(d.copyLabel), onTap: d.onCopy),
         Align(
           alignment: Alignment.centerRight,
           child: Padding(

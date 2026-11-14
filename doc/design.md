@@ -75,6 +75,10 @@ Diturunkan dari `textTheme` host (font host tetap dipakai), warna dari token tek
 | `CommunityTheme.threadIndent` | 40 | indentasi per tingkat balasan (sebelumnya 16); garis thread 1 px `threadLine` |
 | `borderWidth` | 1 | border kartu & divider |
 | `minTouchTarget` | 48 | target sentuh minimum |
+| `danger` | `#D92D20` (`fallback`: `colorScheme.error`) | ikon dan label item berbahaya di popup menu (hapus, blokir, keluar, hapus grup, akhiri chat) |
+| `menuItemHeight` | 36 | tinggi item popup menu desktop (`communityMenuItem`); bottom sheet mobile tetap ≥ `minTouchTarget` |
+| `menuIconSize` | 17 | ukuran ikon item popup menu; jarak ikon ke label 10, label 12 |
+| `icons` | `CommunityIcons()` | ikon aksi dan menu; bawaan ikon Material, isi dengan ikon aplikasi (misalnya FluentIcons) |
 
 ### Helper
 

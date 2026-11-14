@@ -94,7 +94,7 @@ class _DefaultPageHeader extends StatelessWidget {
             onPressed: d.onDownload,
             icon: d.downloading
                 ? SizedBox.square(dimension: 18, child: CircularProgressIndicator(strokeWidth: 2, color: style.accent))
-                : const Icon(Icons.download_outlined),
+                : Icon(style.icons.download),
           ),
         if (onClose != null)
           IconButton(tooltip: context.communityL10n.close, onPressed: onClose, icon: const Icon(Icons.close)),

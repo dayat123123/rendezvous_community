@@ -1,6 +1,7 @@
 import 'dart:ui' show lerpDouble;
 
 import 'package:flutter/material.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_icons.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_tokens.dart';
 
 @immutable
@@ -27,6 +28,10 @@ class CommunityStyle extends ThemeExtension<CommunityStyle> {
     this.avatarSizes = const CommunityAvatarSizes(),
     this.borderWidth = 1,
     this.minTouchTarget = 48,
+    this.danger = const Color(0xFFD92D20),
+    this.menuItemHeight = 36,
+    this.menuIconSize = 17,
+    this.icons = const CommunityIcons(),
   });
 
   factory CommunityStyle.fallback(ThemeData theme) {
@@ -59,6 +64,7 @@ class CommunityStyle extends ThemeExtension<CommunityStyle> {
       onChip: textPrimary,
       skeleton: tint(surface, dark ? 0.10 : 0.07),
       typography: CommunityTypography.fallback(theme.textTheme, primary: textPrimary, secondary: textSecondary),
+      danger: scheme.error,
     );
   }
 
@@ -93,6 +99,10 @@ class CommunityStyle extends ThemeExtension<CommunityStyle> {
   final CommunityAvatarSizes avatarSizes;
   final double borderWidth;
   final double minTouchTarget;
+  final Color danger;
+  final double menuItemHeight;
+  final double menuIconSize;
+  final CommunityIcons icons;
 
   double get sectionGap => spacing.sm;
 
@@ -152,6 +162,10 @@ class CommunityStyle extends ThemeExtension<CommunityStyle> {
     CommunityAvatarSizes? avatarSizes,
     double? borderWidth,
     double? minTouchTarget,
+    Color? danger,
+    double? menuItemHeight,
+    double? menuIconSize,
+    CommunityIcons? icons,
   }) => CommunityStyle(
     background: background ?? this.background,
     surface: surface ?? this.surface,
@@ -174,6 +188,10 @@ class CommunityStyle extends ThemeExtension<CommunityStyle> {
     avatarSizes: avatarSizes ?? this.avatarSizes,
     borderWidth: borderWidth ?? this.borderWidth,
     minTouchTarget: minTouchTarget ?? this.minTouchTarget,
+    danger: danger ?? this.danger,
+    menuItemHeight: menuItemHeight ?? this.menuItemHeight,
+    menuIconSize: menuIconSize ?? this.menuIconSize,
+    icons: icons ?? this.icons,
   );
 
   @override
@@ -202,6 +220,10 @@ class CommunityStyle extends ThemeExtension<CommunityStyle> {
       avatarSizes: avatarSizes.lerp(other.avatarSizes, t),
       borderWidth: lerpDouble(borderWidth, other.borderWidth, t)!,
       minTouchTarget: lerpDouble(minTouchTarget, other.minTouchTarget, t)!,
+      danger: c(danger, other.danger),
+      menuItemHeight: lerpDouble(menuItemHeight, other.menuItemHeight, t)!,
+      menuIconSize: lerpDouble(menuIconSize, other.menuIconSize, t)!,
+      icons: icons.lerp(other.icons, t),
     );
   }
 }

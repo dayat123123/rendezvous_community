@@ -19,6 +19,7 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_actions.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_user_name.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/moderation_notice.dart';
@@ -463,7 +464,7 @@ class _CommentTileState extends State<CommentTile> {
 
   Widget _commentMenu(CommunityCommentDetails d, CommunityLocalizations l10n, CommunityStyle style) =>
       PopupMenuButton<String>(
-        icon: Icon(Icons.more_horiz, size: 18, color: style.textSecondary),
+        icon: Icon(style.icons.more, size: 18, color: style.textSecondary),
         tooltip: '',
         onSelected: (action) => switch (action) {
           'edit' => d.onEdit?.call(),
@@ -472,11 +473,15 @@ class _CommentTileState extends State<CommentTile> {
           'block' => d.onBlock?.call(),
           _ => null,
         },
-        itemBuilder: (_) => [
-          if (d.onEdit != null) PopupMenuItem(value: 'edit', child: Text(l10n.editAction)),
-          if (d.onDelete != null) PopupMenuItem(value: 'delete', child: Text(l10n.delete)),
-          if (d.onReport != null) PopupMenuItem(value: 'report', child: Text(l10n.report)),
-          if (d.onBlock != null) PopupMenuItem(value: 'block', child: Text(l10n.block)),
+        itemBuilder: (menuContext) => [
+          if (d.onEdit != null)
+            communityMenuItem(menuContext, value: 'edit', icon: style.icons.edit, label: l10n.editAction),
+          if (d.onDelete != null)
+            communityMenuItem(menuContext, value: 'delete', icon: style.icons.delete, label: l10n.delete, danger: true),
+          if (d.onReport != null)
+            communityMenuItem(menuContext, value: 'report', icon: style.icons.report, label: l10n.report),
+          if (d.onBlock != null)
+            communityMenuItem(menuContext, value: 'block', icon: style.icons.block, label: l10n.block, danger: true),
         ],
       );
 }

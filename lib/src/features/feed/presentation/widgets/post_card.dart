@@ -21,6 +21,7 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_the
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_actions.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_user_name.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/moderation_notice.dart';
@@ -677,8 +678,9 @@ class _PostMenu extends StatelessWidget {
     final style = CommunityStyle.of(context);
     final d = details;
     final bookmarked = d.post.isBookmarked;
+    final icons = style.icons;
     return PopupMenuButton<_PostAction>(
-      icon: Icon(Icons.more_horiz, size: 20, color: style.textSecondary),
+      icon: Icon(icons.more, size: 20, color: style.textSecondary),
       onSelected: (action) => switch (action) {
         _PostAction.edit => d.onEdit?.call(),
         _PostAction.bookmark => d.onToggleBookmark?.call(),
@@ -687,39 +689,29 @@ class _PostMenu extends StatelessWidget {
         _PostAction.report => d.onReport?.call(),
         _PostAction.block => d.onBlock?.call(),
       },
-      itemBuilder: (_) => [
+      itemBuilder: (menuContext) => [
         if (d.onEdit != null)
-          PopupMenuItem(
-            value: _PostAction.edit,
-            child: ListTile(leading: const Icon(Icons.edit_outlined), title: Text(l10n.editAction)),
-          ),
+          communityMenuItem(menuContext, value: _PostAction.edit, icon: icons.edit, label: l10n.editAction),
         if (d.onToggleBookmark != null)
-          PopupMenuItem(
+          communityMenuItem(
+            menuContext,
             value: _PostAction.bookmark,
-            child: ListTile(
-              leading: Icon(bookmarked ? Icons.bookmark_remove_outlined : Icons.bookmark_add_outlined),
-              title: Text(bookmarked ? l10n.bookmarkRemove : l10n.bookmarkAdd),
-            ),
+            icon: bookmarked ? icons.unbookmark : icons.bookmark,
+            label: bookmarked ? l10n.bookmarkRemove : l10n.bookmarkAdd,
           ),
         if (d.onShare != null)
-          PopupMenuItem(
-            value: _PostAction.share,
-            child: ListTile(leading: const Icon(Icons.send_outlined), title: Text(l10n.shareToChat)),
-          ),
+          communityMenuItem(menuContext, value: _PostAction.share, icon: icons.share, label: l10n.shareToChat),
         if (d.onDelete != null)
-          PopupMenuItem(
+          communityMenuItem(
+            menuContext,
             value: _PostAction.delete,
-            child: ListTile(leading: const Icon(Icons.delete_outlined), title: Text(l10n.delete)),
+            icon: icons.delete,
+            label: l10n.delete,
+            danger: true,
           ),
         if (!d.isMine) ...[
-          PopupMenuItem(
-            value: _PostAction.report,
-            child: ListTile(leading: const Icon(Icons.flag_outlined), title: Text(l10n.report)),
-          ),
-          PopupMenuItem(
-            value: _PostAction.block,
-            child: ListTile(leading: const Icon(Icons.block), title: Text(l10n.block)),
-          ),
+          communityMenuItem(menuContext, value: _PostAction.report, icon: icons.report, label: l10n.report),
+          communityMenuItem(menuContext, value: _PostAction.block, icon: icons.block, label: l10n.block, danger: true),
         ],
       ],
     );

@@ -293,6 +293,7 @@ export 'src/shared/presentation/images/community_image_loader.dart'
 export 'src/shared/presentation/images/community_image_provider.dart' show CommunityImageProvider;
 export 'src/shared/presentation/l10n/l10n.dart' show CommunityErrorText, CommunityL10nContext, CommunityLocalizations;
 export 'src/shared/presentation/load_status.dart';
+export 'src/shared/presentation/theme/community_icons.dart';
 export 'src/shared/presentation/theme/community_style.dart';
 export 'src/shared/presentation/theme/community_theme.dart';
 export 'src/shared/presentation/theme/community_tokens.dart';
@@ -304,6 +305,7 @@ export 'src/shared/presentation/widgets/community_composer_field.dart';
 export 'src/shared/presentation/widgets/community_count_badge.dart';
 export 'src/shared/presentation/widgets/community_disclaimer.dart';
 export 'src/shared/presentation/widgets/community_divider.dart';
+export 'src/shared/presentation/widgets/community_menu.dart';
 export 'src/shared/presentation/widgets/community_network_image.dart' show CommunityNetworkImage;
 export 'src/shared/presentation/widgets/community_section_header.dart';
 export 'src/shared/presentation/widgets/community_tag.dart';

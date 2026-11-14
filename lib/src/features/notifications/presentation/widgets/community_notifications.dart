@@ -246,7 +246,7 @@ class _NotificationHeader extends StatelessWidget {
           TextButton.icon(
             style: TextButton.styleFrom(foregroundColor: style.accent, textStyle: style.typography.label),
             onPressed: details.onMarkAllRead,
-            icon: const Icon(Icons.done_all, size: 18),
+            icon: Icon(style.icons.markRead, size: 18),
             label: Text(context.communityL10n.markAllRead),
           ),
         ],

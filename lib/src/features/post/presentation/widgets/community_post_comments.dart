@@ -15,6 +15,7 @@ import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -217,9 +218,9 @@ class _DefaultCommentSort extends StatelessWidget {
             enabled: select != null,
             initialValue: d.selected,
             onSelected: select,
-            itemBuilder: (_) => [
+            itemBuilder: (menuContext) => [
               for (final (index, option) in d.options.indexed)
-                CheckedPopupMenuItem(value: option, checked: option == d.selected, child: Text(d.labels[index])),
+                communityMenuItem(menuContext, value: option, checked: option == d.selected, label: d.labels[index]),
             ],
             child: Padding(
               padding: EdgeInsets.symmetric(horizontal: spacing.xs, vertical: spacing.sm),

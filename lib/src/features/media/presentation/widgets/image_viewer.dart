@@ -18,7 +18,9 @@ import 'package:rendezvous_community/src/shared/presentation/builders/community_
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/images/community_image_loader.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
+import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_network_image.dart';
 import 'package:share_plus/share_plus.dart' show ShareParams, SharePlus, ShareResultStatus;
 
@@ -341,6 +343,7 @@ class _DefaultImageViewerState extends State<_DefaultImageViewer> {
     final onCopy = d.onCopy;
     final onReply = d.onReply;
     final onReact = d.onReact;
+    final icons = CommunityStyle.of(context).icons;
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.arrowLeft): () => _go(-1),
@@ -379,23 +382,18 @@ class _DefaultImageViewerState extends State<_DefaultImageViewer> {
                         onPressed: _scale < _maxScale - 0.01 ? () => _zoomBy(_zoomStep) : null,
                       ),
                       if (onReply != null)
-                        _BarButton(
-                          icon: Icons.reply_outlined,
-                          size: 20,
-                          tooltip: l10n.replyToMessage,
-                          onPressed: onReply,
-                        ),
+                        _BarButton(icon: icons.reply, size: 20, tooltip: l10n.replyToMessage, onPressed: onReply),
                       if (onReact != null && d.reactionChoices.isNotEmpty)
                         _ReactButton(choices: d.reactionChoices, onReact: onReact),
                       if (onCopy != null)
                         _BarButton(
-                          icon: Icons.content_copy_outlined,
+                          icon: icons.copy,
                           size: 16,
                           tooltip: l10n.imageCopy,
                           onPressed: _busy ? null : () => _run(onCopy),
                         ),
                       _BarButton(
-                        icon: Icons.file_download_outlined,
+                        icon: icons.download,
                         tooltip: l10n.imageDownload,
                         onPressed: _busy ? null : () => _run(d.onDownload),
                       ),
@@ -580,22 +578,13 @@ class _MoreButton extends StatelessWidget {
     tooltip: tooltip,
     style: _barStyle(),
     iconSize: _iconSize,
-    icon: const Icon(Icons.more_vert),
+    icon: Icon(CommunityStyle.of(context).icons.moreVertical),
     color: const Color(0xFF2D2E30),
     position: PopupMenuPosition.under,
     onSelected: (action) => action(),
-    itemBuilder: (_) => [
+    itemBuilder: (menuContext) => [
       for (final (icon, label, action) in items)
-        PopupMenuItem<VoidCallback>(
-          value: action,
-          child: Row(
-            children: [
-              Icon(icon, size: 20, color: _onSurface),
-              const SizedBox(width: 14),
-              Text(label, style: const TextStyle(color: _onSurface)),
-            ],
-          ),
-        ),
+        communityMenuItem<VoidCallback>(menuContext, value: action, icon: icon, label: label, color: _onSurface),
     ],
   );
 }
@@ -611,7 +600,7 @@ class _ReactButton extends StatelessWidget {
     tooltip: context.communityL10n.imageReact,
     style: _barStyle(),
     iconSize: _iconSize,
-    icon: const Icon(Icons.add_reaction_outlined, size: 17),
+    icon: Icon(CommunityStyle.of(context).icons.react, size: 17),
     color: const Color(0xFF2D2E30),
     position: PopupMenuPosition.under,
     onSelected: onReact,

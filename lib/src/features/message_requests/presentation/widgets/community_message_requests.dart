@@ -479,7 +479,7 @@ class _DefaultRequestActions extends StatelessWidget {
                   textStyle: style.typography.label.copyWith(fontSize: 14),
                   shape: const StadiumBorder(),
                 ),
-                icon: const Icon(Icons.block),
+                icon: Icon(style.icons.block),
                 label: Text(l10n.messageRequestBlock),
               ),
               OutlinedButton(

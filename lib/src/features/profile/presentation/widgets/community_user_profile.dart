@@ -22,6 +22,7 @@ import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_actions.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_user_name.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/social_text.dart';
@@ -243,7 +244,7 @@ class _ProfileHeader extends StatelessWidget {
             OutlinedButton.icon(
               style: style.secondaryButtonStyle(),
               onPressed: details.onEdit,
-              icon: const Icon(Icons.edit_outlined, size: 18),
+              icon: Icon(style.icons.edit, size: 18),
               label: Text(l10n.editProfile),
             )
           else if (!profile.isBlocked)
@@ -324,18 +325,22 @@ class _ProfileMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
     final blocked = details.profile.isBlocked;
     return PopupMenuButton<String>(
-      icon: Icon(Icons.more_horiz, color: CommunityStyle.of(context).textSecondary),
+      icon: Icon(style.icons.more, color: style.textSecondary),
       onSelected: (action) => switch (action) {
         'report' => details.onReport?.call(),
         'block' => details.onBlock?.call(),
         'unblock' => details.onUnblock?.call(),
         _ => null,
       },
-      itemBuilder: (_) => [
-        PopupMenuItem(value: 'report', child: Text(l10n.report)),
-        PopupMenuItem(value: blocked ? 'unblock' : 'block', child: Text(blocked ? l10n.unblock : l10n.block)),
+      itemBuilder: (menuContext) => [
+        communityMenuItem(menuContext, value: 'report', icon: style.icons.report, label: l10n.report),
+        if (blocked)
+          communityMenuItem(menuContext, value: 'unblock', icon: style.icons.unblock, label: l10n.unblock)
+        else
+          communityMenuItem(menuContext, value: 'block', icon: style.icons.block, label: l10n.block, danger: true),
       ],
     );
   }

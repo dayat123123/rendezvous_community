@@ -13,6 +13,7 @@ import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 class RoomHeader extends StatelessWidget {
@@ -138,10 +139,30 @@ class _DefaultRoomHeader extends StatelessWidget {
                 PopupMenuButton<VoidCallback>(
                   iconColor: style.textSecondary,
                   onSelected: (action) => action(),
-                  itemBuilder: (_) => [
-                    PopupMenuItem(value: onToggleMute, child: Text(d.room.muted ? l10n.unmute : l10n.mute)),
-                    if (onHide != null) PopupMenuItem(value: onHide, child: Text(l10n.hideChat)),
-                    if (onLeave != null) PopupMenuItem(value: onLeave, child: Text(l10n.leaveRoom)),
+                  icon: Icon(style.icons.moreVertical),
+                  itemBuilder: (menuContext) => [
+                    communityMenuItem(
+                      menuContext,
+                      value: onToggleMute,
+                      icon: d.room.muted ? style.icons.unmute : style.icons.mute,
+                      label: d.room.muted ? l10n.unmute : l10n.mute,
+                    ),
+                    if (onHide != null)
+                      communityMenuItem(
+                        menuContext,
+                        value: onHide,
+                        icon: style.icons.delete,
+                        label: l10n.hideChat,
+                        danger: true,
+                      ),
+                    if (onLeave != null)
+                      communityMenuItem(
+                        menuContext,
+                        value: onLeave,
+                        icon: style.icons.leave,
+                        label: l10n.leaveRoom,
+                        danger: true,
+                      ),
                   ],
                 )
               else

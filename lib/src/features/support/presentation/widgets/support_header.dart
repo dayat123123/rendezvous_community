@@ -18,6 +18,7 @@ import 'package:rendezvous_community/src/features/support/presentation/widgets/s
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 
 String supportStatusText(CommunityLocalizations l10n, SupportTicket ticket) => switch (ticket.status) {
   SupportStatus.open => [
@@ -157,12 +158,13 @@ class _DefaultSupportHeader extends StatelessWidget {
     final status = d.status;
     final statusLabel = d.statusLabel;
     final onClose = d.onClose;
-    final menu = <(VoidCallback?, String)>[
-      (d.onComplaint, l10n.supportComplaint),
-      (d.onReportFake, l10n.supportReportFake),
-      (d.onNewTicket, l10n.supportNewTicket),
-      (d.onShowTickets, l10n.supportMyTickets),
-      (d.onEndChat, l10n.supportEndChat),
+    final icons = style.icons;
+    final menu = <(VoidCallback?, IconData, String, bool)>[
+      (d.onComplaint, icons.complaint, l10n.supportComplaint, false),
+      (d.onReportFake, icons.reportFake, l10n.supportReportFake, false),
+      (d.onNewTicket, icons.newTicket, l10n.supportNewTicket, false),
+      (d.onShowTickets, icons.tickets, l10n.supportMyTickets, false),
+      (d.onEndChat, icons.endChat, l10n.supportEndChat, true),
     ];
     return Padding(
       padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.xs, spacing.md),
@@ -200,11 +202,12 @@ class _DefaultSupportHeader extends StatelessWidget {
           ),
           PopupMenuButton<VoidCallback>(
             tooltip: d.menuTooltip,
-            icon: Icon(Icons.more_horiz, color: style.textSecondary),
+            icon: Icon(icons.more, color: style.textSecondary),
             onSelected: (action) => action(),
-            itemBuilder: (context) => [
-              for (final (handler, label) in menu)
-                if (handler != null) PopupMenuItem(value: handler, child: Text(label)),
+            itemBuilder: (menuContext) => [
+              for (final (handler, icon, label, danger) in menu)
+                if (handler != null)
+                  communityMenuItem(menuContext, value: handler, icon: icon, label: label, danger: danger),
             ],
           ),
           if (onClose != null)

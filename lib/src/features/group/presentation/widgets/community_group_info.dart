@@ -20,6 +20,7 @@ import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -229,13 +230,13 @@ class _DefaultGroupInfoPage extends StatelessWidget {
         ...d.members,
         const CommunityDivider(),
         ListTile(
-          leading: Icon(Icons.logout, color: danger),
+          leading: Icon(style.icons.leave, color: danger),
           title: Text(d.leaveLabel, style: style.typography.body.copyWith(color: danger)),
           onTap: d.onLeave,
         ),
         if (onDeleteGroup != null)
           ListTile(
-            leading: Icon(Icons.delete_forever_outlined, color: danger),
+            leading: Icon(style.icons.deleteGroup, color: danger),
             title: Text(d.deleteGroupLabel, style: style.typography.body.copyWith(color: danger)),
             onTap: onDeleteGroup,
           ),
@@ -301,9 +302,21 @@ class _DefaultGroupHeader extends StatelessWidget {
             PopupMenuButton<VoidCallback>(
               tooltip: d.changePhotoLabel,
               onSelected: (action) => action(),
-              itemBuilder: (_) => [
-                PopupMenuItem(value: onChangePhoto, child: Text(d.changePhotoLabel)),
-                if (onRemovePhoto != null) PopupMenuItem(value: onRemovePhoto, child: Text(d.removePhotoLabel)),
+              itemBuilder: (menuContext) => [
+                communityMenuItem(
+                  menuContext,
+                  value: onChangePhoto,
+                  icon: style.icons.changePhoto,
+                  label: d.changePhotoLabel,
+                ),
+                if (onRemovePhoto != null)
+                  communityMenuItem(
+                    menuContext,
+                    value: onRemovePhoto,
+                    icon: style.icons.delete,
+                    label: d.removePhotoLabel,
+                    danger: true,
+                  ),
               ],
               child: Stack(
                 children: [
@@ -339,7 +352,7 @@ class _DefaultGroupHeader extends StatelessWidget {
               padding: EdgeInsets.only(top: spacing.sm),
               child: TextButton.icon(
                 onPressed: d.onEditInfo,
-                icon: const Icon(Icons.edit_outlined, size: 18),
+                icon: Icon(style.icons.edit, size: 18),
                 label: Text(d.editInfoLabel),
               ),
             ),

@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.25.4            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.26.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -152,6 +152,57 @@ MaterialApp(
   ),
 );
 ```
+
+- **Menu dan ikon aksi seperti app OLT (1.26.0):** semua popup menu library memakai `communityMenuItem` dengan tinggi item `menuItemHeight` (bawaan 36), ikon `menuIconSize` (bawaan 17) berwarna `textSecondary`, jarak ikon ke label 10, label 12 berwarna `textPrimary`. Item berbahaya (hapus, blokir, keluar, hapus grup, akhiri chat) memakai warna `danger`. Semua ikon aksi (balas, salin, ubah, info, hapus, laporkan, sembunyikan, bisukan, eskalasi, blokir, simpan, bagikan, keluar, lainnya, unduh, tandai dibaca, reaksi, dan menu CS) dibaca dari `CommunityStyle.icons`. Bawaannya ikon Material. Library tidak bergantung ke `fluentui_system_icons`, jadi OLT yang mengisi ikonnya. Bottom sheet aksi pesan di mobile tetap memakai baris setinggi target sentuh. Popup menu milik OLT bisa memakai helper yang sama: `communityMenuItem(context, value: ..., icon: ..., label: ..., danger: true)`.
+
+```dart
+import 'package:fluentui_system_icons/fluentui_system_icons.dart';
+
+ThemeData oltThemeWithCommunity(ThemeData base) => base.copyWith(
+  extensions: [
+    CommunityStyle.fallback(base).copyWith(
+      danger: oltColors.danger,
+      menuItemHeight: 36,
+      menuIconSize: 17,
+      icons: const CommunityIcons(
+        reply: FluentIcons.arrow_reply_20_regular,
+        copy: FluentIcons.copy_20_regular,
+        edit: FluentIcons.edit_20_regular,
+        info: FluentIcons.info_20_regular,
+        delete: FluentIcons.delete_20_regular,
+        deleteGroup: FluentIcons.delete_dismiss_20_regular,
+        report: FluentIcons.flag_20_regular,
+        hide: FluentIcons.eye_off_20_regular,
+        mute: FluentIcons.speaker_mute_20_regular,
+        unmute: FluentIcons.speaker_2_20_regular,
+        escalate: FluentIcons.arrow_up_20_regular,
+        block: FluentIcons.prohibited_20_regular,
+        unblock: FluentIcons.lock_open_20_regular,
+        share: FluentIcons.send_20_regular,
+        bookmark: FluentIcons.bookmark_add_20_regular,
+        unbookmark: FluentIcons.bookmark_off_20_regular,
+        pin: FluentIcons.pin_20_regular,
+        unpin: FluentIcons.pin_off_20_regular,
+        leave: FluentIcons.sign_out_20_regular,
+        more: FluentIcons.more_horizontal_20_regular,
+        moreVertical: FluentIcons.more_vertical_20_regular,
+        download: FluentIcons.arrow_download_20_regular,
+        markRead: FluentIcons.checkmark_20_regular,
+        react: FluentIcons.emoji_add_20_regular,
+        changePhoto: FluentIcons.camera_20_regular,
+        complaint: FluentIcons.gavel_20_regular,
+        reportFake: FluentIcons.shield_error_20_regular,
+        newTicket: FluentIcons.chat_add_20_regular,
+        tickets: FluentIcons.receipt_20_regular,
+        endChat: FluentIcons.sign_out_20_regular,
+        check: FluentIcons.checkmark_20_regular,
+      ),
+    ),
+  ],
+);
+```
+
+Field `CommunityIcons` yang tidak diisi tetap memakai ikon Material bawaan. Bila OLT sudah memasang `CommunityStyle` sendiri, tambahkan `danger`, `menuItemHeight`, `menuIconSize`, dan `icons` ke `copyWith` style itu.
 
 - **Cache gambar (1.4.0):** gambar diunduh sekali, didekode seukuran tampilan, dan disimpan di disk per user (bawaan 200 MB, 30 hari). Atur lewat `RendezvousCommunity.initialize(imageCache: CommunityImageCacheConfig(maxBytes: ..., maxAge: ...))`; `CommunityImageCacheConfig.disabled()` mematikan cache disk. Cache ikut terhapus bersama cache offline saat `signOut()`, `deleteMyAccount()`, `clearLocalCache()`, dan ganti user. Lampiran chat CS tidak pernah disimpan ke disk.
 

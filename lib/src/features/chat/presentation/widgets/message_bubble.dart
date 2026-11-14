@@ -39,6 +39,7 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/moderation_notice.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/social_text.dart';
@@ -197,6 +198,7 @@ class _MessageBubbleState extends State<MessageBubble> {
 
   Future<void> _showActions(BuildContext context, CommunityMessageDetails details) async {
     final l10n = context.communityL10n;
+    final icons = CommunityStyle.of(context).icons;
     final onReact = details.onReact;
     final carry = carryCommunityBuilders(context);
     final mutedUntil = details.senderMutedUntil;
@@ -210,20 +212,20 @@ class _MessageBubbleState extends State<MessageBubble> {
           message: details,
           actions: [
             for (final (handler, icon, label) in [
-              (details.onReply, Icons.reply_outlined, l10n.replyToMessage),
-              (details.onCopy, Icons.copy_outlined, l10n.copyMessage),
-              (details.onEdit, Icons.edit_outlined, l10n.editAction),
-              (details.onInfo, Icons.info_outlined, l10n.messageInfo),
-              (details.onDelete, Icons.delete_outlined, l10n.delete),
-              (details.onReport, Icons.flag_outlined, l10n.report),
+              (details.onReply, icons.reply, l10n.replyToMessage),
+              (details.onCopy, icons.copy, l10n.copyMessage),
+              (details.onEdit, icons.edit, l10n.editAction),
+              (details.onInfo, icons.info, l10n.messageInfo),
+              (details.onDelete, icons.delete, l10n.delete),
+              (details.onReport, icons.report, l10n.report),
             ])
               if (handler != null) entry(handler, icon, label),
           ],
           moderationActions: [
             for (final (handler, icon, label) in [
-              (details.onHide, Icons.visibility_off_outlined, l10n.roomModHide),
-              (details.onMuteSender, Icons.volume_off_outlined, l10n.roomModMute),
-              (details.onEscalate, Icons.outlined_flag, l10n.roomModEscalate),
+              (details.onHide, icons.hide, l10n.roomModHide),
+              (details.onMuteSender, icons.mute, l10n.roomModMute),
+              (details.onEscalate, icons.escalate, l10n.roomModEscalate),
             ])
               if (handler != null) entry(handler, icon, label),
           ],
@@ -615,16 +617,17 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
     }
 
     const actionSize = BoxConstraints.tightFor(width: _actionSize, height: _actionSize);
+    final icons = style.icons;
     final menu = [
-      for (final (handler, icon, label) in [
-        (d.onReply, Icons.reply_outlined, l10n.replyToMessage),
-        (d.onCopy, Icons.copy_outlined, l10n.copyMessage),
-        (d.onEdit, Icons.edit_outlined, l10n.editAction),
-        (d.onInfo, Icons.info_outlined, l10n.messageInfo),
-        (d.onReport, Icons.flag_outlined, l10n.report),
-        (d.onDelete, Icons.delete_outlined, l10n.delete),
+      for (final (handler, icon, label, danger) in [
+        (d.onReply, icons.reply, l10n.replyToMessage, false),
+        (d.onCopy, icons.copy, l10n.copyMessage, false),
+        (d.onEdit, icons.edit, l10n.editAction, false),
+        (d.onInfo, icons.info, l10n.messageInfo, false),
+        (d.onReport, icons.report, l10n.report, false),
+        (d.onDelete, icons.delete, l10n.delete, true),
       ])
-        if (handler != null) (handler, icon, label),
+        if (handler != null) (handler, icon, label, danger),
     ];
     final hasActions = menu.isNotEmpty || d.onReact != null;
     final actions = SizedBox(
@@ -650,7 +653,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
                         fixedSize: const Size.square(_actionSize),
                       ),
                       iconColor: style.textSecondary,
-                      icon: const Icon(Icons.add_reaction_outlined),
+                      icon: Icon(icons.react),
                       onSelected: d.onReact,
                       itemBuilder: (_) => [
                         _ReactionMenuEntry(choices: d.reactionChoices, selected: myReaction(d.reactions)),
@@ -664,7 +667,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
                       iconSize: 18,
                       color: style.textSecondary,
                       onPressed: d.onReply,
-                      icon: const Icon(Icons.reply_outlined),
+                      icon: Icon(icons.reply),
                     ),
                   if (menu.isNotEmpty)
                     PopupMenuButton<VoidCallback>(
@@ -677,19 +680,16 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
                         fixedSize: const Size.square(_actionSize),
                       ),
                       iconColor: style.textSecondary,
-                      icon: const Icon(Icons.more_vert),
+                      icon: Icon(icons.moreVertical),
                       onSelected: (handler) => handler(),
-                      itemBuilder: (_) => [
-                        for (final (handler, icon, label) in menu)
-                          PopupMenuItem<VoidCallback>(
+                      itemBuilder: (menuContext) => [
+                        for (final (handler, icon, label, danger) in menu)
+                          communityMenuItem<VoidCallback>(
+                            menuContext,
                             value: handler,
-                            child: Row(
-                              children: [
-                                Icon(icon, size: 18, color: style.textSecondary),
-                                SizedBox(width: spacing.md),
-                                Text(label, style: style.typography.body),
-                              ],
-                            ),
+                            icon: icon,
+                            label: label,
+                            danger: danger,
                           ),
                       ],
                     ),

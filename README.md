@@ -79,7 +79,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.25.4          # selalu pin ke tag rilis
+      ref: v1.26.0          # selalu pin ke tag rilis
 ```
 
 - **Laptop developer:** login GitHub sekali lewat Git Credential Manager (ikut terpasang bersama Git for Windows).
@@ -175,6 +175,8 @@ MaterialApp(
 ```
 
 Setiap builder menerima `details` (data siap tampil + handler yang sudah tersambung) dan `fallback` (tampilan bawaan). Daftar lengkap builder, tema `CommunityTheme`, dan cache gambar ada di [doc/customization.md](doc/customization.md).
+
+Ikon aksi dan menu (balas, salin, hapus, laporkan, blokir, lainnya, dan lainnya) diambil dari `CommunityStyle.icons` (`CommunityIcons`), dengan tinggi item popup menu `menuItemHeight` (bawaan 36) dan warna item berbahaya `danger`. Isi dengan ikon milik aplikasi, misalnya FluentIcons, lewat `CommunityStyle.fallback(theme).copyWith(icons: const CommunityIcons(delete: FluentIcons.delete_20_regular))`. Contoh lengkap ada di [doc/integration.md](doc/integration.md#4-lokalisasi--tema).
 
 ## Hal penting untuk host
 
