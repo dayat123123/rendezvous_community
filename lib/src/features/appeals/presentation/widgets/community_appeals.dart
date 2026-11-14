@@ -269,7 +269,7 @@ class _AppealsView extends StatelessWidget {
                                 details: CommunityAppealTileDetails(
                                   kind: CommunityAppealTileKind.moderatedContent,
                                   icon: item.state == ModeratedState.removed
-                                      ? Icons.delete_outline
+                                      ? Icons.delete_outlined
                                       : Icons.visibility_off_outlined,
                                   color: scheme.error,
                                   title:

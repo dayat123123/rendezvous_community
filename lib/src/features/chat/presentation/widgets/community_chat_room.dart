@@ -124,7 +124,7 @@ class _ChatRoomView extends StatelessWidget {
               child: CommunityEmptyView(
                 message: closedMessage(context, state),
                 icon: switch (state.closed) {
-                  RoomRemovalReason.hidden => Icons.delete_outline,
+                  RoomRemovalReason.hidden => Icons.delete_outlined,
                   RoomRemovalReason.left => Icons.logout,
                   _ => Icons.group_off_outlined,
                 },

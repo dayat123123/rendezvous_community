@@ -79,7 +79,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.25.2          # selalu pin ke tag rilis
+      ref: v1.25.3          # selalu pin ke tag rilis
 ```
 
 - **Laptop developer:** login GitHub sekali lewat Git Credential Manager (ikut terpasang bersama Git for Windows).

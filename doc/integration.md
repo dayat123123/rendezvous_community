@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.25.2            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.25.3            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```

@@ -709,7 +709,7 @@ class _PostMenu extends StatelessWidget {
         if (d.onDelete != null)
           PopupMenuItem(
             value: _PostAction.delete,
-            child: ListTile(leading: const Icon(Icons.delete_outline), title: Text(l10n.delete)),
+            child: ListTile(leading: const Icon(Icons.delete_outlined), title: Text(l10n.delete)),
           ),
         if (!d.isMine) ...[
           PopupMenuItem(

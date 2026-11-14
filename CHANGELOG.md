@@ -1,3 +1,10 @@
+## 1.25.3
+
+Tidak butuh migrasi server.
+
+* **Ikon menu pesan seragam:** menu aksi pesan (menu hover desktop dan bottom sheet) kini memakai satu keluarga ikon Material Outlined: `reply_outlined`, `copy_outlined`, `edit_outlined`, `info_outlined`, `delete_outlined`, `flag_outlined`. Sebelumnya ikon Hapus dan Info memakai set lama (`delete_outline`, `info_outline`) yang bentuk dan tebal garisnya berbeda.
+* **Ikon hapus sama di semua tempat:** `Icons.delete_outline` diganti `Icons.delete_outlined` di menu post, draf, daftar chat (sembunyikan chat), banding, dan banner room tertutup.
+
 ## 1.25.2
 
 Tidak butuh migrasi server. Migrasi server `0158` disarankan: badge CS hanya menghitung pesan yang tampil ke nasabah (tidak termasuk pesan yang disembunyikan moderasi atau dari pengirim yang diblokir).

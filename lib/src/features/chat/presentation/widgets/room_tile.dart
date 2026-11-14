@@ -98,7 +98,7 @@ Future<void> showRoomActions(BuildContext context, CommunityRoomTileDetails room
       final details = CommunityRoomActionsDetails(
         room: room,
         actions: [
-          if (hide != null) entry(CommunityRoomActionKind.hide, hide, Icons.delete_outline, l10n.hideChat),
+          if (hide != null) entry(CommunityRoomActionKind.hide, hide, Icons.delete_outlined, l10n.hideChat),
           if (leave != null) entry(CommunityRoomActionKind.leave, leave, Icons.logout, l10n.leaveRoom),
           if (deleteGroup != null)
             entry(

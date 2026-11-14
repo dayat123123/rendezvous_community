@@ -145,7 +145,7 @@ class _DefaultDraftTile extends StatelessWidget {
               tooltip: details.deleteLabel,
               color: style.textSecondary,
               onPressed: details.onDelete,
-              icon: const Icon(Icons.delete_outline),
+              icon: const Icon(Icons.delete_outlined),
             ),
           ],
         ),

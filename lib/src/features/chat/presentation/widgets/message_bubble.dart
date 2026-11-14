@@ -210,11 +210,11 @@ class _MessageBubbleState extends State<MessageBubble> {
           message: details,
           actions: [
             for (final (handler, icon, label) in [
-              (details.onReply, Icons.reply, l10n.replyToMessage),
+              (details.onReply, Icons.reply_outlined, l10n.replyToMessage),
               (details.onCopy, Icons.copy_outlined, l10n.copyMessage),
               (details.onEdit, Icons.edit_outlined, l10n.editAction),
-              (details.onInfo, Icons.info_outline, l10n.messageInfo),
-              (details.onDelete, Icons.delete_outline, l10n.delete),
+              (details.onInfo, Icons.info_outlined, l10n.messageInfo),
+              (details.onDelete, Icons.delete_outlined, l10n.delete),
               (details.onReport, Icons.flag_outlined, l10n.report),
             ])
               if (handler != null) entry(handler, icon, label),
@@ -617,12 +617,12 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
     const actionSize = BoxConstraints.tightFor(width: _actionSize, height: _actionSize);
     final menu = [
       for (final (handler, icon, label) in [
-        (d.onReply, Icons.reply, l10n.replyToMessage),
+        (d.onReply, Icons.reply_outlined, l10n.replyToMessage),
         (d.onCopy, Icons.copy_outlined, l10n.copyMessage),
         (d.onEdit, Icons.edit_outlined, l10n.editAction),
-        (d.onInfo, Icons.info_outline, l10n.messageInfo),
+        (d.onInfo, Icons.info_outlined, l10n.messageInfo),
         (d.onReport, Icons.flag_outlined, l10n.report),
-        (d.onDelete, Icons.delete_outline, l10n.delete),
+        (d.onDelete, Icons.delete_outlined, l10n.delete),
       ])
         if (handler != null) (handler, icon, label),
     ];
@@ -664,7 +664,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
                       iconSize: 18,
                       color: style.textSecondary,
                       onPressed: d.onReply,
-                      icon: const Icon(Icons.reply),
+                      icon: const Icon(Icons.reply_outlined),
                     ),
                   if (menu.isNotEmpty)
                     PopupMenuButton<VoidCallback>(
