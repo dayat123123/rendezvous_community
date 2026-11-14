@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/features/guest_support/data/models/gues
 import 'package:rendezvous_community/src/features/guest_support/domain/entities/guest_support.dart';
 import 'package:rendezvous_community/src/features/guest_support/domain/repositories/guest_support_repository.dart';
 import 'package:rendezvous_community/src/features/guest_support/domain/services/guest_support_form.dart';
+import 'package:rendezvous_community/src/features/support/domain/entities/support_ticket.dart';
 
 class GuestSupportRepositoryImpl implements GuestSupportRepository {
   GuestSupportRepositoryImpl(this._rpc);
@@ -65,8 +66,13 @@ class GuestSupportRepositoryImpl implements GuestSupportRepository {
       parseGuestMessage(await _rpc('guest_send', {'p_token': token, 'p_body': body.trim(), 'p_client_id': clientId}));
 
   @override
-  Future<void> end(String token) async {
-    await _rpc('guest_end', {'p_token': token});
-    CommunityLoggers.support.info('Guest support session ended by the customer');
+  Future<SupportTicket?> end(String token) async {
+    final ticket = parseGuestEnd(await _rpc('guest_end', {'p_token': token}));
+    CommunityLoggers.support.event(
+      Level.INFO,
+      'Guest support session ended by the customer',
+      fields: {'ticketId': ticket?.id, 'status': ticket?.status.name},
+    );
+    return ticket;
   }
 }

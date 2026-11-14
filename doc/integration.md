@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.25.3            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.25.4            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -391,6 +391,8 @@ CommunityGuestSupportClient.anonymous(supabaseUrl: ..., anonKey: ..., sessions: 
 ```
 
 Token adalah kunci akses ke percakapan itu, jadi simpan di penyimpanan aman (Keychain/Keystore), bukan preferensi biasa. Library menghapusnya sendiri saat pengaduan selesai, ditutup, diakhiri, atau kedaluwarsa, dan token yang sudah lewat `expires_at` tidak dipakai lagi.
+
+Saat tamu menekan **Akhiri pengaduan**, tiketnya ikut ditutup di server (butuh server migrasi `0159`, library 1.25.4): tiket keluar dari antrean CS, dan header menampilkan status Ditutup. Bila OLT memakai `GuestSupportRepository` sendiri, `end(token)` kini mengembalikan `Future<SupportTicket?>` (tiket terbaru dari `guest_end`, atau `null`).
 
 Perilaku lengkap (validasi, polling, galat) ada di [features.md](features.md#pengaduan-tamu-sebelum-login-server-migrasi-0140); builder `guestForm`, `guestSecurityNote`, dan `guestHeader` di [customization.md](customization.md#pengaduan-tamu).
 

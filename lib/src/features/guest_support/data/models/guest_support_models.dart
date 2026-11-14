@@ -50,6 +50,11 @@ GuestSupportSession parseGuestSession(Object? raw) {
   );
 }
 
+SupportTicket? parseGuestEnd(Object? raw) => switch (raw) {
+  {'ticket': final Map<String, dynamic> ticket} => parseGuestTicket(ticket),
+  _ => null,
+};
+
 ChatMessage parseGuestMessage(Object? raw) => ChatMessageModel.fromJson(_object(raw, 'message')).toEntity();
 
 GuestSupportSnapshot parseGuestSnapshot(Object? raw) {

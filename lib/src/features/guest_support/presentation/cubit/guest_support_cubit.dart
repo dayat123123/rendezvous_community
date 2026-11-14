@@ -361,8 +361,9 @@ class GuestSupportCubit extends Cubit<GuestSupportState> {
     if (token == null || state.ending) return;
     _timer?.cancel();
     emit(state.copyWith(ending: true));
+    SupportTicket? ended;
     try {
-      await _repository.end(token.token);
+      ended = await _repository.end(token.token);
     } catch (e) {
       if (isClosed) return;
       if (guestSupportErrorOf(e) != GuestSupportError.sessionExpired) {
@@ -377,6 +378,7 @@ class GuestSupportCubit extends Cubit<GuestSupportState> {
       state.copyWith(
         phase: GuestSupportPhase.ended,
         token: null,
+        ticket: ended ?? state.ticket?.copyWith(status: SupportStatus.closed),
         ending: false,
         reconnecting: false,
         endReason: GuestSupportEndReason.ended,

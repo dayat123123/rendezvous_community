@@ -1,3 +1,10 @@
+## 1.25.4
+
+Butuh migrasi server `0159` agar tiket benar-benar ditutup. Dengan server lama, tampilan tetap menunjukkan status Ditutup, tetapi tiket di server masih terbuka.
+
+* **Mengakhiri pengaduan tamu menutup tiket:** setelah tamu menekan "Akhiri pengaduan", header menampilkan status Ditutup, bukan lagi status antrean. Server `0159` menutup tiket seperti nasabah yang menutup tiketnya sendiri: tiket keluar dari antrean CS, CS yang memegangnya dilepas, dan pesan sistem "tiket ditutup" muncul.
+* **Breaking untuk repository tamu milik host:** `GuestSupportRepository.end(token)` kini mengembalikan `Future<SupportTicket?>`, yaitu tiket terbaru dari server, atau `null` bila server belum mengirimnya. Bila hasilnya `null`, `GuestSupportCubit` menandai tiket yang sedang tampil sebagai `closed`. Hal yang sama berlaku bila sesi ternyata sudah kedaluwarsa saat diakhiri.
+
 ## 1.25.3
 
 Tidak butuh migrasi server.

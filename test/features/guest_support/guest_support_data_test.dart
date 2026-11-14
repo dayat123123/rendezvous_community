@@ -177,6 +177,7 @@ void main() {
             'messages': [_messageJson('m1', 'customer', 'Lupa PIN'), _messageJson('m22', 'agent', 'Halo Pak Budi')],
           },
           'guest_send' => _messageJson('m333', 'customer', 'Terima kasih'),
+          'guest_end' => {'ticket': _ticketJson(status: 'closed')},
           _ => null,
         };
       });
@@ -205,7 +206,8 @@ void main() {
       final sent = await repo.send(session.token.token, body: ' Terima kasih ', clientId: 'c-1');
       expect(sent.body, 'Terima kasih');
 
-      await repo.end(session.token.token);
+      final ended = await repo.end(session.token.token);
+      expect(ended?.status, SupportStatus.closed);
 
       expect(calls.map((c) => c.$1), ['guest_config', 'guest_start', 'guest_poll', 'guest_send', 'guest_end']);
       expect(calls[0].$2, {'p_language': 'en'});
@@ -229,6 +231,17 @@ void main() {
             throw const CommunityException(CommunityErrorKind.unknown, code: 'PGRST202', message: 'not found'),
       );
       expect((await repo.config()).enabled, isFalse);
+    });
+
+    test('guest_end from an older server returns no ticket', () async {
+      expect(
+        await GuestSupportRepositoryImpl((fn, params) async => null).end('tok-abcdefghijklmnopqrstuvwxyz'),
+        isNull,
+      );
+      expect(
+        await GuestSupportRepositoryImpl((fn, params) async => {'ticket': null}).end('tok-abcdefghijklmnopqrstuvwxyz'),
+        isNull,
+      );
     });
 
     test('a start response without a token is rejected', () async {

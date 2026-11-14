@@ -184,10 +184,11 @@ void main() {
     await _leave(tester);
   });
 
-  testWidgets('ending asks for confirmation and calls guest_end', (tester) async {
+  testWidgets('ending asks for confirmation, calls guest_end and shows the ticket as closed', (tester) async {
     final repo = FakeGuestSupportRepository();
     await _pump(tester, repo);
     await _startChat(tester, repo);
+    expect(find.textContaining('2 tiket di depan Anda'), findsOneWidget);
 
     await tester.tap(find.byKey(const ValueKey('guest-end')));
     await tester.pumpAndSettle();
@@ -196,6 +197,8 @@ void main() {
     await tester.pump();
     expect(repo.endCalls, 1);
     expect(find.text('Anda sudah mengakhiri pengaduan #CS-20261109-0042.'), findsOneWidget);
+    expect(find.text('Ditutup'), findsOneWidget);
+    expect(find.textContaining('2 tiket di depan Anda'), findsNothing);
     await _leave(tester);
   });
 

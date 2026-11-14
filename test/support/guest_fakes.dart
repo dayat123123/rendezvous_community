@@ -132,11 +132,14 @@ class FakeGuestSupportRepository implements GuestSupportRepository {
     return message;
   }
 
+  SupportTicket? endTicket;
+
   @override
-  Future<void> end(String token) async {
+  Future<SupportTicket?> end(String token) async {
     endCalls++;
     final error = endError;
     if (error != null) throw error;
+    return endTicket;
   }
 
   void agentReply(String body, {int minute = 5}) {

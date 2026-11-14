@@ -185,6 +185,49 @@ void main() {
     expect(store.token, isNull);
   });
 
+  test('end shows the closed ticket returned by the server', () async {
+    final repo = FakeGuestSupportRepository()..endTicket = guestTicket(status: SupportStatus.closed);
+    final cubit = await _started(repo, MemoryGuestSessionStore());
+    addTearDown(cubit.close);
+    expect(cubit.state.ticket?.status, SupportStatus.open);
+    await cubit.end();
+    expect(cubit.state.phase, GuestSupportPhase.ended);
+    expect(cubit.state.ticket?.status, SupportStatus.closed);
+  });
+
+  test('end without a ticket from an older server still marks the ticket closed', () async {
+    final repo = FakeGuestSupportRepository();
+    final cubit = await _started(repo, MemoryGuestSessionStore());
+    addTearDown(cubit.close);
+    await cubit.end();
+    expect(cubit.state.ticket?.status, SupportStatus.closed);
+    expect(cubit.state.ticket?.id, 'gt-1');
+  });
+
+  test('end on an expired session also marks the ticket closed', () async {
+    final repo = FakeGuestSupportRepository();
+    final cubit = await _started(repo, MemoryGuestSessionStore());
+    addTearDown(cubit.close);
+    repo.endError = _expired;
+    await cubit.end();
+    expect(cubit.state.phase, GuestSupportPhase.ended);
+    expect(cubit.state.ticket?.status, SupportStatus.closed);
+  });
+
+  test('a failed end keeps the chat and the ticket status', () async {
+    final repo = FakeGuestSupportRepository();
+    final store = RecordingGuestSessionStore();
+    final cubit = await _started(repo, store);
+    addTearDown(cubit.close);
+    repo.endError = _network;
+    await cubit.end();
+    expect(cubit.state.phase, GuestSupportPhase.chat);
+    expect(cubit.state.ticket?.status, SupportStatus.open);
+    expect(cubit.state.ending, isFalse);
+    expect(cubit.state.actionErrorId, 1);
+    expect(store.token, isNotNull);
+  });
+
   test('a saved token resumes the chat, an expired one falls back to the form', () async {
     final repo = FakeGuestSupportRepository()..agentReply('Sudah kami kirim ke email terdaftar');
     final saved = GuestSupportToken(
