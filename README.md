@@ -6,7 +6,7 @@
 
 Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · moderasi
 
-![Versi](https://img.shields.io/badge/versi-1.7.0-0f766e)
+![Versi](https://img.shields.io/badge/versi-1.28.0-0f766e)
 ![Flutter](https://img.shields.io/badge/Flutter-%E2%89%A5%203.44-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-%E2%89%A5%203.12-0175C2?logo=dart&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android-555)
@@ -41,6 +41,7 @@ Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · mod
 | 🗨️ **Chat** | DM, grup, dan room saham realtime; centang ala WhatsApp; balas, reaksi, kartu saham; indikator mengetik; lazy load per 30 pesan; isi celah otomatis setelah koneksi putus |
 | 🎧 **Chat CS** | Room CS resmi disematkan paling atas, lampiran gambar + PDF, riwayat tiket, rating |
 | ❓ **Pusat Bantuan** | FAQ dua bahasa dari Hub: kategori, pencarian, "Apakah ini membantu?", saran artikel sebelum chat CS, tetap terbuka saat offline |
+| 📈 **Berbagi Trade** | Trader yang disetujui Kepatuhan membagikan order yang sudah match; pelanggan menerima notifikasi (hanya informasi, tanpa order otomatis). UI tersembunyi otomatis bila fitur dimatikan dari Hub |
 | 🔔 **Notifikasi** | Kotak notifikasi + badge, push komunitas dan push transaksi OLT, preferensi per jenis dan jam tenang |
 | 🛡️ **Keamanan & moderasi** | Konten ditahan/disembunyikan dengan banding, permintaan DM dari orang asing, slow mode room saham, persetujuan dokumen hukum |
 | 📴 **Offline** | Cache lokal per user (feed, daftar chat, pesan) dan outbox pesan teks yang dikirim ulang otomatis |
@@ -63,6 +64,7 @@ Rincian perilaku setiap fitur ada di [doc/features.md](doc/features.md).
 
 | Package | Server minimal | Catatan |
 |---|---|---|
+| **1.28.x** | migrasi `0164` | Berbagi Trade. Di server lama UI fitur ini tidak tampil (status gagal dimuat dianggap mati) |
 | **1.6.x** | migrasi `0107` | Ringkasan mengetik di room besar, presence hanya DM, pratinjau room saham live. Di server lama otomatis kembali ke perilaku 1.5 |
 | **1.5.x** | migrasi `0098` | Pesan realtime lewat Broadcast. **Wajib** untuk server dengan `0098`: klien 1.4.x tidak lagi menerima pesan realtime |
 | 1.2 – 1.4 | — | Butuh layanan `media` untuk unggahan |
@@ -79,7 +81,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.27.0          # selalu pin ke tag rilis
+      ref: v1.28.0          # selalu pin ke tag rilis
 ```
 
 - **Laptop developer:** login GitHub sekali lewat Git Credential Manager (ikut terpasang bersama Git for Windows).
@@ -145,6 +147,8 @@ Semua widget berupa konten tanpa `Scaffold`, jadi AppBar, navigasi, dan layout t
 | Bantuan / Chat CS | Windows: `CommunitySupportChat(onClose: ...)` sebagai panel samping ±420 px. Android: `openCommunitySupport(context)` |
 | Ikon "Bantuan" | `CommunitySupportBadge(child: Icon(Icons.support_agent_outlined))` |
 | Menu "Pusat Bantuan" | `openCommunityHelpCenter(context)` (atau `CommunityHelpCenter(onContactSupport: ...)` di panel host) |
+| Pengaturan → Berbagi aktivitas trade | `CommunityTradeShareGate(child: ...)` → `openCommunityTradeShare(context)` |
+| Menu "Langganan trade" | `CommunityTradeShareGate(child: ...)` → `openCommunityTradeSubscriptions(context)` (lonceng di profil trader sudah otomatis) |
 | Pengaturan → Privasi & akun komunitas | `openCommunityAccountSettings(context, onAccountDeleted: ...)` |
 | Profil sosial / deep link post | `CommunityUserProfile(userId: id)` / `CommunityPostDetail(postId: id)` |
 | Pencarian, trending, bookmark | `CommunitySearch()`, `CommunityTrending()`, `CommunityBookmarks()` |
@@ -174,13 +178,14 @@ MaterialApp(
 );
 ```
 
-Setiap builder menerima `details` (data siap tampil + handler yang sudah tersambung) dan `fallback` (tampilan bawaan). Daftar lengkap builder, tema `CommunityTheme`, dan cache gambar ada di [doc/customization.md](doc/customization.md).
+Setiap builder menerima `details` (data siap tampil + handler yang sudah tersambung) dan `fallback` (tampilan bawaan). Sejak 1.28.0 ada set `tradeShare` untuk lonceng trade di profil, kartu aktivitas trade, baris langganan/pelanggan, dan halaman pengajuan. Daftar lengkap builder, tema `CommunityTheme`, dan cache gambar ada di [doc/customization.md](doc/customization.md).
 
 Ikon aksi dan menu (balas, salin, hapus, laporkan, blokir, lainnya, dan lainnya) diambil dari `CommunityStyle.icons` (`CommunityIcons`), dengan tinggi item popup menu `menuItemHeight` (bawaan 36) dan warna item berbahaya `danger`. Isi dengan ikon milik aplikasi, misalnya FluentIcons, lewat `CommunityStyle.fallback(theme).copyWith(icons: const CommunityIcons(delete: FluentIcons.delete_20_regular))`. Contoh lengkap ada di [doc/integration.md](doc/integration.md#4-lokalisasi--tema).
 
 ## Hal penting untuk host
 
 - **Data saham milik OLT.** `stockSearch` memberi saran `$KODE`, `stockInfo` mengisi nama/harga di kartu saham, `stockName` mengisi header feed saham. Server hanya menyimpan kode sebagai label.
+- **Berbagi Trade.** Bungkus menu fitur ini dengan `CommunityTradeShareGate` supaya hilang saat tombol darurat dimatikan. Detail aktivitas memanggil `onStockTap`, dan push `olt.trade.matched` tetap push OLT. [Detail](doc/integration.md#berbagi-trade-1280)
 - **Push.** Daftarkan token FCM dengan `registerPushToken(token, platform: CommunityPushPlatform.android)`. Push transaksi (`olt.*`) dibuka layar OLT sendiri lewat `isOltPush(data)` / `onOltNotificationTap`; push komunitas lewat `openCommunityPush(context, data)`. [Detail](doc/features.md#push-transaksi-olt)
 - **Offline & privasi.** Cache lokal satu database per user dan dihapus saat `signOut()`, `deleteMyAccount()`, `clearLocalCache()`, atau ganti user. Chat CS tidak pernah di-cache. [Detail](doc/features.md#offline-cache--outbox-130)
 - **Kill switch & versi minimum.** Server bisa mematikan fitur sosial atau memaksa update. Widget lalu menampilkan placeholder, sedangkan chat CS tetap jalan. [Detail](doc/features.md#konfigurasi-klien--kill-switch-130)

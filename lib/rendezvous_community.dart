@@ -15,6 +15,7 @@ export 'src/app/community_scope.dart';
 export 'src/app/community_scroll.dart'
     show CommunityMouseDragScrollBehavior, CommunityScrollScope, CommunityScrollSettings;
 export 'src/app/community_support_scope.dart';
+export 'src/app/community_trade_share_scope.dart';
 export 'src/app/rendezvous_community.dart';
 export 'src/core/auth/social_session.dart';
 export 'src/core/error/community_exception.dart';
@@ -269,6 +270,35 @@ export 'src/features/support/presentation/widgets/community_support_chat.dart'
 export 'src/features/support/presentation/widgets/community_support_tickets.dart' show CommunitySupportTickets;
 export 'src/features/support/presentation/widgets/support_message_actions.dart';
 export 'src/features/support/presentation/widgets/support_message_parts.dart' show OfficialBadge;
+export 'src/features/trade_share/domain/entities/trade_activity.dart';
+export 'src/features/trade_share/domain/entities/trade_share.dart';
+export 'src/features/trade_share/domain/entities/trade_subscription.dart';
+export 'src/features/trade_share/domain/repositories/trade_share_repository.dart';
+export 'src/features/trade_share/domain/services/community_trade_share.dart';
+export 'src/features/trade_share/presentation/builders/community_trade_share_builders.dart'
+    show CommunityTradeShareBuilders, CommunityTradeShareBuildersScope;
+export 'src/features/trade_share/presentation/builders/community_trade_share_details.dart';
+export 'src/features/trade_share/presentation/trade_share_navigation.dart'
+    show
+        openCommunityTradeActivity,
+        openCommunityTradeActivityFeed,
+        openCommunityTradeShare,
+        openCommunityTradeSubscribers,
+        openCommunityTradeSubscriptions;
+export 'src/features/trade_share/presentation/widgets/community_trade_activity.dart'
+    show
+        CommunityTradeActivityDetail,
+        CommunityTradeActivityFeed,
+        CommunityTradeActivityFeedPage,
+        CommunityTradeActivityPage;
+export 'src/features/trade_share/presentation/widgets/community_trade_share_gate.dart';
+export 'src/features/trade_share/presentation/widgets/community_trade_share_page.dart'
+    show CommunityTradeSharePage, CommunityTradeShareSettings;
+export 'src/features/trade_share/presentation/widgets/community_trade_share_profile_bar.dart';
+export 'src/features/trade_share/presentation/widgets/community_trade_subscribers_page.dart'
+    show CommunityTradeSubscribers, CommunityTradeSubscribersPage;
+export 'src/features/trade_share/presentation/widgets/community_trade_subscriptions_page.dart'
+    show CommunityTradeSubscriptions, CommunityTradeSubscriptionsPage;
 export 'src/features/trending/domain/entities/trending.dart';
 export 'src/features/trending/domain/repositories/trending_repository.dart';
 export 'src/features/trending/presentation/widgets/community_market_sentiment.dart'

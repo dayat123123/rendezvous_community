@@ -90,6 +90,8 @@ class _HomePageState extends State<HomePage> {
 
   Future<void> _explore() async {
     final l10n = context.communityL10n;
+    final trade = await RendezvousCommunity.instance.tradeShare.ensureFresh();
+    if (!mounted) return;
     final entries = <(IconData, String, Future<void> Function())>[
       (Icons.search, l10n.searchTitle, () => openCommunitySearch(context)),
       (Icons.trending_up, l10n.trendingTitle, () => _push(l10n.trendingTitle, const CommunityTrending())),
@@ -103,6 +105,14 @@ class _HomePageState extends State<HomePage> {
       (Icons.gavel_outlined, l10n.myAppeals, () => openCommunityAppeals(context)),
       (Icons.drafts_outlined, l10n.draftsTitle, () => openCommunityPostDrafts(context)),
       (Icons.candlestick_chart_outlined, 'Bagikan chart \$$_stock', _shareChart),
+      if (trade?.enabled ?? false) ...[
+        (Icons.candlestick_chart_outlined, l10n.tradeShareTitle, () => openCommunityTradeShare(context)),
+        (
+          Icons.notifications_active_outlined,
+          l10n.tradeSubscriptionsTitle,
+          () => openCommunityTradeSubscriptions(context),
+        ),
+      ],
     ];
     final action = await showModalBottomSheet<Future<void> Function()>(
       context: context,

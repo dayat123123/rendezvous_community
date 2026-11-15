@@ -50,6 +50,11 @@ class CommunityPushMessage {
 
   String? get actorId => _text('actor_id');
   String? get actorUsername => _text('actor_username');
+  String? get activityId => _text('activity_id');
+  String? get traderId => _text('trader_id');
+  String? get action => _text('action');
+  String? get screen => _text('screen');
+  bool get isTrade => type == 'trade_activity' || type == 'trade_share';
   Uri? get link {
     final url = Uri.tryParse(_text('url') ?? '');
     return url != null && url.scheme == 'https' && url.host.isNotEmpty ? url : null;

@@ -48,7 +48,7 @@ Lazy load, kirim ulang otomatis, indikator mengetik, dan tanda terima tetap diur
 
 ### Pasang semua sekaligus
 
-`CommunityBuilders` menggabungkan semua set builder: `chat`, `feed`, `notifications`, `profile`, `badges`, dan sejak 1.7.0 `shared` (komponen bersama, lihat [di bawah](#komponen-bersama-170)), `discovery` (pencarian & trending), `support` (chat CS), `settings` (pengaturan, hukum, banding, laporan), `system` (banner, kill switch, offline), dan `help` (Pusat Bantuan/FAQ). Pasang sekali di `MaterialApp.builder` supaya berlaku di semua halaman, termasuk halaman yang dibuka package:
+`CommunityBuilders` menggabungkan semua set builder: `chat`, `feed`, `notifications`, `profile`, `badges`, dan sejak 1.7.0 `shared` (komponen bersama, lihat [di bawah](#komponen-bersama-170)), `discovery` (pencarian & trending), `support` (chat CS), `settings` (pengaturan, hukum, banding, laporan), `system` (banner, kill switch, offline), `help` (Pusat Bantuan/FAQ), dan sejak 1.28.0 `tradeShare` (Berbagi Trade). Pasang sekali di `MaterialApp.builder` supaya berlaku di semua halaman, termasuk halaman yang dibuka package:
 
 ```dart
 MaterialApp(
@@ -66,7 +66,7 @@ MaterialApp(
 
 Slot `discovery`, `support`, `settings`, dan `system` diisi bertahap (lihat [builders.md](builders.md)); set yang belum punya slot boleh dibiarkan bawaan.
 
-`CommunityBuildersScope` boleh bersarang: scope di dalam hanya menimpa bagian yang diisinya, sisanya diwarisi dari scope di atasnya (`merge` mencakup semua field; dijaga oleh `test/tool/merge_completeness_test.dart`). Builder per widget (`CommunityFeedList(builders: ...)`, `CommunityStreamFeed(builders: ...)`, `CommunityNotificationList(builders: ...)`, `CommunityUserProfile(builders: ...)`, `CommunityChatList/CommunityChatRoom(builders: ...)`) juga digabung dengan cara yang sama. Scope per set (`CommunityChatBuildersScope`, `CommunityFeedBuildersScope`, `CommunityNotificationBuildersScope`, `CommunityProfileBuildersScope`, `CommunityBadgeBuildersScope`, `CommunitySharedBuildersScope`, `CommunityDiscoveryBuildersScope`, `CommunitySupportBuildersScope`, `CommunitySettingsBuildersScope`, `CommunitySystemBuildersScope`, `CommunityHelpBuildersScope`) mengganti set itu seluruhnya.
+`CommunityBuildersScope` boleh bersarang: scope di dalam hanya menimpa bagian yang diisinya, sisanya diwarisi dari scope di atasnya (`merge` mencakup semua field; dijaga oleh `test/tool/merge_completeness_test.dart`). Builder per widget (`CommunityFeedList(builders: ...)`, `CommunityStreamFeed(builders: ...)`, `CommunityNotificationList(builders: ...)`, `CommunityUserProfile(builders: ...)`, `CommunityChatList/CommunityChatRoom(builders: ...)`) juga digabung dengan cara yang sama. Scope per set (`CommunityChatBuildersScope`, `CommunityFeedBuildersScope`, `CommunityNotificationBuildersScope`, `CommunityProfileBuildersScope`, `CommunityBadgeBuildersScope`, `CommunitySharedBuildersScope`, `CommunityDiscoveryBuildersScope`, `CommunitySupportBuildersScope`, `CommunitySettingsBuildersScope`, `CommunitySystemBuildersScope`, `CommunityHelpBuildersScope`, `CommunityTradeShareBuildersScope`) mengganti set itu seluruhnya.
 
 ### Komponen bersama (1.7.0)
 
@@ -767,6 +767,45 @@ CommunityUserProfile(
 `header`, `stats`, `followButton`, `messageButton` (1.7.0, tombol Kirim pesan), dan `menu` (1.7.0, menu laporkan/blokir di header) menerima `CommunityProfileDetails`: `profile`, `busy`, `isMe`, `isFollowing`, label statistik terlokalisasi; `onToggleFollow`, `onMessage`, `onEdit` (dialog edit bawaan), `onReport`, `onBlock`, `onUnblock`; `isOfficial` dan `onOfficialContact` (1.16.0). Untuk akun resmi `onMessage` selalu null; tombol bawaan di slot `messageButton` menjadi "Hubungi CS" (memanggil `onOfficialContact`) atau disembunyikan bila callback itu tidak diisi. Sejak 1.21.0 ada juga `onOpenFollowers` dan `onOpenFollowing` (membuka daftar pengikut atau yang diikuti; null untuk profil yang diblokir atau bila repository host tidak mengimplementasikan `FollowListRepository`), jadi builder `stats` sendiri bisa tetap membuka daftar. Untuk akun resmi (1.22.0) `onOpenFollowing` selalu null, `onOpenFollowers` membuka daftar pengikut tanpa tab, dan statistik bawaan tidak menampilkan angka Mengikuti.
 
 `followListEntry` (1.21.0) mengganti tiap baris di `CommunityFollowList` dan menerima `CommunityFollowListEntryDetails`: `entry` (`FollowListEntry`), `user`, `kind` (`FollowListKind.followers`/`following`), `isMe`, `following`, `followsMe`, `pending` (permintaan ikuti sedang berjalan), `buttonLabel` ("Ikuti", "Ikuti balik", "Mengikuti", atau kosong untuk baris diri sendiri), label `followLabel`, `followingLabel`, `followBackLabel`, `followsYouLabel`; `onOpen` (membuka profil) dan `onToggleFollow` (null untuk baris diri sendiri).
+
+### Berbagi Trade (1.28.0)
+
+`CommunityTradeShareBuilders` (`CommunityBuilders(tradeShare: ...)` atau `CommunityTradeShareBuildersScope`) mengganti bagian fitur Berbagi Trade. Slot yang tidak diisi memakai tampilan bawaan, dan setiap builder menerima `fallback` berisi tampilan bawaan itu. Handler di `details` sudah tersambung ke cubit (konfirmasi dan pernyataan risiko ikut di dalamnya); handler `null` berarti aksi tidak berlaku saat itu (misalnya sedang sibuk).
+
+```dart
+CommunityBuildersScope(
+  builders: CommunityBuilders(
+    tradeShare: CommunityTradeShareBuilders(
+      profileBar: (context, d, fallback) => OltTradeBell(
+        label: d.bellLabel,
+        icon: d.bellIcon,
+        badge: d.sharing ? d.badgeLabel : null,
+        hint: d.hint,
+        onPressed: d.onBell,
+      ),
+      activityTile: (context, d, fallback) => d.placement == CommunityTradeActivityPlacement.notification
+          ? fallback
+          : OltTradeCard(title: d.title, body: d.body, time: d.timeLabel, onTap: d.onTap),
+    ),
+  ),
+  child: child,
+);
+```
+
+| Slot | Details | Isi |
+|---|---|---|
+| `statusCard` | `CommunityTradeShareStatusDetails` | kartu status di `CommunityTradeShareSettings`: `status` (`TradeShareStatus`), `title`, `label`, `hint`, `icon`, `tone`, `reason`, `suspendedUntil`, `cooldown`, `intro` (teks siap tampil atau null), `busy`, `pauseLabel`, `resumeLabel`, `withdrawLabel`; `onPause`, `onResume`, `onWithdraw` (dengan dialog konfirmasi) |
+| `checkRow` | `CommunityTradeShareCheckDetails` | satu baris syarat pengajuan: `check`, `ok`, `label`, `hint` (alasan bila belum terpenuhi) |
+| `preview` | `CommunityTradeSharePreviewDetails` | pratinjau notifikasi: `user`, `title`, `body`, `showLot`, `showPrice` (sudah memperhitungkan paksa sembunyi) |
+| `profileBar` | `CommunityTradeProfileBarDetails` | tanda dan lonceng di profil (`CommunityTradeShareProfileBar`): `user`, `profile`, `bell` (`TradeBellState`), `sharing`, `badgeLabel`, `badgeIcon`, `bellLabel`, `bellIcon`, `hint` (alasan tidak tersedia / trader sedang tidak membagikan), `busy`; `onBell` (aksi bawaan tombol), `onSubscribe` (pernyataan risiko lalu berlangganan), `onMute`, `onUnmute`, `onCancel` (dengan konfirmasi). Tidak dipanggil saat lonceng tersembunyi |
+| `subscriptionTile` | `CommunityTradeSubscriptionTileDetails` | baris `CommunityTradeSubscriptions`: `entry`, `trader`, `statusLabel`, `subtitle`, `muted`, `pending`, `busy`, `muteLabel`, `cancelLabel`; `onOpen`, `onToggleMute` (null bila belum aktif), `onCancel` |
+| `subscriberTile` | `CommunityTradeSubscriberTileDetails` | baris `CommunityTradeSubscribers`: `entry`, `subscriber`, `pending`, `subtitle`, `busy`, label tombol; `onOpen`, `onApprove`/`onDecline` (permintaan), `onRemove` (pelanggan aktif, dengan konfirmasi) |
+| `activityTile` | `CommunityTradeActivityTileDetails` | satu aktivitas: `activity`, `placement` (`feed` di `CommunityTradeActivityFeed`, `notification` di `CommunityNotificationList`), `title`, `body`, `timeLabel`, `notification` (untuk `notification`), `isRead`; `onTap`. Untuk `notification`, `fallback` adalah item notifikasi bawaan (yang sudah melewati `notifications.item`) |
+| `activityDetail` | `CommunityTradeActivityViewDetails` | isi `CommunityTradeActivityDetail`: `activity`, `title`, `body`, `facts` (`CommunityTradeActivityFact`: `label`, `value`), `badges`, `disclaimer`, `openStockLabel`; `onOpenStock` (memanggil `onStockTap`), `onOpenTrader` |
+| `loading` / `empty` / `error` | `CommunityTradeLoadingDetails` / `CommunityTradeEmptyDetails` / `CommunityTradeErrorDetails` | status halaman fitur ini; semuanya membawa `area` (`settings`, `subscriptions`, `subscribers`, `activityFeed`, `activityDetail`). `empty`: `message`, `icon`; `error`: `error`, `message`, `onRetry` |
+| `unavailable` | `CommunityTradeUnavailableDetails` | pengganti halaman saat fitur dimatikan atau dependensinya tidak ada: `message`, `icon` |
+
+Fallback state memakai `CommunityLoadingView`/`CommunityEmptyView`/`CommunityErrorView`, jadi slot `shared.loadingView`/`emptyView`/`errorView` tetap berlaku bila slot `tradeShare` tidak diisi.
 
 ### Badge (1.4.0)
 

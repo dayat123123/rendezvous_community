@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_dependencies.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/app/community_trade_share_scope.dart';
 import 'package:rendezvous_community/src/app/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/community_chat_room.dart';
@@ -126,6 +127,7 @@ abstract final class CommunityNavigator {
   static Route<T> _route<T>(BuildContext context, String? title, Widget body) {
     final dependencies = CommunityScope.of(context);
     final features = context.getInheritedWidgetOfExactType<CommunityFeatureScope>()?.dependencies;
+    final trade = context.getInheritedWidgetOfExactType<CommunityTradeShareScope>()?.dependencies;
     final carry = carryCommunityBuilders(context);
     return MaterialPageRoute<T>(
       builder: (_) {
@@ -137,6 +139,7 @@ abstract final class CommunityNavigator {
           ),
         );
         if (features != null) page = CommunityFeatureScope(dependencies: features, child: page);
+        if (trade != null) page = CommunityTradeShareScope(dependencies: trade, child: page);
         return carry(page);
       },
     );

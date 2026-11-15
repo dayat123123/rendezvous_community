@@ -9,6 +9,7 @@ import 'package:rendezvous_community/src/features/notifications/presentation/bui
 import 'package:rendezvous_community/src/features/profile/presentation/builders/community_profile_builders.dart';
 import 'package:rendezvous_community/src/features/search/presentation/builders/community_discovery_builders.dart';
 import 'package:rendezvous_community/src/features/support/presentation/builders/community_support_builders.dart';
+import 'package:rendezvous_community/src/features/trade_share/presentation/builders/community_trade_share_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
 
@@ -25,6 +26,7 @@ class CommunityBuilders {
     this.settings = const CommunitySettingsBuilders(),
     this.system = const CommunitySystemBuilders(),
     this.help = const CommunityHelpBuilders(),
+    this.tradeShare = const CommunityTradeShareBuilders(),
   });
 
   final CommunityChatBuilders chat;
@@ -38,6 +40,7 @@ class CommunityBuilders {
   final CommunitySettingsBuilders settings;
   final CommunitySystemBuilders system;
   final CommunityHelpBuilders help;
+  final CommunityTradeShareBuilders tradeShare;
 
   static CommunityBuilders of(BuildContext context, {bool listen = true}) => CommunityBuilders(
     chat: CommunityChatBuilders.of(context, listen: listen),
@@ -51,6 +54,7 @@ class CommunityBuilders {
     settings: CommunitySettingsBuilders.of(context, listen: listen),
     system: CommunitySystemBuilders.of(context, listen: listen),
     help: CommunityHelpBuilders.of(context, listen: listen),
+    tradeShare: CommunityTradeShareBuilders.of(context, listen: listen),
   );
 
   CommunityBuilders merge(CommunityBuilders? other) {
@@ -67,6 +71,7 @@ class CommunityBuilders {
       settings: settings.merge(other.settings),
       system: system.merge(other.system),
       help: help.merge(other.help),
+      tradeShare: tradeShare.merge(other.tradeShare),
     );
   }
 
@@ -90,7 +95,10 @@ class CommunityBuilders {
                     builders: settings,
                     child: CommunitySystemBuildersScope(
                       builders: system,
-                      child: CommunityHelpBuildersScope(builders: help, child: child),
+                      child: CommunityHelpBuildersScope(
+                        builders: help,
+                        child: CommunityTradeShareBuildersScope(builders: tradeShare, child: child),
+                      ),
                     ),
                   ),
                 ),
@@ -129,7 +137,8 @@ class _CommunityBuildersScopeState extends State<CommunityBuildersScope> {
       identical(a.support, b.support) &&
       identical(a.settings, b.settings) &&
       identical(a.system, b.system) &&
-      identical(a.help, b.help);
+      identical(a.help, b.help) &&
+      identical(a.tradeShare, b.tradeShare);
 
   @override
   Widget build(BuildContext context) {

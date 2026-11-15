@@ -15,6 +15,12 @@ import 'package:rendezvous_community/src/features/notifications/presentation/bui
 import 'package:rendezvous_community/src/features/notifications/presentation/builders/community_notification_details.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/widgets/community_notification_settings.dart';
+import 'package:rendezvous_community/src/features/trade_share/domain/entities/trade_activity.dart';
+import 'package:rendezvous_community/src/features/trade_share/presentation/builders/community_trade_share_details.dart';
+import 'package:rendezvous_community/src/features/trade_share/presentation/trade_share_navigation.dart';
+import 'package:rendezvous_community/src/features/trade_share/presentation/trade_share_texts.dart';
+import 'package:rendezvous_community/src/features/trade_share/presentation/widgets/community_trade_activity.dart';
+import 'package:rendezvous_community/src/features/trade_share/presentation/widgets/community_trade_share_gate.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_badge_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_list_state_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
@@ -74,37 +80,45 @@ class CommunityNotificationList extends StatelessWidget {
                   children: [
                     buildCommunityPart(parts.header, context, header, _NotificationHeader(details: header)),
                     Expanded(
-                      child: state.items.isEmpty
-                          ? buildCommunityPart(
-                              parts.empty,
-                              context,
-                              CommunityListEmptyDetails(message: l10n.noNotifications),
-                              CommunityEmptyView(message: l10n.noNotifications, icon: Icons.notifications_none),
-                            )
-                          : NotificationListener<ScrollEndNotification>(
-                              onNotification: (n) {
-                                if (n.metrics.extentAfter < 300) cubit.loadMore();
-                                return false;
-                              },
-                              child: _NotificationRows(
-                                items: state.items,
-                                itemBuilder: (context, n) {
-                                  return _NotificationTile(
-                                    key: ValueKey(n.id),
-                                    notification: n,
-                                    onTap: () {
-                                      cubit.markRead(n);
-                                      final reporter = context.communityFeatures?.notificationReporter;
-                                      final source = NotificationSource(notificationId: n.id);
-                                      unawaited(reporter?.opened(source));
-                                      final custom = onNotificationTap;
-                                      if (custom != null) return custom(context, n);
-                                      if (openCommunityNotification(context, n)) unawaited(reporter?.tapped(source));
-                                    },
-                                  );
+                      child: _NotificationFilter(
+                        items: state.items,
+                        hasMore: state.nextCursor != null,
+                        onLoadMore: cubit.loadMore,
+                        builder: (context, items, trade) => items.isEmpty
+                            ? buildCommunityPart(
+                                parts.empty,
+                                context,
+                                CommunityListEmptyDetails(message: trade ? l10n.notifTradeEmpty : l10n.noNotifications),
+                                CommunityEmptyView(
+                                  message: trade ? l10n.notifTradeEmpty : l10n.noNotifications,
+                                  icon: Icons.notifications_none,
+                                ),
+                              )
+                            : NotificationListener<ScrollEndNotification>(
+                                onNotification: (n) {
+                                  if (n.metrics.extentAfter < 300) cubit.loadMore();
+                                  return false;
                                 },
+                                child: _NotificationRows(
+                                  items: items,
+                                  itemBuilder: (context, n) {
+                                    return _NotificationTile(
+                                      key: ValueKey(n.id),
+                                      notification: n,
+                                      onTap: () {
+                                        cubit.markRead(n);
+                                        final reporter = context.communityFeatures?.notificationReporter;
+                                        final source = NotificationSource(notificationId: n.id);
+                                        unawaited(reporter?.opened(source));
+                                        final custom = onNotificationTap;
+                                        if (custom != null) return custom(context, n);
+                                        if (openCommunityNotification(context, n)) unawaited(reporter?.tapped(source));
+                                      },
+                                    );
+                                  },
+                                ),
                               ),
-                            ),
+                      ),
                     ),
                   ],
                 ),
@@ -118,6 +132,7 @@ class CommunityNotificationList extends StatelessWidget {
 }
 
 bool openCommunityNotification(BuildContext context, AppNotification n) {
+  if (n.isTrade) return _openTradeNotification(context, n);
   if (n.isOlt) {
     final callback = CommunityScope.of(context).callbacks.onOltNotificationTap;
     callback?.call(context, Map.unmodifiable({...n.payload, 'notification_id': n.id}));
@@ -147,6 +162,125 @@ bool openCommunityNotification(BuildContext context, AppNotification n) {
     return false;
   }
   return true;
+}
+
+bool _openTradeNotification(BuildContext context, AppNotification n) {
+  final actor = n.actor;
+  if (n.type == NotificationType.tradeActivity) {
+    final id = n.tradeActivityId;
+    if (id == null || !canOpenTradeShare(context)) return false;
+    unawaited(openCommunityTradeActivity(context, id, activity: TradeActivity.fromPayload(n.payload, trader: actor)));
+    return true;
+  }
+  if (n.tradeAction == 'subscription_approved' && actor != null) {
+    CommunityNavigator.openUser(context, actor);
+    return true;
+  }
+  if (!canOpenTradeShare(context)) return false;
+  if (n.tradeAction == 'subscription_request') {
+    unawaited(openCommunityTradeSubscribers(context, requests: true));
+  } else {
+    unawaited(openCommunityTradeShare(context));
+  }
+  return true;
+}
+
+String notificationTradeShareTitle(CommunityLocalizations l10n, AppNotification n, String name) =>
+    switch (n.tradeAction) {
+      'approved' => l10n.notifTradeApproved,
+      'rejected' => l10n.notifTradeRejected,
+      'suspended' => l10n.notifTradeSuspended,
+      'revoked' => l10n.notifTradeRevoked,
+      'reinstated' || 'suspension_ended' => l10n.notifTradeReinstated,
+      'auto_paused' => l10n.notifTradeAutoPaused,
+      'auto_resumed' => l10n.notifTradeAutoResumed,
+      'subscription_request' => l10n.notifTradeRequest(name),
+      'subscription_approved' => l10n.notifTradeRequestApproved(name),
+      _ => n.title ?? l10n.notifTradeUpdate,
+    };
+
+String? notificationTradeShareBody(CommunityLocalizations l10n, AppNotification n) => switch (n.tradeAction) {
+  'approved' => l10n.notifTradeApprovedBody,
+  'auto_paused' => l10n.notifTradeAutoPausedBody,
+  'auto_resumed' => l10n.notifTradeAutoResumedBody,
+  'subscription_request' => l10n.notifTradeRequestBody,
+  'rejected' || 'suspended' || 'revoked' => n.tradeReason ?? n.body,
+  _ => n.body,
+};
+
+class _NotificationFilter extends StatefulWidget {
+  const _NotificationFilter({
+    required this.items,
+    required this.hasMore,
+    required this.onLoadMore,
+    required this.builder,
+  });
+
+  final List<AppNotification> items;
+  final bool hasMore;
+  final Future<void> Function() onLoadMore;
+  final Widget Function(BuildContext context, List<AppNotification> items, bool trade) builder;
+
+  @override
+  State<_NotificationFilter> createState() => _NotificationFilterState();
+}
+
+class _NotificationFilterState extends State<_NotificationFilter> {
+  bool _trade = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return CommunityTradeShareStatusBuilder(
+      builder: (context, status) {
+        final enabled = status?.enabled ?? false;
+        final trade = enabled && _trade;
+        final items = trade
+            ? [
+                for (final n in widget.items)
+                  if (n.isTrade) n,
+              ]
+            : widget.items;
+        final waiting = trade && items.isEmpty && widget.hasMore;
+        if (waiting) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) unawaited(widget.onLoadMore());
+          });
+        }
+        final body = waiting ? const CommunityLoadingView() : widget.builder(context, items, trade);
+        if (!enabled) return body;
+        final l10n = context.communityL10n;
+        final style = CommunityStyle.of(context);
+        final spacing = style.spacing;
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xs, spacing.lg, spacing.xs),
+              child: Wrap(
+                spacing: spacing.sm,
+                children: [
+                  ChoiceChip(
+                    key: const ValueKey('notification-filter-all'),
+                    selected: !trade,
+                    label: Text(l10n.notifFilterAll),
+                    onSelected: (_) => setState(() => _trade = false),
+                  ),
+                  ChoiceChip(
+                    key: const ValueKey('notification-filter-trade'),
+                    selected: trade,
+                    avatar: Icon(style.icons.tradeShare, size: 16),
+                    label: Text(l10n.notifFilterTrade),
+                    onSelected: (_) => setState(() => _trade = true),
+                  ),
+                ],
+              ),
+            ),
+            Expanded(child: body),
+          ],
+        );
+      },
+    );
+  }
 }
 
 const _leadingSize = 44.0;
@@ -382,7 +516,12 @@ class _NotificationTile extends StatelessWidget {
     final n = notification;
     if (n.isOlt) return _OltNotificationTile(notification: n, onTap: onTap);
     final l10n = context.communityL10n;
+    final icons = CommunityStyle.of(context).icons;
     final name = n.actor?.name ?? l10n.someone;
+    final activity = n.type == NotificationType.tradeActivity
+        ? TradeActivity.fromPayload(n.payload, trader: n.actor)
+        : null;
+    final activityText = activity == null ? null : l10n.tradeActivityText(activity);
     final title = switch (n.type) {
       NotificationType.reply => l10n.notifReply(name),
       NotificationType.mention when n.isRoomMention => l10n.notifMentionRoom(
@@ -399,6 +538,8 @@ class _NotificationTile extends StatelessWidget {
         n.eventCount > 1 ? l10n.notifFollowedPostMany(name, n.eventCount) : l10n.notifFollowedPost(name),
       NotificationType.watchlistDigest => l10n.notifWatchlistDigest,
       NotificationType.moderation => notificationModerationTitle(l10n, n),
+      NotificationType.tradeActivity => activityText?.title ?? n.title ?? l10n.notifTypeTradeActivity,
+      NotificationType.tradeShare => notificationTradeShareTitle(l10n, n, name),
     };
     final icon = switch (n.type) {
       NotificationType.followedPost => Icons.article_outlined,
@@ -411,6 +552,8 @@ class _NotificationTile extends StatelessWidget {
       NotificationType.message => Icons.chat_bubble,
       NotificationType.announcement => Icons.campaign,
       NotificationType.appeal => Icons.gavel_outlined,
+      NotificationType.tradeActivity => icons.tradeShare,
+      NotificationType.tradeShare => n.tradeAction == 'subscription_request' ? icons.tradeBell : icons.tradeShare,
     };
     final snippet = switch (n.type) {
       NotificationType.announcement => n.body,
@@ -421,6 +564,8 @@ class _NotificationTile extends StatelessWidget {
         if ((n.excerpt ?? '').isNotEmpty) n.excerpt!,
         n.appealable ? l10n.notifModerationAppealable : l10n.notifModerationAppealed,
       ].join('\n'),
+      NotificationType.tradeActivity => activityText?.body ?? n.body,
+      NotificationType.tradeShare => notificationTradeShareBody(l10n, n),
       _ => n.snippet,
     };
     final details = CommunityNotificationDetails(
@@ -431,7 +576,7 @@ class _NotificationTile extends StatelessWidget {
       timeLabel: l10n.relativeTime(n.createdAt),
       onTap: onTap,
     );
-    return buildCommunityPart(
+    final row = buildCommunityPart(
       CommunityNotificationBuilders.of(context).item,
       context,
       details,
@@ -451,6 +596,14 @@ class _NotificationTile extends StatelessWidget {
           ],
         ),
       ),
+    );
+    if (activity == null) return row;
+    return TradeActivityTile(
+      activity: activity,
+      placement: CommunityTradeActivityPlacement.notification,
+      notification: n,
+      onTap: onTap,
+      fallback: row,
     );
   }
 }

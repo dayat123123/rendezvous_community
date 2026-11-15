@@ -25,6 +25,7 @@ Daftar semua widget visual di `lib/src/shared/presentation/widgets` dan `lib/src
 | `CommunitySettingsBuilders` (`settings`) | `CommunitySettingsBuildersScope` | **B** | pengaturan akun & notifikasi, kebijakan DM, dokumen hukum, banding, laporan (13 slot, tahap 2 sudah) |
 | `CommunitySystemBuilders` (`system`) | `CommunitySystemBuildersScope` | **B** | banner konfigurasi, kill switch, offline, banner persetujuan, popup promo (5 slot, tahap 2 sudah) |
 | `CommunityHelpBuilders` (`help`) | `CommunityHelpBuildersScope` | – | Pusat Bantuan/FAQ dan saran artikel di pilih topik CS (11 slot, lihat [customization.md](customization.md#pusat-bantuan)) |
+| `CommunityTradeShareBuilders` (`tradeShare`) | `CommunityTradeShareBuildersScope` | – | Berbagi Trade: status, syarat, pratinjau, lonceng profil, baris langganan/pelanggan, aktivitas, status halaman (12 slot, 1.28.0, lihat [customization.md](customization.md#berbagi-trade-1280)) |
 
 Keempat set baru sudah tersambung ke `CommunityBuilders` (`discovery`, `support`, `settings`, `system`: field, `of`, `merge`, `wrap`, `_same`) dan diekspor. Tahap 2 cukup menambah field slot ke file set miliknya sendiri, lengkap dengan `merge` per field (diawasi `test/tool/merge_completeness_test.dart`; tambahkan `'<Set>.merge'` ke daftar tes begitu set punya field). File `*_details.dart` dibuat di folder `builders/` fitur yang sama. Agen A tidak menyentuh set milik B dan sebaliknya; `community_builders.dart` dan `rendezvous_community.dart` tidak perlu diubah lagi kecuali untuk ekspor file details baru (tambahkan satu baris, urut abjad).
 
@@ -249,6 +250,18 @@ Dialog, sheet, dan halaman yang didorong chat (aksi pesan, moderasi, kartu saham
 | `CommunityAvailabilityScope`, `CommunityUpdateListener` | ya | n/a (scope/listener) | – |
 | `CommunityOfflineBanner`, `CommunityOfflineNotice` | ya | sudah (`system.offlineBanner`; parameter `builder` banner dan `chat.connectionBanner` di room tetap didahulukan) | `CommunityOfflineDetails` (`message`) |
 | `CommunityConsentBanner` | ya | sudah (`system.consentBanner`) | `CommunityConsentBannerDetails` (`documents`, `message`, `updated`, `reviewLabel`, `dismissLabel`, `margin`; `onReview`, `onDismiss`) |
+
+### Berbagi Trade (`features/trade_share`, 1.28.0) → set `tradeShare`
+
+| Widget | Pub | Builder | Usulan |
+|---|---|---|---|
+| `CommunityTradeSharePage`, `CommunityTradeShareSettings`, `_StatusCard`, `_CheckRow`, `_Preview` | ya | sudah (`tradeShare.statusCard`, `checkRow`, `preview`, `loading`, `error`, `unavailable`; judul bagian lewat `shared.sectionHeader`) | `CommunityTradeShareStatusDetails`, `CommunityTradeShareCheckDetails`, `CommunityTradeSharePreviewDetails` |
+| `CommunityTradeShareProfileBar` (juga di header `CommunityUserProfile`) | ya | sudah (`tradeShare.profileBar`) | `CommunityTradeProfileBarDetails` (`bell`, label, ikon, `hint`; `onBell`, `onSubscribe`, `onMute`, `onUnmute`, `onCancel`) |
+| `CommunityTradeSubscriptions(Page)`, `_SubscriptionTile` | ya | sudah (`tradeShare.subscriptionTile`, `loading`, `empty`, `error`) | `CommunityTradeSubscriptionTileDetails` |
+| `CommunityTradeSubscribers(Page)`, `_SubscriberTile` | ya | sudah (`tradeShare.subscriberTile`, `loading`, `empty`, `error`) | `CommunityTradeSubscriberTileDetails` |
+| `CommunityTradeActivityFeed(Page)`, `TradeActivityTile`, item `trade_activity` di `CommunityNotificationList` | sebagian | sudah (`tradeShare.activityTile` dengan `placement` `feed`/`notification`; di notifikasi fallback-nya item `notifications.item`) | `CommunityTradeActivityTileDetails` |
+| `CommunityTradeActivityDetail`, `CommunityTradeActivityPage`, `_DetailView` | ya | sudah (`tradeShare.activityDetail`, `loading`, `error`) | `CommunityTradeActivityViewDetails` (`facts`, `badges`, `disclaimer`; `onOpenStock`, `onOpenTrader`) |
+| `CommunityTradeShareGate`, `CommunityTradeShareStatusBuilder` | ya | n/a (gerbang tombol darurat) | – |
 
 ### Tanpa widget
 

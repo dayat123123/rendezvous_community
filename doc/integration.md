@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.27.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.28.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -196,6 +196,11 @@ ThemeData oltThemeWithCommunity(ThemeData base) => base.copyWith(
         tickets: FluentIcons.receipt_20_regular,
         endChat: FluentIcons.sign_out_20_regular,
         check: FluentIcons.checkmark_20_regular,
+        tradeShare: FluentIcons.data_trending_20_regular,
+        tradeBell: FluentIcons.alert_20_regular,
+        tradeBellActive: FluentIcons.alert_on_20_regular,
+        tradeBellMuted: FluentIcons.alert_off_20_regular,
+        tradePending: FluentIcons.hourglass_half_20_regular,
       ),
     ),
   ],
@@ -231,6 +236,8 @@ Semua widget adalah konten tanpa `Scaffold`, sehingga OLT tetap memegang AppBar,
 | Tombol bantuan di layar order / dana / portofolio | `openCommunitySupport(context, topic: 'orders', screen: 'order_detail')` atau `CommunitySupportChat(topic: ..., screen: ...)` di panel samping. Topik dan asal layar ikut tercatat di tiket; detail order tidak dikirim ke server |
 | Riwayat tiket | `CommunitySupportTickets()` (juga ada di menu "⋯" room CS) |
 | Halaman login OLT ("Tidak bisa masuk? Hubungi CS") | `openCommunityGuestSupport(context)` atau `CommunityGuestSupport()`: pengaduan tamu tanpa login, lihat [Pengaduan tamu dari halaman login](#pengaduan-tamu-dari-halaman-login) |
+| Menu "Pengaturan → Berbagi aktivitas trade" (1.28.0, server `0160`–`0164`) | `CommunityTradeShareGate(child: ListTile(title: Text('Berbagi aktivitas trade'), onTap: () => openCommunityTradeShare(context)))`. Halaman: `CommunityTradeSharePage` (dengan AppBar) atau `CommunityTradeShareSettings` (tanpa Scaffold). Lihat [Berbagi Trade](#berbagi-trade-1280) |
+| Menu "Langganan trade" (1.28.0) | `CommunityTradeShareGate(child: ...)` → `openCommunityTradeSubscriptions(context)` / `CommunityTradeSubscriptionsPage`. Aktivitas trade: `openCommunityTradeActivityFeed(context)`. Pelanggan (trader): `openCommunityTradeSubscribers(context)` |
 | Menu "Pengaturan → Privasi & akun komunitas" | `openCommunityAccountSettings(context, onAccountDeleted: ...)` atau `CommunityAccountSettings(...)`: baca S&K/Pedoman/Kebijakan Privasi, unduh data saya, hapus akun komunitas (akun trading tidak terpengaruh) |
 
 Contoh tab Diskusi di halaman saham OLT:
@@ -314,6 +321,39 @@ Untuk sebagian layar saja pakai `CommunityScrollScope`. Rinciannya di [customiza
 **Gambar post (1.15.2).** Mengetuk gambar di kartu post membuka penampil layar penuh (`showCommunityImageViewer`, juga diekspor untuk UI host).
 
 Navigasi dari dalam widget sosial memakai callback dari langkah 3. Contohnya, mengetuk `$TLKM` di sebuah post memanggil `onStockTap(context, 'TLKM')`, sehingga OLT bisa membuka halaman sahamnya sendiri.
+
+### Berbagi Trade (1.28.0)
+
+Butuh server migrasi `0160`–`0164`. Fitur ini **hanya informasi** (tidak ada tombol "ikuti order"), dan seluruh UI-nya **tersembunyi otomatis** lewat tombol darurat `trade_share.enabled` di Hub, tanpa rilis ulang aplikasi OLT. Library membaca `enabled` dari `get_trade_share_status` (disimpan 5 menit, dimuat ulang saat aplikasi kembali ke depan) dan dari `get_trade_share_profile`.
+
+Yang perlu dipasang OLT:
+
+1. Naikkan dependency ke `ref: v1.28.0`.
+2. Pasang menu pengaturan dan menu langganan, dibungkus `CommunityTradeShareGate` supaya menunya hilang saat fitur mati:
+
+   ```dart
+   CommunityTradeShareGate(
+     child: ListTile(
+       leading: const Icon(Icons.candlestick_chart_outlined),
+       title: const Text('Berbagi aktivitas trade'),
+       onTap: () => openCommunityTradeShare(context),      // CommunityTradeSharePage
+     ),
+   ),
+   CommunityTradeShareGate(
+     child: ListTile(
+       leading: const Icon(Icons.notifications_active_outlined),
+       title: const Text('Langganan trade'),
+       onTap: () => openCommunityTradeSubscriptions(context),
+     ),
+   ),
+   ```
+
+   Untuk panel milik OLT tanpa route baru, tanam `CommunityTradeShareSettings()`, `CommunityTradeSubscriptions()`, `CommunityTradeSubscribers()`, `CommunityTradeActivityFeed()`, atau `CommunityTradeActivityDetail(activityId: id)` (tanpa `Scaffold`). Status mentah tersedia lewat `CommunityTradeShareStatusBuilder(builder: (context, status) => ...)` atau `RendezvousCommunity.instance.tradeShare` (`status()`, `enabled`, `listenable`).
+3. Tanda **Membagikan trade** dan lonceng **Notifikasi trade** di `CommunityUserProfile` sudah otomatis. Bila OLT mengganti header profil lewat builder `profile.header`, tambahkan `CommunityTradeShareProfileBar(user: details.profile.user, following: details.profile.isFollowing)` di posisi yang diinginkan. Tampilannya bisa diganti tanpa menulis ulang logikanya lewat `CommunityBuilders(tradeShare: CommunityTradeShareBuilders(profileBar: ...))`; slot lain (status, syarat, pratinjau, baris langganan dan pelanggan, kartu aktivitas di feed dan notifikasi, detail aktivitas, status halaman) ada di [customization.md](customization.md#berbagi-trade-1280).
+4. Pastikan `onStockTap` sudah diteruskan (sudah dipakai untuk cashtag). Tombol **Buka $KODE** di detail aktivitas memanggil callback itu.
+5. Push `trade_activity` dan `trade_share` dibuka `openCommunityPush` (detail aktivitas, daftar permintaan langganan, profil trader, atau pengaturan). Push trade milik nasabah sendiri `olt.trade.matched` (preferensi `olt.trade`, data `screen: /trade-list`) adalah push OLT: `isOltPush(data)` true, jadi OLT membukanya lewat `onOltNotificationTap` atau routernya sendiri.
+
+Pusat notifikasi menampilkan item `trade_activity` dan `trade_share`, filter **Semua / Trade**, dan preferensi `trade_activity` ("Aktivitas trade") serta `trade_share` ("Berbagi trade") di `CommunityNotificationSettings`. Untuk UI sendiri: `TradeShareRepository` (`RendezvousCommunity.instance.tradeShare.repository`) dan entitas `TradeShareStatus`, `TradeShareProfile`, `TradeSubscriptionEntry`, `TradeSubscriberEntry`, `TradeActivity` (`TradeActivity.fromPayload(notification.payload)`). Di tes, pasang `CommunityTradeShareScope(dependencies: ...)` dengan `CommunityTradeShareDependencies` palsu; tanpa scope dan tanpa `RendezvousCommunity.initialize`, semua UI fitur ini tidak tampil.
 
 ### Banner & popup promo (1.7.0)
 

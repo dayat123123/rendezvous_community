@@ -35,6 +35,11 @@ class CommunityIcons {
     this.tickets = Icons.receipt_long_outlined,
     this.endChat = Icons.logout,
     this.check = Icons.check,
+    this.tradeShare = Icons.candlestick_chart_outlined,
+    this.tradeBell = Icons.notifications_none_outlined,
+    this.tradeBellActive = Icons.notifications_active_outlined,
+    this.tradeBellMuted = Icons.notifications_off_outlined,
+    this.tradePending = Icons.hourglass_top_outlined,
   });
 
   final IconData reply;
@@ -68,6 +73,11 @@ class CommunityIcons {
   final IconData tickets;
   final IconData endChat;
   final IconData check;
+  final IconData tradeShare;
+  final IconData tradeBell;
+  final IconData tradeBellActive;
+  final IconData tradeBellMuted;
+  final IconData tradePending;
 
   List<IconData> get _values => [
     reply,
@@ -101,6 +111,11 @@ class CommunityIcons {
     tickets,
     endChat,
     check,
+    tradeShare,
+    tradeBell,
+    tradeBellActive,
+    tradeBellMuted,
+    tradePending,
   ];
 
   CommunityIcons copyWith({
@@ -135,6 +150,11 @@ class CommunityIcons {
     IconData? tickets,
     IconData? endChat,
     IconData? check,
+    IconData? tradeShare,
+    IconData? tradeBell,
+    IconData? tradeBellActive,
+    IconData? tradeBellMuted,
+    IconData? tradePending,
   }) => CommunityIcons(
     reply: reply ?? this.reply,
     copy: copy ?? this.copy,
@@ -167,6 +187,11 @@ class CommunityIcons {
     tickets: tickets ?? this.tickets,
     endChat: endChat ?? this.endChat,
     check: check ?? this.check,
+    tradeShare: tradeShare ?? this.tradeShare,
+    tradeBell: tradeBell ?? this.tradeBell,
+    tradeBellActive: tradeBellActive ?? this.tradeBellActive,
+    tradeBellMuted: tradeBellMuted ?? this.tradeBellMuted,
+    tradePending: tradePending ?? this.tradePending,
   );
 
   CommunityIcons lerp(CommunityIcons other, double t) => t < 0.5 ? this : other;

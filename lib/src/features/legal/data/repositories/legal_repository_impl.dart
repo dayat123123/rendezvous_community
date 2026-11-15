@@ -3,6 +3,8 @@ import 'package:rendezvous_community/src/features/legal/data/models/legal_docume
 import 'package:rendezvous_community/src/features/legal/domain/entities/legal_document.dart';
 import 'package:rendezvous_community/src/features/legal/domain/repositories/legal_repository.dart';
 
+const _featureKinds = {'trade_share_terms', 'trade_share_risk'};
+
 class LegalRepositoryImpl implements LegalRepository {
   LegalRepositoryImpl(this._api);
 
@@ -11,7 +13,10 @@ class LegalRepositoryImpl implements LegalRepository {
   @override
   Future<List<LegalDocument>> getDocuments() async {
     final rows = await _api.rpcRows('get_legal_documents');
-    return [for (final row in rows) LegalDocumentModel.fromJson(row).toEntity()]..sort(_byKind);
+    return [
+      for (final row in rows)
+        if (!_featureKinds.contains(row['kind'])) LegalDocumentModel.fromJson(row).toEntity(),
+    ]..sort(_byKind);
   }
 
   @override

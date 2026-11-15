@@ -40,6 +40,7 @@ await RendezvousCommunity.initialize(
 | `RendezvousCommunity.Config` | Konfigurasi klien, kill switch, versi minimum |
 | `RendezvousCommunity.Analytics` | Pengiriman batch analitik |
 | `RendezvousCommunity.Offline` | Database lokal (hapus, ganti user, error penyimpanan) dan status koneksi |
+| `RendezvousCommunity.TradeShare` | Status fitur Berbagi Trade (tombol darurat dari server) |
 
 Di kode: `CommunityLoggers.chat.event(Level.SEVERE, 'Failed to send message', fields: {...})`.
 
@@ -85,6 +86,8 @@ Di kode: `CommunityLoggers.chat.event(Level.SEVERE, 'Failed to send message', fi
 | INFO | Offline | `Image cache wiped` | — |
 | INFO | Offline | `Image cache of a previous user removed` | — |
 | WARNING | Offline | `Image cache operation failed` | `operation` (`open`, `write`, `wipe`), `errorType`, error |
+| INFO | TradeShare | `Trade share availability changed` | `enabled` |
+| FINE | TradeShare | `Trade share status unavailable` | error |
 
 ## Data sensitif
 

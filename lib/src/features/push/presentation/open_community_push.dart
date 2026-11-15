@@ -10,6 +10,7 @@ import 'package:rendezvous_community/src/features/notifications/domain/entities/
 import 'package:rendezvous_community/src/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:rendezvous_community/src/features/push/domain/entities/community_push_message.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/community_support_chat.dart';
+import 'package:rendezvous_community/src/features/trade_share/presentation/trade_share_navigation.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,6 +47,7 @@ bool _openMessage(BuildContext context, CommunityPushMessage message) {
   final actorId = message.actorId;
   final link = message.link;
   final topStock = message.stocks.firstOrNull;
+  if (message.isTrade) return _openTradePush(context, message);
   if (message.isSupport) {
     unawaited(openCommunitySupport(context));
   } else if (message.type == 'moderation' && message.data['target_type'] == 'room' && roomId != null) {
@@ -64,6 +66,25 @@ bool _openMessage(BuildContext context, CommunityPushMessage message) {
     unawaited(launchUrl(link, mode: LaunchMode.externalApplication));
   } else {
     return false;
+  }
+  return true;
+}
+
+bool _openTradePush(BuildContext context, CommunityPushMessage message) {
+  final traderId = message.traderId;
+  if (message.type == 'trade_share' && message.action == 'subscription_approved' && traderId != null) {
+    CommunityNavigator.openUser(context, UserSummary(id: traderId, username: ''));
+    return true;
+  }
+  if (!canOpenTradeShare(context)) return false;
+  if (message.type == 'trade_activity') {
+    final activityId = message.activityId;
+    if (activityId == null) return false;
+    unawaited(openCommunityTradeActivity(context, activityId));
+  } else if (message.screen == 'trade_subscribers' || message.action == 'subscription_request') {
+    unawaited(openCommunityTradeSubscribers(context, requests: true));
+  } else {
+    unawaited(openCommunityTradeShare(context));
   }
   return true;
 }

@@ -3,11 +3,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scroll.dart';
+import 'package:rendezvous_community/src/app/community_trade_share_scope.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
 import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/notification_preferences.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/cubit/notification_preferences_cubit.dart';
+import 'package:rendezvous_community/src/features/trade_share/presentation/widgets/community_trade_share_gate.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -16,22 +18,26 @@ import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.da
 
 Future<void> openCommunityNotificationSettings(BuildContext context) {
   final features = CommunityFeatureScope.of(context);
+  final trade = context.getInheritedWidgetOfExactType<CommunityTradeShareScope>()?.dependencies;
   final title = context.communityL10n.notificationSettings;
   final carry = carryCommunityBuilders(context);
+  Widget withTrade(Widget child) => trade == null ? child : CommunityTradeShareScope(dependencies: trade, child: child);
   return Navigator.of(context).push<void>(
     MaterialPageRoute(
       builder: (_) => carry(
         CommunityFeatureScope(
           dependencies: features,
-          child: Scaffold(
-            appBar: AppBar(title: Text(title)),
-            body: SafeArea(
-              top: false,
-              child: Center(
-                child: ConstrainedBox(
-                  constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
-                  child: CommunityScrollArea(
-                    child: const SingleChildScrollView(child: CommunityNotificationSettings()),
+          child: withTrade(
+            Scaffold(
+              appBar: AppBar(title: Text(title)),
+              body: SafeArea(
+                top: false,
+                child: Center(
+                  child: ConstrainedBox(
+                    constraints: const BoxConstraints(maxWidth: CommunityBreakpoints.contentMaxWidth),
+                    child: CommunityScrollArea(
+                      child: const SingleChildScrollView(child: CommunityNotificationSettings()),
+                    ),
                   ),
                 ),
               ),
@@ -67,6 +73,8 @@ String notificationTypeLabel(CommunityLocalizations l10n, String type) => switch
   'followed_post' => l10n.notifTypeFollowedPost,
   'watchlist_digest' => l10n.notifTypeWatchlistDigest,
   'moderation' => l10n.notifTypeModeration,
+  notificationTradeActivityType => l10n.notifTypeTradeActivity,
+  notificationTradeShareType => l10n.notifTypeTradeShare,
   notificationTradeType => l10n.notifTypeTrade,
   notificationFundsType => l10n.notifTypeFunds,
   notificationMarketType => l10n.notifTypeMarket,
@@ -89,6 +97,8 @@ String? notificationTypeDescription(CommunityLocalizations l10n, String type, {S
       ),
       'watchlist_digest' => l10n.notifTypeWatchlistDigestHint,
       'moderation' => l10n.notifTypeModerationHint,
+      notificationTradeActivityType => l10n.notifTypeTradeActivityHint,
+      notificationTradeShareType => l10n.notifTypeTradeShareHint,
       _ => null,
     };
 
@@ -191,6 +201,12 @@ class _SettingsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return CommunityTradeShareStatusBuilder(
+      builder: (context, trade) => _preferences(context, tradeShare: trade?.enabled ?? false),
+    );
+  }
+
+  Widget _preferences(BuildContext context, {required bool tradeShare}) {
     final l10n = context.communityL10n;
     final style = CommunityStyle.of(context);
     final spacing = style.spacing;
@@ -239,7 +255,8 @@ class _SettingsView extends StatelessWidget {
               ),
             ),
             for (final pref in state.preferences.types)
-              if (!pref.isOlt) _TypeRow(preference: pref, watchlistDigestTime: state.preferences.watchlistDigestTime),
+              if (!pref.isOlt && (tradeShare || !isTradeShareNotificationType(pref.type)))
+                _TypeRow(preference: pref, watchlistDigestTime: state.preferences.watchlistDigestTime),
             Padding(
               padding: EdgeInsets.fromLTRB(spacing.lg, spacing.xs, spacing.lg, spacing.sm),
               child: Text(l10n.notifSupportAlwaysOn, style: muted),

@@ -16,6 +16,7 @@ import 'package:rendezvous_community/src/features/profile/domain/repositories/pr
 import 'package:rendezvous_community/src/features/profile/presentation/builders/community_profile_builders.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/builders/community_profile_details.dart';
 import 'package:rendezvous_community/src/features/profile/presentation/cubit/profile_cubit.dart';
+import 'package:rendezvous_community/src/features/trade_share/presentation/widgets/community_trade_share_profile_bar.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
@@ -257,6 +258,8 @@ class _ProfileHeader extends StatelessWidget {
                 ],
               ],
             ),
+          if (!profile.isMe && !profile.isBlocked && !details.isOfficial)
+            CommunityTradeShareProfileBar(user: user, following: profile.isFollowing),
         ],
       ),
     );

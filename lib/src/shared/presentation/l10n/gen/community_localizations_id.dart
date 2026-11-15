@@ -2725,4 +2725,549 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get chatLeftNotice => 'Anda sudah keluar dari chat ini.';
+
+  @override
+  String get tradeShareTitle => 'Berbagi aktivitas trade';
+
+  @override
+  String get tradeShareIntro =>
+      'Pelanggan Anda menerima notifikasi saat order Anda selesai (match). Informasi ini bukan rekomendasi dan tidak ada order otomatis.';
+
+  @override
+  String get tradeShareUnavailable => 'Fitur berbagi trade sedang tidak tersedia.';
+
+  @override
+  String get tradeShareStatusNone => 'Belum mengajukan';
+
+  @override
+  String get tradeShareStatusPending => 'Menunggu peninjauan';
+
+  @override
+  String get tradeShareStatusActive => 'Aktif';
+
+  @override
+  String get tradeShareStatusPaused => 'Dijeda';
+
+  @override
+  String get tradeShareStatusSuspended => 'Ditangguhkan';
+
+  @override
+  String get tradeShareStatusRejected => 'Ditolak';
+
+  @override
+  String get tradeShareStatusRevoked => 'Dicabut';
+
+  @override
+  String get tradeShareStatusWithdrawn => 'Dihentikan';
+
+  @override
+  String get tradeShareHintNone => 'Ajukan untuk membagikan trade yang sudah match ke pelanggan Anda.';
+
+  @override
+  String get tradeShareHintPending => 'Pengajuan Anda sedang ditinjau Kepatuhan.';
+
+  @override
+  String tradeShareHintActive(int minutes) {
+    return 'Trade Anda dibagikan ke pelanggan $minutes menit setelah match.';
+  }
+
+  @override
+  String get tradeShareHintPaused =>
+      'Pembagian dijeda. Pelanggan tetap tercatat dan menerima lagi saat Anda melanjutkan.';
+
+  @override
+  String get tradeShareHintPausedSystem => 'Dijeda otomatis karena tidak ada rekening yang bisa dibagikan.';
+
+  @override
+  String get tradeShareHintSuspended => 'Ditangguhkan Kepatuhan. Anda belum bisa melanjutkan sendiri.';
+
+  @override
+  String get tradeShareHintRejected => 'Pengajuan Anda ditolak.';
+
+  @override
+  String get tradeShareHintRevoked => 'Izin berbagi trade Anda dicabut.';
+
+  @override
+  String get tradeShareHintWithdrawn => 'Anda sudah berhenti membagikan trade.';
+
+  @override
+  String tradeShareSuspendedUntil(String date) {
+    return 'Ditangguhkan sampai $date.';
+  }
+
+  @override
+  String tradeShareReason(String reason) {
+    return 'Alasan: $reason';
+  }
+
+  @override
+  String tradeShareCooldown(String date) {
+    return 'Anda bisa mengajukan lagi mulai $date.';
+  }
+
+  @override
+  String get tradeShareChecks => 'Syarat pengajuan';
+
+  @override
+  String get tradeShareCheckFeature => 'Fitur berbagi trade aktif';
+
+  @override
+  String get tradeShareCheckPilot => 'Terdaftar di program pilot';
+
+  @override
+  String get tradeShareCheckPilotHint => 'Saat ini pengajuan hanya untuk nasabah undangan.';
+
+  @override
+  String get tradeShareCheckProfile => 'Profil nasabah biasa';
+
+  @override
+  String get tradeShareCheckProfileHint => 'Akun tamu, akun resmi, dan akun staf tidak bisa mengajukan.';
+
+  @override
+  String get tradeShareCheckSanction => 'Tidak sedang dalam sanksi moderasi';
+
+  @override
+  String get tradeShareCheckSanctionHint => 'Tunggu sampai sanksi moderasi Anda berakhir.';
+
+  @override
+  String get tradeShareCheckAge => 'Umur profil memenuhi syarat';
+
+  @override
+  String get tradeShareCheckAgeHint => 'Profil komunitas Anda belum cukup lama.';
+
+  @override
+  String get tradeShareCheckCooldown => 'Tidak dalam masa tunggu';
+
+  @override
+  String get tradeShareCheckAccount => 'Punya rekening tertaut yang aktif';
+
+  @override
+  String get tradeShareCheckAccountHint => 'Masuk ke fitur komunitas dari aplikasi OLT dengan rekening Anda.';
+
+  @override
+  String get tradeShareCheckTerms => 'Syarat & Ketentuan tersedia';
+
+  @override
+  String get tradeShareCheckTermsHint => 'Syarat & Ketentuan belum diterbitkan.';
+
+  @override
+  String get tradeShareAccounts => 'Rekening yang dibagikan';
+
+  @override
+  String get tradeShareAccountsHint => 'Hanya rekening aktif yang bisa dipilih.';
+
+  @override
+  String get tradeShareAccountActive => 'Aktif';
+
+  @override
+  String get tradeShareAccountUnlinked => 'Tidak tertaut lagi';
+
+  @override
+  String get tradeShareAccountExpired => 'Kedaluwarsa';
+
+  @override
+  String get tradeShareAccountSharedLink => 'Tertaut ke profil lain';
+
+  @override
+  String get tradeShareAccountExcluded => 'Tidak boleh dibagikan';
+
+  @override
+  String get tradeShareShowPrice => 'Tampilkan harga';
+
+  @override
+  String get tradeShareShowLot => 'Tampilkan lot';
+
+  @override
+  String get tradeShareShowLotHint => 'Lot memperlihatkan besar posisi Anda.';
+
+  @override
+  String get tradeShareForcedHidden => 'Disembunyikan oleh Kepatuhan';
+
+  @override
+  String get tradeShareDelay => 'Jeda notifikasi';
+
+  @override
+  String tradeShareDelayHint(int minutes) {
+    return 'Notifikasi dikirim paling cepat $minutes menit setelah trade.';
+  }
+
+  @override
+  String tradeShareMinutes(int count) {
+    return '$count menit';
+  }
+
+  @override
+  String get tradeShareSubscribeMode => 'Mode langganan';
+
+  @override
+  String get tradeShareModeAuto => 'Otomatis';
+
+  @override
+  String get tradeShareModeApproval => 'Perlu persetujuan';
+
+  @override
+  String get tradeShareModeApprovalHint => 'Anda menyetujui atau menolak setiap permintaan langganan.';
+
+  @override
+  String get tradeSharePreview => 'Pratinjau notifikasi';
+
+  @override
+  String tradeSharePreviewBuy(String name, String stock) {
+    return '$name membeli \$$stock';
+  }
+
+  @override
+  String tradeSharePreviewSell(String name, String stock) {
+    return '$name menjual \$$stock';
+  }
+
+  @override
+  String tradeShareLots(String lots) {
+    return '$lots lot';
+  }
+
+  @override
+  String tradeShareLotsOf(String lots, String total) {
+    return '$lots dari $total lot';
+  }
+
+  @override
+  String get tradeSharePartial => 'sebagian';
+
+  @override
+  String get tradeShareTerms => 'Syarat & Ketentuan Berbagi Trade';
+
+  @override
+  String get tradeShareReadTerms => 'Baca S&K';
+
+  @override
+  String get tradeShareAcceptTerms => 'Saya sudah membaca dan menyetujui Syarat & Ketentuan Berbagi Trade';
+
+  @override
+  String get tradeShareSubmit => 'Ajukan';
+
+  @override
+  String get tradeShareSave => 'Simpan perubahan';
+
+  @override
+  String get tradeSharePause => 'Jeda';
+
+  @override
+  String get tradeShareResume => 'Lanjutkan';
+
+  @override
+  String get tradeShareWithdraw => 'Berhenti membagikan';
+
+  @override
+  String get tradeShareWithdrawConfirm =>
+      'Berhenti membagikan trade? Semua langganan berakhir dan Anda perlu mengajukan ulang untuk membagikan lagi.';
+
+  @override
+  String get tradeShareScopeTitle => 'Ubah cakupan data?';
+
+  @override
+  String get tradeShareScopeConfirm =>
+      'Perubahan rekening, harga, atau lot mengubah data yang dilihat pelanggan. Perubahan dicatat dan berlaku untuk order berikutnya.';
+
+  @override
+  String get tradeShareConfirm => 'Ya, ubah';
+
+  @override
+  String get tradeShareSubmitted => 'Pengajuan terkirim. Menunggu peninjauan.';
+
+  @override
+  String get tradeShareSaved => 'Pengaturan disimpan.';
+
+  @override
+  String get tradeShareMySubscribers => 'Pelanggan saya';
+
+  @override
+  String tradeShareSubscriberCounts(int active, int pending) {
+    return '$active aktif · $pending menunggu';
+  }
+
+  @override
+  String get tradeShareBadge => 'Membagikan trade';
+
+  @override
+  String get tradeBellSubscribe => 'Notifikasi trade';
+
+  @override
+  String get tradeBellPending => 'Menunggu persetujuan';
+
+  @override
+  String get tradeBellActive => 'Berlangganan';
+
+  @override
+  String get tradeBellMuted => 'Dibisukan';
+
+  @override
+  String get tradeBellUnavailable => 'Notifikasi trade tidak tersedia';
+
+  @override
+  String get tradeMute => 'Bisukan notifikasi trade';
+
+  @override
+  String get tradeUnmute => 'Aktifkan notifikasi trade';
+
+  @override
+  String get tradeUnsubscribe => 'Berhenti berlangganan';
+
+  @override
+  String get tradeCancelRequest => 'Batalkan permintaan';
+
+  @override
+  String tradeUnsubscribeConfirm(String name) {
+    return 'Berhenti menerima notifikasi trade dari $name?';
+  }
+
+  @override
+  String get tradeRequestSent => 'Permintaan dikirim. Menunggu persetujuan trader.';
+
+  @override
+  String tradeSubscribed(String name) {
+    return 'Anda akan menerima notifikasi trade dari $name.';
+  }
+
+  @override
+  String get tradeRiskTitle => 'Pernyataan risiko';
+
+  @override
+  String get tradeRiskAccept =>
+      'Saya mengerti bahwa informasi ini bukan rekomendasi dan keputusan investasi sepenuhnya tanggung jawab saya';
+
+  @override
+  String get tradeRiskSubscribe => 'Setuju & berlangganan';
+
+  @override
+  String get tradeNotSharingNow => 'Trader ini sedang tidak membagikan trade.';
+
+  @override
+  String get tradeBlockedSelf => 'Anda tidak bisa berlangganan diri sendiri.';
+
+  @override
+  String get tradeBlockedNotCustomer => 'Hanya nasabah yang bisa berlangganan.';
+
+  @override
+  String get tradeBlockedNoAccount => 'Tautkan rekening OLT Anda untuk berlangganan.';
+
+  @override
+  String get tradeBlockedSanctioned => 'Akun Anda sedang dalam sanksi.';
+
+  @override
+  String get tradeBlockedBlocked => 'Tidak tersedia untuk akun ini.';
+
+  @override
+  String get tradeBlockedNotFollowing => 'Ikuti trader ini untuk berlangganan notifikasi trade.';
+
+  @override
+  String get tradeBlockedRisk => 'Pernyataan risiko belum tersedia.';
+
+  @override
+  String get tradeSubscriptionsTitle => 'Langganan trade';
+
+  @override
+  String get tradeSubscriptionsEmpty => 'Anda belum berlangganan trader mana pun.';
+
+  @override
+  String get tradeActivityFeed => 'Aktivitas trade';
+
+  @override
+  String get tradeActivityEmpty => 'Belum ada aktivitas trade.';
+
+  @override
+  String get tradeActivityTitle => 'Detail aktivitas trade';
+
+  @override
+  String get tradeActivityDisclaimer =>
+      'Informasi ini bukan rekomendasi. Keputusan investasi sepenuhnya tanggung jawab Anda.';
+
+  @override
+  String get tradeSideBuy => 'Beli';
+
+  @override
+  String get tradeSideSell => 'Jual';
+
+  @override
+  String get tradeActivitySide => 'Transaksi';
+
+  @override
+  String get tradeActivityStock => 'Saham';
+
+  @override
+  String get tradeActivityVolume => 'Volume';
+
+  @override
+  String get tradeActivityPrice => 'Harga';
+
+  @override
+  String get tradeActivityTime => 'Selesai';
+
+  @override
+  String get tradeActivityHidden => 'Disembunyikan trader';
+
+  @override
+  String get tradeActivityPartial => 'Terisi sebagian';
+
+  @override
+  String get tradeActivityAdditional => 'Tambahan dari order yang sudah dilaporkan';
+
+  @override
+  String tradeOpenStock(String stock) {
+    return 'Buka \$$stock';
+  }
+
+  @override
+  String get tradeSubscribersTitle => 'Pelanggan trade';
+
+  @override
+  String get tradeSubscribersRequests => 'Permintaan';
+
+  @override
+  String get tradeSubscribersActive => 'Pelanggan';
+
+  @override
+  String get tradeSubscribersEmpty => 'Belum ada pelanggan.';
+
+  @override
+  String get tradeRequestsEmpty => 'Tidak ada permintaan langganan.';
+
+  @override
+  String get tradeApprove => 'Setujui';
+
+  @override
+  String get tradeDecline => 'Tolak';
+
+  @override
+  String get tradeRemoveSubscriber => 'Keluarkan';
+
+  @override
+  String tradeRemoveSubscriberConfirm(String name) {
+    return 'Keluarkan $name dari pelanggan trade Anda?';
+  }
+
+  @override
+  String tradeRequestExpires(String date) {
+    return 'Kedaluwarsa $date';
+  }
+
+  @override
+  String tradeSubscribedSince(String date) {
+    return 'Berlangganan sejak $date';
+  }
+
+  @override
+  String get notifTypeTradeActivity => 'Aktivitas trade';
+
+  @override
+  String get notifTypeTradeActivityHint => 'Trade dari trader yang Anda langgan';
+
+  @override
+  String get notifTypeTradeShare => 'Berbagi trade';
+
+  @override
+  String get notifTypeTradeShareHint => 'Status pengajuan dan permintaan langganan';
+
+  @override
+  String get notifFilterAll => 'Semua';
+
+  @override
+  String get notifFilterTrade => 'Trade';
+
+  @override
+  String get notifTradeEmpty => 'Belum ada notifikasi trade.';
+
+  @override
+  String get notifTradeApproved => 'Pengajuan berbagi trade disetujui';
+
+  @override
+  String get notifTradeApprovedBody => 'Pelanggan Anda kini menerima notifikasi trade Anda.';
+
+  @override
+  String get notifTradeRejected => 'Pengajuan berbagi trade ditolak';
+
+  @override
+  String get notifTradeSuspended => 'Berbagi trade ditangguhkan';
+
+  @override
+  String get notifTradeRevoked => 'Izin berbagi trade dicabut';
+
+  @override
+  String get notifTradeReinstated => 'Berbagi trade aktif kembali';
+
+  @override
+  String get notifTradeAutoPaused => 'Berbagi trade dijeda';
+
+  @override
+  String get notifTradeAutoPausedBody => 'Tidak ada rekening yang bisa dibagikan.';
+
+  @override
+  String get notifTradeAutoResumed => 'Berbagi trade aktif kembali';
+
+  @override
+  String get notifTradeAutoResumedBody => 'Rekening Anda tertaut kembali.';
+
+  @override
+  String notifTradeRequest(String name) {
+    return '$name ingin berlangganan trade Anda';
+  }
+
+  @override
+  String get notifTradeRequestBody => 'Ketuk untuk menyetujui atau menolak.';
+
+  @override
+  String notifTradeRequestApproved(String name) {
+    return '$name menyetujui langganan trade Anda';
+  }
+
+  @override
+  String get notifTradeUpdate => 'Pembaruan berbagi trade';
+
+  @override
+  String get errorTradeNotEligible => 'Anda belum memenuhi syarat berbagi trade.';
+
+  @override
+  String get errorTradeTermsOutdated => 'Syarat & Ketentuan sudah diperbarui. Baca dan setujui lagi.';
+
+  @override
+  String get errorTradeAlreadyApplied => 'Pengajuan Anda masih berjalan.';
+
+  @override
+  String get errorTradeNotSharing => 'Anda belum terdaftar sebagai trader.';
+
+  @override
+  String get errorTradeNotActive => 'Berbagi trade tidak sedang aktif.';
+
+  @override
+  String get errorTradeNotPaused => 'Berbagi trade tidak sedang dijeda.';
+
+  @override
+  String get errorTradeNoAccounts => 'Tidak ada rekening aktif yang bisa dibagikan.';
+
+  @override
+  String get errorTradeAccountsRequired => 'Pilih minimal satu rekening.';
+
+  @override
+  String get errorTradeAccountNotEligible => 'Ada rekening yang tidak bisa dibagikan.';
+
+  @override
+  String get errorTradeInvalidDelay => 'Jeda di luar batas yang diizinkan.';
+
+  @override
+  String get errorTradeRiskOutdated => 'Pernyataan risiko sudah diperbarui. Baca dan setujui lagi.';
+
+  @override
+  String get errorTradeAlreadySubscribed => 'Anda sudah berlangganan trader ini.';
+
+  @override
+  String get errorTradeSubscriptionLimit => 'Anda sudah mencapai batas jumlah trader yang dilanggan.';
+
+  @override
+  String get errorTradeSubscriptionNotFound => 'Langganan tidak ditemukan.';
+
+  @override
+  String get errorTradeActivityNotFound => 'Aktivitas trade tidak ditemukan.';
+
+  @override
+  String get errorTradeNotTrader => 'Hanya trader yang bisa melihat pelanggan.';
 }

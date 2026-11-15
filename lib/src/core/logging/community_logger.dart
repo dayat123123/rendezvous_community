@@ -120,6 +120,7 @@ abstract final class CommunityLoggers {
   static final Logger config = Logger('$rootName.Config');
   static final Logger analytics = Logger('$rootName.Analytics');
   static final Logger offline = Logger('$rootName.Offline');
+  static final Logger tradeShare = Logger('$rootName.TradeShare');
 
   static StreamSubscription<LogRecord>? _subscription;
 

@@ -4843,6 +4843,1008 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Anda sudah keluar dari chat ini.'**
   String get chatLeftNotice;
+
+  /// No description provided for @tradeShareTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Berbagi aktivitas trade'**
+  String get tradeShareTitle;
+
+  /// No description provided for @tradeShareIntro.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelanggan Anda menerima notifikasi saat order Anda selesai (match). Informasi ini bukan rekomendasi dan tidak ada order otomatis.'**
+  String get tradeShareIntro;
+
+  /// No description provided for @tradeShareUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Fitur berbagi trade sedang tidak tersedia.'**
+  String get tradeShareUnavailable;
+
+  /// No description provided for @tradeShareStatusNone.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum mengajukan'**
+  String get tradeShareStatusNone;
+
+  /// No description provided for @tradeShareStatusPending.
+  ///
+  /// In id, this message translates to:
+  /// **'Menunggu peninjauan'**
+  String get tradeShareStatusPending;
+
+  /// No description provided for @tradeShareStatusActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktif'**
+  String get tradeShareStatusActive;
+
+  /// No description provided for @tradeShareStatusPaused.
+  ///
+  /// In id, this message translates to:
+  /// **'Dijeda'**
+  String get tradeShareStatusPaused;
+
+  /// No description provided for @tradeShareStatusSuspended.
+  ///
+  /// In id, this message translates to:
+  /// **'Ditangguhkan'**
+  String get tradeShareStatusSuspended;
+
+  /// No description provided for @tradeShareStatusRejected.
+  ///
+  /// In id, this message translates to:
+  /// **'Ditolak'**
+  String get tradeShareStatusRejected;
+
+  /// No description provided for @tradeShareStatusRevoked.
+  ///
+  /// In id, this message translates to:
+  /// **'Dicabut'**
+  String get tradeShareStatusRevoked;
+
+  /// No description provided for @tradeShareStatusWithdrawn.
+  ///
+  /// In id, this message translates to:
+  /// **'Dihentikan'**
+  String get tradeShareStatusWithdrawn;
+
+  /// No description provided for @tradeShareHintNone.
+  ///
+  /// In id, this message translates to:
+  /// **'Ajukan untuk membagikan trade yang sudah match ke pelanggan Anda.'**
+  String get tradeShareHintNone;
+
+  /// No description provided for @tradeShareHintPending.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengajuan Anda sedang ditinjau Kepatuhan.'**
+  String get tradeShareHintPending;
+
+  /// No description provided for @tradeShareHintActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Trade Anda dibagikan ke pelanggan {minutes} menit setelah match.'**
+  String tradeShareHintActive(int minutes);
+
+  /// No description provided for @tradeShareHintPaused.
+  ///
+  /// In id, this message translates to:
+  /// **'Pembagian dijeda. Pelanggan tetap tercatat dan menerima lagi saat Anda melanjutkan.'**
+  String get tradeShareHintPaused;
+
+  /// No description provided for @tradeShareHintPausedSystem.
+  ///
+  /// In id, this message translates to:
+  /// **'Dijeda otomatis karena tidak ada rekening yang bisa dibagikan.'**
+  String get tradeShareHintPausedSystem;
+
+  /// No description provided for @tradeShareHintSuspended.
+  ///
+  /// In id, this message translates to:
+  /// **'Ditangguhkan Kepatuhan. Anda belum bisa melanjutkan sendiri.'**
+  String get tradeShareHintSuspended;
+
+  /// No description provided for @tradeShareHintRejected.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengajuan Anda ditolak.'**
+  String get tradeShareHintRejected;
+
+  /// No description provided for @tradeShareHintRevoked.
+  ///
+  /// In id, this message translates to:
+  /// **'Izin berbagi trade Anda dicabut.'**
+  String get tradeShareHintRevoked;
+
+  /// No description provided for @tradeShareHintWithdrawn.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda sudah berhenti membagikan trade.'**
+  String get tradeShareHintWithdrawn;
+
+  /// No description provided for @tradeShareSuspendedUntil.
+  ///
+  /// In id, this message translates to:
+  /// **'Ditangguhkan sampai {date}.'**
+  String tradeShareSuspendedUntil(String date);
+
+  /// No description provided for @tradeShareReason.
+  ///
+  /// In id, this message translates to:
+  /// **'Alasan: {reason}'**
+  String tradeShareReason(String reason);
+
+  /// No description provided for @tradeShareCooldown.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda bisa mengajukan lagi mulai {date}.'**
+  String tradeShareCooldown(String date);
+
+  /// No description provided for @tradeShareChecks.
+  ///
+  /// In id, this message translates to:
+  /// **'Syarat pengajuan'**
+  String get tradeShareChecks;
+
+  /// No description provided for @tradeShareCheckFeature.
+  ///
+  /// In id, this message translates to:
+  /// **'Fitur berbagi trade aktif'**
+  String get tradeShareCheckFeature;
+
+  /// No description provided for @tradeShareCheckPilot.
+  ///
+  /// In id, this message translates to:
+  /// **'Terdaftar di program pilot'**
+  String get tradeShareCheckPilot;
+
+  /// No description provided for @tradeShareCheckPilotHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Saat ini pengajuan hanya untuk nasabah undangan.'**
+  String get tradeShareCheckPilotHint;
+
+  /// No description provided for @tradeShareCheckProfile.
+  ///
+  /// In id, this message translates to:
+  /// **'Profil nasabah biasa'**
+  String get tradeShareCheckProfile;
+
+  /// No description provided for @tradeShareCheckProfileHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun tamu, akun resmi, dan akun staf tidak bisa mengajukan.'**
+  String get tradeShareCheckProfileHint;
+
+  /// No description provided for @tradeShareCheckSanction.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak sedang dalam sanksi moderasi'**
+  String get tradeShareCheckSanction;
+
+  /// No description provided for @tradeShareCheckSanctionHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Tunggu sampai sanksi moderasi Anda berakhir.'**
+  String get tradeShareCheckSanctionHint;
+
+  /// No description provided for @tradeShareCheckAge.
+  ///
+  /// In id, this message translates to:
+  /// **'Umur profil memenuhi syarat'**
+  String get tradeShareCheckAge;
+
+  /// No description provided for @tradeShareCheckAgeHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Profil komunitas Anda belum cukup lama.'**
+  String get tradeShareCheckAgeHint;
+
+  /// No description provided for @tradeShareCheckCooldown.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak dalam masa tunggu'**
+  String get tradeShareCheckCooldown;
+
+  /// No description provided for @tradeShareCheckAccount.
+  ///
+  /// In id, this message translates to:
+  /// **'Punya rekening tertaut yang aktif'**
+  String get tradeShareCheckAccount;
+
+  /// No description provided for @tradeShareCheckAccountHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Masuk ke fitur komunitas dari aplikasi OLT dengan rekening Anda.'**
+  String get tradeShareCheckAccountHint;
+
+  /// No description provided for @tradeShareCheckTerms.
+  ///
+  /// In id, this message translates to:
+  /// **'Syarat & Ketentuan tersedia'**
+  String get tradeShareCheckTerms;
+
+  /// No description provided for @tradeShareCheckTermsHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Syarat & Ketentuan belum diterbitkan.'**
+  String get tradeShareCheckTermsHint;
+
+  /// No description provided for @tradeShareAccounts.
+  ///
+  /// In id, this message translates to:
+  /// **'Rekening yang dibagikan'**
+  String get tradeShareAccounts;
+
+  /// No description provided for @tradeShareAccountsHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya rekening aktif yang bisa dipilih.'**
+  String get tradeShareAccountsHint;
+
+  /// No description provided for @tradeShareAccountActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktif'**
+  String get tradeShareAccountActive;
+
+  /// No description provided for @tradeShareAccountUnlinked.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak tertaut lagi'**
+  String get tradeShareAccountUnlinked;
+
+  /// No description provided for @tradeShareAccountExpired.
+  ///
+  /// In id, this message translates to:
+  /// **'Kedaluwarsa'**
+  String get tradeShareAccountExpired;
+
+  /// No description provided for @tradeShareAccountSharedLink.
+  ///
+  /// In id, this message translates to:
+  /// **'Tertaut ke profil lain'**
+  String get tradeShareAccountSharedLink;
+
+  /// No description provided for @tradeShareAccountExcluded.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak boleh dibagikan'**
+  String get tradeShareAccountExcluded;
+
+  /// No description provided for @tradeShareShowPrice.
+  ///
+  /// In id, this message translates to:
+  /// **'Tampilkan harga'**
+  String get tradeShareShowPrice;
+
+  /// No description provided for @tradeShareShowLot.
+  ///
+  /// In id, this message translates to:
+  /// **'Tampilkan lot'**
+  String get tradeShareShowLot;
+
+  /// No description provided for @tradeShareShowLotHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Lot memperlihatkan besar posisi Anda.'**
+  String get tradeShareShowLotHint;
+
+  /// No description provided for @tradeShareForcedHidden.
+  ///
+  /// In id, this message translates to:
+  /// **'Disembunyikan oleh Kepatuhan'**
+  String get tradeShareForcedHidden;
+
+  /// No description provided for @tradeShareDelay.
+  ///
+  /// In id, this message translates to:
+  /// **'Jeda notifikasi'**
+  String get tradeShareDelay;
+
+  /// No description provided for @tradeShareDelayHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Notifikasi dikirim paling cepat {minutes} menit setelah trade.'**
+  String tradeShareDelayHint(int minutes);
+
+  /// No description provided for @tradeShareMinutes.
+  ///
+  /// In id, this message translates to:
+  /// **'{count} menit'**
+  String tradeShareMinutes(int count);
+
+  /// No description provided for @tradeShareSubscribeMode.
+  ///
+  /// In id, this message translates to:
+  /// **'Mode langganan'**
+  String get tradeShareSubscribeMode;
+
+  /// No description provided for @tradeShareModeAuto.
+  ///
+  /// In id, this message translates to:
+  /// **'Otomatis'**
+  String get tradeShareModeAuto;
+
+  /// No description provided for @tradeShareModeApproval.
+  ///
+  /// In id, this message translates to:
+  /// **'Perlu persetujuan'**
+  String get tradeShareModeApproval;
+
+  /// No description provided for @tradeShareModeApprovalHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda menyetujui atau menolak setiap permintaan langganan.'**
+  String get tradeShareModeApprovalHint;
+
+  /// No description provided for @tradeSharePreview.
+  ///
+  /// In id, this message translates to:
+  /// **'Pratinjau notifikasi'**
+  String get tradeSharePreview;
+
+  /// No description provided for @tradeSharePreviewBuy.
+  ///
+  /// In id, this message translates to:
+  /// **'{name} membeli \${stock}'**
+  String tradeSharePreviewBuy(String name, String stock);
+
+  /// No description provided for @tradeSharePreviewSell.
+  ///
+  /// In id, this message translates to:
+  /// **'{name} menjual \${stock}'**
+  String tradeSharePreviewSell(String name, String stock);
+
+  /// No description provided for @tradeShareLots.
+  ///
+  /// In id, this message translates to:
+  /// **'{lots} lot'**
+  String tradeShareLots(String lots);
+
+  /// No description provided for @tradeShareLotsOf.
+  ///
+  /// In id, this message translates to:
+  /// **'{lots} dari {total} lot'**
+  String tradeShareLotsOf(String lots, String total);
+
+  /// No description provided for @tradeSharePartial.
+  ///
+  /// In id, this message translates to:
+  /// **'sebagian'**
+  String get tradeSharePartial;
+
+  /// No description provided for @tradeShareTerms.
+  ///
+  /// In id, this message translates to:
+  /// **'Syarat & Ketentuan Berbagi Trade'**
+  String get tradeShareTerms;
+
+  /// No description provided for @tradeShareReadTerms.
+  ///
+  /// In id, this message translates to:
+  /// **'Baca S&K'**
+  String get tradeShareReadTerms;
+
+  /// No description provided for @tradeShareAcceptTerms.
+  ///
+  /// In id, this message translates to:
+  /// **'Saya sudah membaca dan menyetujui Syarat & Ketentuan Berbagi Trade'**
+  String get tradeShareAcceptTerms;
+
+  /// No description provided for @tradeShareSubmit.
+  ///
+  /// In id, this message translates to:
+  /// **'Ajukan'**
+  String get tradeShareSubmit;
+
+  /// No description provided for @tradeShareSave.
+  ///
+  /// In id, this message translates to:
+  /// **'Simpan perubahan'**
+  String get tradeShareSave;
+
+  /// No description provided for @tradeSharePause.
+  ///
+  /// In id, this message translates to:
+  /// **'Jeda'**
+  String get tradeSharePause;
+
+  /// No description provided for @tradeShareResume.
+  ///
+  /// In id, this message translates to:
+  /// **'Lanjutkan'**
+  String get tradeShareResume;
+
+  /// No description provided for @tradeShareWithdraw.
+  ///
+  /// In id, this message translates to:
+  /// **'Berhenti membagikan'**
+  String get tradeShareWithdraw;
+
+  /// No description provided for @tradeShareWithdrawConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Berhenti membagikan trade? Semua langganan berakhir dan Anda perlu mengajukan ulang untuk membagikan lagi.'**
+  String get tradeShareWithdrawConfirm;
+
+  /// No description provided for @tradeShareScopeTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Ubah cakupan data?'**
+  String get tradeShareScopeTitle;
+
+  /// No description provided for @tradeShareScopeConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Perubahan rekening, harga, atau lot mengubah data yang dilihat pelanggan. Perubahan dicatat dan berlaku untuk order berikutnya.'**
+  String get tradeShareScopeConfirm;
+
+  /// No description provided for @tradeShareConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Ya, ubah'**
+  String get tradeShareConfirm;
+
+  /// No description provided for @tradeShareSubmitted.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengajuan terkirim. Menunggu peninjauan.'**
+  String get tradeShareSubmitted;
+
+  /// No description provided for @tradeShareSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaturan disimpan.'**
+  String get tradeShareSaved;
+
+  /// No description provided for @tradeShareMySubscribers.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelanggan saya'**
+  String get tradeShareMySubscribers;
+
+  /// No description provided for @tradeShareSubscriberCounts.
+  ///
+  /// In id, this message translates to:
+  /// **'{active} aktif · {pending} menunggu'**
+  String tradeShareSubscriberCounts(int active, int pending);
+
+  /// No description provided for @tradeShareBadge.
+  ///
+  /// In id, this message translates to:
+  /// **'Membagikan trade'**
+  String get tradeShareBadge;
+
+  /// No description provided for @tradeBellSubscribe.
+  ///
+  /// In id, this message translates to:
+  /// **'Notifikasi trade'**
+  String get tradeBellSubscribe;
+
+  /// No description provided for @tradeBellPending.
+  ///
+  /// In id, this message translates to:
+  /// **'Menunggu persetujuan'**
+  String get tradeBellPending;
+
+  /// No description provided for @tradeBellActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Berlangganan'**
+  String get tradeBellActive;
+
+  /// No description provided for @tradeBellMuted.
+  ///
+  /// In id, this message translates to:
+  /// **'Dibisukan'**
+  String get tradeBellMuted;
+
+  /// No description provided for @tradeBellUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Notifikasi trade tidak tersedia'**
+  String get tradeBellUnavailable;
+
+  /// No description provided for @tradeMute.
+  ///
+  /// In id, this message translates to:
+  /// **'Bisukan notifikasi trade'**
+  String get tradeMute;
+
+  /// No description provided for @tradeUnmute.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktifkan notifikasi trade'**
+  String get tradeUnmute;
+
+  /// No description provided for @tradeUnsubscribe.
+  ///
+  /// In id, this message translates to:
+  /// **'Berhenti berlangganan'**
+  String get tradeUnsubscribe;
+
+  /// No description provided for @tradeCancelRequest.
+  ///
+  /// In id, this message translates to:
+  /// **'Batalkan permintaan'**
+  String get tradeCancelRequest;
+
+  /// No description provided for @tradeUnsubscribeConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Berhenti menerima notifikasi trade dari {name}?'**
+  String tradeUnsubscribeConfirm(String name);
+
+  /// No description provided for @tradeRequestSent.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan dikirim. Menunggu persetujuan trader.'**
+  String get tradeRequestSent;
+
+  /// No description provided for @tradeSubscribed.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda akan menerima notifikasi trade dari {name}.'**
+  String tradeSubscribed(String name);
+
+  /// No description provided for @tradeRiskTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pernyataan risiko'**
+  String get tradeRiskTitle;
+
+  /// No description provided for @tradeRiskAccept.
+  ///
+  /// In id, this message translates to:
+  /// **'Saya mengerti bahwa informasi ini bukan rekomendasi dan keputusan investasi sepenuhnya tanggung jawab saya'**
+  String get tradeRiskAccept;
+
+  /// No description provided for @tradeRiskSubscribe.
+  ///
+  /// In id, this message translates to:
+  /// **'Setuju & berlangganan'**
+  String get tradeRiskSubscribe;
+
+  /// No description provided for @tradeNotSharingNow.
+  ///
+  /// In id, this message translates to:
+  /// **'Trader ini sedang tidak membagikan trade.'**
+  String get tradeNotSharingNow;
+
+  /// No description provided for @tradeBlockedSelf.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda tidak bisa berlangganan diri sendiri.'**
+  String get tradeBlockedSelf;
+
+  /// No description provided for @tradeBlockedNotCustomer.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya nasabah yang bisa berlangganan.'**
+  String get tradeBlockedNotCustomer;
+
+  /// No description provided for @tradeBlockedNoAccount.
+  ///
+  /// In id, this message translates to:
+  /// **'Tautkan rekening OLT Anda untuk berlangganan.'**
+  String get tradeBlockedNoAccount;
+
+  /// No description provided for @tradeBlockedSanctioned.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun Anda sedang dalam sanksi.'**
+  String get tradeBlockedSanctioned;
+
+  /// No description provided for @tradeBlockedBlocked.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak tersedia untuk akun ini.'**
+  String get tradeBlockedBlocked;
+
+  /// No description provided for @tradeBlockedNotFollowing.
+  ///
+  /// In id, this message translates to:
+  /// **'Ikuti trader ini untuk berlangganan notifikasi trade.'**
+  String get tradeBlockedNotFollowing;
+
+  /// No description provided for @tradeBlockedRisk.
+  ///
+  /// In id, this message translates to:
+  /// **'Pernyataan risiko belum tersedia.'**
+  String get tradeBlockedRisk;
+
+  /// No description provided for @tradeSubscriptionsTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Langganan trade'**
+  String get tradeSubscriptionsTitle;
+
+  /// No description provided for @tradeSubscriptionsEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda belum berlangganan trader mana pun.'**
+  String get tradeSubscriptionsEmpty;
+
+  /// No description provided for @tradeActivityFeed.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas trade'**
+  String get tradeActivityFeed;
+
+  /// No description provided for @tradeActivityEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada aktivitas trade.'**
+  String get tradeActivityEmpty;
+
+  /// No description provided for @tradeActivityTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Detail aktivitas trade'**
+  String get tradeActivityTitle;
+
+  /// No description provided for @tradeActivityDisclaimer.
+  ///
+  /// In id, this message translates to:
+  /// **'Informasi ini bukan rekomendasi. Keputusan investasi sepenuhnya tanggung jawab Anda.'**
+  String get tradeActivityDisclaimer;
+
+  /// No description provided for @tradeSideBuy.
+  ///
+  /// In id, this message translates to:
+  /// **'Beli'**
+  String get tradeSideBuy;
+
+  /// No description provided for @tradeSideSell.
+  ///
+  /// In id, this message translates to:
+  /// **'Jual'**
+  String get tradeSideSell;
+
+  /// No description provided for @tradeActivitySide.
+  ///
+  /// In id, this message translates to:
+  /// **'Transaksi'**
+  String get tradeActivitySide;
+
+  /// No description provided for @tradeActivityStock.
+  ///
+  /// In id, this message translates to:
+  /// **'Saham'**
+  String get tradeActivityStock;
+
+  /// No description provided for @tradeActivityVolume.
+  ///
+  /// In id, this message translates to:
+  /// **'Volume'**
+  String get tradeActivityVolume;
+
+  /// No description provided for @tradeActivityPrice.
+  ///
+  /// In id, this message translates to:
+  /// **'Harga'**
+  String get tradeActivityPrice;
+
+  /// No description provided for @tradeActivityTime.
+  ///
+  /// In id, this message translates to:
+  /// **'Selesai'**
+  String get tradeActivityTime;
+
+  /// No description provided for @tradeActivityHidden.
+  ///
+  /// In id, this message translates to:
+  /// **'Disembunyikan trader'**
+  String get tradeActivityHidden;
+
+  /// No description provided for @tradeActivityPartial.
+  ///
+  /// In id, this message translates to:
+  /// **'Terisi sebagian'**
+  String get tradeActivityPartial;
+
+  /// No description provided for @tradeActivityAdditional.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambahan dari order yang sudah dilaporkan'**
+  String get tradeActivityAdditional;
+
+  /// No description provided for @tradeOpenStock.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka \${stock}'**
+  String tradeOpenStock(String stock);
+
+  /// No description provided for @tradeSubscribersTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelanggan trade'**
+  String get tradeSubscribersTitle;
+
+  /// No description provided for @tradeSubscribersRequests.
+  ///
+  /// In id, this message translates to:
+  /// **'Permintaan'**
+  String get tradeSubscribersRequests;
+
+  /// No description provided for @tradeSubscribersActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelanggan'**
+  String get tradeSubscribersActive;
+
+  /// No description provided for @tradeSubscribersEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada pelanggan.'**
+  String get tradeSubscribersEmpty;
+
+  /// No description provided for @tradeRequestsEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada permintaan langganan.'**
+  String get tradeRequestsEmpty;
+
+  /// No description provided for @tradeApprove.
+  ///
+  /// In id, this message translates to:
+  /// **'Setujui'**
+  String get tradeApprove;
+
+  /// No description provided for @tradeDecline.
+  ///
+  /// In id, this message translates to:
+  /// **'Tolak'**
+  String get tradeDecline;
+
+  /// No description provided for @tradeRemoveSubscriber.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluarkan'**
+  String get tradeRemoveSubscriber;
+
+  /// No description provided for @tradeRemoveSubscriberConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Keluarkan {name} dari pelanggan trade Anda?'**
+  String tradeRemoveSubscriberConfirm(String name);
+
+  /// No description provided for @tradeRequestExpires.
+  ///
+  /// In id, this message translates to:
+  /// **'Kedaluwarsa {date}'**
+  String tradeRequestExpires(String date);
+
+  /// No description provided for @tradeSubscribedSince.
+  ///
+  /// In id, this message translates to:
+  /// **'Berlangganan sejak {date}'**
+  String tradeSubscribedSince(String date);
+
+  /// No description provided for @notifTypeTradeActivity.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas trade'**
+  String get notifTypeTradeActivity;
+
+  /// No description provided for @notifTypeTradeActivityHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Trade dari trader yang Anda langgan'**
+  String get notifTypeTradeActivityHint;
+
+  /// No description provided for @notifTypeTradeShare.
+  ///
+  /// In id, this message translates to:
+  /// **'Berbagi trade'**
+  String get notifTypeTradeShare;
+
+  /// No description provided for @notifTypeTradeShareHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Status pengajuan dan permintaan langganan'**
+  String get notifTypeTradeShareHint;
+
+  /// No description provided for @notifFilterAll.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua'**
+  String get notifFilterAll;
+
+  /// No description provided for @notifFilterTrade.
+  ///
+  /// In id, this message translates to:
+  /// **'Trade'**
+  String get notifFilterTrade;
+
+  /// No description provided for @notifTradeEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada notifikasi trade.'**
+  String get notifTradeEmpty;
+
+  /// No description provided for @notifTradeApproved.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengajuan berbagi trade disetujui'**
+  String get notifTradeApproved;
+
+  /// No description provided for @notifTradeApprovedBody.
+  ///
+  /// In id, this message translates to:
+  /// **'Pelanggan Anda kini menerima notifikasi trade Anda.'**
+  String get notifTradeApprovedBody;
+
+  /// No description provided for @notifTradeRejected.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengajuan berbagi trade ditolak'**
+  String get notifTradeRejected;
+
+  /// No description provided for @notifTradeSuspended.
+  ///
+  /// In id, this message translates to:
+  /// **'Berbagi trade ditangguhkan'**
+  String get notifTradeSuspended;
+
+  /// No description provided for @notifTradeRevoked.
+  ///
+  /// In id, this message translates to:
+  /// **'Izin berbagi trade dicabut'**
+  String get notifTradeRevoked;
+
+  /// No description provided for @notifTradeReinstated.
+  ///
+  /// In id, this message translates to:
+  /// **'Berbagi trade aktif kembali'**
+  String get notifTradeReinstated;
+
+  /// No description provided for @notifTradeAutoPaused.
+  ///
+  /// In id, this message translates to:
+  /// **'Berbagi trade dijeda'**
+  String get notifTradeAutoPaused;
+
+  /// No description provided for @notifTradeAutoPausedBody.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada rekening yang bisa dibagikan.'**
+  String get notifTradeAutoPausedBody;
+
+  /// No description provided for @notifTradeAutoResumed.
+  ///
+  /// In id, this message translates to:
+  /// **'Berbagi trade aktif kembali'**
+  String get notifTradeAutoResumed;
+
+  /// No description provided for @notifTradeAutoResumedBody.
+  ///
+  /// In id, this message translates to:
+  /// **'Rekening Anda tertaut kembali.'**
+  String get notifTradeAutoResumedBody;
+
+  /// No description provided for @notifTradeRequest.
+  ///
+  /// In id, this message translates to:
+  /// **'{name} ingin berlangganan trade Anda'**
+  String notifTradeRequest(String name);
+
+  /// No description provided for @notifTradeRequestBody.
+  ///
+  /// In id, this message translates to:
+  /// **'Ketuk untuk menyetujui atau menolak.'**
+  String get notifTradeRequestBody;
+
+  /// No description provided for @notifTradeRequestApproved.
+  ///
+  /// In id, this message translates to:
+  /// **'{name} menyetujui langganan trade Anda'**
+  String notifTradeRequestApproved(String name);
+
+  /// No description provided for @notifTradeUpdate.
+  ///
+  /// In id, this message translates to:
+  /// **'Pembaruan berbagi trade'**
+  String get notifTradeUpdate;
+
+  /// No description provided for @errorTradeNotEligible.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda belum memenuhi syarat berbagi trade.'**
+  String get errorTradeNotEligible;
+
+  /// No description provided for @errorTradeTermsOutdated.
+  ///
+  /// In id, this message translates to:
+  /// **'Syarat & Ketentuan sudah diperbarui. Baca dan setujui lagi.'**
+  String get errorTradeTermsOutdated;
+
+  /// No description provided for @errorTradeAlreadyApplied.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengajuan Anda masih berjalan.'**
+  String get errorTradeAlreadyApplied;
+
+  /// No description provided for @errorTradeNotSharing.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda belum terdaftar sebagai trader.'**
+  String get errorTradeNotSharing;
+
+  /// No description provided for @errorTradeNotActive.
+  ///
+  /// In id, this message translates to:
+  /// **'Berbagi trade tidak sedang aktif.'**
+  String get errorTradeNotActive;
+
+  /// No description provided for @errorTradeNotPaused.
+  ///
+  /// In id, this message translates to:
+  /// **'Berbagi trade tidak sedang dijeda.'**
+  String get errorTradeNotPaused;
+
+  /// No description provided for @errorTradeNoAccounts.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada rekening aktif yang bisa dibagikan.'**
+  String get errorTradeNoAccounts;
+
+  /// No description provided for @errorTradeAccountsRequired.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih minimal satu rekening.'**
+  String get errorTradeAccountsRequired;
+
+  /// No description provided for @errorTradeAccountNotEligible.
+  ///
+  /// In id, this message translates to:
+  /// **'Ada rekening yang tidak bisa dibagikan.'**
+  String get errorTradeAccountNotEligible;
+
+  /// No description provided for @errorTradeInvalidDelay.
+  ///
+  /// In id, this message translates to:
+  /// **'Jeda di luar batas yang diizinkan.'**
+  String get errorTradeInvalidDelay;
+
+  /// No description provided for @errorTradeRiskOutdated.
+  ///
+  /// In id, this message translates to:
+  /// **'Pernyataan risiko sudah diperbarui. Baca dan setujui lagi.'**
+  String get errorTradeRiskOutdated;
+
+  /// No description provided for @errorTradeAlreadySubscribed.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda sudah berlangganan trader ini.'**
+  String get errorTradeAlreadySubscribed;
+
+  /// No description provided for @errorTradeSubscriptionLimit.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda sudah mencapai batas jumlah trader yang dilanggan.'**
+  String get errorTradeSubscriptionLimit;
+
+  /// No description provided for @errorTradeSubscriptionNotFound.
+  ///
+  /// In id, this message translates to:
+  /// **'Langganan tidak ditemukan.'**
+  String get errorTradeSubscriptionNotFound;
+
+  /// No description provided for @errorTradeActivityNotFound.
+  ///
+  /// In id, this message translates to:
+  /// **'Aktivitas trade tidak ditemukan.'**
+  String get errorTradeActivityNotFound;
+
+  /// No description provided for @errorTradeNotTrader.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya trader yang bisa melihat pelanggan.'**
+  String get errorTradeNotTrader;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

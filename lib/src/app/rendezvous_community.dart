@@ -13,6 +13,7 @@ import 'package:rendezvous_community/src/app/community_help_scope.dart';
 import 'package:rendezvous_community/src/app/community_offline_scope.dart';
 import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/app/community_support_scope.dart';
+import 'package:rendezvous_community/src/app/community_trade_share_scope.dart';
 import 'package:rendezvous_community/src/core/auth/auth_bridge_client.dart';
 import 'package:rendezvous_community/src/core/auth/social_session.dart';
 import 'package:rendezvous_community/src/core/auth/token_manager.dart';
@@ -105,6 +106,8 @@ import 'package:rendezvous_community/src/features/stocks/domain/repositories/sto
 import 'package:rendezvous_community/src/features/support/data/repositories/support_chat_repository.dart';
 import 'package:rendezvous_community/src/features/support/data/repositories/support_repository_impl.dart';
 import 'package:rendezvous_community/src/features/support/domain/repositories/support_repository.dart';
+import 'package:rendezvous_community/src/features/trade_share/data/repositories/trade_share_repository_impl.dart';
+import 'package:rendezvous_community/src/features/trade_share/domain/services/community_trade_share.dart';
 import 'package:rendezvous_community/src/features/trending/data/repositories/trending_repository_impl.dart';
 import 'package:rendezvous_community/src/features/trending/domain/repositories/trending_repository.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
@@ -134,6 +137,7 @@ class RendezvousCommunity
         CommunityFeatureDependencies,
         CommunityPromoPopupDependencies,
         CommunityOfflineDependencies,
+        CommunityTradeShareDependencies,
         CommunityUserChanges {
   RendezvousCommunity._({
     required this.client,
@@ -172,6 +176,7 @@ class RendezvousCommunity
     required this.promoPopups,
     required this.drafts,
     required this.groups,
+    required this.tradeShare,
     required this.connectivity,
     required this._offline,
     required this.chatCache,
@@ -422,6 +427,7 @@ class RendezvousCommunity
       ),
       drafts: CommunityDrafts(PostDraftRepositoryImpl(api), PostDraftStoreImpl(localValues)),
       groups: GroupRepositoryImpl(api),
+      tradeShare: CommunityTradeShare(TradeShareRepositoryImpl(api)),
       analytics: CommunityAnalytics(
         AnalyticsRepositoryImpl(api),
         enabled: () => configService.current.feature(CommunityFlags.analytics),
@@ -454,6 +460,7 @@ class RendezvousCommunity
         social.notificationReporter.reset();
         social.bannerDismissals.reset();
         social.promoPopups.onUserChanged(userId);
+        social.tradeShare.onUserChanged(userId);
         if (social._started && userId != null) unawaited(social.configService.refresh());
         if (session != null) unawaited(social._bindOffline(session.user));
       }
@@ -520,6 +527,8 @@ class RendezvousCommunity
   @override
   final GroupRepository groups;
   @override
+  final CommunityTradeShare tradeShare;
+  @override
   final CommunityConnectivity connectivity;
   @override
   final ChatCacheRepository? chatCache;
@@ -581,6 +590,7 @@ class RendezvousCommunity
     _lifecycle = AppLifecycleListener(
       onResume: () {
         unawaited(configService.refresh());
+        unawaited(tradeShare.onResumed());
         unawaited(outbox?.flush(force: true));
         connectivity.notifyResumed();
       },
@@ -732,6 +742,7 @@ class RendezvousCommunity
     linkPreviews.dispose();
     await bannerDismissals.dispose();
     promoPopups.dispose();
+    tradeShare.dispose();
     await configService.dispose();
     await _sessionSub?.cancel();
     await _connectivitySub?.cancel();

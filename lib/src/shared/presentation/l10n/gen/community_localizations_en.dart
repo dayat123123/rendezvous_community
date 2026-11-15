@@ -2740,4 +2740,549 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get chatLeftNotice => 'You left this chat.';
+
+  @override
+  String get tradeShareTitle => 'Share trade activity';
+
+  @override
+  String get tradeShareIntro =>
+      'Your subscribers get a notification when your orders are matched. This is not a recommendation and no order is placed for them.';
+
+  @override
+  String get tradeShareUnavailable => 'Trade sharing is not available right now.';
+
+  @override
+  String get tradeShareStatusNone => 'Not applied';
+
+  @override
+  String get tradeShareStatusPending => 'Under review';
+
+  @override
+  String get tradeShareStatusActive => 'Active';
+
+  @override
+  String get tradeShareStatusPaused => 'Paused';
+
+  @override
+  String get tradeShareStatusSuspended => 'Suspended';
+
+  @override
+  String get tradeShareStatusRejected => 'Rejected';
+
+  @override
+  String get tradeShareStatusRevoked => 'Revoked';
+
+  @override
+  String get tradeShareStatusWithdrawn => 'Stopped';
+
+  @override
+  String get tradeShareHintNone => 'Apply to share your matched trades with your subscribers.';
+
+  @override
+  String get tradeShareHintPending => 'Your application is being reviewed by Compliance.';
+
+  @override
+  String tradeShareHintActive(int minutes) {
+    return 'Your trades are shared with subscribers $minutes minutes after they match.';
+  }
+
+  @override
+  String get tradeShareHintPaused => 'Sharing is paused. Your subscribers stay and get notified again when you resume.';
+
+  @override
+  String get tradeShareHintPausedSystem => 'Paused automatically because no account can be shared.';
+
+  @override
+  String get tradeShareHintSuspended => 'Suspended by Compliance. You cannot resume it yourself.';
+
+  @override
+  String get tradeShareHintRejected => 'Your application was rejected.';
+
+  @override
+  String get tradeShareHintRevoked => 'Your trade sharing permission was revoked.';
+
+  @override
+  String get tradeShareHintWithdrawn => 'You stopped sharing your trades.';
+
+  @override
+  String tradeShareSuspendedUntil(String date) {
+    return 'Suspended until $date.';
+  }
+
+  @override
+  String tradeShareReason(String reason) {
+    return 'Reason: $reason';
+  }
+
+  @override
+  String tradeShareCooldown(String date) {
+    return 'You can apply again from $date.';
+  }
+
+  @override
+  String get tradeShareChecks => 'Requirements';
+
+  @override
+  String get tradeShareCheckFeature => 'Trade sharing is available';
+
+  @override
+  String get tradeShareCheckPilot => 'Invited to the pilot';
+
+  @override
+  String get tradeShareCheckPilotHint => 'Applications are currently open to invited customers only.';
+
+  @override
+  String get tradeShareCheckProfile => 'Regular customer profile';
+
+  @override
+  String get tradeShareCheckProfileHint => 'Guest, official, and staff accounts cannot apply.';
+
+  @override
+  String get tradeShareCheckSanction => 'No active moderation sanction';
+
+  @override
+  String get tradeShareCheckSanctionHint => 'Wait until your moderation sanction ends.';
+
+  @override
+  String get tradeShareCheckAge => 'Profile is old enough';
+
+  @override
+  String get tradeShareCheckAgeHint => 'Your community profile is too new.';
+
+  @override
+  String get tradeShareCheckCooldown => 'Not in a waiting period';
+
+  @override
+  String get tradeShareCheckAccount => 'Has an active linked account';
+
+  @override
+  String get tradeShareCheckAccountHint => 'Open the community from the OLT app while signed in to your account.';
+
+  @override
+  String get tradeShareCheckTerms => 'Terms are available';
+
+  @override
+  String get tradeShareCheckTermsHint => 'The terms have not been published yet.';
+
+  @override
+  String get tradeShareAccounts => 'Shared accounts';
+
+  @override
+  String get tradeShareAccountsHint => 'Only active accounts can be selected.';
+
+  @override
+  String get tradeShareAccountActive => 'Active';
+
+  @override
+  String get tradeShareAccountUnlinked => 'No longer linked';
+
+  @override
+  String get tradeShareAccountExpired => 'Expired';
+
+  @override
+  String get tradeShareAccountSharedLink => 'Linked to another profile';
+
+  @override
+  String get tradeShareAccountExcluded => 'Not allowed to be shared';
+
+  @override
+  String get tradeShareShowPrice => 'Show price';
+
+  @override
+  String get tradeShareShowLot => 'Show lots';
+
+  @override
+  String get tradeShareShowLotHint => 'Lots reveal the size of your position.';
+
+  @override
+  String get tradeShareForcedHidden => 'Hidden by Compliance';
+
+  @override
+  String get tradeShareDelay => 'Notification delay';
+
+  @override
+  String tradeShareDelayHint(int minutes) {
+    return 'Notifications are sent at least $minutes minutes after the trade.';
+  }
+
+  @override
+  String tradeShareMinutes(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: '$count minutes', one: '1 minute');
+    return '$_temp0';
+  }
+
+  @override
+  String get tradeShareSubscribeMode => 'Subscription mode';
+
+  @override
+  String get tradeShareModeAuto => 'Automatic';
+
+  @override
+  String get tradeShareModeApproval => 'Needs approval';
+
+  @override
+  String get tradeShareModeApprovalHint => 'You approve or decline each subscription request.';
+
+  @override
+  String get tradeSharePreview => 'Notification preview';
+
+  @override
+  String tradeSharePreviewBuy(String name, String stock) {
+    return '$name bought \$$stock';
+  }
+
+  @override
+  String tradeSharePreviewSell(String name, String stock) {
+    return '$name sold \$$stock';
+  }
+
+  @override
+  String tradeShareLots(String lots) {
+    return '$lots lots';
+  }
+
+  @override
+  String tradeShareLotsOf(String lots, String total) {
+    return '$lots of $total lots';
+  }
+
+  @override
+  String get tradeSharePartial => 'partial';
+
+  @override
+  String get tradeShareTerms => 'Trade Sharing Terms';
+
+  @override
+  String get tradeShareReadTerms => 'Read the terms';
+
+  @override
+  String get tradeShareAcceptTerms => 'I have read and agree to the Trade Sharing Terms';
+
+  @override
+  String get tradeShareSubmit => 'Apply';
+
+  @override
+  String get tradeShareSave => 'Save changes';
+
+  @override
+  String get tradeSharePause => 'Pause';
+
+  @override
+  String get tradeShareResume => 'Resume';
+
+  @override
+  String get tradeShareWithdraw => 'Stop sharing';
+
+  @override
+  String get tradeShareWithdrawConfirm =>
+      'Stop sharing your trades? All subscriptions end and you need to apply again to share later.';
+
+  @override
+  String get tradeShareScopeTitle => 'Change what is shared?';
+
+  @override
+  String get tradeShareScopeConfirm =>
+      'Changing accounts, price, or lots changes what subscribers see. The change is recorded and applies to your next orders.';
+
+  @override
+  String get tradeShareConfirm => 'Yes, change';
+
+  @override
+  String get tradeShareSubmitted => 'Application sent. Waiting for review.';
+
+  @override
+  String get tradeShareSaved => 'Settings saved.';
+
+  @override
+  String get tradeShareMySubscribers => 'My subscribers';
+
+  @override
+  String tradeShareSubscriberCounts(int active, int pending) {
+    return '$active active · $pending waiting';
+  }
+
+  @override
+  String get tradeShareBadge => 'Shares trades';
+
+  @override
+  String get tradeBellSubscribe => 'Trade alerts';
+
+  @override
+  String get tradeBellPending => 'Waiting for approval';
+
+  @override
+  String get tradeBellActive => 'Subscribed';
+
+  @override
+  String get tradeBellMuted => 'Muted';
+
+  @override
+  String get tradeBellUnavailable => 'Trade alerts unavailable';
+
+  @override
+  String get tradeMute => 'Mute trade alerts';
+
+  @override
+  String get tradeUnmute => 'Unmute trade alerts';
+
+  @override
+  String get tradeUnsubscribe => 'Unsubscribe';
+
+  @override
+  String get tradeCancelRequest => 'Cancel request';
+
+  @override
+  String tradeUnsubscribeConfirm(String name) {
+    return 'Stop getting trade alerts from $name?';
+  }
+
+  @override
+  String get tradeRequestSent => 'Request sent. Waiting for the trader to approve.';
+
+  @override
+  String tradeSubscribed(String name) {
+    return 'You will get trade alerts from $name.';
+  }
+
+  @override
+  String get tradeRiskTitle => 'Risk statement';
+
+  @override
+  String get tradeRiskAccept =>
+      'I understand this is not a recommendation and investment decisions are my own responsibility';
+
+  @override
+  String get tradeRiskSubscribe => 'Agree & subscribe';
+
+  @override
+  String get tradeNotSharingNow => 'This trader is not sharing trades right now.';
+
+  @override
+  String get tradeBlockedSelf => 'You cannot subscribe to yourself.';
+
+  @override
+  String get tradeBlockedNotCustomer => 'Only customers can subscribe.';
+
+  @override
+  String get tradeBlockedNoAccount => 'Link your OLT account to subscribe.';
+
+  @override
+  String get tradeBlockedSanctioned => 'Your account has an active sanction.';
+
+  @override
+  String get tradeBlockedBlocked => 'Not available for this account.';
+
+  @override
+  String get tradeBlockedNotFollowing => 'Follow this trader to subscribe to trade alerts.';
+
+  @override
+  String get tradeBlockedRisk => 'The risk statement is not available yet.';
+
+  @override
+  String get tradeSubscriptionsTitle => 'Trade subscriptions';
+
+  @override
+  String get tradeSubscriptionsEmpty => 'You are not subscribed to any trader.';
+
+  @override
+  String get tradeActivityFeed => 'Trade activity';
+
+  @override
+  String get tradeActivityEmpty => 'No trade activity yet.';
+
+  @override
+  String get tradeActivityTitle => 'Trade activity details';
+
+  @override
+  String get tradeActivityDisclaimer =>
+      'This is not a recommendation. Investment decisions are your own responsibility.';
+
+  @override
+  String get tradeSideBuy => 'Buy';
+
+  @override
+  String get tradeSideSell => 'Sell';
+
+  @override
+  String get tradeActivitySide => 'Side';
+
+  @override
+  String get tradeActivityStock => 'Stock';
+
+  @override
+  String get tradeActivityVolume => 'Volume';
+
+  @override
+  String get tradeActivityPrice => 'Price';
+
+  @override
+  String get tradeActivityTime => 'Completed';
+
+  @override
+  String get tradeActivityHidden => 'Hidden by the trader';
+
+  @override
+  String get tradeActivityPartial => 'Partially filled';
+
+  @override
+  String get tradeActivityAdditional => 'Additional fill of an order shared before';
+
+  @override
+  String tradeOpenStock(String stock) {
+    return 'Open \$$stock';
+  }
+
+  @override
+  String get tradeSubscribersTitle => 'Trade subscribers';
+
+  @override
+  String get tradeSubscribersRequests => 'Requests';
+
+  @override
+  String get tradeSubscribersActive => 'Subscribers';
+
+  @override
+  String get tradeSubscribersEmpty => 'No subscribers yet.';
+
+  @override
+  String get tradeRequestsEmpty => 'No subscription requests.';
+
+  @override
+  String get tradeApprove => 'Approve';
+
+  @override
+  String get tradeDecline => 'Decline';
+
+  @override
+  String get tradeRemoveSubscriber => 'Remove';
+
+  @override
+  String tradeRemoveSubscriberConfirm(String name) {
+    return 'Remove $name from your trade subscribers?';
+  }
+
+  @override
+  String tradeRequestExpires(String date) {
+    return 'Expires $date';
+  }
+
+  @override
+  String tradeSubscribedSince(String date) {
+    return 'Subscribed since $date';
+  }
+
+  @override
+  String get notifTypeTradeActivity => 'Trade activity';
+
+  @override
+  String get notifTypeTradeActivityHint => 'Trades from traders you subscribe to';
+
+  @override
+  String get notifTypeTradeShare => 'Trade sharing';
+
+  @override
+  String get notifTypeTradeShareHint => 'Application status and subscription requests';
+
+  @override
+  String get notifFilterAll => 'All';
+
+  @override
+  String get notifFilterTrade => 'Trades';
+
+  @override
+  String get notifTradeEmpty => 'No trade notifications yet.';
+
+  @override
+  String get notifTradeApproved => 'Trade sharing approved';
+
+  @override
+  String get notifTradeApprovedBody => 'Your subscribers now receive your trade notifications.';
+
+  @override
+  String get notifTradeRejected => 'Trade sharing application rejected';
+
+  @override
+  String get notifTradeSuspended => 'Trade sharing suspended';
+
+  @override
+  String get notifTradeRevoked => 'Trade sharing revoked';
+
+  @override
+  String get notifTradeReinstated => 'Trade sharing reinstated';
+
+  @override
+  String get notifTradeAutoPaused => 'Trade sharing paused';
+
+  @override
+  String get notifTradeAutoPausedBody => 'No account can be shared.';
+
+  @override
+  String get notifTradeAutoResumed => 'Trade sharing resumed';
+
+  @override
+  String get notifTradeAutoResumedBody => 'Your account is linked again.';
+
+  @override
+  String notifTradeRequest(String name) {
+    return '$name wants to subscribe to your trades';
+  }
+
+  @override
+  String get notifTradeRequestBody => 'Tap to approve or decline.';
+
+  @override
+  String notifTradeRequestApproved(String name) {
+    return '$name approved your trade subscription';
+  }
+
+  @override
+  String get notifTradeUpdate => 'Trade sharing update';
+
+  @override
+  String get errorTradeNotEligible => 'You do not meet the trade sharing requirements yet.';
+
+  @override
+  String get errorTradeTermsOutdated => 'The terms were updated. Please read and accept them again.';
+
+  @override
+  String get errorTradeAlreadyApplied => 'Your application is still in progress.';
+
+  @override
+  String get errorTradeNotSharing => 'You are not registered as a trader.';
+
+  @override
+  String get errorTradeNotActive => 'Trade sharing is not active.';
+
+  @override
+  String get errorTradeNotPaused => 'Trade sharing is not paused.';
+
+  @override
+  String get errorTradeNoAccounts => 'No active account can be shared.';
+
+  @override
+  String get errorTradeAccountsRequired => 'Select at least one account.';
+
+  @override
+  String get errorTradeAccountNotEligible => 'One of the accounts cannot be shared.';
+
+  @override
+  String get errorTradeInvalidDelay => 'The delay is outside the allowed range.';
+
+  @override
+  String get errorTradeRiskOutdated => 'The risk statement was updated. Please read and accept it again.';
+
+  @override
+  String get errorTradeAlreadySubscribed => 'You are already subscribed to this trader.';
+
+  @override
+  String get errorTradeSubscriptionLimit => 'You reached the maximum number of traders you can subscribe to.';
+
+  @override
+  String get errorTradeSubscriptionNotFound => 'Subscription not found.';
+
+  @override
+  String get errorTradeActivityNotFound => 'Trade activity not found.';
+
+  @override
+  String get errorTradeNotTrader => 'Only traders can see subscribers.';
 }

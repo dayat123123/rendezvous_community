@@ -10,6 +10,12 @@ const notificationPromoType = 'olt.promo';
 
 bool isOltNotificationType(String type) => type.startsWith('olt.');
 
+const notificationTradeActivityType = 'trade_activity';
+const notificationTradeShareType = 'trade_share';
+
+bool isTradeShareNotificationType(String type) =>
+    type == notificationTradeActivityType || type == notificationTradeShareType;
+
 final _digestTimePattern = RegExp(r'^([01][0-9]|2[0-3]):[0-5][0-9]$');
 
 bool isValidDigestTime(Object? value) => value is String && _digestTimePattern.hasMatch(value);

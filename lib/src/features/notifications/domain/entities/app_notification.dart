@@ -16,11 +16,15 @@ enum NotificationType {
   followedPost,
   watchlistDigest,
   moderation,
+  tradeActivity,
+  tradeShare,
 }
 
 const notificationTypeKeys = {
   NotificationType.followedPost: 'followed_post',
   NotificationType.watchlistDigest: 'watchlist_digest',
+  NotificationType.tradeActivity: 'trade_activity',
+  NotificationType.tradeShare: 'trade_share',
 };
 
 NotificationType? notificationTypeFromKey(String key) =>
@@ -69,6 +73,11 @@ abstract class AppNotification with _$AppNotification {
   bool get isRoomMention => type == NotificationType.mention && roomId != null && postId == null;
   bool get isRoomMute => type == NotificationType.moderation && targetType == 'room';
   DateTime? get muteUntil => payload['until'] is String ? DateTime.tryParse(payload['until'] as String)?.toUtc() : null;
+  bool get isTrade => type == NotificationType.tradeActivity || type == NotificationType.tradeShare;
+  String? get tradeActivityId => payload['activity_id'] is String ? payload['activity_id'] as String : null;
+  String? get tradeAction => payload['action'] is String ? payload['action'] as String : null;
+  String? get tradeReason => payload['reason'] is String ? payload['reason'] as String : null;
+  String? get tradeTraderId => payload['trader_id'] is String ? payload['trader_id'] as String : null;
   String? localizedTitle(String languageCode) => _localizedText(payload['title'], languageCode);
   String? localizedBody(String languageCode) => _localizedText(payload['body'], languageCode);
 }
