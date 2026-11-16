@@ -88,7 +88,10 @@ abstract final class CommunityNavigator {
   }
 
   static void openPost(BuildContext context, String postId, {String? rootCommentId}) {
-    final callback = CommunityScope.of(context).callbacks.onPostTap;
+    final callbacks = CommunityScope.of(context).callbacks;
+    final thread = callbacks.onThreadTap;
+    if (rootCommentId != null && thread != null) return thread(context, postId, rootCommentId);
+    final callback = callbacks.onPostTap;
     if (callback != null && rootCommentId == null) return callback(context, postId);
     _push(context, null, CommunityPostDetail(postId: postId, rootCommentId: rootCommentId));
   }

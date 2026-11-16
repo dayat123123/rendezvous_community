@@ -1,3 +1,10 @@
+## 1.29.0
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Callback `onThreadTap`:** `CommunityCallbacks`, `RendezvousCommunity.initialize`, dan `RendezvousCommunity.create` menerima `onThreadTap(context, postId, rootCommentId)`. "Lanjutkan thread →" dan `CommunityNavigator.openPost(rootCommentId: ...)` memanggilnya, jadi host bisa membuka thread di halamannya sendiri (header, panel, dan tombol kembali milik host). Tanpa callback, perilaku lama tetap: `CommunityPostDetail(rootCommentId)` dibuka di route bawaan. `onPostTap` tidak berubah dan tetap hanya untuk detail post biasa.
+* **`CommunityThreadHeaderDetails.isThread`:** builder `threadHeader` kini tahu header sedang tampil di tampilan thread (`rootCommentId`). Di tampilan itu komentar tidak bisa diurutkan, sehingga host bisa memilih judul sendiri tanpa menebak dari `fallback`. Bawaan `false`, jadi pembuat `CommunityThreadHeaderDetails` yang sudah ada tidak perlu berubah.
+
 ## 1.28.0
 
 Butuh server migrasi `0160`–`0164` untuk fitur Berbagi Trade. Di server lama `get_trade_share_status` gagal dimuat, fitur dianggap mati, dan semua UI-nya tetap tersembunyi. Tidak ada breaking change pada API publik, kecuali dua nilai enum baru di `NotificationType`.

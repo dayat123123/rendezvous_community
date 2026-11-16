@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.28.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.29.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -85,6 +85,7 @@ Future<void> onOltLoggedIn() async {
     stockSearch: (query) => OltStockDirectory.search(query),             // saran $KODE dari daftar saham OLT
     onUserTap: null,      // null = pakai halaman profil bawaan rendezvous_community
     onPostTap: null,      // null = buka CommunityPostDetail
+    onThreadTap: null,    // null = "Lanjutkan thread" membuka CommunityPostDetail(rootCommentId) bawaan (1.29.0)
     onRoomTap: null,      // null = buka CommunityChatRoom; boleh async, daftar chat menunggu lalu refresh (1.25.1)
     onBannerLink: (context, uri, banner) => OltRouter.tryOpenDeepLink(context, uri), // opsional, true = ditangani OLT (bagian 5)
     chatStockCards: true, // false = sembunyikan tombol "Kirim kartu saham" di kolom chat (1.15.1)

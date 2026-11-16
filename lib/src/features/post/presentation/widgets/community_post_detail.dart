@@ -91,6 +91,7 @@ class _PostDetailView extends StatelessWidget {
           post: post,
           commentCount: post.commentCount,
           label: '${l10n.comments} (${post.commentCount})',
+          isThread: state.root != null,
         );
         PostCard card({bool actionsOnly = false}) => PostCard(
           post: post,

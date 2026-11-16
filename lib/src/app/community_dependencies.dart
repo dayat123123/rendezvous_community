@@ -21,6 +21,8 @@ typedef CommunityUserTapCallback = void Function(BuildContext context, UserSumma
 
 typedef CommunityPostTapCallback = void Function(BuildContext context, String postId);
 
+typedef CommunityThreadTapCallback = void Function(BuildContext context, String postId, String rootCommentId);
+
 typedef CommunityRoomTapCallback = FutureOr<void> Function(BuildContext context, String roomId);
 
 typedef CommunityHashtagTapCallback = void Function(BuildContext context, String tag);
@@ -41,6 +43,7 @@ class CommunityCallbacks {
     this.onIndexTap,
     this.onUserTap,
     this.onPostTap,
+    this.onThreadTap,
     this.onRoomTap,
     this.stockSearch,
     this.onHashtagTap,
@@ -56,6 +59,7 @@ class CommunityCallbacks {
   final CommunityStockTapCallback? onIndexTap;
   final CommunityUserTapCallback? onUserTap;
   final CommunityPostTapCallback? onPostTap;
+  final CommunityThreadTapCallback? onThreadTap;
   final CommunityRoomTapCallback? onRoomTap;
   final CommunityStockSearch? stockSearch;
   final CommunityHashtagTapCallback? onHashtagTap;

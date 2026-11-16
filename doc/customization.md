@@ -332,7 +332,7 @@ CommunityFeedBuilders(
 | `feedTabs` | `CommunityFeedTabsDetails` | `tabs`, `labels`, `selected`; `onSelect(tab)` (tab Terbaru/Mengikuti di `CommunityStreamFeed`) |
 | `newPosts` | `CommunityNewPostsDetails` | `count`, `label`; `onTap` (muat ulang dan gulir ke atas) |
 | `composePrompt` | `CommunityComposePromptDetails` | `user`, `hintText`; `onCompose` (buka composer, post baru masuk ke feed); `quickActions` (`CommunityComposeQuickAction`: `label`, `icon`, `sentiment` atau `action`) dan `onComposeWith(sentiment:, action:)` untuk tombol Bullish/Bearish/Gambar/Polling/Saham (1.14.0) |
-| `threadHeader` | `CommunityThreadHeaderDetails` | `post`, `commentCount`, `label` ("Komentar (7)") |
+| `threadHeader` | `CommunityThreadHeaderDetails` | `post`, `commentCount`, `label` ("Komentar (7)"), `isThread` (1.29.0: true saat tampilan thread `rootCommentId`, header bisa diurutkan hanya bila false) |
 | `threadContext` | `CommunityThreadContextDetails` | `root`, `label`, `actionLabel`, `comment` (tile komentar akar bawaan); `onOpenPost` |
 | `threadMore` | `CommunityThreadMoreDetails` | `kind` (`moreReplies`/`continueThread`/`moreComments`), `label`, `level`, `remaining`, `loading`; `onTap` (null saat memuat). Indentasi & garis thread tetap digambar package |
 | `replyComposer` | `CommunityReplyComposerDetails` | `controller`, `focusNode`, `field`, `hintText`, `replyTo`, `replyingLabel`, `sending`, `sendLabel`, `cancelLabel`; `onSend` (null saat mengirim), `onCancelReply` |

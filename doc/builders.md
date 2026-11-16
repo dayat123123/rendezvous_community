@@ -88,7 +88,7 @@ Status tahap 2: **sudah** untuk semua baris di bawah. Revisi gaya Quora: feed, d
 
 | Widget | Pub | Builder | Status |
 |---|---|---|---|
-| `CommunityPostDetail`, `_PostDetailView` | ya | ya (`feed.postCard`, `feed.comment`, `feed.threadHeader`) | sudah: `CommunityThreadHeaderDetails` (`post`, `commentCount`, `label`); fallback `CommunitySectionHeader`; komentar tingkat atas dipisah `CommunityDivider` |
+| `CommunityPostDetail`, `_PostDetailView` | ya | ya (`feed.postCard`, `feed.comment`, `feed.threadHeader`) | sudah: `CommunityThreadHeaderDetails` (`post`, `commentCount`, `label`, `isThread`); fallback `CommunitySectionHeader`; komentar tingkat atas dipisah `CommunityDivider` |
 | `_ThreadContext` | tidak | ya (`feed.threadContext`) | sudah: `CommunityThreadContextDetails` (`root`, `label`, `actionLabel`, `comment`; `onOpenPost`), menggantikan `ancestors`/`onOpenRoot` karena state hanya punya satu komentar akar |
 | `_ReplyComposer` | tidak | ya (`feed.replyComposer`) | sudah: `CommunityReplyComposerDetails` (`controller`, `focusNode`, `hintText`, `field`, `replyTo`, `replyingLabel`, `sending`, `sendLabel`, `cancelLabel`; `onSend`, `onCancelReply`) |
 | `CommentTile` | tidak | ya (`feed.comment`) | sudah: gaya Facebook, gelembung abu radius 16 (nama tebal + teks), baris kecil "waktu · Suka · Balas · ⋯" (target 48), jumlah suka dalam pil kecil, tombol ciutkan di samping gelembung; avatar `comment` (32), balasan `reply` (24); `CommunityCommentDetails.level` memberi tingkat indentasi |

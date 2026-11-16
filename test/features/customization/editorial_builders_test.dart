@@ -222,6 +222,44 @@ void main() {
       expect(context!.root.id, 'c1');
     });
 
+    testWidgets('continue thread goes to onThreadTap when the host provides it', (tester) async {
+      final opened = <(String, String)>[];
+      await _pump(
+        tester,
+        const CommunityPostDetail(postId: 'p-1'),
+        deps: FakeDependencies(
+          callbacks: CommunityCallbacks(onThreadTap: (context, postId, root) => opened.add((postId, root))),
+        ),
+      );
+      await tester.tap(find.text('Lanjutkan thread →'));
+      await tester.pumpAndSettle();
+      expect(opened, hasLength(1));
+      expect(opened.single.$1, 'p-1');
+      expect(opened.single.$2, isNotEmpty);
+      expect(find.byType(CommunityPostDetail), findsOneWidget);
+    });
+
+    testWidgets('thread header tells the host whether it is a thread view', (tester) async {
+      final seen = <bool>[];
+      final builders = CommunityBuilders(
+        feed: CommunityFeedBuilders(
+          threadHeader: (context, d, fallback) {
+            seen.add(d.isThread);
+            return Text('thread ${d.isThread}');
+          },
+        ),
+      );
+      await _pump(tester, const CommunityPostDetail(postId: 'p-1'), builders: builders);
+      expect(find.text('thread false'), findsOneWidget);
+      await _pump(
+        tester,
+        const CommunityPostDetail(key: ValueKey('thread'), postId: 'p-1', rootCommentId: 'c1'),
+        builders: builders,
+      );
+      expect(find.text('thread true'), findsOneWidget);
+      expect(seen, containsAll([false, true]));
+    });
+
     testWidgets('compose toolbar, sentiment and poll editor', (tester) async {
       final features = FakeFeatureDependencies(config: loadedConfig());
       addTearDown(features.dispose);

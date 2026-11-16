@@ -257,11 +257,17 @@ class CommunityComposeQuickAction {
 }
 
 class CommunityThreadHeaderDetails {
-  const CommunityThreadHeaderDetails({required this.post, required this.commentCount, required this.label});
+  const CommunityThreadHeaderDetails({
+    required this.post,
+    required this.commentCount,
+    required this.label,
+    this.isThread = false,
+  });
 
   final Post post;
   final int commentCount;
   final String label;
+  final bool isThread;
 }
 
 class CommunityThreadContextDetails {
