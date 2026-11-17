@@ -1,3 +1,9 @@
+## 1.34.0
+
+Tidak butuh migrasi server. Tidak ada perubahan API publik.
+
+* **Header section pencarian dan trending mengikuti tema host:** judul "Pengguna", "Saham & Indeks", "Hashtag", "Hashtag trending", dan header komentar bawaan di detail post kini memakai `CommunityStyle.typography.sectionTitle` apa adanya. Sebelumnya ukurannya dipaksa 16. Ikon section dan panah "Lihat semua" mengikuti ukuran judul (ukuran font + 4). Dengan tema bawaan judul menjadi 15 dan ikon 19; host yang mengatur `sectionTitle` sendiri kini mendapat ukuran itu.
+
 ## 1.33.0
 
 Butuh server migrasi `0170` untuk saklar baru. Di server yang baru punya `0169`, saklar tidak tampil dan fitur kontrol komentar lain tetap jalan. Tidak ada breaking change pada API publik.

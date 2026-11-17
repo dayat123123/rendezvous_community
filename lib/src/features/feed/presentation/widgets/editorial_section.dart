@@ -80,13 +80,15 @@ class _DefaultEditorialHeader extends StatelessWidget {
     final action = details.onAction;
     final label = details.actionLabel;
     final subtitle = details.subtitle;
+    final titleStyle = style.typography.sectionTitle;
+    final iconSize = (titleStyle.fontSize ?? 15) + 4;
     final row = ConstrainedBox(
       constraints: BoxConstraints(minHeight: style.minTouchTarget),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.sm),
         child: Row(
           children: [
-            if (icon != null) ...[Icon(icon, size: 20, color: style.accent), SizedBox(width: spacing.sm + spacing.xxs)],
+            if (icon != null) ...[Icon(icon, size: iconSize, color: style.accent), SizedBox(width: spacing.sm)],
             Expanded(
               child: Semantics(
                 header: true,
@@ -94,7 +96,7 @@ class _DefaultEditorialHeader extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    Text(details.title, style: style.typography.sectionTitle.copyWith(fontSize: 16)),
+                    Text(details.title, style: titleStyle),
                     if (subtitle != null) Text(subtitle, style: style.typography.meta),
                   ],
                 ),
@@ -105,7 +107,7 @@ class _DefaultEditorialHeader extends StatelessWidget {
               Text(label, style: style.typography.label.copyWith(color: style.accent)),
             ],
             if (action != null)
-              Icon(Icons.chevron_right, size: 20, color: label != null ? style.accent : style.textSecondary),
+              Icon(Icons.chevron_right, size: iconSize, color: label != null ? style.accent : style.textSecondary),
           ],
         ),
       ),
