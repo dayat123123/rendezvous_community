@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'poll_model.dart';
@@ -9,6 +9,7 @@ part of 'poll_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $PollOptionModelCopyWith<PollOptionModel> get copyWith => _$PollOptionModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollOptionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.label, label) || other.label == label)&&(identical(other.votes, votes) || other.votes == votes));
+  final _this = this as PollOptionModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollOptionModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.label, _this.label) || other.label == _this.label)&&(identical(other.votes, _this.votes) || other.votes == _this.votes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,label,votes);
+int get hashCode {
+  final _this = this as PollOptionModel;
+  return Object.hash(runtimeType,_this.id,_this.label,_this.votes);
+}
 
 @override
 String toString() {
-  return 'PollOptionModel(id: $id, label: $label, votes: $votes)';
+  final _this = this as PollOptionModel;
+  return 'PollOptionModel(id: ${_this.id}, label: ${_this.label}, votes: ${_this.votes})';
 }
 
 
@@ -66,7 +72,7 @@ class _$PollOptionModelCopyWithImpl<$Res>
 /// Create a copy of PollOptionModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? label = null,Object? votes = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(PollOptionModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String,votes: freezed == votes ? _self.votes : votes // ignore: cast_nullable_to_non_nullable
@@ -231,16 +237,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollOptionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.label, label) || other.label == label)&&(identical(other.votes, votes) || other.votes == votes));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollOptionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.label, label) || other.label == label)&&(identical(other.votes, votes) || other.votes == votes));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,label,votes);
+int get hashCode {
+    return Object.hash(runtimeType,id,label,votes);
+}
 
 @override
 String toString() {
-  return 'PollOptionModel(id: $id, label: $label, votes: $votes)';
+    return 'PollOptionModel(id: $id, label: $label, votes: $votes)';
 }
 
 
@@ -297,16 +305,21 @@ $PollModelCopyWith<PollModel> get copyWith => _$PollModelCopyWithImpl<PollModel>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollModel&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.closed, closed) || other.closed == closed)&&(identical(other.totalVotes, totalVotes) || other.totalVotes == totalVotes)&&(identical(other.myOptionId, myOptionId) || other.myOptionId == myOptionId)&&(identical(other.resultsVisible, resultsVisible) || other.resultsVisible == resultsVisible)&&const DeepCollectionEquality().equals(other.options, options));
+  final _this = this as PollModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollModel&&(identical(other.endsAt, _this.endsAt) || other.endsAt == _this.endsAt)&&(identical(other.closed, _this.closed) || other.closed == _this.closed)&&(identical(other.totalVotes, _this.totalVotes) || other.totalVotes == _this.totalVotes)&&(identical(other.myOptionId, _this.myOptionId) || other.myOptionId == _this.myOptionId)&&(identical(other.resultsVisible, _this.resultsVisible) || other.resultsVisible == _this.resultsVisible)&&const DeepCollectionEquality().equals(other.options, _this.options));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,endsAt,closed,totalVotes,myOptionId,resultsVisible,const DeepCollectionEquality().hash(options));
+int get hashCode {
+  final _this = this as PollModel;
+  return Object.hash(runtimeType,_this.endsAt,_this.closed,_this.totalVotes,_this.myOptionId,_this.resultsVisible,const DeepCollectionEquality().hash(_this.options));
+}
 
 @override
 String toString() {
-  return 'PollModel(endsAt: $endsAt, closed: $closed, totalVotes: $totalVotes, myOptionId: $myOptionId, resultsVisible: $resultsVisible, options: $options)';
+  final _this = this as PollModel;
+  return 'PollModel(endsAt: ${_this.endsAt}, closed: ${_this.closed}, totalVotes: ${_this.totalVotes}, myOptionId: ${_this.myOptionId}, resultsVisible: ${_this.resultsVisible}, options: ${_this.options})';
 }
 
 
@@ -335,7 +348,7 @@ class _$PollModelCopyWithImpl<$Res>
 /// Create a copy of PollModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? endsAt = null,Object? closed = null,Object? totalVotes = null,Object? myOptionId = freezed,Object? resultsVisible = null,Object? options = null,}) {
-  return _then(_self.copyWith(
+  return _then(PollModel(
 endsAt: null == endsAt ? _self.endsAt : endsAt // ignore: cast_nullable_to_non_nullable
 as DateTime,closed: null == closed ? _self.closed : closed // ignore: cast_nullable_to_non_nullable
 as bool,totalVotes: null == totalVotes ? _self.totalVotes : totalVotes // ignore: cast_nullable_to_non_nullable
@@ -483,7 +496,7 @@ return $default(_that.endsAt,_that.closed,_that.totalVotes,_that.myOptionId,_tha
 @JsonSerializable()
 
 class _PollModel extends PollModel {
-  const _PollModel({required this.endsAt, this.closed = false, this.totalVotes = 0, this.myOptionId, this.resultsVisible = false, final  List<PollOptionModel> options = const <PollOptionModel>[]}): _options = options,super._();
+  const _PollModel({required this.endsAt, this.closed = false, this.totalVotes = 0, this.myOptionId, this.resultsVisible = false,  List<PollOptionModel> options = const <PollOptionModel>[]}): _options = options,super._();
   factory _PollModel.fromJson(Map<String, dynamic> json) => _$PollModelFromJson(json);
 
 @override final  DateTime endsAt;
@@ -512,16 +525,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollModel&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.closed, closed) || other.closed == closed)&&(identical(other.totalVotes, totalVotes) || other.totalVotes == totalVotes)&&(identical(other.myOptionId, myOptionId) || other.myOptionId == myOptionId)&&(identical(other.resultsVisible, resultsVisible) || other.resultsVisible == resultsVisible)&&const DeepCollectionEquality().equals(other._options, _options));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollModel&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.closed, closed) || other.closed == closed)&&(identical(other.totalVotes, totalVotes) || other.totalVotes == totalVotes)&&(identical(other.myOptionId, myOptionId) || other.myOptionId == myOptionId)&&(identical(other.resultsVisible, resultsVisible) || other.resultsVisible == resultsVisible)&&const DeepCollectionEquality().equals(other.options, _options));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,endsAt,closed,totalVotes,myOptionId,resultsVisible,const DeepCollectionEquality().hash(_options));
+int get hashCode {
+    return Object.hash(runtimeType,endsAt,closed,totalVotes,myOptionId,resultsVisible,const DeepCollectionEquality().hash(_options));
+}
 
 @override
 String toString() {
-  return 'PollModel(endsAt: $endsAt, closed: $closed, totalVotes: $totalVotes, myOptionId: $myOptionId, resultsVisible: $resultsVisible, options: $options)';
+    return 'PollModel(endsAt: $endsAt, closed: $closed, totalVotes: $totalVotes, myOptionId: $myOptionId, resultsVisible: $resultsVisible, options: $options)';
 }
 
 

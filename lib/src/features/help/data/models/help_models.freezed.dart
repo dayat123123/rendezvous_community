@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'help_models.dart';
@@ -9,6 +9,7 @@ part of 'help_models.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $HelpFeedbackModelCopyWith<HelpFeedbackModel> get copyWith => _$HelpFeedbackMode
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpFeedbackModel&&(identical(other.helpful, helpful) || other.helpful == helpful)&&(identical(other.comment, comment) || other.comment == comment));
+  final _this = this as HelpFeedbackModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpFeedbackModel&&(identical(other.helpful, _this.helpful) || other.helpful == _this.helpful)&&(identical(other.comment, _this.comment) || other.comment == _this.comment));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,helpful,comment);
+int get hashCode {
+  final _this = this as HelpFeedbackModel;
+  return Object.hash(runtimeType,_this.helpful,_this.comment);
+}
 
 @override
 String toString() {
-  return 'HelpFeedbackModel(helpful: $helpful, comment: $comment)';
+  final _this = this as HelpFeedbackModel;
+  return 'HelpFeedbackModel(helpful: ${_this.helpful}, comment: ${_this.comment})';
 }
 
 
@@ -66,7 +72,7 @@ class _$HelpFeedbackModelCopyWithImpl<$Res>
 /// Create a copy of HelpFeedbackModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? helpful = null,Object? comment = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(HelpFeedbackModel(
 helpful: null == helpful ? _self.helpful : helpful // ignore: cast_nullable_to_non_nullable
 as bool,comment: freezed == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -229,16 +235,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpFeedbackModel&&(identical(other.helpful, helpful) || other.helpful == helpful)&&(identical(other.comment, comment) || other.comment == comment));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpFeedbackModel&&(identical(other.helpful, helpful) || other.helpful == helpful)&&(identical(other.comment, comment) || other.comment == comment));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,helpful,comment);
+int get hashCode {
+    return Object.hash(runtimeType,helpful,comment);
+}
 
 @override
 String toString() {
-  return 'HelpFeedbackModel(helpful: $helpful, comment: $comment)';
+    return 'HelpFeedbackModel(helpful: $helpful, comment: $comment)';
 }
 
 
@@ -294,16 +302,21 @@ $HelpArticleModelCopyWith<HelpArticleModel> get copyWith => _$HelpArticleModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpArticleModel&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.question, question) || other.question == question)&&(identical(other.answer, answer) || other.answer == answer)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.feedback, feedback) || other.feedback == feedback));
+  final _this = this as HelpArticleModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpArticleModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.question, _this.question) || other.question == _this.question)&&(identical(other.answer, _this.answer) || other.answer == _this.answer)&&(identical(other.topic, _this.topic) || other.topic == _this.topic)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.feedback, _this.feedback) || other.feedback == _this.feedback));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,category,question,answer,topic,updatedAt,feedback);
+int get hashCode {
+  final _this = this as HelpArticleModel;
+  return Object.hash(runtimeType,_this.id,_this.category,_this.question,_this.answer,_this.topic,_this.updatedAt,_this.feedback);
+}
 
 @override
 String toString() {
-  return 'HelpArticleModel(id: $id, category: $category, question: $question, answer: $answer, topic: $topic, updatedAt: $updatedAt, feedback: $feedback)';
+  final _this = this as HelpArticleModel;
+  return 'HelpArticleModel(id: ${_this.id}, category: ${_this.category}, question: ${_this.question}, answer: ${_this.answer}, topic: ${_this.topic}, updatedAt: ${_this.updatedAt}, feedback: ${_this.feedback})';
 }
 
 
@@ -332,7 +345,7 @@ class _$HelpArticleModelCopyWithImpl<$Res>
 /// Create a copy of HelpArticleModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? category = null,Object? question = null,Object? answer = null,Object? topic = freezed,Object? updatedAt = freezed,Object? feedback = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(HelpArticleModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
 as String,question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
@@ -517,16 +530,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpArticleModel&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.question, question) || other.question == question)&&(identical(other.answer, answer) || other.answer == answer)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.feedback, feedback) || other.feedback == feedback));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpArticleModel&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.question, question) || other.question == question)&&(identical(other.answer, answer) || other.answer == answer)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.feedback, feedback) || other.feedback == feedback));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,category,question,answer,topic,updatedAt,feedback);
+int get hashCode {
+    return Object.hash(runtimeType,id,category,question,answer,topic,updatedAt,feedback);
+}
 
 @override
 String toString() {
-  return 'HelpArticleModel(id: $id, category: $category, question: $question, answer: $answer, topic: $topic, updatedAt: $updatedAt, feedback: $feedback)';
+    return 'HelpArticleModel(id: $id, category: $category, question: $question, answer: $answer, topic: $topic, updatedAt: $updatedAt, feedback: $feedback)';
 }
 
 
@@ -599,16 +614,21 @@ $HelpCategoryModelCopyWith<HelpCategoryModel> get copyWith => _$HelpCategoryMode
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpCategoryModel&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.icon, icon) || other.icon == icon)&&const DeepCollectionEquality().equals(other.articles, articles));
+  final _this = this as HelpCategoryModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpCategoryModel&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.icon, _this.icon) || other.icon == _this.icon)&&const DeepCollectionEquality().equals(other.articles, _this.articles));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,code,name,icon,const DeepCollectionEquality().hash(articles));
+int get hashCode {
+  final _this = this as HelpCategoryModel;
+  return Object.hash(runtimeType,_this.code,_this.name,_this.icon,const DeepCollectionEquality().hash(_this.articles));
+}
 
 @override
 String toString() {
-  return 'HelpCategoryModel(code: $code, name: $name, icon: $icon, articles: $articles)';
+  final _this = this as HelpCategoryModel;
+  return 'HelpCategoryModel(code: ${_this.code}, name: ${_this.name}, icon: ${_this.icon}, articles: ${_this.articles})';
 }
 
 
@@ -637,7 +657,7 @@ class _$HelpCategoryModelCopyWithImpl<$Res>
 /// Create a copy of HelpCategoryModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? name = null,Object? icon = freezed,Object? articles = null,}) {
-  return _then(_self.copyWith(
+  return _then(HelpCategoryModel(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,icon: freezed == icon ? _self.icon : icon // ignore: cast_nullable_to_non_nullable
@@ -783,7 +803,7 @@ return $default(_that.code,_that.name,_that.icon,_that.articles);case _:
 @JsonSerializable()
 
 class _HelpCategoryModel extends HelpCategoryModel {
-  const _HelpCategoryModel({required this.code, this.name = '', this.icon, final  List<HelpArticleModel> articles = const <HelpArticleModel>[]}): _articles = articles,super._();
+  const _HelpCategoryModel({required this.code, this.name = '', this.icon,  List<HelpArticleModel> articles = const <HelpArticleModel>[]}): _articles = articles,super._();
   factory _HelpCategoryModel.fromJson(Map<String, dynamic> json) => _$HelpCategoryModelFromJson(json);
 
 @override final  String code;
@@ -810,16 +830,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpCategoryModel&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.icon, icon) || other.icon == icon)&&const DeepCollectionEquality().equals(other._articles, _articles));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpCategoryModel&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.icon, icon) || other.icon == icon)&&const DeepCollectionEquality().equals(other.articles, _articles));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,code,name,icon,const DeepCollectionEquality().hash(_articles));
+int get hashCode {
+    return Object.hash(runtimeType,code,name,icon,const DeepCollectionEquality().hash(_articles));
+}
 
 @override
 String toString() {
-  return 'HelpCategoryModel(code: $code, name: $name, icon: $icon, articles: $articles)';
+    return 'HelpCategoryModel(code: $code, name: $name, icon: $icon, articles: $articles)';
 }
 
 
@@ -877,16 +899,21 @@ $HelpCenterModelCopyWith<HelpCenterModel> get copyWith => _$HelpCenterModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpCenterModel&&const DeepCollectionEquality().equals(other.categories, categories)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  final _this = this as HelpCenterModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpCenterModel&&const DeepCollectionEquality().equals(other.categories, _this.categories)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(categories),updatedAt);
+int get hashCode {
+  final _this = this as HelpCenterModel;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.categories),_this.updatedAt);
+}
 
 @override
 String toString() {
-  return 'HelpCenterModel(categories: $categories, updatedAt: $updatedAt)';
+  final _this = this as HelpCenterModel;
+  return 'HelpCenterModel(categories: ${_this.categories}, updatedAt: ${_this.updatedAt})';
 }
 
 
@@ -915,7 +942,7 @@ class _$HelpCenterModelCopyWithImpl<$Res>
 /// Create a copy of HelpCenterModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? categories = null,Object? updatedAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(HelpCenterModel(
 categories: null == categories ? _self.categories : categories // ignore: cast_nullable_to_non_nullable
 as List<HelpCategoryModel>,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,
@@ -1059,7 +1086,7 @@ return $default(_that.categories,_that.updatedAt);case _:
 @JsonSerializable()
 
 class _HelpCenterModel extends HelpCenterModel {
-  const _HelpCenterModel({final  List<HelpCategoryModel> categories = const <HelpCategoryModel>[], this.updatedAt}): _categories = categories,super._();
+  const _HelpCenterModel({ List<HelpCategoryModel> categories = const <HelpCategoryModel>[], this.updatedAt}): _categories = categories,super._();
   factory _HelpCenterModel.fromJson(Map<String, dynamic> json) => _$HelpCenterModelFromJson(json);
 
  final  List<HelpCategoryModel> _categories;
@@ -1084,16 +1111,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpCenterModel&&const DeepCollectionEquality().equals(other._categories, _categories)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpCenterModel&&const DeepCollectionEquality().equals(other.categories, _categories)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_categories),updatedAt);
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_categories),updatedAt);
+}
 
 @override
 String toString() {
-  return 'HelpCenterModel(categories: $categories, updatedAt: $updatedAt)';
+    return 'HelpCenterModel(categories: $categories, updatedAt: $updatedAt)';
 }
 
 

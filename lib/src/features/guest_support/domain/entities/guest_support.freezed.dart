@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'guest_support.dart';
@@ -9,6 +9,7 @@ part of 'guest_support.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $GuestLoginProblemCopyWith<GuestLoginProblem> get copyWith => _$GuestLoginProble
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestLoginProblem&&(identical(other.code, code) || other.code == code)&&(identical(other.label, label) || other.label == label));
+  final _this = this as GuestLoginProblem;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestLoginProblem&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.label, _this.label) || other.label == _this.label));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,label);
+int get hashCode {
+  final _this = this as GuestLoginProblem;
+  return Object.hash(runtimeType,_this.code,_this.label);
+}
 
 @override
 String toString() {
-  return 'GuestLoginProblem(code: $code, label: $label)';
+  final _this = this as GuestLoginProblem;
+  return 'GuestLoginProblem(code: ${_this.code}, label: ${_this.label})';
 }
 
 
@@ -63,7 +69,7 @@ class _$GuestLoginProblemCopyWithImpl<$Res>
 /// Create a copy of GuestLoginProblem
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? label = null,}) {
-  return _then(_self.copyWith(
+  return _then(GuestLoginProblem(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String,
@@ -223,16 +229,18 @@ _$GuestLoginProblemCopyWith<_GuestLoginProblem> get copyWith => __$GuestLoginPro
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestLoginProblem&&(identical(other.code, code) || other.code == code)&&(identical(other.label, label) || other.label == label));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestLoginProblem&&(identical(other.code, code) || other.code == code)&&(identical(other.label, label) || other.label == label));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,label);
+int get hashCode {
+    return Object.hash(runtimeType,code,label);
+}
 
 @override
 String toString() {
-  return 'GuestLoginProblem(code: $code, label: $label)';
+    return 'GuestLoginProblem(code: $code, label: $label)';
 }
 
 
@@ -285,16 +293,21 @@ $GuestSupportConfigCopyWith<GuestSupportConfig> get copyWith => _$GuestSupportCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportConfig&&(identical(other.enabled, enabled) || other.enabled == enabled)&&(identical(other.sessionHours, sessionHours) || other.sessionHours == sessionHours)&&const DeepCollectionEquality().equals(other.problems, problems));
+  final _this = this as GuestSupportConfig;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportConfig&&(identical(other.enabled, _this.enabled) || other.enabled == _this.enabled)&&(identical(other.sessionHours, _this.sessionHours) || other.sessionHours == _this.sessionHours)&&const DeepCollectionEquality().equals(other.problems, _this.problems));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,enabled,sessionHours,const DeepCollectionEquality().hash(problems));
+int get hashCode {
+  final _this = this as GuestSupportConfig;
+  return Object.hash(runtimeType,_this.enabled,_this.sessionHours,const DeepCollectionEquality().hash(_this.problems));
+}
 
 @override
 String toString() {
-  return 'GuestSupportConfig(enabled: $enabled, sessionHours: $sessionHours, problems: $problems)';
+  final _this = this as GuestSupportConfig;
+  return 'GuestSupportConfig(enabled: ${_this.enabled}, sessionHours: ${_this.sessionHours}, problems: ${_this.problems})';
 }
 
 
@@ -323,7 +336,7 @@ class _$GuestSupportConfigCopyWithImpl<$Res>
 /// Create a copy of GuestSupportConfig
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? enabled = null,Object? sessionHours = null,Object? problems = null,}) {
-  return _then(_self.copyWith(
+  return _then(GuestSupportConfig(
 enabled: null == enabled ? _self.enabled : enabled // ignore: cast_nullable_to_non_nullable
 as bool,sessionHours: null == sessionHours ? _self.sessionHours : sessionHours // ignore: cast_nullable_to_non_nullable
 as int,problems: null == problems ? _self.problems : problems // ignore: cast_nullable_to_non_nullable
@@ -468,7 +481,7 @@ return $default(_that.enabled,_that.sessionHours,_that.problems);case _:
 
 
 class _GuestSupportConfig implements GuestSupportConfig {
-  const _GuestSupportConfig({this.enabled = false, this.sessionHours = 24, final  List<GuestLoginProblem> problems = const <GuestLoginProblem>[]}): _problems = problems;
+  const _GuestSupportConfig({this.enabled = false, this.sessionHours = 24,  List<GuestLoginProblem> problems = const <GuestLoginProblem>[]}): _problems = problems;
   
 
 @override@JsonKey() final  bool enabled;
@@ -491,16 +504,18 @@ _$GuestSupportConfigCopyWith<_GuestSupportConfig> get copyWith => __$GuestSuppor
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportConfig&&(identical(other.enabled, enabled) || other.enabled == enabled)&&(identical(other.sessionHours, sessionHours) || other.sessionHours == sessionHours)&&const DeepCollectionEquality().equals(other._problems, _problems));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportConfig&&(identical(other.enabled, enabled) || other.enabled == enabled)&&(identical(other.sessionHours, sessionHours) || other.sessionHours == sessionHours)&&const DeepCollectionEquality().equals(other.problems, _problems));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,enabled,sessionHours,const DeepCollectionEquality().hash(_problems));
+int get hashCode {
+    return Object.hash(runtimeType,enabled,sessionHours,const DeepCollectionEquality().hash(_problems));
+}
 
 @override
 String toString() {
-  return 'GuestSupportConfig(enabled: $enabled, sessionHours: $sessionHours, problems: $problems)';
+    return 'GuestSupportConfig(enabled: $enabled, sessionHours: $sessionHours, problems: $problems)';
 }
 
 
@@ -554,12 +569,16 @@ $GuestSupportTokenCopyWith<GuestSupportToken> get copyWith => _$GuestSupportToke
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportToken&&(identical(other.token, token) || other.token == token)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
+  final _this = this as GuestSupportToken;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportToken&&(identical(other.token, _this.token) || other.token == _this.token)&&(identical(other.expiresAt, _this.expiresAt) || other.expiresAt == _this.expiresAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,token,expiresAt);
+int get hashCode {
+  final _this = this as GuestSupportToken;
+  return Object.hash(runtimeType,_this.token,_this.expiresAt);
+}
 
 
 
@@ -588,7 +607,7 @@ class _$GuestSupportTokenCopyWithImpl<$Res>
 /// Create a copy of GuestSupportToken
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? token = null,Object? expiresAt = null,}) {
-  return _then(_self.copyWith(
+  return _then(GuestSupportToken(
 token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as String,expiresAt: null == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
 as DateTime,
@@ -748,12 +767,14 @@ _$GuestSupportTokenCopyWith<_GuestSupportToken> get copyWith => __$GuestSupportT
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportToken&&(identical(other.token, token) || other.token == token)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportToken&&(identical(other.token, token) || other.token == token)&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,token,expiresAt);
+int get hashCode {
+    return Object.hash(runtimeType,token,expiresAt);
+}
 
 
 
@@ -806,16 +827,21 @@ $GuestSupportSessionCopyWith<GuestSupportSession> get copyWith => _$GuestSupport
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportSession&&(identical(other.token, token) || other.token == token)&&(identical(other.ticket, ticket) || other.ticket == ticket));
+  final _this = this as GuestSupportSession;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportSession&&(identical(other.token, _this.token) || other.token == _this.token)&&(identical(other.ticket, _this.ticket) || other.ticket == _this.ticket));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,token,ticket);
+int get hashCode {
+  final _this = this as GuestSupportSession;
+  return Object.hash(runtimeType,_this.token,_this.ticket);
+}
 
 @override
 String toString() {
-  return 'GuestSupportSession(token: $token, ticket: $ticket)';
+  final _this = this as GuestSupportSession;
+  return 'GuestSupportSession(token: ${_this.token}, ticket: ${_this.ticket})';
 }
 
 
@@ -844,7 +870,7 @@ class _$GuestSupportSessionCopyWithImpl<$Res>
 /// Create a copy of GuestSupportSession
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? token = null,Object? ticket = null,}) {
-  return _then(_self.copyWith(
+  return _then(GuestSupportSession(
 token: null == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
 as GuestSupportToken,ticket: null == ticket ? _self.ticket : ticket // ignore: cast_nullable_to_non_nullable
 as SupportTicket,
@@ -1022,16 +1048,18 @@ _$GuestSupportSessionCopyWith<_GuestSupportSession> get copyWith => __$GuestSupp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportSession&&(identical(other.token, token) || other.token == token)&&(identical(other.ticket, ticket) || other.ticket == ticket));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportSession&&(identical(other.token, token) || other.token == token)&&(identical(other.ticket, ticket) || other.ticket == ticket));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,token,ticket);
+int get hashCode {
+    return Object.hash(runtimeType,token,ticket);
+}
 
 @override
 String toString() {
-  return 'GuestSupportSession(token: $token, ticket: $ticket)';
+    return 'GuestSupportSession(token: $token, ticket: $ticket)';
 }
 
 
@@ -1102,16 +1130,21 @@ $GuestSupportSnapshotCopyWith<GuestSupportSnapshot> get copyWith => _$GuestSuppo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportSnapshot&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other.messages, messages));
+  final _this = this as GuestSupportSnapshot;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportSnapshot&&(identical(other.expiresAt, _this.expiresAt) || other.expiresAt == _this.expiresAt)&&(identical(other.ticket, _this.ticket) || other.ticket == _this.ticket)&&const DeepCollectionEquality().equals(other.messages, _this.messages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,expiresAt,ticket,const DeepCollectionEquality().hash(messages));
+int get hashCode {
+  final _this = this as GuestSupportSnapshot;
+  return Object.hash(runtimeType,_this.expiresAt,_this.ticket,const DeepCollectionEquality().hash(_this.messages));
+}
 
 @override
 String toString() {
-  return 'GuestSupportSnapshot(expiresAt: $expiresAt, ticket: $ticket, messages: $messages)';
+  final _this = this as GuestSupportSnapshot;
+  return 'GuestSupportSnapshot(expiresAt: ${_this.expiresAt}, ticket: ${_this.ticket}, messages: ${_this.messages})';
 }
 
 
@@ -1140,7 +1173,7 @@ class _$GuestSupportSnapshotCopyWithImpl<$Res>
 /// Create a copy of GuestSupportSnapshot
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? expiresAt = null,Object? ticket = null,Object? messages = null,}) {
-  return _then(_self.copyWith(
+  return _then(GuestSupportSnapshot(
 expiresAt: null == expiresAt ? _self.expiresAt : expiresAt // ignore: cast_nullable_to_non_nullable
 as DateTime,ticket: null == ticket ? _self.ticket : ticket // ignore: cast_nullable_to_non_nullable
 as SupportTicket,messages: null == messages ? _self.messages : messages // ignore: cast_nullable_to_non_nullable
@@ -1294,7 +1327,7 @@ return $default(_that.expiresAt,_that.ticket,_that.messages);case _:
 
 
 class _GuestSupportSnapshot implements GuestSupportSnapshot {
-  const _GuestSupportSnapshot({required this.expiresAt, required this.ticket, final  List<ChatMessage> messages = const <ChatMessage>[]}): _messages = messages;
+  const _GuestSupportSnapshot({required this.expiresAt, required this.ticket,  List<ChatMessage> messages = const <ChatMessage>[]}): _messages = messages;
   
 
 @override final  DateTime expiresAt;
@@ -1317,16 +1350,18 @@ _$GuestSupportSnapshotCopyWith<_GuestSupportSnapshot> get copyWith => __$GuestSu
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportSnapshot&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other._messages, _messages));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportSnapshot&&(identical(other.expiresAt, expiresAt) || other.expiresAt == expiresAt)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other.messages, _messages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,expiresAt,ticket,const DeepCollectionEquality().hash(_messages));
+int get hashCode {
+    return Object.hash(runtimeType,expiresAt,ticket,const DeepCollectionEquality().hash(_messages));
+}
 
 @override
 String toString() {
-  return 'GuestSupportSnapshot(expiresAt: $expiresAt, ticket: $ticket, messages: $messages)';
+    return 'GuestSupportSnapshot(expiresAt: $expiresAt, ticket: $ticket, messages: $messages)';
 }
 
 

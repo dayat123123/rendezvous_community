@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'outbox_message.dart';
@@ -9,6 +9,7 @@ part of 'outbox_message.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $OutboxMessageCopyWith<OutboxMessage> get copyWith => _$OutboxMessageCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OutboxMessage&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.body, body) || other.body == body)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&(identical(other.replyToBody, replyToBody) || other.replyToBody == replyToBody)&&(identical(other.replyToSenderUsername, replyToSenderUsername) || other.replyToSenderUsername == replyToSenderUsername)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.state, state) || other.state == state)&&(identical(other.attempts, attempts) || other.attempts == attempts)&&(identical(other.nextAttemptAt, nextAttemptAt) || other.nextAttemptAt == nextAttemptAt)&&(identical(other.error, error) || other.error == error));
+  final _this = this as OutboxMessage;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OutboxMessage&&(identical(other.clientId, _this.clientId) || other.clientId == _this.clientId)&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.replyToId, _this.replyToId) || other.replyToId == _this.replyToId)&&(identical(other.replyToBody, _this.replyToBody) || other.replyToBody == _this.replyToBody)&&(identical(other.replyToSenderUsername, _this.replyToSenderUsername) || other.replyToSenderUsername == _this.replyToSenderUsername)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.state, _this.state) || other.state == _this.state)&&(identical(other.attempts, _this.attempts) || other.attempts == _this.attempts)&&(identical(other.nextAttemptAt, _this.nextAttemptAt) || other.nextAttemptAt == _this.nextAttemptAt)&&(identical(other.error, _this.error) || other.error == _this.error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,clientId,roomId,body,replyToId,replyToBody,replyToSenderUsername,createdAt,state,attempts,nextAttemptAt,error);
+int get hashCode {
+  final _this = this as OutboxMessage;
+  return Object.hash(runtimeType,_this.clientId,_this.roomId,_this.body,_this.replyToId,_this.replyToBody,_this.replyToSenderUsername,_this.createdAt,_this.state,_this.attempts,_this.nextAttemptAt,_this.error);
+}
 
 @override
 String toString() {
-  return 'OutboxMessage(clientId: $clientId, roomId: $roomId, body: $body, replyToId: $replyToId, replyToBody: $replyToBody, replyToSenderUsername: $replyToSenderUsername, createdAt: $createdAt, state: $state, attempts: $attempts, nextAttemptAt: $nextAttemptAt, error: $error)';
+  final _this = this as OutboxMessage;
+  return 'OutboxMessage(clientId: ${_this.clientId}, roomId: ${_this.roomId}, body: ${_this.body}, replyToId: ${_this.replyToId}, replyToBody: ${_this.replyToBody}, replyToSenderUsername: ${_this.replyToSenderUsername}, createdAt: ${_this.createdAt}, state: ${_this.state}, attempts: ${_this.attempts}, nextAttemptAt: ${_this.nextAttemptAt}, error: ${_this.error})';
 }
 
 
@@ -63,7 +69,7 @@ class _$OutboxMessageCopyWithImpl<$Res>
 /// Create a copy of OutboxMessage
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? clientId = null,Object? roomId = null,Object? body = null,Object? replyToId = freezed,Object? replyToBody = freezed,Object? replyToSenderUsername = freezed,Object? createdAt = null,Object? state = null,Object? attempts = null,Object? nextAttemptAt = freezed,Object? error = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(OutboxMessage(
 clientId: null == clientId ? _self.clientId : clientId // ignore: cast_nullable_to_non_nullable
 as String,roomId: null == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
@@ -241,16 +247,18 @@ _$OutboxMessageCopyWith<_OutboxMessage> get copyWith => __$OutboxMessageCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OutboxMessage&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.body, body) || other.body == body)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&(identical(other.replyToBody, replyToBody) || other.replyToBody == replyToBody)&&(identical(other.replyToSenderUsername, replyToSenderUsername) || other.replyToSenderUsername == replyToSenderUsername)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.state, state) || other.state == state)&&(identical(other.attempts, attempts) || other.attempts == attempts)&&(identical(other.nextAttemptAt, nextAttemptAt) || other.nextAttemptAt == nextAttemptAt)&&(identical(other.error, error) || other.error == error));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OutboxMessage&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.body, body) || other.body == body)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&(identical(other.replyToBody, replyToBody) || other.replyToBody == replyToBody)&&(identical(other.replyToSenderUsername, replyToSenderUsername) || other.replyToSenderUsername == replyToSenderUsername)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.state, state) || other.state == state)&&(identical(other.attempts, attempts) || other.attempts == attempts)&&(identical(other.nextAttemptAt, nextAttemptAt) || other.nextAttemptAt == nextAttemptAt)&&(identical(other.error, error) || other.error == error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,clientId,roomId,body,replyToId,replyToBody,replyToSenderUsername,createdAt,state,attempts,nextAttemptAt,error);
+int get hashCode {
+    return Object.hash(runtimeType,clientId,roomId,body,replyToId,replyToBody,replyToSenderUsername,createdAt,state,attempts,nextAttemptAt,error);
+}
 
 @override
 String toString() {
-  return 'OutboxMessage(clientId: $clientId, roomId: $roomId, body: $body, replyToId: $replyToId, replyToBody: $replyToBody, replyToSenderUsername: $replyToSenderUsername, createdAt: $createdAt, state: $state, attempts: $attempts, nextAttemptAt: $nextAttemptAt, error: $error)';
+    return 'OutboxMessage(clientId: $clientId, roomId: $roomId, body: $body, replyToId: $replyToId, replyToBody: $replyToBody, replyToSenderUsername: $replyToSenderUsername, createdAt: $createdAt, state: $state, attempts: $attempts, nextAttemptAt: $nextAttemptAt, error: $error)';
 }
 
 

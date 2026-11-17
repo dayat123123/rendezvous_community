@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_composer.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
@@ -31,7 +31,7 @@ class _DocumentMedia extends Fake implements MediaRepository {
 
 Widget _app(Widget child, {MediaRepository? media, ChatRepository? chat}) => MaterialApp(
   locale: const Locale('id'),
-  localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+  localizationsDelegates: communityLocalizationsDelegates,
   supportedLocales: CommunityLocalizations.supportedLocales,
   home: Scaffold(
     body: CommunityScope(

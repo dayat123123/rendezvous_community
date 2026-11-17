@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'help_article_cubit.dart';
@@ -9,6 +9,7 @@ part of 'help_article_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $HelpArticleStateCopyWith<HelpArticleState> get copyWith => _$HelpArticleStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpArticleState&&(identical(other.article, article) || other.article == article)&&(identical(other.loading, loading) || other.loading == loading)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.sending, sending) || other.sending == sending)&&(identical(other.commentSent, commentSent) || other.commentSent == commentSent)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as HelpArticleState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpArticleState&&(identical(other.article, _this.article) || other.article == _this.article)&&(identical(other.loading, _this.loading) || other.loading == _this.loading)&&(identical(other.offline, _this.offline) || other.offline == _this.offline)&&const DeepCollectionEquality().equals(other.error, _this.error)&&(identical(other.sending, _this.sending) || other.sending == _this.sending)&&(identical(other.commentSent, _this.commentSent) || other.commentSent == _this.commentSent)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,article,loading,offline,const DeepCollectionEquality().hash(error),sending,commentSent,const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as HelpArticleState;
+  return Object.hash(runtimeType,_this.article,_this.loading,_this.offline,const DeepCollectionEquality().hash(_this.error),_this.sending,_this.commentSent,const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'HelpArticleState(article: $article, loading: $loading, offline: $offline, error: $error, sending: $sending, commentSent: $commentSent, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as HelpArticleState;
+  return 'HelpArticleState(article: ${_this.article}, loading: ${_this.loading}, offline: ${_this.offline}, error: ${_this.error}, sending: ${_this.sending}, commentSent: ${_this.commentSent}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$HelpArticleStateCopyWithImpl<$Res>
 /// Create a copy of HelpArticleState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? article = null,Object? loading = null,Object? offline = null,Object? error = freezed,Object? sending = null,Object? commentSent = null,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(HelpArticleState(
 article: null == article ? _self.article : article // ignore: cast_nullable_to_non_nullable
 as HelpArticle,loading: null == loading ? _self.loading : loading // ignore: cast_nullable_to_non_nullable
 as bool,offline: null == offline ? _self.offline : offline // ignore: cast_nullable_to_non_nullable
@@ -242,16 +248,18 @@ _$HelpArticleStateCopyWith<_HelpArticleState> get copyWith => __$HelpArticleStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpArticleState&&(identical(other.article, article) || other.article == article)&&(identical(other.loading, loading) || other.loading == loading)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.sending, sending) || other.sending == sending)&&(identical(other.commentSent, commentSent) || other.commentSent == commentSent)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpArticleState&&(identical(other.article, article) || other.article == article)&&(identical(other.loading, loading) || other.loading == loading)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.sending, sending) || other.sending == sending)&&(identical(other.commentSent, commentSent) || other.commentSent == commentSent)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,article,loading,offline,const DeepCollectionEquality().hash(error),sending,commentSent,const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,article,loading,offline,const DeepCollectionEquality().hash(error),sending,commentSent,const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'HelpArticleState(article: $article, loading: $loading, offline: $offline, error: $error, sending: $sending, commentSent: $commentSent, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'HelpArticleState(article: $article, loading: $loading, offline: $offline, error: $error, sending: $sending, commentSent: $commentSent, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

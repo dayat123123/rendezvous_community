@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'market_sentiment_cubit.dart';
@@ -9,6 +9,7 @@ part of 'market_sentiment_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $MarketSentimentStateCopyWith<MarketSentimentState> get copyWith => _$MarketSent
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketSentimentState&&(identical(other.status, status) || other.status == status)&&(identical(other.window, window) || other.window == window)&&const DeepCollectionEquality().equals(other.breakdowns, breakdowns)&&const DeepCollectionEquality().equals(other.error, error));
+  final _this = this as MarketSentimentState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketSentimentState&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.window, _this.window) || other.window == _this.window)&&const DeepCollectionEquality().equals(other.breakdowns, _this.breakdowns)&&const DeepCollectionEquality().equals(other.error, _this.error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,window,const DeepCollectionEquality().hash(breakdowns),const DeepCollectionEquality().hash(error));
+int get hashCode {
+  final _this = this as MarketSentimentState;
+  return Object.hash(runtimeType,_this.status,_this.window,const DeepCollectionEquality().hash(_this.breakdowns),const DeepCollectionEquality().hash(_this.error));
+}
 
 @override
 String toString() {
-  return 'MarketSentimentState(status: $status, window: $window, breakdowns: $breakdowns, error: $error)';
+  final _this = this as MarketSentimentState;
+  return 'MarketSentimentState(status: ${_this.status}, window: ${_this.window}, breakdowns: ${_this.breakdowns}, error: ${_this.error})';
 }
 
 
@@ -63,7 +69,7 @@ class _$MarketSentimentStateCopyWithImpl<$Res>
 /// Create a copy of MarketSentimentState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? window = null,Object? breakdowns = null,Object? error = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(MarketSentimentState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,window: null == window ? _self.window : window // ignore: cast_nullable_to_non_nullable
 as TrendWindow,breakdowns: null == breakdowns ? _self.breakdowns : breakdowns // ignore: cast_nullable_to_non_nullable
@@ -208,7 +214,7 @@ return $default(_that.status,_that.window,_that.breakdowns,_that.error);case _:
 
 
 class _MarketSentimentState extends MarketSentimentState {
-  const _MarketSentimentState({this.status = LoadStatus.initial, this.window = TrendWindow.day, final  Map<TrendWindow, SentimentBreakdown> breakdowns = const <TrendWindow, SentimentBreakdown>{}, this.error}): _breakdowns = breakdowns,super._();
+  const _MarketSentimentState({this.status = LoadStatus.initial, this.window = TrendWindow.day,  Map<TrendWindow, SentimentBreakdown> breakdowns = const <TrendWindow, SentimentBreakdown>{}, this.error}): _breakdowns = breakdowns,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -232,16 +238,18 @@ _$MarketSentimentStateCopyWith<_MarketSentimentState> get copyWith => __$MarketS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MarketSentimentState&&(identical(other.status, status) || other.status == status)&&(identical(other.window, window) || other.window == window)&&const DeepCollectionEquality().equals(other._breakdowns, _breakdowns)&&const DeepCollectionEquality().equals(other.error, error));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MarketSentimentState&&(identical(other.status, status) || other.status == status)&&(identical(other.window, window) || other.window == window)&&const DeepCollectionEquality().equals(other.breakdowns, _breakdowns)&&const DeepCollectionEquality().equals(other.error, error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,window,const DeepCollectionEquality().hash(_breakdowns),const DeepCollectionEquality().hash(error));
+int get hashCode {
+    return Object.hash(runtimeType,status,window,const DeepCollectionEquality().hash(_breakdowns),const DeepCollectionEquality().hash(error));
+}
 
 @override
 String toString() {
-  return 'MarketSentimentState(status: $status, window: $window, breakdowns: $breakdowns, error: $error)';
+    return 'MarketSentimentState(status: $status, window: $window, breakdowns: $breakdowns, error: $error)';
 }
 
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'link_preview.dart';
@@ -9,6 +9,7 @@ part of 'link_preview.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $LinkPreviewCopyWith<LinkPreview> get copyWith => _$LinkPreviewCopyWithImpl<Link
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LinkPreview&&(identical(other.url, url) || other.url == url)&&(identical(other.status, status) || other.status == status)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.siteName, siteName) || other.siteName == siteName)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.imageWidth, imageWidth) || other.imageWidth == imageWidth)&&(identical(other.imageHeight, imageHeight) || other.imageHeight == imageHeight)&&(identical(other.finalUrl, finalUrl) || other.finalUrl == finalUrl)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt));
+  final _this = this as LinkPreview;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LinkPreview&&(identical(other.url, _this.url) || other.url == _this.url)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.siteName, _this.siteName) || other.siteName == _this.siteName)&&(identical(other.imageUrl, _this.imageUrl) || other.imageUrl == _this.imageUrl)&&(identical(other.imageWidth, _this.imageWidth) || other.imageWidth == _this.imageWidth)&&(identical(other.imageHeight, _this.imageHeight) || other.imageHeight == _this.imageHeight)&&(identical(other.finalUrl, _this.finalUrl) || other.finalUrl == _this.finalUrl)&&(identical(other.fetchedAt, _this.fetchedAt) || other.fetchedAt == _this.fetchedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,url,status,title,description,siteName,imageUrl,imageWidth,imageHeight,finalUrl,fetchedAt);
+int get hashCode {
+  final _this = this as LinkPreview;
+  return Object.hash(runtimeType,_this.url,_this.status,_this.title,_this.description,_this.siteName,_this.imageUrl,_this.imageWidth,_this.imageHeight,_this.finalUrl,_this.fetchedAt);
+}
 
 @override
 String toString() {
-  return 'LinkPreview(url: $url, status: $status, title: $title, description: $description, siteName: $siteName, imageUrl: $imageUrl, imageWidth: $imageWidth, imageHeight: $imageHeight, finalUrl: $finalUrl, fetchedAt: $fetchedAt)';
+  final _this = this as LinkPreview;
+  return 'LinkPreview(url: ${_this.url}, status: ${_this.status}, title: ${_this.title}, description: ${_this.description}, siteName: ${_this.siteName}, imageUrl: ${_this.imageUrl}, imageWidth: ${_this.imageWidth}, imageHeight: ${_this.imageHeight}, finalUrl: ${_this.finalUrl}, fetchedAt: ${_this.fetchedAt})';
 }
 
 
@@ -63,7 +69,7 @@ class _$LinkPreviewCopyWithImpl<$Res>
 /// Create a copy of LinkPreview
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? url = null,Object? status = null,Object? title = freezed,Object? description = freezed,Object? siteName = freezed,Object? imageUrl = freezed,Object? imageWidth = freezed,Object? imageHeight = freezed,Object? finalUrl = freezed,Object? fetchedAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(LinkPreview(
 url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
 as String,status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LinkPreviewStatus,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -239,16 +245,18 @@ _$LinkPreviewCopyWith<_LinkPreview> get copyWith => __$LinkPreviewCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LinkPreview&&(identical(other.url, url) || other.url == url)&&(identical(other.status, status) || other.status == status)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.siteName, siteName) || other.siteName == siteName)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.imageWidth, imageWidth) || other.imageWidth == imageWidth)&&(identical(other.imageHeight, imageHeight) || other.imageHeight == imageHeight)&&(identical(other.finalUrl, finalUrl) || other.finalUrl == finalUrl)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _LinkPreview&&(identical(other.url, url) || other.url == url)&&(identical(other.status, status) || other.status == status)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.siteName, siteName) || other.siteName == siteName)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.imageWidth, imageWidth) || other.imageWidth == imageWidth)&&(identical(other.imageHeight, imageHeight) || other.imageHeight == imageHeight)&&(identical(other.finalUrl, finalUrl) || other.finalUrl == finalUrl)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,url,status,title,description,siteName,imageUrl,imageWidth,imageHeight,finalUrl,fetchedAt);
+int get hashCode {
+    return Object.hash(runtimeType,url,status,title,description,siteName,imageUrl,imageWidth,imageHeight,finalUrl,fetchedAt);
+}
 
 @override
 String toString() {
-  return 'LinkPreview(url: $url, status: $status, title: $title, description: $description, siteName: $siteName, imageUrl: $imageUrl, imageWidth: $imageWidth, imageHeight: $imageHeight, finalUrl: $finalUrl, fetchedAt: $fetchedAt)';
+    return 'LinkPreview(url: $url, status: $status, title: $title, description: $description, siteName: $siteName, imageUrl: $imageUrl, imageWidth: $imageWidth, imageHeight: $imageHeight, finalUrl: $finalUrl, fetchedAt: $fetchedAt)';
 }
 
 

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/features/help/domain/entities/help_article.dart';
 import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_builders.dart';
 import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_details.dart';

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'post_drafts_cubit.dart';
@@ -9,6 +9,7 @@ part of 'post_drafts_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $PostDraftsStateCopyWith<PostDraftsState> get copyWith => _$PostDraftsStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDraftsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.drafts, drafts)&&const DeepCollectionEquality().equals(other.error, error));
+  final _this = this as PostDraftsState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDraftsState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.drafts, _this.drafts)&&const DeepCollectionEquality().equals(other.error, _this.error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(drafts),const DeepCollectionEquality().hash(error));
+int get hashCode {
+  final _this = this as PostDraftsState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.drafts),const DeepCollectionEquality().hash(_this.error));
+}
 
 @override
 String toString() {
-  return 'PostDraftsState(status: $status, drafts: $drafts, error: $error)';
+  final _this = this as PostDraftsState;
+  return 'PostDraftsState(status: ${_this.status}, drafts: ${_this.drafts}, error: ${_this.error})';
 }
 
 
@@ -63,7 +69,7 @@ class _$PostDraftsStateCopyWithImpl<$Res>
 /// Create a copy of PostDraftsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? drafts = null,Object? error = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(PostDraftsState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,drafts: null == drafts ? _self.drafts : drafts // ignore: cast_nullable_to_non_nullable
 as List<PostDraft>,error: freezed == error ? _self.error : error ,
@@ -207,7 +213,7 @@ return $default(_that.status,_that.drafts,_that.error);case _:
 
 
 class _PostDraftsState implements PostDraftsState {
-  const _PostDraftsState({this.status = LoadStatus.initial, final  List<PostDraft> drafts = const <PostDraft>[], this.error}): _drafts = drafts;
+  const _PostDraftsState({this.status = LoadStatus.initial,  List<PostDraft> drafts = const <PostDraft>[], this.error}): _drafts = drafts;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -230,16 +236,18 @@ _$PostDraftsStateCopyWith<_PostDraftsState> get copyWith => __$PostDraftsStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDraftsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._drafts, _drafts)&&const DeepCollectionEquality().equals(other.error, error));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDraftsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.drafts, _drafts)&&const DeepCollectionEquality().equals(other.error, error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_drafts),const DeepCollectionEquality().hash(error));
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_drafts),const DeepCollectionEquality().hash(error));
+}
 
 @override
 String toString() {
-  return 'PostDraftsState(status: $status, drafts: $drafts, error: $error)';
+    return 'PostDraftsState(status: $status, drafts: $drafts, error: $error)';
 }
 
 

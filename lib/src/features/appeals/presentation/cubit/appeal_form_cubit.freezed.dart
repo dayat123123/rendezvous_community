@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'appeal_form_cubit.dart';
@@ -9,6 +9,7 @@ part of 'appeal_form_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $AppealFormStateCopyWith<AppealFormState> get copyWith => _$AppealFormStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppealFormState&&(identical(other.submitting, submitting) || other.submitting == submitting)&&(identical(other.created, created) || other.created == created)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId));
+  final _this = this as AppealFormState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppealFormState&&(identical(other.submitting, _this.submitting) || other.submitting == _this.submitting)&&(identical(other.created, _this.created) || other.created == _this.created)&&const DeepCollectionEquality().equals(other.error, _this.error)&&(identical(other.errorId, _this.errorId) || other.errorId == _this.errorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,submitting,created,const DeepCollectionEquality().hash(error),errorId);
+int get hashCode {
+  final _this = this as AppealFormState;
+  return Object.hash(runtimeType,_this.submitting,_this.created,const DeepCollectionEquality().hash(_this.error),_this.errorId);
+}
 
 @override
 String toString() {
-  return 'AppealFormState(submitting: $submitting, created: $created, error: $error, errorId: $errorId)';
+  final _this = this as AppealFormState;
+  return 'AppealFormState(submitting: ${_this.submitting}, created: ${_this.created}, error: ${_this.error}, errorId: ${_this.errorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$AppealFormStateCopyWithImpl<$Res>
 /// Create a copy of AppealFormState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? submitting = null,Object? created = freezed,Object? error = freezed,Object? errorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(AppealFormState(
 submitting: null == submitting ? _self.submitting : submitting // ignore: cast_nullable_to_non_nullable
 as bool,created: freezed == created ? _self.created : created // ignore: cast_nullable_to_non_nullable
 as Appeal?,error: freezed == error ? _self.error : error ,errorId: null == errorId ? _self.errorId : errorId // ignore: cast_nullable_to_non_nullable
@@ -238,16 +244,18 @@ _$AppealFormStateCopyWith<_AppealFormState> get copyWith => __$AppealFormStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppealFormState&&(identical(other.submitting, submitting) || other.submitting == submitting)&&(identical(other.created, created) || other.created == created)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppealFormState&&(identical(other.submitting, submitting) || other.submitting == submitting)&&(identical(other.created, created) || other.created == created)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,submitting,created,const DeepCollectionEquality().hash(error),errorId);
+int get hashCode {
+    return Object.hash(runtimeType,submitting,created,const DeepCollectionEquality().hash(error),errorId);
+}
 
 @override
 String toString() {
-  return 'AppealFormState(submitting: $submitting, created: $created, error: $error, errorId: $errorId)';
+    return 'AppealFormState(submitting: $submitting, created: $created, error: $error, errorId: $errorId)';
 }
 
 

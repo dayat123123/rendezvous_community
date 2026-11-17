@@ -12,8 +12,9 @@ _StockModel _$StockModelFromJson(Map<String, dynamic> json) => _StockModel(
   watching: json['watching'] as bool? ?? false,
 );
 
-Map<String, dynamic> _$StockModelToJson(_StockModel instance) => <String, dynamic>{
-  'code': instance.code,
-  'watcher_count': instance.watcherCount,
-  'watching': instance.watching,
-};
+Map<String, dynamic> _$StockModelToJson(_StockModel instance) =>
+    <String, dynamic>{
+      'code': instance.code,
+      'watcher_count': instance.watcherCount,
+      'watching': instance.watching,
+    };

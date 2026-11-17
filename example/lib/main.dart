@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
 import 'custom_chat_style.dart';
@@ -59,7 +59,7 @@ class _ExampleAppState extends State<ExampleApp> {
       darkTheme: theme(Brightness.dark),
       themeMode: _themeMode,
       locale: _locale,
-      localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+      localizationsDelegates: communityLocalizationsDelegates,
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: _anonKey.isEmpty ? const _MissingConfigPage() : const LoginPage(onSignedIn: _startSocial),
       builder: (context, child) => _SettingsScope(

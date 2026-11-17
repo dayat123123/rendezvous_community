@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'message_requests_cubit.dart';
@@ -9,6 +9,7 @@ part of 'message_requests_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $MessageRequestsStateCopyWith<MessageRequestsState> get copyWith => _$MessageReq
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageRequestsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.requests, requests)&&(identical(other.count, count) || other.count == count)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.respondingRoomId, respondingRoomId) || other.respondingRoomId == respondingRoomId)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as MessageRequestsState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageRequestsState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.requests, _this.requests)&&(identical(other.count, _this.count) || other.count == _this.count)&&(identical(other.loadingMore, _this.loadingMore) || other.loadingMore == _this.loadingMore)&&(identical(other.hasMore, _this.hasMore) || other.hasMore == _this.hasMore)&&(identical(other.respondingRoomId, _this.respondingRoomId) || other.respondingRoomId == _this.respondingRoomId)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(requests),count,loadingMore,hasMore,respondingRoomId,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as MessageRequestsState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.requests),_this.count,_this.loadingMore,_this.hasMore,_this.respondingRoomId,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'MessageRequestsState(status: $status, requests: $requests, count: $count, loadingMore: $loadingMore, hasMore: $hasMore, respondingRoomId: $respondingRoomId, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as MessageRequestsState;
+  return 'MessageRequestsState(status: ${_this.status}, requests: ${_this.requests}, count: ${_this.count}, loadingMore: ${_this.loadingMore}, hasMore: ${_this.hasMore}, respondingRoomId: ${_this.respondingRoomId}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$MessageRequestsStateCopyWithImpl<$Res>
 /// Create a copy of MessageRequestsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? requests = null,Object? count = null,Object? loadingMore = null,Object? hasMore = null,Object? respondingRoomId = freezed,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(MessageRequestsState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,requests: null == requests ? _self.requests : requests // ignore: cast_nullable_to_non_nullable
 as List<MessageRequest>,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
@@ -212,7 +218,7 @@ return $default(_that.status,_that.requests,_that.count,_that.loadingMore,_that.
 
 
 class _MessageRequestsState implements MessageRequestsState {
-  const _MessageRequestsState({this.status = LoadStatus.initial, final  List<MessageRequest> requests = const <MessageRequest>[], this.count = 0, this.loadingMore = false, this.hasMore = true, this.respondingRoomId, this.error, this.actionError, this.actionErrorId = 0}): _requests = requests;
+  const _MessageRequestsState({this.status = LoadStatus.initial,  List<MessageRequest> requests = const <MessageRequest>[], this.count = 0, this.loadingMore = false, this.hasMore = true, this.respondingRoomId, this.error, this.actionError, this.actionErrorId = 0}): _requests = requests;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -241,16 +247,18 @@ _$MessageRequestsStateCopyWith<_MessageRequestsState> get copyWith => __$Message
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageRequestsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._requests, _requests)&&(identical(other.count, count) || other.count == count)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.respondingRoomId, respondingRoomId) || other.respondingRoomId == respondingRoomId)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageRequestsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.requests, _requests)&&(identical(other.count, count) || other.count == count)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.respondingRoomId, respondingRoomId) || other.respondingRoomId == respondingRoomId)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_requests),count,loadingMore,hasMore,respondingRoomId,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_requests),count,loadingMore,hasMore,respondingRoomId,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'MessageRequestsState(status: $status, requests: $requests, count: $count, loadingMore: $loadingMore, hasMore: $hasMore, respondingRoomId: $respondingRoomId, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'MessageRequestsState(status: $status, requests: $requests, count: $count, loadingMore: $loadingMore, hasMore: $hasMore, respondingRoomId: $respondingRoomId, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

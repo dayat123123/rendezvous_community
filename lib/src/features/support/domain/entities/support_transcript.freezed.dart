@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'support_transcript.dart';
@@ -9,6 +9,7 @@ part of 'support_transcript.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $SupportTranscriptMessageCopyWith<SupportTranscriptMessage> get copyWith => _$Su
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTranscriptMessage&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.sender, sender) || other.sender == sender)&&(identical(other.senderName, senderName) || other.senderName == senderName)&&(identical(other.body, body) || other.body == body)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&const DeepCollectionEquality().equals(other.attachments, attachments));
+  final _this = this as SupportTranscriptMessage;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTranscriptMessage&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.sender, _this.sender) || other.sender == _this.sender)&&(identical(other.senderName, _this.senderName) || other.senderName == _this.senderName)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.deleted, _this.deleted) || other.deleted == _this.deleted)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,createdAt,sender,senderName,body,deleted,const DeepCollectionEquality().hash(attachments));
+int get hashCode {
+  final _this = this as SupportTranscriptMessage;
+  return Object.hash(runtimeType,_this.createdAt,_this.sender,_this.senderName,_this.body,_this.deleted,const DeepCollectionEquality().hash(_this.attachments));
+}
 
 @override
 String toString() {
-  return 'SupportTranscriptMessage(createdAt: $createdAt, sender: $sender, senderName: $senderName, body: $body, deleted: $deleted, attachments: $attachments)';
+  final _this = this as SupportTranscriptMessage;
+  return 'SupportTranscriptMessage(createdAt: ${_this.createdAt}, sender: ${_this.sender}, senderName: ${_this.senderName}, body: ${_this.body}, deleted: ${_this.deleted}, attachments: ${_this.attachments})';
 }
 
 
@@ -63,7 +69,7 @@ class _$SupportTranscriptMessageCopyWithImpl<$Res>
 /// Create a copy of SupportTranscriptMessage
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? createdAt = null,Object? sender = null,Object? senderName = freezed,Object? body = freezed,Object? deleted = null,Object? attachments = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportTranscriptMessage(
 createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,sender: null == sender ? _self.sender : sender // ignore: cast_nullable_to_non_nullable
 as SupportTranscriptSender,senderName: freezed == senderName ? _self.senderName : senderName // ignore: cast_nullable_to_non_nullable
@@ -211,7 +217,7 @@ return $default(_that.createdAt,_that.sender,_that.senderName,_that.body,_that.d
 
 
 class _SupportTranscriptMessage implements SupportTranscriptMessage {
-  const _SupportTranscriptMessage({required this.createdAt, required this.sender, this.senderName, this.body, this.deleted = false, final  List<String> attachments = const <String>[]}): _attachments = attachments;
+  const _SupportTranscriptMessage({required this.createdAt, required this.sender, this.senderName, this.body, this.deleted = false,  List<String> attachments = const <String>[]}): _attachments = attachments;
   
 
 @override final  DateTime createdAt;
@@ -237,16 +243,18 @@ _$SupportTranscriptMessageCopyWith<_SupportTranscriptMessage> get copyWith => __
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTranscriptMessage&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.sender, sender) || other.sender == sender)&&(identical(other.senderName, senderName) || other.senderName == senderName)&&(identical(other.body, body) || other.body == body)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&const DeepCollectionEquality().equals(other._attachments, _attachments));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTranscriptMessage&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.sender, sender) || other.sender == sender)&&(identical(other.senderName, senderName) || other.senderName == senderName)&&(identical(other.body, body) || other.body == body)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&const DeepCollectionEquality().equals(other.attachments, _attachments));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,createdAt,sender,senderName,body,deleted,const DeepCollectionEquality().hash(_attachments));
+int get hashCode {
+    return Object.hash(runtimeType,createdAt,sender,senderName,body,deleted,const DeepCollectionEquality().hash(_attachments));
+}
 
 @override
 String toString() {
-  return 'SupportTranscriptMessage(createdAt: $createdAt, sender: $sender, senderName: $senderName, body: $body, deleted: $deleted, attachments: $attachments)';
+    return 'SupportTranscriptMessage(createdAt: $createdAt, sender: $sender, senderName: $senderName, body: $body, deleted: $deleted, attachments: $attachments)';
 }
 
 
@@ -303,16 +311,21 @@ $SupportTranscriptCopyWith<SupportTranscript> get copyWith => _$SupportTranscrip
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTranscript&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other.messages, messages));
+  final _this = this as SupportTranscript;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTranscript&&(identical(other.ticket, _this.ticket) || other.ticket == _this.ticket)&&const DeepCollectionEquality().equals(other.messages, _this.messages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,ticket,const DeepCollectionEquality().hash(messages));
+int get hashCode {
+  final _this = this as SupportTranscript;
+  return Object.hash(runtimeType,_this.ticket,const DeepCollectionEquality().hash(_this.messages));
+}
 
 @override
 String toString() {
-  return 'SupportTranscript(ticket: $ticket, messages: $messages)';
+  final _this = this as SupportTranscript;
+  return 'SupportTranscript(ticket: ${_this.ticket}, messages: ${_this.messages})';
 }
 
 
@@ -341,7 +354,7 @@ class _$SupportTranscriptCopyWithImpl<$Res>
 /// Create a copy of SupportTranscript
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? ticket = null,Object? messages = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportTranscript(
 ticket: null == ticket ? _self.ticket : ticket // ignore: cast_nullable_to_non_nullable
 as SupportTicket,messages: null == messages ? _self.messages : messages // ignore: cast_nullable_to_non_nullable
 as List<SupportTranscriptMessage>,
@@ -494,7 +507,7 @@ return $default(_that.ticket,_that.messages);case _:
 
 
 class _SupportTranscript implements SupportTranscript {
-  const _SupportTranscript({required this.ticket, final  List<SupportTranscriptMessage> messages = const <SupportTranscriptMessage>[]}): _messages = messages;
+  const _SupportTranscript({required this.ticket,  List<SupportTranscriptMessage> messages = const <SupportTranscriptMessage>[]}): _messages = messages;
   
 
 @override final  SupportTicket ticket;
@@ -516,16 +529,18 @@ _$SupportTranscriptCopyWith<_SupportTranscript> get copyWith => __$SupportTransc
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTranscript&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other._messages, _messages));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTranscript&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other.messages, _messages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,ticket,const DeepCollectionEquality().hash(_messages));
+int get hashCode {
+    return Object.hash(runtimeType,ticket,const DeepCollectionEquality().hash(_messages));
+}
 
 @override
 String toString() {
-  return 'SupportTranscript(ticket: $ticket, messages: $messages)';
+    return 'SupportTranscript(ticket: $ticket, messages: $messages)';
 }
 
 

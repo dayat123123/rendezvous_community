@@ -29,7 +29,7 @@ class _ArgumentCollector extends RecursiveAstVisitor<void> {
 
   void _collect(ArgumentList arguments) {
     for (final argument in arguments.arguments) {
-      if (argument is NamedExpression) names.add(argument.name.label.name);
+      if (argument is NamedArgument) names.add(argument.name.lexeme);
     }
   }
 

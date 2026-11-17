@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'follow_list_cubit.dart';
@@ -9,6 +9,7 @@ part of 'follow_list_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $FollowListStateCopyWith<FollowListState> get copyWith => _$FollowListStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FollowListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.entries, entries)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&const DeepCollectionEquality().equals(other.pending, pending)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as FollowListState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FollowListState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.entries, _this.entries)&&(identical(other.nextCursor, _this.nextCursor) || other.nextCursor == _this.nextCursor)&&(identical(other.loadingMore, _this.loadingMore) || other.loadingMore == _this.loadingMore)&&const DeepCollectionEquality().equals(other.pending, _this.pending)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(entries),nextCursor,loadingMore,const DeepCollectionEquality().hash(pending),const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as FollowListState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.entries),_this.nextCursor,_this.loadingMore,const DeepCollectionEquality().hash(_this.pending),const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'FollowListState(status: $status, entries: $entries, nextCursor: $nextCursor, loadingMore: $loadingMore, pending: $pending, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as FollowListState;
+  return 'FollowListState(status: ${_this.status}, entries: ${_this.entries}, nextCursor: ${_this.nextCursor}, loadingMore: ${_this.loadingMore}, pending: ${_this.pending}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$FollowListStateCopyWithImpl<$Res>
 /// Create a copy of FollowListState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? entries = null,Object? nextCursor = freezed,Object? loadingMore = null,Object? pending = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(FollowListState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,entries: null == entries ? _self.entries : entries // ignore: cast_nullable_to_non_nullable
 as List<FollowListEntry>,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
@@ -211,7 +217,7 @@ return $default(_that.status,_that.entries,_that.nextCursor,_that.loadingMore,_t
 
 
 class _FollowListState implements FollowListState {
-  const _FollowListState({this.status = LoadStatus.initial, final  List<FollowListEntry> entries = const <FollowListEntry>[], this.nextCursor, this.loadingMore = false, final  Set<String> pending = const <String>{}, this.error, this.actionError, this.actionErrorId = 0}): _entries = entries,_pending = pending;
+  const _FollowListState({this.status = LoadStatus.initial,  List<FollowListEntry> entries = const <FollowListEntry>[], this.nextCursor, this.loadingMore = false,  Set<String> pending = const <String>{}, this.error, this.actionError, this.actionErrorId = 0}): _entries = entries,_pending = pending;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -245,16 +251,18 @@ _$FollowListStateCopyWith<_FollowListState> get copyWith => __$FollowListStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FollowListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._entries, _entries)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&const DeepCollectionEquality().equals(other._pending, _pending)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _FollowListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.entries, _entries)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&const DeepCollectionEquality().equals(other.pending, _pending)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_entries),nextCursor,loadingMore,const DeepCollectionEquality().hash(_pending),const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_entries),nextCursor,loadingMore,const DeepCollectionEquality().hash(_pending),const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'FollowListState(status: $status, entries: $entries, nextCursor: $nextCursor, loadingMore: $loadingMore, pending: $pending, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'FollowListState(status: $status, entries: $entries, nextCursor: $nextCursor, loadingMore: $loadingMore, pending: $pending, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

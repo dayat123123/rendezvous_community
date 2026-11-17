@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'consent_cubit.dart';
@@ -9,6 +9,7 @@ part of 'consent_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ConsentStateCopyWith<ConsentState> get copyWith => _$ConsentStateCopyWithImpl<C
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ConsentState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.documents, documents)&&(identical(other.agreed, agreed) || other.agreed == agreed)&&(identical(other.submitting, submitting) || other.submitting == submitting)&&(identical(other.accepted, accepted) || other.accepted == accepted)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError));
+  final _this = this as ConsentState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ConsentState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.documents, _this.documents)&&(identical(other.agreed, _this.agreed) || other.agreed == _this.agreed)&&(identical(other.submitting, _this.submitting) || other.submitting == _this.submitting)&&(identical(other.accepted, _this.accepted) || other.accepted == _this.accepted)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(documents),agreed,submitting,accepted,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError));
+int get hashCode {
+  final _this = this as ConsentState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.documents),_this.agreed,_this.submitting,_this.accepted,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError));
+}
 
 @override
 String toString() {
-  return 'ConsentState(status: $status, documents: $documents, agreed: $agreed, submitting: $submitting, accepted: $accepted, error: $error, actionError: $actionError)';
+  final _this = this as ConsentState;
+  return 'ConsentState(status: ${_this.status}, documents: ${_this.documents}, agreed: ${_this.agreed}, submitting: ${_this.submitting}, accepted: ${_this.accepted}, error: ${_this.error}, actionError: ${_this.actionError})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ConsentStateCopyWithImpl<$Res>
 /// Create a copy of ConsentState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? documents = null,Object? agreed = null,Object? submitting = null,Object? accepted = null,Object? error = freezed,Object? actionError = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ConsentState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,documents: null == documents ? _self.documents : documents // ignore: cast_nullable_to_non_nullable
 as List<LegalDocument>,agreed: null == agreed ? _self.agreed : agreed // ignore: cast_nullable_to_non_nullable
@@ -210,7 +216,7 @@ return $default(_that.status,_that.documents,_that.agreed,_that.submitting,_that
 
 
 class _ConsentState extends ConsentState {
-  const _ConsentState({this.status = LoadStatus.initial, final  List<LegalDocument> documents = const <LegalDocument>[], this.agreed = false, this.submitting = false, this.accepted = false, this.error, this.actionError}): _documents = documents,super._();
+  const _ConsentState({this.status = LoadStatus.initial,  List<LegalDocument> documents = const <LegalDocument>[], this.agreed = false, this.submitting = false, this.accepted = false, this.error, this.actionError}): _documents = documents,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -237,16 +243,18 @@ _$ConsentStateCopyWith<_ConsentState> get copyWith => __$ConsentStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ConsentState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._documents, _documents)&&(identical(other.agreed, agreed) || other.agreed == agreed)&&(identical(other.submitting, submitting) || other.submitting == submitting)&&(identical(other.accepted, accepted) || other.accepted == accepted)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ConsentState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.documents, _documents)&&(identical(other.agreed, agreed) || other.agreed == agreed)&&(identical(other.submitting, submitting) || other.submitting == submitting)&&(identical(other.accepted, accepted) || other.accepted == accepted)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_documents),agreed,submitting,accepted,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError));
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_documents),agreed,submitting,accepted,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError));
+}
 
 @override
 String toString() {
-  return 'ConsentState(status: $status, documents: $documents, agreed: $agreed, submitting: $submitting, accepted: $accepted, error: $error, actionError: $actionError)';
+    return 'ConsentState(status: $status, documents: $documents, agreed: $agreed, submitting: $submitting, accepted: $accepted, error: $error, actionError: $actionError)';
 }
 
 

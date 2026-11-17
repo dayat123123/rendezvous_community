@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community_example/fake_olt_auth.dart';
@@ -13,7 +13,7 @@ void main() {
   testWidgets('the login page offers guest support for customers who cannot sign in', (tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+        localizationsDelegates: communityLocalizationsDelegates,
         supportedLocales: CommunityLocalizations.supportedLocales,
         home: CommunityGuestSupportScope(
           dependencies: CommunityGuestSupportClient.anonymous(supabaseUrl: 'http://localhost:1', anonKey: 'anon'),

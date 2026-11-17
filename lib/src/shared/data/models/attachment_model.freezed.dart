@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'attachment_model.dart';
@@ -9,6 +9,7 @@ part of 'attachment_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $AttachmentModelCopyWith<AttachmentModel> get copyWith => _$AttachmentModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttachmentModel&&(identical(other.path, path) || other.path == path)&&(identical(other.bucket, bucket) || other.bucket == bucket)&&(identical(other.mime, mime) || other.mime == mime)&&(identical(other.name, name) || other.name == name)&&(identical(other.size, size) || other.size == size)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.thumbnail, thumbnail) || other.thumbnail == thumbnail));
+  final _this = this as AttachmentModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AttachmentModel&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.bucket, _this.bucket) || other.bucket == _this.bucket)&&(identical(other.mime, _this.mime) || other.mime == _this.mime)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.size, _this.size) || other.size == _this.size)&&(identical(other.width, _this.width) || other.width == _this.width)&&(identical(other.height, _this.height) || other.height == _this.height)&&(identical(other.duration, _this.duration) || other.duration == _this.duration)&&(identical(other.thumbnail, _this.thumbnail) || other.thumbnail == _this.thumbnail));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,path,bucket,mime,name,size,width,height,duration,thumbnail);
+int get hashCode {
+  final _this = this as AttachmentModel;
+  return Object.hash(runtimeType,_this.path,_this.bucket,_this.mime,_this.name,_this.size,_this.width,_this.height,_this.duration,_this.thumbnail);
+}
 
 @override
 String toString() {
-  return 'AttachmentModel(path: $path, bucket: $bucket, mime: $mime, name: $name, size: $size, width: $width, height: $height, duration: $duration, thumbnail: $thumbnail)';
+  final _this = this as AttachmentModel;
+  return 'AttachmentModel(path: ${_this.path}, bucket: ${_this.bucket}, mime: ${_this.mime}, name: ${_this.name}, size: ${_this.size}, width: ${_this.width}, height: ${_this.height}, duration: ${_this.duration}, thumbnail: ${_this.thumbnail})';
 }
 
 
@@ -66,7 +72,7 @@ class _$AttachmentModelCopyWithImpl<$Res>
 /// Create a copy of AttachmentModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? path = null,Object? bucket = freezed,Object? mime = freezed,Object? name = freezed,Object? size = freezed,Object? width = freezed,Object? height = freezed,Object? duration = freezed,Object? thumbnail = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(AttachmentModel(
 path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
 as String,bucket: freezed == bucket ? _self.bucket : bucket // ignore: cast_nullable_to_non_nullable
 as String?,mime: freezed == mime ? _self.mime : mime // ignore: cast_nullable_to_non_nullable
@@ -243,16 +249,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttachmentModel&&(identical(other.path, path) || other.path == path)&&(identical(other.bucket, bucket) || other.bucket == bucket)&&(identical(other.mime, mime) || other.mime == mime)&&(identical(other.name, name) || other.name == name)&&(identical(other.size, size) || other.size == size)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.thumbnail, thumbnail) || other.thumbnail == thumbnail));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AttachmentModel&&(identical(other.path, path) || other.path == path)&&(identical(other.bucket, bucket) || other.bucket == bucket)&&(identical(other.mime, mime) || other.mime == mime)&&(identical(other.name, name) || other.name == name)&&(identical(other.size, size) || other.size == size)&&(identical(other.width, width) || other.width == width)&&(identical(other.height, height) || other.height == height)&&(identical(other.duration, duration) || other.duration == duration)&&(identical(other.thumbnail, thumbnail) || other.thumbnail == thumbnail));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,path,bucket,mime,name,size,width,height,duration,thumbnail);
+int get hashCode {
+    return Object.hash(runtimeType,path,bucket,mime,name,size,width,height,duration,thumbnail);
+}
 
 @override
 String toString() {
-  return 'AttachmentModel(path: $path, bucket: $bucket, mime: $mime, name: $name, size: $size, width: $width, height: $height, duration: $duration, thumbnail: $thumbnail)';
+    return 'AttachmentModel(path: $path, bucket: $bucket, mime: $mime, name: $name, size: $size, width: $width, height: $height, duration: $duration, thumbnail: $thumbnail)';
 }
 
 

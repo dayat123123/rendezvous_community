@@ -25,11 +25,11 @@ class _ListCollector extends RecursiveAstVisitor<void> {
 
   void _check(String? type, String? constructor, ArgumentList arguments, int offset) {
     if (type != 'ListView' || !_lazyConstructors.contains(constructor)) return;
-    final disables = arguments.arguments.whereType<NamedExpression>().any(
+    final disables = arguments.arguments.whereType<NamedArgument>().any(
       (a) =>
-          a.name.label.name == 'addAutomaticKeepAlives' &&
-          a.expression is BooleanLiteral &&
-          !(a.expression as BooleanLiteral).value,
+          a.name.lexeme == 'addAutomaticKeepAlives' &&
+          a.argumentExpression is BooleanLiteral &&
+          !(a.argumentExpression as BooleanLiteral).value,
     );
     lists.add(_LazyList('$path:${lineOf(offset)}', disables));
   }

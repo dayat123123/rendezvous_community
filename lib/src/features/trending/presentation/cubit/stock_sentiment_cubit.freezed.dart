@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'stock_sentiment_cubit.dart';
@@ -9,6 +9,7 @@ part of 'stock_sentiment_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $StockSentimentStateCopyWith<StockSentimentState> get copyWith => _$StockSentime
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockSentimentState&&(identical(other.status, status) || other.status == status)&&(identical(other.window, window) || other.window == window)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.error, error));
+  final _this = this as StockSentimentState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockSentimentState&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.window, _this.window) || other.window == _this.window)&&(identical(other.sentiment, _this.sentiment) || other.sentiment == _this.sentiment)&&const DeepCollectionEquality().equals(other.error, _this.error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,window,sentiment,const DeepCollectionEquality().hash(error));
+int get hashCode {
+  final _this = this as StockSentimentState;
+  return Object.hash(runtimeType,_this.status,_this.window,_this.sentiment,const DeepCollectionEquality().hash(_this.error));
+}
 
 @override
 String toString() {
-  return 'StockSentimentState(status: $status, window: $window, sentiment: $sentiment, error: $error)';
+  final _this = this as StockSentimentState;
+  return 'StockSentimentState(status: ${_this.status}, window: ${_this.window}, sentiment: ${_this.sentiment}, error: ${_this.error})';
 }
 
 
@@ -63,7 +69,7 @@ class _$StockSentimentStateCopyWithImpl<$Res>
 /// Create a copy of StockSentimentState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? window = null,Object? sentiment = freezed,Object? error = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(StockSentimentState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,window: null == window ? _self.window : window // ignore: cast_nullable_to_non_nullable
 as TrendWindow,sentiment: freezed == sentiment ? _self.sentiment : sentiment // ignore: cast_nullable_to_non_nullable
@@ -238,16 +244,18 @@ _$StockSentimentStateCopyWith<_StockSentimentState> get copyWith => __$StockSent
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockSentimentState&&(identical(other.status, status) || other.status == status)&&(identical(other.window, window) || other.window == window)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.error, error));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockSentimentState&&(identical(other.status, status) || other.status == status)&&(identical(other.window, window) || other.window == window)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.error, error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,window,sentiment,const DeepCollectionEquality().hash(error));
+int get hashCode {
+    return Object.hash(runtimeType,status,window,sentiment,const DeepCollectionEquality().hash(error));
+}
 
 @override
 String toString() {
-  return 'StockSentimentState(status: $status, window: $window, sentiment: $sentiment, error: $error)';
+    return 'StockSentimentState(status: $status, window: $window, sentiment: $sentiment, error: $error)';
 }
 
 

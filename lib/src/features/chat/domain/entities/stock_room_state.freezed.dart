@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'stock_room_state.dart';
@@ -9,6 +9,7 @@ part of 'stock_room_state.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $StockRoomStateCopyWith<StockRoomState> get copyWith => _$StockRoomStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockRoomState&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.slowModeSeconds, slowModeSeconds) || other.slowModeSeconds == slowModeSeconds)&&(identical(other.slowModeUntil, slowModeUntil) || other.slowModeUntil == slowModeUntil)&&(identical(other.slowModeSource, slowModeSource) || other.slowModeSource == slowModeSource)&&(identical(other.waitSeconds, waitSeconds) || other.waitSeconds == waitSeconds)&&(identical(other.pinnedMessage, pinnedMessage) || other.pinnedMessage == pinnedMessage)&&(identical(other.pinnedAt, pinnedAt) || other.pinnedAt == pinnedAt)&&const DeepCollectionEquality().equals(other.moderatorIds, moderatorIds)&&const DeepCollectionEquality().equals(other.mutes, mutes)&&(identical(other.viewerMutedUntil, viewerMutedUntil) || other.viewerMutedUntil == viewerMutedUntil));
+  final _this = this as StockRoomState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockRoomState&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId)&&(identical(other.stockCode, _this.stockCode) || other.stockCode == _this.stockCode)&&(identical(other.slowModeSeconds, _this.slowModeSeconds) || other.slowModeSeconds == _this.slowModeSeconds)&&(identical(other.slowModeUntil, _this.slowModeUntil) || other.slowModeUntil == _this.slowModeUntil)&&(identical(other.slowModeSource, _this.slowModeSource) || other.slowModeSource == _this.slowModeSource)&&(identical(other.waitSeconds, _this.waitSeconds) || other.waitSeconds == _this.waitSeconds)&&(identical(other.pinnedMessage, _this.pinnedMessage) || other.pinnedMessage == _this.pinnedMessage)&&(identical(other.pinnedAt, _this.pinnedAt) || other.pinnedAt == _this.pinnedAt)&&const DeepCollectionEquality().equals(other.moderatorIds, _this.moderatorIds)&&const DeepCollectionEquality().equals(other.mutes, _this.mutes)&&(identical(other.viewerMutedUntil, _this.viewerMutedUntil) || other.viewerMutedUntil == _this.viewerMutedUntil));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,roomId,stockCode,slowModeSeconds,slowModeUntil,slowModeSource,waitSeconds,pinnedMessage,pinnedAt,const DeepCollectionEquality().hash(moderatorIds),const DeepCollectionEquality().hash(mutes),viewerMutedUntil);
+int get hashCode {
+  final _this = this as StockRoomState;
+  return Object.hash(runtimeType,_this.roomId,_this.stockCode,_this.slowModeSeconds,_this.slowModeUntil,_this.slowModeSource,_this.waitSeconds,_this.pinnedMessage,_this.pinnedAt,const DeepCollectionEquality().hash(_this.moderatorIds),const DeepCollectionEquality().hash(_this.mutes),_this.viewerMutedUntil);
+}
 
 @override
 String toString() {
-  return 'StockRoomState(roomId: $roomId, stockCode: $stockCode, slowModeSeconds: $slowModeSeconds, slowModeUntil: $slowModeUntil, slowModeSource: $slowModeSource, waitSeconds: $waitSeconds, pinnedMessage: $pinnedMessage, pinnedAt: $pinnedAt, moderatorIds: $moderatorIds, mutes: $mutes, viewerMutedUntil: $viewerMutedUntil)';
+  final _this = this as StockRoomState;
+  return 'StockRoomState(roomId: ${_this.roomId}, stockCode: ${_this.stockCode}, slowModeSeconds: ${_this.slowModeSeconds}, slowModeUntil: ${_this.slowModeUntil}, slowModeSource: ${_this.slowModeSource}, waitSeconds: ${_this.waitSeconds}, pinnedMessage: ${_this.pinnedMessage}, pinnedAt: ${_this.pinnedAt}, moderatorIds: ${_this.moderatorIds}, mutes: ${_this.mutes}, viewerMutedUntil: ${_this.viewerMutedUntil})';
 }
 
 
@@ -63,7 +69,7 @@ class _$StockRoomStateCopyWithImpl<$Res>
 /// Create a copy of StockRoomState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? roomId = freezed,Object? stockCode = freezed,Object? slowModeSeconds = null,Object? slowModeUntil = freezed,Object? slowModeSource = freezed,Object? waitSeconds = null,Object? pinnedMessage = freezed,Object? pinnedAt = freezed,Object? moderatorIds = null,Object? mutes = null,Object? viewerMutedUntil = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(StockRoomState(
 roomId: freezed == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String?,stockCode: freezed == stockCode ? _self.stockCode : stockCode // ignore: cast_nullable_to_non_nullable
 as String?,slowModeSeconds: null == slowModeSeconds ? _self.slowModeSeconds : slowModeSeconds // ignore: cast_nullable_to_non_nullable
@@ -228,7 +234,7 @@ return $default(_that.roomId,_that.stockCode,_that.slowModeSeconds,_that.slowMod
 
 
 class _StockRoomState extends StockRoomState {
-  const _StockRoomState({this.roomId, this.stockCode, this.slowModeSeconds = 0, this.slowModeUntil, this.slowModeSource, this.waitSeconds = 0, this.pinnedMessage, this.pinnedAt, final  Set<String> moderatorIds = const <String>{}, final  Map<String, DateTime> mutes = const <String, DateTime>{}, this.viewerMutedUntil}): _moderatorIds = moderatorIds,_mutes = mutes,super._();
+  const _StockRoomState({this.roomId, this.stockCode, this.slowModeSeconds = 0, this.slowModeUntil, this.slowModeSource, this.waitSeconds = 0, this.pinnedMessage, this.pinnedAt,  Set<String> moderatorIds = const <String>{},  Map<String, DateTime> mutes = const <String, DateTime>{}, this.viewerMutedUntil}): _moderatorIds = moderatorIds,_mutes = mutes,super._();
   
 
 @override final  String? roomId;
@@ -265,16 +271,18 @@ _$StockRoomStateCopyWith<_StockRoomState> get copyWith => __$StockRoomStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockRoomState&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.slowModeSeconds, slowModeSeconds) || other.slowModeSeconds == slowModeSeconds)&&(identical(other.slowModeUntil, slowModeUntil) || other.slowModeUntil == slowModeUntil)&&(identical(other.slowModeSource, slowModeSource) || other.slowModeSource == slowModeSource)&&(identical(other.waitSeconds, waitSeconds) || other.waitSeconds == waitSeconds)&&(identical(other.pinnedMessage, pinnedMessage) || other.pinnedMessage == pinnedMessage)&&(identical(other.pinnedAt, pinnedAt) || other.pinnedAt == pinnedAt)&&const DeepCollectionEquality().equals(other._moderatorIds, _moderatorIds)&&const DeepCollectionEquality().equals(other._mutes, _mutes)&&(identical(other.viewerMutedUntil, viewerMutedUntil) || other.viewerMutedUntil == viewerMutedUntil));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockRoomState&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.slowModeSeconds, slowModeSeconds) || other.slowModeSeconds == slowModeSeconds)&&(identical(other.slowModeUntil, slowModeUntil) || other.slowModeUntil == slowModeUntil)&&(identical(other.slowModeSource, slowModeSource) || other.slowModeSource == slowModeSource)&&(identical(other.waitSeconds, waitSeconds) || other.waitSeconds == waitSeconds)&&(identical(other.pinnedMessage, pinnedMessage) || other.pinnedMessage == pinnedMessage)&&(identical(other.pinnedAt, pinnedAt) || other.pinnedAt == pinnedAt)&&const DeepCollectionEquality().equals(other.moderatorIds, _moderatorIds)&&const DeepCollectionEquality().equals(other.mutes, _mutes)&&(identical(other.viewerMutedUntil, viewerMutedUntil) || other.viewerMutedUntil == viewerMutedUntil));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,roomId,stockCode,slowModeSeconds,slowModeUntil,slowModeSource,waitSeconds,pinnedMessage,pinnedAt,const DeepCollectionEquality().hash(_moderatorIds),const DeepCollectionEquality().hash(_mutes),viewerMutedUntil);
+int get hashCode {
+    return Object.hash(runtimeType,roomId,stockCode,slowModeSeconds,slowModeUntil,slowModeSource,waitSeconds,pinnedMessage,pinnedAt,const DeepCollectionEquality().hash(_moderatorIds),const DeepCollectionEquality().hash(_mutes),viewerMutedUntil);
+}
 
 @override
 String toString() {
-  return 'StockRoomState(roomId: $roomId, stockCode: $stockCode, slowModeSeconds: $slowModeSeconds, slowModeUntil: $slowModeUntil, slowModeSource: $slowModeSource, waitSeconds: $waitSeconds, pinnedMessage: $pinnedMessage, pinnedAt: $pinnedAt, moderatorIds: $moderatorIds, mutes: $mutes, viewerMutedUntil: $viewerMutedUntil)';
+    return 'StockRoomState(roomId: $roomId, stockCode: $stockCode, slowModeSeconds: $slowModeSeconds, slowModeUntil: $slowModeUntil, slowModeSource: $slowModeSource, waitSeconds: $waitSeconds, pinnedMessage: $pinnedMessage, pinnedAt: $pinnedAt, moderatorIds: $moderatorIds, mutes: $mutes, viewerMutedUntil: $viewerMutedUntil)';
 }
 
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'guest_support_cubit.dart';
@@ -9,6 +9,7 @@ part of 'guest_support_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $GuestSupportStateCopyWith<GuestSupportState> get copyWith => _$GuestSupportStat
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportState&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.config, config) || other.config == config)&&(identical(other.token, token) || other.token == token)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other.messages, messages)&&(identical(other.starting, starting) || other.starting == starting)&&(identical(other.sending, sending) || other.sending == sending)&&(identical(other.ending, ending) || other.ending == ending)&&(identical(other.reconnecting, reconnecting) || other.reconnecting == reconnecting)&&(identical(other.endReason, endReason) || other.endReason == endReason)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as GuestSupportState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GuestSupportState&&(identical(other.phase, _this.phase) || other.phase == _this.phase)&&(identical(other.config, _this.config) || other.config == _this.config)&&(identical(other.token, _this.token) || other.token == _this.token)&&(identical(other.ticket, _this.ticket) || other.ticket == _this.ticket)&&const DeepCollectionEquality().equals(other.messages, _this.messages)&&(identical(other.starting, _this.starting) || other.starting == _this.starting)&&(identical(other.sending, _this.sending) || other.sending == _this.sending)&&(identical(other.ending, _this.ending) || other.ending == _this.ending)&&(identical(other.reconnecting, _this.reconnecting) || other.reconnecting == _this.reconnecting)&&(identical(other.endReason, _this.endReason) || other.endReason == _this.endReason)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,phase,config,token,ticket,const DeepCollectionEquality().hash(messages),starting,sending,ending,reconnecting,endReason,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as GuestSupportState;
+  return Object.hash(runtimeType,_this.phase,_this.config,_this.token,_this.ticket,const DeepCollectionEquality().hash(_this.messages),_this.starting,_this.sending,_this.ending,_this.reconnecting,_this.endReason,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'GuestSupportState(phase: $phase, config: $config, token: $token, ticket: $ticket, messages: $messages, starting: $starting, sending: $sending, ending: $ending, reconnecting: $reconnecting, endReason: $endReason, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as GuestSupportState;
+  return 'GuestSupportState(phase: ${_this.phase}, config: ${_this.config}, token: ${_this.token}, ticket: ${_this.ticket}, messages: ${_this.messages}, starting: ${_this.starting}, sending: ${_this.sending}, ending: ${_this.ending}, reconnecting: ${_this.reconnecting}, endReason: ${_this.endReason}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$GuestSupportStateCopyWithImpl<$Res>
 /// Create a copy of GuestSupportState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? phase = null,Object? config = freezed,Object? token = freezed,Object? ticket = freezed,Object? messages = null,Object? starting = null,Object? sending = null,Object? ending = null,Object? reconnecting = null,Object? endReason = freezed,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(GuestSupportState(
 phase: null == phase ? _self.phase : phase // ignore: cast_nullable_to_non_nullable
 as GuestSupportPhase,config: freezed == config ? _self.config : config // ignore: cast_nullable_to_non_nullable
 as GuestSupportConfig?,token: freezed == token ? _self.token : token // ignore: cast_nullable_to_non_nullable
@@ -252,7 +258,7 @@ return $default(_that.phase,_that.config,_that.token,_that.ticket,_that.messages
 
 
 class _GuestSupportState extends GuestSupportState {
-  const _GuestSupportState({this.phase = GuestSupportPhase.loading, this.config, this.token, this.ticket, final  List<ChatMessage> messages = const <ChatMessage>[], this.starting = false, this.sending = false, this.ending = false, this.reconnecting = false, this.endReason, this.error, this.actionError, this.actionErrorId = 0}): _messages = messages,super._();
+  const _GuestSupportState({this.phase = GuestSupportPhase.loading, this.config, this.token, this.ticket,  List<ChatMessage> messages = const <ChatMessage>[], this.starting = false, this.sending = false, this.ending = false, this.reconnecting = false, this.endReason, this.error, this.actionError, this.actionErrorId = 0}): _messages = messages,super._();
   
 
 @override@JsonKey() final  GuestSupportPhase phase;
@@ -285,16 +291,18 @@ _$GuestSupportStateCopyWith<_GuestSupportState> get copyWith => __$GuestSupportS
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportState&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.config, config) || other.config == config)&&(identical(other.token, token) || other.token == token)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other._messages, _messages)&&(identical(other.starting, starting) || other.starting == starting)&&(identical(other.sending, sending) || other.sending == sending)&&(identical(other.ending, ending) || other.ending == ending)&&(identical(other.reconnecting, reconnecting) || other.reconnecting == reconnecting)&&(identical(other.endReason, endReason) || other.endReason == endReason)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GuestSupportState&&(identical(other.phase, phase) || other.phase == phase)&&(identical(other.config, config) || other.config == config)&&(identical(other.token, token) || other.token == token)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other.messages, _messages)&&(identical(other.starting, starting) || other.starting == starting)&&(identical(other.sending, sending) || other.sending == sending)&&(identical(other.ending, ending) || other.ending == ending)&&(identical(other.reconnecting, reconnecting) || other.reconnecting == reconnecting)&&(identical(other.endReason, endReason) || other.endReason == endReason)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,phase,config,token,ticket,const DeepCollectionEquality().hash(_messages),starting,sending,ending,reconnecting,endReason,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,phase,config,token,ticket,const DeepCollectionEquality().hash(_messages),starting,sending,ending,reconnecting,endReason,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'GuestSupportState(phase: $phase, config: $config, token: $token, ticket: $ticket, messages: $messages, starting: $starting, sending: $sending, ending: $ending, reconnecting: $reconnecting, endReason: $endReason, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'GuestSupportState(phase: $phase, config: $config, token: $token, ticket: $ticket, messages: $messages, starting: $starting, sending: $sending, ending: $ending, reconnecting: $reconnecting, endReason: $endReason, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

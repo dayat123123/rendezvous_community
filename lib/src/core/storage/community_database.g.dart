@@ -3,7 +3,8 @@
 part of 'community_database.dart';
 
 // ignore_for_file: type=lint
-class $MetaEntriesTable extends MetaEntries with TableInfo<$MetaEntriesTable, MetaEntry> {
+class $MetaEntriesTable extends MetaEntries
+    with TableInfo<$MetaEntriesTable, MetaEntry> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -34,16 +35,25 @@ class $MetaEntriesTable extends MetaEntries with TableInfo<$MetaEntriesTable, Me
   String get actualTableName => $name;
   static const String $name = 'meta_entries';
   @override
-  VerificationContext validateIntegrity(Insertable<MetaEntry> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<MetaEntry> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('key')) {
-      context.handle(_keyMeta, key.isAcceptableOrUnknown(data['key']!, _keyMeta));
+      context.handle(
+        _keyMeta,
+        key.isAcceptableOrUnknown(data['key']!, _keyMeta),
+      );
     } else if (isInserting) {
       context.missing(_keyMeta);
     }
     if (data.containsKey('value')) {
-      context.handle(_valueMeta, value.isAcceptableOrUnknown(data['value']!, _valueMeta));
+      context.handle(
+        _valueMeta,
+        value.isAcceptableOrUnknown(data['value']!, _valueMeta),
+      );
     } else if (isInserting) {
       context.missing(_valueMeta);
     }
@@ -56,8 +66,14 @@ class $MetaEntriesTable extends MetaEntries with TableInfo<$MetaEntriesTable, Me
   MetaEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return MetaEntry(
-      key: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}key'])!,
-      value: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}value'])!,
+      key: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}key'],
+      )!,
+      value: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}value'],
+      )!,
     );
   }
 
@@ -83,17 +99,27 @@ class MetaEntry extends DataClass implements Insertable<MetaEntry> {
     return MetaEntriesCompanion(key: Value(key), value: Value(value));
   }
 
-  factory MetaEntry.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory MetaEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return MetaEntry(key: serializer.fromJson<String>(json['key']), value: serializer.fromJson<String>(json['value']));
+    return MetaEntry(
+      key: serializer.fromJson<String>(json['key']),
+      value: serializer.fromJson<String>(json['value']),
+    );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
-    return <String, dynamic>{'key': serializer.toJson<String>(key), 'value': serializer.toJson<String>(value)};
+    return <String, dynamic>{
+      'key': serializer.toJson<String>(key),
+      'value': serializer.toJson<String>(value),
+    };
   }
 
-  MetaEntry copyWith({String? key, String? value}) => MetaEntry(key: key ?? this.key, value: value ?? this.value);
+  MetaEntry copyWith({String? key, String? value}) =>
+      MetaEntry(key: key ?? this.key, value: value ?? this.value);
   MetaEntry copyWithCompanion(MetaEntriesCompanion data) {
     return MetaEntry(
       key: data.key.present ? data.key.value : this.key,
@@ -114,7 +140,10 @@ class MetaEntry extends DataClass implements Insertable<MetaEntry> {
   int get hashCode => Object.hash(key, value);
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || (other is MetaEntry && other.key == this.key && other.value == this.value);
+      identical(this, other) ||
+      (other is MetaEntry &&
+          other.key == this.key &&
+          other.value == this.value);
 }
 
 class MetaEntriesCompanion extends UpdateCompanion<MetaEntry> {
@@ -126,10 +155,17 @@ class MetaEntriesCompanion extends UpdateCompanion<MetaEntry> {
     this.value = const Value.absent(),
     this.rowid = const Value.absent(),
   });
-  MetaEntriesCompanion.insert({required String key, required String value, this.rowid = const Value.absent()})
-    : key = Value(key),
-      value = Value(value);
-  static Insertable<MetaEntry> custom({Expression<String>? key, Expression<String>? value, Expression<int>? rowid}) {
+  MetaEntriesCompanion.insert({
+    required String key,
+    required String value,
+    this.rowid = const Value.absent(),
+  }) : key = Value(key),
+       value = Value(value);
+  static Insertable<MetaEntry> custom({
+    Expression<String>? key,
+    Expression<String>? value,
+    Expression<int>? rowid,
+  }) {
     return RawValuesInsertable({
       if (key != null) 'key': key,
       if (value != null) 'value': value,
@@ -137,8 +173,16 @@ class MetaEntriesCompanion extends UpdateCompanion<MetaEntry> {
     });
   }
 
-  MetaEntriesCompanion copyWith({Value<String>? key, Value<String>? value, Value<int>? rowid}) {
-    return MetaEntriesCompanion(key: key ?? this.key, value: value ?? this.value, rowid: rowid ?? this.rowid);
+  MetaEntriesCompanion copyWith({
+    Value<String>? key,
+    Value<String>? value,
+    Value<int>? rowid,
+  }) {
+    return MetaEntriesCompanion(
+      key: key ?? this.key,
+      value: value ?? this.value,
+      rowid: rowid ?? this.rowid,
+    );
   }
 
   @override
@@ -167,7 +211,8 @@ class MetaEntriesCompanion extends UpdateCompanion<MetaEntry> {
   }
 }
 
-class $CachedRoomsTable extends CachedRooms with TableInfo<$CachedRoomsTable, CachedRoom> {
+class $CachedRoomsTable extends CachedRooms
+    with TableInfo<$CachedRoomsTable, CachedRoom> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -181,7 +226,9 @@ class $CachedRoomsTable extends CachedRooms with TableInfo<$CachedRoomsTable, Ca
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _positionMeta = const VerificationMeta('position');
+  static const VerificationMeta _positionMeta = const VerificationMeta(
+    'position',
+  );
   @override
   late final GeneratedColumn<int> position = GeneratedColumn<int>(
     'position',
@@ -207,7 +254,10 @@ class $CachedRoomsTable extends CachedRooms with TableInfo<$CachedRoomsTable, Ca
   String get actualTableName => $name;
   static const String $name = 'cached_rooms';
   @override
-  VerificationContext validateIntegrity(Insertable<CachedRoom> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<CachedRoom> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -216,12 +266,18 @@ class $CachedRoomsTable extends CachedRooms with TableInfo<$CachedRoomsTable, Ca
       context.missing(_idMeta);
     }
     if (data.containsKey('position')) {
-      context.handle(_positionMeta, position.isAcceptableOrUnknown(data['position']!, _positionMeta));
+      context.handle(
+        _positionMeta,
+        position.isAcceptableOrUnknown(data['position']!, _positionMeta),
+      );
     } else if (isInserting) {
       context.missing(_positionMeta);
     }
     if (data.containsKey('data')) {
-      context.handle(_dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
+      context.handle(
+        _dataMeta,
+        this.data.isAcceptableOrUnknown(data['data']!, _dataMeta),
+      );
     } else if (isInserting) {
       context.missing(_dataMeta);
     }
@@ -234,9 +290,18 @@ class $CachedRoomsTable extends CachedRooms with TableInfo<$CachedRoomsTable, Ca
   CachedRoom map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CachedRoom(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      position: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}position'])!,
-      data: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}data'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      position: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}position'],
+      )!,
+      data: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}data'],
+      )!,
     );
   }
 
@@ -250,7 +315,11 @@ class CachedRoom extends DataClass implements Insertable<CachedRoom> {
   final String id;
   final int position;
   final String data;
-  const CachedRoom({required this.id, required this.position, required this.data});
+  const CachedRoom({
+    required this.id,
+    required this.position,
+    required this.data,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -261,10 +330,17 @@ class CachedRoom extends DataClass implements Insertable<CachedRoom> {
   }
 
   CachedRoomsCompanion toCompanion(bool nullToAbsent) {
-    return CachedRoomsCompanion(id: Value(id), position: Value(position), data: Value(data));
+    return CachedRoomsCompanion(
+      id: Value(id),
+      position: Value(position),
+      data: Value(data),
+    );
   }
 
-  factory CachedRoom.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory CachedRoom.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CachedRoom(
       id: serializer.fromJson<String>(json['id']),
@@ -282,8 +358,11 @@ class CachedRoom extends DataClass implements Insertable<CachedRoom> {
     };
   }
 
-  CachedRoom copyWith({String? id, int? position, String? data}) =>
-      CachedRoom(id: id ?? this.id, position: position ?? this.position, data: data ?? this.data);
+  CachedRoom copyWith({String? id, int? position, String? data}) => CachedRoom(
+    id: id ?? this.id,
+    position: position ?? this.position,
+    data: data ?? this.data,
+  );
   CachedRoom copyWithCompanion(CachedRoomsCompanion data) {
     return CachedRoom(
       id: data.id.present ? data.id.value : this.id,
@@ -307,7 +386,10 @@ class CachedRoom extends DataClass implements Insertable<CachedRoom> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      (other is CachedRoom && other.id == this.id && other.position == this.position && other.data == this.data);
+      (other is CachedRoom &&
+          other.id == this.id &&
+          other.position == this.position &&
+          other.data == this.data);
 }
 
 class CachedRoomsCompanion extends UpdateCompanion<CachedRoom> {
@@ -343,7 +425,12 @@ class CachedRoomsCompanion extends UpdateCompanion<CachedRoom> {
     });
   }
 
-  CachedRoomsCompanion copyWith({Value<String>? id, Value<int>? position, Value<String>? data, Value<int>? rowid}) {
+  CachedRoomsCompanion copyWith({
+    Value<String>? id,
+    Value<int>? position,
+    Value<String>? data,
+    Value<int>? rowid,
+  }) {
     return CachedRoomsCompanion(
       id: id ?? this.id,
       position: position ?? this.position,
@@ -382,7 +469,8 @@ class CachedRoomsCompanion extends UpdateCompanion<CachedRoom> {
   }
 }
 
-class $CachedMessagesTable extends CachedMessages with TableInfo<$CachedMessagesTable, CachedMessage> {
+class $CachedMessagesTable extends CachedMessages
+    with TableInfo<$CachedMessagesTable, CachedMessage> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -405,7 +493,9 @@ class $CachedMessagesTable extends CachedMessages with TableInfo<$CachedMessages
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -431,7 +521,10 @@ class $CachedMessagesTable extends CachedMessages with TableInfo<$CachedMessages
   String get actualTableName => $name;
   static const String $name = 'cached_messages';
   @override
-  VerificationContext validateIntegrity(Insertable<CachedMessage> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<CachedMessage> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -440,17 +533,26 @@ class $CachedMessagesTable extends CachedMessages with TableInfo<$CachedMessages
       context.missing(_idMeta);
     }
     if (data.containsKey('room_id')) {
-      context.handle(_roomIdMeta, roomId.isAcceptableOrUnknown(data['room_id']!, _roomIdMeta));
+      context.handle(
+        _roomIdMeta,
+        roomId.isAcceptableOrUnknown(data['room_id']!, _roomIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_roomIdMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('data')) {
-      context.handle(_dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
+      context.handle(
+        _dataMeta,
+        this.data.isAcceptableOrUnknown(data['data']!, _dataMeta),
+      );
     } else if (isInserting) {
       context.missing(_dataMeta);
     }
@@ -463,10 +565,22 @@ class $CachedMessagesTable extends CachedMessages with TableInfo<$CachedMessages
   CachedMessage map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CachedMessage(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      roomId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}room_id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      data: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}data'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      roomId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}room_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      data: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}data'],
+      )!,
     );
   }
 
@@ -481,7 +595,12 @@ class CachedMessage extends DataClass implements Insertable<CachedMessage> {
   final String roomId;
   final int createdAt;
   final String data;
-  const CachedMessage({required this.id, required this.roomId, required this.createdAt, required this.data});
+  const CachedMessage({
+    required this.id,
+    required this.roomId,
+    required this.createdAt,
+    required this.data,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -501,7 +620,10 @@ class CachedMessage extends DataClass implements Insertable<CachedMessage> {
     );
   }
 
-  factory CachedMessage.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory CachedMessage.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CachedMessage(
       id: serializer.fromJson<String>(json['id']),
@@ -521,7 +643,12 @@ class CachedMessage extends DataClass implements Insertable<CachedMessage> {
     };
   }
 
-  CachedMessage copyWith({String? id, String? roomId, int? createdAt, String? data}) => CachedMessage(
+  CachedMessage copyWith({
+    String? id,
+    String? roomId,
+    int? createdAt,
+    String? data,
+  }) => CachedMessage(
     id: id ?? this.id,
     roomId: roomId ?? this.roomId,
     createdAt: createdAt ?? this.createdAt,
@@ -648,7 +775,8 @@ class CachedMessagesCompanion extends UpdateCompanion<CachedMessage> {
   }
 }
 
-class $CachedFeedPagesTable extends CachedFeedPages with TableInfo<$CachedFeedPagesTable, CachedFeedPage> {
+class $CachedFeedPagesTable extends CachedFeedPages
+    with TableInfo<$CachedFeedPagesTable, CachedFeedPage> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -662,7 +790,9 @@ class $CachedFeedPagesTable extends CachedFeedPages with TableInfo<$CachedFeedPa
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _savedAtMeta = const VerificationMeta('savedAt');
+  static const VerificationMeta _savedAtMeta = const VerificationMeta(
+    'savedAt',
+  );
   @override
   late final GeneratedColumn<int> savedAt = GeneratedColumn<int>(
     'saved_at',
@@ -688,21 +818,33 @@ class $CachedFeedPagesTable extends CachedFeedPages with TableInfo<$CachedFeedPa
   String get actualTableName => $name;
   static const String $name = 'cached_feed_pages';
   @override
-  VerificationContext validateIntegrity(Insertable<CachedFeedPage> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<CachedFeedPage> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('scope')) {
-      context.handle(_scopeMeta, scope.isAcceptableOrUnknown(data['scope']!, _scopeMeta));
+      context.handle(
+        _scopeMeta,
+        scope.isAcceptableOrUnknown(data['scope']!, _scopeMeta),
+      );
     } else if (isInserting) {
       context.missing(_scopeMeta);
     }
     if (data.containsKey('saved_at')) {
-      context.handle(_savedAtMeta, savedAt.isAcceptableOrUnknown(data['saved_at']!, _savedAtMeta));
+      context.handle(
+        _savedAtMeta,
+        savedAt.isAcceptableOrUnknown(data['saved_at']!, _savedAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_savedAtMeta);
     }
     if (data.containsKey('data')) {
-      context.handle(_dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
+      context.handle(
+        _dataMeta,
+        this.data.isAcceptableOrUnknown(data['data']!, _dataMeta),
+      );
     } else if (isInserting) {
       context.missing(_dataMeta);
     }
@@ -715,9 +857,18 @@ class $CachedFeedPagesTable extends CachedFeedPages with TableInfo<$CachedFeedPa
   CachedFeedPage map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return CachedFeedPage(
-      scope: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}scope'])!,
-      savedAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}saved_at'])!,
-      data: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}data'])!,
+      scope: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}scope'],
+      )!,
+      savedAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}saved_at'],
+      )!,
+      data: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}data'],
+      )!,
     );
   }
 
@@ -731,7 +882,11 @@ class CachedFeedPage extends DataClass implements Insertable<CachedFeedPage> {
   final String scope;
   final int savedAt;
   final String data;
-  const CachedFeedPage({required this.scope, required this.savedAt, required this.data});
+  const CachedFeedPage({
+    required this.scope,
+    required this.savedAt,
+    required this.data,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -742,10 +897,17 @@ class CachedFeedPage extends DataClass implements Insertable<CachedFeedPage> {
   }
 
   CachedFeedPagesCompanion toCompanion(bool nullToAbsent) {
-    return CachedFeedPagesCompanion(scope: Value(scope), savedAt: Value(savedAt), data: Value(data));
+    return CachedFeedPagesCompanion(
+      scope: Value(scope),
+      savedAt: Value(savedAt),
+      data: Value(data),
+    );
   }
 
-  factory CachedFeedPage.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory CachedFeedPage.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return CachedFeedPage(
       scope: serializer.fromJson<String>(json['scope']),
@@ -764,7 +926,11 @@ class CachedFeedPage extends DataClass implements Insertable<CachedFeedPage> {
   }
 
   CachedFeedPage copyWith({String? scope, int? savedAt, String? data}) =>
-      CachedFeedPage(scope: scope ?? this.scope, savedAt: savedAt ?? this.savedAt, data: data ?? this.data);
+      CachedFeedPage(
+        scope: scope ?? this.scope,
+        savedAt: savedAt ?? this.savedAt,
+        data: data ?? this.data,
+      );
   CachedFeedPage copyWithCompanion(CachedFeedPagesCompanion data) {
     return CachedFeedPage(
       scope: data.scope.present ? data.scope.value : this.scope,
@@ -871,7 +1037,8 @@ class CachedFeedPagesCompanion extends UpdateCompanion<CachedFeedPage> {
   }
 }
 
-class $OutboxEntriesTable extends OutboxEntries with TableInfo<$OutboxEntriesTable, OutboxEntry> {
+class $OutboxEntriesTable extends OutboxEntries
+    with TableInfo<$OutboxEntriesTable, OutboxEntry> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -894,7 +1061,9 @@ class $OutboxEntriesTable extends OutboxEntries with TableInfo<$OutboxEntriesTab
     type: DriftSqlType.string,
     requiredDuringInsert: true,
   );
-  static const VerificationMeta _createdAtMeta = const VerificationMeta('createdAt');
+  static const VerificationMeta _createdAtMeta = const VerificationMeta(
+    'createdAt',
+  );
   @override
   late final GeneratedColumn<int> createdAt = GeneratedColumn<int>(
     'created_at',
@@ -920,7 +1089,10 @@ class $OutboxEntriesTable extends OutboxEntries with TableInfo<$OutboxEntriesTab
   String get actualTableName => $name;
   static const String $name = 'outbox_entries';
   @override
-  VerificationContext validateIntegrity(Insertable<OutboxEntry> instance, {bool isInserting = false}) {
+  VerificationContext validateIntegrity(
+    Insertable<OutboxEntry> instance, {
+    bool isInserting = false,
+  }) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
     if (data.containsKey('id')) {
@@ -929,17 +1101,26 @@ class $OutboxEntriesTable extends OutboxEntries with TableInfo<$OutboxEntriesTab
       context.missing(_idMeta);
     }
     if (data.containsKey('room_id')) {
-      context.handle(_roomIdMeta, roomId.isAcceptableOrUnknown(data['room_id']!, _roomIdMeta));
+      context.handle(
+        _roomIdMeta,
+        roomId.isAcceptableOrUnknown(data['room_id']!, _roomIdMeta),
+      );
     } else if (isInserting) {
       context.missing(_roomIdMeta);
     }
     if (data.containsKey('created_at')) {
-      context.handle(_createdAtMeta, createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta));
+      context.handle(
+        _createdAtMeta,
+        createdAt.isAcceptableOrUnknown(data['created_at']!, _createdAtMeta),
+      );
     } else if (isInserting) {
       context.missing(_createdAtMeta);
     }
     if (data.containsKey('data')) {
-      context.handle(_dataMeta, this.data.isAcceptableOrUnknown(data['data']!, _dataMeta));
+      context.handle(
+        _dataMeta,
+        this.data.isAcceptableOrUnknown(data['data']!, _dataMeta),
+      );
     } else if (isInserting) {
       context.missing(_dataMeta);
     }
@@ -952,10 +1133,22 @@ class $OutboxEntriesTable extends OutboxEntries with TableInfo<$OutboxEntriesTab
   OutboxEntry map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return OutboxEntry(
-      id: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}id'])!,
-      roomId: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}room_id'])!,
-      createdAt: attachedDatabase.typeMapping.read(DriftSqlType.int, data['${effectivePrefix}created_at'])!,
-      data: attachedDatabase.typeMapping.read(DriftSqlType.string, data['${effectivePrefix}data'])!,
+      id: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}id'],
+      )!,
+      roomId: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}room_id'],
+      )!,
+      createdAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.int,
+        data['${effectivePrefix}created_at'],
+      )!,
+      data: attachedDatabase.typeMapping.read(
+        DriftSqlType.string,
+        data['${effectivePrefix}data'],
+      )!,
     );
   }
 
@@ -970,7 +1163,12 @@ class OutboxEntry extends DataClass implements Insertable<OutboxEntry> {
   final String roomId;
   final int createdAt;
   final String data;
-  const OutboxEntry({required this.id, required this.roomId, required this.createdAt, required this.data});
+  const OutboxEntry({
+    required this.id,
+    required this.roomId,
+    required this.createdAt,
+    required this.data,
+  });
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -982,10 +1180,18 @@ class OutboxEntry extends DataClass implements Insertable<OutboxEntry> {
   }
 
   OutboxEntriesCompanion toCompanion(bool nullToAbsent) {
-    return OutboxEntriesCompanion(id: Value(id), roomId: Value(roomId), createdAt: Value(createdAt), data: Value(data));
+    return OutboxEntriesCompanion(
+      id: Value(id),
+      roomId: Value(roomId),
+      createdAt: Value(createdAt),
+      data: Value(data),
+    );
   }
 
-  factory OutboxEntry.fromJson(Map<String, dynamic> json, {ValueSerializer? serializer}) {
+  factory OutboxEntry.fromJson(
+    Map<String, dynamic> json, {
+    ValueSerializer? serializer,
+  }) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return OutboxEntry(
       id: serializer.fromJson<String>(json['id']),
@@ -1005,7 +1211,12 @@ class OutboxEntry extends DataClass implements Insertable<OutboxEntry> {
     };
   }
 
-  OutboxEntry copyWith({String? id, String? roomId, int? createdAt, String? data}) => OutboxEntry(
+  OutboxEntry copyWith({
+    String? id,
+    String? roomId,
+    int? createdAt,
+    String? data,
+  }) => OutboxEntry(
     id: id ?? this.id,
     roomId: roomId ?? this.roomId,
     createdAt: createdAt ?? this.createdAt,
@@ -1138,14 +1349,17 @@ abstract class _$CommunityDatabase extends GeneratedDatabase {
   late final $MetaEntriesTable metaEntries = $MetaEntriesTable(this);
   late final $CachedRoomsTable cachedRooms = $CachedRoomsTable(this);
   late final $CachedMessagesTable cachedMessages = $CachedMessagesTable(this);
-  late final $CachedFeedPagesTable cachedFeedPages = $CachedFeedPagesTable(this);
+  late final $CachedFeedPagesTable cachedFeedPages = $CachedFeedPagesTable(
+    this,
+  );
   late final $OutboxEntriesTable outboxEntries = $OutboxEntriesTable(this);
   late final Index cachedMessagesRoomTime = Index(
     'cached_messages_room_time',
     'CREATE INDEX cached_messages_room_time ON cached_messages (room_id, created_at)',
   );
   @override
-  Iterable<TableInfo<Table, Object?>> get allTables => allSchemaEntities.whereType<TableInfo<Table, Object?>>();
+  Iterable<TableInfo<Table, Object?>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     metaEntries,
@@ -1158,11 +1372,20 @@ abstract class _$CommunityDatabase extends GeneratedDatabase {
 }
 
 typedef $$MetaEntriesTableCreateCompanionBuilder =
-    MetaEntriesCompanion Function({required String key, required String value, Value<int> rowid});
+    MetaEntriesCompanion Function({
+      required String key,
+      required String value,
+      Value<int> rowid,
+    });
 typedef $$MetaEntriesTableUpdateCompanionBuilder =
-    MetaEntriesCompanion Function({Value<String> key, Value<String> value, Value<int> rowid});
+    MetaEntriesCompanion Function({
+      Value<String> key,
+      Value<String> value,
+      Value<int> rowid,
+    });
 
-class $$MetaEntriesTableFilterComposer extends Composer<_$CommunityDatabase, $MetaEntriesTable> {
+class $$MetaEntriesTableFilterComposer
+    extends Composer<_$CommunityDatabase, $MetaEntriesTable> {
   $$MetaEntriesTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1170,13 +1393,19 @@ class $$MetaEntriesTableFilterComposer extends Composer<_$CommunityDatabase, $Me
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get key => $composableBuilder(column: $table.key, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get value =>
-      $composableBuilder(column: $table.value, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get value => $composableBuilder(
+    column: $table.value,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$MetaEntriesTableOrderingComposer extends Composer<_$CommunityDatabase, $MetaEntriesTable> {
+class $$MetaEntriesTableOrderingComposer
+    extends Composer<_$CommunityDatabase, $MetaEntriesTable> {
   $$MetaEntriesTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1184,14 +1413,19 @@ class $$MetaEntriesTableOrderingComposer extends Composer<_$CommunityDatabase, $
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get key =>
-      $composableBuilder(column: $table.key, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get key => $composableBuilder(
+    column: $table.key,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get value =>
-      $composableBuilder(column: $table.value, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get value => $composableBuilder(
+    column: $table.value,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$MetaEntriesTableAnnotationComposer extends Composer<_$CommunityDatabase, $MetaEntriesTable> {
+class $$MetaEntriesTableAnnotationComposer
+    extends Composer<_$CommunityDatabase, $MetaEntriesTable> {
   $$MetaEntriesTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1199,9 +1433,11 @@ class $$MetaEntriesTableAnnotationComposer extends Composer<_$CommunityDatabase,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get key => $composableBuilder(column: $table.key, builder: (column) => column);
+  GeneratedColumn<String> get key =>
+      $composableBuilder(column: $table.key, builder: (column) => column);
 
-  GeneratedColumn<String> get value => $composableBuilder(column: $table.value, builder: (column) => column);
+  GeneratedColumn<String> get value =>
+      $composableBuilder(column: $table.value, builder: (column) => column);
 }
 
 class $$MetaEntriesTableTableManager
@@ -1215,18 +1451,26 @@ class $$MetaEntriesTableTableManager
           $$MetaEntriesTableAnnotationComposer,
           $$MetaEntriesTableCreateCompanionBuilder,
           $$MetaEntriesTableUpdateCompanionBuilder,
-          (MetaEntry, BaseReferences<_$CommunityDatabase, $MetaEntriesTable, MetaEntry>),
+          (
+            MetaEntry,
+            BaseReferences<_$CommunityDatabase, $MetaEntriesTable, MetaEntry>,
+          ),
           MetaEntry,
           PrefetchHooks Function()
         > {
-  $$MetaEntriesTableTableManager(_$CommunityDatabase db, $MetaEntriesTable table)
-    : super(
+  $$MetaEntriesTableTableManager(
+    _$CommunityDatabase db,
+    $MetaEntriesTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$MetaEntriesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$MetaEntriesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$MetaEntriesTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$MetaEntriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$MetaEntriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$MetaEntriesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> key = const Value.absent(),
@@ -1234,9 +1478,27 @@ class $$MetaEntriesTableTableManager
                 Value<int> rowid = const Value.absent(),
               }) => MetaEntriesCompanion(key: key, value: value, rowid: rowid),
           createCompanionCallback:
-              ({required String key, required String value, Value<int> rowid = const Value.absent()}) =>
-                  MetaEntriesCompanion.insert(key: key, value: value, rowid: rowid),
-          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
+              ({
+                required String key,
+                required String value,
+                Value<int> rowid = const Value.absent(),
+              }) => MetaEntriesCompanion.insert(
+                key: key,
+                value: value,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$MetaEntriesTable, MetaEntry>(table),
+                  BaseReferences<
+                    _$CommunityDatabase,
+                    $MetaEntriesTable,
+                    MetaEntry
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1252,16 +1514,30 @@ typedef $$MetaEntriesTableProcessedTableManager =
       $$MetaEntriesTableAnnotationComposer,
       $$MetaEntriesTableCreateCompanionBuilder,
       $$MetaEntriesTableUpdateCompanionBuilder,
-      (MetaEntry, BaseReferences<_$CommunityDatabase, $MetaEntriesTable, MetaEntry>),
+      (
+        MetaEntry,
+        BaseReferences<_$CommunityDatabase, $MetaEntriesTable, MetaEntry>,
+      ),
       MetaEntry,
       PrefetchHooks Function()
     >;
 typedef $$CachedRoomsTableCreateCompanionBuilder =
-    CachedRoomsCompanion Function({required String id, required int position, required String data, Value<int> rowid});
+    CachedRoomsCompanion Function({
+      required String id,
+      required int position,
+      required String data,
+      Value<int> rowid,
+    });
 typedef $$CachedRoomsTableUpdateCompanionBuilder =
-    CachedRoomsCompanion Function({Value<String> id, Value<int> position, Value<String> data, Value<int> rowid});
+    CachedRoomsCompanion Function({
+      Value<String> id,
+      Value<int> position,
+      Value<String> data,
+      Value<int> rowid,
+    });
 
-class $$CachedRoomsTableFilterComposer extends Composer<_$CommunityDatabase, $CachedRoomsTable> {
+class $$CachedRoomsTableFilterComposer
+    extends Composer<_$CommunityDatabase, $CachedRoomsTable> {
   $$CachedRoomsTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1269,15 +1545,24 @@ class $$CachedRoomsTableFilterComposer extends Composer<_$CommunityDatabase, $Ca
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get position =>
-      $composableBuilder(column: $table.position, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get data => $composableBuilder(column: $table.data, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$CachedRoomsTableOrderingComposer extends Composer<_$CommunityDatabase, $CachedRoomsTable> {
+class $$CachedRoomsTableOrderingComposer
+    extends Composer<_$CommunityDatabase, $CachedRoomsTable> {
   $$CachedRoomsTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1285,16 +1570,24 @@ class $$CachedRoomsTableOrderingComposer extends Composer<_$CommunityDatabase, $
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get position =>
-      $composableBuilder(column: $table.position, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get position => $composableBuilder(
+    column: $table.position,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get data =>
-      $composableBuilder(column: $table.data, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$CachedRoomsTableAnnotationComposer extends Composer<_$CommunityDatabase, $CachedRoomsTable> {
+class $$CachedRoomsTableAnnotationComposer
+    extends Composer<_$CommunityDatabase, $CachedRoomsTable> {
   $$CachedRoomsTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1302,11 +1595,14 @@ class $$CachedRoomsTableAnnotationComposer extends Composer<_$CommunityDatabase,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get position => $composableBuilder(column: $table.position, builder: (column) => column);
+  GeneratedColumn<int> get position =>
+      $composableBuilder(column: $table.position, builder: (column) => column);
 
-  GeneratedColumn<String> get data => $composableBuilder(column: $table.data, builder: (column) => column);
+  GeneratedColumn<String> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => column);
 }
 
 class $$CachedRoomsTableTableManager
@@ -1320,33 +1616,62 @@ class $$CachedRoomsTableTableManager
           $$CachedRoomsTableAnnotationComposer,
           $$CachedRoomsTableCreateCompanionBuilder,
           $$CachedRoomsTableUpdateCompanionBuilder,
-          (CachedRoom, BaseReferences<_$CommunityDatabase, $CachedRoomsTable, CachedRoom>),
+          (
+            CachedRoom,
+            BaseReferences<_$CommunityDatabase, $CachedRoomsTable, CachedRoom>,
+          ),
           CachedRoom,
           PrefetchHooks Function()
         > {
-  $$CachedRoomsTableTableManager(_$CommunityDatabase db, $CachedRoomsTable table)
-    : super(
+  $$CachedRoomsTableTableManager(
+    _$CommunityDatabase db,
+    $CachedRoomsTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$CachedRoomsTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$CachedRoomsTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$CachedRoomsTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$CachedRoomsTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CachedRoomsTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CachedRoomsTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
                 Value<int> position = const Value.absent(),
                 Value<String> data = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => CachedRoomsCompanion(id: id, position: position, data: data, rowid: rowid),
+              }) => CachedRoomsCompanion(
+                id: id,
+                position: position,
+                data: data,
+                rowid: rowid,
+              ),
           createCompanionCallback:
               ({
                 required String id,
                 required int position,
                 required String data,
                 Value<int> rowid = const Value.absent(),
-              }) => CachedRoomsCompanion.insert(id: id, position: position, data: data, rowid: rowid),
-          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
+              }) => CachedRoomsCompanion.insert(
+                id: id,
+                position: position,
+                data: data,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$CachedRoomsTable, CachedRoom>(table),
+                  BaseReferences<
+                    _$CommunityDatabase,
+                    $CachedRoomsTable,
+                    CachedRoom
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1362,7 +1687,10 @@ typedef $$CachedRoomsTableProcessedTableManager =
       $$CachedRoomsTableAnnotationComposer,
       $$CachedRoomsTableCreateCompanionBuilder,
       $$CachedRoomsTableUpdateCompanionBuilder,
-      (CachedRoom, BaseReferences<_$CommunityDatabase, $CachedRoomsTable, CachedRoom>),
+      (
+        CachedRoom,
+        BaseReferences<_$CommunityDatabase, $CachedRoomsTable, CachedRoom>,
+      ),
       CachedRoom,
       PrefetchHooks Function()
     >;
@@ -1383,7 +1711,8 @@ typedef $$CachedMessagesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$CachedMessagesTableFilterComposer extends Composer<_$CommunityDatabase, $CachedMessagesTable> {
+class $$CachedMessagesTableFilterComposer
+    extends Composer<_$CommunityDatabase, $CachedMessagesTable> {
   $$CachedMessagesTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1391,18 +1720,29 @@ class $$CachedMessagesTableFilterComposer extends Composer<_$CommunityDatabase, 
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get roomId =>
-      $composableBuilder(column: $table.roomId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get roomId => $composableBuilder(
+    column: $table.roomId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get data => $composableBuilder(column: $table.data, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$CachedMessagesTableOrderingComposer extends Composer<_$CommunityDatabase, $CachedMessagesTable> {
+class $$CachedMessagesTableOrderingComposer
+    extends Composer<_$CommunityDatabase, $CachedMessagesTable> {
   $$CachedMessagesTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1410,19 +1750,29 @@ class $$CachedMessagesTableOrderingComposer extends Composer<_$CommunityDatabase
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get roomId =>
-      $composableBuilder(column: $table.roomId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get roomId => $composableBuilder(
+    column: $table.roomId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get data =>
-      $composableBuilder(column: $table.data, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$CachedMessagesTableAnnotationComposer extends Composer<_$CommunityDatabase, $CachedMessagesTable> {
+class $$CachedMessagesTableAnnotationComposer
+    extends Composer<_$CommunityDatabase, $CachedMessagesTable> {
   $$CachedMessagesTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1430,13 +1780,17 @@ class $$CachedMessagesTableAnnotationComposer extends Composer<_$CommunityDataba
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get roomId => $composableBuilder(column: $table.roomId, builder: (column) => column);
+  GeneratedColumn<String> get roomId =>
+      $composableBuilder(column: $table.roomId, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<String> get data => $composableBuilder(column: $table.data, builder: (column) => column);
+  GeneratedColumn<String> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => column);
 }
 
 class $$CachedMessagesTableTableManager
@@ -1450,18 +1804,30 @@ class $$CachedMessagesTableTableManager
           $$CachedMessagesTableAnnotationComposer,
           $$CachedMessagesTableCreateCompanionBuilder,
           $$CachedMessagesTableUpdateCompanionBuilder,
-          (CachedMessage, BaseReferences<_$CommunityDatabase, $CachedMessagesTable, CachedMessage>),
+          (
+            CachedMessage,
+            BaseReferences<
+              _$CommunityDatabase,
+              $CachedMessagesTable,
+              CachedMessage
+            >,
+          ),
           CachedMessage,
           PrefetchHooks Function()
         > {
-  $$CachedMessagesTableTableManager(_$CommunityDatabase db, $CachedMessagesTable table)
-    : super(
+  $$CachedMessagesTableTableManager(
+    _$CommunityDatabase db,
+    $CachedMessagesTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$CachedMessagesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$CachedMessagesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$CachedMessagesTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$CachedMessagesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CachedMessagesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CachedMessagesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -1469,7 +1835,13 @@ class $$CachedMessagesTableTableManager
                 Value<int> createdAt = const Value.absent(),
                 Value<String> data = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => CachedMessagesCompanion(id: id, roomId: roomId, createdAt: createdAt, data: data, rowid: rowid),
+              }) => CachedMessagesCompanion(
+                id: id,
+                roomId: roomId,
+                createdAt: createdAt,
+                data: data,
+                rowid: rowid,
+              ),
           createCompanionCallback:
               ({
                 required String id,
@@ -1484,7 +1856,18 @@ class $$CachedMessagesTableTableManager
                 data: data,
                 rowid: rowid,
               ),
-          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$CachedMessagesTable, CachedMessage>(table),
+                  BaseReferences<
+                    _$CommunityDatabase,
+                    $CachedMessagesTable,
+                    CachedMessage
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1500,7 +1883,14 @@ typedef $$CachedMessagesTableProcessedTableManager =
       $$CachedMessagesTableAnnotationComposer,
       $$CachedMessagesTableCreateCompanionBuilder,
       $$CachedMessagesTableUpdateCompanionBuilder,
-      (CachedMessage, BaseReferences<_$CommunityDatabase, $CachedMessagesTable, CachedMessage>),
+      (
+        CachedMessage,
+        BaseReferences<
+          _$CommunityDatabase,
+          $CachedMessagesTable,
+          CachedMessage
+        >,
+      ),
       CachedMessage,
       PrefetchHooks Function()
     >;
@@ -1512,9 +1902,15 @@ typedef $$CachedFeedPagesTableCreateCompanionBuilder =
       Value<int> rowid,
     });
 typedef $$CachedFeedPagesTableUpdateCompanionBuilder =
-    CachedFeedPagesCompanion Function({Value<String> scope, Value<int> savedAt, Value<String> data, Value<int> rowid});
+    CachedFeedPagesCompanion Function({
+      Value<String> scope,
+      Value<int> savedAt,
+      Value<String> data,
+      Value<int> rowid,
+    });
 
-class $$CachedFeedPagesTableFilterComposer extends Composer<_$CommunityDatabase, $CachedFeedPagesTable> {
+class $$CachedFeedPagesTableFilterComposer
+    extends Composer<_$CommunityDatabase, $CachedFeedPagesTable> {
   $$CachedFeedPagesTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1522,16 +1918,24 @@ class $$CachedFeedPagesTableFilterComposer extends Composer<_$CommunityDatabase,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get scope =>
-      $composableBuilder(column: $table.scope, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get scope => $composableBuilder(
+    column: $table.scope,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get savedAt =>
-      $composableBuilder(column: $table.savedAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get savedAt => $composableBuilder(
+    column: $table.savedAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get data => $composableBuilder(column: $table.data, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$CachedFeedPagesTableOrderingComposer extends Composer<_$CommunityDatabase, $CachedFeedPagesTable> {
+class $$CachedFeedPagesTableOrderingComposer
+    extends Composer<_$CommunityDatabase, $CachedFeedPagesTable> {
   $$CachedFeedPagesTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1539,17 +1943,24 @@ class $$CachedFeedPagesTableOrderingComposer extends Composer<_$CommunityDatabas
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get scope =>
-      $composableBuilder(column: $table.scope, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get scope => $composableBuilder(
+    column: $table.scope,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get savedAt =>
-      $composableBuilder(column: $table.savedAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get savedAt => $composableBuilder(
+    column: $table.savedAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get data =>
-      $composableBuilder(column: $table.data, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$CachedFeedPagesTableAnnotationComposer extends Composer<_$CommunityDatabase, $CachedFeedPagesTable> {
+class $$CachedFeedPagesTableAnnotationComposer
+    extends Composer<_$CommunityDatabase, $CachedFeedPagesTable> {
   $$CachedFeedPagesTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1557,11 +1968,14 @@ class $$CachedFeedPagesTableAnnotationComposer extends Composer<_$CommunityDatab
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get scope => $composableBuilder(column: $table.scope, builder: (column) => column);
+  GeneratedColumn<String> get scope =>
+      $composableBuilder(column: $table.scope, builder: (column) => column);
 
-  GeneratedColumn<int> get savedAt => $composableBuilder(column: $table.savedAt, builder: (column) => column);
+  GeneratedColumn<int> get savedAt =>
+      $composableBuilder(column: $table.savedAt, builder: (column) => column);
 
-  GeneratedColumn<String> get data => $composableBuilder(column: $table.data, builder: (column) => column);
+  GeneratedColumn<String> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => column);
 }
 
 class $$CachedFeedPagesTableTableManager
@@ -1575,33 +1989,66 @@ class $$CachedFeedPagesTableTableManager
           $$CachedFeedPagesTableAnnotationComposer,
           $$CachedFeedPagesTableCreateCompanionBuilder,
           $$CachedFeedPagesTableUpdateCompanionBuilder,
-          (CachedFeedPage, BaseReferences<_$CommunityDatabase, $CachedFeedPagesTable, CachedFeedPage>),
+          (
+            CachedFeedPage,
+            BaseReferences<
+              _$CommunityDatabase,
+              $CachedFeedPagesTable,
+              CachedFeedPage
+            >,
+          ),
           CachedFeedPage,
           PrefetchHooks Function()
         > {
-  $$CachedFeedPagesTableTableManager(_$CommunityDatabase db, $CachedFeedPagesTable table)
-    : super(
+  $$CachedFeedPagesTableTableManager(
+    _$CommunityDatabase db,
+    $CachedFeedPagesTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$CachedFeedPagesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$CachedFeedPagesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$CachedFeedPagesTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$CachedFeedPagesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$CachedFeedPagesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$CachedFeedPagesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> scope = const Value.absent(),
                 Value<int> savedAt = const Value.absent(),
                 Value<String> data = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => CachedFeedPagesCompanion(scope: scope, savedAt: savedAt, data: data, rowid: rowid),
+              }) => CachedFeedPagesCompanion(
+                scope: scope,
+                savedAt: savedAt,
+                data: data,
+                rowid: rowid,
+              ),
           createCompanionCallback:
               ({
                 required String scope,
                 required int savedAt,
                 required String data,
                 Value<int> rowid = const Value.absent(),
-              }) => CachedFeedPagesCompanion.insert(scope: scope, savedAt: savedAt, data: data, rowid: rowid),
-          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
+              }) => CachedFeedPagesCompanion.insert(
+                scope: scope,
+                savedAt: savedAt,
+                data: data,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$CachedFeedPagesTable, CachedFeedPage>(table),
+                  BaseReferences<
+                    _$CommunityDatabase,
+                    $CachedFeedPagesTable,
+                    CachedFeedPage
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1617,7 +2064,14 @@ typedef $$CachedFeedPagesTableProcessedTableManager =
       $$CachedFeedPagesTableAnnotationComposer,
       $$CachedFeedPagesTableCreateCompanionBuilder,
       $$CachedFeedPagesTableUpdateCompanionBuilder,
-      (CachedFeedPage, BaseReferences<_$CommunityDatabase, $CachedFeedPagesTable, CachedFeedPage>),
+      (
+        CachedFeedPage,
+        BaseReferences<
+          _$CommunityDatabase,
+          $CachedFeedPagesTable,
+          CachedFeedPage
+        >,
+      ),
       CachedFeedPage,
       PrefetchHooks Function()
     >;
@@ -1638,7 +2092,8 @@ typedef $$OutboxEntriesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$OutboxEntriesTableFilterComposer extends Composer<_$CommunityDatabase, $OutboxEntriesTable> {
+class $$OutboxEntriesTableFilterComposer
+    extends Composer<_$CommunityDatabase, $OutboxEntriesTable> {
   $$OutboxEntriesTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1646,18 +2101,29 @@ class $$OutboxEntriesTableFilterComposer extends Composer<_$CommunityDatabase, $
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnFilters<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get roomId =>
-      $composableBuilder(column: $table.roomId, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get roomId => $composableBuilder(
+    column: $table.roomId,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnFilters(column));
+  ColumnFilters<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnFilters(column),
+  );
 
-  ColumnFilters<String> get data => $composableBuilder(column: $table.data, builder: (column) => ColumnFilters(column));
+  ColumnFilters<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnFilters(column),
+  );
 }
 
-class $$OutboxEntriesTableOrderingComposer extends Composer<_$CommunityDatabase, $OutboxEntriesTable> {
+class $$OutboxEntriesTableOrderingComposer
+    extends Composer<_$CommunityDatabase, $OutboxEntriesTable> {
   $$OutboxEntriesTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1665,19 +2131,29 @@ class $$OutboxEntriesTableOrderingComposer extends Composer<_$CommunityDatabase,
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  ColumnOrderings<String> get id => $composableBuilder(column: $table.id, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get id => $composableBuilder(
+    column: $table.id,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get roomId =>
-      $composableBuilder(column: $table.roomId, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get roomId => $composableBuilder(
+    column: $table.roomId,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<int> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<int> get createdAt => $composableBuilder(
+    column: $table.createdAt,
+    builder: (column) => ColumnOrderings(column),
+  );
 
-  ColumnOrderings<String> get data =>
-      $composableBuilder(column: $table.data, builder: (column) => ColumnOrderings(column));
+  ColumnOrderings<String> get data => $composableBuilder(
+    column: $table.data,
+    builder: (column) => ColumnOrderings(column),
+  );
 }
 
-class $$OutboxEntriesTableAnnotationComposer extends Composer<_$CommunityDatabase, $OutboxEntriesTable> {
+class $$OutboxEntriesTableAnnotationComposer
+    extends Composer<_$CommunityDatabase, $OutboxEntriesTable> {
   $$OutboxEntriesTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1685,13 +2161,17 @@ class $$OutboxEntriesTableAnnotationComposer extends Composer<_$CommunityDatabas
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id =>
+      $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<String> get roomId => $composableBuilder(column: $table.roomId, builder: (column) => column);
+  GeneratedColumn<String> get roomId =>
+      $composableBuilder(column: $table.roomId, builder: (column) => column);
 
-  GeneratedColumn<int> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<int> get createdAt =>
+      $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<String> get data => $composableBuilder(column: $table.data, builder: (column) => column);
+  GeneratedColumn<String> get data =>
+      $composableBuilder(column: $table.data, builder: (column) => column);
 }
 
 class $$OutboxEntriesTableTableManager
@@ -1705,18 +2185,30 @@ class $$OutboxEntriesTableTableManager
           $$OutboxEntriesTableAnnotationComposer,
           $$OutboxEntriesTableCreateCompanionBuilder,
           $$OutboxEntriesTableUpdateCompanionBuilder,
-          (OutboxEntry, BaseReferences<_$CommunityDatabase, $OutboxEntriesTable, OutboxEntry>),
+          (
+            OutboxEntry,
+            BaseReferences<
+              _$CommunityDatabase,
+              $OutboxEntriesTable,
+              OutboxEntry
+            >,
+          ),
           OutboxEntry,
           PrefetchHooks Function()
         > {
-  $$OutboxEntriesTableTableManager(_$CommunityDatabase db, $OutboxEntriesTable table)
-    : super(
+  $$OutboxEntriesTableTableManager(
+    _$CommunityDatabase db,
+    $OutboxEntriesTable table,
+  ) : super(
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () => $$OutboxEntriesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () => $$OutboxEntriesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () => $$OutboxEntriesTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () =>
+              $$OutboxEntriesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () =>
+              $$OutboxEntriesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () =>
+              $$OutboxEntriesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -1724,7 +2216,13 @@ class $$OutboxEntriesTableTableManager
                 Value<int> createdAt = const Value.absent(),
                 Value<String> data = const Value.absent(),
                 Value<int> rowid = const Value.absent(),
-              }) => OutboxEntriesCompanion(id: id, roomId: roomId, createdAt: createdAt, data: data, rowid: rowid),
+              }) => OutboxEntriesCompanion(
+                id: id,
+                roomId: roomId,
+                createdAt: createdAt,
+                data: data,
+                rowid: rowid,
+              ),
           createCompanionCallback:
               ({
                 required String id,
@@ -1732,9 +2230,25 @@ class $$OutboxEntriesTableTableManager
                 required int createdAt,
                 required String data,
                 Value<int> rowid = const Value.absent(),
-              }) =>
-                  OutboxEntriesCompanion.insert(id: id, roomId: roomId, createdAt: createdAt, data: data, rowid: rowid),
-          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
+              }) => OutboxEntriesCompanion.insert(
+                id: id,
+                roomId: roomId,
+                createdAt: createdAt,
+                data: data,
+                rowid: rowid,
+              ),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$OutboxEntriesTable, OutboxEntry>(table),
+                  BaseReferences<
+                    _$CommunityDatabase,
+                    $OutboxEntriesTable,
+                    OutboxEntry
+                  >(db, table, e),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1750,7 +2264,10 @@ typedef $$OutboxEntriesTableProcessedTableManager =
       $$OutboxEntriesTableAnnotationComposer,
       $$OutboxEntriesTableCreateCompanionBuilder,
       $$OutboxEntriesTableUpdateCompanionBuilder,
-      (OutboxEntry, BaseReferences<_$CommunityDatabase, $OutboxEntriesTable, OutboxEntry>),
+      (
+        OutboxEntry,
+        BaseReferences<_$CommunityDatabase, $OutboxEntriesTable, OutboxEntry>,
+      ),
       OutboxEntry,
       PrefetchHooks Function()
     >;
@@ -1758,10 +2275,14 @@ typedef $$OutboxEntriesTableProcessedTableManager =
 class $CommunityDatabaseManager {
   final _$CommunityDatabase _db;
   $CommunityDatabaseManager(this._db);
-  $$MetaEntriesTableTableManager get metaEntries => $$MetaEntriesTableTableManager(_db, _db.metaEntries);
-  $$CachedRoomsTableTableManager get cachedRooms => $$CachedRoomsTableTableManager(_db, _db.cachedRooms);
-  $$CachedMessagesTableTableManager get cachedMessages => $$CachedMessagesTableTableManager(_db, _db.cachedMessages);
+  $$MetaEntriesTableTableManager get metaEntries =>
+      $$MetaEntriesTableTableManager(_db, _db.metaEntries);
+  $$CachedRoomsTableTableManager get cachedRooms =>
+      $$CachedRoomsTableTableManager(_db, _db.cachedRooms);
+  $$CachedMessagesTableTableManager get cachedMessages =>
+      $$CachedMessagesTableTableManager(_db, _db.cachedMessages);
   $$CachedFeedPagesTableTableManager get cachedFeedPages =>
       $$CachedFeedPagesTableTableManager(_db, _db.cachedFeedPages);
-  $$OutboxEntriesTableTableManager get outboxEntries => $$OutboxEntriesTableTableManager(_db, _db.outboxEntries);
+  $$OutboxEntriesTableTableManager get outboxEntries =>
+      $$OutboxEntriesTableTableManager(_db, _db.outboxEntries);
 }

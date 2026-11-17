@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'message_request_room_cubit.dart';
@@ -9,6 +9,7 @@ part of 'message_request_room_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $MessageRequestRoomStateCopyWith<MessageRequestRoomState> get copyWith => _$Mess
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageRequestRoomState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.messages, messages)&&(identical(other.responding, responding) || other.responding == responding)&&(identical(other.completed, completed) || other.completed == completed)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as MessageRequestRoomState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageRequestRoomState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.messages, _this.messages)&&(identical(other.responding, _this.responding) || other.responding == _this.responding)&&(identical(other.completed, _this.completed) || other.completed == _this.completed)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(messages),responding,completed,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as MessageRequestRoomState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.messages),_this.responding,_this.completed,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'MessageRequestRoomState(status: $status, messages: $messages, responding: $responding, completed: $completed, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as MessageRequestRoomState;
+  return 'MessageRequestRoomState(status: ${_this.status}, messages: ${_this.messages}, responding: ${_this.responding}, completed: ${_this.completed}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$MessageRequestRoomStateCopyWithImpl<$Res>
 /// Create a copy of MessageRequestRoomState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? messages = null,Object? responding = freezed,Object? completed = freezed,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(MessageRequestRoomState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,messages: null == messages ? _self.messages : messages // ignore: cast_nullable_to_non_nullable
 as List<ChatMessage>,responding: freezed == responding ? _self.responding : responding // ignore: cast_nullable_to_non_nullable
@@ -210,7 +216,7 @@ return $default(_that.status,_that.messages,_that.responding,_that.completed,_th
 
 
 class _MessageRequestRoomState implements MessageRequestRoomState {
-  const _MessageRequestRoomState({this.status = LoadStatus.initial, final  List<ChatMessage> messages = const <ChatMessage>[], this.responding, this.completed, this.error, this.actionError, this.actionErrorId = 0}): _messages = messages;
+  const _MessageRequestRoomState({this.status = LoadStatus.initial,  List<ChatMessage> messages = const <ChatMessage>[], this.responding, this.completed, this.error, this.actionError, this.actionErrorId = 0}): _messages = messages;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -237,16 +243,18 @@ _$MessageRequestRoomStateCopyWith<_MessageRequestRoomState> get copyWith => __$M
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageRequestRoomState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._messages, _messages)&&(identical(other.responding, responding) || other.responding == responding)&&(identical(other.completed, completed) || other.completed == completed)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageRequestRoomState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.messages, _messages)&&(identical(other.responding, responding) || other.responding == responding)&&(identical(other.completed, completed) || other.completed == completed)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_messages),responding,completed,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_messages),responding,completed,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'MessageRequestRoomState(status: $status, messages: $messages, responding: $responding, completed: $completed, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'MessageRequestRoomState(status: $status, messages: $messages, responding: $responding, completed: $completed, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

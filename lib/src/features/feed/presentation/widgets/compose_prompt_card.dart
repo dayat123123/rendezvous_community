@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_current_user.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/composer_action.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/widgets/community_compose_post.dart';

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'user_profile.dart';
@@ -9,6 +9,7 @@ part of 'user_profile.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $UserProfileCopyWith<UserProfile> get copyWith => _$UserProfileCopyWithImpl<User
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.user, user) || other.user == user)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.followingCount, followingCount) || other.followingCount == followingCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.isBlocked, isBlocked) || other.isBlocked == isBlocked));
+  final _this = this as UserProfile;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserProfile&&(identical(other.user, _this.user) || other.user == _this.user)&&(identical(other.bio, _this.bio) || other.bio == _this.bio)&&(identical(other.followerCount, _this.followerCount) || other.followerCount == _this.followerCount)&&(identical(other.followingCount, _this.followingCount) || other.followingCount == _this.followingCount)&&(identical(other.postCount, _this.postCount) || other.postCount == _this.postCount)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.isMe, _this.isMe) || other.isMe == _this.isMe)&&(identical(other.isFollowing, _this.isFollowing) || other.isFollowing == _this.isFollowing)&&(identical(other.followsMe, _this.followsMe) || other.followsMe == _this.followsMe)&&(identical(other.isBlocked, _this.isBlocked) || other.isBlocked == _this.isBlocked));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,bio,followerCount,followingCount,postCount,createdAt,isMe,isFollowing,followsMe,isBlocked);
+int get hashCode {
+  final _this = this as UserProfile;
+  return Object.hash(runtimeType,_this.user,_this.bio,_this.followerCount,_this.followingCount,_this.postCount,_this.createdAt,_this.isMe,_this.isFollowing,_this.followsMe,_this.isBlocked);
+}
 
 @override
 String toString() {
-  return 'UserProfile(user: $user, bio: $bio, followerCount: $followerCount, followingCount: $followingCount, postCount: $postCount, createdAt: $createdAt, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, isBlocked: $isBlocked)';
+  final _this = this as UserProfile;
+  return 'UserProfile(user: ${_this.user}, bio: ${_this.bio}, followerCount: ${_this.followerCount}, followingCount: ${_this.followingCount}, postCount: ${_this.postCount}, createdAt: ${_this.createdAt}, isMe: ${_this.isMe}, isFollowing: ${_this.isFollowing}, followsMe: ${_this.followsMe}, isBlocked: ${_this.isBlocked})';
 }
 
 
@@ -63,7 +69,7 @@ class _$UserProfileCopyWithImpl<$Res>
 /// Create a copy of UserProfile
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? bio = freezed,Object? followerCount = null,Object? followingCount = null,Object? postCount = null,Object? createdAt = null,Object? isMe = null,Object? isFollowing = null,Object? followsMe = null,Object? isBlocked = null,}) {
-  return _then(_self.copyWith(
+  return _then(UserProfile(
 user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserSummary,bio: freezed == bio ? _self.bio : bio // ignore: cast_nullable_to_non_nullable
 as String?,followerCount: null == followerCount ? _self.followerCount : followerCount // ignore: cast_nullable_to_non_nullable
@@ -248,16 +254,18 @@ _$UserProfileCopyWith<_UserProfile> get copyWith => __$UserProfileCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.user, user) || other.user == user)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.followingCount, followingCount) || other.followingCount == followingCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.isBlocked, isBlocked) || other.isBlocked == isBlocked));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserProfile&&(identical(other.user, user) || other.user == user)&&(identical(other.bio, bio) || other.bio == bio)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.followingCount, followingCount) || other.followingCount == followingCount)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.isBlocked, isBlocked) || other.isBlocked == isBlocked));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,bio,followerCount,followingCount,postCount,createdAt,isMe,isFollowing,followsMe,isBlocked);
+int get hashCode {
+    return Object.hash(runtimeType,user,bio,followerCount,followingCount,postCount,createdAt,isMe,isFollowing,followsMe,isBlocked);
+}
 
 @override
 String toString() {
-  return 'UserProfile(user: $user, bio: $bio, followerCount: $followerCount, followingCount: $followingCount, postCount: $postCount, createdAt: $createdAt, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, isBlocked: $isBlocked)';
+    return 'UserProfile(user: $user, bio: $bio, followerCount: $followerCount, followingCount: $followingCount, postCount: $postCount, createdAt: $createdAt, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, isBlocked: $isBlocked)';
 }
 
 
@@ -327,16 +335,21 @@ $SuggestedUserCopyWith<SuggestedUser> get copyWith => _$SuggestedUserCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuggestedUser&&(identical(other.user, user) || other.user == user)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.mutualCount, mutualCount) || other.mutualCount == mutualCount)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
+  final _this = this as SuggestedUser;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuggestedUser&&(identical(other.user, _this.user) || other.user == _this.user)&&(identical(other.followerCount, _this.followerCount) || other.followerCount == _this.followerCount)&&(identical(other.mutualCount, _this.mutualCount) || other.mutualCount == _this.mutualCount)&&(identical(other.isOfficial, _this.isOfficial) || other.isOfficial == _this.isOfficial));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,followerCount,mutualCount,isOfficial);
+int get hashCode {
+  final _this = this as SuggestedUser;
+  return Object.hash(runtimeType,_this.user,_this.followerCount,_this.mutualCount,_this.isOfficial);
+}
 
 @override
 String toString() {
-  return 'SuggestedUser(user: $user, followerCount: $followerCount, mutualCount: $mutualCount, isOfficial: $isOfficial)';
+  final _this = this as SuggestedUser;
+  return 'SuggestedUser(user: ${_this.user}, followerCount: ${_this.followerCount}, mutualCount: ${_this.mutualCount}, isOfficial: ${_this.isOfficial})';
 }
 
 
@@ -365,7 +378,7 @@ class _$SuggestedUserCopyWithImpl<$Res>
 /// Create a copy of SuggestedUser
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? followerCount = null,Object? mutualCount = null,Object? isOfficial = null,}) {
-  return _then(_self.copyWith(
+  return _then(SuggestedUser(
 user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserSummary,followerCount: null == followerCount ? _self.followerCount : followerCount // ignore: cast_nullable_to_non_nullable
 as int,mutualCount: null == mutualCount ? _self.mutualCount : mutualCount // ignore: cast_nullable_to_non_nullable
@@ -538,16 +551,18 @@ _$SuggestedUserCopyWith<_SuggestedUser> get copyWith => __$SuggestedUserCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SuggestedUser&&(identical(other.user, user) || other.user == user)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.mutualCount, mutualCount) || other.mutualCount == mutualCount)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SuggestedUser&&(identical(other.user, user) || other.user == user)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.mutualCount, mutualCount) || other.mutualCount == mutualCount)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,followerCount,mutualCount,isOfficial);
+int get hashCode {
+    return Object.hash(runtimeType,user,followerCount,mutualCount,isOfficial);
+}
 
 @override
 String toString() {
-  return 'SuggestedUser(user: $user, followerCount: $followerCount, mutualCount: $mutualCount, isOfficial: $isOfficial)';
+    return 'SuggestedUser(user: $user, followerCount: $followerCount, mutualCount: $mutualCount, isOfficial: $isOfficial)';
 }
 
 
@@ -611,16 +626,21 @@ $FollowListEntryCopyWith<FollowListEntry> get copyWith => _$FollowListEntryCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FollowListEntry&&(identical(other.user, user) || other.user == user)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.followedAt, followedAt) || other.followedAt == followedAt)&&(identical(other.cursor, cursor) || other.cursor == cursor));
+  final _this = this as FollowListEntry;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FollowListEntry&&(identical(other.user, _this.user) || other.user == _this.user)&&(identical(other.isMe, _this.isMe) || other.isMe == _this.isMe)&&(identical(other.isFollowing, _this.isFollowing) || other.isFollowing == _this.isFollowing)&&(identical(other.followsMe, _this.followsMe) || other.followsMe == _this.followsMe)&&(identical(other.followedAt, _this.followedAt) || other.followedAt == _this.followedAt)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,isMe,isFollowing,followsMe,followedAt,cursor);
+int get hashCode {
+  final _this = this as FollowListEntry;
+  return Object.hash(runtimeType,_this.user,_this.isMe,_this.isFollowing,_this.followsMe,_this.followedAt,_this.cursor);
+}
 
 @override
 String toString() {
-  return 'FollowListEntry(user: $user, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, followedAt: $followedAt, cursor: $cursor)';
+  final _this = this as FollowListEntry;
+  return 'FollowListEntry(user: ${_this.user}, isMe: ${_this.isMe}, isFollowing: ${_this.isFollowing}, followsMe: ${_this.followsMe}, followedAt: ${_this.followedAt}, cursor: ${_this.cursor})';
 }
 
 
@@ -649,7 +669,7 @@ class _$FollowListEntryCopyWithImpl<$Res>
 /// Create a copy of FollowListEntry
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? isMe = null,Object? isFollowing = null,Object? followsMe = null,Object? followedAt = freezed,Object? cursor = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(FollowListEntry(
 user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserSummary,isMe: null == isMe ? _self.isMe : isMe // ignore: cast_nullable_to_non_nullable
 as bool,isFollowing: null == isFollowing ? _self.isFollowing : isFollowing // ignore: cast_nullable_to_non_nullable
@@ -826,16 +846,18 @@ _$FollowListEntryCopyWith<_FollowListEntry> get copyWith => __$FollowListEntryCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FollowListEntry&&(identical(other.user, user) || other.user == user)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.followedAt, followedAt) || other.followedAt == followedAt)&&(identical(other.cursor, cursor) || other.cursor == cursor));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _FollowListEntry&&(identical(other.user, user) || other.user == user)&&(identical(other.isMe, isMe) || other.isMe == isMe)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.followsMe, followsMe) || other.followsMe == followsMe)&&(identical(other.followedAt, followedAt) || other.followedAt == followedAt)&&(identical(other.cursor, cursor) || other.cursor == cursor));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,isMe,isFollowing,followsMe,followedAt,cursor);
+int get hashCode {
+    return Object.hash(runtimeType,user,isMe,isFollowing,followsMe,followedAt,cursor);
+}
 
 @override
 String toString() {
-  return 'FollowListEntry(user: $user, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, followedAt: $followedAt, cursor: $cursor)';
+    return 'FollowListEntry(user: $user, isMe: $isMe, isFollowing: $isFollowing, followsMe: $followsMe, followedAt: $followedAt, cursor: $cursor)';
 }
 
 

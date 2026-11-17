@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/new_group_dialog.dart';
 
@@ -9,7 +9,7 @@ import '../../../support/feature_fakes.dart';
 
 Widget _app(Widget child, {CommunityChatBuilders builders = const CommunityChatBuilders()}) => MaterialApp(
   locale: const Locale('id'),
-  localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+  localizationsDelegates: communityLocalizationsDelegates,
   supportedLocales: CommunityLocalizations.supportedLocales,
   home: Scaffold(
     body: CommunityScope(

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'poll.dart';
@@ -9,6 +9,7 @@ part of 'poll.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $PollOptionCopyWith<PollOption> get copyWith => _$PollOptionCopyWithImpl<PollOpt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollOption&&(identical(other.id, id) || other.id == id)&&(identical(other.label, label) || other.label == label)&&(identical(other.votes, votes) || other.votes == votes));
+  final _this = this as PollOption;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollOption&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.label, _this.label) || other.label == _this.label)&&(identical(other.votes, _this.votes) || other.votes == _this.votes));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,label,votes);
+int get hashCode {
+  final _this = this as PollOption;
+  return Object.hash(runtimeType,_this.id,_this.label,_this.votes);
+}
 
 @override
 String toString() {
-  return 'PollOption(id: $id, label: $label, votes: $votes)';
+  final _this = this as PollOption;
+  return 'PollOption(id: ${_this.id}, label: ${_this.label}, votes: ${_this.votes})';
 }
 
 
@@ -63,7 +69,7 @@ class _$PollOptionCopyWithImpl<$Res>
 /// Create a copy of PollOption
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? label = null,Object? votes = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(PollOption(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String,votes: freezed == votes ? _self.votes : votes // ignore: cast_nullable_to_non_nullable
@@ -225,16 +231,18 @@ _$PollOptionCopyWith<_PollOption> get copyWith => __$PollOptionCopyWithImpl<_Pol
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollOption&&(identical(other.id, id) || other.id == id)&&(identical(other.label, label) || other.label == label)&&(identical(other.votes, votes) || other.votes == votes));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollOption&&(identical(other.id, id) || other.id == id)&&(identical(other.label, label) || other.label == label)&&(identical(other.votes, votes) || other.votes == votes));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,label,votes);
+int get hashCode {
+    return Object.hash(runtimeType,id,label,votes);
+}
 
 @override
 String toString() {
-  return 'PollOption(id: $id, label: $label, votes: $votes)';
+    return 'PollOption(id: $id, label: $label, votes: $votes)';
 }
 
 
@@ -288,16 +296,21 @@ $PollCopyWith<Poll> get copyWith => _$PollCopyWithImpl<Poll>(this as Poll, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Poll&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.closed, closed) || other.closed == closed)&&(identical(other.totalVotes, totalVotes) || other.totalVotes == totalVotes)&&(identical(other.myOptionId, myOptionId) || other.myOptionId == myOptionId)&&(identical(other.resultsVisible, resultsVisible) || other.resultsVisible == resultsVisible)&&const DeepCollectionEquality().equals(other.options, options));
+  final _this = this as Poll;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Poll&&(identical(other.endsAt, _this.endsAt) || other.endsAt == _this.endsAt)&&(identical(other.closed, _this.closed) || other.closed == _this.closed)&&(identical(other.totalVotes, _this.totalVotes) || other.totalVotes == _this.totalVotes)&&(identical(other.myOptionId, _this.myOptionId) || other.myOptionId == _this.myOptionId)&&(identical(other.resultsVisible, _this.resultsVisible) || other.resultsVisible == _this.resultsVisible)&&const DeepCollectionEquality().equals(other.options, _this.options));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,endsAt,closed,totalVotes,myOptionId,resultsVisible,const DeepCollectionEquality().hash(options));
+int get hashCode {
+  final _this = this as Poll;
+  return Object.hash(runtimeType,_this.endsAt,_this.closed,_this.totalVotes,_this.myOptionId,_this.resultsVisible,const DeepCollectionEquality().hash(_this.options));
+}
 
 @override
 String toString() {
-  return 'Poll(endsAt: $endsAt, closed: $closed, totalVotes: $totalVotes, myOptionId: $myOptionId, resultsVisible: $resultsVisible, options: $options)';
+  final _this = this as Poll;
+  return 'Poll(endsAt: ${_this.endsAt}, closed: ${_this.closed}, totalVotes: ${_this.totalVotes}, myOptionId: ${_this.myOptionId}, resultsVisible: ${_this.resultsVisible}, options: ${_this.options})';
 }
 
 
@@ -326,7 +339,7 @@ class _$PollCopyWithImpl<$Res>
 /// Create a copy of Poll
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? endsAt = null,Object? closed = null,Object? totalVotes = null,Object? myOptionId = freezed,Object? resultsVisible = null,Object? options = null,}) {
-  return _then(_self.copyWith(
+  return _then(Poll(
 endsAt: null == endsAt ? _self.endsAt : endsAt // ignore: cast_nullable_to_non_nullable
 as DateTime,closed: null == closed ? _self.closed : closed // ignore: cast_nullable_to_non_nullable
 as bool,totalVotes: null == totalVotes ? _self.totalVotes : totalVotes // ignore: cast_nullable_to_non_nullable
@@ -474,7 +487,7 @@ return $default(_that.endsAt,_that.closed,_that.totalVotes,_that.myOptionId,_tha
 
 
 class _Poll extends Poll {
-  const _Poll({required this.endsAt, required this.closed, required this.totalVotes, this.myOptionId, required this.resultsVisible, required final  List<PollOption> options}): _options = options,super._();
+  const _Poll({required this.endsAt, required this.closed, required this.totalVotes, this.myOptionId, required this.resultsVisible, required  List<PollOption> options}): _options = options,super._();
   
 
 @override final  DateTime endsAt;
@@ -500,16 +513,18 @@ _$PollCopyWith<_Poll> get copyWith => __$PollCopyWithImpl<_Poll>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Poll&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.closed, closed) || other.closed == closed)&&(identical(other.totalVotes, totalVotes) || other.totalVotes == totalVotes)&&(identical(other.myOptionId, myOptionId) || other.myOptionId == myOptionId)&&(identical(other.resultsVisible, resultsVisible) || other.resultsVisible == resultsVisible)&&const DeepCollectionEquality().equals(other._options, _options));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Poll&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.closed, closed) || other.closed == closed)&&(identical(other.totalVotes, totalVotes) || other.totalVotes == totalVotes)&&(identical(other.myOptionId, myOptionId) || other.myOptionId == myOptionId)&&(identical(other.resultsVisible, resultsVisible) || other.resultsVisible == resultsVisible)&&const DeepCollectionEquality().equals(other.options, _options));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,endsAt,closed,totalVotes,myOptionId,resultsVisible,const DeepCollectionEquality().hash(_options));
+int get hashCode {
+    return Object.hash(runtimeType,endsAt,closed,totalVotes,myOptionId,resultsVisible,const DeepCollectionEquality().hash(_options));
+}
 
 @override
 String toString() {
-  return 'Poll(endsAt: $endsAt, closed: $closed, totalVotes: $totalVotes, myOptionId: $myOptionId, resultsVisible: $resultsVisible, options: $options)';
+    return 'Poll(endsAt: $endsAt, closed: $closed, totalVotes: $totalVotes, myOptionId: $myOptionId, resultsVisible: $resultsVisible, options: $options)';
 }
 
 
@@ -566,16 +581,21 @@ $PollDraftCopyWith<PollDraft> get copyWith => _$PollDraftCopyWithImpl<PollDraft>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollDraft&&const DeepCollectionEquality().equals(other.options, options)&&(identical(other.duration, duration) || other.duration == duration));
+  final _this = this as PollDraft;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollDraft&&const DeepCollectionEquality().equals(other.options, _this.options)&&(identical(other.duration, _this.duration) || other.duration == _this.duration));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(options),duration);
+int get hashCode {
+  final _this = this as PollDraft;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.options),_this.duration);
+}
 
 @override
 String toString() {
-  return 'PollDraft(options: $options, duration: $duration)';
+  final _this = this as PollDraft;
+  return 'PollDraft(options: ${_this.options}, duration: ${_this.duration})';
 }
 
 
@@ -604,7 +624,7 @@ class _$PollDraftCopyWithImpl<$Res>
 /// Create a copy of PollDraft
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? options = null,Object? duration = null,}) {
-  return _then(_self.copyWith(
+  return _then(PollDraft(
 options: null == options ? _self.options : options // ignore: cast_nullable_to_non_nullable
 as List<String>,duration: null == duration ? _self.duration : duration // ignore: cast_nullable_to_non_nullable
 as PollDuration,
@@ -748,7 +768,7 @@ return $default(_that.options,_that.duration);case _:
 
 
 class _PollDraft extends PollDraft {
-  const _PollDraft({final  List<String> options = const <String>['', ''], this.duration = PollDuration.oneDay}): _options = options,super._();
+  const _PollDraft({ List<String> options = const <String>['', ''], this.duration = PollDuration.oneDay}): _options = options,super._();
   
 
  final  List<String> _options;
@@ -770,16 +790,18 @@ _$PollDraftCopyWith<_PollDraft> get copyWith => __$PollDraftCopyWithImpl<_PollDr
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollDraft&&const DeepCollectionEquality().equals(other._options, _options)&&(identical(other.duration, duration) || other.duration == duration));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollDraft&&const DeepCollectionEquality().equals(other.options, _options)&&(identical(other.duration, duration) || other.duration == duration));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_options),duration);
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_options),duration);
+}
 
 @override
 String toString() {
-  return 'PollDraft(options: $options, duration: $duration)';
+    return 'PollDraft(options: $options, duration: $duration)';
 }
 
 

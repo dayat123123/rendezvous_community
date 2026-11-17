@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'appeal_model.dart';
@@ -9,6 +9,7 @@ part of 'appeal_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $AppealModelCopyWith<AppealModel> get copyWith => _$AppealModelCopyWithImpl<Appe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppealModel&&(identical(other.id, id) || other.id == id)&&(identical(other.targetType, targetType) || other.targetType == targetType)&&(identical(other.targetId, targetId) || other.targetId == targetId)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.decisionNote, decisionNote) || other.decisionNote == decisionNote)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.decidedAt, decidedAt) || other.decidedAt == decidedAt));
+  final _this = this as AppealModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppealModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.targetType, _this.targetType) || other.targetType == _this.targetType)&&(identical(other.targetId, _this.targetId) || other.targetId == _this.targetId)&&(identical(other.reason, _this.reason) || other.reason == _this.reason)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.decisionNote, _this.decisionNote) || other.decisionNote == _this.decisionNote)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.decidedAt, _this.decidedAt) || other.decidedAt == _this.decidedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,targetType,targetId,reason,status,decisionNote,createdAt,decidedAt);
+int get hashCode {
+  final _this = this as AppealModel;
+  return Object.hash(runtimeType,_this.id,_this.targetType,_this.targetId,_this.reason,_this.status,_this.decisionNote,_this.createdAt,_this.decidedAt);
+}
 
 @override
 String toString() {
-  return 'AppealModel(id: $id, targetType: $targetType, targetId: $targetId, reason: $reason, status: $status, decisionNote: $decisionNote, createdAt: $createdAt, decidedAt: $decidedAt)';
+  final _this = this as AppealModel;
+  return 'AppealModel(id: ${_this.id}, targetType: ${_this.targetType}, targetId: ${_this.targetId}, reason: ${_this.reason}, status: ${_this.status}, decisionNote: ${_this.decisionNote}, createdAt: ${_this.createdAt}, decidedAt: ${_this.decidedAt})';
 }
 
 
@@ -66,7 +72,7 @@ class _$AppealModelCopyWithImpl<$Res>
 /// Create a copy of AppealModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? targetType = null,Object? targetId = null,Object? reason = null,Object? status = null,Object? decisionNote = freezed,Object? createdAt = null,Object? decidedAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(AppealModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,targetType: null == targetType ? _self.targetType : targetType // ignore: cast_nullable_to_non_nullable
 as String,targetId: null == targetId ? _self.targetId : targetId // ignore: cast_nullable_to_non_nullable
@@ -241,16 +247,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppealModel&&(identical(other.id, id) || other.id == id)&&(identical(other.targetType, targetType) || other.targetType == targetType)&&(identical(other.targetId, targetId) || other.targetId == targetId)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.decisionNote, decisionNote) || other.decisionNote == decisionNote)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.decidedAt, decidedAt) || other.decidedAt == decidedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppealModel&&(identical(other.id, id) || other.id == id)&&(identical(other.targetType, targetType) || other.targetType == targetType)&&(identical(other.targetId, targetId) || other.targetId == targetId)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.decisionNote, decisionNote) || other.decisionNote == decisionNote)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.decidedAt, decidedAt) || other.decidedAt == decidedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,targetType,targetId,reason,status,decisionNote,createdAt,decidedAt);
+int get hashCode {
+    return Object.hash(runtimeType,id,targetType,targetId,reason,status,decisionNote,createdAt,decidedAt);
+}
 
 @override
 String toString() {
-  return 'AppealModel(id: $id, targetType: $targetType, targetId: $targetId, reason: $reason, status: $status, decisionNote: $decisionNote, createdAt: $createdAt, decidedAt: $decidedAt)';
+    return 'AppealModel(id: $id, targetType: $targetType, targetId: $targetId, reason: $reason, status: $status, decisionNote: $decisionNote, createdAt: $createdAt, decidedAt: $decidedAt)';
 }
 
 
@@ -312,16 +320,21 @@ $SanctionModelCopyWith<SanctionModel> get copyWith => _$SanctionModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SanctionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.category, category) || other.category == category)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
+  final _this = this as SanctionModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SanctionModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.reason, _this.reason) || other.reason == _this.reason)&&(identical(other.startsAt, _this.startsAt) || other.startsAt == _this.startsAt)&&(identical(other.endsAt, _this.endsAt) || other.endsAt == _this.endsAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,kind,category,reason,startsAt,endsAt);
+int get hashCode {
+  final _this = this as SanctionModel;
+  return Object.hash(runtimeType,_this.id,_this.kind,_this.category,_this.reason,_this.startsAt,_this.endsAt);
+}
 
 @override
 String toString() {
-  return 'SanctionModel(id: $id, kind: $kind, category: $category, reason: $reason, startsAt: $startsAt, endsAt: $endsAt)';
+  final _this = this as SanctionModel;
+  return 'SanctionModel(id: ${_this.id}, kind: ${_this.kind}, category: ${_this.category}, reason: ${_this.reason}, startsAt: ${_this.startsAt}, endsAt: ${_this.endsAt})';
 }
 
 
@@ -350,7 +363,7 @@ class _$SanctionModelCopyWithImpl<$Res>
 /// Create a copy of SanctionModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? kind = null,Object? category = freezed,Object? reason = freezed,Object? startsAt = freezed,Object? endsAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SanctionModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as String,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
@@ -521,16 +534,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SanctionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.category, category) || other.category == category)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SanctionModel&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.category, category) || other.category == category)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,kind,category,reason,startsAt,endsAt);
+int get hashCode {
+    return Object.hash(runtimeType,id,kind,category,reason,startsAt,endsAt);
+}
 
 @override
 String toString() {
-  return 'SanctionModel(id: $id, kind: $kind, category: $category, reason: $reason, startsAt: $startsAt, endsAt: $endsAt)';
+    return 'SanctionModel(id: $id, kind: $kind, category: $category, reason: $reason, startsAt: $startsAt, endsAt: $endsAt)';
 }
 
 

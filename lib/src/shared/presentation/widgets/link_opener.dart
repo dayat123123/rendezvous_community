@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';

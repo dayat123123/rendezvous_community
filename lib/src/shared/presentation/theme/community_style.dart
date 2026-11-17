@@ -1,6 +1,6 @@
 import 'dart:ui' show lerpDouble;
 
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_icons.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_tokens.dart';
 

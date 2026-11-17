@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
 import '../../support/guest_fakes.dart';
@@ -19,7 +19,7 @@ Future<void> _pump(
   await tester.pumpWidget(
     MaterialApp(
       locale: locale,
-      localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+      localizationsDelegates: communityLocalizationsDelegates,
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: CommunityBuildersScope(
         builders: builders ?? const CommunityBuilders(),

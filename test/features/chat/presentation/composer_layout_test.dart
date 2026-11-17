@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
 import '../../../support/chat_app.dart';
@@ -11,7 +11,7 @@ Future<Rect> _fieldRect(WidgetTester tester, VisualDensity density) async {
     MaterialApp(
       theme: ThemeData(visualDensity: density),
       locale: const Locale('id'),
-      localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+      localizationsDelegates: communityLocalizationsDelegates,
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: Scaffold(
         body: CommunityScope(

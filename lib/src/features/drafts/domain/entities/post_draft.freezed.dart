@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'post_draft.dart';
@@ -9,6 +9,7 @@ part of 'post_draft.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $PostDraftCopyWith<PostDraft> get copyWith => _$PostDraftCopyWithImpl<PostDraft>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDraft&&(identical(other.clientDraftId, clientDraftId) || other.clientDraftId == clientDraftId)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.stocks, stocks)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.serverUpdatedAt, serverUpdatedAt) || other.serverUpdatedAt == serverUpdatedAt));
+  final _this = this as PostDraft;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostDraft&&(identical(other.clientDraftId, _this.clientDraftId) || other.clientDraftId == _this.clientDraftId)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.sentiment, _this.sentiment) || other.sentiment == _this.sentiment)&&const DeepCollectionEquality().equals(other.stocks, _this.stocks)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.poll, _this.poll) || other.poll == _this.poll)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.serverUpdatedAt, _this.serverUpdatedAt) || other.serverUpdatedAt == _this.serverUpdatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,clientDraftId,body,sentiment,const DeepCollectionEquality().hash(stocks),const DeepCollectionEquality().hash(attachments),poll,updatedAt,serverUpdatedAt);
+int get hashCode {
+  final _this = this as PostDraft;
+  return Object.hash(runtimeType,_this.clientDraftId,_this.body,_this.sentiment,const DeepCollectionEquality().hash(_this.stocks),const DeepCollectionEquality().hash(_this.attachments),_this.poll,_this.updatedAt,_this.serverUpdatedAt);
+}
 
 @override
 String toString() {
-  return 'PostDraft(clientDraftId: $clientDraftId, body: $body, sentiment: $sentiment, stocks: $stocks, attachments: $attachments, poll: $poll, updatedAt: $updatedAt, serverUpdatedAt: $serverUpdatedAt)';
+  final _this = this as PostDraft;
+  return 'PostDraft(clientDraftId: ${_this.clientDraftId}, body: ${_this.body}, sentiment: ${_this.sentiment}, stocks: ${_this.stocks}, attachments: ${_this.attachments}, poll: ${_this.poll}, updatedAt: ${_this.updatedAt}, serverUpdatedAt: ${_this.serverUpdatedAt})';
 }
 
 
@@ -63,7 +69,7 @@ class _$PostDraftCopyWithImpl<$Res>
 /// Create a copy of PostDraft
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? clientDraftId = null,Object? body = null,Object? sentiment = freezed,Object? stocks = null,Object? attachments = null,Object? poll = freezed,Object? updatedAt = null,Object? serverUpdatedAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(PostDraft(
 clientDraftId: null == clientDraftId ? _self.clientDraftId : clientDraftId // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
 as String,sentiment: freezed == sentiment ? _self.sentiment : sentiment // ignore: cast_nullable_to_non_nullable
@@ -225,7 +231,7 @@ return $default(_that.clientDraftId,_that.body,_that.sentiment,_that.stocks,_tha
 
 
 class _PostDraft extends PostDraft {
-  const _PostDraft({required this.clientDraftId, this.body = '', this.sentiment, final  List<String> stocks = const <String>[], final  List<Attachment> attachments = const <Attachment>[], this.poll, required this.updatedAt, this.serverUpdatedAt}): _stocks = stocks,_attachments = attachments,super._();
+  const _PostDraft({required this.clientDraftId, this.body = '', this.sentiment,  List<String> stocks = const <String>[],  List<Attachment> attachments = const <Attachment>[], this.poll, required this.updatedAt, this.serverUpdatedAt}): _stocks = stocks,_attachments = attachments,super._();
   
 
 @override final  String clientDraftId;
@@ -259,16 +265,18 @@ _$PostDraftCopyWith<_PostDraft> get copyWith => __$PostDraftCopyWithImpl<_PostDr
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDraft&&(identical(other.clientDraftId, clientDraftId) || other.clientDraftId == clientDraftId)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other._stocks, _stocks)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.serverUpdatedAt, serverUpdatedAt) || other.serverUpdatedAt == serverUpdatedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostDraft&&(identical(other.clientDraftId, clientDraftId) || other.clientDraftId == clientDraftId)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.stocks, _stocks)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.serverUpdatedAt, serverUpdatedAt) || other.serverUpdatedAt == serverUpdatedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,clientDraftId,body,sentiment,const DeepCollectionEquality().hash(_stocks),const DeepCollectionEquality().hash(_attachments),poll,updatedAt,serverUpdatedAt);
+int get hashCode {
+    return Object.hash(runtimeType,clientDraftId,body,sentiment,const DeepCollectionEquality().hash(_stocks),const DeepCollectionEquality().hash(_attachments),poll,updatedAt,serverUpdatedAt);
+}
 
 @override
 String toString() {
-  return 'PostDraft(clientDraftId: $clientDraftId, body: $body, sentiment: $sentiment, stocks: $stocks, attachments: $attachments, poll: $poll, updatedAt: $updatedAt, serverUpdatedAt: $serverUpdatedAt)';
+    return 'PostDraft(clientDraftId: $clientDraftId, body: $body, sentiment: $sentiment, stocks: $stocks, attachments: $attachments, poll: $poll, updatedAt: $updatedAt, serverUpdatedAt: $serverUpdatedAt)';
 }
 
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'support_cubit.dart';
@@ -9,6 +9,7 @@ part of 'support_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $SupportStateCopyWith<SupportState> get copyWith => _$SupportStateCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportState&&(identical(other.status, status) || other.status == status)&&(identical(other.home, home) || other.home == home)&&const DeepCollectionEquality().equals(other.topics, topics)&&(identical(other.picking, picking) || other.picking == picking)&&(identical(other.history, history) || other.history == history)&&(identical(other.busy, busy) || other.busy == busy)&&(identical(other.sensitive, sensitive) || other.sensitive == sensitive)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.notice, notice) || other.notice == notice)&&(identical(other.noticeId, noticeId) || other.noticeId == noticeId)&&(identical(other.suggesting, suggesting) || other.suggesting == suggesting)&&(identical(other.suggestionTopic, suggestionTopic) || other.suggestionTopic == suggestionTopic)&&const DeepCollectionEquality().equals(other.suggestions, suggestions)&&(identical(other.attachmentPolicy, attachmentPolicy) || other.attachmentPolicy == attachmentPolicy)&&(identical(other.leavingMessage, leavingMessage) || other.leavingMessage == leavingMessage)&&(identical(other.intakeTopic, intakeTopic) || other.intakeTopic == intakeTopic));
+  final _this = this as SupportState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportState&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.home, _this.home) || other.home == _this.home)&&const DeepCollectionEquality().equals(other.topics, _this.topics)&&(identical(other.picking, _this.picking) || other.picking == _this.picking)&&(identical(other.history, _this.history) || other.history == _this.history)&&(identical(other.busy, _this.busy) || other.busy == _this.busy)&&(identical(other.sensitive, _this.sensitive) || other.sensitive == _this.sensitive)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId)&&(identical(other.notice, _this.notice) || other.notice == _this.notice)&&(identical(other.noticeId, _this.noticeId) || other.noticeId == _this.noticeId)&&(identical(other.suggesting, _this.suggesting) || other.suggesting == _this.suggesting)&&(identical(other.suggestionTopic, _this.suggestionTopic) || other.suggestionTopic == _this.suggestionTopic)&&const DeepCollectionEquality().equals(other.suggestions, _this.suggestions)&&(identical(other.attachmentPolicy, _this.attachmentPolicy) || other.attachmentPolicy == _this.attachmentPolicy)&&(identical(other.leavingMessage, _this.leavingMessage) || other.leavingMessage == _this.leavingMessage)&&(identical(other.intakeTopic, _this.intakeTopic) || other.intakeTopic == _this.intakeTopic));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,home,const DeepCollectionEquality().hash(topics),picking,history,busy,sensitive,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,notice,noticeId,suggesting,suggestionTopic,const DeepCollectionEquality().hash(suggestions),attachmentPolicy,leavingMessage,intakeTopic);
+int get hashCode {
+  final _this = this as SupportState;
+  return Object.hash(runtimeType,_this.status,_this.home,const DeepCollectionEquality().hash(_this.topics),_this.picking,_this.history,_this.busy,_this.sensitive,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId,_this.notice,_this.noticeId,_this.suggesting,_this.suggestionTopic,const DeepCollectionEquality().hash(_this.suggestions),_this.attachmentPolicy,_this.leavingMessage,_this.intakeTopic);
+}
 
 @override
 String toString() {
-  return 'SupportState(status: $status, home: $home, topics: $topics, picking: $picking, history: $history, busy: $busy, sensitive: $sensitive, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, notice: $notice, noticeId: $noticeId, suggesting: $suggesting, suggestionTopic: $suggestionTopic, suggestions: $suggestions, attachmentPolicy: $attachmentPolicy, leavingMessage: $leavingMessage, intakeTopic: $intakeTopic)';
+  final _this = this as SupportState;
+  return 'SupportState(status: ${_this.status}, home: ${_this.home}, topics: ${_this.topics}, picking: ${_this.picking}, history: ${_this.history}, busy: ${_this.busy}, sensitive: ${_this.sensitive}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId}, notice: ${_this.notice}, noticeId: ${_this.noticeId}, suggesting: ${_this.suggesting}, suggestionTopic: ${_this.suggestionTopic}, suggestions: ${_this.suggestions}, attachmentPolicy: ${_this.attachmentPolicy}, leavingMessage: ${_this.leavingMessage}, intakeTopic: ${_this.intakeTopic})';
 }
 
 
@@ -63,7 +69,7 @@ class _$SupportStateCopyWithImpl<$Res>
 /// Create a copy of SupportState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? home = freezed,Object? topics = null,Object? picking = null,Object? history = null,Object? busy = null,Object? sensitive = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? notice = freezed,Object? noticeId = null,Object? suggesting = freezed,Object? suggestionTopic = freezed,Object? suggestions = null,Object? attachmentPolicy = freezed,Object? leavingMessage = null,Object? intakeTopic = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SupportState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,home: freezed == home ? _self.home : home // ignore: cast_nullable_to_non_nullable
 as SupportHome?,topics: null == topics ? _self.topics : topics // ignore: cast_nullable_to_non_nullable
@@ -242,7 +248,7 @@ return $default(_that.status,_that.home,_that.topics,_that.picking,_that.history
 
 
 class _SupportState extends SupportState {
-  const _SupportState({this.status = LoadStatus.initial, this.home, final  List<SupportTopic> topics = const <SupportTopic>[], this.picking = false, this.history = false, this.busy = false, this.sensitive = const SensitiveCheck(), this.error, this.actionError, this.actionErrorId = 0, this.notice, this.noticeId = 0, this.suggesting, this.suggestionTopic, final  List<HelpArticle> suggestions = const <HelpArticle>[], this.attachmentPolicy, this.leavingMessage = false, this.intakeTopic}): _topics = topics,_suggestions = suggestions,super._();
+  const _SupportState({this.status = LoadStatus.initial, this.home,  List<SupportTopic> topics = const <SupportTopic>[], this.picking = false, this.history = false, this.busy = false, this.sensitive = const SensitiveCheck(), this.error, this.actionError, this.actionErrorId = 0, this.notice, this.noticeId = 0, this.suggesting, this.suggestionTopic,  List<HelpArticle> suggestions = const <HelpArticle>[], this.attachmentPolicy, this.leavingMessage = false, this.intakeTopic}): _topics = topics,_suggestions = suggestions,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -286,16 +292,18 @@ _$SupportStateCopyWith<_SupportState> get copyWith => __$SupportStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportState&&(identical(other.status, status) || other.status == status)&&(identical(other.home, home) || other.home == home)&&const DeepCollectionEquality().equals(other._topics, _topics)&&(identical(other.picking, picking) || other.picking == picking)&&(identical(other.history, history) || other.history == history)&&(identical(other.busy, busy) || other.busy == busy)&&(identical(other.sensitive, sensitive) || other.sensitive == sensitive)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.notice, notice) || other.notice == notice)&&(identical(other.noticeId, noticeId) || other.noticeId == noticeId)&&(identical(other.suggesting, suggesting) || other.suggesting == suggesting)&&(identical(other.suggestionTopic, suggestionTopic) || other.suggestionTopic == suggestionTopic)&&const DeepCollectionEquality().equals(other._suggestions, _suggestions)&&(identical(other.attachmentPolicy, attachmentPolicy) || other.attachmentPolicy == attachmentPolicy)&&(identical(other.leavingMessage, leavingMessage) || other.leavingMessage == leavingMessage)&&(identical(other.intakeTopic, intakeTopic) || other.intakeTopic == intakeTopic));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportState&&(identical(other.status, status) || other.status == status)&&(identical(other.home, home) || other.home == home)&&const DeepCollectionEquality().equals(other.topics, _topics)&&(identical(other.picking, picking) || other.picking == picking)&&(identical(other.history, history) || other.history == history)&&(identical(other.busy, busy) || other.busy == busy)&&(identical(other.sensitive, sensitive) || other.sensitive == sensitive)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.notice, notice) || other.notice == notice)&&(identical(other.noticeId, noticeId) || other.noticeId == noticeId)&&(identical(other.suggesting, suggesting) || other.suggesting == suggesting)&&(identical(other.suggestionTopic, suggestionTopic) || other.suggestionTopic == suggestionTopic)&&const DeepCollectionEquality().equals(other.suggestions, _suggestions)&&(identical(other.attachmentPolicy, attachmentPolicy) || other.attachmentPolicy == attachmentPolicy)&&(identical(other.leavingMessage, leavingMessage) || other.leavingMessage == leavingMessage)&&(identical(other.intakeTopic, intakeTopic) || other.intakeTopic == intakeTopic));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,home,const DeepCollectionEquality().hash(_topics),picking,history,busy,sensitive,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,notice,noticeId,suggesting,suggestionTopic,const DeepCollectionEquality().hash(_suggestions),attachmentPolicy,leavingMessage,intakeTopic);
+int get hashCode {
+    return Object.hash(runtimeType,status,home,const DeepCollectionEquality().hash(_topics),picking,history,busy,sensitive,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,notice,noticeId,suggesting,suggestionTopic,const DeepCollectionEquality().hash(_suggestions),attachmentPolicy,leavingMessage,intakeTopic);
+}
 
 @override
 String toString() {
-  return 'SupportState(status: $status, home: $home, topics: $topics, picking: $picking, history: $history, busy: $busy, sensitive: $sensitive, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, notice: $notice, noticeId: $noticeId, suggesting: $suggesting, suggestionTopic: $suggestionTopic, suggestions: $suggestions, attachmentPolicy: $attachmentPolicy, leavingMessage: $leavingMessage, intakeTopic: $intakeTopic)';
+    return 'SupportState(status: $status, home: $home, topics: $topics, picking: $picking, history: $history, busy: $busy, sensitive: $sensitive, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, notice: $notice, noticeId: $noticeId, suggesting: $suggesting, suggestionTopic: $suggestionTopic, suggestions: $suggestions, attachmentPolicy: $attachmentPolicy, leavingMessage: $leavingMessage, intakeTopic: $intakeTopic)';
 }
 
 

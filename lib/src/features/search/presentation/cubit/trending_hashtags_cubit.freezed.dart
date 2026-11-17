@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'trending_hashtags_cubit.dart';
@@ -9,6 +9,7 @@ part of 'trending_hashtags_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $TrendingHashtagsStateCopyWith<TrendingHashtagsState> get copyWith => _$Trending
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TrendingHashtagsState&&(identical(other.status, status) || other.status == status)&&(identical(other.window, window) || other.window == window)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&const DeepCollectionEquality().equals(other.error, error));
+  final _this = this as TrendingHashtagsState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TrendingHashtagsState&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.window, _this.window) || other.window == _this.window)&&const DeepCollectionEquality().equals(other.hashtags, _this.hashtags)&&const DeepCollectionEquality().equals(other.error, _this.error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,window,const DeepCollectionEquality().hash(hashtags),const DeepCollectionEquality().hash(error));
+int get hashCode {
+  final _this = this as TrendingHashtagsState;
+  return Object.hash(runtimeType,_this.status,_this.window,const DeepCollectionEquality().hash(_this.hashtags),const DeepCollectionEquality().hash(_this.error));
+}
 
 @override
 String toString() {
-  return 'TrendingHashtagsState(status: $status, window: $window, hashtags: $hashtags, error: $error)';
+  final _this = this as TrendingHashtagsState;
+  return 'TrendingHashtagsState(status: ${_this.status}, window: ${_this.window}, hashtags: ${_this.hashtags}, error: ${_this.error})';
 }
 
 
@@ -63,7 +69,7 @@ class _$TrendingHashtagsStateCopyWithImpl<$Res>
 /// Create a copy of TrendingHashtagsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? window = null,Object? hashtags = null,Object? error = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(TrendingHashtagsState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,window: null == window ? _self.window : window // ignore: cast_nullable_to_non_nullable
 as TrendWindow,hashtags: null == hashtags ? _self.hashtags : hashtags // ignore: cast_nullable_to_non_nullable
@@ -208,7 +214,7 @@ return $default(_that.status,_that.window,_that.hashtags,_that.error);case _:
 
 
 class _TrendingHashtagsState implements TrendingHashtagsState {
-  const _TrendingHashtagsState({this.status = LoadStatus.initial, this.window = TrendWindow.day, final  List<HashtagSummary> hashtags = const <HashtagSummary>[], this.error}): _hashtags = hashtags;
+  const _TrendingHashtagsState({this.status = LoadStatus.initial, this.window = TrendWindow.day,  List<HashtagSummary> hashtags = const <HashtagSummary>[], this.error}): _hashtags = hashtags;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -232,16 +238,18 @@ _$TrendingHashtagsStateCopyWith<_TrendingHashtagsState> get copyWith => __$Trend
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TrendingHashtagsState&&(identical(other.status, status) || other.status == status)&&(identical(other.window, window) || other.window == window)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&const DeepCollectionEquality().equals(other.error, error));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TrendingHashtagsState&&(identical(other.status, status) || other.status == status)&&(identical(other.window, window) || other.window == window)&&const DeepCollectionEquality().equals(other.hashtags, _hashtags)&&const DeepCollectionEquality().equals(other.error, error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,window,const DeepCollectionEquality().hash(_hashtags),const DeepCollectionEquality().hash(error));
+int get hashCode {
+    return Object.hash(runtimeType,status,window,const DeepCollectionEquality().hash(_hashtags),const DeepCollectionEquality().hash(error));
+}
 
 @override
 String toString() {
-  return 'TrendingHashtagsState(status: $status, window: $window, hashtags: $hashtags, error: $error)';
+    return 'TrendingHashtagsState(status: $status, window: $window, hashtags: $hashtags, error: $error)';
 }
 
 

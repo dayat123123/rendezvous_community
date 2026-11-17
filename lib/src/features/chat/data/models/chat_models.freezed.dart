@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'chat_models.dart';
@@ -9,6 +9,7 @@ part of 'chat_models.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $MessageReactionModelCopyWith<MessageReactionModel> get copyWith => _$MessageRea
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageReactionModel&&(identical(other.emoji, emoji) || other.emoji == emoji)&&(identical(other.count, count) || other.count == count)&&(identical(other.me, me) || other.me == me));
+  final _this = this as MessageReactionModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageReactionModel&&(identical(other.emoji, _this.emoji) || other.emoji == _this.emoji)&&(identical(other.count, _this.count) || other.count == _this.count)&&(identical(other.me, _this.me) || other.me == _this.me));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,emoji,count,me);
+int get hashCode {
+  final _this = this as MessageReactionModel;
+  return Object.hash(runtimeType,_this.emoji,_this.count,_this.me);
+}
 
 @override
 String toString() {
-  return 'MessageReactionModel(emoji: $emoji, count: $count, me: $me)';
+  final _this = this as MessageReactionModel;
+  return 'MessageReactionModel(emoji: ${_this.emoji}, count: ${_this.count}, me: ${_this.me})';
 }
 
 
@@ -66,7 +72,7 @@ class _$MessageReactionModelCopyWithImpl<$Res>
 /// Create a copy of MessageReactionModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? emoji = null,Object? count = null,Object? me = null,}) {
-  return _then(_self.copyWith(
+  return _then(MessageReactionModel(
 emoji: null == emoji ? _self.emoji : emoji // ignore: cast_nullable_to_non_nullable
 as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int,me: null == me ? _self.me : me // ignore: cast_nullable_to_non_nullable
@@ -231,16 +237,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageReactionModel&&(identical(other.emoji, emoji) || other.emoji == emoji)&&(identical(other.count, count) || other.count == count)&&(identical(other.me, me) || other.me == me));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageReactionModel&&(identical(other.emoji, emoji) || other.emoji == emoji)&&(identical(other.count, count) || other.count == count)&&(identical(other.me, me) || other.me == me));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,emoji,count,me);
+int get hashCode {
+    return Object.hash(runtimeType,emoji,count,me);
+}
 
 @override
 String toString() {
-  return 'MessageReactionModel(emoji: $emoji, count: $count, me: $me)';
+    return 'MessageReactionModel(emoji: $emoji, count: $count, me: $me)';
 }
 
 
@@ -297,16 +305,21 @@ $SharedPostModelCopyWith<SharedPostModel> get copyWith => _$SharedPostModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SharedPostModel&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.available, available) || other.available == available)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorUsername, authorUsername) || other.authorUsername == authorUsername)&&(identical(other.authorDisplayName, authorDisplayName) || other.authorDisplayName == authorDisplayName)&&(identical(other.authorAvatarUrl, authorAvatarUrl) || other.authorAvatarUrl == authorAvatarUrl)&&(identical(other.authorIsVerified, authorIsVerified) || other.authorIsVerified == authorIsVerified)&&(identical(other.body, body) || other.body == body)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.stockCodes, stockCodes)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  final _this = this as SharedPostModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SharedPostModel&&(identical(other.postId, _this.postId) || other.postId == _this.postId)&&(identical(other.available, _this.available) || other.available == _this.available)&&(identical(other.authorId, _this.authorId) || other.authorId == _this.authorId)&&(identical(other.authorUsername, _this.authorUsername) || other.authorUsername == _this.authorUsername)&&(identical(other.authorDisplayName, _this.authorDisplayName) || other.authorDisplayName == _this.authorDisplayName)&&(identical(other.authorAvatarUrl, _this.authorAvatarUrl) || other.authorAvatarUrl == _this.authorAvatarUrl)&&(identical(other.authorIsVerified, _this.authorIsVerified) || other.authorIsVerified == _this.authorIsVerified)&&(identical(other.body, _this.body) || other.body == _this.body)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.sentiment, _this.sentiment) || other.sentiment == _this.sentiment)&&const DeepCollectionEquality().equals(other.stockCodes, _this.stockCodes)&&(identical(other.likeCount, _this.likeCount) || other.likeCount == _this.likeCount)&&(identical(other.commentCount, _this.commentCount) || other.commentCount == _this.commentCount)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,postId,available,authorId,authorUsername,authorDisplayName,authorAvatarUrl,authorIsVerified,body,const DeepCollectionEquality().hash(attachments),sentiment,const DeepCollectionEquality().hash(stockCodes),likeCount,commentCount,createdAt);
+int get hashCode {
+  final _this = this as SharedPostModel;
+  return Object.hash(runtimeType,_this.postId,_this.available,_this.authorId,_this.authorUsername,_this.authorDisplayName,_this.authorAvatarUrl,_this.authorIsVerified,_this.body,const DeepCollectionEquality().hash(_this.attachments),_this.sentiment,const DeepCollectionEquality().hash(_this.stockCodes),_this.likeCount,_this.commentCount,_this.createdAt);
+}
 
 @override
 String toString() {
-  return 'SharedPostModel(postId: $postId, available: $available, authorId: $authorId, authorUsername: $authorUsername, authorDisplayName: $authorDisplayName, authorAvatarUrl: $authorAvatarUrl, authorIsVerified: $authorIsVerified, body: $body, attachments: $attachments, sentiment: $sentiment, stockCodes: $stockCodes, likeCount: $likeCount, commentCount: $commentCount, createdAt: $createdAt)';
+  final _this = this as SharedPostModel;
+  return 'SharedPostModel(postId: ${_this.postId}, available: ${_this.available}, authorId: ${_this.authorId}, authorUsername: ${_this.authorUsername}, authorDisplayName: ${_this.authorDisplayName}, authorAvatarUrl: ${_this.authorAvatarUrl}, authorIsVerified: ${_this.authorIsVerified}, body: ${_this.body}, attachments: ${_this.attachments}, sentiment: ${_this.sentiment}, stockCodes: ${_this.stockCodes}, likeCount: ${_this.likeCount}, commentCount: ${_this.commentCount}, createdAt: ${_this.createdAt})';
 }
 
 
@@ -335,7 +348,7 @@ class _$SharedPostModelCopyWithImpl<$Res>
 /// Create a copy of SharedPostModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? postId = null,Object? available = null,Object? authorId = freezed,Object? authorUsername = freezed,Object? authorDisplayName = freezed,Object? authorAvatarUrl = freezed,Object? authorIsVerified = null,Object? body = freezed,Object? attachments = null,Object? sentiment = freezed,Object? stockCodes = null,Object? likeCount = null,Object? commentCount = null,Object? createdAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SharedPostModel(
 postId: null == postId ? _self.postId : postId // ignore: cast_nullable_to_non_nullable
 as String,available: null == available ? _self.available : available // ignore: cast_nullable_to_non_nullable
 as bool,authorId: freezed == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
@@ -491,7 +504,7 @@ return $default(_that.postId,_that.available,_that.authorId,_that.authorUsername
 @JsonSerializable()
 
 class _SharedPostModel extends SharedPostModel {
-  const _SharedPostModel({required this.postId, this.available = false, this.authorId, this.authorUsername, this.authorDisplayName, this.authorAvatarUrl, this.authorIsVerified = false, this.body, @JsonKey(fromJson: attachmentsFromJson) final  List<AttachmentModel> attachments = const <AttachmentModel>[], this.sentiment, final  List<String> stockCodes = const <String>[], this.likeCount = 0, this.commentCount = 0, this.createdAt}): _attachments = attachments,_stockCodes = stockCodes,super._();
+  const _SharedPostModel({required this.postId, this.available = false, this.authorId, this.authorUsername, this.authorDisplayName, this.authorAvatarUrl, this.authorIsVerified = false, this.body, @JsonKey(fromJson: attachmentsFromJson)  List<AttachmentModel> attachments = const <AttachmentModel>[], this.sentiment,  List<String> stockCodes = const <String>[], this.likeCount = 0, this.commentCount = 0, this.createdAt}): _attachments = attachments,_stockCodes = stockCodes,super._();
   factory _SharedPostModel.fromJson(Map<String, dynamic> json) => _$SharedPostModelFromJson(json);
 
 @override final  String postId;
@@ -534,16 +547,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SharedPostModel&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.available, available) || other.available == available)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorUsername, authorUsername) || other.authorUsername == authorUsername)&&(identical(other.authorDisplayName, authorDisplayName) || other.authorDisplayName == authorDisplayName)&&(identical(other.authorAvatarUrl, authorAvatarUrl) || other.authorAvatarUrl == authorAvatarUrl)&&(identical(other.authorIsVerified, authorIsVerified) || other.authorIsVerified == authorIsVerified)&&(identical(other.body, body) || other.body == body)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other._stockCodes, _stockCodes)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SharedPostModel&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.available, available) || other.available == available)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorUsername, authorUsername) || other.authorUsername == authorUsername)&&(identical(other.authorDisplayName, authorDisplayName) || other.authorDisplayName == authorDisplayName)&&(identical(other.authorAvatarUrl, authorAvatarUrl) || other.authorAvatarUrl == authorAvatarUrl)&&(identical(other.authorIsVerified, authorIsVerified) || other.authorIsVerified == authorIsVerified)&&(identical(other.body, body) || other.body == body)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.stockCodes, _stockCodes)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,postId,available,authorId,authorUsername,authorDisplayName,authorAvatarUrl,authorIsVerified,body,const DeepCollectionEquality().hash(_attachments),sentiment,const DeepCollectionEquality().hash(_stockCodes),likeCount,commentCount,createdAt);
+int get hashCode {
+    return Object.hash(runtimeType,postId,available,authorId,authorUsername,authorDisplayName,authorAvatarUrl,authorIsVerified,body,const DeepCollectionEquality().hash(_attachments),sentiment,const DeepCollectionEquality().hash(_stockCodes),likeCount,commentCount,createdAt);
+}
 
 @override
 String toString() {
-  return 'SharedPostModel(postId: $postId, available: $available, authorId: $authorId, authorUsername: $authorUsername, authorDisplayName: $authorDisplayName, authorAvatarUrl: $authorAvatarUrl, authorIsVerified: $authorIsVerified, body: $body, attachments: $attachments, sentiment: $sentiment, stockCodes: $stockCodes, likeCount: $likeCount, commentCount: $commentCount, createdAt: $createdAt)';
+    return 'SharedPostModel(postId: $postId, available: $available, authorId: $authorId, authorUsername: $authorUsername, authorDisplayName: $authorDisplayName, authorAvatarUrl: $authorAvatarUrl, authorIsVerified: $authorIsVerified, body: $body, attachments: $attachments, sentiment: $sentiment, stockCodes: $stockCodes, likeCount: $likeCount, commentCount: $commentCount, createdAt: $createdAt)';
 }
 
 
@@ -611,16 +626,21 @@ $ChatMessageModelCopyWith<ChatMessageModel> get copyWith => _$ChatMessageModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatMessageModel&&(identical(other.id, id) || other.id == id)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.senderUsername, senderUsername) || other.senderUsername == senderUsername)&&(identical(other.senderDisplayName, senderDisplayName) || other.senderDisplayName == senderDisplayName)&&(identical(other.senderAvatarUrl, senderAvatarUrl) || other.senderAvatarUrl == senderAvatarUrl)&&(identical(other.body, body) || other.body == body)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&(identical(other.replyToBody, replyToBody) || other.replyToBody == replyToBody)&&(identical(other.replyToSenderUsername, replyToSenderUsername) || other.replyToSenderUsername == replyToSenderUsername)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.sharedPostId, sharedPostId) || other.sharedPostId == sharedPostId)&&const DeepCollectionEquality().equals(other.stockCodes, stockCodes)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.senderRole, senderRole) || other.senderRole == senderRole)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&const DeepCollectionEquality().equals(other.payload, payload)&&const DeepCollectionEquality().equals(other.reactions, reactions)&&(identical(other.sharedPost, sharedPost) || other.sharedPost == sharedPost)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+  final _this = this as ChatMessageModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatMessageModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId)&&(identical(other.senderId, _this.senderId) || other.senderId == _this.senderId)&&(identical(other.senderUsername, _this.senderUsername) || other.senderUsername == _this.senderUsername)&&(identical(other.senderDisplayName, _this.senderDisplayName) || other.senderDisplayName == _this.senderDisplayName)&&(identical(other.senderAvatarUrl, _this.senderAvatarUrl) || other.senderAvatarUrl == _this.senderAvatarUrl)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.isDeleted, _this.isDeleted) || other.isDeleted == _this.isDeleted)&&(identical(other.replyToId, _this.replyToId) || other.replyToId == _this.replyToId)&&(identical(other.replyToBody, _this.replyToBody) || other.replyToBody == _this.replyToBody)&&(identical(other.replyToSenderUsername, _this.replyToSenderUsername) || other.replyToSenderUsername == _this.replyToSenderUsername)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.sharedPostId, _this.sharedPostId) || other.sharedPostId == _this.sharedPostId)&&const DeepCollectionEquality().equals(other.stockCodes, _this.stockCodes)&&(identical(other.clientId, _this.clientId) || other.clientId == _this.clientId)&&(identical(other.editedAt, _this.editedAt) || other.editedAt == _this.editedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.senderRole, _this.senderRole) || other.senderRole == _this.senderRole)&&(identical(other.sessionId, _this.sessionId) || other.sessionId == _this.sessionId)&&const DeepCollectionEquality().equals(other.payload, _this.payload)&&const DeepCollectionEquality().equals(other.reactions, _this.reactions)&&(identical(other.sharedPost, _this.sharedPost) || other.sharedPost == _this.sharedPost)&&(identical(other.moderationStatus, _this.moderationStatus) || other.moderationStatus == _this.moderationStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,roomId,senderId,senderUsername,senderDisplayName,senderAvatarUrl,body,isDeleted,replyToId,replyToBody,replyToSenderUsername,const DeepCollectionEquality().hash(attachments),sharedPostId,const DeepCollectionEquality().hash(stockCodes),clientId,editedAt,createdAt,cursor,kind,senderRole,sessionId,const DeepCollectionEquality().hash(payload),const DeepCollectionEquality().hash(reactions),sharedPost,moderationStatus]);
+int get hashCode {
+  final _this = this as ChatMessageModel;
+  return Object.hashAll([runtimeType,_this.id,_this.roomId,_this.senderId,_this.senderUsername,_this.senderDisplayName,_this.senderAvatarUrl,_this.body,_this.isDeleted,_this.replyToId,_this.replyToBody,_this.replyToSenderUsername,const DeepCollectionEquality().hash(_this.attachments),_this.sharedPostId,const DeepCollectionEquality().hash(_this.stockCodes),_this.clientId,_this.editedAt,_this.createdAt,_this.cursor,_this.kind,_this.senderRole,_this.sessionId,const DeepCollectionEquality().hash(_this.payload),const DeepCollectionEquality().hash(_this.reactions),_this.sharedPost,_this.moderationStatus]);
+}
 
 @override
 String toString() {
-  return 'ChatMessageModel(id: $id, roomId: $roomId, senderId: $senderId, senderUsername: $senderUsername, senderDisplayName: $senderDisplayName, senderAvatarUrl: $senderAvatarUrl, body: $body, isDeleted: $isDeleted, replyToId: $replyToId, replyToBody: $replyToBody, replyToSenderUsername: $replyToSenderUsername, attachments: $attachments, sharedPostId: $sharedPostId, stockCodes: $stockCodes, clientId: $clientId, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, kind: $kind, senderRole: $senderRole, sessionId: $sessionId, payload: $payload, reactions: $reactions, sharedPost: $sharedPost, moderationStatus: $moderationStatus)';
+  final _this = this as ChatMessageModel;
+  return 'ChatMessageModel(id: ${_this.id}, roomId: ${_this.roomId}, senderId: ${_this.senderId}, senderUsername: ${_this.senderUsername}, senderDisplayName: ${_this.senderDisplayName}, senderAvatarUrl: ${_this.senderAvatarUrl}, body: ${_this.body}, isDeleted: ${_this.isDeleted}, replyToId: ${_this.replyToId}, replyToBody: ${_this.replyToBody}, replyToSenderUsername: ${_this.replyToSenderUsername}, attachments: ${_this.attachments}, sharedPostId: ${_this.sharedPostId}, stockCodes: ${_this.stockCodes}, clientId: ${_this.clientId}, editedAt: ${_this.editedAt}, createdAt: ${_this.createdAt}, cursor: ${_this.cursor}, kind: ${_this.kind}, senderRole: ${_this.senderRole}, sessionId: ${_this.sessionId}, payload: ${_this.payload}, reactions: ${_this.reactions}, sharedPost: ${_this.sharedPost}, moderationStatus: ${_this.moderationStatus})';
 }
 
 
@@ -649,7 +669,7 @@ class _$ChatMessageModelCopyWithImpl<$Res>
 /// Create a copy of ChatMessageModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? roomId = null,Object? senderId = freezed,Object? senderUsername = freezed,Object? senderDisplayName = freezed,Object? senderAvatarUrl = freezed,Object? body = freezed,Object? isDeleted = null,Object? replyToId = freezed,Object? replyToBody = freezed,Object? replyToSenderUsername = freezed,Object? attachments = null,Object? sharedPostId = freezed,Object? stockCodes = null,Object? clientId = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = freezed,Object? kind = freezed,Object? senderRole = freezed,Object? sessionId = freezed,Object? payload = null,Object? reactions = freezed,Object? sharedPost = freezed,Object? moderationStatus = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ChatMessageModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,roomId: null == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String,senderId: freezed == senderId ? _self.senderId : senderId // ignore: cast_nullable_to_non_nullable
@@ -828,7 +848,7 @@ return $default(_that.id,_that.roomId,_that.senderId,_that.senderUsername,_that.
 @JsonSerializable()
 
 class _ChatMessageModel extends ChatMessageModel {
-  const _ChatMessageModel({required this.id, required this.roomId, this.senderId, this.senderUsername, this.senderDisplayName, this.senderAvatarUrl, this.body, this.isDeleted = false, this.replyToId, this.replyToBody, this.replyToSenderUsername, @JsonKey(fromJson: attachmentsFromJson) final  List<AttachmentModel> attachments = const <AttachmentModel>[], @JsonKey(readValue: readAttachments, fromJson: sharedPostIdFromJson, includeToJson: false) this.sharedPostId, @JsonKey(readValue: readAttachments, fromJson: stockCodesFromJson, includeToJson: false) final  List<String> stockCodes = const <String>[], this.clientId, this.editedAt, required this.createdAt, this.cursor, this.kind, this.senderRole, this.sessionId, final  Map<String, dynamic> payload = const <String, dynamic>{}, final  List<MessageReactionModel>? reactions, this.sharedPost, this.moderationStatus}): _attachments = attachments,_stockCodes = stockCodes,_payload = payload,_reactions = reactions,super._();
+  const _ChatMessageModel({required this.id, required this.roomId, this.senderId, this.senderUsername, this.senderDisplayName, this.senderAvatarUrl, this.body, this.isDeleted = false, this.replyToId, this.replyToBody, this.replyToSenderUsername, @JsonKey(fromJson: attachmentsFromJson)  List<AttachmentModel> attachments = const <AttachmentModel>[], @JsonKey(readValue: readAttachments, fromJson: sharedPostIdFromJson, includeToJson: false) this.sharedPostId, @JsonKey(readValue: readAttachments, fromJson: stockCodesFromJson, includeToJson: false)  List<String> stockCodes = const <String>[], this.clientId, this.editedAt, required this.createdAt, this.cursor, this.kind, this.senderRole, this.sessionId,  Map<String, dynamic> payload = const <String, dynamic>{},  List<MessageReactionModel>? reactions, this.sharedPost, this.moderationStatus}): _attachments = attachments,_stockCodes = stockCodes,_payload = payload,_reactions = reactions,super._();
   factory _ChatMessageModel.fromJson(Map<String, dynamic> json) => _$ChatMessageModelFromJson(json);
 
 @override final  String id;
@@ -896,16 +916,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatMessageModel&&(identical(other.id, id) || other.id == id)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.senderUsername, senderUsername) || other.senderUsername == senderUsername)&&(identical(other.senderDisplayName, senderDisplayName) || other.senderDisplayName == senderDisplayName)&&(identical(other.senderAvatarUrl, senderAvatarUrl) || other.senderAvatarUrl == senderAvatarUrl)&&(identical(other.body, body) || other.body == body)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&(identical(other.replyToBody, replyToBody) || other.replyToBody == replyToBody)&&(identical(other.replyToSenderUsername, replyToSenderUsername) || other.replyToSenderUsername == replyToSenderUsername)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.sharedPostId, sharedPostId) || other.sharedPostId == sharedPostId)&&const DeepCollectionEquality().equals(other._stockCodes, _stockCodes)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.senderRole, senderRole) || other.senderRole == senderRole)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&const DeepCollectionEquality().equals(other._payload, _payload)&&const DeepCollectionEquality().equals(other._reactions, _reactions)&&(identical(other.sharedPost, sharedPost) || other.sharedPost == sharedPost)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatMessageModel&&(identical(other.id, id) || other.id == id)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.senderUsername, senderUsername) || other.senderUsername == senderUsername)&&(identical(other.senderDisplayName, senderDisplayName) || other.senderDisplayName == senderDisplayName)&&(identical(other.senderAvatarUrl, senderAvatarUrl) || other.senderAvatarUrl == senderAvatarUrl)&&(identical(other.body, body) || other.body == body)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&(identical(other.replyToBody, replyToBody) || other.replyToBody == replyToBody)&&(identical(other.replyToSenderUsername, replyToSenderUsername) || other.replyToSenderUsername == replyToSenderUsername)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.sharedPostId, sharedPostId) || other.sharedPostId == sharedPostId)&&const DeepCollectionEquality().equals(other.stockCodes, _stockCodes)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.senderRole, senderRole) || other.senderRole == senderRole)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&const DeepCollectionEquality().equals(other.payload, _payload)&&const DeepCollectionEquality().equals(other.reactions, _reactions)&&(identical(other.sharedPost, sharedPost) || other.sharedPost == sharedPost)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,roomId,senderId,senderUsername,senderDisplayName,senderAvatarUrl,body,isDeleted,replyToId,replyToBody,replyToSenderUsername,const DeepCollectionEquality().hash(_attachments),sharedPostId,const DeepCollectionEquality().hash(_stockCodes),clientId,editedAt,createdAt,cursor,kind,senderRole,sessionId,const DeepCollectionEquality().hash(_payload),const DeepCollectionEquality().hash(_reactions),sharedPost,moderationStatus]);
+int get hashCode {
+    return Object.hashAll([runtimeType,id,roomId,senderId,senderUsername,senderDisplayName,senderAvatarUrl,body,isDeleted,replyToId,replyToBody,replyToSenderUsername,const DeepCollectionEquality().hash(_attachments),sharedPostId,const DeepCollectionEquality().hash(_stockCodes),clientId,editedAt,createdAt,cursor,kind,senderRole,sessionId,const DeepCollectionEquality().hash(_payload),const DeepCollectionEquality().hash(_reactions),sharedPost,moderationStatus]);
+}
 
 @override
 String toString() {
-  return 'ChatMessageModel(id: $id, roomId: $roomId, senderId: $senderId, senderUsername: $senderUsername, senderDisplayName: $senderDisplayName, senderAvatarUrl: $senderAvatarUrl, body: $body, isDeleted: $isDeleted, replyToId: $replyToId, replyToBody: $replyToBody, replyToSenderUsername: $replyToSenderUsername, attachments: $attachments, sharedPostId: $sharedPostId, stockCodes: $stockCodes, clientId: $clientId, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, kind: $kind, senderRole: $senderRole, sessionId: $sessionId, payload: $payload, reactions: $reactions, sharedPost: $sharedPost, moderationStatus: $moderationStatus)';
+    return 'ChatMessageModel(id: $id, roomId: $roomId, senderId: $senderId, senderUsername: $senderUsername, senderDisplayName: $senderDisplayName, senderAvatarUrl: $senderAvatarUrl, body: $body, isDeleted: $isDeleted, replyToId: $replyToId, replyToBody: $replyToBody, replyToSenderUsername: $replyToSenderUsername, attachments: $attachments, sharedPostId: $sharedPostId, stockCodes: $stockCodes, clientId: $clientId, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, kind: $kind, senderRole: $senderRole, sessionId: $sessionId, payload: $payload, reactions: $reactions, sharedPost: $sharedPost, moderationStatus: $moderationStatus)';
 }
 
 
@@ -996,16 +1018,21 @@ $MessageRowModelCopyWith<MessageRowModel> get copyWith => _$MessageRowModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.body, body) || other.body == body)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.sharedPostId, sharedPostId) || other.sharedPostId == sharedPostId)&&const DeepCollectionEquality().equals(other.stockCodes, stockCodes)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.senderRole, senderRole) || other.senderRole == senderRole)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&const DeepCollectionEquality().equals(other.payload, payload)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+  final _this = this as MessageRowModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageRowModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId)&&(identical(other.senderId, _this.senderId) || other.senderId == _this.senderId)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.replyToId, _this.replyToId) || other.replyToId == _this.replyToId)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.sharedPostId, _this.sharedPostId) || other.sharedPostId == _this.sharedPostId)&&const DeepCollectionEquality().equals(other.stockCodes, _this.stockCodes)&&(identical(other.clientId, _this.clientId) || other.clientId == _this.clientId)&&(identical(other.editedAt, _this.editedAt) || other.editedAt == _this.editedAt)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.senderRole, _this.senderRole) || other.senderRole == _this.senderRole)&&(identical(other.sessionId, _this.sessionId) || other.sessionId == _this.sessionId)&&const DeepCollectionEquality().equals(other.payload, _this.payload)&&(identical(other.moderationStatus, _this.moderationStatus) || other.moderationStatus == _this.moderationStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,roomId,senderId,body,replyToId,const DeepCollectionEquality().hash(attachments),sharedPostId,const DeepCollectionEquality().hash(stockCodes),clientId,editedAt,deletedAt,createdAt,kind,senderRole,sessionId,const DeepCollectionEquality().hash(payload),moderationStatus);
+int get hashCode {
+  final _this = this as MessageRowModel;
+  return Object.hash(runtimeType,_this.id,_this.roomId,_this.senderId,_this.body,_this.replyToId,const DeepCollectionEquality().hash(_this.attachments),_this.sharedPostId,const DeepCollectionEquality().hash(_this.stockCodes),_this.clientId,_this.editedAt,_this.deletedAt,_this.createdAt,_this.kind,_this.senderRole,_this.sessionId,const DeepCollectionEquality().hash(_this.payload),_this.moderationStatus);
+}
 
 @override
 String toString() {
-  return 'MessageRowModel(id: $id, roomId: $roomId, senderId: $senderId, body: $body, replyToId: $replyToId, attachments: $attachments, sharedPostId: $sharedPostId, stockCodes: $stockCodes, clientId: $clientId, editedAt: $editedAt, deletedAt: $deletedAt, createdAt: $createdAt, kind: $kind, senderRole: $senderRole, sessionId: $sessionId, payload: $payload, moderationStatus: $moderationStatus)';
+  final _this = this as MessageRowModel;
+  return 'MessageRowModel(id: ${_this.id}, roomId: ${_this.roomId}, senderId: ${_this.senderId}, body: ${_this.body}, replyToId: ${_this.replyToId}, attachments: ${_this.attachments}, sharedPostId: ${_this.sharedPostId}, stockCodes: ${_this.stockCodes}, clientId: ${_this.clientId}, editedAt: ${_this.editedAt}, deletedAt: ${_this.deletedAt}, createdAt: ${_this.createdAt}, kind: ${_this.kind}, senderRole: ${_this.senderRole}, sessionId: ${_this.sessionId}, payload: ${_this.payload}, moderationStatus: ${_this.moderationStatus})';
 }
 
 
@@ -1034,7 +1061,7 @@ class _$MessageRowModelCopyWithImpl<$Res>
 /// Create a copy of MessageRowModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? roomId = null,Object? senderId = freezed,Object? body = null,Object? replyToId = freezed,Object? attachments = null,Object? sharedPostId = freezed,Object? stockCodes = null,Object? clientId = freezed,Object? editedAt = freezed,Object? deletedAt = freezed,Object? createdAt = null,Object? kind = freezed,Object? senderRole = freezed,Object? sessionId = freezed,Object? payload = null,Object? moderationStatus = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(MessageRowModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,roomId: null == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String,senderId: freezed == senderId ? _self.senderId : senderId // ignore: cast_nullable_to_non_nullable
@@ -1193,7 +1220,7 @@ return $default(_that.id,_that.roomId,_that.senderId,_that.body,_that.replyToId,
 @JsonSerializable()
 
 class _MessageRowModel extends MessageRowModel {
-  const _MessageRowModel({required this.id, required this.roomId, this.senderId, this.body = '', this.replyToId, @JsonKey(fromJson: attachmentsFromJson) final  List<AttachmentModel> attachments = const <AttachmentModel>[], @JsonKey(readValue: readAttachments, fromJson: sharedPostIdFromJson, includeToJson: false) this.sharedPostId, @JsonKey(readValue: readAttachments, fromJson: stockCodesFromJson, includeToJson: false) final  List<String> stockCodes = const <String>[], this.clientId, this.editedAt, this.deletedAt, required this.createdAt, this.kind, this.senderRole, this.sessionId, final  Map<String, dynamic> payload = const <String, dynamic>{}, this.moderationStatus}): _attachments = attachments,_stockCodes = stockCodes,_payload = payload,super._();
+  const _MessageRowModel({required this.id, required this.roomId, this.senderId, this.body = '', this.replyToId, @JsonKey(fromJson: attachmentsFromJson)  List<AttachmentModel> attachments = const <AttachmentModel>[], @JsonKey(readValue: readAttachments, fromJson: sharedPostIdFromJson, includeToJson: false) this.sharedPostId, @JsonKey(readValue: readAttachments, fromJson: stockCodesFromJson, includeToJson: false)  List<String> stockCodes = const <String>[], this.clientId, this.editedAt, this.deletedAt, required this.createdAt, this.kind, this.senderRole, this.sessionId,  Map<String, dynamic> payload = const <String, dynamic>{}, this.moderationStatus}): _attachments = attachments,_stockCodes = stockCodes,_payload = payload,super._();
   factory _MessageRowModel.fromJson(Map<String, dynamic> json) => _$MessageRowModelFromJson(json);
 
 @override final  String id;
@@ -1245,16 +1272,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.body, body) || other.body == body)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.sharedPostId, sharedPostId) || other.sharedPostId == sharedPostId)&&const DeepCollectionEquality().equals(other._stockCodes, _stockCodes)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.senderRole, senderRole) || other.senderRole == senderRole)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&const DeepCollectionEquality().equals(other._payload, _payload)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.senderId, senderId) || other.senderId == senderId)&&(identical(other.body, body) || other.body == body)&&(identical(other.replyToId, replyToId) || other.replyToId == replyToId)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.sharedPostId, sharedPostId) || other.sharedPostId == sharedPostId)&&const DeepCollectionEquality().equals(other.stockCodes, _stockCodes)&&(identical(other.clientId, clientId) || other.clientId == clientId)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.senderRole, senderRole) || other.senderRole == senderRole)&&(identical(other.sessionId, sessionId) || other.sessionId == sessionId)&&const DeepCollectionEquality().equals(other.payload, _payload)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,roomId,senderId,body,replyToId,const DeepCollectionEquality().hash(_attachments),sharedPostId,const DeepCollectionEquality().hash(_stockCodes),clientId,editedAt,deletedAt,createdAt,kind,senderRole,sessionId,const DeepCollectionEquality().hash(_payload),moderationStatus);
+int get hashCode {
+    return Object.hash(runtimeType,id,roomId,senderId,body,replyToId,const DeepCollectionEquality().hash(_attachments),sharedPostId,const DeepCollectionEquality().hash(_stockCodes),clientId,editedAt,deletedAt,createdAt,kind,senderRole,sessionId,const DeepCollectionEquality().hash(_payload),moderationStatus);
+}
 
 @override
 String toString() {
-  return 'MessageRowModel(id: $id, roomId: $roomId, senderId: $senderId, body: $body, replyToId: $replyToId, attachments: $attachments, sharedPostId: $sharedPostId, stockCodes: $stockCodes, clientId: $clientId, editedAt: $editedAt, deletedAt: $deletedAt, createdAt: $createdAt, kind: $kind, senderRole: $senderRole, sessionId: $sessionId, payload: $payload, moderationStatus: $moderationStatus)';
+    return 'MessageRowModel(id: $id, roomId: $roomId, senderId: $senderId, body: $body, replyToId: $replyToId, attachments: $attachments, sharedPostId: $sharedPostId, stockCodes: $stockCodes, clientId: $clientId, editedAt: $editedAt, deletedAt: $deletedAt, createdAt: $createdAt, kind: $kind, senderRole: $senderRole, sessionId: $sessionId, payload: $payload, moderationStatus: $moderationStatus)';
 }
 
 
@@ -1325,16 +1354,21 @@ $RoomSummaryModelCopyWith<RoomSummaryModel> get copyWith => _$RoomSummaryModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoomSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.name, name) || other.name == name)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageSenderId, lastMessageSenderId) || other.lastMessageSenderId == lastMessageSenderId)&&(identical(other.lastMessageStatus, lastMessageStatus) || other.lastMessageStatus == lastMessageStatus)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.myRole, myRole) || other.myRole == myRole)&&(identical(other.muted, muted) || other.muted == muted)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.otherUserId, otherUserId) || other.otherUserId == otherUserId)&&(identical(other.otherUsername, otherUsername) || other.otherUsername == otherUsername)&&(identical(other.otherDisplayName, otherDisplayName) || other.otherDisplayName == otherDisplayName)&&(identical(other.otherAvatarUrl, otherAvatarUrl) || other.otherAvatarUrl == otherAvatarUrl)&&(identical(other.otherIsVerified, otherIsVerified) || other.otherIsVerified == otherIsVerified)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.onlyAdminsSend, onlyAdminsSend) || other.onlyAdminsSend == onlyAdminsSend)&&(identical(other.onlyAdminsEdit, onlyAdminsEdit) || other.onlyAdminsEdit == onlyAdminsEdit));
+  final _this = this as RoomSummaryModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoomSummaryModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.stockCode, _this.stockCode) || other.stockCode == _this.stockCode)&&(identical(other.lastMessageAt, _this.lastMessageAt) || other.lastMessageAt == _this.lastMessageAt)&&(identical(other.lastMessagePreview, _this.lastMessagePreview) || other.lastMessagePreview == _this.lastMessagePreview)&&(identical(other.lastMessageSenderId, _this.lastMessageSenderId) || other.lastMessageSenderId == _this.lastMessageSenderId)&&(identical(other.lastMessageStatus, _this.lastMessageStatus) || other.lastMessageStatus == _this.lastMessageStatus)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.myRole, _this.myRole) || other.myRole == _this.myRole)&&(identical(other.muted, _this.muted) || other.muted == _this.muted)&&(identical(other.lastReadAt, _this.lastReadAt) || other.lastReadAt == _this.lastReadAt)&&(identical(other.unreadCount, _this.unreadCount) || other.unreadCount == _this.unreadCount)&&(identical(other.memberCount, _this.memberCount) || other.memberCount == _this.memberCount)&&(identical(other.otherUserId, _this.otherUserId) || other.otherUserId == _this.otherUserId)&&(identical(other.otherUsername, _this.otherUsername) || other.otherUsername == _this.otherUsername)&&(identical(other.otherDisplayName, _this.otherDisplayName) || other.otherDisplayName == _this.otherDisplayName)&&(identical(other.otherAvatarUrl, _this.otherAvatarUrl) || other.otherAvatarUrl == _this.otherAvatarUrl)&&(identical(other.otherIsVerified, _this.otherIsVerified) || other.otherIsVerified == _this.otherIsVerified)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl)&&(identical(other.onlyAdminsSend, _this.onlyAdminsSend) || other.onlyAdminsSend == _this.onlyAdminsSend)&&(identical(other.onlyAdminsEdit, _this.onlyAdminsEdit) || other.onlyAdminsEdit == _this.onlyAdminsEdit));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,type,name,stockCode,lastMessageAt,lastMessagePreview,lastMessageSenderId,lastMessageStatus,createdAt,myRole,muted,lastReadAt,unreadCount,memberCount,otherUserId,otherUsername,otherDisplayName,otherAvatarUrl,otherIsVerified,cursor,description,avatarUrl,onlyAdminsSend,onlyAdminsEdit]);
+int get hashCode {
+  final _this = this as RoomSummaryModel;
+  return Object.hashAll([runtimeType,_this.id,_this.type,_this.name,_this.stockCode,_this.lastMessageAt,_this.lastMessagePreview,_this.lastMessageSenderId,_this.lastMessageStatus,_this.createdAt,_this.myRole,_this.muted,_this.lastReadAt,_this.unreadCount,_this.memberCount,_this.otherUserId,_this.otherUsername,_this.otherDisplayName,_this.otherAvatarUrl,_this.otherIsVerified,_this.cursor,_this.description,_this.avatarUrl,_this.onlyAdminsSend,_this.onlyAdminsEdit]);
+}
 
 @override
 String toString() {
-  return 'RoomSummaryModel(id: $id, type: $type, name: $name, stockCode: $stockCode, lastMessageAt: $lastMessageAt, lastMessagePreview: $lastMessagePreview, lastMessageSenderId: $lastMessageSenderId, lastMessageStatus: $lastMessageStatus, createdAt: $createdAt, myRole: $myRole, muted: $muted, lastReadAt: $lastReadAt, unreadCount: $unreadCount, memberCount: $memberCount, otherUserId: $otherUserId, otherUsername: $otherUsername, otherDisplayName: $otherDisplayName, otherAvatarUrl: $otherAvatarUrl, otherIsVerified: $otherIsVerified, cursor: $cursor, description: $description, avatarUrl: $avatarUrl, onlyAdminsSend: $onlyAdminsSend, onlyAdminsEdit: $onlyAdminsEdit)';
+  final _this = this as RoomSummaryModel;
+  return 'RoomSummaryModel(id: ${_this.id}, type: ${_this.type}, name: ${_this.name}, stockCode: ${_this.stockCode}, lastMessageAt: ${_this.lastMessageAt}, lastMessagePreview: ${_this.lastMessagePreview}, lastMessageSenderId: ${_this.lastMessageSenderId}, lastMessageStatus: ${_this.lastMessageStatus}, createdAt: ${_this.createdAt}, myRole: ${_this.myRole}, muted: ${_this.muted}, lastReadAt: ${_this.lastReadAt}, unreadCount: ${_this.unreadCount}, memberCount: ${_this.memberCount}, otherUserId: ${_this.otherUserId}, otherUsername: ${_this.otherUsername}, otherDisplayName: ${_this.otherDisplayName}, otherAvatarUrl: ${_this.otherAvatarUrl}, otherIsVerified: ${_this.otherIsVerified}, cursor: ${_this.cursor}, description: ${_this.description}, avatarUrl: ${_this.avatarUrl}, onlyAdminsSend: ${_this.onlyAdminsSend}, onlyAdminsEdit: ${_this.onlyAdminsEdit})';
 }
 
 
@@ -1363,7 +1397,7 @@ class _$RoomSummaryModelCopyWithImpl<$Res>
 /// Create a copy of RoomSummaryModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? name = freezed,Object? stockCode = freezed,Object? lastMessageAt = freezed,Object? lastMessagePreview = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageStatus = freezed,Object? createdAt = null,Object? myRole = freezed,Object? muted = null,Object? lastReadAt = null,Object? unreadCount = null,Object? memberCount = null,Object? otherUserId = freezed,Object? otherUsername = freezed,Object? otherDisplayName = freezed,Object? otherAvatarUrl = freezed,Object? otherIsVerified = null,Object? cursor = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? onlyAdminsSend = freezed,Object? onlyAdminsEdit = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(RoomSummaryModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,name: freezed == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
@@ -1570,16 +1604,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoomSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.name, name) || other.name == name)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageSenderId, lastMessageSenderId) || other.lastMessageSenderId == lastMessageSenderId)&&(identical(other.lastMessageStatus, lastMessageStatus) || other.lastMessageStatus == lastMessageStatus)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.myRole, myRole) || other.myRole == myRole)&&(identical(other.muted, muted) || other.muted == muted)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.otherUserId, otherUserId) || other.otherUserId == otherUserId)&&(identical(other.otherUsername, otherUsername) || other.otherUsername == otherUsername)&&(identical(other.otherDisplayName, otherDisplayName) || other.otherDisplayName == otherDisplayName)&&(identical(other.otherAvatarUrl, otherAvatarUrl) || other.otherAvatarUrl == otherAvatarUrl)&&(identical(other.otherIsVerified, otherIsVerified) || other.otherIsVerified == otherIsVerified)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.onlyAdminsSend, onlyAdminsSend) || other.onlyAdminsSend == onlyAdminsSend)&&(identical(other.onlyAdminsEdit, onlyAdminsEdit) || other.onlyAdminsEdit == onlyAdminsEdit));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoomSummaryModel&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.name, name) || other.name == name)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageSenderId, lastMessageSenderId) || other.lastMessageSenderId == lastMessageSenderId)&&(identical(other.lastMessageStatus, lastMessageStatus) || other.lastMessageStatus == lastMessageStatus)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.myRole, myRole) || other.myRole == myRole)&&(identical(other.muted, muted) || other.muted == muted)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.otherUserId, otherUserId) || other.otherUserId == otherUserId)&&(identical(other.otherUsername, otherUsername) || other.otherUsername == otherUsername)&&(identical(other.otherDisplayName, otherDisplayName) || other.otherDisplayName == otherDisplayName)&&(identical(other.otherAvatarUrl, otherAvatarUrl) || other.otherAvatarUrl == otherAvatarUrl)&&(identical(other.otherIsVerified, otherIsVerified) || other.otherIsVerified == otherIsVerified)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.onlyAdminsSend, onlyAdminsSend) || other.onlyAdminsSend == onlyAdminsSend)&&(identical(other.onlyAdminsEdit, onlyAdminsEdit) || other.onlyAdminsEdit == onlyAdminsEdit));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,type,name,stockCode,lastMessageAt,lastMessagePreview,lastMessageSenderId,lastMessageStatus,createdAt,myRole,muted,lastReadAt,unreadCount,memberCount,otherUserId,otherUsername,otherDisplayName,otherAvatarUrl,otherIsVerified,cursor,description,avatarUrl,onlyAdminsSend,onlyAdminsEdit]);
+int get hashCode {
+    return Object.hashAll([runtimeType,id,type,name,stockCode,lastMessageAt,lastMessagePreview,lastMessageSenderId,lastMessageStatus,createdAt,myRole,muted,lastReadAt,unreadCount,memberCount,otherUserId,otherUsername,otherDisplayName,otherAvatarUrl,otherIsVerified,cursor,description,avatarUrl,onlyAdminsSend,onlyAdminsEdit]);
+}
 
 @override
 String toString() {
-  return 'RoomSummaryModel(id: $id, type: $type, name: $name, stockCode: $stockCode, lastMessageAt: $lastMessageAt, lastMessagePreview: $lastMessagePreview, lastMessageSenderId: $lastMessageSenderId, lastMessageStatus: $lastMessageStatus, createdAt: $createdAt, myRole: $myRole, muted: $muted, lastReadAt: $lastReadAt, unreadCount: $unreadCount, memberCount: $memberCount, otherUserId: $otherUserId, otherUsername: $otherUsername, otherDisplayName: $otherDisplayName, otherAvatarUrl: $otherAvatarUrl, otherIsVerified: $otherIsVerified, cursor: $cursor, description: $description, avatarUrl: $avatarUrl, onlyAdminsSend: $onlyAdminsSend, onlyAdminsEdit: $onlyAdminsEdit)';
+    return 'RoomSummaryModel(id: $id, type: $type, name: $name, stockCode: $stockCode, lastMessageAt: $lastMessageAt, lastMessagePreview: $lastMessagePreview, lastMessageSenderId: $lastMessageSenderId, lastMessageStatus: $lastMessageStatus, createdAt: $createdAt, myRole: $myRole, muted: $muted, lastReadAt: $lastReadAt, unreadCount: $unreadCount, memberCount: $memberCount, otherUserId: $otherUserId, otherUsername: $otherUsername, otherDisplayName: $otherDisplayName, otherAvatarUrl: $otherAvatarUrl, otherIsVerified: $otherIsVerified, cursor: $cursor, description: $description, avatarUrl: $avatarUrl, onlyAdminsSend: $onlyAdminsSend, onlyAdminsEdit: $onlyAdminsEdit)';
 }
 
 
@@ -1657,16 +1693,21 @@ $RoomMemberModelCopyWith<RoomMemberModel> get copyWith => _$RoomMemberModelCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoomMemberModel&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.role, role) || other.role == role)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.lastDeliveredAt, lastDeliveredAt) || other.lastDeliveredAt == lastDeliveredAt)&&(identical(other.joinedAt, joinedAt) || other.joinedAt == joinedAt));
+  final _this = this as RoomMemberModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RoomMemberModel&&(identical(other.userId, _this.userId) || other.userId == _this.userId)&&(identical(other.username, _this.username) || other.username == _this.username)&&(identical(other.displayName, _this.displayName) || other.displayName == _this.displayName)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl)&&(identical(other.isVerified, _this.isVerified) || other.isVerified == _this.isVerified)&&(identical(other.role, _this.role) || other.role == _this.role)&&(identical(other.lastReadAt, _this.lastReadAt) || other.lastReadAt == _this.lastReadAt)&&(identical(other.lastDeliveredAt, _this.lastDeliveredAt) || other.lastDeliveredAt == _this.lastDeliveredAt)&&(identical(other.joinedAt, _this.joinedAt) || other.joinedAt == _this.joinedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userId,username,displayName,avatarUrl,isVerified,role,lastReadAt,lastDeliveredAt,joinedAt);
+int get hashCode {
+  final _this = this as RoomMemberModel;
+  return Object.hash(runtimeType,_this.userId,_this.username,_this.displayName,_this.avatarUrl,_this.isVerified,_this.role,_this.lastReadAt,_this.lastDeliveredAt,_this.joinedAt);
+}
 
 @override
 String toString() {
-  return 'RoomMemberModel(userId: $userId, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified, role: $role, lastReadAt: $lastReadAt, lastDeliveredAt: $lastDeliveredAt, joinedAt: $joinedAt)';
+  final _this = this as RoomMemberModel;
+  return 'RoomMemberModel(userId: ${_this.userId}, username: ${_this.username}, displayName: ${_this.displayName}, avatarUrl: ${_this.avatarUrl}, isVerified: ${_this.isVerified}, role: ${_this.role}, lastReadAt: ${_this.lastReadAt}, lastDeliveredAt: ${_this.lastDeliveredAt}, joinedAt: ${_this.joinedAt})';
 }
 
 
@@ -1695,7 +1736,7 @@ class _$RoomMemberModelCopyWithImpl<$Res>
 /// Create a copy of RoomMemberModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? userId = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? isVerified = null,Object? role = freezed,Object? lastReadAt = null,Object? lastDeliveredAt = freezed,Object? joinedAt = null,}) {
-  return _then(_self.copyWith(
+  return _then(RoomMemberModel(
 userId: null == userId ? _self.userId : userId // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
@@ -1872,16 +1913,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoomMemberModel&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.role, role) || other.role == role)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.lastDeliveredAt, lastDeliveredAt) || other.lastDeliveredAt == lastDeliveredAt)&&(identical(other.joinedAt, joinedAt) || other.joinedAt == joinedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RoomMemberModel&&(identical(other.userId, userId) || other.userId == userId)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.role, role) || other.role == role)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.lastDeliveredAt, lastDeliveredAt) || other.lastDeliveredAt == lastDeliveredAt)&&(identical(other.joinedAt, joinedAt) || other.joinedAt == joinedAt));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,userId,username,displayName,avatarUrl,isVerified,role,lastReadAt,lastDeliveredAt,joinedAt);
+int get hashCode {
+    return Object.hash(runtimeType,userId,username,displayName,avatarUrl,isVerified,role,lastReadAt,lastDeliveredAt,joinedAt);
+}
 
 @override
 String toString() {
-  return 'RoomMemberModel(userId: $userId, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified, role: $role, lastReadAt: $lastReadAt, lastDeliveredAt: $lastDeliveredAt, joinedAt: $joinedAt)';
+    return 'RoomMemberModel(userId: $userId, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified, role: $role, lastReadAt: $lastReadAt, lastDeliveredAt: $lastDeliveredAt, joinedAt: $joinedAt)';
 }
 
 

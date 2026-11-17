@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
 const customBadgeBuilders = CommunityBadgeBuilders(label: _pillBadge, count: _countBadge);

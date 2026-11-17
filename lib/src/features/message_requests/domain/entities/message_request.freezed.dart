@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'message_request.dart';
@@ -9,6 +9,7 @@ part of 'message_request.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $MessageRequestCopyWith<MessageRequest> get copyWith => _$MessageRequestCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageRequest&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.sender, sender) || other.sender == sender)&&(identical(other.messageCount, messageCount) || other.messageCount == messageCount)&&(identical(other.hasImage, hasImage) || other.hasImage == hasImage)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  final _this = this as MessageRequest;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageRequest&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId)&&(identical(other.sender, _this.sender) || other.sender == _this.sender)&&(identical(other.messageCount, _this.messageCount) || other.messageCount == _this.messageCount)&&(identical(other.hasImage, _this.hasImage) || other.hasImage == _this.hasImage)&&(identical(other.lastMessagePreview, _this.lastMessagePreview) || other.lastMessagePreview == _this.lastMessagePreview)&&(identical(other.lastMessageAt, _this.lastMessageAt) || other.lastMessageAt == _this.lastMessageAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,roomId,sender,messageCount,hasImage,lastMessagePreview,lastMessageAt,createdAt);
+int get hashCode {
+  final _this = this as MessageRequest;
+  return Object.hash(runtimeType,_this.roomId,_this.sender,_this.messageCount,_this.hasImage,_this.lastMessagePreview,_this.lastMessageAt,_this.createdAt);
+}
 
 @override
 String toString() {
-  return 'MessageRequest(roomId: $roomId, sender: $sender, messageCount: $messageCount, hasImage: $hasImage, lastMessagePreview: $lastMessagePreview, lastMessageAt: $lastMessageAt, createdAt: $createdAt)';
+  final _this = this as MessageRequest;
+  return 'MessageRequest(roomId: ${_this.roomId}, sender: ${_this.sender}, messageCount: ${_this.messageCount}, hasImage: ${_this.hasImage}, lastMessagePreview: ${_this.lastMessagePreview}, lastMessageAt: ${_this.lastMessageAt}, createdAt: ${_this.createdAt})';
 }
 
 
@@ -63,7 +69,7 @@ class _$MessageRequestCopyWithImpl<$Res>
 /// Create a copy of MessageRequest
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? roomId = null,Object? sender = null,Object? messageCount = null,Object? hasImage = null,Object? lastMessagePreview = freezed,Object? lastMessageAt = freezed,Object? createdAt = null,}) {
-  return _then(_self.copyWith(
+  return _then(MessageRequest(
 roomId: null == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String,sender: null == sender ? _self.sender : sender // ignore: cast_nullable_to_non_nullable
 as UserSummary,messageCount: null == messageCount ? _self.messageCount : messageCount // ignore: cast_nullable_to_non_nullable
@@ -242,16 +248,18 @@ _$MessageRequestCopyWith<_MessageRequest> get copyWith => __$MessageRequestCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageRequest&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.sender, sender) || other.sender == sender)&&(identical(other.messageCount, messageCount) || other.messageCount == messageCount)&&(identical(other.hasImage, hasImage) || other.hasImage == hasImage)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageRequest&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.sender, sender) || other.sender == sender)&&(identical(other.messageCount, messageCount) || other.messageCount == messageCount)&&(identical(other.hasImage, hasImage) || other.hasImage == hasImage)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,roomId,sender,messageCount,hasImage,lastMessagePreview,lastMessageAt,createdAt);
+int get hashCode {
+    return Object.hash(runtimeType,roomId,sender,messageCount,hasImage,lastMessagePreview,lastMessageAt,createdAt);
+}
 
 @override
 String toString() {
-  return 'MessageRequest(roomId: $roomId, sender: $sender, messageCount: $messageCount, hasImage: $hasImage, lastMessagePreview: $lastMessagePreview, lastMessageAt: $lastMessageAt, createdAt: $createdAt)';
+    return 'MessageRequest(roomId: $roomId, sender: $sender, messageCount: $messageCount, hasImage: $hasImage, lastMessagePreview: $lastMessagePreview, lastMessageAt: $lastMessageAt, createdAt: $createdAt)';
 }
 
 
@@ -318,16 +326,21 @@ $DmRequestStateCopyWith<DmRequestState> get copyWith => _$DmRequestStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DmRequestState&&(identical(other.isRequest, isRequest) || other.isRequest == isRequest)&&(identical(other.role, role) || other.role == role)&&(identical(other.declined, declined) || other.declined == declined)&&(identical(other.sent, sent) || other.sent == sent)&&(identical(other.maxMessages, maxMessages) || other.maxMessages == maxMessages));
+  final _this = this as DmRequestState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DmRequestState&&(identical(other.isRequest, _this.isRequest) || other.isRequest == _this.isRequest)&&(identical(other.role, _this.role) || other.role == _this.role)&&(identical(other.declined, _this.declined) || other.declined == _this.declined)&&(identical(other.sent, _this.sent) || other.sent == _this.sent)&&(identical(other.maxMessages, _this.maxMessages) || other.maxMessages == _this.maxMessages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isRequest,role,declined,sent,maxMessages);
+int get hashCode {
+  final _this = this as DmRequestState;
+  return Object.hash(runtimeType,_this.isRequest,_this.role,_this.declined,_this.sent,_this.maxMessages);
+}
 
 @override
 String toString() {
-  return 'DmRequestState(isRequest: $isRequest, role: $role, declined: $declined, sent: $sent, maxMessages: $maxMessages)';
+  final _this = this as DmRequestState;
+  return 'DmRequestState(isRequest: ${_this.isRequest}, role: ${_this.role}, declined: ${_this.declined}, sent: ${_this.sent}, maxMessages: ${_this.maxMessages})';
 }
 
 
@@ -356,7 +369,7 @@ class _$DmRequestStateCopyWithImpl<$Res>
 /// Create a copy of DmRequestState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? isRequest = null,Object? role = freezed,Object? declined = null,Object? sent = null,Object? maxMessages = null,}) {
-  return _then(_self.copyWith(
+  return _then(DmRequestState(
 isRequest: null == isRequest ? _self.isRequest : isRequest // ignore: cast_nullable_to_non_nullable
 as bool,role: freezed == role ? _self.role : role // ignore: cast_nullable_to_non_nullable
 as DmRequestRole?,declined: null == declined ? _self.declined : declined // ignore: cast_nullable_to_non_nullable
@@ -522,16 +535,18 @@ _$DmRequestStateCopyWith<_DmRequestState> get copyWith => __$DmRequestStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DmRequestState&&(identical(other.isRequest, isRequest) || other.isRequest == isRequest)&&(identical(other.role, role) || other.role == role)&&(identical(other.declined, declined) || other.declined == declined)&&(identical(other.sent, sent) || other.sent == sent)&&(identical(other.maxMessages, maxMessages) || other.maxMessages == maxMessages));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DmRequestState&&(identical(other.isRequest, isRequest) || other.isRequest == isRequest)&&(identical(other.role, role) || other.role == role)&&(identical(other.declined, declined) || other.declined == declined)&&(identical(other.sent, sent) || other.sent == sent)&&(identical(other.maxMessages, maxMessages) || other.maxMessages == maxMessages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,isRequest,role,declined,sent,maxMessages);
+int get hashCode {
+    return Object.hash(runtimeType,isRequest,role,declined,sent,maxMessages);
+}
 
 @override
 String toString() {
-  return 'DmRequestState(isRequest: $isRequest, role: $role, declined: $declined, sent: $sent, maxMessages: $maxMessages)';
+    return 'DmRequestState(isRequest: $isRequest, role: $role, declined: $declined, sent: $sent, maxMessages: $maxMessages)';
 }
 
 
@@ -587,16 +602,21 @@ $DmPolicySettingsCopyWith<DmPolicySettings> get copyWith => _$DmPolicySettingsCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DmPolicySettings&&(identical(other.policy, policy) || other.policy == policy)&&(identical(other.requestMaxMessages, requestMaxMessages) || other.requestMaxMessages == requestMaxMessages));
+  final _this = this as DmPolicySettings;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DmPolicySettings&&(identical(other.policy, _this.policy) || other.policy == _this.policy)&&(identical(other.requestMaxMessages, _this.requestMaxMessages) || other.requestMaxMessages == _this.requestMaxMessages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,policy,requestMaxMessages);
+int get hashCode {
+  final _this = this as DmPolicySettings;
+  return Object.hash(runtimeType,_this.policy,_this.requestMaxMessages);
+}
 
 @override
 String toString() {
-  return 'DmPolicySettings(policy: $policy, requestMaxMessages: $requestMaxMessages)';
+  final _this = this as DmPolicySettings;
+  return 'DmPolicySettings(policy: ${_this.policy}, requestMaxMessages: ${_this.requestMaxMessages})';
 }
 
 
@@ -625,7 +645,7 @@ class _$DmPolicySettingsCopyWithImpl<$Res>
 /// Create a copy of DmPolicySettings
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? policy = null,Object? requestMaxMessages = null,}) {
-  return _then(_self.copyWith(
+  return _then(DmPolicySettings(
 policy: null == policy ? _self.policy : policy // ignore: cast_nullable_to_non_nullable
 as DmPolicy,requestMaxMessages: null == requestMaxMessages ? _self.requestMaxMessages : requestMaxMessages // ignore: cast_nullable_to_non_nullable
 as int,
@@ -785,16 +805,18 @@ _$DmPolicySettingsCopyWith<_DmPolicySettings> get copyWith => __$DmPolicySetting
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DmPolicySettings&&(identical(other.policy, policy) || other.policy == policy)&&(identical(other.requestMaxMessages, requestMaxMessages) || other.requestMaxMessages == requestMaxMessages));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DmPolicySettings&&(identical(other.policy, policy) || other.policy == policy)&&(identical(other.requestMaxMessages, requestMaxMessages) || other.requestMaxMessages == requestMaxMessages));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,policy,requestMaxMessages);
+int get hashCode {
+    return Object.hash(runtimeType,policy,requestMaxMessages);
+}
 
 @override
 String toString() {
-  return 'DmPolicySettings(policy: $policy, requestMaxMessages: $requestMaxMessages)';
+    return 'DmPolicySettings(policy: $policy, requestMaxMessages: $requestMaxMessages)';
 }
 
 

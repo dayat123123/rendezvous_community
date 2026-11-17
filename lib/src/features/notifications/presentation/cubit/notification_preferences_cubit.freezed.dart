@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'notification_preferences_cubit.dart';
@@ -9,6 +9,7 @@ part of 'notification_preferences_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $NotificationPreferencesStateCopyWith<NotificationPreferencesState> get copyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPreferencesState&&(identical(other.status, status) || other.status == status)&&(identical(other.preferences, preferences) || other.preferences == preferences)&&(identical(other.saving, saving) || other.saving == saving)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as NotificationPreferencesState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPreferencesState&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.preferences, _this.preferences) || other.preferences == _this.preferences)&&(identical(other.saving, _this.saving) || other.saving == _this.saving)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,preferences,saving,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as NotificationPreferencesState;
+  return Object.hash(runtimeType,_this.status,_this.preferences,_this.saving,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'NotificationPreferencesState(status: $status, preferences: $preferences, saving: $saving, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as NotificationPreferencesState;
+  return 'NotificationPreferencesState(status: ${_this.status}, preferences: ${_this.preferences}, saving: ${_this.saving}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$NotificationPreferencesStateCopyWithImpl<$Res>
 /// Create a copy of NotificationPreferencesState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? preferences = null,Object? saving = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(NotificationPreferencesState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,preferences: null == preferences ? _self.preferences : preferences // ignore: cast_nullable_to_non_nullable
 as NotificationPreferences,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
@@ -238,16 +244,18 @@ _$NotificationPreferencesStateCopyWith<_NotificationPreferencesState> get copyWi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationPreferencesState&&(identical(other.status, status) || other.status == status)&&(identical(other.preferences, preferences) || other.preferences == preferences)&&(identical(other.saving, saving) || other.saving == saving)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationPreferencesState&&(identical(other.status, status) || other.status == status)&&(identical(other.preferences, preferences) || other.preferences == preferences)&&(identical(other.saving, saving) || other.saving == saving)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,preferences,saving,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,preferences,saving,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'NotificationPreferencesState(status: $status, preferences: $preferences, saving: $saving, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'NotificationPreferencesState(status: $status, preferences: $preferences, saving: $saving, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

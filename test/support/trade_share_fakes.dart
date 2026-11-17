@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
 import 'fakes.dart';
@@ -309,7 +309,7 @@ Future<void> pumpTradeApp(
   await tester.pumpWidget(
     MaterialApp(
       locale: locale,
-      localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+      localizationsDelegates: communityLocalizationsDelegates,
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: Scaffold(
         body: CommunityScope(dependencies: dependencies ?? FakeDependencies(), child: body),

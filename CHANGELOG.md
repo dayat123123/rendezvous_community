@@ -1,3 +1,11 @@
+## 1.30.0
+
+Tidak butuh migrasi server. **Breaking:** library kini memakai `package:material_ui` (Flutter >= 3.47.0), bukan `package:flutter/material.dart` yang sudah deprecated.
+
+* **Migrasi ke `material_ui`:** semua widget, tema (`CommunityStyle`, `CommunityTheme` sebagai `ThemeExtension`), dan API publik yang menerima `ThemeData`, `InputDecoration`, atau tipe Material lain kini memakai tipe dari `material_ui`. Host harus ikut pindah ke `material_ui`; mencampur keduanya membuat tipe tidak cocok dan widget tidak mendapat tema host.
+* **`communityLocalizationsDelegates`:** daftar delegate baru berisi `CommunityLocalizations.localizationsDelegates` ditambah `GlobalMaterialLocalizations.delegates` dari `material_ui`. Delegate hasil `gen-l10n` masih menyediakan `MaterialLocalizations` versi lama, sehingga tanpa daftar ini widget `material_ui` gagal dengan "No MaterialLocalizations found" untuk locale `id`. Pakai `communityLocalizationsDelegates` sebagai pengganti `CommunityLocalizations.localizationsDelegates` di `MaterialApp`.
+* **Dev dependency:** `analyzer ^14.3.0`, `freezed ^4.0.3`, `drift_dev ^2.35.3`, `build_runner ^2.17.1` agar `pub get` berhasil di Flutter 3.50. Kode generated dibuat ulang.
+
 ## 1.29.0
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

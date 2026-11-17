@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'account_settings_cubit.dart';
@@ -9,6 +9,7 @@ part of 'account_settings_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $AccountSettingsStateCopyWith<AccountSettingsState> get copyWith => _$AccountSet
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountSettingsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.documents, documents)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.exporting, exporting) || other.exporting == exporting)&&(identical(other.deleting, deleting) || other.deleting == deleting)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.failedAction, failedAction) || other.failedAction == failedAction)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as AccountSettingsState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountSettingsState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.documents, _this.documents)&&const DeepCollectionEquality().equals(other.error, _this.error)&&(identical(other.exporting, _this.exporting) || other.exporting == _this.exporting)&&(identical(other.deleting, _this.deleting) || other.deleting == _this.deleting)&&(identical(other.deleted, _this.deleted) || other.deleted == _this.deleted)&&(identical(other.failedAction, _this.failedAction) || other.failedAction == _this.failedAction)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(documents),const DeepCollectionEquality().hash(error),exporting,deleting,deleted,failedAction,const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as AccountSettingsState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.documents),const DeepCollectionEquality().hash(_this.error),_this.exporting,_this.deleting,_this.deleted,_this.failedAction,const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'AccountSettingsState(status: $status, documents: $documents, error: $error, exporting: $exporting, deleting: $deleting, deleted: $deleted, failedAction: $failedAction, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as AccountSettingsState;
+  return 'AccountSettingsState(status: ${_this.status}, documents: ${_this.documents}, error: ${_this.error}, exporting: ${_this.exporting}, deleting: ${_this.deleting}, deleted: ${_this.deleted}, failedAction: ${_this.failedAction}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$AccountSettingsStateCopyWithImpl<$Res>
 /// Create a copy of AccountSettingsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? documents = null,Object? error = freezed,Object? exporting = null,Object? deleting = null,Object? deleted = null,Object? failedAction = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(AccountSettingsState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,documents: null == documents ? _self.documents : documents // ignore: cast_nullable_to_non_nullable
 as List<LegalDocument>,error: freezed == error ? _self.error : error ,exporting: null == exporting ? _self.exporting : exporting // ignore: cast_nullable_to_non_nullable
@@ -212,7 +218,7 @@ return $default(_that.status,_that.documents,_that.error,_that.exporting,_that.d
 
 
 class _AccountSettingsState implements AccountSettingsState {
-  const _AccountSettingsState({this.status = LoadStatus.initial, final  List<LegalDocument> documents = const <LegalDocument>[], this.error, this.exporting = false, this.deleting = false, this.deleted = false, this.failedAction, this.actionError, this.actionErrorId = 0}): _documents = documents;
+  const _AccountSettingsState({this.status = LoadStatus.initial,  List<LegalDocument> documents = const <LegalDocument>[], this.error, this.exporting = false, this.deleting = false, this.deleted = false, this.failedAction, this.actionError, this.actionErrorId = 0}): _documents = documents;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -241,16 +247,18 @@ _$AccountSettingsStateCopyWith<_AccountSettingsState> get copyWith => __$Account
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountSettingsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._documents, _documents)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.exporting, exporting) || other.exporting == exporting)&&(identical(other.deleting, deleting) || other.deleting == deleting)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.failedAction, failedAction) || other.failedAction == failedAction)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountSettingsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.documents, _documents)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.exporting, exporting) || other.exporting == exporting)&&(identical(other.deleting, deleting) || other.deleting == deleting)&&(identical(other.deleted, deleted) || other.deleted == deleted)&&(identical(other.failedAction, failedAction) || other.failedAction == failedAction)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_documents),const DeepCollectionEquality().hash(error),exporting,deleting,deleted,failedAction,const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_documents),const DeepCollectionEquality().hash(error),exporting,deleting,deleted,failedAction,const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'AccountSettingsState(status: $status, documents: $documents, error: $error, exporting: $exporting, deleting: $deleting, deleted: $deleted, failedAction: $failedAction, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'AccountSettingsState(status: $status, documents: $documents, error: $error, exporting: $exporting, deleting: $deleting, deleted: $deleted, failedAction: $failedAction, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

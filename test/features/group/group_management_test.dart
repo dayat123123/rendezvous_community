@@ -1,7 +1,7 @@
 import 'dart:typed_data';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/core/network/media_gateway.dart';

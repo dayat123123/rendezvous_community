@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'message_extras.dart';
@@ -9,6 +9,7 @@ part of 'message_extras.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $MessageReactionCopyWith<MessageReaction> get copyWith => _$MessageReactionCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageReaction&&(identical(other.emoji, emoji) || other.emoji == emoji)&&(identical(other.count, count) || other.count == count)&&(identical(other.mine, mine) || other.mine == mine));
+  final _this = this as MessageReaction;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MessageReaction&&(identical(other.emoji, _this.emoji) || other.emoji == _this.emoji)&&(identical(other.count, _this.count) || other.count == _this.count)&&(identical(other.mine, _this.mine) || other.mine == _this.mine));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,emoji,count,mine);
+int get hashCode {
+  final _this = this as MessageReaction;
+  return Object.hash(runtimeType,_this.emoji,_this.count,_this.mine);
+}
 
 @override
 String toString() {
-  return 'MessageReaction(emoji: $emoji, count: $count, mine: $mine)';
+  final _this = this as MessageReaction;
+  return 'MessageReaction(emoji: ${_this.emoji}, count: ${_this.count}, mine: ${_this.mine})';
 }
 
 
@@ -63,7 +69,7 @@ class _$MessageReactionCopyWithImpl<$Res>
 /// Create a copy of MessageReaction
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? emoji = null,Object? count = null,Object? mine = null,}) {
-  return _then(_self.copyWith(
+  return _then(MessageReaction(
 emoji: null == emoji ? _self.emoji : emoji // ignore: cast_nullable_to_non_nullable
 as String,count: null == count ? _self.count : count // ignore: cast_nullable_to_non_nullable
 as int,mine: null == mine ? _self.mine : mine // ignore: cast_nullable_to_non_nullable
@@ -225,16 +231,18 @@ _$MessageReactionCopyWith<_MessageReaction> get copyWith => __$MessageReactionCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageReaction&&(identical(other.emoji, emoji) || other.emoji == emoji)&&(identical(other.count, count) || other.count == count)&&(identical(other.mine, mine) || other.mine == mine));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MessageReaction&&(identical(other.emoji, emoji) || other.emoji == emoji)&&(identical(other.count, count) || other.count == count)&&(identical(other.mine, mine) || other.mine == mine));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,emoji,count,mine);
+int get hashCode {
+    return Object.hash(runtimeType,emoji,count,mine);
+}
 
 @override
 String toString() {
-  return 'MessageReaction(emoji: $emoji, count: $count, mine: $mine)';
+    return 'MessageReaction(emoji: $emoji, count: $count, mine: $mine)';
 }
 
 
@@ -288,16 +296,21 @@ $SharedPostCopyWith<SharedPost> get copyWith => _$SharedPostCopyWithImpl<SharedP
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SharedPost&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.available, available) || other.available == available)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.stockCodes, stockCodes)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+  final _this = this as SharedPost;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SharedPost&&(identical(other.postId, _this.postId) || other.postId == _this.postId)&&(identical(other.available, _this.available) || other.available == _this.available)&&(identical(other.author, _this.author) || other.author == _this.author)&&(identical(other.body, _this.body) || other.body == _this.body)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.sentiment, _this.sentiment) || other.sentiment == _this.sentiment)&&const DeepCollectionEquality().equals(other.stockCodes, _this.stockCodes)&&(identical(other.likeCount, _this.likeCount) || other.likeCount == _this.likeCount)&&(identical(other.commentCount, _this.commentCount) || other.commentCount == _this.commentCount)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,postId,available,author,body,const DeepCollectionEquality().hash(attachments),sentiment,const DeepCollectionEquality().hash(stockCodes),likeCount,commentCount,createdAt);
+int get hashCode {
+  final _this = this as SharedPost;
+  return Object.hash(runtimeType,_this.postId,_this.available,_this.author,_this.body,const DeepCollectionEquality().hash(_this.attachments),_this.sentiment,const DeepCollectionEquality().hash(_this.stockCodes),_this.likeCount,_this.commentCount,_this.createdAt);
+}
 
 @override
 String toString() {
-  return 'SharedPost(postId: $postId, available: $available, author: $author, body: $body, attachments: $attachments, sentiment: $sentiment, stockCodes: $stockCodes, likeCount: $likeCount, commentCount: $commentCount, createdAt: $createdAt)';
+  final _this = this as SharedPost;
+  return 'SharedPost(postId: ${_this.postId}, available: ${_this.available}, author: ${_this.author}, body: ${_this.body}, attachments: ${_this.attachments}, sentiment: ${_this.sentiment}, stockCodes: ${_this.stockCodes}, likeCount: ${_this.likeCount}, commentCount: ${_this.commentCount}, createdAt: ${_this.createdAt})';
 }
 
 
@@ -326,7 +339,7 @@ class _$SharedPostCopyWithImpl<$Res>
 /// Create a copy of SharedPost
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? postId = null,Object? available = null,Object? author = freezed,Object? body = freezed,Object? attachments = null,Object? sentiment = freezed,Object? stockCodes = null,Object? likeCount = null,Object? commentCount = null,Object? createdAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SharedPost(
 postId: null == postId ? _self.postId : postId // ignore: cast_nullable_to_non_nullable
 as String,available: null == available ? _self.available : available // ignore: cast_nullable_to_non_nullable
 as bool,author: freezed == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -490,7 +503,7 @@ return $default(_that.postId,_that.available,_that.author,_that.body,_that.attac
 
 
 class _SharedPost implements SharedPost {
-  const _SharedPost({required this.postId, this.available = true, this.author, this.body, final  List<Attachment> attachments = const <Attachment>[], this.sentiment, final  List<String> stockCodes = const <String>[], this.likeCount = 0, this.commentCount = 0, this.createdAt}): _attachments = attachments,_stockCodes = stockCodes;
+  const _SharedPost({required this.postId, this.available = true, this.author, this.body,  List<Attachment> attachments = const <Attachment>[], this.sentiment,  List<String> stockCodes = const <String>[], this.likeCount = 0, this.commentCount = 0, this.createdAt}): _attachments = attachments,_stockCodes = stockCodes;
   
 
 @override final  String postId;
@@ -526,16 +539,18 @@ _$SharedPostCopyWith<_SharedPost> get copyWith => __$SharedPostCopyWithImpl<_Sha
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SharedPost&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.available, available) || other.available == available)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other._stockCodes, _stockCodes)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SharedPost&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.available, available) || other.available == available)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.stockCodes, _stockCodes)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,postId,available,author,body,const DeepCollectionEquality().hash(_attachments),sentiment,const DeepCollectionEquality().hash(_stockCodes),likeCount,commentCount,createdAt);
+int get hashCode {
+    return Object.hash(runtimeType,postId,available,author,body,const DeepCollectionEquality().hash(_attachments),sentiment,const DeepCollectionEquality().hash(_stockCodes),likeCount,commentCount,createdAt);
+}
 
 @override
 String toString() {
-  return 'SharedPost(postId: $postId, available: $available, author: $author, body: $body, attachments: $attachments, sentiment: $sentiment, stockCodes: $stockCodes, likeCount: $likeCount, commentCount: $commentCount, createdAt: $createdAt)';
+    return 'SharedPost(postId: $postId, available: $available, author: $author, body: $body, attachments: $attachments, sentiment: $sentiment, stockCodes: $stockCodes, likeCount: $likeCount, commentCount: $commentCount, createdAt: $createdAt)';
 }
 
 

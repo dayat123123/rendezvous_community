@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'chat_list_cubit.dart';
@@ -9,6 +9,7 @@ part of 'chat_list_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ChatListStateCopyWith<ChatListState> get copyWith => _$ChatListStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.rooms, rooms)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&const DeepCollectionEquality().equals(other.presence, presence)&&const DeepCollectionEquality().equals(other.typing, typing)&&(identical(other.me, me) || other.me == me)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.stale, stale) || other.stale == stale)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as ChatListState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatListState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.rooms, _this.rooms)&&(identical(other.nextCursor, _this.nextCursor) || other.nextCursor == _this.nextCursor)&&(identical(other.loadingMore, _this.loadingMore) || other.loadingMore == _this.loadingMore)&&const DeepCollectionEquality().equals(other.presence, _this.presence)&&const DeepCollectionEquality().equals(other.typing, _this.typing)&&(identical(other.me, _this.me) || other.me == _this.me)&&const DeepCollectionEquality().equals(other.error, _this.error)&&(identical(other.stale, _this.stale) || other.stale == _this.stale)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(rooms),nextCursor,loadingMore,const DeepCollectionEquality().hash(presence),const DeepCollectionEquality().hash(typing),me,const DeepCollectionEquality().hash(error),stale,const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as ChatListState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.rooms),_this.nextCursor,_this.loadingMore,const DeepCollectionEquality().hash(_this.presence),const DeepCollectionEquality().hash(_this.typing),_this.me,const DeepCollectionEquality().hash(_this.error),_this.stale,const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'ChatListState(status: $status, rooms: $rooms, nextCursor: $nextCursor, loadingMore: $loadingMore, presence: $presence, typing: $typing, me: $me, error: $error, stale: $stale, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as ChatListState;
+  return 'ChatListState(status: ${_this.status}, rooms: ${_this.rooms}, nextCursor: ${_this.nextCursor}, loadingMore: ${_this.loadingMore}, presence: ${_this.presence}, typing: ${_this.typing}, me: ${_this.me}, error: ${_this.error}, stale: ${_this.stale}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ChatListStateCopyWithImpl<$Res>
 /// Create a copy of ChatListState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? rooms = null,Object? nextCursor = freezed,Object? loadingMore = null,Object? presence = null,Object? typing = null,Object? me = freezed,Object? error = freezed,Object? stale = null,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(ChatListState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,rooms: null == rooms ? _self.rooms : rooms // ignore: cast_nullable_to_non_nullable
 as List<ChatRoom>,nextCursor: freezed == nextCursor ? _self.nextCursor : nextCursor // ignore: cast_nullable_to_non_nullable
@@ -226,7 +232,7 @@ return $default(_that.status,_that.rooms,_that.nextCursor,_that.loadingMore,_tha
 
 
 class _ChatListState extends ChatListState {
-  const _ChatListState({this.status = LoadStatus.initial, final  List<ChatRoom> rooms = const <ChatRoom>[], this.nextCursor, this.loadingMore = false, final  Map<String, Set<String>> presence = const <String, Set<String>>{}, final  Map<String, Map<String, UserSummary>> typing = const <String, Map<String, UserSummary>>{}, this.me, this.error, this.stale = false, this.actionError, this.actionErrorId = 0}): _rooms = rooms,_presence = presence,_typing = typing,super._();
+  const _ChatListState({this.status = LoadStatus.initial,  List<ChatRoom> rooms = const <ChatRoom>[], this.nextCursor, this.loadingMore = false,  Map<String, Set<String>> presence = const <String, Set<String>>{},  Map<String, Map<String, UserSummary>> typing = const <String, Map<String, UserSummary>>{}, this.me, this.error, this.stale = false, this.actionError, this.actionErrorId = 0}): _rooms = rooms,_presence = presence,_typing = typing,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -269,16 +275,18 @@ _$ChatListStateCopyWith<_ChatListState> get copyWith => __$ChatListStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._rooms, _rooms)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&const DeepCollectionEquality().equals(other._presence, _presence)&&const DeepCollectionEquality().equals(other._typing, _typing)&&(identical(other.me, me) || other.me == me)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.stale, stale) || other.stale == stale)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatListState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.rooms, _rooms)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&const DeepCollectionEquality().equals(other.presence, _presence)&&const DeepCollectionEquality().equals(other.typing, _typing)&&(identical(other.me, me) || other.me == me)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.stale, stale) || other.stale == stale)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_rooms),nextCursor,loadingMore,const DeepCollectionEquality().hash(_presence),const DeepCollectionEquality().hash(_typing),me,const DeepCollectionEquality().hash(error),stale,const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_rooms),nextCursor,loadingMore,const DeepCollectionEquality().hash(_presence),const DeepCollectionEquality().hash(_typing),me,const DeepCollectionEquality().hash(error),stale,const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'ChatListState(status: $status, rooms: $rooms, nextCursor: $nextCursor, loadingMore: $loadingMore, presence: $presence, typing: $typing, me: $me, error: $error, stale: $stale, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'ChatListState(status: $status, rooms: $rooms, nextCursor: $nextCursor, loadingMore: $loadingMore, presence: $presence, typing: $typing, me: $me, error: $error, stale: $stale, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

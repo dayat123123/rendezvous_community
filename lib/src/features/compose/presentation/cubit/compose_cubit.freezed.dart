@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'compose_cubit.dart';
@@ -9,6 +9,7 @@ part of 'compose_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ComposeStateCopyWith<ComposeState> get copyWith => _$ComposeStateCopyWithImpl<C
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ComposeState&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.uploading, uploading) || other.uploading == uploading)&&(identical(other.submitting, submitting) || other.submitting == submitting)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId)&&(identical(other.draftStatus, draftStatus) || other.draftStatus == draftStatus)&&(identical(other.draftNoticeId, draftNoticeId) || other.draftNoticeId == draftNoticeId)&&(identical(other.restoredBody, restoredBody) || other.restoredBody == restoredBody));
+  final _this = this as ComposeState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ComposeState&&(identical(other.sentiment, _this.sentiment) || other.sentiment == _this.sentiment)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.poll, _this.poll) || other.poll == _this.poll)&&(identical(other.uploading, _this.uploading) || other.uploading == _this.uploading)&&(identical(other.submitting, _this.submitting) || other.submitting == _this.submitting)&&const DeepCollectionEquality().equals(other.error, _this.error)&&(identical(other.errorId, _this.errorId) || other.errorId == _this.errorId)&&(identical(other.draftStatus, _this.draftStatus) || other.draftStatus == _this.draftStatus)&&(identical(other.draftNoticeId, _this.draftNoticeId) || other.draftNoticeId == _this.draftNoticeId)&&(identical(other.restoredBody, _this.restoredBody) || other.restoredBody == _this.restoredBody));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,sentiment,const DeepCollectionEquality().hash(attachments),poll,uploading,submitting,const DeepCollectionEquality().hash(error),errorId,draftStatus,draftNoticeId,restoredBody);
+int get hashCode {
+  final _this = this as ComposeState;
+  return Object.hash(runtimeType,_this.sentiment,const DeepCollectionEquality().hash(_this.attachments),_this.poll,_this.uploading,_this.submitting,const DeepCollectionEquality().hash(_this.error),_this.errorId,_this.draftStatus,_this.draftNoticeId,_this.restoredBody);
+}
 
 @override
 String toString() {
-  return 'ComposeState(sentiment: $sentiment, attachments: $attachments, poll: $poll, uploading: $uploading, submitting: $submitting, error: $error, errorId: $errorId, draftStatus: $draftStatus, draftNoticeId: $draftNoticeId, restoredBody: $restoredBody)';
+  final _this = this as ComposeState;
+  return 'ComposeState(sentiment: ${_this.sentiment}, attachments: ${_this.attachments}, poll: ${_this.poll}, uploading: ${_this.uploading}, submitting: ${_this.submitting}, error: ${_this.error}, errorId: ${_this.errorId}, draftStatus: ${_this.draftStatus}, draftNoticeId: ${_this.draftNoticeId}, restoredBody: ${_this.restoredBody})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ComposeStateCopyWithImpl<$Res>
 /// Create a copy of ComposeState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? sentiment = freezed,Object? attachments = null,Object? poll = freezed,Object? uploading = null,Object? submitting = null,Object? error = freezed,Object? errorId = null,Object? draftStatus = freezed,Object? draftNoticeId = null,Object? restoredBody = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ComposeState(
 sentiment: freezed == sentiment ? _self.sentiment : sentiment // ignore: cast_nullable_to_non_nullable
 as Sentiment?,attachments: null == attachments ? _self.attachments : attachments // ignore: cast_nullable_to_non_nullable
 as List<Attachment>,poll: freezed == poll ? _self.poll : poll // ignore: cast_nullable_to_non_nullable
@@ -226,7 +232,7 @@ return $default(_that.sentiment,_that.attachments,_that.poll,_that.uploading,_th
 
 
 class _ComposeState extends ComposeState {
-  const _ComposeState({this.sentiment, final  List<Attachment> attachments = const <Attachment>[], this.poll, this.uploading = false, this.submitting = false, this.error, this.errorId = 0, this.draftStatus, this.draftNoticeId = 0, this.restoredBody}): _attachments = attachments,super._();
+  const _ComposeState({this.sentiment,  List<Attachment> attachments = const <Attachment>[], this.poll, this.uploading = false, this.submitting = false, this.error, this.errorId = 0, this.draftStatus, this.draftNoticeId = 0, this.restoredBody}): _attachments = attachments,super._();
   
 
 @override final  Sentiment? sentiment;
@@ -256,16 +262,18 @@ _$ComposeStateCopyWith<_ComposeState> get copyWith => __$ComposeStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ComposeState&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.uploading, uploading) || other.uploading == uploading)&&(identical(other.submitting, submitting) || other.submitting == submitting)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId)&&(identical(other.draftStatus, draftStatus) || other.draftStatus == draftStatus)&&(identical(other.draftNoticeId, draftNoticeId) || other.draftNoticeId == draftNoticeId)&&(identical(other.restoredBody, restoredBody) || other.restoredBody == restoredBody));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ComposeState&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.uploading, uploading) || other.uploading == uploading)&&(identical(other.submitting, submitting) || other.submitting == submitting)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId)&&(identical(other.draftStatus, draftStatus) || other.draftStatus == draftStatus)&&(identical(other.draftNoticeId, draftNoticeId) || other.draftNoticeId == draftNoticeId)&&(identical(other.restoredBody, restoredBody) || other.restoredBody == restoredBody));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,sentiment,const DeepCollectionEquality().hash(_attachments),poll,uploading,submitting,const DeepCollectionEquality().hash(error),errorId,draftStatus,draftNoticeId,restoredBody);
+int get hashCode {
+    return Object.hash(runtimeType,sentiment,const DeepCollectionEquality().hash(_attachments),poll,uploading,submitting,const DeepCollectionEquality().hash(error),errorId,draftStatus,draftNoticeId,restoredBody);
+}
 
 @override
 String toString() {
-  return 'ComposeState(sentiment: $sentiment, attachments: $attachments, poll: $poll, uploading: $uploading, submitting: $submitting, error: $error, errorId: $errorId, draftStatus: $draftStatus, draftNoticeId: $draftNoticeId, restoredBody: $restoredBody)';
+    return 'ComposeState(sentiment: $sentiment, attachments: $attachments, poll: $poll, uploading: $uploading, submitting: $submitting, error: $error, errorId: $errorId, draftStatus: $draftStatus, draftNoticeId: $draftNoticeId, restoredBody: $restoredBody)';
 }
 
 

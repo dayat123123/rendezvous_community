@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'comment_thread_cubit.dart';
@@ -9,6 +9,7 @@ part of 'comment_thread_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -24,23 +25,29 @@ $ThreadStateCopyWith<ThreadState> get copyWith => _$ThreadStateCopyWithImpl<Thre
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  final _this = this as ThreadState;
   properties
     ..add(DiagnosticsProperty('type', 'ThreadState'))
-    ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('post', post))..add(DiagnosticsProperty('root', root))..add(DiagnosticsProperty('comments', comments))..add(DiagnosticsProperty('children', children))..add(DiagnosticsProperty('topCursor', topCursor))..add(DiagnosticsProperty('hasMoreTop', hasMoreTop))..add(DiagnosticsProperty('collapsed', collapsed))..add(DiagnosticsProperty('loadingBranches', loadingBranches))..add(DiagnosticsProperty('replyTo', replyTo))..add(DiagnosticsProperty('sending', sending))..add(DiagnosticsProperty('error', error))..add(DiagnosticsProperty('actionError', actionError))..add(DiagnosticsProperty('actionErrorId', actionErrorId))..add(DiagnosticsProperty('sort', sort))..add(DiagnosticsProperty('sortSupported', sortSupported))..add(DiagnosticsProperty('topOffset', topOffset));
+    ..add(DiagnosticsProperty('status', _this.status))..add(DiagnosticsProperty('post', _this.post))..add(DiagnosticsProperty('root', _this.root))..add(DiagnosticsProperty('comments', _this.comments))..add(DiagnosticsProperty('children', _this.children))..add(DiagnosticsProperty('topCursor', _this.topCursor))..add(DiagnosticsProperty('hasMoreTop', _this.hasMoreTop))..add(DiagnosticsProperty('collapsed', _this.collapsed))..add(DiagnosticsProperty('loadingBranches', _this.loadingBranches))..add(DiagnosticsProperty('replyTo', _this.replyTo))..add(DiagnosticsProperty('sending', _this.sending))..add(DiagnosticsProperty('error', _this.error))..add(DiagnosticsProperty('actionError', _this.actionError))..add(DiagnosticsProperty('actionErrorId', _this.actionErrorId))..add(DiagnosticsProperty('sort', _this.sort))..add(DiagnosticsProperty('sortSupported', _this.sortSupported))..add(DiagnosticsProperty('topOffset', _this.topOffset));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThreadState&&(identical(other.status, status) || other.status == status)&&(identical(other.post, post) || other.post == post)&&(identical(other.root, root) || other.root == root)&&const DeepCollectionEquality().equals(other.comments, comments)&&const DeepCollectionEquality().equals(other.children, children)&&(identical(other.topCursor, topCursor) || other.topCursor == topCursor)&&(identical(other.hasMoreTop, hasMoreTop) || other.hasMoreTop == hasMoreTop)&&const DeepCollectionEquality().equals(other.collapsed, collapsed)&&const DeepCollectionEquality().equals(other.loadingBranches, loadingBranches)&&(identical(other.replyTo, replyTo) || other.replyTo == replyTo)&&(identical(other.sending, sending) || other.sending == sending)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.sort, sort) || other.sort == sort)&&(identical(other.sortSupported, sortSupported) || other.sortSupported == sortSupported)&&(identical(other.topOffset, topOffset) || other.topOffset == topOffset));
+  final _this = this as ThreadState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThreadState&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.post, _this.post) || other.post == _this.post)&&(identical(other.root, _this.root) || other.root == _this.root)&&const DeepCollectionEquality().equals(other.comments, _this.comments)&&const DeepCollectionEquality().equals(other.children, _this.children)&&(identical(other.topCursor, _this.topCursor) || other.topCursor == _this.topCursor)&&(identical(other.hasMoreTop, _this.hasMoreTop) || other.hasMoreTop == _this.hasMoreTop)&&const DeepCollectionEquality().equals(other.collapsed, _this.collapsed)&&const DeepCollectionEquality().equals(other.loadingBranches, _this.loadingBranches)&&(identical(other.replyTo, _this.replyTo) || other.replyTo == _this.replyTo)&&(identical(other.sending, _this.sending) || other.sending == _this.sending)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId)&&(identical(other.sort, _this.sort) || other.sort == _this.sort)&&(identical(other.sortSupported, _this.sortSupported) || other.sortSupported == _this.sortSupported)&&(identical(other.topOffset, _this.topOffset) || other.topOffset == _this.topOffset));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,post,root,const DeepCollectionEquality().hash(comments),const DeepCollectionEquality().hash(children),topCursor,hasMoreTop,const DeepCollectionEquality().hash(collapsed),const DeepCollectionEquality().hash(loadingBranches),replyTo,sending,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,sort,sortSupported,topOffset);
+int get hashCode {
+  final _this = this as ThreadState;
+  return Object.hash(runtimeType,_this.status,_this.post,_this.root,const DeepCollectionEquality().hash(_this.comments),const DeepCollectionEquality().hash(_this.children),_this.topCursor,_this.hasMoreTop,const DeepCollectionEquality().hash(_this.collapsed),const DeepCollectionEquality().hash(_this.loadingBranches),_this.replyTo,_this.sending,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId,_this.sort,_this.sortSupported,_this.topOffset);
+}
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'ThreadState(status: $status, post: $post, root: $root, comments: $comments, children: $children, topCursor: $topCursor, hasMoreTop: $hasMoreTop, collapsed: $collapsed, loadingBranches: $loadingBranches, replyTo: $replyTo, sending: $sending, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, sort: $sort, sortSupported: $sortSupported, topOffset: $topOffset)';
+  final _this = this as ThreadState;
+  return 'ThreadState(status: ${_this.status}, post: ${_this.post}, root: ${_this.root}, comments: ${_this.comments}, children: ${_this.children}, topCursor: ${_this.topCursor}, hasMoreTop: ${_this.hasMoreTop}, collapsed: ${_this.collapsed}, loadingBranches: ${_this.loadingBranches}, replyTo: ${_this.replyTo}, sending: ${_this.sending}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId}, sort: ${_this.sort}, sortSupported: ${_this.sortSupported}, topOffset: ${_this.topOffset})';
 }
 
 
@@ -69,7 +76,7 @@ class _$ThreadStateCopyWithImpl<$Res>
 /// Create a copy of ThreadState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? post = freezed,Object? root = freezed,Object? comments = null,Object? children = null,Object? topCursor = freezed,Object? hasMoreTop = null,Object? collapsed = null,Object? loadingBranches = null,Object? replyTo = freezed,Object? sending = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? sort = null,Object? sortSupported = null,Object? topOffset = null,}) {
-  return _then(_self.copyWith(
+  return _then(ThreadState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,post: freezed == post ? _self.post : post // ignore: cast_nullable_to_non_nullable
 as Post?,root: freezed == root ? _self.root : root // ignore: cast_nullable_to_non_nullable
@@ -262,7 +269,7 @@ return $default(_that.status,_that.post,_that.root,_that.comments,_that.children
 
 
 class _ThreadState extends ThreadState with DiagnosticableTreeMixin {
-  const _ThreadState({this.status = LoadStatus.initial, this.post, this.root, final  Map<String, ThreadComment> comments = const <String, ThreadComment>{}, final  Map<String, List<String>> children = const <String, List<String>>{}, this.topCursor, this.hasMoreTop = false, final  Set<String> collapsed = const <String>{}, final  Set<String> loadingBranches = const <String>{}, this.replyTo, this.sending = false, this.error, this.actionError, this.actionErrorId = 0, this.sort = CommunityCommentSort.oldest, this.sortSupported = true, this.topOffset = 0}): _comments = comments,_children = children,_collapsed = collapsed,_loadingBranches = loadingBranches,super._();
+  const _ThreadState({this.status = LoadStatus.initial, this.post, this.root,  Map<String, ThreadComment> comments = const <String, ThreadComment>{},  Map<String, List<String>> children = const <String, List<String>>{}, this.topCursor, this.hasMoreTop = false,  Set<String> collapsed = const <String>{},  Set<String> loadingBranches = const <String>{}, this.replyTo, this.sending = false, this.error, this.actionError, this.actionErrorId = 0, this.sort = CommunityCommentSort.oldest, this.sortSupported = true, this.topOffset = 0}): _comments = comments,_children = children,_collapsed = collapsed,_loadingBranches = loadingBranches,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -316,23 +323,25 @@ _$ThreadStateCopyWith<_ThreadState> get copyWith => __$ThreadStateCopyWithImpl<_
 
 @override
 void debugFillProperties(DiagnosticPropertiesBuilder properties) {
-  properties
+    properties
     ..add(DiagnosticsProperty('type', 'ThreadState'))
     ..add(DiagnosticsProperty('status', status))..add(DiagnosticsProperty('post', post))..add(DiagnosticsProperty('root', root))..add(DiagnosticsProperty('comments', comments))..add(DiagnosticsProperty('children', children))..add(DiagnosticsProperty('topCursor', topCursor))..add(DiagnosticsProperty('hasMoreTop', hasMoreTop))..add(DiagnosticsProperty('collapsed', collapsed))..add(DiagnosticsProperty('loadingBranches', loadingBranches))..add(DiagnosticsProperty('replyTo', replyTo))..add(DiagnosticsProperty('sending', sending))..add(DiagnosticsProperty('error', error))..add(DiagnosticsProperty('actionError', actionError))..add(DiagnosticsProperty('actionErrorId', actionErrorId))..add(DiagnosticsProperty('sort', sort))..add(DiagnosticsProperty('sortSupported', sortSupported))..add(DiagnosticsProperty('topOffset', topOffset));
 }
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThreadState&&(identical(other.status, status) || other.status == status)&&(identical(other.post, post) || other.post == post)&&(identical(other.root, root) || other.root == root)&&const DeepCollectionEquality().equals(other._comments, _comments)&&const DeepCollectionEquality().equals(other._children, _children)&&(identical(other.topCursor, topCursor) || other.topCursor == topCursor)&&(identical(other.hasMoreTop, hasMoreTop) || other.hasMoreTop == hasMoreTop)&&const DeepCollectionEquality().equals(other._collapsed, _collapsed)&&const DeepCollectionEquality().equals(other._loadingBranches, _loadingBranches)&&(identical(other.replyTo, replyTo) || other.replyTo == replyTo)&&(identical(other.sending, sending) || other.sending == sending)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.sort, sort) || other.sort == sort)&&(identical(other.sortSupported, sortSupported) || other.sortSupported == sortSupported)&&(identical(other.topOffset, topOffset) || other.topOffset == topOffset));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThreadState&&(identical(other.status, status) || other.status == status)&&(identical(other.post, post) || other.post == post)&&(identical(other.root, root) || other.root == root)&&const DeepCollectionEquality().equals(other.comments, _comments)&&const DeepCollectionEquality().equals(other.children, _children)&&(identical(other.topCursor, topCursor) || other.topCursor == topCursor)&&(identical(other.hasMoreTop, hasMoreTop) || other.hasMoreTop == hasMoreTop)&&const DeepCollectionEquality().equals(other.collapsed, _collapsed)&&const DeepCollectionEquality().equals(other.loadingBranches, _loadingBranches)&&(identical(other.replyTo, replyTo) || other.replyTo == replyTo)&&(identical(other.sending, sending) || other.sending == sending)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.sort, sort) || other.sort == sort)&&(identical(other.sortSupported, sortSupported) || other.sortSupported == sortSupported)&&(identical(other.topOffset, topOffset) || other.topOffset == topOffset));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,post,root,const DeepCollectionEquality().hash(_comments),const DeepCollectionEquality().hash(_children),topCursor,hasMoreTop,const DeepCollectionEquality().hash(_collapsed),const DeepCollectionEquality().hash(_loadingBranches),replyTo,sending,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,sort,sortSupported,topOffset);
+int get hashCode {
+    return Object.hash(runtimeType,status,post,root,const DeepCollectionEquality().hash(_comments),const DeepCollectionEquality().hash(_children),topCursor,hasMoreTop,const DeepCollectionEquality().hash(_collapsed),const DeepCollectionEquality().hash(_loadingBranches),replyTo,sending,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,sort,sortSupported,topOffset);
+}
 
 @override
 String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
-  return 'ThreadState(status: $status, post: $post, root: $root, comments: $comments, children: $children, topCursor: $topCursor, hasMoreTop: $hasMoreTop, collapsed: $collapsed, loadingBranches: $loadingBranches, replyTo: $replyTo, sending: $sending, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, sort: $sort, sortSupported: $sortSupported, topOffset: $topOffset)';
+    return 'ThreadState(status: $status, post: $post, root: $root, comments: $comments, children: $children, topCursor: $topCursor, hasMoreTop: $hasMoreTop, collapsed: $collapsed, loadingBranches: $loadingBranches, replyTo: $replyTo, sending: $sending, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, sort: $sort, sortSupported: $sortSupported, topOffset: $topOffset)';
 }
 
 

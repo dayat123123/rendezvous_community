@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/share_post_cubit.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/new_group_dialog.dart';
@@ -61,7 +61,7 @@ Future<void> _pumpProfile(
   await tester.pumpWidget(
     MaterialApp(
       locale: const Locale('id'),
-      localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+      localizationsDelegates: communityLocalizationsDelegates,
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: Scaffold(
         body: CommunityScope(
@@ -139,7 +139,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           locale: const Locale('en'),
-          localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+          localizationsDelegates: communityLocalizationsDelegates,
           supportedLocales: CommunityLocalizations.supportedLocales,
           home: Builder(
             builder: (c) {

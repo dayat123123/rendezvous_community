@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'pinned_post.dart';
@@ -9,6 +9,7 @@ part of 'pinned_post.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $PinnedPostCopyWith<PinnedPost> get copyWith => _$PinnedPostCopyWithImpl<PinnedP
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PinnedPost&&(identical(other.post, post) || other.post == post)&&(identical(other.announcement, announcement) || other.announcement == announcement)&&(identical(other.title, title) || other.title == title)&&(identical(other.pinnedUntil, pinnedUntil) || other.pinnedUntil == pinnedUntil));
+  final _this = this as PinnedPost;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PinnedPost&&(identical(other.post, _this.post) || other.post == _this.post)&&(identical(other.announcement, _this.announcement) || other.announcement == _this.announcement)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.pinnedUntil, _this.pinnedUntil) || other.pinnedUntil == _this.pinnedUntil));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,post,announcement,title,pinnedUntil);
+int get hashCode {
+  final _this = this as PinnedPost;
+  return Object.hash(runtimeType,_this.post,_this.announcement,_this.title,_this.pinnedUntil);
+}
 
 @override
 String toString() {
-  return 'PinnedPost(post: $post, announcement: $announcement, title: $title, pinnedUntil: $pinnedUntil)';
+  final _this = this as PinnedPost;
+  return 'PinnedPost(post: ${_this.post}, announcement: ${_this.announcement}, title: ${_this.title}, pinnedUntil: ${_this.pinnedUntil})';
 }
 
 
@@ -63,7 +69,7 @@ class _$PinnedPostCopyWithImpl<$Res>
 /// Create a copy of PinnedPost
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? post = null,Object? announcement = null,Object? title = freezed,Object? pinnedUntil = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(PinnedPost(
 post: null == post ? _self.post : post // ignore: cast_nullable_to_non_nullable
 as Post,announcement: null == announcement ? _self.announcement : announcement // ignore: cast_nullable_to_non_nullable
 as bool,title: freezed == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -236,16 +242,18 @@ _$PinnedPostCopyWith<_PinnedPost> get copyWith => __$PinnedPostCopyWithImpl<_Pin
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PinnedPost&&(identical(other.post, post) || other.post == post)&&(identical(other.announcement, announcement) || other.announcement == announcement)&&(identical(other.title, title) || other.title == title)&&(identical(other.pinnedUntil, pinnedUntil) || other.pinnedUntil == pinnedUntil));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PinnedPost&&(identical(other.post, post) || other.post == post)&&(identical(other.announcement, announcement) || other.announcement == announcement)&&(identical(other.title, title) || other.title == title)&&(identical(other.pinnedUntil, pinnedUntil) || other.pinnedUntil == pinnedUntil));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,post,announcement,title,pinnedUntil);
+int get hashCode {
+    return Object.hash(runtimeType,post,announcement,title,pinnedUntil);
+}
 
 @override
 String toString() {
-  return 'PinnedPost(post: $post, announcement: $announcement, title: $title, pinnedUntil: $pinnedUntil)';
+    return 'PinnedPost(post: $post, announcement: $announcement, title: $title, pinnedUntil: $pinnedUntil)';
 }
 
 

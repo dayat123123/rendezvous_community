@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'support_models.dart';
@@ -9,6 +9,7 @@ part of 'support_models.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $SupportTicketModelCopyWith<SupportTicketModel> get copyWith => _$SupportTicketM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTicketModel&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&const DeepCollectionEquality().equals(other.agent, agent)&&const DeepCollectionEquality().equals(other.complaint, complaint)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate)&&(identical(other.etaMinutes, etaMinutes) || other.etaMinutes == etaMinutes)&&const DeepCollectionEquality().equals(other.quickReplies, quickReplies));
+  final _this = this as SupportTicketModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTicketModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.ticketNumber, _this.ticketNumber) || other.ticketNumber == _this.ticketNumber)&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId)&&(identical(other.topic, _this.topic) || other.topic == _this.topic)&&(identical(other.topicName, _this.topicName) || other.topicName == _this.topicName)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.queueAhead, _this.queueAhead) || other.queueAhead == _this.queueAhead)&&const DeepCollectionEquality().equals(other.agent, _this.agent)&&const DeepCollectionEquality().equals(other.complaint, _this.complaint)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.resolvedAt, _this.resolvedAt) || other.resolvedAt == _this.resolvedAt)&&(identical(other.closedAt, _this.closedAt) || other.closedAt == _this.closedAt)&&(identical(other.reopenUntil, _this.reopenUntil) || other.reopenUntil == _this.reopenUntil)&&(identical(other.rating, _this.rating) || other.rating == _this.rating)&&(identical(other.canRate, _this.canRate) || other.canRate == _this.canRate)&&(identical(other.etaMinutes, _this.etaMinutes) || other.etaMinutes == _this.etaMinutes)&&const DeepCollectionEquality().equals(other.quickReplies, _this.quickReplies));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,const DeepCollectionEquality().hash(agent),const DeepCollectionEquality().hash(complaint),createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate,etaMinutes,const DeepCollectionEquality().hash(quickReplies));
+int get hashCode {
+  final _this = this as SupportTicketModel;
+  return Object.hash(runtimeType,_this.id,_this.ticketNumber,_this.roomId,_this.topic,_this.topicName,_this.status,_this.queueAhead,const DeepCollectionEquality().hash(_this.agent),const DeepCollectionEquality().hash(_this.complaint),_this.createdAt,_this.resolvedAt,_this.closedAt,_this.reopenUntil,_this.rating,_this.canRate,_this.etaMinutes,const DeepCollectionEquality().hash(_this.quickReplies));
+}
 
 @override
 String toString() {
-  return 'SupportTicketModel(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaint: $complaint, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate, etaMinutes: $etaMinutes, quickReplies: $quickReplies)';
+  final _this = this as SupportTicketModel;
+  return 'SupportTicketModel(id: ${_this.id}, ticketNumber: ${_this.ticketNumber}, roomId: ${_this.roomId}, topic: ${_this.topic}, topicName: ${_this.topicName}, status: ${_this.status}, queueAhead: ${_this.queueAhead}, agent: ${_this.agent}, complaint: ${_this.complaint}, createdAt: ${_this.createdAt}, resolvedAt: ${_this.resolvedAt}, closedAt: ${_this.closedAt}, reopenUntil: ${_this.reopenUntil}, rating: ${_this.rating}, canRate: ${_this.canRate}, etaMinutes: ${_this.etaMinutes}, quickReplies: ${_this.quickReplies})';
 }
 
 
@@ -66,7 +72,7 @@ class _$SupportTicketModelCopyWithImpl<$Res>
 /// Create a copy of SupportTicketModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? ticketNumber = null,Object? roomId = null,Object? topic = null,Object? topicName = freezed,Object? status = null,Object? queueAhead = freezed,Object? agent = freezed,Object? complaint = freezed,Object? createdAt = null,Object? resolvedAt = freezed,Object? closedAt = freezed,Object? reopenUntil = freezed,Object? rating = freezed,Object? canRate = null,Object? etaMinutes = freezed,Object? quickReplies = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SupportTicketModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,ticketNumber: null == ticketNumber ? _self.ticketNumber : ticketNumber // ignore: cast_nullable_to_non_nullable
 as String,roomId: null == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
@@ -225,7 +231,7 @@ return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topic
 @JsonSerializable()
 
 class _SupportTicketModel extends SupportTicketModel {
-  const _SupportTicketModel({required this.id, required this.ticketNumber, required this.roomId, required this.topic, this.topicName, required this.status, this.queueAhead, final  Map<String, dynamic>? agent, final  Map<String, dynamic>? complaint, required this.createdAt, this.resolvedAt, this.closedAt, this.reopenUntil, this.rating, this.canRate = false, this.etaMinutes, final  List<Object?>? quickReplies}): _agent = agent,_complaint = complaint,_quickReplies = quickReplies,super._();
+  const _SupportTicketModel({required this.id, required this.ticketNumber, required this.roomId, required this.topic, this.topicName, required this.status, this.queueAhead,  Map<String, dynamic>? agent,  Map<String, dynamic>? complaint, required this.createdAt, this.resolvedAt, this.closedAt, this.reopenUntil, this.rating, this.canRate = false, this.etaMinutes,  List<Object?>? quickReplies}): _agent = agent,_complaint = complaint,_quickReplies = quickReplies,super._();
   factory _SupportTicketModel.fromJson(Map<String, dynamic> json) => _$SupportTicketModelFromJson(json);
 
 @override final  String id;
@@ -283,16 +289,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTicketModel&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&const DeepCollectionEquality().equals(other._agent, _agent)&&const DeepCollectionEquality().equals(other._complaint, _complaint)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate)&&(identical(other.etaMinutes, etaMinutes) || other.etaMinutes == etaMinutes)&&const DeepCollectionEquality().equals(other._quickReplies, _quickReplies));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTicketModel&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&const DeepCollectionEquality().equals(other.agent, _agent)&&const DeepCollectionEquality().equals(other.complaint, _complaint)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate)&&(identical(other.etaMinutes, etaMinutes) || other.etaMinutes == etaMinutes)&&const DeepCollectionEquality().equals(other.quickReplies, _quickReplies));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,const DeepCollectionEquality().hash(_agent),const DeepCollectionEquality().hash(_complaint),createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate,etaMinutes,const DeepCollectionEquality().hash(_quickReplies));
+int get hashCode {
+    return Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,const DeepCollectionEquality().hash(_agent),const DeepCollectionEquality().hash(_complaint),createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate,etaMinutes,const DeepCollectionEquality().hash(_quickReplies));
+}
 
 @override
 String toString() {
-  return 'SupportTicketModel(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaint: $complaint, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate, etaMinutes: $etaMinutes, quickReplies: $quickReplies)';
+    return 'SupportTicketModel(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaint: $complaint, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate, etaMinutes: $etaMinutes, quickReplies: $quickReplies)';
 }
 
 
@@ -363,16 +371,21 @@ $SupportHomeModelCopyWith<SupportHomeModel> get copyWith => _$SupportHomeModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&const DeepCollectionEquality().equals(other.topicPicker, topicPicker)&&const DeepCollectionEquality().equals(other.incidents, incidents)&&const DeepCollectionEquality().equals(other.survey, survey));
+  final _this = this as SupportHomeModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHomeModel&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId)&&(identical(other.supportName, _this.supportName) || other.supportName == _this.supportName)&&(identical(other.ticket, _this.ticket) || other.ticket == _this.ticket)&&(identical(other.active, _this.active) || other.active == _this.active)&&(identical(other.unreadCount, _this.unreadCount) || other.unreadCount == _this.unreadCount)&&(identical(other.serviceOpen, _this.serviceOpen) || other.serviceOpen == _this.serviceOpen)&&(identical(other.nextOpenAt, _this.nextOpenAt) || other.nextOpenAt == _this.nextOpenAt)&&const DeepCollectionEquality().equals(other.topicPicker, _this.topicPicker)&&const DeepCollectionEquality().equals(other.incidents, _this.incidents)&&const DeepCollectionEquality().equals(other.survey, _this.survey));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,const DeepCollectionEquality().hash(topicPicker),const DeepCollectionEquality().hash(incidents),const DeepCollectionEquality().hash(survey));
+int get hashCode {
+  final _this = this as SupportHomeModel;
+  return Object.hash(runtimeType,_this.roomId,_this.supportName,_this.ticket,_this.active,_this.unreadCount,_this.serviceOpen,_this.nextOpenAt,const DeepCollectionEquality().hash(_this.topicPicker),const DeepCollectionEquality().hash(_this.incidents),const DeepCollectionEquality().hash(_this.survey));
+}
 
 @override
 String toString() {
-  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker, incidents: $incidents, survey: $survey)';
+  final _this = this as SupportHomeModel;
+  return 'SupportHomeModel(roomId: ${_this.roomId}, supportName: ${_this.supportName}, ticket: ${_this.ticket}, active: ${_this.active}, unreadCount: ${_this.unreadCount}, serviceOpen: ${_this.serviceOpen}, nextOpenAt: ${_this.nextOpenAt}, topicPicker: ${_this.topicPicker}, incidents: ${_this.incidents}, survey: ${_this.survey})';
 }
 
 
@@ -401,7 +414,7 @@ class _$SupportHomeModelCopyWithImpl<$Res>
 /// Create a copy of SupportHomeModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = freezed,Object? incidents = freezed,Object? survey = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SupportHomeModel(
 roomId: freezed == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String?,supportName: null == supportName ? _self.supportName : supportName // ignore: cast_nullable_to_non_nullable
 as String,ticket: freezed == ticket ? _self.ticket : ticket // ignore: cast_nullable_to_non_nullable
@@ -565,7 +578,7 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 @JsonSerializable()
 
 class _SupportHomeModel extends SupportHomeModel {
-  const _SupportHomeModel({this.roomId, this.supportName = '', this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt, final  Map<String, dynamic>? topicPicker, final  List<Object?>? incidents, final  Map<String, dynamic>? survey}): _topicPicker = topicPicker,_incidents = incidents,_survey = survey,super._();
+  const _SupportHomeModel({this.roomId, this.supportName = '', this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt,  Map<String, dynamic>? topicPicker,  List<Object?>? incidents,  Map<String, dynamic>? survey}): _topicPicker = topicPicker,_incidents = incidents,_survey = survey,super._();
   factory _SupportHomeModel.fromJson(Map<String, dynamic> json) => _$SupportHomeModelFromJson(json);
 
 @override final  String? roomId;
@@ -616,16 +629,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&const DeepCollectionEquality().equals(other._topicPicker, _topicPicker)&&const DeepCollectionEquality().equals(other._incidents, _incidents)&&const DeepCollectionEquality().equals(other._survey, _survey));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHomeModel&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&const DeepCollectionEquality().equals(other.topicPicker, _topicPicker)&&const DeepCollectionEquality().equals(other.incidents, _incidents)&&const DeepCollectionEquality().equals(other.survey, _survey));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,const DeepCollectionEquality().hash(_topicPicker),const DeepCollectionEquality().hash(_incidents),const DeepCollectionEquality().hash(_survey));
+int get hashCode {
+    return Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,const DeepCollectionEquality().hash(_topicPicker),const DeepCollectionEquality().hash(_incidents),const DeepCollectionEquality().hash(_survey));
+}
 
 @override
 String toString() {
-  return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker, incidents: $incidents, survey: $survey)';
+    return 'SupportHomeModel(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker, incidents: $incidents, survey: $survey)';
 }
 
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'search_results.dart';
@@ -9,6 +9,7 @@ part of 'search_results.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $UserSearchResultCopyWith<UserSearchResult> get copyWith => _$UserSearchResultCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserSearchResult&&(identical(other.user, user) || other.user == user)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.isMe, isMe) || other.isMe == isMe));
+  final _this = this as UserSearchResult;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserSearchResult&&(identical(other.user, _this.user) || other.user == _this.user)&&(identical(other.followerCount, _this.followerCount) || other.followerCount == _this.followerCount)&&(identical(other.isOfficial, _this.isOfficial) || other.isOfficial == _this.isOfficial)&&(identical(other.isFollowing, _this.isFollowing) || other.isFollowing == _this.isFollowing)&&(identical(other.isMe, _this.isMe) || other.isMe == _this.isMe));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,followerCount,isOfficial,isFollowing,isMe);
+int get hashCode {
+  final _this = this as UserSearchResult;
+  return Object.hash(runtimeType,_this.user,_this.followerCount,_this.isOfficial,_this.isFollowing,_this.isMe);
+}
 
 @override
 String toString() {
-  return 'UserSearchResult(user: $user, followerCount: $followerCount, isOfficial: $isOfficial, isFollowing: $isFollowing, isMe: $isMe)';
+  final _this = this as UserSearchResult;
+  return 'UserSearchResult(user: ${_this.user}, followerCount: ${_this.followerCount}, isOfficial: ${_this.isOfficial}, isFollowing: ${_this.isFollowing}, isMe: ${_this.isMe})';
 }
 
 
@@ -63,7 +69,7 @@ class _$UserSearchResultCopyWithImpl<$Res>
 /// Create a copy of UserSearchResult
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? user = null,Object? followerCount = null,Object? isOfficial = null,Object? isFollowing = null,Object? isMe = null,}) {
-  return _then(_self.copyWith(
+  return _then(UserSearchResult(
 user: null == user ? _self.user : user // ignore: cast_nullable_to_non_nullable
 as UserSummary,followerCount: null == followerCount ? _self.followerCount : followerCount // ignore: cast_nullable_to_non_nullable
 as int,isOfficial: null == isOfficial ? _self.isOfficial : isOfficial // ignore: cast_nullable_to_non_nullable
@@ -238,16 +244,18 @@ _$UserSearchResultCopyWith<_UserSearchResult> get copyWith => __$UserSearchResul
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSearchResult&&(identical(other.user, user) || other.user == user)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.isMe, isMe) || other.isMe == isMe));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSearchResult&&(identical(other.user, user) || other.user == user)&&(identical(other.followerCount, followerCount) || other.followerCount == followerCount)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial)&&(identical(other.isFollowing, isFollowing) || other.isFollowing == isFollowing)&&(identical(other.isMe, isMe) || other.isMe == isMe));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,user,followerCount,isOfficial,isFollowing,isMe);
+int get hashCode {
+    return Object.hash(runtimeType,user,followerCount,isOfficial,isFollowing,isMe);
+}
 
 @override
 String toString() {
-  return 'UserSearchResult(user: $user, followerCount: $followerCount, isOfficial: $isOfficial, isFollowing: $isFollowing, isMe: $isMe)';
+    return 'UserSearchResult(user: $user, followerCount: $followerCount, isOfficial: $isOfficial, isFollowing: $isFollowing, isMe: $isMe)';
 }
 
 
@@ -312,16 +320,21 @@ $StockSearchResultCopyWith<StockSearchResult> get copyWith => _$StockSearchResul
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockSearchResult&&(identical(other.code, code) || other.code == code)&&(identical(other.posts7d, posts7d) || other.posts7d == posts7d)&&(identical(other.watcherCount, watcherCount) || other.watcherCount == watcherCount)&&(identical(other.isWatching, isWatching) || other.isWatching == isWatching));
+  final _this = this as StockSearchResult;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockSearchResult&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.posts7d, _this.posts7d) || other.posts7d == _this.posts7d)&&(identical(other.watcherCount, _this.watcherCount) || other.watcherCount == _this.watcherCount)&&(identical(other.isWatching, _this.isWatching) || other.isWatching == _this.isWatching));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,posts7d,watcherCount,isWatching);
+int get hashCode {
+  final _this = this as StockSearchResult;
+  return Object.hash(runtimeType,_this.code,_this.posts7d,_this.watcherCount,_this.isWatching);
+}
 
 @override
 String toString() {
-  return 'StockSearchResult(code: $code, posts7d: $posts7d, watcherCount: $watcherCount, isWatching: $isWatching)';
+  final _this = this as StockSearchResult;
+  return 'StockSearchResult(code: ${_this.code}, posts7d: ${_this.posts7d}, watcherCount: ${_this.watcherCount}, isWatching: ${_this.isWatching})';
 }
 
 
@@ -350,7 +363,7 @@ class _$StockSearchResultCopyWithImpl<$Res>
 /// Create a copy of StockSearchResult
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? posts7d = null,Object? watcherCount = null,Object? isWatching = null,}) {
-  return _then(_self.copyWith(
+  return _then(StockSearchResult(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,posts7d: null == posts7d ? _self.posts7d : posts7d // ignore: cast_nullable_to_non_nullable
 as int,watcherCount: null == watcherCount ? _self.watcherCount : watcherCount // ignore: cast_nullable_to_non_nullable
@@ -514,16 +527,18 @@ _$StockSearchResultCopyWith<_StockSearchResult> get copyWith => __$StockSearchRe
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockSearchResult&&(identical(other.code, code) || other.code == code)&&(identical(other.posts7d, posts7d) || other.posts7d == posts7d)&&(identical(other.watcherCount, watcherCount) || other.watcherCount == watcherCount)&&(identical(other.isWatching, isWatching) || other.isWatching == isWatching));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockSearchResult&&(identical(other.code, code) || other.code == code)&&(identical(other.posts7d, posts7d) || other.posts7d == posts7d)&&(identical(other.watcherCount, watcherCount) || other.watcherCount == watcherCount)&&(identical(other.isWatching, isWatching) || other.isWatching == isWatching));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,posts7d,watcherCount,isWatching);
+int get hashCode {
+    return Object.hash(runtimeType,code,posts7d,watcherCount,isWatching);
+}
 
 @override
 String toString() {
-  return 'StockSearchResult(code: $code, posts7d: $posts7d, watcherCount: $watcherCount, isWatching: $isWatching)';
+    return 'StockSearchResult(code: $code, posts7d: $posts7d, watcherCount: $watcherCount, isWatching: $isWatching)';
 }
 
 
@@ -578,16 +593,21 @@ $SearchResultsCopyWith<SearchResults> get copyWith => _$SearchResultsCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchResults&&(identical(other.query, query) || other.query == query)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.posts, posts)&&const DeepCollectionEquality().equals(other.users, users)&&const DeepCollectionEquality().equals(other.stocks, stocks)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
+  final _this = this as SearchResults;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SearchResults&&(identical(other.query, _this.query) || other.query == _this.query)&&(identical(other.type, _this.type) || other.type == _this.type)&&const DeepCollectionEquality().equals(other.posts, _this.posts)&&const DeepCollectionEquality().equals(other.users, _this.users)&&const DeepCollectionEquality().equals(other.stocks, _this.stocks)&&const DeepCollectionEquality().equals(other.hashtags, _this.hashtags)&&(identical(other.nextCursor, _this.nextCursor) || other.nextCursor == _this.nextCursor));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,query,type,const DeepCollectionEquality().hash(posts),const DeepCollectionEquality().hash(users),const DeepCollectionEquality().hash(stocks),const DeepCollectionEquality().hash(hashtags),nextCursor);
+int get hashCode {
+  final _this = this as SearchResults;
+  return Object.hash(runtimeType,_this.query,_this.type,const DeepCollectionEquality().hash(_this.posts),const DeepCollectionEquality().hash(_this.users),const DeepCollectionEquality().hash(_this.stocks),const DeepCollectionEquality().hash(_this.hashtags),_this.nextCursor);
+}
 
 @override
 String toString() {
-  return 'SearchResults(query: $query, type: $type, posts: $posts, users: $users, stocks: $stocks, hashtags: $hashtags, nextCursor: $nextCursor)';
+  final _this = this as SearchResults;
+  return 'SearchResults(query: ${_this.query}, type: ${_this.type}, posts: ${_this.posts}, users: ${_this.users}, stocks: ${_this.stocks}, hashtags: ${_this.hashtags}, nextCursor: ${_this.nextCursor})';
 }
 
 
@@ -616,7 +636,7 @@ class _$SearchResultsCopyWithImpl<$Res>
 /// Create a copy of SearchResults
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? query = null,Object? type = null,Object? posts = null,Object? users = null,Object? stocks = null,Object? hashtags = null,Object? nextCursor = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SearchResults(
 query: null == query ? _self.query : query // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as SearchType,posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
@@ -765,7 +785,7 @@ return $default(_that.query,_that.type,_that.posts,_that.users,_that.stocks,_tha
 
 
 class _SearchResults extends SearchResults {
-  const _SearchResults({required this.query, required this.type, final  List<Post> posts = const <Post>[], final  List<UserSearchResult> users = const <UserSearchResult>[], final  List<StockSearchResult> stocks = const <StockSearchResult>[], final  List<HashtagSummary> hashtags = const <HashtagSummary>[], this.nextCursor}): _posts = posts,_users = users,_stocks = stocks,_hashtags = hashtags,super._();
+  const _SearchResults({required this.query, required this.type,  List<Post> posts = const <Post>[],  List<UserSearchResult> users = const <UserSearchResult>[],  List<StockSearchResult> stocks = const <StockSearchResult>[],  List<HashtagSummary> hashtags = const <HashtagSummary>[], this.nextCursor}): _posts = posts,_users = users,_stocks = stocks,_hashtags = hashtags,super._();
   
 
 @override final  String query;
@@ -810,16 +830,18 @@ _$SearchResultsCopyWith<_SearchResults> get copyWith => __$SearchResultsCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchResults&&(identical(other.query, query) || other.query == query)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other._posts, _posts)&&const DeepCollectionEquality().equals(other._users, _users)&&const DeepCollectionEquality().equals(other._stocks, _stocks)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SearchResults&&(identical(other.query, query) || other.query == query)&&(identical(other.type, type) || other.type == type)&&const DeepCollectionEquality().equals(other.posts, _posts)&&const DeepCollectionEquality().equals(other.users, _users)&&const DeepCollectionEquality().equals(other.stocks, _stocks)&&const DeepCollectionEquality().equals(other.hashtags, _hashtags)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,query,type,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_users),const DeepCollectionEquality().hash(_stocks),const DeepCollectionEquality().hash(_hashtags),nextCursor);
+int get hashCode {
+    return Object.hash(runtimeType,query,type,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_users),const DeepCollectionEquality().hash(_stocks),const DeepCollectionEquality().hash(_hashtags),nextCursor);
+}
 
 @override
 String toString() {
-  return 'SearchResults(query: $query, type: $type, posts: $posts, users: $users, stocks: $stocks, hashtags: $hashtags, nextCursor: $nextCursor)';
+    return 'SearchResults(query: $query, type: $type, posts: $posts, users: $users, stocks: $stocks, hashtags: $hashtags, nextCursor: $nextCursor)';
 }
 
 

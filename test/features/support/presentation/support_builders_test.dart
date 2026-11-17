@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_dialogs.dart';
@@ -76,7 +76,7 @@ List<ChatMessage> _messages() => [
 
 Widget _app(Widget child, {CommunitySupportBuilders support = const CommunitySupportBuilders()}) => MaterialApp(
   locale: const Locale('id'),
-  localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+  localizationsDelegates: communityLocalizationsDelegates,
   supportedLocales: CommunityLocalizations.supportedLocales,
   home: CommunityBuildersScope(
     builders: CommunityBuilders(support: support),

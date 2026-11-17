@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'client_config_model.dart';
@@ -9,6 +9,7 @@ part of 'client_config_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $ClientConfigModelCopyWith<ClientConfigModel> get copyWith => _$ClientConfigMode
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientConfigModel&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other.flags, flags)&&const DeepCollectionEquality().equals(other.minVersion, minVersion)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&const DeepCollectionEquality().equals(other.config, config)&&const DeepCollectionEquality().equals(other.banners, banners));
+  final _this = this as ClientConfigModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientConfigModel&&(identical(other.socialEnabled, _this.socialEnabled) || other.socialEnabled == _this.socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _this.flags)&&const DeepCollectionEquality().equals(other.minVersion, _this.minVersion)&&(identical(other.updateRequired, _this.updateRequired) || other.updateRequired == _this.updateRequired)&&const DeepCollectionEquality().equals(other.config, _this.config)&&const DeepCollectionEquality().equals(other.banners, _this.banners));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(flags),const DeepCollectionEquality().hash(minVersion),updateRequired,const DeepCollectionEquality().hash(config),const DeepCollectionEquality().hash(banners));
+int get hashCode {
+  final _this = this as ClientConfigModel;
+  return Object.hash(runtimeType,_this.socialEnabled,const DeepCollectionEquality().hash(_this.flags),const DeepCollectionEquality().hash(_this.minVersion),_this.updateRequired,const DeepCollectionEquality().hash(_this.config),const DeepCollectionEquality().hash(_this.banners));
+}
 
 @override
 String toString() {
-  return 'ClientConfigModel(socialEnabled: $socialEnabled, flags: $flags, minVersion: $minVersion, updateRequired: $updateRequired, config: $config, banners: $banners)';
+  final _this = this as ClientConfigModel;
+  return 'ClientConfigModel(socialEnabled: ${_this.socialEnabled}, flags: ${_this.flags}, minVersion: ${_this.minVersion}, updateRequired: ${_this.updateRequired}, config: ${_this.config}, banners: ${_this.banners})';
 }
 
 
@@ -66,7 +72,7 @@ class _$ClientConfigModelCopyWithImpl<$Res>
 /// Create a copy of ClientConfigModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersion = null,Object? updateRequired = null,Object? config = null,Object? banners = null,}) {
-  return _then(_self.copyWith(
+  return _then(ClientConfigModel(
 socialEnabled: null == socialEnabled ? _self.socialEnabled : socialEnabled // ignore: cast_nullable_to_non_nullable
 as bool,flags: null == flags ? _self.flags : flags // ignore: cast_nullable_to_non_nullable
 as Map<String, bool>,minVersion: null == minVersion ? _self.minVersion : minVersion // ignore: cast_nullable_to_non_nullable
@@ -214,7 +220,7 @@ return $default(_that.socialEnabled,_that.flags,_that.minVersion,_that.updateReq
 @JsonSerializable()
 
 class _ClientConfigModel extends ClientConfigModel {
-  const _ClientConfigModel({this.socialEnabled = true, @JsonKey(fromJson: _flagsFromJson) final  Map<String, bool> flags = const <String, bool>{}, @JsonKey(fromJson: _versionsFromJson) final  Map<String, String?> minVersion = const <String, String?>{}, this.updateRequired = false, final  Map<String, dynamic> config = const <String, dynamic>{}, @JsonKey(fromJson: bannersFromJson, includeToJson: false) final  List<CommunityBanner> banners = const <CommunityBanner>[]}): _flags = flags,_minVersion = minVersion,_config = config,_banners = banners,super._();
+  const _ClientConfigModel({this.socialEnabled = true, @JsonKey(fromJson: _flagsFromJson)  Map<String, bool> flags = const <String, bool>{}, @JsonKey(fromJson: _versionsFromJson)  Map<String, String?> minVersion = const <String, String?>{}, this.updateRequired = false,  Map<String, dynamic> config = const <String, dynamic>{}, @JsonKey(fromJson: bannersFromJson, includeToJson: false)  List<CommunityBanner> banners = const <CommunityBanner>[]}): _flags = flags,_minVersion = minVersion,_config = config,_banners = banners,super._();
   factory _ClientConfigModel.fromJson(Map<String, dynamic> json) => _$ClientConfigModelFromJson(json);
 
 @override@JsonKey() final  bool socialEnabled;
@@ -261,16 +267,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientConfigModel&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other._flags, _flags)&&const DeepCollectionEquality().equals(other._minVersion, _minVersion)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&const DeepCollectionEquality().equals(other._config, _config)&&const DeepCollectionEquality().equals(other._banners, _banners));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientConfigModel&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _flags)&&const DeepCollectionEquality().equals(other.minVersion, _minVersion)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&const DeepCollectionEquality().equals(other.config, _config)&&const DeepCollectionEquality().equals(other.banners, _banners));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(_flags),const DeepCollectionEquality().hash(_minVersion),updateRequired,const DeepCollectionEquality().hash(_config),const DeepCollectionEquality().hash(_banners));
+int get hashCode {
+    return Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(_flags),const DeepCollectionEquality().hash(_minVersion),updateRequired,const DeepCollectionEquality().hash(_config),const DeepCollectionEquality().hash(_banners));
+}
 
 @override
 String toString() {
-  return 'ClientConfigModel(socialEnabled: $socialEnabled, flags: $flags, minVersion: $minVersion, updateRequired: $updateRequired, config: $config, banners: $banners)';
+    return 'ClientConfigModel(socialEnabled: $socialEnabled, flags: $flags, minVersion: $minVersion, updateRequired: $updateRequired, config: $config, banners: $banners)';
 }
 
 

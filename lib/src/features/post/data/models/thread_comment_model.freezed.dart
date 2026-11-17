@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'thread_comment_model.dart';
@@ -9,6 +9,7 @@ part of 'thread_comment_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $ThreadCommentModelCopyWith<ThreadCommentModel> get copyWith => _$ThreadCommentM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThreadCommentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.parentId, parentId) || other.parentId == parentId)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorUsername, authorUsername) || other.authorUsername == authorUsername)&&(identical(other.authorDisplayName, authorDisplayName) || other.authorDisplayName == authorDisplayName)&&(identical(other.authorAvatarUrl, authorAvatarUrl) || other.authorAvatarUrl == authorAvatarUrl)&&(identical(other.authorIsVerified, authorIsVerified) || other.authorIsVerified == authorIsVerified)&&(identical(other.body, body) || other.body == body)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.depth, depth) || other.depth == depth)&&(identical(other.path, path) || other.path == path)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.replyCount, replyCount) || other.replyCount == replyCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+  final _this = this as ThreadCommentModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThreadCommentModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.postId, _this.postId) || other.postId == _this.postId)&&(identical(other.parentId, _this.parentId) || other.parentId == _this.parentId)&&(identical(other.authorId, _this.authorId) || other.authorId == _this.authorId)&&(identical(other.authorUsername, _this.authorUsername) || other.authorUsername == _this.authorUsername)&&(identical(other.authorDisplayName, _this.authorDisplayName) || other.authorDisplayName == _this.authorDisplayName)&&(identical(other.authorAvatarUrl, _this.authorAvatarUrl) || other.authorAvatarUrl == _this.authorAvatarUrl)&&(identical(other.authorIsVerified, _this.authorIsVerified) || other.authorIsVerified == _this.authorIsVerified)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.isDeleted, _this.isDeleted) || other.isDeleted == _this.isDeleted)&&(identical(other.depth, _this.depth) || other.depth == _this.depth)&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.likeCount, _this.likeCount) || other.likeCount == _this.likeCount)&&(identical(other.replyCount, _this.replyCount) || other.replyCount == _this.replyCount)&&(identical(other.likedByMe, _this.likedByMe) || other.likedByMe == _this.likedByMe)&&(identical(other.editedAt, _this.editedAt) || other.editedAt == _this.editedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&(identical(other.moderationStatus, _this.moderationStatus) || other.moderationStatus == _this.moderationStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,postId,parentId,authorId,authorUsername,authorDisplayName,authorAvatarUrl,authorIsVerified,body,isDeleted,depth,path,likeCount,replyCount,likedByMe,editedAt,createdAt,cursor,moderationStatus]);
+int get hashCode {
+  final _this = this as ThreadCommentModel;
+  return Object.hashAll([runtimeType,_this.id,_this.postId,_this.parentId,_this.authorId,_this.authorUsername,_this.authorDisplayName,_this.authorAvatarUrl,_this.authorIsVerified,_this.body,_this.isDeleted,_this.depth,_this.path,_this.likeCount,_this.replyCount,_this.likedByMe,_this.editedAt,_this.createdAt,_this.cursor,_this.moderationStatus]);
+}
 
 @override
 String toString() {
-  return 'ThreadCommentModel(id: $id, postId: $postId, parentId: $parentId, authorId: $authorId, authorUsername: $authorUsername, authorDisplayName: $authorDisplayName, authorAvatarUrl: $authorAvatarUrl, authorIsVerified: $authorIsVerified, body: $body, isDeleted: $isDeleted, depth: $depth, path: $path, likeCount: $likeCount, replyCount: $replyCount, likedByMe: $likedByMe, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, moderationStatus: $moderationStatus)';
+  final _this = this as ThreadCommentModel;
+  return 'ThreadCommentModel(id: ${_this.id}, postId: ${_this.postId}, parentId: ${_this.parentId}, authorId: ${_this.authorId}, authorUsername: ${_this.authorUsername}, authorDisplayName: ${_this.authorDisplayName}, authorAvatarUrl: ${_this.authorAvatarUrl}, authorIsVerified: ${_this.authorIsVerified}, body: ${_this.body}, isDeleted: ${_this.isDeleted}, depth: ${_this.depth}, path: ${_this.path}, likeCount: ${_this.likeCount}, replyCount: ${_this.replyCount}, likedByMe: ${_this.likedByMe}, editedAt: ${_this.editedAt}, createdAt: ${_this.createdAt}, cursor: ${_this.cursor}, moderationStatus: ${_this.moderationStatus})';
 }
 
 
@@ -66,7 +72,7 @@ class _$ThreadCommentModelCopyWithImpl<$Res>
 /// Create a copy of ThreadCommentModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? postId = null,Object? parentId = freezed,Object? authorId = freezed,Object? authorUsername = freezed,Object? authorDisplayName = freezed,Object? authorAvatarUrl = freezed,Object? authorIsVerified = null,Object? body = freezed,Object? isDeleted = null,Object? depth = null,Object? path = null,Object? likeCount = null,Object? replyCount = null,Object? likedByMe = null,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? moderationStatus = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ThreadCommentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,postId: null == postId ? _self.postId : postId // ignore: cast_nullable_to_non_nullable
 as String,parentId: freezed == parentId ? _self.parentId : parentId // ignore: cast_nullable_to_non_nullable
@@ -263,16 +269,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThreadCommentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.parentId, parentId) || other.parentId == parentId)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorUsername, authorUsername) || other.authorUsername == authorUsername)&&(identical(other.authorDisplayName, authorDisplayName) || other.authorDisplayName == authorDisplayName)&&(identical(other.authorAvatarUrl, authorAvatarUrl) || other.authorAvatarUrl == authorAvatarUrl)&&(identical(other.authorIsVerified, authorIsVerified) || other.authorIsVerified == authorIsVerified)&&(identical(other.body, body) || other.body == body)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.depth, depth) || other.depth == depth)&&(identical(other.path, path) || other.path == path)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.replyCount, replyCount) || other.replyCount == replyCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThreadCommentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.parentId, parentId) || other.parentId == parentId)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorUsername, authorUsername) || other.authorUsername == authorUsername)&&(identical(other.authorDisplayName, authorDisplayName) || other.authorDisplayName == authorDisplayName)&&(identical(other.authorAvatarUrl, authorAvatarUrl) || other.authorAvatarUrl == authorAvatarUrl)&&(identical(other.authorIsVerified, authorIsVerified) || other.authorIsVerified == authorIsVerified)&&(identical(other.body, body) || other.body == body)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.depth, depth) || other.depth == depth)&&(identical(other.path, path) || other.path == path)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.replyCount, replyCount) || other.replyCount == replyCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,postId,parentId,authorId,authorUsername,authorDisplayName,authorAvatarUrl,authorIsVerified,body,isDeleted,depth,path,likeCount,replyCount,likedByMe,editedAt,createdAt,cursor,moderationStatus]);
+int get hashCode {
+    return Object.hashAll([runtimeType,id,postId,parentId,authorId,authorUsername,authorDisplayName,authorAvatarUrl,authorIsVerified,body,isDeleted,depth,path,likeCount,replyCount,likedByMe,editedAt,createdAt,cursor,moderationStatus]);
+}
 
 @override
 String toString() {
-  return 'ThreadCommentModel(id: $id, postId: $postId, parentId: $parentId, authorId: $authorId, authorUsername: $authorUsername, authorDisplayName: $authorDisplayName, authorAvatarUrl: $authorAvatarUrl, authorIsVerified: $authorIsVerified, body: $body, isDeleted: $isDeleted, depth: $depth, path: $path, likeCount: $likeCount, replyCount: $replyCount, likedByMe: $likedByMe, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, moderationStatus: $moderationStatus)';
+    return 'ThreadCommentModel(id: $id, postId: $postId, parentId: $parentId, authorId: $authorId, authorUsername: $authorUsername, authorDisplayName: $authorDisplayName, authorAvatarUrl: $authorAvatarUrl, authorIsVerified: $authorIsVerified, body: $body, isDeleted: $isDeleted, depth: $depth, path: $path, likeCount: $likeCount, replyCount: $replyCount, likedByMe: $likedByMe, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, moderationStatus: $moderationStatus)';
 }
 
 

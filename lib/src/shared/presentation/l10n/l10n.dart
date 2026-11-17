@@ -1,10 +1,16 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:material_ui/material_ui.dart' show GlobalMaterialLocalizations;
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/error/error_mapper.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/gen/community_localizations.dart';
 
 export 'gen/community_localizations.dart';
+
+const List<LocalizationsDelegate<dynamic>> communityLocalizationsDelegates = [
+  ...CommunityLocalizations.localizationsDelegates,
+  ...GlobalMaterialLocalizations.delegates,
+];
 
 extension CommunityL10nContext on BuildContext {
   CommunityLocalizations get communityL10n =>

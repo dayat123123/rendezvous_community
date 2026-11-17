@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'support_ticket.dart';
@@ -9,6 +9,7 @@ part of 'support_ticket.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $SupportAgentCopyWith<SupportAgent> get copyWith => _$SupportAgentCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportAgent&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.agentCode, agentCode) || other.agentCode == agentCode));
+  final _this = this as SupportAgent;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportAgent&&(identical(other.displayName, _this.displayName) || other.displayName == _this.displayName)&&(identical(other.agentCode, _this.agentCode) || other.agentCode == _this.agentCode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,displayName,agentCode);
+int get hashCode {
+  final _this = this as SupportAgent;
+  return Object.hash(runtimeType,_this.displayName,_this.agentCode);
+}
 
 @override
 String toString() {
-  return 'SupportAgent(displayName: $displayName, agentCode: $agentCode)';
+  final _this = this as SupportAgent;
+  return 'SupportAgent(displayName: ${_this.displayName}, agentCode: ${_this.agentCode})';
 }
 
 
@@ -63,7 +69,7 @@ class _$SupportAgentCopyWithImpl<$Res>
 /// Create a copy of SupportAgent
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? displayName = null,Object? agentCode = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SupportAgent(
 displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,agentCode: freezed == agentCode ? _self.agentCode : agentCode // ignore: cast_nullable_to_non_nullable
 as String?,
@@ -223,16 +229,18 @@ _$SupportAgentCopyWith<_SupportAgent> get copyWith => __$SupportAgentCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportAgent&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.agentCode, agentCode) || other.agentCode == agentCode));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportAgent&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.agentCode, agentCode) || other.agentCode == agentCode));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,displayName,agentCode);
+int get hashCode {
+    return Object.hash(runtimeType,displayName,agentCode);
+}
 
 @override
 String toString() {
-  return 'SupportAgent(displayName: $displayName, agentCode: $agentCode)';
+    return 'SupportAgent(displayName: $displayName, agentCode: $agentCode)';
 }
 
 
@@ -285,16 +293,21 @@ $SupportTicketCopyWith<SupportTicket> get copyWith => _$SupportTicketCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTicket&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&(identical(other.agent, agent) || other.agent == agent)&&(identical(other.complaintReceivedAt, complaintReceivedAt) || other.complaintReceivedAt == complaintReceivedAt)&&(identical(other.complaintDueAt, complaintDueAt) || other.complaintDueAt == complaintDueAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate)&&(identical(other.etaMinutes, etaMinutes) || other.etaMinutes == etaMinutes)&&const DeepCollectionEquality().equals(other.quickReplies, quickReplies));
+  final _this = this as SupportTicket;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTicket&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.ticketNumber, _this.ticketNumber) || other.ticketNumber == _this.ticketNumber)&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId)&&(identical(other.topic, _this.topic) || other.topic == _this.topic)&&(identical(other.topicName, _this.topicName) || other.topicName == _this.topicName)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.queueAhead, _this.queueAhead) || other.queueAhead == _this.queueAhead)&&(identical(other.agent, _this.agent) || other.agent == _this.agent)&&(identical(other.complaintReceivedAt, _this.complaintReceivedAt) || other.complaintReceivedAt == _this.complaintReceivedAt)&&(identical(other.complaintDueAt, _this.complaintDueAt) || other.complaintDueAt == _this.complaintDueAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.resolvedAt, _this.resolvedAt) || other.resolvedAt == _this.resolvedAt)&&(identical(other.closedAt, _this.closedAt) || other.closedAt == _this.closedAt)&&(identical(other.reopenUntil, _this.reopenUntil) || other.reopenUntil == _this.reopenUntil)&&(identical(other.rating, _this.rating) || other.rating == _this.rating)&&(identical(other.canRate, _this.canRate) || other.canRate == _this.canRate)&&(identical(other.etaMinutes, _this.etaMinutes) || other.etaMinutes == _this.etaMinutes)&&const DeepCollectionEquality().equals(other.quickReplies, _this.quickReplies));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,agent,complaintReceivedAt,complaintDueAt,createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate,etaMinutes,const DeepCollectionEquality().hash(quickReplies));
+int get hashCode {
+  final _this = this as SupportTicket;
+  return Object.hash(runtimeType,_this.id,_this.ticketNumber,_this.roomId,_this.topic,_this.topicName,_this.status,_this.queueAhead,_this.agent,_this.complaintReceivedAt,_this.complaintDueAt,_this.createdAt,_this.resolvedAt,_this.closedAt,_this.reopenUntil,_this.rating,_this.canRate,_this.etaMinutes,const DeepCollectionEquality().hash(_this.quickReplies));
+}
 
 @override
 String toString() {
-  return 'SupportTicket(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaintReceivedAt: $complaintReceivedAt, complaintDueAt: $complaintDueAt, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate, etaMinutes: $etaMinutes, quickReplies: $quickReplies)';
+  final _this = this as SupportTicket;
+  return 'SupportTicket(id: ${_this.id}, ticketNumber: ${_this.ticketNumber}, roomId: ${_this.roomId}, topic: ${_this.topic}, topicName: ${_this.topicName}, status: ${_this.status}, queueAhead: ${_this.queueAhead}, agent: ${_this.agent}, complaintReceivedAt: ${_this.complaintReceivedAt}, complaintDueAt: ${_this.complaintDueAt}, createdAt: ${_this.createdAt}, resolvedAt: ${_this.resolvedAt}, closedAt: ${_this.closedAt}, reopenUntil: ${_this.reopenUntil}, rating: ${_this.rating}, canRate: ${_this.canRate}, etaMinutes: ${_this.etaMinutes}, quickReplies: ${_this.quickReplies})';
 }
 
 
@@ -323,7 +336,7 @@ class _$SupportTicketCopyWithImpl<$Res>
 /// Create a copy of SupportTicket
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? ticketNumber = null,Object? roomId = null,Object? topic = null,Object? topicName = freezed,Object? status = null,Object? queueAhead = freezed,Object? agent = freezed,Object? complaintReceivedAt = freezed,Object? complaintDueAt = freezed,Object? createdAt = null,Object? resolvedAt = freezed,Object? closedAt = freezed,Object? reopenUntil = freezed,Object? rating = freezed,Object? canRate = null,Object? etaMinutes = freezed,Object? quickReplies = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportTicket(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,ticketNumber: null == ticketNumber ? _self.ticketNumber : ticketNumber // ignore: cast_nullable_to_non_nullable
 as String,roomId: null == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
@@ -495,7 +508,7 @@ return $default(_that.id,_that.ticketNumber,_that.roomId,_that.topic,_that.topic
 
 
 class _SupportTicket extends SupportTicket {
-  const _SupportTicket({required this.id, required this.ticketNumber, required this.roomId, required this.topic, this.topicName, required this.status, this.queueAhead, this.agent, this.complaintReceivedAt, this.complaintDueAt, required this.createdAt, this.resolvedAt, this.closedAt, this.reopenUntil, this.rating, this.canRate = false, this.etaMinutes, final  List<String> quickReplies = const <String>[]}): _quickReplies = quickReplies,super._();
+  const _SupportTicket({required this.id, required this.ticketNumber, required this.roomId, required this.topic, this.topicName, required this.status, this.queueAhead, this.agent, this.complaintReceivedAt, this.complaintDueAt, required this.createdAt, this.resolvedAt, this.closedAt, this.reopenUntil, this.rating, this.canRate = false, this.etaMinutes,  List<String> quickReplies = const <String>[]}): _quickReplies = quickReplies,super._();
   
 
 @override final  String id;
@@ -533,16 +546,18 @@ _$SupportTicketCopyWith<_SupportTicket> get copyWith => __$SupportTicketCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTicket&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&(identical(other.agent, agent) || other.agent == agent)&&(identical(other.complaintReceivedAt, complaintReceivedAt) || other.complaintReceivedAt == complaintReceivedAt)&&(identical(other.complaintDueAt, complaintDueAt) || other.complaintDueAt == complaintDueAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate)&&(identical(other.etaMinutes, etaMinutes) || other.etaMinutes == etaMinutes)&&const DeepCollectionEquality().equals(other._quickReplies, _quickReplies));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTicket&&(identical(other.id, id) || other.id == id)&&(identical(other.ticketNumber, ticketNumber) || other.ticketNumber == ticketNumber)&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.topicName, topicName) || other.topicName == topicName)&&(identical(other.status, status) || other.status == status)&&(identical(other.queueAhead, queueAhead) || other.queueAhead == queueAhead)&&(identical(other.agent, agent) || other.agent == agent)&&(identical(other.complaintReceivedAt, complaintReceivedAt) || other.complaintReceivedAt == complaintReceivedAt)&&(identical(other.complaintDueAt, complaintDueAt) || other.complaintDueAt == complaintDueAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.resolvedAt, resolvedAt) || other.resolvedAt == resolvedAt)&&(identical(other.closedAt, closedAt) || other.closedAt == closedAt)&&(identical(other.reopenUntil, reopenUntil) || other.reopenUntil == reopenUntil)&&(identical(other.rating, rating) || other.rating == rating)&&(identical(other.canRate, canRate) || other.canRate == canRate)&&(identical(other.etaMinutes, etaMinutes) || other.etaMinutes == etaMinutes)&&const DeepCollectionEquality().equals(other.quickReplies, _quickReplies));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,agent,complaintReceivedAt,complaintDueAt,createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate,etaMinutes,const DeepCollectionEquality().hash(_quickReplies));
+int get hashCode {
+    return Object.hash(runtimeType,id,ticketNumber,roomId,topic,topicName,status,queueAhead,agent,complaintReceivedAt,complaintDueAt,createdAt,resolvedAt,closedAt,reopenUntil,rating,canRate,etaMinutes,const DeepCollectionEquality().hash(_quickReplies));
+}
 
 @override
 String toString() {
-  return 'SupportTicket(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaintReceivedAt: $complaintReceivedAt, complaintDueAt: $complaintDueAt, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate, etaMinutes: $etaMinutes, quickReplies: $quickReplies)';
+    return 'SupportTicket(id: $id, ticketNumber: $ticketNumber, roomId: $roomId, topic: $topic, topicName: $topicName, status: $status, queueAhead: $queueAhead, agent: $agent, complaintReceivedAt: $complaintReceivedAt, complaintDueAt: $complaintDueAt, createdAt: $createdAt, resolvedAt: $resolvedAt, closedAt: $closedAt, reopenUntil: $reopenUntil, rating: $rating, canRate: $canRate, etaMinutes: $etaMinutes, quickReplies: $quickReplies)';
 }
 
 
@@ -623,16 +638,21 @@ $SupportHomeCopyWith<SupportHome> get copyWith => _$SupportHomeCopyWithImpl<Supp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHome&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&(identical(other.topicPicker, topicPicker) || other.topicPicker == topicPicker)&&const DeepCollectionEquality().equals(other.incidents, incidents)&&const DeepCollectionEquality().equals(other.surveys, surveys));
+  final _this = this as SupportHome;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportHome&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId)&&(identical(other.supportName, _this.supportName) || other.supportName == _this.supportName)&&(identical(other.ticket, _this.ticket) || other.ticket == _this.ticket)&&(identical(other.active, _this.active) || other.active == _this.active)&&(identical(other.unreadCount, _this.unreadCount) || other.unreadCount == _this.unreadCount)&&(identical(other.serviceOpen, _this.serviceOpen) || other.serviceOpen == _this.serviceOpen)&&(identical(other.nextOpenAt, _this.nextOpenAt) || other.nextOpenAt == _this.nextOpenAt)&&(identical(other.topicPicker, _this.topicPicker) || other.topicPicker == _this.topicPicker)&&const DeepCollectionEquality().equals(other.incidents, _this.incidents)&&const DeepCollectionEquality().equals(other.surveys, _this.surveys));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,topicPicker,const DeepCollectionEquality().hash(incidents),const DeepCollectionEquality().hash(surveys));
+int get hashCode {
+  final _this = this as SupportHome;
+  return Object.hash(runtimeType,_this.roomId,_this.supportName,_this.ticket,_this.active,_this.unreadCount,_this.serviceOpen,_this.nextOpenAt,_this.topicPicker,const DeepCollectionEquality().hash(_this.incidents),const DeepCollectionEquality().hash(_this.surveys));
+}
 
 @override
 String toString() {
-  return 'SupportHome(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker, incidents: $incidents, surveys: $surveys)';
+  final _this = this as SupportHome;
+  return 'SupportHome(roomId: ${_this.roomId}, supportName: ${_this.supportName}, ticket: ${_this.ticket}, active: ${_this.active}, unreadCount: ${_this.unreadCount}, serviceOpen: ${_this.serviceOpen}, nextOpenAt: ${_this.nextOpenAt}, topicPicker: ${_this.topicPicker}, incidents: ${_this.incidents}, surveys: ${_this.surveys})';
 }
 
 
@@ -661,7 +681,7 @@ class _$SupportHomeCopyWithImpl<$Res>
 /// Create a copy of SupportHome
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? roomId = freezed,Object? supportName = null,Object? ticket = freezed,Object? active = null,Object? unreadCount = null,Object? serviceOpen = null,Object? nextOpenAt = freezed,Object? topicPicker = null,Object? incidents = null,Object? surveys = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportHome(
 roomId: freezed == roomId ? _self.roomId : roomId // ignore: cast_nullable_to_non_nullable
 as String?,supportName: null == supportName ? _self.supportName : supportName // ignore: cast_nullable_to_non_nullable
 as String,ticket: freezed == ticket ? _self.ticket : ticket // ignore: cast_nullable_to_non_nullable
@@ -834,7 +854,7 @@ return $default(_that.roomId,_that.supportName,_that.ticket,_that.active,_that.u
 
 
 class _SupportHome extends SupportHome {
-  const _SupportHome({this.roomId, required this.supportName, this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt, this.topicPicker = const SupportTopicPickerTexts(), final  List<SupportIncident> incidents = const <SupportIncident>[], final  Map<String, SupportSurvey> surveys = const <String, SupportSurvey>{}}): _incidents = incidents,_surveys = surveys,super._();
+  const _SupportHome({this.roomId, required this.supportName, this.ticket, this.active = false, this.unreadCount = 0, this.serviceOpen = true, this.nextOpenAt, this.topicPicker = const SupportTopicPickerTexts(),  List<SupportIncident> incidents = const <SupportIncident>[],  Map<String, SupportSurvey> surveys = const <String, SupportSurvey>{}}): _incidents = incidents,_surveys = surveys,super._();
   
 
 @override final  String? roomId;
@@ -870,16 +890,18 @@ _$SupportHomeCopyWith<_SupportHome> get copyWith => __$SupportHomeCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHome&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&(identical(other.topicPicker, topicPicker) || other.topicPicker == topicPicker)&&const DeepCollectionEquality().equals(other._incidents, _incidents)&&const DeepCollectionEquality().equals(other._surveys, _surveys));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportHome&&(identical(other.roomId, roomId) || other.roomId == roomId)&&(identical(other.supportName, supportName) || other.supportName == supportName)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&(identical(other.active, active) || other.active == active)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.serviceOpen, serviceOpen) || other.serviceOpen == serviceOpen)&&(identical(other.nextOpenAt, nextOpenAt) || other.nextOpenAt == nextOpenAt)&&(identical(other.topicPicker, topicPicker) || other.topicPicker == topicPicker)&&const DeepCollectionEquality().equals(other.incidents, _incidents)&&const DeepCollectionEquality().equals(other.surveys, _surveys));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,topicPicker,const DeepCollectionEquality().hash(_incidents),const DeepCollectionEquality().hash(_surveys));
+int get hashCode {
+    return Object.hash(runtimeType,roomId,supportName,ticket,active,unreadCount,serviceOpen,nextOpenAt,topicPicker,const DeepCollectionEquality().hash(_incidents),const DeepCollectionEquality().hash(_surveys));
+}
 
 @override
 String toString() {
-  return 'SupportHome(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker, incidents: $incidents, surveys: $surveys)';
+    return 'SupportHome(roomId: $roomId, supportName: $supportName, ticket: $ticket, active: $active, unreadCount: $unreadCount, serviceOpen: $serviceOpen, nextOpenAt: $nextOpenAt, topicPicker: $topicPicker, incidents: $incidents, surveys: $surveys)';
 }
 
 
@@ -961,16 +983,21 @@ $SupportTopicCopyWith<SupportTopic> get copyWith => _$SupportTopicCopyWithImpl<S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTopic&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.helpUrl, helpUrl) || other.helpUrl == helpUrl)&&(identical(other.urgent, urgent) || other.urgent == urgent)&&(identical(other.description, description) || other.description == description)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.style, style) || other.style == style)&&const DeepCollectionEquality().equals(other.intake, intake));
+  final _this = this as SupportTopic;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTopic&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.helpUrl, _this.helpUrl) || other.helpUrl == _this.helpUrl)&&(identical(other.urgent, _this.urgent) || other.urgent == _this.urgent)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.icon, _this.icon) || other.icon == _this.icon)&&(identical(other.style, _this.style) || other.style == _this.style)&&const DeepCollectionEquality().equals(other.intake, _this.intake));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,name,helpUrl,urgent,description,icon,style,const DeepCollectionEquality().hash(intake));
+int get hashCode {
+  final _this = this as SupportTopic;
+  return Object.hash(runtimeType,_this.code,_this.name,_this.helpUrl,_this.urgent,_this.description,_this.icon,_this.style,const DeepCollectionEquality().hash(_this.intake));
+}
 
 @override
 String toString() {
-  return 'SupportTopic(code: $code, name: $name, helpUrl: $helpUrl, urgent: $urgent, description: $description, icon: $icon, style: $style, intake: $intake)';
+  final _this = this as SupportTopic;
+  return 'SupportTopic(code: ${_this.code}, name: ${_this.name}, helpUrl: ${_this.helpUrl}, urgent: ${_this.urgent}, description: ${_this.description}, icon: ${_this.icon}, style: ${_this.style}, intake: ${_this.intake})';
 }
 
 
@@ -999,7 +1026,7 @@ class _$SupportTopicCopyWithImpl<$Res>
 /// Create a copy of SupportTopic
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? name = null,Object? helpUrl = freezed,Object? urgent = null,Object? description = freezed,Object? icon = freezed,Object? style = null,Object? intake = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportTopic(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,helpUrl: freezed == helpUrl ? _self.helpUrl : helpUrl // ignore: cast_nullable_to_non_nullable
@@ -1149,7 +1176,7 @@ return $default(_that.code,_that.name,_that.helpUrl,_that.urgent,_that.descripti
 
 
 class _SupportTopic extends SupportTopic {
-  const _SupportTopic({required this.code, required this.name, this.helpUrl, this.urgent = false, this.description, this.icon, this.style = 'normal', final  List<SupportIntakeField> intake = const <SupportIntakeField>[]}): _intake = intake,super._();
+  const _SupportTopic({required this.code, required this.name, this.helpUrl, this.urgent = false, this.description, this.icon, this.style = 'normal',  List<SupportIntakeField> intake = const <SupportIntakeField>[]}): _intake = intake,super._();
   
 
 @override final  String code;
@@ -1177,16 +1204,18 @@ _$SupportTopicCopyWith<_SupportTopic> get copyWith => __$SupportTopicCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTopic&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.helpUrl, helpUrl) || other.helpUrl == helpUrl)&&(identical(other.urgent, urgent) || other.urgent == urgent)&&(identical(other.description, description) || other.description == description)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.style, style) || other.style == style)&&const DeepCollectionEquality().equals(other._intake, _intake));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTopic&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.helpUrl, helpUrl) || other.helpUrl == helpUrl)&&(identical(other.urgent, urgent) || other.urgent == urgent)&&(identical(other.description, description) || other.description == description)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.style, style) || other.style == style)&&const DeepCollectionEquality().equals(other.intake, _intake));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,name,helpUrl,urgent,description,icon,style,const DeepCollectionEquality().hash(_intake));
+int get hashCode {
+    return Object.hash(runtimeType,code,name,helpUrl,urgent,description,icon,style,const DeepCollectionEquality().hash(_intake));
+}
 
 @override
 String toString() {
-  return 'SupportTopic(code: $code, name: $name, helpUrl: $helpUrl, urgent: $urgent, description: $description, icon: $icon, style: $style, intake: $intake)';
+    return 'SupportTopic(code: $code, name: $name, helpUrl: $helpUrl, urgent: $urgent, description: $description, icon: $icon, style: $style, intake: $intake)';
 }
 
 
@@ -1245,16 +1274,21 @@ $SupportIntakeOptionCopyWith<SupportIntakeOption> get copyWith => _$SupportIntak
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportIntakeOption&&(identical(other.value, value) || other.value == value)&&(identical(other.label, label) || other.label == label));
+  final _this = this as SupportIntakeOption;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportIntakeOption&&(identical(other.value, _this.value) || other.value == _this.value)&&(identical(other.label, _this.label) || other.label == _this.label));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,value,label);
+int get hashCode {
+  final _this = this as SupportIntakeOption;
+  return Object.hash(runtimeType,_this.value,_this.label);
+}
 
 @override
 String toString() {
-  return 'SupportIntakeOption(value: $value, label: $label)';
+  final _this = this as SupportIntakeOption;
+  return 'SupportIntakeOption(value: ${_this.value}, label: ${_this.label})';
 }
 
 
@@ -1283,7 +1317,7 @@ class _$SupportIntakeOptionCopyWithImpl<$Res>
 /// Create a copy of SupportIntakeOption
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? value = null,Object? label = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportIntakeOption(
 value: null == value ? _self.value : value // ignore: cast_nullable_to_non_nullable
 as String,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String,
@@ -1443,16 +1477,18 @@ _$SupportIntakeOptionCopyWith<_SupportIntakeOption> get copyWith => __$SupportIn
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportIntakeOption&&(identical(other.value, value) || other.value == value)&&(identical(other.label, label) || other.label == label));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportIntakeOption&&(identical(other.value, value) || other.value == value)&&(identical(other.label, label) || other.label == label));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,value,label);
+int get hashCode {
+    return Object.hash(runtimeType,value,label);
+}
 
 @override
 String toString() {
-  return 'SupportIntakeOption(value: $value, label: $label)';
+    return 'SupportIntakeOption(value: $value, label: $label)';
 }
 
 
@@ -1505,16 +1541,21 @@ $SupportIntakeFieldCopyWith<SupportIntakeField> get copyWith => _$SupportIntakeF
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportIntakeField&&(identical(other.key, key) || other.key == key)&&(identical(other.type, type) || other.type == type)&&(identical(other.label, label) || other.label == label)&&(identical(other.isRequired, isRequired) || other.isRequired == isRequired)&&const DeepCollectionEquality().equals(other.options, options));
+  final _this = this as SupportIntakeField;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportIntakeField&&(identical(other.key, _this.key) || other.key == _this.key)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.label, _this.label) || other.label == _this.label)&&(identical(other.isRequired, _this.isRequired) || other.isRequired == _this.isRequired)&&const DeepCollectionEquality().equals(other.options, _this.options));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,key,type,label,isRequired,const DeepCollectionEquality().hash(options));
+int get hashCode {
+  final _this = this as SupportIntakeField;
+  return Object.hash(runtimeType,_this.key,_this.type,_this.label,_this.isRequired,const DeepCollectionEquality().hash(_this.options));
+}
 
 @override
 String toString() {
-  return 'SupportIntakeField(key: $key, type: $type, label: $label, isRequired: $isRequired, options: $options)';
+  final _this = this as SupportIntakeField;
+  return 'SupportIntakeField(key: ${_this.key}, type: ${_this.type}, label: ${_this.label}, isRequired: ${_this.isRequired}, options: ${_this.options})';
 }
 
 
@@ -1543,7 +1584,7 @@ class _$SupportIntakeFieldCopyWithImpl<$Res>
 /// Create a copy of SupportIntakeField
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? key = null,Object? type = null,Object? label = null,Object? isRequired = null,Object? options = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportIntakeField(
 key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as SupportIntakeType,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
@@ -1690,7 +1731,7 @@ return $default(_that.key,_that.type,_that.label,_that.isRequired,_that.options)
 
 
 class _SupportIntakeField extends SupportIntakeField {
-  const _SupportIntakeField({required this.key, required this.type, required this.label, this.isRequired = false, final  List<SupportIntakeOption> options = const <SupportIntakeOption>[]}): _options = options,super._();
+  const _SupportIntakeField({required this.key, required this.type, required this.label, this.isRequired = false,  List<SupportIntakeOption> options = const <SupportIntakeOption>[]}): _options = options,super._();
   
 
 @override final  String key;
@@ -1715,16 +1756,18 @@ _$SupportIntakeFieldCopyWith<_SupportIntakeField> get copyWith => __$SupportInta
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportIntakeField&&(identical(other.key, key) || other.key == key)&&(identical(other.type, type) || other.type == type)&&(identical(other.label, label) || other.label == label)&&(identical(other.isRequired, isRequired) || other.isRequired == isRequired)&&const DeepCollectionEquality().equals(other._options, _options));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportIntakeField&&(identical(other.key, key) || other.key == key)&&(identical(other.type, type) || other.type == type)&&(identical(other.label, label) || other.label == label)&&(identical(other.isRequired, isRequired) || other.isRequired == isRequired)&&const DeepCollectionEquality().equals(other.options, _options));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,key,type,label,isRequired,const DeepCollectionEquality().hash(_options));
+int get hashCode {
+    return Object.hash(runtimeType,key,type,label,isRequired,const DeepCollectionEquality().hash(_options));
+}
 
 @override
 String toString() {
-  return 'SupportIntakeField(key: $key, type: $type, label: $label, isRequired: $isRequired, options: $options)';
+    return 'SupportIntakeField(key: $key, type: $type, label: $label, isRequired: $isRequired, options: $options)';
 }
 
 
@@ -1780,16 +1823,21 @@ $SupportIncidentCopyWith<SupportIncident> get copyWith => _$SupportIncidentCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportIncident&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.level, level) || other.level == level)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.faqArticleId, faqArticleId) || other.faqArticleId == faqArticleId));
+  final _this = this as SupportIncident;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportIncident&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.level, _this.level) || other.level == _this.level)&&(identical(other.startsAt, _this.startsAt) || other.startsAt == _this.startsAt)&&(identical(other.endsAt, _this.endsAt) || other.endsAt == _this.endsAt)&&(identical(other.faqArticleId, _this.faqArticleId) || other.faqArticleId == _this.faqArticleId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,body,level,startsAt,endsAt,faqArticleId);
+int get hashCode {
+  final _this = this as SupportIncident;
+  return Object.hash(runtimeType,_this.id,_this.title,_this.body,_this.level,_this.startsAt,_this.endsAt,_this.faqArticleId);
+}
 
 @override
 String toString() {
-  return 'SupportIncident(id: $id, title: $title, body: $body, level: $level, startsAt: $startsAt, endsAt: $endsAt, faqArticleId: $faqArticleId)';
+  final _this = this as SupportIncident;
+  return 'SupportIncident(id: ${_this.id}, title: ${_this.title}, body: ${_this.body}, level: ${_this.level}, startsAt: ${_this.startsAt}, endsAt: ${_this.endsAt}, faqArticleId: ${_this.faqArticleId})';
 }
 
 
@@ -1818,7 +1866,7 @@ class _$SupportIncidentCopyWithImpl<$Res>
 /// Create a copy of SupportIncident
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? body = null,Object? level = null,Object? startsAt = freezed,Object? endsAt = freezed,Object? faqArticleId = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SupportIncident(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
@@ -1988,16 +2036,18 @@ _$SupportIncidentCopyWith<_SupportIncident> get copyWith => __$SupportIncidentCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportIncident&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.level, level) || other.level == level)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.faqArticleId, faqArticleId) || other.faqArticleId == faqArticleId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportIncident&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.level, level) || other.level == level)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.faqArticleId, faqArticleId) || other.faqArticleId == faqArticleId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,body,level,startsAt,endsAt,faqArticleId);
+int get hashCode {
+    return Object.hash(runtimeType,id,title,body,level,startsAt,endsAt,faqArticleId);
+}
 
 @override
 String toString() {
-  return 'SupportIncident(id: $id, title: $title, body: $body, level: $level, startsAt: $startsAt, endsAt: $endsAt, faqArticleId: $faqArticleId)';
+    return 'SupportIncident(id: $id, title: $title, body: $body, level: $level, startsAt: $startsAt, endsAt: $endsAt, faqArticleId: $faqArticleId)';
 }
 
 
@@ -2055,16 +2105,21 @@ $SupportSurveyReasonCopyWith<SupportSurveyReason> get copyWith => _$SupportSurve
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportSurveyReason&&(identical(other.code, code) || other.code == code)&&(identical(other.label, label) || other.label == label));
+  final _this = this as SupportSurveyReason;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportSurveyReason&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.label, _this.label) || other.label == _this.label));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,label);
+int get hashCode {
+  final _this = this as SupportSurveyReason;
+  return Object.hash(runtimeType,_this.code,_this.label);
+}
 
 @override
 String toString() {
-  return 'SupportSurveyReason(code: $code, label: $label)';
+  final _this = this as SupportSurveyReason;
+  return 'SupportSurveyReason(code: ${_this.code}, label: ${_this.label})';
 }
 
 
@@ -2093,7 +2148,7 @@ class _$SupportSurveyReasonCopyWithImpl<$Res>
 /// Create a copy of SupportSurveyReason
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? label = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportSurveyReason(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,label: null == label ? _self.label : label // ignore: cast_nullable_to_non_nullable
 as String,
@@ -2253,16 +2308,18 @@ _$SupportSurveyReasonCopyWith<_SupportSurveyReason> get copyWith => __$SupportSu
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportSurveyReason&&(identical(other.code, code) || other.code == code)&&(identical(other.label, label) || other.label == label));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportSurveyReason&&(identical(other.code, code) || other.code == code)&&(identical(other.label, label) || other.label == label));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,label);
+int get hashCode {
+    return Object.hash(runtimeType,code,label);
+}
 
 @override
 String toString() {
-  return 'SupportSurveyReason(code: $code, label: $label)';
+    return 'SupportSurveyReason(code: $code, label: $label)';
 }
 
 
@@ -2315,16 +2372,21 @@ $SupportSurveyCopyWith<SupportSurvey> get copyWith => _$SupportSurveyCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportSurvey&&(identical(other.question, question) || other.question == question)&&(identical(other.scale, scale) || other.scale == scale)&&(identical(other.lowMax, lowMax) || other.lowMax == lowMax)&&const DeepCollectionEquality().equals(other.reasons, reasons));
+  final _this = this as SupportSurvey;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportSurvey&&(identical(other.question, _this.question) || other.question == _this.question)&&(identical(other.scale, _this.scale) || other.scale == _this.scale)&&(identical(other.lowMax, _this.lowMax) || other.lowMax == _this.lowMax)&&const DeepCollectionEquality().equals(other.reasons, _this.reasons));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,question,scale,lowMax,const DeepCollectionEquality().hash(reasons));
+int get hashCode {
+  final _this = this as SupportSurvey;
+  return Object.hash(runtimeType,_this.question,_this.scale,_this.lowMax,const DeepCollectionEquality().hash(_this.reasons));
+}
 
 @override
 String toString() {
-  return 'SupportSurvey(question: $question, scale: $scale, lowMax: $lowMax, reasons: $reasons)';
+  final _this = this as SupportSurvey;
+  return 'SupportSurvey(question: ${_this.question}, scale: ${_this.scale}, lowMax: ${_this.lowMax}, reasons: ${_this.reasons})';
 }
 
 
@@ -2353,7 +2415,7 @@ class _$SupportSurveyCopyWithImpl<$Res>
 /// Create a copy of SupportSurvey
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? question = null,Object? scale = null,Object? lowMax = null,Object? reasons = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportSurvey(
 question: null == question ? _self.question : question // ignore: cast_nullable_to_non_nullable
 as String,scale: null == scale ? _self.scale : scale // ignore: cast_nullable_to_non_nullable
 as int,lowMax: null == lowMax ? _self.lowMax : lowMax // ignore: cast_nullable_to_non_nullable
@@ -2499,7 +2561,7 @@ return $default(_that.question,_that.scale,_that.lowMax,_that.reasons);case _:
 
 
 class _SupportSurvey extends SupportSurvey {
-  const _SupportSurvey({required this.question, this.scale = 5, this.lowMax = 2, final  List<SupportSurveyReason> reasons = const <SupportSurveyReason>[]}): _reasons = reasons,super._();
+  const _SupportSurvey({required this.question, this.scale = 5, this.lowMax = 2,  List<SupportSurveyReason> reasons = const <SupportSurveyReason>[]}): _reasons = reasons,super._();
   
 
 @override final  String question;
@@ -2523,16 +2585,18 @@ _$SupportSurveyCopyWith<_SupportSurvey> get copyWith => __$SupportSurveyCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportSurvey&&(identical(other.question, question) || other.question == question)&&(identical(other.scale, scale) || other.scale == scale)&&(identical(other.lowMax, lowMax) || other.lowMax == lowMax)&&const DeepCollectionEquality().equals(other._reasons, _reasons));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportSurvey&&(identical(other.question, question) || other.question == question)&&(identical(other.scale, scale) || other.scale == scale)&&(identical(other.lowMax, lowMax) || other.lowMax == lowMax)&&const DeepCollectionEquality().equals(other.reasons, _reasons));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,question,scale,lowMax,const DeepCollectionEquality().hash(_reasons));
+int get hashCode {
+    return Object.hash(runtimeType,question,scale,lowMax,const DeepCollectionEquality().hash(_reasons));
+}
 
 @override
 String toString() {
-  return 'SupportSurvey(question: $question, scale: $scale, lowMax: $lowMax, reasons: $reasons)';
+    return 'SupportSurvey(question: $question, scale: $scale, lowMax: $lowMax, reasons: $reasons)';
 }
 
 
@@ -2587,16 +2651,21 @@ $SupportTopicPickerTextsCopyWith<SupportTopicPickerTexts> get copyWith => _$Supp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTopicPickerTexts&&const DeepCollectionEquality().equals(other.title, title)&&const DeepCollectionEquality().equals(other.hint, hint));
+  final _this = this as SupportTopicPickerTexts;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportTopicPickerTexts&&const DeepCollectionEquality().equals(other.title, _this.title)&&const DeepCollectionEquality().equals(other.hint, _this.hint));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(title),const DeepCollectionEquality().hash(hint));
+int get hashCode {
+  final _this = this as SupportTopicPickerTexts;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.title),const DeepCollectionEquality().hash(_this.hint));
+}
 
 @override
 String toString() {
-  return 'SupportTopicPickerTexts(title: $title, hint: $hint)';
+  final _this = this as SupportTopicPickerTexts;
+  return 'SupportTopicPickerTexts(title: ${_this.title}, hint: ${_this.hint})';
 }
 
 
@@ -2625,7 +2694,7 @@ class _$SupportTopicPickerTextsCopyWithImpl<$Res>
 /// Create a copy of SupportTopicPickerTexts
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? title = null,Object? hint = null,}) {
-  return _then(_self.copyWith(
+  return _then(SupportTopicPickerTexts(
 title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as Map<String, String>,hint: null == hint ? _self.hint : hint // ignore: cast_nullable_to_non_nullable
 as Map<String, String>,
@@ -2769,7 +2838,7 @@ return $default(_that.title,_that.hint);case _:
 
 
 class _SupportTopicPickerTexts implements SupportTopicPickerTexts {
-  const _SupportTopicPickerTexts({final  Map<String, String> title = const <String, String>{}, final  Map<String, String> hint = const <String, String>{}}): _title = title,_hint = hint;
+  const _SupportTopicPickerTexts({ Map<String, String> title = const <String, String>{},  Map<String, String> hint = const <String, String>{}}): _title = title,_hint = hint;
   
 
  final  Map<String, String> _title;
@@ -2797,16 +2866,18 @@ _$SupportTopicPickerTextsCopyWith<_SupportTopicPickerTexts> get copyWith => __$S
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTopicPickerTexts&&const DeepCollectionEquality().equals(other._title, _title)&&const DeepCollectionEquality().equals(other._hint, _hint));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportTopicPickerTexts&&const DeepCollectionEquality().equals(other.title, _title)&&const DeepCollectionEquality().equals(other.hint, _hint));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_title),const DeepCollectionEquality().hash(_hint));
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_title),const DeepCollectionEquality().hash(_hint));
+}
 
 @override
 String toString() {
-  return 'SupportTopicPickerTexts(title: $title, hint: $hint)';
+    return 'SupportTopicPickerTexts(title: $title, hint: $hint)';
 }
 
 
@@ -2859,16 +2930,21 @@ $SensitiveCheckCopyWith<SensitiveCheck> get copyWith => _$SensitiveCheckCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SensitiveCheck&&(identical(other.masked, masked) || other.masked == masked)&&const DeepCollectionEquality().equals(other.kinds, kinds));
+  final _this = this as SensitiveCheck;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SensitiveCheck&&(identical(other.masked, _this.masked) || other.masked == _this.masked)&&const DeepCollectionEquality().equals(other.kinds, _this.kinds));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,masked,const DeepCollectionEquality().hash(kinds));
+int get hashCode {
+  final _this = this as SensitiveCheck;
+  return Object.hash(runtimeType,_this.masked,const DeepCollectionEquality().hash(_this.kinds));
+}
 
 @override
 String toString() {
-  return 'SensitiveCheck(masked: $masked, kinds: $kinds)';
+  final _this = this as SensitiveCheck;
+  return 'SensitiveCheck(masked: ${_this.masked}, kinds: ${_this.kinds})';
 }
 
 
@@ -2897,7 +2973,7 @@ class _$SensitiveCheckCopyWithImpl<$Res>
 /// Create a copy of SensitiveCheck
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? masked = null,Object? kinds = null,}) {
-  return _then(_self.copyWith(
+  return _then(SensitiveCheck(
 masked: null == masked ? _self.masked : masked // ignore: cast_nullable_to_non_nullable
 as bool,kinds: null == kinds ? _self.kinds : kinds // ignore: cast_nullable_to_non_nullable
 as List<String>,
@@ -3041,7 +3117,7 @@ return $default(_that.masked,_that.kinds);case _:
 
 
 class _SensitiveCheck implements SensitiveCheck {
-  const _SensitiveCheck({this.masked = false, final  List<String> kinds = const <String>[]}): _kinds = kinds;
+  const _SensitiveCheck({this.masked = false,  List<String> kinds = const <String>[]}): _kinds = kinds;
   
 
 @override@JsonKey() final  bool masked;
@@ -3063,16 +3139,18 @@ _$SensitiveCheckCopyWith<_SensitiveCheck> get copyWith => __$SensitiveCheckCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SensitiveCheck&&(identical(other.masked, masked) || other.masked == masked)&&const DeepCollectionEquality().equals(other._kinds, _kinds));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SensitiveCheck&&(identical(other.masked, masked) || other.masked == masked)&&const DeepCollectionEquality().equals(other.kinds, _kinds));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,masked,const DeepCollectionEquality().hash(_kinds));
+int get hashCode {
+    return Object.hash(runtimeType,masked,const DeepCollectionEquality().hash(_kinds));
+}
 
 @override
 String toString() {
-  return 'SensitiveCheck(masked: $masked, kinds: $kinds)';
+    return 'SensitiveCheck(masked: $masked, kinds: $kinds)';
 }
 
 
@@ -3125,16 +3203,21 @@ $SupportNoticeCopyWith<SupportNotice> get copyWith => _$SupportNoticeCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportNotice&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.ticketId, ticketId) || other.ticketId == ticketId)&&(identical(other.roomId, roomId) || other.roomId == roomId));
+  final _this = this as SupportNotice;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SupportNotice&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.ticketId, _this.ticketId) || other.ticketId == _this.ticketId)&&(identical(other.roomId, _this.roomId) || other.roomId == _this.roomId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,body,ticketId,roomId);
+int get hashCode {
+  final _this = this as SupportNotice;
+  return Object.hash(runtimeType,_this.id,_this.title,_this.body,_this.ticketId,_this.roomId);
+}
 
 @override
 String toString() {
-  return 'SupportNotice(id: $id, title: $title, body: $body, ticketId: $ticketId, roomId: $roomId)';
+  final _this = this as SupportNotice;
+  return 'SupportNotice(id: ${_this.id}, title: ${_this.title}, body: ${_this.body}, ticketId: ${_this.ticketId}, roomId: ${_this.roomId})';
 }
 
 
@@ -3163,7 +3246,7 @@ class _$SupportNoticeCopyWithImpl<$Res>
 /// Create a copy of SupportNotice
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? body = null,Object? ticketId = freezed,Object? roomId = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SupportNotice(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
@@ -3329,16 +3412,18 @@ _$SupportNoticeCopyWith<_SupportNotice> get copyWith => __$SupportNoticeCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportNotice&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.ticketId, ticketId) || other.ticketId == ticketId)&&(identical(other.roomId, roomId) || other.roomId == roomId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SupportNotice&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.ticketId, ticketId) || other.ticketId == ticketId)&&(identical(other.roomId, roomId) || other.roomId == roomId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,body,ticketId,roomId);
+int get hashCode {
+    return Object.hash(runtimeType,id,title,body,ticketId,roomId);
+}
 
 @override
 String toString() {
-  return 'SupportNotice(id: $id, title: $title, body: $body, ticketId: $ticketId, roomId: $roomId)';
+    return 'SupportNotice(id: $id, title: $title, body: $body, ticketId: $ticketId, roomId: $roomId)';
 }
 
 

@@ -1,7 +1,7 @@
 import 'dart:async';
 
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
@@ -81,7 +81,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('id'),
-        localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+        localizationsDelegates: communityLocalizationsDelegates,
         supportedLocales: CommunityLocalizations.supportedLocales,
         home: Scaffold(
           body: CommunityScope(
@@ -203,7 +203,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('id'),
-        localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+        localizationsDelegates: communityLocalizationsDelegates,
         supportedLocales: CommunityLocalizations.supportedLocales,
         home: CommunityBuildersScope(
           builders: CommunityBuilders(

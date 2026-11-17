@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/account/presentation/cubit/account_settings_cubit.dart';
 import 'package:rendezvous_community/src/features/account/presentation/widgets/delete_account_dialog.dart';

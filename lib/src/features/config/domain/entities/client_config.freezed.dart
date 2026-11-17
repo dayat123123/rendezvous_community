@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'client_config.dart';
@@ -9,6 +9,7 @@ part of 'client_config.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ClientConfigCopyWith<ClientConfig> get copyWith => _$ClientConfigCopyWithImpl<C
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientConfig&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other.flags, flags)&&const DeepCollectionEquality().equals(other.minVersions, minVersions)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&(identical(other.editWindow, editWindow) || other.editWindow == editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, messageReactions)&&(identical(other.searchMinLength, searchMinLength) || other.searchMinLength == searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, trendingWindows)&&(identical(other.notificationAggregateMinutes, notificationAggregateMinutes) || other.notificationAggregateMinutes == notificationAggregateMinutes)&&(identical(other.clockSkew, clockSkew) || other.clockSkew == clockSkew)&&const DeepCollectionEquality().equals(other.banners, banners)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt));
+  final _this = this as ClientConfig;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientConfig&&(identical(other.socialEnabled, _this.socialEnabled) || other.socialEnabled == _this.socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _this.flags)&&const DeepCollectionEquality().equals(other.minVersions, _this.minVersions)&&(identical(other.updateRequired, _this.updateRequired) || other.updateRequired == _this.updateRequired)&&(identical(other.editWindow, _this.editWindow) || other.editWindow == _this.editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _this.messageReactions)&&(identical(other.searchMinLength, _this.searchMinLength) || other.searchMinLength == _this.searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _this.notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _this.trendingWindows)&&(identical(other.notificationAggregateMinutes, _this.notificationAggregateMinutes) || other.notificationAggregateMinutes == _this.notificationAggregateMinutes)&&(identical(other.clockSkew, _this.clockSkew) || other.clockSkew == _this.clockSkew)&&const DeepCollectionEquality().equals(other.banners, _this.banners)&&(identical(other.fetchedAt, _this.fetchedAt) || other.fetchedAt == _this.fetchedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(flags),const DeepCollectionEquality().hash(minVersions),updateRequired,editWindow,const DeepCollectionEquality().hash(messageReactions),searchMinLength,const DeepCollectionEquality().hash(notificationTypes),const DeepCollectionEquality().hash(trendingWindows),notificationAggregateMinutes,clockSkew,const DeepCollectionEquality().hash(banners),fetchedAt);
+int get hashCode {
+  final _this = this as ClientConfig;
+  return Object.hash(runtimeType,_this.socialEnabled,const DeepCollectionEquality().hash(_this.flags),const DeepCollectionEquality().hash(_this.minVersions),_this.updateRequired,_this.editWindow,const DeepCollectionEquality().hash(_this.messageReactions),_this.searchMinLength,const DeepCollectionEquality().hash(_this.notificationTypes),const DeepCollectionEquality().hash(_this.trendingWindows),_this.notificationAggregateMinutes,_this.clockSkew,const DeepCollectionEquality().hash(_this.banners),_this.fetchedAt);
+}
 
 @override
 String toString() {
-  return 'ClientConfig(socialEnabled: $socialEnabled, flags: $flags, minVersions: $minVersions, updateRequired: $updateRequired, editWindow: $editWindow, messageReactions: $messageReactions, searchMinLength: $searchMinLength, notificationTypes: $notificationTypes, trendingWindows: $trendingWindows, notificationAggregateMinutes: $notificationAggregateMinutes, clockSkew: $clockSkew, banners: $banners, fetchedAt: $fetchedAt)';
+  final _this = this as ClientConfig;
+  return 'ClientConfig(socialEnabled: ${_this.socialEnabled}, flags: ${_this.flags}, minVersions: ${_this.minVersions}, updateRequired: ${_this.updateRequired}, editWindow: ${_this.editWindow}, messageReactions: ${_this.messageReactions}, searchMinLength: ${_this.searchMinLength}, notificationTypes: ${_this.notificationTypes}, trendingWindows: ${_this.trendingWindows}, notificationAggregateMinutes: ${_this.notificationAggregateMinutes}, clockSkew: ${_this.clockSkew}, banners: ${_this.banners}, fetchedAt: ${_this.fetchedAt})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ClientConfigCopyWithImpl<$Res>
 /// Create a copy of ClientConfig
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersions = null,Object? updateRequired = null,Object? editWindow = null,Object? messageReactions = null,Object? searchMinLength = null,Object? notificationTypes = null,Object? trendingWindows = null,Object? notificationAggregateMinutes = null,Object? clockSkew = null,Object? banners = null,Object? fetchedAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ClientConfig(
 socialEnabled: null == socialEnabled ? _self.socialEnabled : socialEnabled // ignore: cast_nullable_to_non_nullable
 as bool,flags: null == flags ? _self.flags : flags // ignore: cast_nullable_to_non_nullable
 as Map<String, bool>,minVersions: null == minVersions ? _self.minVersions : minVersions // ignore: cast_nullable_to_non_nullable
@@ -218,7 +224,7 @@ return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRe
 
 
 class _ClientConfig extends ClientConfig {
-  const _ClientConfig({this.socialEnabled = true, final  Map<String, bool> flags = const <String, bool>{}, final  Map<String, String?> minVersions = const <String, String?>{}, this.updateRequired = false, this.editWindow = const Duration(minutes: 15), final  List<String> messageReactions = const <String>['👍', '❤️', '😂', '😮', '😢', '🔥'], this.searchMinLength = 2, final  List<String> notificationTypes = const <String>[], final  List<String> trendingWindows = const <String>['24h', '7d'], this.notificationAggregateMinutes = 60, this.clockSkew = Duration.zero, final  List<CommunityBanner> banners = const <CommunityBanner>[], this.fetchedAt}): _flags = flags,_minVersions = minVersions,_messageReactions = messageReactions,_notificationTypes = notificationTypes,_trendingWindows = trendingWindows,_banners = banners,super._();
+  const _ClientConfig({this.socialEnabled = true,  Map<String, bool> flags = const <String, bool>{},  Map<String, String?> minVersions = const <String, String?>{}, this.updateRequired = false, this.editWindow = const Duration(minutes: 15),  List<String> messageReactions = const <String>['👍', '❤️', '😂', '😮', '😢', '🔥'], this.searchMinLength = 2,  List<String> notificationTypes = const <String>[],  List<String> trendingWindows = const <String>['24h', '7d'], this.notificationAggregateMinutes = 60, this.clockSkew = Duration.zero,  List<CommunityBanner> banners = const <CommunityBanner>[], this.fetchedAt}): _flags = flags,_minVersions = minVersions,_messageReactions = messageReactions,_notificationTypes = notificationTypes,_trendingWindows = trendingWindows,_banners = banners,super._();
   
 
 @override@JsonKey() final  bool socialEnabled;
@@ -281,16 +287,18 @@ _$ClientConfigCopyWith<_ClientConfig> get copyWith => __$ClientConfigCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientConfig&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other._flags, _flags)&&const DeepCollectionEquality().equals(other._minVersions, _minVersions)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&(identical(other.editWindow, editWindow) || other.editWindow == editWindow)&&const DeepCollectionEquality().equals(other._messageReactions, _messageReactions)&&(identical(other.searchMinLength, searchMinLength) || other.searchMinLength == searchMinLength)&&const DeepCollectionEquality().equals(other._notificationTypes, _notificationTypes)&&const DeepCollectionEquality().equals(other._trendingWindows, _trendingWindows)&&(identical(other.notificationAggregateMinutes, notificationAggregateMinutes) || other.notificationAggregateMinutes == notificationAggregateMinutes)&&(identical(other.clockSkew, clockSkew) || other.clockSkew == clockSkew)&&const DeepCollectionEquality().equals(other._banners, _banners)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientConfig&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _flags)&&const DeepCollectionEquality().equals(other.minVersions, _minVersions)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&(identical(other.editWindow, editWindow) || other.editWindow == editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _messageReactions)&&(identical(other.searchMinLength, searchMinLength) || other.searchMinLength == searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _trendingWindows)&&(identical(other.notificationAggregateMinutes, notificationAggregateMinutes) || other.notificationAggregateMinutes == notificationAggregateMinutes)&&(identical(other.clockSkew, clockSkew) || other.clockSkew == clockSkew)&&const DeepCollectionEquality().equals(other.banners, _banners)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(_flags),const DeepCollectionEquality().hash(_minVersions),updateRequired,editWindow,const DeepCollectionEquality().hash(_messageReactions),searchMinLength,const DeepCollectionEquality().hash(_notificationTypes),const DeepCollectionEquality().hash(_trendingWindows),notificationAggregateMinutes,clockSkew,const DeepCollectionEquality().hash(_banners),fetchedAt);
+int get hashCode {
+    return Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(_flags),const DeepCollectionEquality().hash(_minVersions),updateRequired,editWindow,const DeepCollectionEquality().hash(_messageReactions),searchMinLength,const DeepCollectionEquality().hash(_notificationTypes),const DeepCollectionEquality().hash(_trendingWindows),notificationAggregateMinutes,clockSkew,const DeepCollectionEquality().hash(_banners),fetchedAt);
+}
 
 @override
 String toString() {
-  return 'ClientConfig(socialEnabled: $socialEnabled, flags: $flags, minVersions: $minVersions, updateRequired: $updateRequired, editWindow: $editWindow, messageReactions: $messageReactions, searchMinLength: $searchMinLength, notificationTypes: $notificationTypes, trendingWindows: $trendingWindows, notificationAggregateMinutes: $notificationAggregateMinutes, clockSkew: $clockSkew, banners: $banners, fetchedAt: $fetchedAt)';
+    return 'ClientConfig(socialEnabled: $socialEnabled, flags: $flags, minVersions: $minVersions, updateRequired: $updateRequired, editWindow: $editWindow, messageReactions: $messageReactions, searchMinLength: $searchMinLength, notificationTypes: $notificationTypes, trendingWindows: $trendingWindows, notificationAggregateMinutes: $notificationAggregateMinutes, clockSkew: $clockSkew, banners: $banners, fetchedAt: $fetchedAt)';
 }
 
 
@@ -354,16 +362,21 @@ $CommunityBannerCopyWith<CommunityBanner> get copyWith => _$CommunityBannerCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.linkUrl, linkUrl) || other.linkUrl == linkUrl)&&(identical(other.level, level) || other.level == level)&&(identical(other.dismissible, dismissible) || other.dismissible == dismissible)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.display, display) || other.display == display)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.ctaLabel, ctaLabel) || other.ctaLabel == ctaLabel)&&(identical(other.frequency, frequency) || other.frequency == frequency));
+  final _this = this as CommunityBanner;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityBanner&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.linkUrl, _this.linkUrl) || other.linkUrl == _this.linkUrl)&&(identical(other.level, _this.level) || other.level == _this.level)&&(identical(other.dismissible, _this.dismissible) || other.dismissible == _this.dismissible)&&(identical(other.priority, _this.priority) || other.priority == _this.priority)&&(identical(other.startsAt, _this.startsAt) || other.startsAt == _this.startsAt)&&(identical(other.endsAt, _this.endsAt) || other.endsAt == _this.endsAt)&&(identical(other.display, _this.display) || other.display == _this.display)&&(identical(other.imageUrl, _this.imageUrl) || other.imageUrl == _this.imageUrl)&&(identical(other.ctaLabel, _this.ctaLabel) || other.ctaLabel == _this.ctaLabel)&&(identical(other.frequency, _this.frequency) || other.frequency == _this.frequency));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,body,linkUrl,level,dismissible,priority,startsAt,endsAt,display,imageUrl,ctaLabel,frequency);
+int get hashCode {
+  final _this = this as CommunityBanner;
+  return Object.hash(runtimeType,_this.id,_this.title,_this.body,_this.linkUrl,_this.level,_this.dismissible,_this.priority,_this.startsAt,_this.endsAt,_this.display,_this.imageUrl,_this.ctaLabel,_this.frequency);
+}
 
 @override
 String toString() {
-  return 'CommunityBanner(id: $id, title: $title, body: $body, linkUrl: $linkUrl, level: $level, dismissible: $dismissible, priority: $priority, startsAt: $startsAt, endsAt: $endsAt, display: $display, imageUrl: $imageUrl, ctaLabel: $ctaLabel, frequency: $frequency)';
+  final _this = this as CommunityBanner;
+  return 'CommunityBanner(id: ${_this.id}, title: ${_this.title}, body: ${_this.body}, linkUrl: ${_this.linkUrl}, level: ${_this.level}, dismissible: ${_this.dismissible}, priority: ${_this.priority}, startsAt: ${_this.startsAt}, endsAt: ${_this.endsAt}, display: ${_this.display}, imageUrl: ${_this.imageUrl}, ctaLabel: ${_this.ctaLabel}, frequency: ${_this.frequency})';
 }
 
 
@@ -392,7 +405,7 @@ class _$CommunityBannerCopyWithImpl<$Res>
 /// Create a copy of CommunityBanner
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? body = null,Object? linkUrl = freezed,Object? level = null,Object? dismissible = null,Object? priority = null,Object? startsAt = freezed,Object? endsAt = freezed,Object? display = null,Object? imageUrl = freezed,Object? ctaLabel = freezed,Object? frequency = null,}) {
-  return _then(_self.copyWith(
+  return _then(CommunityBanner(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
@@ -574,16 +587,18 @@ _$CommunityBannerCopyWith<_CommunityBanner> get copyWith => __$CommunityBannerCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.linkUrl, linkUrl) || other.linkUrl == linkUrl)&&(identical(other.level, level) || other.level == level)&&(identical(other.dismissible, dismissible) || other.dismissible == dismissible)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.display, display) || other.display == display)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.ctaLabel, ctaLabel) || other.ctaLabel == ctaLabel)&&(identical(other.frequency, frequency) || other.frequency == frequency));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.linkUrl, linkUrl) || other.linkUrl == linkUrl)&&(identical(other.level, level) || other.level == level)&&(identical(other.dismissible, dismissible) || other.dismissible == dismissible)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.display, display) || other.display == display)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.ctaLabel, ctaLabel) || other.ctaLabel == ctaLabel)&&(identical(other.frequency, frequency) || other.frequency == frequency));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,title,body,linkUrl,level,dismissible,priority,startsAt,endsAt,display,imageUrl,ctaLabel,frequency);
+int get hashCode {
+    return Object.hash(runtimeType,id,title,body,linkUrl,level,dismissible,priority,startsAt,endsAt,display,imageUrl,ctaLabel,frequency);
+}
 
 @override
 String toString() {
-  return 'CommunityBanner(id: $id, title: $title, body: $body, linkUrl: $linkUrl, level: $level, dismissible: $dismissible, priority: $priority, startsAt: $startsAt, endsAt: $endsAt, display: $display, imageUrl: $imageUrl, ctaLabel: $ctaLabel, frequency: $frequency)';
+    return 'CommunityBanner(id: $id, title: $title, body: $body, linkUrl: $linkUrl, level: $level, dismissible: $dismissible, priority: $priority, startsAt: $startsAt, endsAt: $endsAt, display: $display, imageUrl: $imageUrl, ctaLabel: $ctaLabel, frequency: $frequency)';
 }
 
 

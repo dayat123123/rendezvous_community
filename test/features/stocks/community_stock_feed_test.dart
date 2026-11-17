@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
 import '../../support/fakes.dart';
@@ -25,7 +25,7 @@ class _EmptyFeed extends FakeFeedRepository {
 Future<void> _pump(WidgetTester tester, StockRepository stocks, Widget child) => tester.pumpWidget(
   MaterialApp(
     locale: const Locale('id'),
-    localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+    localizationsDelegates: communityLocalizationsDelegates,
     supportedLocales: CommunityLocalizations.supportedLocales,
     home: CommunityScope(
       dependencies: FakeDependencies(feed: _EmptyFeed(), stocks: stocks),

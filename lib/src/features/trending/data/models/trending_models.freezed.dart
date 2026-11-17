@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'trending_models.dart';
@@ -9,6 +9,7 @@ part of 'trending_models.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $HashtagSummaryModelCopyWith<HashtagSummaryModel> get copyWith => _$HashtagSumma
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HashtagSummaryModel&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.posts7d, posts7d) || other.posts7d == posts7d)&&(identical(other.authorCount, authorCount) || other.authorCount == authorCount)&&(identical(other.score, score) || other.score == score));
+  final _this = this as HashtagSummaryModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HashtagSummaryModel&&(identical(other.tag, _this.tag) || other.tag == _this.tag)&&(identical(other.postCount, _this.postCount) || other.postCount == _this.postCount)&&(identical(other.posts7d, _this.posts7d) || other.posts7d == _this.posts7d)&&(identical(other.authorCount, _this.authorCount) || other.authorCount == _this.authorCount)&&(identical(other.score, _this.score) || other.score == _this.score));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,tag,postCount,posts7d,authorCount,score);
+int get hashCode {
+  final _this = this as HashtagSummaryModel;
+  return Object.hash(runtimeType,_this.tag,_this.postCount,_this.posts7d,_this.authorCount,_this.score);
+}
 
 @override
 String toString() {
-  return 'HashtagSummaryModel(tag: $tag, postCount: $postCount, posts7d: $posts7d, authorCount: $authorCount, score: $score)';
+  final _this = this as HashtagSummaryModel;
+  return 'HashtagSummaryModel(tag: ${_this.tag}, postCount: ${_this.postCount}, posts7d: ${_this.posts7d}, authorCount: ${_this.authorCount}, score: ${_this.score})';
 }
 
 
@@ -66,7 +72,7 @@ class _$HashtagSummaryModelCopyWithImpl<$Res>
 /// Create a copy of HashtagSummaryModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? tag = null,Object? postCount = freezed,Object? posts7d = freezed,Object? authorCount = null,Object? score = null,}) {
-  return _then(_self.copyWith(
+  return _then(HashtagSummaryModel(
 tag: null == tag ? _self.tag : tag // ignore: cast_nullable_to_non_nullable
 as String,postCount: freezed == postCount ? _self.postCount : postCount // ignore: cast_nullable_to_non_nullable
 as int?,posts7d: freezed == posts7d ? _self.posts7d : posts7d // ignore: cast_nullable_to_non_nullable
@@ -235,16 +241,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HashtagSummaryModel&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.posts7d, posts7d) || other.posts7d == posts7d)&&(identical(other.authorCount, authorCount) || other.authorCount == authorCount)&&(identical(other.score, score) || other.score == score));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HashtagSummaryModel&&(identical(other.tag, tag) || other.tag == tag)&&(identical(other.postCount, postCount) || other.postCount == postCount)&&(identical(other.posts7d, posts7d) || other.posts7d == posts7d)&&(identical(other.authorCount, authorCount) || other.authorCount == authorCount)&&(identical(other.score, score) || other.score == score));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,tag,postCount,posts7d,authorCount,score);
+int get hashCode {
+    return Object.hash(runtimeType,tag,postCount,posts7d,authorCount,score);
+}
 
 @override
 String toString() {
-  return 'HashtagSummaryModel(tag: $tag, postCount: $postCount, posts7d: $posts7d, authorCount: $authorCount, score: $score)';
+    return 'HashtagSummaryModel(tag: $tag, postCount: $postCount, posts7d: $posts7d, authorCount: $authorCount, score: $score)';
 }
 
 
@@ -303,16 +311,21 @@ $TrendingStockModelCopyWith<TrendingStockModel> get copyWith => _$TrendingStockM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TrendingStockModel&&(identical(other.code, code) || other.code == code)&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.score, score) || other.score == score)&&(identical(other.bullishPct, bullishPct) || other.bullishPct == bullishPct)&&(identical(other.bearishPct, bearishPct) || other.bearishPct == bearishPct)&&(identical(other.neutralPct, neutralPct) || other.neutralPct == neutralPct)&&(identical(other.growthPct, growthPct) || other.growthPct == growthPct));
+  final _this = this as TrendingStockModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TrendingStockModel&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.posts, _this.posts) || other.posts == _this.posts)&&(identical(other.score, _this.score) || other.score == _this.score)&&(identical(other.bullishPct, _this.bullishPct) || other.bullishPct == _this.bullishPct)&&(identical(other.bearishPct, _this.bearishPct) || other.bearishPct == _this.bearishPct)&&(identical(other.neutralPct, _this.neutralPct) || other.neutralPct == _this.neutralPct)&&(identical(other.growthPct, _this.growthPct) || other.growthPct == _this.growthPct));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,code,posts,score,bullishPct,bearishPct,neutralPct,growthPct);
+int get hashCode {
+  final _this = this as TrendingStockModel;
+  return Object.hash(runtimeType,_this.code,_this.posts,_this.score,_this.bullishPct,_this.bearishPct,_this.neutralPct,_this.growthPct);
+}
 
 @override
 String toString() {
-  return 'TrendingStockModel(code: $code, posts: $posts, score: $score, bullishPct: $bullishPct, bearishPct: $bearishPct, neutralPct: $neutralPct, growthPct: $growthPct)';
+  final _this = this as TrendingStockModel;
+  return 'TrendingStockModel(code: ${_this.code}, posts: ${_this.posts}, score: ${_this.score}, bullishPct: ${_this.bullishPct}, bearishPct: ${_this.bearishPct}, neutralPct: ${_this.neutralPct}, growthPct: ${_this.growthPct})';
 }
 
 
@@ -341,7 +354,7 @@ class _$TrendingStockModelCopyWithImpl<$Res>
 /// Create a copy of TrendingStockModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? posts = null,Object? score = null,Object? bullishPct = freezed,Object? bearishPct = freezed,Object? neutralPct = freezed,Object? growthPct = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(TrendingStockModel(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
 as int,score: null == score ? _self.score : score // ignore: cast_nullable_to_non_nullable
@@ -514,16 +527,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TrendingStockModel&&(identical(other.code, code) || other.code == code)&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.score, score) || other.score == score)&&(identical(other.bullishPct, bullishPct) || other.bullishPct == bullishPct)&&(identical(other.bearishPct, bearishPct) || other.bearishPct == bearishPct)&&(identical(other.neutralPct, neutralPct) || other.neutralPct == neutralPct)&&(identical(other.growthPct, growthPct) || other.growthPct == growthPct));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _TrendingStockModel&&(identical(other.code, code) || other.code == code)&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.score, score) || other.score == score)&&(identical(other.bullishPct, bullishPct) || other.bullishPct == bullishPct)&&(identical(other.bearishPct, bearishPct) || other.bearishPct == bearishPct)&&(identical(other.neutralPct, neutralPct) || other.neutralPct == neutralPct)&&(identical(other.growthPct, growthPct) || other.growthPct == growthPct));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,code,posts,score,bullishPct,bearishPct,neutralPct,growthPct);
+int get hashCode {
+    return Object.hash(runtimeType,code,posts,score,bullishPct,bearishPct,neutralPct,growthPct);
+}
 
 @override
 String toString() {
-  return 'TrendingStockModel(code: $code, posts: $posts, score: $score, bullishPct: $bullishPct, bearishPct: $bearishPct, neutralPct: $neutralPct, growthPct: $growthPct)';
+    return 'TrendingStockModel(code: $code, posts: $posts, score: $score, bullishPct: $bullishPct, bearishPct: $bearishPct, neutralPct: $neutralPct, growthPct: $growthPct)';
 }
 
 
@@ -584,16 +599,21 @@ $RisingStockModelCopyWith<RisingStockModel> get copyWith => _$RisingStockModelCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is RisingStockModel&&(identical(other.code, code) || other.code == code)&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.prevPosts, prevPosts) || other.prevPosts == prevPosts)&&(identical(other.growthPct, growthPct) || other.growthPct == growthPct));
+  final _this = this as RisingStockModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is RisingStockModel&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.posts, _this.posts) || other.posts == _this.posts)&&(identical(other.prevPosts, _this.prevPosts) || other.prevPosts == _this.prevPosts)&&(identical(other.growthPct, _this.growthPct) || other.growthPct == _this.growthPct));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,code,posts,prevPosts,growthPct);
+int get hashCode {
+  final _this = this as RisingStockModel;
+  return Object.hash(runtimeType,_this.code,_this.posts,_this.prevPosts,_this.growthPct);
+}
 
 @override
 String toString() {
-  return 'RisingStockModel(code: $code, posts: $posts, prevPosts: $prevPosts, growthPct: $growthPct)';
+  final _this = this as RisingStockModel;
+  return 'RisingStockModel(code: ${_this.code}, posts: ${_this.posts}, prevPosts: ${_this.prevPosts}, growthPct: ${_this.growthPct})';
 }
 
 
@@ -622,7 +642,7 @@ class _$RisingStockModelCopyWithImpl<$Res>
 /// Create a copy of RisingStockModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? posts = null,Object? prevPosts = null,Object? growthPct = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(RisingStockModel(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
 as int,prevPosts: null == prevPosts ? _self.prevPosts : prevPosts // ignore: cast_nullable_to_non_nullable
@@ -789,16 +809,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _RisingStockModel&&(identical(other.code, code) || other.code == code)&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.prevPosts, prevPosts) || other.prevPosts == prevPosts)&&(identical(other.growthPct, growthPct) || other.growthPct == growthPct));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _RisingStockModel&&(identical(other.code, code) || other.code == code)&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.prevPosts, prevPosts) || other.prevPosts == prevPosts)&&(identical(other.growthPct, growthPct) || other.growthPct == growthPct));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,code,posts,prevPosts,growthPct);
+int get hashCode {
+    return Object.hash(runtimeType,code,posts,prevPosts,growthPct);
+}
 
 @override
 String toString() {
-  return 'RisingStockModel(code: $code, posts: $posts, prevPosts: $prevPosts, growthPct: $growthPct)';
+    return 'RisingStockModel(code: $code, posts: $posts, prevPosts: $prevPosts, growthPct: $growthPct)';
 }
 
 
@@ -856,16 +878,21 @@ $SentimentBreakdownModelCopyWith<SentimentBreakdownModel> get copyWith => _$Sent
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SentimentBreakdownModel&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.bullish, bullish) || other.bullish == bullish)&&(identical(other.bearish, bearish) || other.bearish == bearish)&&(identical(other.neutral, neutral) || other.neutral == neutral)&&(identical(other.unlabeled, unlabeled) || other.unlabeled == unlabeled)&&(identical(other.bullishPct, bullishPct) || other.bullishPct == bullishPct)&&(identical(other.bearishPct, bearishPct) || other.bearishPct == bearishPct)&&(identical(other.neutralPct, neutralPct) || other.neutralPct == neutralPct));
+  final _this = this as SentimentBreakdownModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SentimentBreakdownModel&&(identical(other.posts, _this.posts) || other.posts == _this.posts)&&(identical(other.bullish, _this.bullish) || other.bullish == _this.bullish)&&(identical(other.bearish, _this.bearish) || other.bearish == _this.bearish)&&(identical(other.neutral, _this.neutral) || other.neutral == _this.neutral)&&(identical(other.unlabeled, _this.unlabeled) || other.unlabeled == _this.unlabeled)&&(identical(other.bullishPct, _this.bullishPct) || other.bullishPct == _this.bullishPct)&&(identical(other.bearishPct, _this.bearishPct) || other.bearishPct == _this.bearishPct)&&(identical(other.neutralPct, _this.neutralPct) || other.neutralPct == _this.neutralPct));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,posts,bullish,bearish,neutral,unlabeled,bullishPct,bearishPct,neutralPct);
+int get hashCode {
+  final _this = this as SentimentBreakdownModel;
+  return Object.hash(runtimeType,_this.posts,_this.bullish,_this.bearish,_this.neutral,_this.unlabeled,_this.bullishPct,_this.bearishPct,_this.neutralPct);
+}
 
 @override
 String toString() {
-  return 'SentimentBreakdownModel(posts: $posts, bullish: $bullish, bearish: $bearish, neutral: $neutral, unlabeled: $unlabeled, bullishPct: $bullishPct, bearishPct: $bearishPct, neutralPct: $neutralPct)';
+  final _this = this as SentimentBreakdownModel;
+  return 'SentimentBreakdownModel(posts: ${_this.posts}, bullish: ${_this.bullish}, bearish: ${_this.bearish}, neutral: ${_this.neutral}, unlabeled: ${_this.unlabeled}, bullishPct: ${_this.bullishPct}, bearishPct: ${_this.bearishPct}, neutralPct: ${_this.neutralPct})';
 }
 
 
@@ -894,7 +921,7 @@ class _$SentimentBreakdownModelCopyWithImpl<$Res>
 /// Create a copy of SentimentBreakdownModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? posts = null,Object? bullish = null,Object? bearish = null,Object? neutral = null,Object? unlabeled = null,Object? bullishPct = freezed,Object? bearishPct = freezed,Object? neutralPct = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(SentimentBreakdownModel(
 posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
 as int,bullish: null == bullish ? _self.bullish : bullish // ignore: cast_nullable_to_non_nullable
 as int,bearish: null == bearish ? _self.bearish : bearish // ignore: cast_nullable_to_non_nullable
@@ -1069,16 +1096,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SentimentBreakdownModel&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.bullish, bullish) || other.bullish == bullish)&&(identical(other.bearish, bearish) || other.bearish == bearish)&&(identical(other.neutral, neutral) || other.neutral == neutral)&&(identical(other.unlabeled, unlabeled) || other.unlabeled == unlabeled)&&(identical(other.bullishPct, bullishPct) || other.bullishPct == bullishPct)&&(identical(other.bearishPct, bearishPct) || other.bearishPct == bearishPct)&&(identical(other.neutralPct, neutralPct) || other.neutralPct == neutralPct));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SentimentBreakdownModel&&(identical(other.posts, posts) || other.posts == posts)&&(identical(other.bullish, bullish) || other.bullish == bullish)&&(identical(other.bearish, bearish) || other.bearish == bearish)&&(identical(other.neutral, neutral) || other.neutral == neutral)&&(identical(other.unlabeled, unlabeled) || other.unlabeled == unlabeled)&&(identical(other.bullishPct, bullishPct) || other.bullishPct == bullishPct)&&(identical(other.bearishPct, bearishPct) || other.bearishPct == bearishPct)&&(identical(other.neutralPct, neutralPct) || other.neutralPct == neutralPct));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,posts,bullish,bearish,neutral,unlabeled,bullishPct,bearishPct,neutralPct);
+int get hashCode {
+    return Object.hash(runtimeType,posts,bullish,bearish,neutral,unlabeled,bullishPct,bearishPct,neutralPct);
+}
 
 @override
 String toString() {
-  return 'SentimentBreakdownModel(posts: $posts, bullish: $bullish, bearish: $bearish, neutral: $neutral, unlabeled: $unlabeled, bullishPct: $bullishPct, bearishPct: $bearishPct, neutralPct: $neutralPct)';
+    return 'SentimentBreakdownModel(posts: $posts, bullish: $bullish, bearish: $bearish, neutral: $neutral, unlabeled: $unlabeled, bullishPct: $bullishPct, bearishPct: $bearishPct, neutralPct: $neutralPct)';
 }
 
 

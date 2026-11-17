@@ -6,7 +6,7 @@
 
 Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · moderasi
 
-![Versi](https://img.shields.io/badge/versi-1.29.0-0f766e)
+![Versi](https://img.shields.io/badge/versi-1.30.0-0f766e)
 ![Flutter](https://img.shields.io/badge/Flutter-%E2%89%A5%203.44-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-%E2%89%A5%203.12-0175C2?logo=dart&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android-555)
@@ -78,10 +78,11 @@ Repo ini private, jadi pasang lewat dependency git. Komputer yang menjalankan `f
 dependencies:
   flutter_localizations:
     sdk: flutter
+  material_ui: ^1.11.1     # sejak 1.30.0 library memakai material_ui
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.29.0          # selalu pin ke tag rilis
+      ref: v1.30.0          # selalu pin ke tag rilis
 ```
 
 - **Laptop developer:** login GitHub sekali lewat Git Credential Manager (ikut terpasang bersama Git for Windows).
@@ -118,17 +119,14 @@ Future<void> onOltLoggedOut() => RendezvousCommunity.instance.signOut();
 
 ```dart
 MaterialApp(
-  localizationsDelegates: const [
-    CommunityLocalizations.delegate,
-    GlobalMaterialLocalizations.delegate,
-    GlobalWidgetsLocalizations.delegate,
-    GlobalCupertinoLocalizations.delegate,
-  ],
+  localizationsDelegates: communityLocalizationsDelegates,
   supportedLocales: const [Locale('id'), Locale('en')],
   theme: oltTheme,
   darkTheme: oltDarkTheme,
 );
 ```
+
+`communityLocalizationsDelegates` sudah berisi delegate `material_ui`. Host yang punya delegate lokalisasi sendiri cukup menggabungkannya: `[...AppLocalizations.localizationsDelegates, ...communityLocalizationsDelegates]`. Sejak 1.30.0 host harus memakai `package:material_ui/material_ui.dart`, bukan `package:flutter/material.dart`.
 
 Bahasa bawaan Indonesia, tersedia juga Inggris. Warna, termasuk dark mode, diturunkan dari `ThemeData` host.
 

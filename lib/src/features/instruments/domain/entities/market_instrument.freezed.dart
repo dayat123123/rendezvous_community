@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'market_instrument.dart';
@@ -9,6 +9,7 @@ part of 'market_instrument.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $MarketInstrumentCopyWith<MarketInstrument> get copyWith => _$MarketInstrumentCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketInstrument&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.aliases, aliases)&&(identical(other.position, position) || other.position == position)&&(identical(other.roomEnabled, roomEnabled) || other.roomEnabled == roomEnabled));
+  final _this = this as MarketInstrument;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is MarketInstrument&&(identical(other.code, _this.code) || other.code == _this.code)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.description, _this.description) || other.description == _this.description)&&const DeepCollectionEquality().equals(other.aliases, _this.aliases)&&(identical(other.position, _this.position) || other.position == _this.position)&&(identical(other.roomEnabled, _this.roomEnabled) || other.roomEnabled == _this.roomEnabled));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,name,kind,description,const DeepCollectionEquality().hash(aliases),position,roomEnabled);
+int get hashCode {
+  final _this = this as MarketInstrument;
+  return Object.hash(runtimeType,_this.code,_this.name,_this.kind,_this.description,const DeepCollectionEquality().hash(_this.aliases),_this.position,_this.roomEnabled);
+}
 
 @override
 String toString() {
-  return 'MarketInstrument(code: $code, name: $name, kind: $kind, description: $description, aliases: $aliases, position: $position, roomEnabled: $roomEnabled)';
+  final _this = this as MarketInstrument;
+  return 'MarketInstrument(code: ${_this.code}, name: ${_this.name}, kind: ${_this.kind}, description: ${_this.description}, aliases: ${_this.aliases}, position: ${_this.position}, roomEnabled: ${_this.roomEnabled})';
 }
 
 
@@ -63,7 +69,7 @@ class _$MarketInstrumentCopyWithImpl<$Res>
 /// Create a copy of MarketInstrument
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? code = null,Object? name = null,Object? kind = null,Object? description = freezed,Object? aliases = null,Object? position = null,Object? roomEnabled = null,}) {
-  return _then(_self.copyWith(
+  return _then(MarketInstrument(
 code: null == code ? _self.code : code // ignore: cast_nullable_to_non_nullable
 as String,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
 as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
@@ -212,7 +218,7 @@ return $default(_that.code,_that.name,_that.kind,_that.description,_that.aliases
 
 
 class _MarketInstrument implements MarketInstrument {
-  const _MarketInstrument({required this.code, required this.name, this.kind = MarketInstrumentKind.stockIndex, this.description, final  List<String> aliases = const <String>[], this.position = 0, this.roomEnabled = true}): _aliases = aliases;
+  const _MarketInstrument({required this.code, required this.name, this.kind = MarketInstrumentKind.stockIndex, this.description,  List<String> aliases = const <String>[], this.position = 0, this.roomEnabled = true}): _aliases = aliases;
   
 
 @override final  String code;
@@ -239,16 +245,18 @@ _$MarketInstrumentCopyWith<_MarketInstrument> get copyWith => __$MarketInstrumen
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _MarketInstrument&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other._aliases, _aliases)&&(identical(other.position, position) || other.position == position)&&(identical(other.roomEnabled, roomEnabled) || other.roomEnabled == roomEnabled));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _MarketInstrument&&(identical(other.code, code) || other.code == code)&&(identical(other.name, name) || other.name == name)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.description, description) || other.description == description)&&const DeepCollectionEquality().equals(other.aliases, _aliases)&&(identical(other.position, position) || other.position == position)&&(identical(other.roomEnabled, roomEnabled) || other.roomEnabled == roomEnabled));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code,name,kind,description,const DeepCollectionEquality().hash(_aliases),position,roomEnabled);
+int get hashCode {
+    return Object.hash(runtimeType,code,name,kind,description,const DeepCollectionEquality().hash(_aliases),position,roomEnabled);
+}
 
 @override
 String toString() {
-  return 'MarketInstrument(code: $code, name: $name, kind: $kind, description: $description, aliases: $aliases, position: $position, roomEnabled: $roomEnabled)';
+    return 'MarketInstrument(code: $code, name: $name, kind: $kind, description: $description, aliases: $aliases, position: $position, roomEnabled: $roomEnabled)';
 }
 
 

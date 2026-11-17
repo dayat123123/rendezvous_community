@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_user_name.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
@@ -16,7 +16,7 @@ Widget _app(
   theme: ThemeData(
     colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0B5FFF), brightness: brightness),
   ),
-  localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+  localizationsDelegates: communityLocalizationsDelegates,
   supportedLocales: CommunityLocalizations.supportedLocales,
   builder: (context, child) => shared == null
       ? child!

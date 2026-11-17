@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'post.dart';
@@ -9,6 +9,7 @@ part of 'post.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $PostCopyWith<Post> get copyWith => _$PostCopyWithImpl<Post>(this as Post, _$ide
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Post&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&(identical(other.topComment, topComment) || other.topComment == topComment));
+  final _this = this as Post;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Post&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.author, _this.author) || other.author == _this.author)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.sentiment, _this.sentiment) || other.sentiment == _this.sentiment)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.likeCount, _this.likeCount) || other.likeCount == _this.likeCount)&&(identical(other.commentCount, _this.commentCount) || other.commentCount == _this.commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, _this.stockCodes)&&(identical(other.likedByMe, _this.likedByMe) || other.likedByMe == _this.likedByMe)&&(identical(other.poll, _this.poll) || other.poll == _this.poll)&&(identical(other.editedAt, _this.editedAt) || other.editedAt == _this.editedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&(identical(other.isBookmarked, _this.isBookmarked) || other.isBookmarked == _this.isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, _this.hashtags)&&(identical(other.isBot, _this.isBot) || other.isBot == _this.isBot)&&(identical(other.authorIsOfficial, _this.authorIsOfficial) || other.authorIsOfficial == _this.authorIsOfficial)&&(identical(other.moderationStatus, _this.moderationStatus) || other.moderationStatus == _this.moderationStatus)&&(identical(other.topComment, _this.topComment) || other.topComment == _this.topComment));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,id,author,body,sentiment,const DeepCollectionEquality().hash(attachments),likeCount,commentCount,const DeepCollectionEquality().hash(stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(hashtags),isBot,authorIsOfficial,moderationStatus,topComment]);
+int get hashCode {
+  final _this = this as Post;
+  return Object.hashAll([runtimeType,_this.id,_this.author,_this.body,_this.sentiment,const DeepCollectionEquality().hash(_this.attachments),_this.likeCount,_this.commentCount,const DeepCollectionEquality().hash(_this.stockCodes),_this.likedByMe,_this.poll,_this.editedAt,_this.createdAt,_this.cursor,_this.isBookmarked,const DeepCollectionEquality().hash(_this.hashtags),_this.isBot,_this.authorIsOfficial,_this.moderationStatus,_this.topComment]);
+}
 
 @override
 String toString() {
-  return 'Post(id: $id, author: $author, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment)';
+  final _this = this as Post;
+  return 'Post(id: ${_this.id}, author: ${_this.author}, body: ${_this.body}, sentiment: ${_this.sentiment}, attachments: ${_this.attachments}, likeCount: ${_this.likeCount}, commentCount: ${_this.commentCount}, stockCodes: ${_this.stockCodes}, likedByMe: ${_this.likedByMe}, poll: ${_this.poll}, editedAt: ${_this.editedAt}, createdAt: ${_this.createdAt}, cursor: ${_this.cursor}, isBookmarked: ${_this.isBookmarked}, hashtags: ${_this.hashtags}, isBot: ${_this.isBot}, authorIsOfficial: ${_this.authorIsOfficial}, moderationStatus: ${_this.moderationStatus}, topComment: ${_this.topComment})';
 }
 
 
@@ -63,7 +69,7 @@ class _$PostCopyWithImpl<$Res>
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = null,Object? hashtags = null,Object? isBot = null,Object? authorIsOfficial = null,Object? moderationStatus = freezed,Object? topComment = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(Post(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
 as UserSummary,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
@@ -257,7 +263,7 @@ return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachmen
 
 
 class _Post extends Post {
-  const _Post({required this.id, required this.author, required this.body, this.sentiment, final  List<Attachment> attachments = const <Attachment>[], this.likeCount = 0, this.commentCount = 0, final  List<String> stockCodes = const <String>[], this.likedByMe = false, this.poll, this.editedAt, required this.createdAt, required this.cursor, this.isBookmarked = false, final  List<String> hashtags = const <String>[], this.isBot = false, this.authorIsOfficial = false, this.moderationStatus, this.topComment}): _attachments = attachments,_stockCodes = stockCodes,_hashtags = hashtags,super._();
+  const _Post({required this.id, required this.author, required this.body, this.sentiment,  List<Attachment> attachments = const <Attachment>[], this.likeCount = 0, this.commentCount = 0,  List<String> stockCodes = const <String>[], this.likedByMe = false, this.poll, this.editedAt, required this.createdAt, required this.cursor, this.isBookmarked = false,  List<String> hashtags = const <String>[], this.isBot = false, this.authorIsOfficial = false, this.moderationStatus, this.topComment}): _attachments = attachments,_stockCodes = stockCodes,_hashtags = hashtags,super._();
   
 
 @override final  String id;
@@ -308,16 +314,18 @@ _$PostCopyWith<_Post> get copyWith => __$PostCopyWithImpl<_Post>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Post&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other._stockCodes, _stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&(identical(other.topComment, topComment) || other.topComment == topComment));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Post&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, _stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, _hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&(identical(other.topComment, topComment) || other.topComment == topComment));
 }
 
 
 @override
-int get hashCode => Object.hashAll([runtimeType,id,author,body,sentiment,const DeepCollectionEquality().hash(_attachments),likeCount,commentCount,const DeepCollectionEquality().hash(_stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(_hashtags),isBot,authorIsOfficial,moderationStatus,topComment]);
+int get hashCode {
+    return Object.hashAll([runtimeType,id,author,body,sentiment,const DeepCollectionEquality().hash(_attachments),likeCount,commentCount,const DeepCollectionEquality().hash(_stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(_hashtags),isBot,authorIsOfficial,moderationStatus,topComment]);
+}
 
 @override
 String toString() {
-  return 'Post(id: $id, author: $author, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment)';
+    return 'Post(id: $id, author: $author, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment)';
 }
 
 
@@ -415,7 +423,7 @@ mixin _$FeedScope {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedScope);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedScope);
 }
 
 
@@ -424,7 +432,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'FeedScope()';
+    return 'FeedScope()';
 }
 
 
@@ -610,7 +618,7 @@ class GlobalFeedScope implements FeedScope {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GlobalFeedScope);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is GlobalFeedScope);
 }
 
 
@@ -619,7 +627,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'FeedScope.global()';
+    return 'FeedScope.global()';
 }
 
 
@@ -642,7 +650,7 @@ class FollowingFeedScope implements FeedScope {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FollowingFeedScope);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is FollowingFeedScope);
 }
 
 
@@ -651,7 +659,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'FeedScope.following()';
+    return 'FeedScope.following()';
 }
 
 
@@ -679,16 +687,18 @@ $StockFeedScopeCopyWith<StockFeedScope> get copyWith => _$StockFeedScopeCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockFeedScope&&(identical(other.code, code) || other.code == code));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is StockFeedScope&&(identical(other.code, code) || other.code == code));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,code);
+int get hashCode {
+    return Object.hash(runtimeType,code);
+}
 
 @override
 String toString() {
-  return 'FeedScope.stock(code: $code)';
+    return 'FeedScope.stock(code: $code)';
 }
 
 
@@ -745,16 +755,18 @@ $UserFeedScopeCopyWith<UserFeedScope> get copyWith => _$UserFeedScopeCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserFeedScope&&(identical(other.userId, userId) || other.userId == userId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is UserFeedScope&&(identical(other.userId, userId) || other.userId == userId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,userId);
+int get hashCode {
+    return Object.hash(runtimeType,userId);
+}
 
 @override
 String toString() {
-  return 'FeedScope.user(userId: $userId)';
+    return 'FeedScope.user(userId: $userId)';
 }
 
 
@@ -796,7 +808,7 @@ as String,
 
 
 class StocksFeedScope implements FeedScope {
-  const StocksFeedScope(final  List<String> codes): _codes = codes;
+  const StocksFeedScope( List<String> codes): _codes = codes;
   
 
  final  List<String> _codes;
@@ -817,16 +829,18 @@ $StocksFeedScopeCopyWith<StocksFeedScope> get copyWith => _$StocksFeedScopeCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StocksFeedScope&&const DeepCollectionEquality().equals(other._codes, _codes));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is StocksFeedScope&&const DeepCollectionEquality().equals(other.codes, _codes));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_codes));
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_codes));
+}
 
 @override
 String toString() {
-  return 'FeedScope.stocks(codes: $codes)';
+    return 'FeedScope.stocks(codes: $codes)';
 }
 
 
@@ -878,7 +892,7 @@ class OfficialFeedScope implements FeedScope {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OfficialFeedScope);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is OfficialFeedScope);
 }
 
 
@@ -887,7 +901,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'FeedScope.official()';
+    return 'FeedScope.official()';
 }
 
 
@@ -910,7 +924,7 @@ class ForYouFeedScope implements FeedScope {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ForYouFeedScope);
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is ForYouFeedScope);
 }
 
 
@@ -919,7 +933,7 @@ int get hashCode => runtimeType.hashCode;
 
 @override
 String toString() {
-  return 'FeedScope.forYou()';
+    return 'FeedScope.forYou()';
 }
 
 

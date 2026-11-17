@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/features/trade_share/domain/entities/trade_share.dart';
 import 'package:rendezvous_community/src/features/trade_share/presentation/builders/community_trade_share_builders.dart';

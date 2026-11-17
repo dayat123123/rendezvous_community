@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'feed_cubit.dart';
@@ -9,6 +9,7 @@ part of 'feed_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $FeedStateCopyWith<FeedState> get copyWith => _$FeedStateCopyWithImpl<FeedState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.posts, posts)&&const DeepCollectionEquality().equals(other.pinned, pinned)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.newPosts, newPosts) || other.newPosts == newPosts)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stale, stale) || other.stale == stale)&&const DeepCollectionEquality().equals(other.openComments, openComments)&&(identical(other.focusComments, focusComments) || other.focusComments == focusComments));
+  final _this = this as FeedState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.posts, _this.posts)&&const DeepCollectionEquality().equals(other.pinned, _this.pinned)&&(identical(other.nextCursor, _this.nextCursor) || other.nextCursor == _this.nextCursor)&&(identical(other.loadingMore, _this.loadingMore) || other.loadingMore == _this.loadingMore)&&(identical(other.newPosts, _this.newPosts) || other.newPosts == _this.newPosts)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId)&&(identical(other.stale, _this.stale) || other.stale == _this.stale)&&const DeepCollectionEquality().equals(other.openComments, _this.openComments)&&(identical(other.focusComments, _this.focusComments) || other.focusComments == _this.focusComments));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(posts),const DeepCollectionEquality().hash(pinned),nextCursor,loadingMore,newPosts,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stale,const DeepCollectionEquality().hash(openComments),focusComments);
+int get hashCode {
+  final _this = this as FeedState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.posts),const DeepCollectionEquality().hash(_this.pinned),_this.nextCursor,_this.loadingMore,_this.newPosts,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId,_this.stale,const DeepCollectionEquality().hash(_this.openComments),_this.focusComments);
+}
 
 @override
 String toString() {
-  return 'FeedState(status: $status, posts: $posts, pinned: $pinned, nextCursor: $nextCursor, loadingMore: $loadingMore, newPosts: $newPosts, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stale: $stale, openComments: $openComments, focusComments: $focusComments)';
+  final _this = this as FeedState;
+  return 'FeedState(status: ${_this.status}, posts: ${_this.posts}, pinned: ${_this.pinned}, nextCursor: ${_this.nextCursor}, loadingMore: ${_this.loadingMore}, newPosts: ${_this.newPosts}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId}, stale: ${_this.stale}, openComments: ${_this.openComments}, focusComments: ${_this.focusComments})';
 }
 
 
@@ -63,7 +69,7 @@ class _$FeedStateCopyWithImpl<$Res>
 /// Create a copy of FeedState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? posts = null,Object? pinned = null,Object? nextCursor = freezed,Object? loadingMore = null,Object? newPosts = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,Object? stale = null,Object? openComments = null,Object? focusComments = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(FeedState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,posts: null == posts ? _self.posts : posts // ignore: cast_nullable_to_non_nullable
 as List<Post>,pinned: null == pinned ? _self.pinned : pinned // ignore: cast_nullable_to_non_nullable
@@ -215,7 +221,7 @@ return $default(_that.status,_that.posts,_that.pinned,_that.nextCursor,_that.loa
 
 
 class _FeedState implements FeedState {
-  const _FeedState({this.status = LoadStatus.initial, final  List<Post> posts = const <Post>[], final  List<PinnedPost> pinned = const <PinnedPost>[], this.nextCursor, this.loadingMore = false, this.newPosts = 0, this.error, this.actionError, this.actionErrorId = 0, this.stale = false, final  Set<String> openComments = const <String>{}, this.focusComments}): _posts = posts,_pinned = pinned,_openComments = openComments;
+  const _FeedState({this.status = LoadStatus.initial,  List<Post> posts = const <Post>[],  List<PinnedPost> pinned = const <PinnedPost>[], this.nextCursor, this.loadingMore = false, this.newPosts = 0, this.error, this.actionError, this.actionErrorId = 0, this.stale = false,  Set<String> openComments = const <String>{}, this.focusComments}): _posts = posts,_pinned = pinned,_openComments = openComments;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -259,16 +265,18 @@ _$FeedStateCopyWith<_FeedState> get copyWith => __$FeedStateCopyWithImpl<_FeedSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._posts, _posts)&&const DeepCollectionEquality().equals(other._pinned, _pinned)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.newPosts, newPosts) || other.newPosts == newPosts)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stale, stale) || other.stale == stale)&&const DeepCollectionEquality().equals(other._openComments, _openComments)&&(identical(other.focusComments, focusComments) || other.focusComments == focusComments));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.posts, _posts)&&const DeepCollectionEquality().equals(other.pinned, _pinned)&&(identical(other.nextCursor, nextCursor) || other.nextCursor == nextCursor)&&(identical(other.loadingMore, loadingMore) || other.loadingMore == loadingMore)&&(identical(other.newPosts, newPosts) || other.newPosts == newPosts)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId)&&(identical(other.stale, stale) || other.stale == stale)&&const DeepCollectionEquality().equals(other.openComments, _openComments)&&(identical(other.focusComments, focusComments) || other.focusComments == focusComments));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_pinned),nextCursor,loadingMore,newPosts,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stale,const DeepCollectionEquality().hash(_openComments),focusComments);
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_posts),const DeepCollectionEquality().hash(_pinned),nextCursor,loadingMore,newPosts,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId,stale,const DeepCollectionEquality().hash(_openComments),focusComments);
+}
 
 @override
 String toString() {
-  return 'FeedState(status: $status, posts: $posts, pinned: $pinned, nextCursor: $nextCursor, loadingMore: $loadingMore, newPosts: $newPosts, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stale: $stale, openComments: $openComments, focusComments: $focusComments)';
+    return 'FeedState(status: $status, posts: $posts, pinned: $pinned, nextCursor: $nextCursor, loadingMore: $loadingMore, newPosts: $newPosts, error: $error, actionError: $actionError, actionErrorId: $actionErrorId, stale: $stale, openComments: $openComments, focusComments: $focusComments)';
 }
 
 

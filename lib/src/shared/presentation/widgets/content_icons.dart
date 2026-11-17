@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 IconData? communityContentIcon(String? key) => switch (key) {
   'account' => Icons.person_outline,

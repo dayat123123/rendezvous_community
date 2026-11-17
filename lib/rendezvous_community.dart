@@ -322,7 +322,8 @@ export 'src/shared/presentation/builders/community_shared_details.dart';
 export 'src/shared/presentation/images/community_image_loader.dart'
     show CommunityImageLoadException, CommunityImageLoader;
 export 'src/shared/presentation/images/community_image_provider.dart' show CommunityImageProvider;
-export 'src/shared/presentation/l10n/l10n.dart' show CommunityErrorText, CommunityL10nContext, CommunityLocalizations;
+export 'src/shared/presentation/l10n/l10n.dart'
+    show CommunityErrorText, CommunityL10nContext, CommunityLocalizations, communityLocalizationsDelegates;
 export 'src/shared/presentation/load_status.dart';
 export 'src/shared/presentation/theme/community_icons.dart';
 export 'src/shared/presentation/theme/community_style.dart';

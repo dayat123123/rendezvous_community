@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'group_info_cubit.dart';
@@ -9,6 +9,7 @@ part of 'group_info_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $GroupInfoStateCopyWith<GroupInfoState> get copyWith => _$GroupInfoStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is GroupInfoState&&(identical(other.status, status) || other.status == status)&&(identical(other.room, room) || other.room == room)&&(identical(other.meId, meId) || other.meId == meId)&&const DeepCollectionEquality().equals(other.members, members)&&(identical(other.busy, busy) || other.busy == busy)&&(identical(other.left, left) || other.left == left)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as GroupInfoState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is GroupInfoState&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.room, _this.room) || other.room == _this.room)&&(identical(other.meId, _this.meId) || other.meId == _this.meId)&&const DeepCollectionEquality().equals(other.members, _this.members)&&(identical(other.busy, _this.busy) || other.busy == _this.busy)&&(identical(other.left, _this.left) || other.left == _this.left)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,room,meId,const DeepCollectionEquality().hash(members),busy,left,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as GroupInfoState;
+  return Object.hash(runtimeType,_this.status,_this.room,_this.meId,const DeepCollectionEquality().hash(_this.members),_this.busy,_this.left,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'GroupInfoState(status: $status, room: $room, meId: $meId, members: $members, busy: $busy, left: $left, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as GroupInfoState;
+  return 'GroupInfoState(status: ${_this.status}, room: ${_this.room}, meId: ${_this.meId}, members: ${_this.members}, busy: ${_this.busy}, left: ${_this.left}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$GroupInfoStateCopyWithImpl<$Res>
 /// Create a copy of GroupInfoState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? room = freezed,Object? meId = freezed,Object? members = null,Object? busy = null,Object? left = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(GroupInfoState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,room: freezed == room ? _self.room : room // ignore: cast_nullable_to_non_nullable
 as ChatRoom?,meId: freezed == meId ? _self.meId : meId // ignore: cast_nullable_to_non_nullable
@@ -224,7 +230,7 @@ return $default(_that.status,_that.room,_that.meId,_that.members,_that.busy,_tha
 
 
 class _GroupInfoState extends GroupInfoState {
-  const _GroupInfoState({this.status = LoadStatus.initial, this.room, this.meId, final  List<RoomMember> members = const <RoomMember>[], this.busy = false, this.left = false, this.error, this.actionError, this.actionErrorId = 0}): _members = members,super._();
+  const _GroupInfoState({this.status = LoadStatus.initial, this.room, this.meId,  List<RoomMember> members = const <RoomMember>[], this.busy = false, this.left = false, this.error, this.actionError, this.actionErrorId = 0}): _members = members,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -253,16 +259,18 @@ _$GroupInfoStateCopyWith<_GroupInfoState> get copyWith => __$GroupInfoStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _GroupInfoState&&(identical(other.status, status) || other.status == status)&&(identical(other.room, room) || other.room == room)&&(identical(other.meId, meId) || other.meId == meId)&&const DeepCollectionEquality().equals(other._members, _members)&&(identical(other.busy, busy) || other.busy == busy)&&(identical(other.left, left) || other.left == left)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _GroupInfoState&&(identical(other.status, status) || other.status == status)&&(identical(other.room, room) || other.room == room)&&(identical(other.meId, meId) || other.meId == meId)&&const DeepCollectionEquality().equals(other.members, _members)&&(identical(other.busy, busy) || other.busy == busy)&&(identical(other.left, left) || other.left == left)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,room,meId,const DeepCollectionEquality().hash(_members),busy,left,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,room,meId,const DeepCollectionEquality().hash(_members),busy,left,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'GroupInfoState(status: $status, room: $room, meId: $meId, members: $members, busy: $busy, left: $left, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'GroupInfoState(status: $status, room: $room, meId: $meId, members: $members, busy: $busy, left: $left, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

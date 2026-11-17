@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 class MessageJumpScope extends InheritedWidget {

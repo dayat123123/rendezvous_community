@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'thread_comment.dart';
@@ -9,6 +9,7 @@ part of 'thread_comment.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $ThreadCommentCopyWith<ThreadComment> get copyWith => _$ThreadCommentCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThreadComment&&(identical(other.id, id) || other.id == id)&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.parentId, parentId) || other.parentId == parentId)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.depth, depth) || other.depth == depth)&&(identical(other.path, path) || other.path == path)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.replyCount, replyCount) || other.replyCount == replyCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+  final _this = this as ThreadComment;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ThreadComment&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.postId, _this.postId) || other.postId == _this.postId)&&(identical(other.parentId, _this.parentId) || other.parentId == _this.parentId)&&(identical(other.author, _this.author) || other.author == _this.author)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.isDeleted, _this.isDeleted) || other.isDeleted == _this.isDeleted)&&(identical(other.depth, _this.depth) || other.depth == _this.depth)&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.likeCount, _this.likeCount) || other.likeCount == _this.likeCount)&&(identical(other.replyCount, _this.replyCount) || other.replyCount == _this.replyCount)&&(identical(other.likedByMe, _this.likedByMe) || other.likedByMe == _this.likedByMe)&&(identical(other.editedAt, _this.editedAt) || other.editedAt == _this.editedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&(identical(other.moderationStatus, _this.moderationStatus) || other.moderationStatus == _this.moderationStatus));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,postId,parentId,author,body,isDeleted,depth,path,likeCount,replyCount,likedByMe,editedAt,createdAt,cursor,moderationStatus);
+int get hashCode {
+  final _this = this as ThreadComment;
+  return Object.hash(runtimeType,_this.id,_this.postId,_this.parentId,_this.author,_this.body,_this.isDeleted,_this.depth,_this.path,_this.likeCount,_this.replyCount,_this.likedByMe,_this.editedAt,_this.createdAt,_this.cursor,_this.moderationStatus);
+}
 
 @override
 String toString() {
-  return 'ThreadComment(id: $id, postId: $postId, parentId: $parentId, author: $author, body: $body, isDeleted: $isDeleted, depth: $depth, path: $path, likeCount: $likeCount, replyCount: $replyCount, likedByMe: $likedByMe, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, moderationStatus: $moderationStatus)';
+  final _this = this as ThreadComment;
+  return 'ThreadComment(id: ${_this.id}, postId: ${_this.postId}, parentId: ${_this.parentId}, author: ${_this.author}, body: ${_this.body}, isDeleted: ${_this.isDeleted}, depth: ${_this.depth}, path: ${_this.path}, likeCount: ${_this.likeCount}, replyCount: ${_this.replyCount}, likedByMe: ${_this.likedByMe}, editedAt: ${_this.editedAt}, createdAt: ${_this.createdAt}, cursor: ${_this.cursor}, moderationStatus: ${_this.moderationStatus})';
 }
 
 
@@ -63,7 +69,7 @@ class _$ThreadCommentCopyWithImpl<$Res>
 /// Create a copy of ThreadComment
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? postId = null,Object? parentId = freezed,Object? author = freezed,Object? body = freezed,Object? isDeleted = null,Object? depth = null,Object? path = null,Object? likeCount = null,Object? replyCount = null,Object? likedByMe = null,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? moderationStatus = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ThreadComment(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,postId: null == postId ? _self.postId : postId // ignore: cast_nullable_to_non_nullable
 as String,parentId: freezed == parentId ? _self.parentId : parentId // ignore: cast_nullable_to_non_nullable
@@ -261,16 +267,18 @@ _$ThreadCommentCopyWith<_ThreadComment> get copyWith => __$ThreadCommentCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThreadComment&&(identical(other.id, id) || other.id == id)&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.parentId, parentId) || other.parentId == parentId)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.depth, depth) || other.depth == depth)&&(identical(other.path, path) || other.path == path)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.replyCount, replyCount) || other.replyCount == replyCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ThreadComment&&(identical(other.id, id) || other.id == id)&&(identical(other.postId, postId) || other.postId == postId)&&(identical(other.parentId, parentId) || other.parentId == parentId)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.depth, depth) || other.depth == depth)&&(identical(other.path, path) || other.path == path)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.replyCount, replyCount) || other.replyCount == replyCount)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,postId,parentId,author,body,isDeleted,depth,path,likeCount,replyCount,likedByMe,editedAt,createdAt,cursor,moderationStatus);
+int get hashCode {
+    return Object.hash(runtimeType,id,postId,parentId,author,body,isDeleted,depth,path,likeCount,replyCount,likedByMe,editedAt,createdAt,cursor,moderationStatus);
+}
 
 @override
 String toString() {
-  return 'ThreadComment(id: $id, postId: $postId, parentId: $parentId, author: $author, body: $body, isDeleted: $isDeleted, depth: $depth, path: $path, likeCount: $likeCount, replyCount: $replyCount, likedByMe: $likedByMe, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, moderationStatus: $moderationStatus)';
+    return 'ThreadComment(id: $id, postId: $postId, parentId: $parentId, author: $author, body: $body, isDeleted: $isDeleted, depth: $depth, path: $path, likeCount: $likeCount, replyCount: $replyCount, likedByMe: $likedByMe, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, moderationStatus: $moderationStatus)';
 }
 
 

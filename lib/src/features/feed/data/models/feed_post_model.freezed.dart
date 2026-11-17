@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'feed_post_model.dart';
@@ -9,6 +9,7 @@ part of 'feed_post_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $FeedPostModelCopyWith<FeedPostModel> get copyWith => _$FeedPostModelCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedPostModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorUsername, authorUsername) || other.authorUsername == authorUsername)&&(identical(other.authorDisplayName, authorDisplayName) || other.authorDisplayName == authorDisplayName)&&(identical(other.authorAvatarUrl, authorAvatarUrl) || other.authorAvatarUrl == authorAvatarUrl)&&(identical(other.authorIsVerified, authorIsVerified) || other.authorIsVerified == authorIsVerified)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&const DeepCollectionEquality().equals(other.topComment, topComment));
+  final _this = this as FeedPostModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedPostModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.authorId, _this.authorId) || other.authorId == _this.authorId)&&(identical(other.authorUsername, _this.authorUsername) || other.authorUsername == _this.authorUsername)&&(identical(other.authorDisplayName, _this.authorDisplayName) || other.authorDisplayName == _this.authorDisplayName)&&(identical(other.authorAvatarUrl, _this.authorAvatarUrl) || other.authorAvatarUrl == _this.authorAvatarUrl)&&(identical(other.authorIsVerified, _this.authorIsVerified) || other.authorIsVerified == _this.authorIsVerified)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.sentiment, _this.sentiment) || other.sentiment == _this.sentiment)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.likeCount, _this.likeCount) || other.likeCount == _this.likeCount)&&(identical(other.commentCount, _this.commentCount) || other.commentCount == _this.commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, _this.stockCodes)&&(identical(other.likedByMe, _this.likedByMe) || other.likedByMe == _this.likedByMe)&&(identical(other.poll, _this.poll) || other.poll == _this.poll)&&(identical(other.editedAt, _this.editedAt) || other.editedAt == _this.editedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&(identical(other.isBookmarked, _this.isBookmarked) || other.isBookmarked == _this.isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, _this.hashtags)&&(identical(other.isBot, _this.isBot) || other.isBot == _this.isBot)&&(identical(other.authorIsOfficial, _this.authorIsOfficial) || other.authorIsOfficial == _this.authorIsOfficial)&&(identical(other.moderationStatus, _this.moderationStatus) || other.moderationStatus == _this.moderationStatus)&&const DeepCollectionEquality().equals(other.topComment, _this.topComment));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,authorId,authorUsername,authorDisplayName,authorAvatarUrl,authorIsVerified,body,sentiment,const DeepCollectionEquality().hash(attachments),likeCount,commentCount,const DeepCollectionEquality().hash(stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(hashtags),isBot,authorIsOfficial,moderationStatus,const DeepCollectionEquality().hash(topComment)]);
+int get hashCode {
+  final _this = this as FeedPostModel;
+  return Object.hashAll([runtimeType,_this.id,_this.authorId,_this.authorUsername,_this.authorDisplayName,_this.authorAvatarUrl,_this.authorIsVerified,_this.body,_this.sentiment,const DeepCollectionEquality().hash(_this.attachments),_this.likeCount,_this.commentCount,const DeepCollectionEquality().hash(_this.stockCodes),_this.likedByMe,_this.poll,_this.editedAt,_this.createdAt,_this.cursor,_this.isBookmarked,const DeepCollectionEquality().hash(_this.hashtags),_this.isBot,_this.authorIsOfficial,_this.moderationStatus,const DeepCollectionEquality().hash(_this.topComment)]);
+}
 
 @override
 String toString() {
-  return 'FeedPostModel(id: $id, authorId: $authorId, authorUsername: $authorUsername, authorDisplayName: $authorDisplayName, authorAvatarUrl: $authorAvatarUrl, authorIsVerified: $authorIsVerified, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment)';
+  final _this = this as FeedPostModel;
+  return 'FeedPostModel(id: ${_this.id}, authorId: ${_this.authorId}, authorUsername: ${_this.authorUsername}, authorDisplayName: ${_this.authorDisplayName}, authorAvatarUrl: ${_this.authorAvatarUrl}, authorIsVerified: ${_this.authorIsVerified}, body: ${_this.body}, sentiment: ${_this.sentiment}, attachments: ${_this.attachments}, likeCount: ${_this.likeCount}, commentCount: ${_this.commentCount}, stockCodes: ${_this.stockCodes}, likedByMe: ${_this.likedByMe}, poll: ${_this.poll}, editedAt: ${_this.editedAt}, createdAt: ${_this.createdAt}, cursor: ${_this.cursor}, isBookmarked: ${_this.isBookmarked}, hashtags: ${_this.hashtags}, isBot: ${_this.isBot}, authorIsOfficial: ${_this.authorIsOfficial}, moderationStatus: ${_this.moderationStatus}, topComment: ${_this.topComment})';
 }
 
 
@@ -66,7 +72,7 @@ class _$FeedPostModelCopyWithImpl<$Res>
 /// Create a copy of FeedPostModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? authorId = null,Object? authorUsername = null,Object? authorDisplayName = freezed,Object? authorAvatarUrl = freezed,Object? authorIsVerified = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = freezed,Object? hashtags = freezed,Object? isBot = freezed,Object? authorIsOfficial = freezed,Object? moderationStatus = freezed,Object? topComment = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(FeedPostModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
 as String,authorUsername: null == authorUsername ? _self.authorUsername : authorUsername // ignore: cast_nullable_to_non_nullable
@@ -243,7 +249,7 @@ return $default(_that.id,_that.authorId,_that.authorUsername,_that.authorDisplay
 @JsonSerializable()
 
 class _FeedPostModel extends FeedPostModel {
-  const _FeedPostModel({required this.id, required this.authorId, required this.authorUsername, this.authorDisplayName, this.authorAvatarUrl, this.authorIsVerified = false, required this.body, this.sentiment, @JsonKey(fromJson: attachmentsFromJson) final  List<AttachmentModel> attachments = const <AttachmentModel>[], this.likeCount = 0, this.commentCount = 0, final  List<String> stockCodes = const <String>[], this.likedByMe = false, this.poll, this.editedAt, required this.createdAt, this.cursor = '', this.isBookmarked, final  List<String>? hashtags, this.isBot, this.authorIsOfficial, this.moderationStatus, final  Map<String, dynamic>? topComment}): _attachments = attachments,_stockCodes = stockCodes,_hashtags = hashtags,_topComment = topComment,super._();
+  const _FeedPostModel({required this.id, required this.authorId, required this.authorUsername, this.authorDisplayName, this.authorAvatarUrl, this.authorIsVerified = false, required this.body, this.sentiment, @JsonKey(fromJson: attachmentsFromJson)  List<AttachmentModel> attachments = const <AttachmentModel>[], this.likeCount = 0, this.commentCount = 0,  List<String> stockCodes = const <String>[], this.likedByMe = false, this.poll, this.editedAt, required this.createdAt, this.cursor = '', this.isBookmarked,  List<String>? hashtags, this.isBot, this.authorIsOfficial, this.moderationStatus,  Map<String, dynamic>? topComment}): _attachments = attachments,_stockCodes = stockCodes,_hashtags = hashtags,_topComment = topComment,super._();
   factory _FeedPostModel.fromJson(Map<String, dynamic> json) => _$FeedPostModelFromJson(json);
 
 @override final  String id;
@@ -311,16 +317,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedPostModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorUsername, authorUsername) || other.authorUsername == authorUsername)&&(identical(other.authorDisplayName, authorDisplayName) || other.authorDisplayName == authorDisplayName)&&(identical(other.authorAvatarUrl, authorAvatarUrl) || other.authorAvatarUrl == authorAvatarUrl)&&(identical(other.authorIsVerified, authorIsVerified) || other.authorIsVerified == authorIsVerified)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other._attachments, _attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other._stockCodes, _stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other._hashtags, _hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&const DeepCollectionEquality().equals(other._topComment, _topComment));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedPostModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.authorUsername, authorUsername) || other.authorUsername == authorUsername)&&(identical(other.authorDisplayName, authorDisplayName) || other.authorDisplayName == authorDisplayName)&&(identical(other.authorAvatarUrl, authorAvatarUrl) || other.authorAvatarUrl == authorAvatarUrl)&&(identical(other.authorIsVerified, authorIsVerified) || other.authorIsVerified == authorIsVerified)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, _stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, _hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&const DeepCollectionEquality().equals(other.topComment, _topComment));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hashAll([runtimeType,id,authorId,authorUsername,authorDisplayName,authorAvatarUrl,authorIsVerified,body,sentiment,const DeepCollectionEquality().hash(_attachments),likeCount,commentCount,const DeepCollectionEquality().hash(_stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(_hashtags),isBot,authorIsOfficial,moderationStatus,const DeepCollectionEquality().hash(_topComment)]);
+int get hashCode {
+    return Object.hashAll([runtimeType,id,authorId,authorUsername,authorDisplayName,authorAvatarUrl,authorIsVerified,body,sentiment,const DeepCollectionEquality().hash(_attachments),likeCount,commentCount,const DeepCollectionEquality().hash(_stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(_hashtags),isBot,authorIsOfficial,moderationStatus,const DeepCollectionEquality().hash(_topComment)]);
+}
 
 @override
 String toString() {
-  return 'FeedPostModel(id: $id, authorId: $authorId, authorUsername: $authorUsername, authorDisplayName: $authorDisplayName, authorAvatarUrl: $authorAvatarUrl, authorIsVerified: $authorIsVerified, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment)';
+    return 'FeedPostModel(id: $id, authorId: $authorId, authorUsername: $authorUsername, authorDisplayName: $authorDisplayName, authorAvatarUrl: $authorAvatarUrl, authorIsVerified: $authorIsVerified, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment)';
 }
 
 
@@ -409,16 +417,21 @@ $PostRowModelCopyWith<PostRowModel> get copyWith => _$PostRowModelCopyWithImpl<P
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.body, body) || other.body == body)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other.attachments, attachments));
+  final _this = this as PostRowModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PostRowModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.authorId, _this.authorId) || other.authorId == _this.authorId)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.likeCount, _this.likeCount) || other.likeCount == _this.likeCount)&&(identical(other.commentCount, _this.commentCount) || other.commentCount == _this.commentCount)&&(identical(other.deletedAt, _this.deletedAt) || other.deletedAt == _this.deletedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,authorId,body,likeCount,commentCount,deletedAt,createdAt,const DeepCollectionEquality().hash(attachments));
+int get hashCode {
+  final _this = this as PostRowModel;
+  return Object.hash(runtimeType,_this.id,_this.authorId,_this.body,_this.likeCount,_this.commentCount,_this.deletedAt,_this.createdAt,const DeepCollectionEquality().hash(_this.attachments));
+}
 
 @override
 String toString() {
-  return 'PostRowModel(id: $id, authorId: $authorId, body: $body, likeCount: $likeCount, commentCount: $commentCount, deletedAt: $deletedAt, createdAt: $createdAt, attachments: $attachments)';
+  final _this = this as PostRowModel;
+  return 'PostRowModel(id: ${_this.id}, authorId: ${_this.authorId}, body: ${_this.body}, likeCount: ${_this.likeCount}, commentCount: ${_this.commentCount}, deletedAt: ${_this.deletedAt}, createdAt: ${_this.createdAt}, attachments: ${_this.attachments})';
 }
 
 
@@ -447,7 +460,7 @@ class _$PostRowModelCopyWithImpl<$Res>
 /// Create a copy of PostRowModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? authorId = null,Object? body = null,Object? likeCount = null,Object? commentCount = null,Object? deletedAt = freezed,Object? createdAt = null,Object? attachments = null,}) {
-  return _then(_self.copyWith(
+  return _then(PostRowModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,authorId: null == authorId ? _self.authorId : authorId // ignore: cast_nullable_to_non_nullable
 as String,body: null == body ? _self.body : body // ignore: cast_nullable_to_non_nullable
@@ -597,7 +610,7 @@ return $default(_that.id,_that.authorId,_that.body,_that.likeCount,_that.comment
 @JsonSerializable()
 
 class _PostRowModel implements PostRowModel {
-  const _PostRowModel({required this.id, required this.authorId, this.body = '', this.likeCount = 0, this.commentCount = 0, this.deletedAt, required this.createdAt, final  List<Object?> attachments = const <Object?>[]}): _attachments = attachments;
+  const _PostRowModel({required this.id, required this.authorId, this.body = '', this.likeCount = 0, this.commentCount = 0, this.deletedAt, required this.createdAt,  List<Object?> attachments = const <Object?>[]}): _attachments = attachments;
   factory _PostRowModel.fromJson(Map<String, dynamic> json) => _$PostRowModelFromJson(json);
 
 @override final  String id;
@@ -628,16 +641,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.body, body) || other.body == body)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other._attachments, _attachments));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PostRowModel&&(identical(other.id, id) || other.id == id)&&(identical(other.authorId, authorId) || other.authorId == authorId)&&(identical(other.body, body) || other.body == body)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&(identical(other.deletedAt, deletedAt) || other.deletedAt == deletedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&const DeepCollectionEquality().equals(other.attachments, _attachments));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,authorId,body,likeCount,commentCount,deletedAt,createdAt,const DeepCollectionEquality().hash(_attachments));
+int get hashCode {
+    return Object.hash(runtimeType,id,authorId,body,likeCount,commentCount,deletedAt,createdAt,const DeepCollectionEquality().hash(_attachments));
+}
 
 @override
 String toString() {
-  return 'PostRowModel(id: $id, authorId: $authorId, body: $body, likeCount: $likeCount, commentCount: $commentCount, deletedAt: $deletedAt, createdAt: $createdAt, attachments: $attachments)';
+    return 'PostRowModel(id: $id, authorId: $authorId, body: $body, likeCount: $likeCount, commentCount: $commentCount, deletedAt: $deletedAt, createdAt: $createdAt, attachments: $attachments)';
 }
 
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'legal_document_model.dart';
@@ -9,6 +9,7 @@ part of 'legal_document_model.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 
@@ -28,16 +29,21 @@ $LegalDocumentModelCopyWith<LegalDocumentModel> get copyWith => _$LegalDocumentM
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is LegalDocumentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.version, version) || other.version == version)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.changeSummary, changeSummary) || other.changeSummary == changeSummary)&&(identical(other.effectiveAt, effectiveAt) || other.effectiveAt == effectiveAt)&&(identical(other.isRequired, isRequired) || other.isRequired == isRequired)&&(identical(other.isAccepted, isAccepted) || other.isAccepted == isAccepted));
+  final _this = this as LegalDocumentModel;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is LegalDocumentModel&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.version, _this.version) || other.version == _this.version)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.changeSummary, _this.changeSummary) || other.changeSummary == _this.changeSummary)&&(identical(other.effectiveAt, _this.effectiveAt) || other.effectiveAt == _this.effectiveAt)&&(identical(other.isRequired, _this.isRequired) || other.isRequired == _this.isRequired)&&(identical(other.isAccepted, _this.isAccepted) || other.isAccepted == _this.isAccepted));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,kind,version,title,body,changeSummary,effectiveAt,isRequired,isAccepted);
+int get hashCode {
+  final _this = this as LegalDocumentModel;
+  return Object.hash(runtimeType,_this.id,_this.kind,_this.version,_this.title,_this.body,_this.changeSummary,_this.effectiveAt,_this.isRequired,_this.isAccepted);
+}
 
 @override
 String toString() {
-  return 'LegalDocumentModel(id: $id, kind: $kind, version: $version, title: $title, body: $body, changeSummary: $changeSummary, effectiveAt: $effectiveAt, isRequired: $isRequired, isAccepted: $isAccepted)';
+  final _this = this as LegalDocumentModel;
+  return 'LegalDocumentModel(id: ${_this.id}, kind: ${_this.kind}, version: ${_this.version}, title: ${_this.title}, body: ${_this.body}, changeSummary: ${_this.changeSummary}, effectiveAt: ${_this.effectiveAt}, isRequired: ${_this.isRequired}, isAccepted: ${_this.isAccepted})';
 }
 
 
@@ -66,7 +72,7 @@ class _$LegalDocumentModelCopyWithImpl<$Res>
 /// Create a copy of LegalDocumentModel
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? kind = null,Object? version = null,Object? title = null,Object? body = null,Object? changeSummary = freezed,Object? effectiveAt = null,Object? isRequired = null,Object? isAccepted = null,}) {
-  return _then(_self.copyWith(
+  return _then(LegalDocumentModel(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as String,version: null == version ? _self.version : version // ignore: cast_nullable_to_non_nullable
@@ -243,16 +249,18 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _LegalDocumentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.version, version) || other.version == version)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.changeSummary, changeSummary) || other.changeSummary == changeSummary)&&(identical(other.effectiveAt, effectiveAt) || other.effectiveAt == effectiveAt)&&(identical(other.isRequired, isRequired) || other.isRequired == isRequired)&&(identical(other.isAccepted, isAccepted) || other.isAccepted == isAccepted));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _LegalDocumentModel&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.version, version) || other.version == version)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.changeSummary, changeSummary) || other.changeSummary == changeSummary)&&(identical(other.effectiveAt, effectiveAt) || other.effectiveAt == effectiveAt)&&(identical(other.isRequired, isRequired) || other.isRequired == isRequired)&&(identical(other.isAccepted, isAccepted) || other.isAccepted == isAccepted));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,kind,version,title,body,changeSummary,effectiveAt,isRequired,isAccepted);
+int get hashCode {
+    return Object.hash(runtimeType,id,kind,version,title,body,changeSummary,effectiveAt,isRequired,isAccepted);
+}
 
 @override
 String toString() {
-  return 'LegalDocumentModel(id: $id, kind: $kind, version: $version, title: $title, body: $body, changeSummary: $changeSummary, effectiveAt: $effectiveAt, isRequired: $isRequired, isAccepted: $isAccepted)';
+    return 'LegalDocumentModel(id: $id, kind: $kind, version: $version, title: $title, body: $body, changeSummary: $changeSummary, effectiveAt: $effectiveAt, isRequired: $isRequired, isAccepted: $isAccepted)';
 }
 
 

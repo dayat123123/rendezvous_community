@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
 import '../../support/help_fakes.dart';
@@ -13,7 +13,7 @@ Widget _app(
   Locale locale = const Locale('id'),
 }) => MaterialApp(
   locale: locale,
-  localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+  localizationsDelegates: communityLocalizationsDelegates,
   supportedLocales: CommunityLocalizations.supportedLocales,
   home: CommunityBuildersScope(
     builders: CommunityBuilders(help: builders),
@@ -109,7 +109,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('id'),
-        localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+        localizationsDelegates: communityLocalizationsDelegates,
         supportedLocales: CommunityLocalizations.supportedLocales,
         home: Scaffold(
           body: CommunityHelpArticleView(article: depositArticle, repository: help),
@@ -147,7 +147,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('id'),
-        localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+        localizationsDelegates: communityLocalizationsDelegates,
         supportedLocales: CommunityLocalizations.supportedLocales,
         home: Scaffold(
           body: CommunityHelpArticleView(article: depositArticle, repository: help),
@@ -169,7 +169,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('id'),
-        localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+        localizationsDelegates: communityLocalizationsDelegates,
         supportedLocales: CommunityLocalizations.supportedLocales,
         home: Scaffold(
           body: CommunityHelpArticleView(article: depositArticle, repository: help),
@@ -201,7 +201,7 @@ void main() {
     await tester.pumpWidget(
       MaterialApp(
         locale: const Locale('id'),
-        localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+        localizationsDelegates: communityLocalizationsDelegates,
         supportedLocales: CommunityLocalizations.supportedLocales,
         home: Scaffold(
           body: CommunityHelpArticleView(article: article, repository: help),

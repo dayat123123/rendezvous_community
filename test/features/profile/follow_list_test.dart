@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/profile/data/repositories/profile_repository_impl.dart';
@@ -100,7 +100,7 @@ Future<void> _pump(
   await tester.pumpWidget(
     MaterialApp(
       locale: const Locale('id'),
-      localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+      localizationsDelegates: communityLocalizationsDelegates,
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: Scaffold(
         body: CommunityScope(

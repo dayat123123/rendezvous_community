@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'dm_policy_cubit.dart';
@@ -9,6 +9,7 @@ part of 'dm_policy_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $DmPolicyStateCopyWith<DmPolicyState> get copyWith => _$DmPolicyStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is DmPolicyState&&(identical(other.status, status) || other.status == status)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.saving, saving) || other.saving == saving)&&(identical(other.savedId, savedId) || other.savedId == savedId)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as DmPolicyState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is DmPolicyState&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.settings, _this.settings) || other.settings == _this.settings)&&(identical(other.saving, _this.saving) || other.saving == _this.saving)&&(identical(other.savedId, _this.savedId) || other.savedId == _this.savedId)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,settings,saving,savedId,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as DmPolicyState;
+  return Object.hash(runtimeType,_this.status,_this.settings,_this.saving,_this.savedId,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'DmPolicyState(status: $status, settings: $settings, saving: $saving, savedId: $savedId, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as DmPolicyState;
+  return 'DmPolicyState(status: ${_this.status}, settings: ${_this.settings}, saving: ${_this.saving}, savedId: ${_this.savedId}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$DmPolicyStateCopyWithImpl<$Res>
 /// Create a copy of DmPolicyState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? settings = null,Object? saving = null,Object? savedId = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(DmPolicyState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,settings: null == settings ? _self.settings : settings // ignore: cast_nullable_to_non_nullable
 as DmPolicySettings,saving: null == saving ? _self.saving : saving // ignore: cast_nullable_to_non_nullable
@@ -240,16 +246,18 @@ _$DmPolicyStateCopyWith<_DmPolicyState> get copyWith => __$DmPolicyStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _DmPolicyState&&(identical(other.status, status) || other.status == status)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.saving, saving) || other.saving == saving)&&(identical(other.savedId, savedId) || other.savedId == savedId)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _DmPolicyState&&(identical(other.status, status) || other.status == status)&&(identical(other.settings, settings) || other.settings == settings)&&(identical(other.saving, saving) || other.saving == saving)&&(identical(other.savedId, savedId) || other.savedId == savedId)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,settings,saving,savedId,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,settings,saving,savedId,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'DmPolicyState(status: $status, settings: $settings, saving: $saving, savedId: $savedId, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'DmPolicyState(status: $status, settings: $settings, saving: $saving, savedId: $savedId, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

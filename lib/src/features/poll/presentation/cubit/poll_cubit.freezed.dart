@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'poll_cubit.dart';
@@ -9,6 +9,7 @@ part of 'poll_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $PollStateCopyWith<PollState> get copyWith => _$PollStateCopyWithImpl<PollState>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollState&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.pendingOptionId, pendingOptionId) || other.pendingOptionId == pendingOptionId)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId));
+  final _this = this as PollState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is PollState&&(identical(other.poll, _this.poll) || other.poll == _this.poll)&&(identical(other.pendingOptionId, _this.pendingOptionId) || other.pendingOptionId == _this.pendingOptionId)&&const DeepCollectionEquality().equals(other.error, _this.error)&&(identical(other.errorId, _this.errorId) || other.errorId == _this.errorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,poll,pendingOptionId,const DeepCollectionEquality().hash(error),errorId);
+int get hashCode {
+  final _this = this as PollState;
+  return Object.hash(runtimeType,_this.poll,_this.pendingOptionId,const DeepCollectionEquality().hash(_this.error),_this.errorId);
+}
 
 @override
 String toString() {
-  return 'PollState(poll: $poll, pendingOptionId: $pendingOptionId, error: $error, errorId: $errorId)';
+  final _this = this as PollState;
+  return 'PollState(poll: ${_this.poll}, pendingOptionId: ${_this.pendingOptionId}, error: ${_this.error}, errorId: ${_this.errorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$PollStateCopyWithImpl<$Res>
 /// Create a copy of PollState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? poll = null,Object? pendingOptionId = freezed,Object? error = freezed,Object? errorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(PollState(
 poll: null == poll ? _self.poll : poll // ignore: cast_nullable_to_non_nullable
 as Poll,pendingOptionId: freezed == pendingOptionId ? _self.pendingOptionId : pendingOptionId // ignore: cast_nullable_to_non_nullable
 as String?,error: freezed == error ? _self.error : error ,errorId: null == errorId ? _self.errorId : errorId // ignore: cast_nullable_to_non_nullable
@@ -235,16 +241,18 @@ _$PollStateCopyWith<_PollState> get copyWith => __$PollStateCopyWithImpl<_PollSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollState&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.pendingOptionId, pendingOptionId) || other.pendingOptionId == pendingOptionId)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _PollState&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.pendingOptionId, pendingOptionId) || other.pendingOptionId == pendingOptionId)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,poll,pendingOptionId,const DeepCollectionEquality().hash(error),errorId);
+int get hashCode {
+    return Object.hash(runtimeType,poll,pendingOptionId,const DeepCollectionEquality().hash(error),errorId);
+}
 
 @override
 String toString() {
-  return 'PollState(poll: $poll, pendingOptionId: $pendingOptionId, error: $error, errorId: $errorId)';
+    return 'PollState(poll: $poll, pendingOptionId: $pendingOptionId, error: $error, errorId: $errorId)';
 }
 
 

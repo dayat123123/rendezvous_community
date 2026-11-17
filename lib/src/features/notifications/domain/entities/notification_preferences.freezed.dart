@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'notification_preferences.dart';
@@ -9,6 +9,7 @@ part of 'notification_preferences.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $NotificationTypePreferenceCopyWith<NotificationTypePreference> get copyWith => 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationTypePreference&&(identical(other.type, type) || other.type == type)&&(identical(other.inApp, inApp) || other.inApp == inApp)&&(identical(other.push, push) || other.push == push)&&(identical(other.inAppLocked, inAppLocked) || other.inAppLocked == inAppLocked));
+  final _this = this as NotificationTypePreference;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationTypePreference&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.inApp, _this.inApp) || other.inApp == _this.inApp)&&(identical(other.push, _this.push) || other.push == _this.push)&&(identical(other.inAppLocked, _this.inAppLocked) || other.inAppLocked == _this.inAppLocked));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type,inApp,push,inAppLocked);
+int get hashCode {
+  final _this = this as NotificationTypePreference;
+  return Object.hash(runtimeType,_this.type,_this.inApp,_this.push,_this.inAppLocked);
+}
 
 @override
 String toString() {
-  return 'NotificationTypePreference(type: $type, inApp: $inApp, push: $push, inAppLocked: $inAppLocked)';
+  final _this = this as NotificationTypePreference;
+  return 'NotificationTypePreference(type: ${_this.type}, inApp: ${_this.inApp}, push: ${_this.push}, inAppLocked: ${_this.inAppLocked})';
 }
 
 
@@ -63,7 +69,7 @@ class _$NotificationTypePreferenceCopyWithImpl<$Res>
 /// Create a copy of NotificationTypePreference
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? type = null,Object? inApp = freezed,Object? push = null,Object? inAppLocked = null,}) {
-  return _then(_self.copyWith(
+  return _then(NotificationTypePreference(
 type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as String,inApp: freezed == inApp ? _self.inApp : inApp // ignore: cast_nullable_to_non_nullable
 as bool?,push: null == push ? _self.push : push // ignore: cast_nullable_to_non_nullable
@@ -227,16 +233,18 @@ _$NotificationTypePreferenceCopyWith<_NotificationTypePreference> get copyWith =
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationTypePreference&&(identical(other.type, type) || other.type == type)&&(identical(other.inApp, inApp) || other.inApp == inApp)&&(identical(other.push, push) || other.push == push)&&(identical(other.inAppLocked, inAppLocked) || other.inAppLocked == inAppLocked));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationTypePreference&&(identical(other.type, type) || other.type == type)&&(identical(other.inApp, inApp) || other.inApp == inApp)&&(identical(other.push, push) || other.push == push)&&(identical(other.inAppLocked, inAppLocked) || other.inAppLocked == inAppLocked));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type,inApp,push,inAppLocked);
+int get hashCode {
+    return Object.hash(runtimeType,type,inApp,push,inAppLocked);
+}
 
 @override
 String toString() {
-  return 'NotificationTypePreference(type: $type, inApp: $inApp, push: $push, inAppLocked: $inAppLocked)';
+    return 'NotificationTypePreference(type: $type, inApp: $inApp, push: $push, inAppLocked: $inAppLocked)';
 }
 
 
@@ -291,16 +299,21 @@ $QuietHoursCopyWith<QuietHours> get copyWith => _$QuietHoursCopyWithImpl<QuietHo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuietHours&&(identical(other.enabled, enabled) || other.enabled == enabled)&&(identical(other.start, start) || other.start == start)&&(identical(other.end, end) || other.end == end)&&(identical(other.timezone, timezone) || other.timezone == timezone));
+  final _this = this as QuietHours;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is QuietHours&&(identical(other.enabled, _this.enabled) || other.enabled == _this.enabled)&&(identical(other.start, _this.start) || other.start == _this.start)&&(identical(other.end, _this.end) || other.end == _this.end)&&(identical(other.timezone, _this.timezone) || other.timezone == _this.timezone));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,enabled,start,end,timezone);
+int get hashCode {
+  final _this = this as QuietHours;
+  return Object.hash(runtimeType,_this.enabled,_this.start,_this.end,_this.timezone);
+}
 
 @override
 String toString() {
-  return 'QuietHours(enabled: $enabled, start: $start, end: $end, timezone: $timezone)';
+  final _this = this as QuietHours;
+  return 'QuietHours(enabled: ${_this.enabled}, start: ${_this.start}, end: ${_this.end}, timezone: ${_this.timezone})';
 }
 
 
@@ -329,7 +342,7 @@ class _$QuietHoursCopyWithImpl<$Res>
 /// Create a copy of QuietHours
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? enabled = null,Object? start = freezed,Object? end = freezed,Object? timezone = null,}) {
-  return _then(_self.copyWith(
+  return _then(QuietHours(
 enabled: null == enabled ? _self.enabled : enabled // ignore: cast_nullable_to_non_nullable
 as bool,start: freezed == start ? _self.start : start // ignore: cast_nullable_to_non_nullable
 as String?,end: freezed == end ? _self.end : end // ignore: cast_nullable_to_non_nullable
@@ -493,16 +506,18 @@ _$QuietHoursCopyWith<_QuietHours> get copyWith => __$QuietHoursCopyWithImpl<_Qui
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuietHours&&(identical(other.enabled, enabled) || other.enabled == enabled)&&(identical(other.start, start) || other.start == start)&&(identical(other.end, end) || other.end == end)&&(identical(other.timezone, timezone) || other.timezone == timezone));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _QuietHours&&(identical(other.enabled, enabled) || other.enabled == enabled)&&(identical(other.start, start) || other.start == start)&&(identical(other.end, end) || other.end == end)&&(identical(other.timezone, timezone) || other.timezone == timezone));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,enabled,start,end,timezone);
+int get hashCode {
+    return Object.hash(runtimeType,enabled,start,end,timezone);
+}
 
 @override
 String toString() {
-  return 'QuietHours(enabled: $enabled, start: $start, end: $end, timezone: $timezone)';
+    return 'QuietHours(enabled: $enabled, start: $start, end: $end, timezone: $timezone)';
 }
 
 
@@ -557,16 +572,21 @@ $NotificationPreferencesCopyWith<NotificationPreferences> get copyWith => _$Noti
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPreferences&&const DeepCollectionEquality().equals(other.types, types)&&(identical(other.quietHours, quietHours) || other.quietHours == quietHours)&&(identical(other.aggregateMinutes, aggregateMinutes) || other.aggregateMinutes == aggregateMinutes)&&(identical(other.watchlistDigestTime, watchlistDigestTime) || other.watchlistDigestTime == watchlistDigestTime));
+  final _this = this as NotificationPreferences;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is NotificationPreferences&&const DeepCollectionEquality().equals(other.types, _this.types)&&(identical(other.quietHours, _this.quietHours) || other.quietHours == _this.quietHours)&&(identical(other.aggregateMinutes, _this.aggregateMinutes) || other.aggregateMinutes == _this.aggregateMinutes)&&(identical(other.watchlistDigestTime, _this.watchlistDigestTime) || other.watchlistDigestTime == _this.watchlistDigestTime));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(types),quietHours,aggregateMinutes,watchlistDigestTime);
+int get hashCode {
+  final _this = this as NotificationPreferences;
+  return Object.hash(runtimeType,const DeepCollectionEquality().hash(_this.types),_this.quietHours,_this.aggregateMinutes,_this.watchlistDigestTime);
+}
 
 @override
 String toString() {
-  return 'NotificationPreferences(types: $types, quietHours: $quietHours, aggregateMinutes: $aggregateMinutes, watchlistDigestTime: $watchlistDigestTime)';
+  final _this = this as NotificationPreferences;
+  return 'NotificationPreferences(types: ${_this.types}, quietHours: ${_this.quietHours}, aggregateMinutes: ${_this.aggregateMinutes}, watchlistDigestTime: ${_this.watchlistDigestTime})';
 }
 
 
@@ -595,7 +615,7 @@ class _$NotificationPreferencesCopyWithImpl<$Res>
 /// Create a copy of NotificationPreferences
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? types = null,Object? quietHours = null,Object? aggregateMinutes = null,Object? watchlistDigestTime = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(NotificationPreferences(
 types: null == types ? _self.types : types // ignore: cast_nullable_to_non_nullable
 as List<NotificationTypePreference>,quietHours: null == quietHours ? _self.quietHours : quietHours // ignore: cast_nullable_to_non_nullable
 as QuietHours,aggregateMinutes: null == aggregateMinutes ? _self.aggregateMinutes : aggregateMinutes // ignore: cast_nullable_to_non_nullable
@@ -750,7 +770,7 @@ return $default(_that.types,_that.quietHours,_that.aggregateMinutes,_that.watchl
 
 
 class _NotificationPreferences extends NotificationPreferences {
-  const _NotificationPreferences({final  List<NotificationTypePreference> types = const <NotificationTypePreference>[], this.quietHours = const QuietHours(), this.aggregateMinutes = 60, this.watchlistDigestTime}): _types = types,super._();
+  const _NotificationPreferences({ List<NotificationTypePreference> types = const <NotificationTypePreference>[], this.quietHours = const QuietHours(), this.aggregateMinutes = 60, this.watchlistDigestTime}): _types = types,super._();
   
 
  final  List<NotificationTypePreference> _types;
@@ -774,16 +794,18 @@ _$NotificationPreferencesCopyWith<_NotificationPreferences> get copyWith => __$N
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationPreferences&&const DeepCollectionEquality().equals(other._types, _types)&&(identical(other.quietHours, quietHours) || other.quietHours == quietHours)&&(identical(other.aggregateMinutes, aggregateMinutes) || other.aggregateMinutes == aggregateMinutes)&&(identical(other.watchlistDigestTime, watchlistDigestTime) || other.watchlistDigestTime == watchlistDigestTime));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _NotificationPreferences&&const DeepCollectionEquality().equals(other.types, _types)&&(identical(other.quietHours, quietHours) || other.quietHours == quietHours)&&(identical(other.aggregateMinutes, aggregateMinutes) || other.aggregateMinutes == aggregateMinutes)&&(identical(other.watchlistDigestTime, watchlistDigestTime) || other.watchlistDigestTime == watchlistDigestTime));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,const DeepCollectionEquality().hash(_types),quietHours,aggregateMinutes,watchlistDigestTime);
+int get hashCode {
+    return Object.hash(runtimeType,const DeepCollectionEquality().hash(_types),quietHours,aggregateMinutes,watchlistDigestTime);
+}
 
 @override
 String toString() {
-  return 'NotificationPreferences(types: $types, quietHours: $quietHours, aggregateMinutes: $aggregateMinutes, watchlistDigestTime: $watchlistDigestTime)';
+    return 'NotificationPreferences(types: $types, quietHours: $quietHours, aggregateMinutes: $aggregateMinutes, watchlistDigestTime: $watchlistDigestTime)';
 }
 
 

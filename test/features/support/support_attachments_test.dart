@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:file_selector/file_selector.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_composer.dart';
 import 'package:rendezvous_community/src/features/media/presentation/file_saver.dart';
@@ -73,7 +73,7 @@ class _Media extends Fake implements MediaRepository {
 Widget _app(Widget child, {MediaRepository? media, ChatRepository? chat, Locale locale = const Locale('id')}) =>
     MaterialApp(
       locale: locale,
-      localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+      localizationsDelegates: communityLocalizationsDelegates,
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: Scaffold(
         body: CommunityScope(
@@ -436,7 +436,7 @@ void main() {
       await tester.pumpWidget(
         MaterialApp(
           locale: const Locale('id'),
-          localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+          localizationsDelegates: communityLocalizationsDelegates,
           supportedLocales: CommunityLocalizations.supportedLocales,
           home: CommunityVideoPlayerPage(
             uri: Uri.parse('https://api.test/v.mp4'),

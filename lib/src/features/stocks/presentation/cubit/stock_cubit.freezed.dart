@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'stock_cubit.dart';
@@ -9,6 +9,7 @@ part of 'stock_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $StockStateCopyWith<StockState> get copyWith => _$StockStateCopyWithImpl<StockSt
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockState&&(identical(other.stock, stock) || other.stock == stock)&&(identical(other.loaded, loaded) || other.loaded == loaded)&&(identical(other.watching, watching) || other.watching == watching)&&(identical(other.joining, joining) || other.joining == joining)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId));
+  final _this = this as StockState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is StockState&&(identical(other.stock, _this.stock) || other.stock == _this.stock)&&(identical(other.loaded, _this.loaded) || other.loaded == _this.loaded)&&(identical(other.watching, _this.watching) || other.watching == _this.watching)&&(identical(other.joining, _this.joining) || other.joining == _this.joining)&&const DeepCollectionEquality().equals(other.error, _this.error)&&(identical(other.errorId, _this.errorId) || other.errorId == _this.errorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,stock,loaded,watching,joining,const DeepCollectionEquality().hash(error),errorId);
+int get hashCode {
+  final _this = this as StockState;
+  return Object.hash(runtimeType,_this.stock,_this.loaded,_this.watching,_this.joining,const DeepCollectionEquality().hash(_this.error),_this.errorId);
+}
 
 @override
 String toString() {
-  return 'StockState(stock: $stock, loaded: $loaded, watching: $watching, joining: $joining, error: $error, errorId: $errorId)';
+  final _this = this as StockState;
+  return 'StockState(stock: ${_this.stock}, loaded: ${_this.loaded}, watching: ${_this.watching}, joining: ${_this.joining}, error: ${_this.error}, errorId: ${_this.errorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$StockStateCopyWithImpl<$Res>
 /// Create a copy of StockState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? stock = freezed,Object? loaded = null,Object? watching = null,Object? joining = null,Object? error = freezed,Object? errorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(StockState(
 stock: freezed == stock ? _self.stock : stock // ignore: cast_nullable_to_non_nullable
 as Stock?,loaded: null == loaded ? _self.loaded : loaded // ignore: cast_nullable_to_non_nullable
 as bool,watching: null == watching ? _self.watching : watching // ignore: cast_nullable_to_non_nullable
@@ -242,16 +248,18 @@ _$StockStateCopyWith<_StockState> get copyWith => __$StockStateCopyWithImpl<_Sto
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockState&&(identical(other.stock, stock) || other.stock == stock)&&(identical(other.loaded, loaded) || other.loaded == loaded)&&(identical(other.watching, watching) || other.watching == watching)&&(identical(other.joining, joining) || other.joining == joining)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _StockState&&(identical(other.stock, stock) || other.stock == stock)&&(identical(other.loaded, loaded) || other.loaded == loaded)&&(identical(other.watching, watching) || other.watching == watching)&&(identical(other.joining, joining) || other.joining == joining)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.errorId, errorId) || other.errorId == errorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,stock,loaded,watching,joining,const DeepCollectionEquality().hash(error),errorId);
+int get hashCode {
+    return Object.hash(runtimeType,stock,loaded,watching,joining,const DeepCollectionEquality().hash(error),errorId);
+}
 
 @override
 String toString() {
-  return 'StockState(stock: $stock, loaded: $loaded, watching: $watching, joining: $joining, error: $error, errorId: $errorId)';
+    return 'StockState(stock: $stock, loaded: $loaded, watching: $watching, joining: $joining, error: $error, errorId: $errorId)';
 }
 
 

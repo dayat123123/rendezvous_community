@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'appeals_cubit.dart';
@@ -9,6 +9,7 @@ part of 'appeals_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $AppealsStateCopyWith<AppealsState> get copyWith => _$AppealsStateCopyWithImpl<A
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppealsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.appeals, appeals)&&const DeepCollectionEquality().equals(other.sanctions, sanctions)&&const DeepCollectionEquality().equals(other.moderated, moderated)&&const DeepCollectionEquality().equals(other.error, error));
+  final _this = this as AppealsState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AppealsState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.appeals, _this.appeals)&&const DeepCollectionEquality().equals(other.sanctions, _this.sanctions)&&const DeepCollectionEquality().equals(other.moderated, _this.moderated)&&const DeepCollectionEquality().equals(other.error, _this.error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(appeals),const DeepCollectionEquality().hash(sanctions),const DeepCollectionEquality().hash(moderated),const DeepCollectionEquality().hash(error));
+int get hashCode {
+  final _this = this as AppealsState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.appeals),const DeepCollectionEquality().hash(_this.sanctions),const DeepCollectionEquality().hash(_this.moderated),const DeepCollectionEquality().hash(_this.error));
+}
 
 @override
 String toString() {
-  return 'AppealsState(status: $status, appeals: $appeals, sanctions: $sanctions, moderated: $moderated, error: $error)';
+  final _this = this as AppealsState;
+  return 'AppealsState(status: ${_this.status}, appeals: ${_this.appeals}, sanctions: ${_this.sanctions}, moderated: ${_this.moderated}, error: ${_this.error})';
 }
 
 
@@ -63,7 +69,7 @@ class _$AppealsStateCopyWithImpl<$Res>
 /// Create a copy of AppealsState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? appeals = null,Object? sanctions = null,Object? moderated = null,Object? error = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(AppealsState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,appeals: null == appeals ? _self.appeals : appeals // ignore: cast_nullable_to_non_nullable
 as List<Appeal>,sanctions: null == sanctions ? _self.sanctions : sanctions // ignore: cast_nullable_to_non_nullable
@@ -209,7 +215,7 @@ return $default(_that.status,_that.appeals,_that.sanctions,_that.moderated,_that
 
 
 class _AppealsState extends AppealsState {
-  const _AppealsState({this.status = LoadStatus.initial, final  List<Appeal> appeals = const <Appeal>[], final  List<Sanction> sanctions = const <Sanction>[], final  List<ModeratedContent> moderated = const <ModeratedContent>[], this.error}): _appeals = appeals,_sanctions = sanctions,_moderated = moderated,super._();
+  const _AppealsState({this.status = LoadStatus.initial,  List<Appeal> appeals = const <Appeal>[],  List<Sanction> sanctions = const <Sanction>[],  List<ModeratedContent> moderated = const <ModeratedContent>[], this.error}): _appeals = appeals,_sanctions = sanctions,_moderated = moderated,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -246,16 +252,18 @@ _$AppealsStateCopyWith<_AppealsState> get copyWith => __$AppealsStateCopyWithImp
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppealsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._appeals, _appeals)&&const DeepCollectionEquality().equals(other._sanctions, _sanctions)&&const DeepCollectionEquality().equals(other._moderated, _moderated)&&const DeepCollectionEquality().equals(other.error, error));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AppealsState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.appeals, _appeals)&&const DeepCollectionEquality().equals(other.sanctions, _sanctions)&&const DeepCollectionEquality().equals(other.moderated, _moderated)&&const DeepCollectionEquality().equals(other.error, error));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_appeals),const DeepCollectionEquality().hash(_sanctions),const DeepCollectionEquality().hash(_moderated),const DeepCollectionEquality().hash(error));
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_appeals),const DeepCollectionEquality().hash(_sanctions),const DeepCollectionEquality().hash(_moderated),const DeepCollectionEquality().hash(error));
+}
 
 @override
 String toString() {
-  return 'AppealsState(status: $status, appeals: $appeals, sanctions: $sanctions, moderated: $moderated, error: $error)';
+    return 'AppealsState(status: $status, appeals: $appeals, sanctions: $sanctions, moderated: $moderated, error: $error)';
 }
 
 

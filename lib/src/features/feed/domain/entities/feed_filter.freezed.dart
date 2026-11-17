@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'feed_filter.dart';
@@ -9,6 +9,7 @@ part of 'feed_filter.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $FeedFilterCopyWith<FeedFilter> get copyWith => _$FeedFilterCopyWithImpl<FeedFil
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedFilter&&(identical(other.key, key) || other.key == key)&&(identical(other.labelEn, labelEn) || other.labelEn == labelEn)&&(identical(other.labelId, labelId) || other.labelId == labelId)&&(identical(other.sort, sort) || other.sort == sort)&&(identical(other.content, content) || other.content == content)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.position, position) || other.position == position));
+  final _this = this as FeedFilter;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is FeedFilter&&(identical(other.key, _this.key) || other.key == _this.key)&&(identical(other.labelEn, _this.labelEn) || other.labelEn == _this.labelEn)&&(identical(other.labelId, _this.labelId) || other.labelId == _this.labelId)&&(identical(other.sort, _this.sort) || other.sort == _this.sort)&&(identical(other.content, _this.content) || other.content == _this.content)&&(identical(other.icon, _this.icon) || other.icon == _this.icon)&&(identical(other.position, _this.position) || other.position == _this.position));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,key,labelEn,labelId,sort,content,icon,position);
+int get hashCode {
+  final _this = this as FeedFilter;
+  return Object.hash(runtimeType,_this.key,_this.labelEn,_this.labelId,_this.sort,_this.content,_this.icon,_this.position);
+}
 
 @override
 String toString() {
-  return 'FeedFilter(key: $key, labelEn: $labelEn, labelId: $labelId, sort: $sort, content: $content, icon: $icon, position: $position)';
+  final _this = this as FeedFilter;
+  return 'FeedFilter(key: ${_this.key}, labelEn: ${_this.labelEn}, labelId: ${_this.labelId}, sort: ${_this.sort}, content: ${_this.content}, icon: ${_this.icon}, position: ${_this.position})';
 }
 
 
@@ -63,7 +69,7 @@ class _$FeedFilterCopyWithImpl<$Res>
 /// Create a copy of FeedFilter
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? key = null,Object? labelEn = null,Object? labelId = null,Object? sort = null,Object? content = freezed,Object? icon = freezed,Object? position = null,}) {
-  return _then(_self.copyWith(
+  return _then(FeedFilter(
 key: null == key ? _self.key : key // ignore: cast_nullable_to_non_nullable
 as String,labelEn: null == labelEn ? _self.labelEn : labelEn // ignore: cast_nullable_to_non_nullable
 as String,labelId: null == labelId ? _self.labelId : labelId // ignore: cast_nullable_to_non_nullable
@@ -233,16 +239,18 @@ _$FeedFilterCopyWith<_FeedFilter> get copyWith => __$FeedFilterCopyWithImpl<_Fee
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedFilter&&(identical(other.key, key) || other.key == key)&&(identical(other.labelEn, labelEn) || other.labelEn == labelEn)&&(identical(other.labelId, labelId) || other.labelId == labelId)&&(identical(other.sort, sort) || other.sort == sort)&&(identical(other.content, content) || other.content == content)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.position, position) || other.position == position));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _FeedFilter&&(identical(other.key, key) || other.key == key)&&(identical(other.labelEn, labelEn) || other.labelEn == labelEn)&&(identical(other.labelId, labelId) || other.labelId == labelId)&&(identical(other.sort, sort) || other.sort == sort)&&(identical(other.content, content) || other.content == content)&&(identical(other.icon, icon) || other.icon == icon)&&(identical(other.position, position) || other.position == position));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,key,labelEn,labelId,sort,content,icon,position);
+int get hashCode {
+    return Object.hash(runtimeType,key,labelEn,labelId,sort,content,icon,position);
+}
 
 @override
 String toString() {
-  return 'FeedFilter(key: $key, labelEn: $labelEn, labelId: $labelId, sort: $sort, content: $content, icon: $icon, position: $position)';
+    return 'FeedFilter(key: $key, labelEn: $labelEn, labelId: $labelId, sort: $sort, content: $content, icon: $icon, position: $position)';
 }
 
 

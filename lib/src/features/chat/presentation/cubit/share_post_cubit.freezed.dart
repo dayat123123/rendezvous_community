@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'share_post_cubit.dart';
@@ -9,6 +9,7 @@ part of 'share_post_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $SharePostStateCopyWith<SharePostState> get copyWith => _$SharePostStateCopyWith
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SharePostState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.rooms, rooms)&&(identical(other.sendingRoomId, sendingRoomId) || other.sendingRoomId == sendingRoomId)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as SharePostState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SharePostState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.rooms, _this.rooms)&&(identical(other.sendingRoomId, _this.sendingRoomId) || other.sendingRoomId == _this.sendingRoomId)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(rooms),sendingRoomId,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as SharePostState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.rooms),_this.sendingRoomId,const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'SharePostState(status: $status, rooms: $rooms, sendingRoomId: $sendingRoomId, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as SharePostState;
+  return 'SharePostState(status: ${_this.status}, rooms: ${_this.rooms}, sendingRoomId: ${_this.sendingRoomId}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$SharePostStateCopyWithImpl<$Res>
 /// Create a copy of SharePostState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? rooms = null,Object? sendingRoomId = freezed,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(SharePostState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,rooms: null == rooms ? _self.rooms : rooms // ignore: cast_nullable_to_non_nullable
 as List<ChatRoom>,sendingRoomId: freezed == sendingRoomId ? _self.sendingRoomId : sendingRoomId // ignore: cast_nullable_to_non_nullable
@@ -209,7 +215,7 @@ return $default(_that.status,_that.rooms,_that.sendingRoomId,_that.error,_that.a
 
 
 class _SharePostState implements SharePostState {
-  const _SharePostState({this.status = LoadStatus.initial, final  List<ChatRoom> rooms = const <ChatRoom>[], this.sendingRoomId, this.error, this.actionError, this.actionErrorId = 0}): _rooms = rooms;
+  const _SharePostState({this.status = LoadStatus.initial,  List<ChatRoom> rooms = const <ChatRoom>[], this.sendingRoomId, this.error, this.actionError, this.actionErrorId = 0}): _rooms = rooms;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -235,16 +241,18 @@ _$SharePostStateCopyWith<_SharePostState> get copyWith => __$SharePostStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SharePostState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._rooms, _rooms)&&(identical(other.sendingRoomId, sendingRoomId) || other.sendingRoomId == sendingRoomId)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SharePostState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.rooms, _rooms)&&(identical(other.sendingRoomId, sendingRoomId) || other.sendingRoomId == sendingRoomId)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_rooms),sendingRoomId,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_rooms),sendingRoomId,const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'SharePostState(status: $status, rooms: $rooms, sendingRoomId: $sendingRoomId, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'SharePostState(status: $status, rooms: $rooms, sendingRoomId: $sendingRoomId, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

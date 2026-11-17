@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/typing_bubble.dart';
@@ -30,7 +30,7 @@ FakeChatRepository _groupChat() => FakeChatRepository(
 Future<void> _pumpApp(WidgetTester tester, Widget child, {bool disableAnimations = false}) => tester.pumpWidget(
   MaterialApp(
     locale: const Locale('id'),
-    localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+    localizationsDelegates: communityLocalizationsDelegates,
     supportedLocales: CommunityLocalizations.supportedLocales,
     home: MediaQuery(
       data: MediaQueryData(disableAnimations: disableAnimations),

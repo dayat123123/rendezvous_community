@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 
@@ -102,7 +102,7 @@ Widget supportApp(Widget child, {Locale locale = const Locale('id'), CommunityBu
   if (builders != null) body = CommunityBuildersScope(builders: builders, child: body);
   return MaterialApp(
     locale: locale,
-    localizationsDelegates: CommunityLocalizations.localizationsDelegates,
+    localizationsDelegates: communityLocalizationsDelegates,
     supportedLocales: CommunityLocalizations.supportedLocales,
     home: Scaffold(body: body),
   );

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'user.dart';
@@ -9,6 +9,7 @@ part of 'user.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $UserSummaryCopyWith<UserSummary> get copyWith => _$UserSummaryCopyWithImpl<User
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
+  final _this = this as UserSummary;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserSummary&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.username, _this.username) || other.username == _this.username)&&(identical(other.displayName, _this.displayName) || other.displayName == _this.displayName)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl)&&(identical(other.isVerified, _this.isVerified) || other.isVerified == _this.isVerified)&&(identical(other.isOfficial, _this.isOfficial) || other.isOfficial == _this.isOfficial));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,isVerified,isOfficial);
+int get hashCode {
+  final _this = this as UserSummary;
+  return Object.hash(runtimeType,_this.id,_this.username,_this.displayName,_this.avatarUrl,_this.isVerified,_this.isOfficial);
+}
 
 @override
 String toString() {
-  return 'UserSummary(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified, isOfficial: $isOfficial)';
+  final _this = this as UserSummary;
+  return 'UserSummary(id: ${_this.id}, username: ${_this.username}, displayName: ${_this.displayName}, avatarUrl: ${_this.avatarUrl}, isVerified: ${_this.isVerified}, isOfficial: ${_this.isOfficial})';
 }
 
 
@@ -63,7 +69,7 @@ class _$UserSummaryCopyWithImpl<$Res>
 /// Create a copy of UserSummary
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? username = null,Object? displayName = freezed,Object? avatarUrl = freezed,Object? isVerified = null,Object? isOfficial = null,}) {
-  return _then(_self.copyWith(
+  return _then(UserSummary(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,username: null == username ? _self.username : username // ignore: cast_nullable_to_non_nullable
 as String,displayName: freezed == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
@@ -231,16 +237,18 @@ _$UserSummaryCopyWith<_UserSummary> get copyWith => __$UserSummaryCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserSummary&&(identical(other.id, id) || other.id == id)&&(identical(other.username, username) || other.username == username)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.isVerified, isVerified) || other.isVerified == isVerified)&&(identical(other.isOfficial, isOfficial) || other.isOfficial == isOfficial));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,username,displayName,avatarUrl,isVerified,isOfficial);
+int get hashCode {
+    return Object.hash(runtimeType,id,username,displayName,avatarUrl,isVerified,isOfficial);
+}
 
 @override
 String toString() {
-  return 'UserSummary(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified, isOfficial: $isOfficial)';
+    return 'UserSummary(id: $id, username: $username, displayName: $displayName, avatarUrl: $avatarUrl, isVerified: $isVerified, isOfficial: $isOfficial)';
 }
 
 

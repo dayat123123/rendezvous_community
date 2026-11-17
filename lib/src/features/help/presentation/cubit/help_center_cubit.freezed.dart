@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'help_center_cubit.dart';
@@ -9,6 +9,7 @@ part of 'help_center_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $HelpCenterStateCopyWith<HelpCenterState> get copyWith => _$HelpCenterStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpCenterState&&(identical(other.status, status) || other.status == status)&&(identical(other.content, content) || other.content == content)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.query, query) || other.query == query)&&(identical(other.searching, searching) || other.searching == searching)&&const DeepCollectionEquality().equals(other.results, results)&&(identical(other.savedResults, savedResults) || other.savedResults == savedResults)&&const DeepCollectionEquality().equals(other.searchError, searchError)&&const DeepCollectionEquality().equals(other.incidents, incidents));
+  final _this = this as HelpCenterState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpCenterState&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.content, _this.content) || other.content == _this.content)&&(identical(other.offline, _this.offline) || other.offline == _this.offline)&&const DeepCollectionEquality().equals(other.error, _this.error)&&(identical(other.query, _this.query) || other.query == _this.query)&&(identical(other.searching, _this.searching) || other.searching == _this.searching)&&const DeepCollectionEquality().equals(other.results, _this.results)&&(identical(other.savedResults, _this.savedResults) || other.savedResults == _this.savedResults)&&const DeepCollectionEquality().equals(other.searchError, _this.searchError)&&const DeepCollectionEquality().equals(other.incidents, _this.incidents));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,content,offline,const DeepCollectionEquality().hash(error),query,searching,const DeepCollectionEquality().hash(results),savedResults,const DeepCollectionEquality().hash(searchError),const DeepCollectionEquality().hash(incidents));
+int get hashCode {
+  final _this = this as HelpCenterState;
+  return Object.hash(runtimeType,_this.status,_this.content,_this.offline,const DeepCollectionEquality().hash(_this.error),_this.query,_this.searching,const DeepCollectionEquality().hash(_this.results),_this.savedResults,const DeepCollectionEquality().hash(_this.searchError),const DeepCollectionEquality().hash(_this.incidents));
+}
 
 @override
 String toString() {
-  return 'HelpCenterState(status: $status, content: $content, offline: $offline, error: $error, query: $query, searching: $searching, results: $results, savedResults: $savedResults, searchError: $searchError, incidents: $incidents)';
+  final _this = this as HelpCenterState;
+  return 'HelpCenterState(status: ${_this.status}, content: ${_this.content}, offline: ${_this.offline}, error: ${_this.error}, query: ${_this.query}, searching: ${_this.searching}, results: ${_this.results}, savedResults: ${_this.savedResults}, searchError: ${_this.searchError}, incidents: ${_this.incidents})';
 }
 
 
@@ -63,7 +69,7 @@ class _$HelpCenterStateCopyWithImpl<$Res>
 /// Create a copy of HelpCenterState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? content = freezed,Object? offline = null,Object? error = freezed,Object? query = null,Object? searching = null,Object? results = freezed,Object? savedResults = null,Object? searchError = freezed,Object? incidents = null,}) {
-  return _then(_self.copyWith(
+  return _then(HelpCenterState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,content: freezed == content ? _self.content : content // ignore: cast_nullable_to_non_nullable
 as HelpCenterContent?,offline: null == offline ? _self.offline : offline // ignore: cast_nullable_to_non_nullable
@@ -225,7 +231,7 @@ return $default(_that.status,_that.content,_that.offline,_that.error,_that.query
 
 
 class _HelpCenterState extends HelpCenterState {
-  const _HelpCenterState({this.status = LoadStatus.initial, this.content, this.offline = false, this.error, this.query = '', this.searching = false, final  List<HelpArticle>? results, this.savedResults = false, this.searchError, final  List<SupportIncident> incidents = const <SupportIncident>[]}): _results = results,_incidents = incidents,super._();
+  const _HelpCenterState({this.status = LoadStatus.initial, this.content, this.offline = false, this.error, this.query = '', this.searching = false,  List<HelpArticle>? results, this.savedResults = false, this.searchError,  List<SupportIncident> incidents = const <SupportIncident>[]}): _results = results,_incidents = incidents,super._();
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -263,16 +269,18 @@ _$HelpCenterStateCopyWith<_HelpCenterState> get copyWith => __$HelpCenterStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpCenterState&&(identical(other.status, status) || other.status == status)&&(identical(other.content, content) || other.content == content)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.query, query) || other.query == query)&&(identical(other.searching, searching) || other.searching == searching)&&const DeepCollectionEquality().equals(other._results, _results)&&(identical(other.savedResults, savedResults) || other.savedResults == savedResults)&&const DeepCollectionEquality().equals(other.searchError, searchError)&&const DeepCollectionEquality().equals(other._incidents, _incidents));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpCenterState&&(identical(other.status, status) || other.status == status)&&(identical(other.content, content) || other.content == content)&&(identical(other.offline, offline) || other.offline == offline)&&const DeepCollectionEquality().equals(other.error, error)&&(identical(other.query, query) || other.query == query)&&(identical(other.searching, searching) || other.searching == searching)&&const DeepCollectionEquality().equals(other.results, _results)&&(identical(other.savedResults, savedResults) || other.savedResults == savedResults)&&const DeepCollectionEquality().equals(other.searchError, searchError)&&const DeepCollectionEquality().equals(other.incidents, _incidents));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,content,offline,const DeepCollectionEquality().hash(error),query,searching,const DeepCollectionEquality().hash(_results),savedResults,const DeepCollectionEquality().hash(searchError),const DeepCollectionEquality().hash(_incidents));
+int get hashCode {
+    return Object.hash(runtimeType,status,content,offline,const DeepCollectionEquality().hash(error),query,searching,const DeepCollectionEquality().hash(_results),savedResults,const DeepCollectionEquality().hash(searchError),const DeepCollectionEquality().hash(_incidents));
+}
 
 @override
 String toString() {
-  return 'HelpCenterState(status: $status, content: $content, offline: $offline, error: $error, query: $query, searching: $searching, results: $results, savedResults: $savedResults, searchError: $searchError, incidents: $incidents)';
+    return 'HelpCenterState(status: $status, content: $content, offline: $offline, error: $error, query: $query, searching: $searching, results: $results, savedResults: $savedResults, searchError: $searchError, incidents: $incidents)';
 }
 
 

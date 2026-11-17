@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'suggested_users_cubit.dart';
@@ -9,6 +9,7 @@ part of 'suggested_users_cubit.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $SuggestedUsersStateCopyWith<SuggestedUsersState> get copyWith => _$SuggestedUse
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuggestedUsersState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.users, users)&&const DeepCollectionEquality().equals(other.following, following)&&const DeepCollectionEquality().equals(other.pending, pending)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+  final _this = this as SuggestedUsersState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is SuggestedUsersState&&(identical(other.status, _this.status) || other.status == _this.status)&&const DeepCollectionEquality().equals(other.users, _this.users)&&const DeepCollectionEquality().equals(other.following, _this.following)&&const DeepCollectionEquality().equals(other.pending, _this.pending)&&const DeepCollectionEquality().equals(other.error, _this.error)&&const DeepCollectionEquality().equals(other.actionError, _this.actionError)&&(identical(other.actionErrorId, _this.actionErrorId) || other.actionErrorId == _this.actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(users),const DeepCollectionEquality().hash(following),const DeepCollectionEquality().hash(pending),const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+  final _this = this as SuggestedUsersState;
+  return Object.hash(runtimeType,_this.status,const DeepCollectionEquality().hash(_this.users),const DeepCollectionEquality().hash(_this.following),const DeepCollectionEquality().hash(_this.pending),const DeepCollectionEquality().hash(_this.error),const DeepCollectionEquality().hash(_this.actionError),_this.actionErrorId);
+}
 
 @override
 String toString() {
-  return 'SuggestedUsersState(status: $status, users: $users, following: $following, pending: $pending, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+  final _this = this as SuggestedUsersState;
+  return 'SuggestedUsersState(status: ${_this.status}, users: ${_this.users}, following: ${_this.following}, pending: ${_this.pending}, error: ${_this.error}, actionError: ${_this.actionError}, actionErrorId: ${_this.actionErrorId})';
 }
 
 
@@ -63,7 +69,7 @@ class _$SuggestedUsersStateCopyWithImpl<$Res>
 /// Create a copy of SuggestedUsersState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? users = null,Object? following = null,Object? pending = null,Object? error = freezed,Object? actionError = freezed,Object? actionErrorId = null,}) {
-  return _then(_self.copyWith(
+  return _then(SuggestedUsersState(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as LoadStatus,users: null == users ? _self.users : users // ignore: cast_nullable_to_non_nullable
 as List<SuggestedUser>,following: null == following ? _self.following : following // ignore: cast_nullable_to_non_nullable
@@ -210,7 +216,7 @@ return $default(_that.status,_that.users,_that.following,_that.pending,_that.err
 
 
 class _SuggestedUsersState implements SuggestedUsersState {
-  const _SuggestedUsersState({this.status = LoadStatus.initial, final  List<SuggestedUser> users = const <SuggestedUser>[], final  Set<String> following = const <String>{}, final  Set<String> pending = const <String>{}, this.error, this.actionError, this.actionErrorId = 0}): _users = users,_following = following,_pending = pending;
+  const _SuggestedUsersState({this.status = LoadStatus.initial,  List<SuggestedUser> users = const <SuggestedUser>[],  Set<String> following = const <String>{},  Set<String> pending = const <String>{}, this.error, this.actionError, this.actionErrorId = 0}): _users = users,_following = following,_pending = pending;
   
 
 @override@JsonKey() final  LoadStatus status;
@@ -249,16 +255,18 @@ _$SuggestedUsersStateCopyWith<_SuggestedUsersState> get copyWith => __$Suggested
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _SuggestedUsersState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other._users, _users)&&const DeepCollectionEquality().equals(other._following, _following)&&const DeepCollectionEquality().equals(other._pending, _pending)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _SuggestedUsersState&&(identical(other.status, status) || other.status == status)&&const DeepCollectionEquality().equals(other.users, _users)&&const DeepCollectionEquality().equals(other.following, _following)&&const DeepCollectionEquality().equals(other.pending, _pending)&&const DeepCollectionEquality().equals(other.error, error)&&const DeepCollectionEquality().equals(other.actionError, actionError)&&(identical(other.actionErrorId, actionErrorId) || other.actionErrorId == actionErrorId));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_users),const DeepCollectionEquality().hash(_following),const DeepCollectionEquality().hash(_pending),const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+int get hashCode {
+    return Object.hash(runtimeType,status,const DeepCollectionEquality().hash(_users),const DeepCollectionEquality().hash(_following),const DeepCollectionEquality().hash(_pending),const DeepCollectionEquality().hash(error),const DeepCollectionEquality().hash(actionError),actionErrorId);
+}
 
 @override
 String toString() {
-  return 'SuggestedUsersState(status: $status, users: $users, following: $following, pending: $pending, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
+    return 'SuggestedUsersState(status: $status, users: $users, following: $following, pending: $pending, error: $error, actionError: $actionError, actionErrorId: $actionErrorId)';
 }
 
 

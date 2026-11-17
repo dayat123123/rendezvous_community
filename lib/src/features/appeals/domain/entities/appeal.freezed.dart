@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'appeal.dart';
@@ -9,6 +9,7 @@ part of 'appeal.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -25,16 +26,21 @@ $AppealCopyWith<Appeal> get copyWith => _$AppealCopyWithImpl<Appeal>(this as App
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Appeal&&(identical(other.id, id) || other.id == id)&&(identical(other.targetType, targetType) || other.targetType == targetType)&&(identical(other.targetId, targetId) || other.targetId == targetId)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.decisionNote, decisionNote) || other.decisionNote == decisionNote)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.decidedAt, decidedAt) || other.decidedAt == decidedAt));
+  final _this = this as Appeal;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Appeal&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.targetType, _this.targetType) || other.targetType == _this.targetType)&&(identical(other.targetId, _this.targetId) || other.targetId == _this.targetId)&&(identical(other.reason, _this.reason) || other.reason == _this.reason)&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.decisionNote, _this.decisionNote) || other.decisionNote == _this.decisionNote)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.decidedAt, _this.decidedAt) || other.decidedAt == _this.decidedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,targetType,targetId,reason,status,decisionNote,createdAt,decidedAt);
+int get hashCode {
+  final _this = this as Appeal;
+  return Object.hash(runtimeType,_this.id,_this.targetType,_this.targetId,_this.reason,_this.status,_this.decisionNote,_this.createdAt,_this.decidedAt);
+}
 
 @override
 String toString() {
-  return 'Appeal(id: $id, targetType: $targetType, targetId: $targetId, reason: $reason, status: $status, decisionNote: $decisionNote, createdAt: $createdAt, decidedAt: $decidedAt)';
+  final _this = this as Appeal;
+  return 'Appeal(id: ${_this.id}, targetType: ${_this.targetType}, targetId: ${_this.targetId}, reason: ${_this.reason}, status: ${_this.status}, decisionNote: ${_this.decisionNote}, createdAt: ${_this.createdAt}, decidedAt: ${_this.decidedAt})';
 }
 
 
@@ -63,7 +69,7 @@ class _$AppealCopyWithImpl<$Res>
 /// Create a copy of Appeal
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? targetType = null,Object? targetId = null,Object? reason = null,Object? status = null,Object? decisionNote = freezed,Object? createdAt = null,Object? decidedAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(Appeal(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,targetType: null == targetType ? _self.targetType : targetType // ignore: cast_nullable_to_non_nullable
 as AppealTargetType,targetId: null == targetId ? _self.targetId : targetId // ignore: cast_nullable_to_non_nullable
@@ -235,16 +241,18 @@ _$AppealCopyWith<_Appeal> get copyWith => __$AppealCopyWithImpl<_Appeal>(this, _
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Appeal&&(identical(other.id, id) || other.id == id)&&(identical(other.targetType, targetType) || other.targetType == targetType)&&(identical(other.targetId, targetId) || other.targetId == targetId)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.decisionNote, decisionNote) || other.decisionNote == decisionNote)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.decidedAt, decidedAt) || other.decidedAt == decidedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Appeal&&(identical(other.id, id) || other.id == id)&&(identical(other.targetType, targetType) || other.targetType == targetType)&&(identical(other.targetId, targetId) || other.targetId == targetId)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.status, status) || other.status == status)&&(identical(other.decisionNote, decisionNote) || other.decisionNote == decisionNote)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.decidedAt, decidedAt) || other.decidedAt == decidedAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,targetType,targetId,reason,status,decisionNote,createdAt,decidedAt);
+int get hashCode {
+    return Object.hash(runtimeType,id,targetType,targetId,reason,status,decisionNote,createdAt,decidedAt);
+}
 
 @override
 String toString() {
-  return 'Appeal(id: $id, targetType: $targetType, targetId: $targetId, reason: $reason, status: $status, decisionNote: $decisionNote, createdAt: $createdAt, decidedAt: $decidedAt)';
+    return 'Appeal(id: $id, targetType: $targetType, targetId: $targetId, reason: $reason, status: $status, decisionNote: $decisionNote, createdAt: $createdAt, decidedAt: $decidedAt)';
 }
 
 
@@ -303,16 +311,21 @@ $ModeratedContentCopyWith<ModeratedContent> get copyWith => _$ModeratedContentCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ModeratedContent&&(identical(other.type, type) || other.type == type)&&(identical(other.id, id) || other.id == id)&&(identical(other.state, state) || other.state == state)&&(identical(other.excerpt, excerpt) || other.excerpt == excerpt)&&(identical(other.decidedAt, decidedAt) || other.decidedAt == decidedAt)&&(identical(other.appeal, appeal) || other.appeal == appeal));
+  final _this = this as ModeratedContent;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ModeratedContent&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.state, _this.state) || other.state == _this.state)&&(identical(other.excerpt, _this.excerpt) || other.excerpt == _this.excerpt)&&(identical(other.decidedAt, _this.decidedAt) || other.decidedAt == _this.decidedAt)&&(identical(other.appeal, _this.appeal) || other.appeal == _this.appeal));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type,id,state,excerpt,decidedAt,appeal);
+int get hashCode {
+  final _this = this as ModeratedContent;
+  return Object.hash(runtimeType,_this.type,_this.id,_this.state,_this.excerpt,_this.decidedAt,_this.appeal);
+}
 
 @override
 String toString() {
-  return 'ModeratedContent(type: $type, id: $id, state: $state, excerpt: $excerpt, decidedAt: $decidedAt, appeal: $appeal)';
+  final _this = this as ModeratedContent;
+  return 'ModeratedContent(type: ${_this.type}, id: ${_this.id}, state: ${_this.state}, excerpt: ${_this.excerpt}, decidedAt: ${_this.decidedAt}, appeal: ${_this.appeal})';
 }
 
 
@@ -341,7 +354,7 @@ class _$ModeratedContentCopyWithImpl<$Res>
 /// Create a copy of ModeratedContent
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? type = null,Object? id = null,Object? state = null,Object? excerpt = freezed,Object? decidedAt = freezed,Object? appeal = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ModeratedContent(
 type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
 as AppealTargetType,id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,state: null == state ? _self.state : state // ignore: cast_nullable_to_non_nullable
@@ -521,16 +534,18 @@ _$ModeratedContentCopyWith<_ModeratedContent> get copyWith => __$ModeratedConten
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModeratedContent&&(identical(other.type, type) || other.type == type)&&(identical(other.id, id) || other.id == id)&&(identical(other.state, state) || other.state == state)&&(identical(other.excerpt, excerpt) || other.excerpt == excerpt)&&(identical(other.decidedAt, decidedAt) || other.decidedAt == decidedAt)&&(identical(other.appeal, appeal) || other.appeal == appeal));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ModeratedContent&&(identical(other.type, type) || other.type == type)&&(identical(other.id, id) || other.id == id)&&(identical(other.state, state) || other.state == state)&&(identical(other.excerpt, excerpt) || other.excerpt == excerpt)&&(identical(other.decidedAt, decidedAt) || other.decidedAt == decidedAt)&&(identical(other.appeal, appeal) || other.appeal == appeal));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,type,id,state,excerpt,decidedAt,appeal);
+int get hashCode {
+    return Object.hash(runtimeType,type,id,state,excerpt,decidedAt,appeal);
+}
 
 @override
 String toString() {
-  return 'ModeratedContent(type: $type, id: $id, state: $state, excerpt: $excerpt, decidedAt: $decidedAt, appeal: $appeal)';
+    return 'ModeratedContent(type: $type, id: $id, state: $state, excerpt: $excerpt, decidedAt: $decidedAt, appeal: $appeal)';
 }
 
 
@@ -599,16 +614,21 @@ $SanctionCopyWith<Sanction> get copyWith => _$SanctionCopyWithImpl<Sanction>(thi
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Sanction&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.category, category) || other.category == category)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
+  final _this = this as Sanction;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Sanction&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.reason, _this.reason) || other.reason == _this.reason)&&(identical(other.startsAt, _this.startsAt) || other.startsAt == _this.startsAt)&&(identical(other.endsAt, _this.endsAt) || other.endsAt == _this.endsAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,kind,category,reason,startsAt,endsAt);
+int get hashCode {
+  final _this = this as Sanction;
+  return Object.hash(runtimeType,_this.id,_this.kind,_this.category,_this.reason,_this.startsAt,_this.endsAt);
+}
 
 @override
 String toString() {
-  return 'Sanction(id: $id, kind: $kind, category: $category, reason: $reason, startsAt: $startsAt, endsAt: $endsAt)';
+  final _this = this as Sanction;
+  return 'Sanction(id: ${_this.id}, kind: ${_this.kind}, category: ${_this.category}, reason: ${_this.reason}, startsAt: ${_this.startsAt}, endsAt: ${_this.endsAt})';
 }
 
 
@@ -637,7 +657,7 @@ class _$SanctionCopyWithImpl<$Res>
 /// Create a copy of Sanction
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? kind = null,Object? category = freezed,Object? reason = freezed,Object? startsAt = freezed,Object? endsAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(Sanction(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
 as String,category: freezed == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
@@ -805,16 +825,18 @@ _$SanctionCopyWith<_Sanction> get copyWith => __$SanctionCopyWithImpl<_Sanction>
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _Sanction&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.category, category) || other.category == category)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Sanction&&(identical(other.id, id) || other.id == id)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.category, category) || other.category == category)&&(identical(other.reason, reason) || other.reason == reason)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,id,kind,category,reason,startsAt,endsAt);
+int get hashCode {
+    return Object.hash(runtimeType,id,kind,category,reason,startsAt,endsAt);
+}
 
 @override
 String toString() {
-  return 'Sanction(id: $id, kind: $kind, category: $category, reason: $reason, startsAt: $startsAt, endsAt: $endsAt)';
+    return 'Sanction(id: $id, kind: $kind, category: $category, reason: $reason, startsAt: $startsAt, endsAt: $endsAt)';
 }
 
 
