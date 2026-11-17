@@ -1,4 +1,5 @@
 import 'package:rendezvous_community/src/core/paging/paged.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
@@ -43,4 +44,22 @@ abstract interface class FeedQueryRepository {
 
 abstract interface class FeedFilterRepository {
   Future<List<FeedFilter>> getFeedFilters({bool refresh = false});
+}
+
+abstract interface class CommentControlRepository implements FeedRepository {
+  @override
+  Future<Post> createPost({
+    required String body,
+    Sentiment? sentiment,
+    List<Attachment> attachments = const [],
+    PollDraft? poll,
+    String? clientId,
+    CommentAudience? commentAudience,
+  });
+
+  Future<CommentAudience> getCommentAudience();
+
+  Future<CommentAudience> setCommentAudience(CommentAudience audience);
+
+  Future<Post> setPostCommentAudience(String postId, CommentAudience audience);
 }

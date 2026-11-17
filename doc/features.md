@@ -325,6 +325,25 @@ Grup memakai peran `owner` (pembuat), `admin`, dan `member`. Header room grup me
 
 Setiap perubahan tercatat sebagai pesan sistem (`MessageKind.groupEvent`) yang tampil di tengah chat dalam bahasa aplikasi dan tidak mengirim push notification. Anggota yang dikeluarkan langsung kehilangan akses ke riwayat grup.
 
+## Kontrol komentar (1.31.0, server migrasi `0169`)
+
+Pemilik post bisa mematikan komentar atau membatasi siapa yang boleh berkomentar, seperti di Instagram.
+
+| Bagian | Perilaku |
+|---|---|
+| Pilihan audiens | `CommentAudience.everyone` (Semua orang), `following` (Orang yang saya ikuti), `followers` (Pengikut saya), `followingAndFollowers` (Orang yang saya ikuti dan pengikut saya), dan `off` (Matikan komentar, hanya per post) |
+| Pengaturan akun | "Izinkan komentar dari" di `CommunityAccountSettings` (bagian Komentar) atau widget `CommunityCommentAudienceSettings`. Menjadi pilihan awal untuk post baru. Post yang sudah terbit tidak berubah. Post lama dan akun yang belum pernah mengatur memakai "Semua orang" |
+| Saat membuat post | Composer menampilkan baris "Siapa yang bisa berkomentar" dengan nilai awal dari pengaturan akun. Bila pengguna tidak mengubahnya, server memakai pengaturan akun |
+| Setelah post terbit | Menu titik tiga milik pemilik: "Matikan komentar" / "Nyalakan komentar" (menyalakan lagi memakai "Semua orang") dan "Atur siapa yang bisa berkomentar" |
+| Aturan | Pemilik selalu bisa berkomentar dan membalas, kecuali saat komentar dimatikan. Aturan berlaku untuk komentar baru dan balasan di semua tingkat. Pengguna yang diblokir tetap tidak bisa berkomentar |
+| Komentar dimatikan | Komentar lama disembunyikan dari semua orang (data tidak dihapus) dan jumlah komentar hanya terlihat oleh pemilik. Tombol komentar nonaktif, kolom balasan diganti "Komentar dinonaktifkan". Saat dinyalakan lagi, komentar lama muncul kembali |
+| Dibatasi | Orang di luar audiens tetap bisa membaca komentar, tetapi tombol Balas hilang dan kolom balasan diganti, misalnya "Hanya pengikut @nama yang bisa berkomentar" |
+| Data dari server | `Post.canComment` (untuk yang sedang login), `Post.commentAudience` (hanya untuk pemilik), `Post.commentRestriction` (alasan bila tidak bisa berkomentar), getter `commentsOff` dan `commentCountHidden`. UI tidak menghitung sendiri |
+| Error | `comments_off` dan `comments_restricted` (403) dipetakan di `CommunityErrorText.errorMessage`. Setelah error ini post di layar langsung ditandai tidak bisa dikomentari. `invalid_comment_audience` (400) untuk pilihan yang tidak dikenal |
+| Realtime | Saat pemilik mematikan komentar, kartu post orang lain di feed dan detail ikut menyembunyikan komentar tanpa muat ulang. Saat dinyalakan lagi, post dimuat ulang agar `canComment` sesuai |
+| Repository | `CommentControlRepository` (diimplementasikan `FeedRepositoryImpl`): `createPost(..., commentAudience:)`, `getCommentAudience`, `setCommentAudience`, `setPostCommentAudience`. Host dengan `FeedRepository` sendiri tidak perlu berubah; fitur ini tersembunyi bila repository-nya tidak mengimplementasikan interface ini |
+| Server lama | Tanpa migrasi `0169`, baris composer dan pengaturan akun tidak tampil, menu pemilik tidak punya aksi komentar, dan semua post tetap bisa dikomentari |
+
 ## Berbagi Trade (1.28.0, server migrasi `0160`–`0164`)
 
 Nasabah yang disetujui Kepatuhan (trader) membagikan order yang sudah match ke pelanggannya. Fitur ini **hanya informasi**: tidak ada tombol "ikuti order" dan tidak ada order otomatis. Pelanggan bertransaksi sendiri lewat aplikasi OLT.

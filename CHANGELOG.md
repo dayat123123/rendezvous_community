@@ -1,3 +1,19 @@
+## 1.31.0
+
+Butuh server migrasi `0169` untuk kontrol komentar. Di server lama pilihan audiens tidak tampil, menu pemilik tidak punya aksi komentar, dan semua post tetap bisa dikomentari. Tidak ada breaking change pada API publik, kecuali satu nilai enum baru `CommunitySettingsArea.commentAudience` (`switch` exhaustive milik host perlu satu cabang baru).
+
+* **Kontrol komentar ala Instagram:** pemilik post bisa mematikan komentar atau membatasi siapa yang boleh berkomentar. Pilihan `CommentAudience`: `everyone`, `following`, `followers`, `followingAndFollowers`, dan `off` (hanya per post).
+  * Composer: baris "Siapa yang bisa berkomentar" dengan nilai awal dari pengaturan akun. Pilihan yang tidak diubah tidak dikirim, sehingga server memakai pengaturan akun.
+  * Menu titik tiga milik pemilik: "Matikan komentar" / "Nyalakan komentar" (menyalakan lagi memakai "Semua orang") dan "Atur siapa yang bisa berkomentar". `PostCard` menerima `onCommentAudience`; `CommunityFeedList` dan `CommunityPostDetail` mengisinya sendiri.
+  * Pengaturan akun "Izinkan komentar dari" di `CommunityAccountSettings` (bagian Komentar), juga sebagai widget `CommunityCommentAudienceSettings`. Tidak mengubah post yang sudah terbit.
+  * Saat `Post.canComment` false: tombol Balas hilang, kolom balasan diganti teks penjelasan ("Komentar dinonaktifkan", "Hanya pengikut @nama yang bisa berkomentar"). Saat komentar mati, tombol komentar nonaktif, jumlah komentar disembunyikan dari bukan pemilik, dan komentar inline tidak dimuat.
+* **Model `Post`:** `canComment` (bawaan `true`), `commentAudience` (hanya terisi untuk pemilik), `commentRestriction`, getter `commentsOff` dan `commentCountHidden`. `PostUpdated` mendapat `commentsOff` (null bila server lama).
+* **Repository:** interface baru `CommentControlRepository` (diimplementasikan `FeedRepositoryImpl`): `createPost(..., commentAudience:)`, `getCommentAudience`, `setCommentAudience`, dan `setPostCommentAudience` (RPC `get_comment_settings`, `set_comment_audience`, `set_post_comment_audience`, parameter `p_comment_audience` di `create_post`). `FeedRepository` tidak berubah, jadi fake dan implementasi milik host tetap jalan; fitur tersembunyi bila repository host tidak mengimplementasikan interface ini.
+* **Error:** `comments_off`, `comments_restricted`, dan `invalid_comment_audience` dipetakan di `CommunityErrorText.errorMessage` (ID/EN). Setelah `comments_off` atau `comments_restricted` dari server, post di layar langsung ditandai tidak bisa dikomentari.
+* **Realtime:** saat pemilik mematikan komentar, kartu post orang lain ikut menyembunyikan komentar dan jumlahnya. Saat dinyalakan lagi, post dimuat ulang.
+* **Builder baru:** `composeCommentAudience` (`CommunityComposeCommentAudienceDetails`), `commentAudienceSheet` (`CommunityCommentAudienceSheetDetails`), dan `commentRestriction` (`CommunityCommentRestrictionDetails`) di `CommunityFeedBuilders`; `commentAudience` (`CommunityCommentAudienceSettingDetails`) di `CommunitySettingsBuilders`. `CommunityPostDetails` mendapat `onToggleCommentsOff`, `onChangeCommentAudience`, `canComment`, `commentsOff`, dan `commentCountHidden`. Helper publik: `showCommentAudienceSheet`, `commentAudienceLabel`, `commentRestrictionMessage`, `CommentRestrictionNotice`, `CommunityCommentAudienceSheet`, `CommunityComposeCommentAudience`.
+* `CommunityPostComments` menerima `post` agar komentar inline langsung tahu aturan komentarnya.
+
 ## 1.30.0
 
 Tidak butuh migrasi server. **Breaking:** library kini memakai `package:material_ui` (Flutter >= 3.47.0), bukan `package:flutter/material.dart` yang sudah deprecated.

@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/core/paging/paged.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/feed/data/local/feed_local_cache.dart';
 import 'package:rendezvous_community/src/features/feed/data/models/feed_post_model.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
@@ -20,7 +21,8 @@ import 'package:uuid/uuid.dart';
 
 const _uuid = Uuid();
 
-class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository, FeedFilterRepository {
+class FeedRepositoryImpl
+    implements FeedRepository, FeedQueryRepository, FeedFilterRepository, CommentControlRepository {
   FeedRepositoryImpl(this._api, [this._realtime, this._cache, DateTime Function()? clock])
     : _clock = clock ?? DateTime.now;
 
@@ -225,17 +227,53 @@ class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository, FeedFil
     List<Attachment> attachments = const [],
     PollDraft? poll,
     String? clientId,
+    CommentAudience? commentAudience,
   }) async {
-    final rows = await _api.rpcRows('create_post', {
+    final params = <String, Object?>{
       'p_body': lowercaseMentions(body),
       'p_sentiment': sentiment?.name,
       'p_attachments': [for (final a in attachments) AttachmentModel.fromEntity(a).toJson()],
       'p_client_id': clientId ?? _uuid.v4(),
       'p_poll': poll == null ? null : {'options': poll.cleanOptions, 'duration_minutes': poll.duration.minutes},
-    });
+    };
+    List<Map<String, dynamic>> rows;
+    try {
+      rows = await _api.rpcRows('create_post', {
+        ...params,
+        if (commentAudience != null) 'p_comment_audience': commentAudience.wire,
+      });
+    } on CommunityException catch (e) {
+      if (commentAudience == null || e.code != 'PGRST202') rethrow;
+      CommunityLoggers.feed.event(
+        Level.INFO,
+        'Server does not support comment controls, creating the post without them',
+        fields: {'code': e.code},
+      );
+      rows = await _api.rpcRows('create_post', params);
+    }
     if (rows.isEmpty) throw const CommunityException(CommunityErrorKind.notFound);
     return FeedPostModel.fromJson(rows.first).toEntity();
   }
+
+  @override
+  Future<CommentAudience> getCommentAudience() async =>
+      _audienceOf(await _api.rpcValue('get_comment_settings', const {}));
+
+  @override
+  Future<CommentAudience> setCommentAudience(CommentAudience audience) async =>
+      _audienceOf(await _api.rpcValue('set_comment_audience', {'p_audience': audience.wire}));
+
+  @override
+  Future<Post> setPostCommentAudience(String postId, CommentAudience audience) async {
+    final rows = await _api.rpcRows('set_post_comment_audience', {'p_post_id': postId, 'p_audience': audience.wire});
+    if (rows.isEmpty) throw const CommunityException(CommunityErrorKind.notFound);
+    return FeedPostModel.fromJson(rows.first).toEntity();
+  }
+
+  static CommentAudience _audienceOf(Object? value) => switch (value) {
+    {'audience': final Object? audience} => CommentAudience.fromWire(audience) ?? CommentAudience.everyone,
+    _ => CommentAudience.everyone,
+  };
 
   @override
   Future<void> deletePost(String postId) => _api.rpcValue('delete_post', {'p_post_id': postId});
@@ -292,6 +330,7 @@ class FeedRepositoryImpl implements FeedRepository, FeedQueryRepository, FeedFil
           likeCount: row.likeCount,
           commentCount: row.commentCount,
           deleted: row.deletedAt != null,
+          commentsOff: row.commentAudience == null ? null : row.commentAudience == CommentAudience.off.wire,
         );
       case PostgresChangeEvent.delete:
         final id = payload.oldRecord['id'] as String?;

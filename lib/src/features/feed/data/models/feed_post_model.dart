@@ -1,4 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/poll/data/models/poll_model.dart';
 import 'package:rendezvous_community/src/features/post/data/models/thread_comment_model.dart';
@@ -38,6 +39,9 @@ abstract class FeedPostModel with _$FeedPostModel {
     bool? authorIsOfficial,
     String? moderationStatus,
     Map<String, dynamic>? topComment,
+    bool? canComment,
+    String? commentAudience,
+    String? commentRestriction,
   }) = _FeedPostModel;
 
   const FeedPostModel._();
@@ -70,6 +74,9 @@ abstract class FeedPostModel with _$FeedPostModel {
     authorIsOfficial: authorIsOfficial ?? false,
     moderationStatus: parseModerationStatus(moderationStatus),
     topComment: _parseTopComment(),
+    canComment: canComment ?? true,
+    commentAudience: CommentAudience.fromWire(commentAudience),
+    commentRestriction: CommentAudience.fromWire(commentRestriction),
   );
 
   ThreadComment? _parseTopComment() {
@@ -94,6 +101,7 @@ abstract class PostRowModel with _$PostRowModel {
     DateTime? deletedAt,
     required DateTime createdAt,
     @Default(<Object?>[]) List<Object?> attachments,
+    String? commentAudience,
   }) = _PostRowModel;
 
   factory PostRowModel.fromJson(Map<String, dynamic> json) => _$PostRowModelFromJson(json);

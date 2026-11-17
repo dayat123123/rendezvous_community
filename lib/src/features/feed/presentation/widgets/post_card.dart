@@ -3,10 +3,12 @@ import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/sentiment_badge.dart';
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
@@ -47,10 +49,12 @@ class PostCard extends StatelessWidget {
     this.commentsExpanded = false,
     this.onToggleComments,
     this.readMoreInPlace = false,
+    this.onCommentAudience,
   });
 
   final Post post;
   final VoidCallback onLike;
+  final PostCommentAudienceSaver? onCommentAudience;
   final bool commentsExpanded;
   final VoidCallback? onToggleComments;
   final bool readMoreInPlace;
@@ -74,6 +78,8 @@ class PostCard extends StatelessWidget {
     final l10n = context.communityL10n;
     final isMine = CommunityScope.of(context).currentUser?.id == post.author.id;
     final remove = onDelete;
+    final current = post.commentAudience;
+    final saveAudience = isMine && current != null ? onCommentAudience : null;
     final details = CommunityPostDetails(
       post: post,
       isMine: isMine,
@@ -115,6 +121,31 @@ class PostCard extends StatelessWidget {
               if (await blockUserWithConfirm(context, post.author)) onAuthorBlocked?.call();
             },
       onAppeal: onAppeal,
+      onToggleCommentsOff: saveAudience == null
+          ? null
+          : () async {
+              final off = !post.commentsOff;
+              final saved = await saveAudience(post, off ? CommentAudience.off : CommentAudience.everyone);
+              if (saved && context.mounted) {
+                showCommunityMessage(context, off ? l10n.commentsTurnedOff : l10n.commentsTurnedOn);
+              }
+            },
+      onChangeCommentAudience: saveAudience == null || current == null
+          ? null
+          : () async {
+              final picked = await showCommentAudienceSheet(context, selected: current);
+              if (picked == null || picked == current || !context.mounted) return;
+              if (await saveAudience(post, picked) && context.mounted) {
+                showCommunityMessage(
+                  context,
+                  picked == CommentAudience.off
+                      ? l10n.commentsTurnedOff
+                      : current == CommentAudience.off
+                      ? l10n.commentsTurnedOn
+                      : l10n.commentAudienceSaved,
+                );
+              }
+            },
     );
     final builders = CommunityFeedBuilders.of(context);
     if (actionsOnly) {
@@ -641,12 +672,12 @@ class PostActionBar extends StatelessWidget {
           },
         ),
         CommunityActionButton(
-          icon: Icons.mode_comment_outlined,
+          icon: details.commentsOff ? Icons.comments_disabled_outlined : Icons.mode_comment_outlined,
           activeIcon: Icons.mode_comment,
-          active: details.commentsExpanded,
-          tooltip: l10n.comment,
-          count: post.commentCount,
-          onPressed: details.onComment,
+          active: details.commentsExpanded && !details.commentsOff,
+          tooltip: details.commentsOff ? l10n.commentsDisabled : l10n.comment,
+          count: details.commentCountHidden ? null : post.commentCount,
+          onPressed: details.commentsOff ? null : details.onComment,
         ),
         if (share != null)
           CommunityActionButton(icon: Icons.send_outlined, tooltip: l10n.shareToChat, onPressed: share),
@@ -665,7 +696,7 @@ class PostActionBar extends StatelessWidget {
   }
 }
 
-enum _PostAction { edit, bookmark, share, delete, report, block }
+enum _PostAction { edit, toggleComments, commentAudience, bookmark, share, delete, report, block }
 
 class _PostMenu extends StatelessWidget {
   const _PostMenu({required this.details});
@@ -683,6 +714,8 @@ class _PostMenu extends StatelessWidget {
       icon: Icon(icons.more, size: 20, color: style.textSecondary),
       onSelected: (action) => switch (action) {
         _PostAction.edit => d.onEdit?.call(),
+        _PostAction.toggleComments => d.onToggleCommentsOff?.call(),
+        _PostAction.commentAudience => d.onChangeCommentAudience?.call(),
         _PostAction.bookmark => d.onToggleBookmark?.call(),
         _PostAction.share => d.onShare?.call(),
         _PostAction.delete => d.onDelete?.call(),
@@ -692,6 +725,20 @@ class _PostMenu extends StatelessWidget {
       itemBuilder: (menuContext) => [
         if (d.onEdit != null)
           communityMenuItem(menuContext, value: _PostAction.edit, icon: icons.edit, label: l10n.editAction),
+        if (d.onToggleCommentsOff != null)
+          communityMenuItem(
+            menuContext,
+            value: _PostAction.toggleComments,
+            icon: d.commentsOff ? Icons.mode_comment_outlined : Icons.comments_disabled_outlined,
+            label: d.commentsOff ? l10n.commentsTurnOn : l10n.commentsTurnOff,
+          ),
+        if (d.onChangeCommentAudience != null)
+          communityMenuItem(
+            menuContext,
+            value: _PostAction.commentAudience,
+            icon: Icons.manage_accounts_outlined,
+            label: l10n.commentsManage,
+          ),
         if (d.onToggleBookmark != null)
           communityMenuItem(
             menuContext,

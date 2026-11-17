@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:rendezvous_community/src/features/appeals/domain/entities/appeal.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/legal/domain/entities/legal_document.dart';
 import 'package:rendezvous_community/src/features/message_requests/domain/entities/message_request.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
@@ -22,6 +23,7 @@ enum CommunitySettingsArea {
   consent,
   dmPolicy,
   notificationPreferences,
+  commentAudience,
 }
 
 class CommunitySettingsLoadingDetails {
@@ -67,6 +69,24 @@ class CommunityDmPolicyDetails {
   final List<CommunitySettingsOption<DmPolicy>> options;
   final bool saving;
   final ValueChanged<DmPolicy>? onChanged;
+}
+
+class CommunityCommentAudienceSettingDetails {
+  const CommunityCommentAudienceSettingDetails({
+    required this.audience,
+    required this.title,
+    required this.hint,
+    required this.options,
+    required this.saving,
+    this.onChanged,
+  });
+
+  final CommentAudience audience;
+  final String title;
+  final String hint;
+  final List<CommunitySettingsOption<CommentAudience>> options;
+  final bool saving;
+  final ValueChanged<CommentAudience>? onChanged;
 }
 
 class CommunityNotificationTypeDetails {

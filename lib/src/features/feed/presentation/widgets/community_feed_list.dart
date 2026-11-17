@@ -365,6 +365,7 @@ class FeedPostCard extends StatelessWidget {
       commentsExpanded: expanded,
       onToggleComments: inline ? toggle : null,
       readMoreInPlace: inline,
+      onCommentAudience: cubit.canControlComments ? cubit.setCommentAudience : null,
     );
     if (!expanded) return card;
     final focus = cubit.state.focusComments == post.id;
@@ -375,6 +376,7 @@ class FeedPostCard extends StatelessWidget {
       onToggle: toggle,
       child: CommunityPostComments(
         postId: post.id,
+        post: post,
         commentCount: post.commentCount,
         autofocusComposer: focus,
         onCommentCountChanged: (delta) => cubit.adjustCommentCount(post.id, delta),

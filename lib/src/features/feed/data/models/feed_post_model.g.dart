@@ -43,6 +43,9 @@ _FeedPostModel _$FeedPostModelFromJson(Map<String, dynamic> json) =>
       authorIsOfficial: json['author_is_official'] as bool?,
       moderationStatus: json['moderation_status'] as String?,
       topComment: json['top_comment'] as Map<String, dynamic>?,
+      canComment: json['can_comment'] as bool?,
+      commentAudience: json['comment_audience'] as String?,
+      commentRestriction: json['comment_restriction'] as String?,
     );
 
 Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) =>
@@ -70,6 +73,9 @@ Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) =>
       'author_is_official': instance.authorIsOfficial,
       'moderation_status': instance.moderationStatus,
       'top_comment': instance.topComment,
+      'can_comment': instance.canComment,
+      'comment_audience': instance.commentAudience,
+      'comment_restriction': instance.commentRestriction,
     };
 
 _PostRowModel _$PostRowModelFromJson(Map<String, dynamic> json) =>
@@ -84,6 +90,7 @@ _PostRowModel _$PostRowModelFromJson(Map<String, dynamic> json) =>
           : DateTime.parse(json['deleted_at'] as String),
       createdAt: DateTime.parse(json['created_at'] as String),
       attachments: json['attachments'] as List<dynamic>? ?? const <Object?>[],
+      commentAudience: json['comment_audience'] as String?,
     );
 
 Map<String, dynamic> _$PostRowModelToJson(_PostRowModel instance) =>
@@ -96,4 +103,5 @@ Map<String, dynamic> _$PostRowModelToJson(_PostRowModel instance) =>
       'deleted_at': instance.deletedAt?.toIso8601String(),
       'created_at': instance.createdAt.toIso8601String(),
       'attachments': instance.attachments,
+      'comment_audience': instance.commentAudience,
     };

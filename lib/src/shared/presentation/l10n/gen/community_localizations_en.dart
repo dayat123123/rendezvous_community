@@ -3285,4 +3285,86 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorTradeNotTrader => 'Only traders can see subscribers.';
+
+  @override
+  String get commentAudienceTitle => 'Who can comment';
+
+  @override
+  String get commentAudienceAccountTitle => 'Allow comments from';
+
+  @override
+  String get commentAudienceAccountHint =>
+      'Used as the starting choice for new posts. Published posts keep their setting.';
+
+  @override
+  String get commentAudienceSection => 'Comments';
+
+  @override
+  String get commentAudienceEveryone => 'Everyone';
+
+  @override
+  String get commentAudienceFollowing => 'People I follow';
+
+  @override
+  String get commentAudienceFollowers => 'My followers';
+
+  @override
+  String get commentAudienceFollowingAndFollowers => 'People I follow and my followers';
+
+  @override
+  String get commentAudienceOff => 'Turn off comments';
+
+  @override
+  String get commentAudienceOffHint => 'Existing comments are hidden and come back when comments are turned on.';
+
+  @override
+  String get commentAudienceSaved => 'Comment settings saved.';
+
+  @override
+  String get commentsTurnOff => 'Turn off comments';
+
+  @override
+  String get commentsTurnOn => 'Turn on comments';
+
+  @override
+  String get commentsManage => 'Choose who can comment';
+
+  @override
+  String get commentsTurnedOff => 'Comments turned off.';
+
+  @override
+  String get commentsTurnedOn => 'Comments turned on.';
+
+  @override
+  String get commentsDisabled => 'Comments are turned off';
+
+  @override
+  String get commentsDisabledOwner => 'Comments are turned off. Turn them back on from the post menu.';
+
+  @override
+  String commentsOnlyFollowing(String name) {
+    return 'Only people $name follows can comment';
+  }
+
+  @override
+  String commentsOnlyFollowers(String name) {
+    return 'Only $name\'s followers can comment';
+  }
+
+  @override
+  String commentsOnlyFollowingAndFollowers(String name) {
+    return 'Only $name\'s followers and people they follow can comment';
+  }
+
+  @override
+  String get commentsUnavailable => 'You can\'t comment on this post';
+
+  @override
+  String get errorCommentsOff => 'Comments on this post have been turned off.';
+
+  @override
+  String get errorCommentsRestricted => 'You\'re not among the people who can comment on this post.';
+
+  @override
+  String get errorInvalidCommentAudience => 'That choice for who can comment isn\'t valid.';
 }

@@ -5,6 +5,7 @@ import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
 import 'package:rendezvous_community/src/features/post/presentation/cubit/comment_thread_cubit.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -57,8 +58,14 @@ class _CommentReplyComposerState extends State<CommentReplyComposer> {
     return BlocConsumer<CommentThreadCubit, ThreadState>(
       listenWhen: (a, b) => a.replyTo?.id != b.replyTo?.id && b.replyTo != null,
       listener: (_, _) => _focus.requestFocus(),
-      buildWhen: (a, b) => a.replyTo != b.replyTo || a.sending != b.sending,
+      buildWhen: (a, b) =>
+          a.replyTo != b.replyTo ||
+          a.sending != b.sending ||
+          a.post?.canComment != b.post?.canComment ||
+          a.post?.commentsOff != b.post?.commentsOff,
       builder: (context, state) {
+        final post = state.post;
+        if (post != null && !post.canComment) return CommentRestrictionNotice(post: post);
         final replyTo = state.replyTo;
         final cubit = context.read<CommentThreadCubit>();
         final hint = widget.hintText ?? l10n.writeComment;

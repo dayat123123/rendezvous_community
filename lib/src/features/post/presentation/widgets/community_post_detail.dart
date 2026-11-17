@@ -90,7 +90,7 @@ class _PostDetailView extends StatelessWidget {
         final threadHeader = CommunityThreadHeaderDetails(
           post: post,
           commentCount: post.commentCount,
-          label: '${l10n.comments} (${post.commentCount})',
+          label: post.commentCountHidden ? l10n.comments : '${l10n.comments} (${post.commentCount})',
           isThread: state.root != null,
         );
         PostCard card({bool actionsOnly = false}) => PostCard(
@@ -104,6 +104,7 @@ class _PostDetailView extends StatelessWidget {
           onShare: sharePostAction(context, post),
           onAppeal: appealPostAction(context, post),
           onLike: cubit.togglePostLike,
+          onCommentAudience: cubit.canControlComments ? cubit.setCommentAudience : null,
           onDelete: () async {
             if (await cubit.deletePost() && context.mounted) {
               showCommunityMessage(context, l10n.postDeleted);
@@ -124,7 +125,8 @@ class _PostDetailView extends StatelessWidget {
                 ? CommentSortHeader(state: state, onSelect: cubit.setSort)
                 : EditorialSectionHeader(title: threadHeader.label, icon: Icons.forum_outlined, divider: false),
           ),
-          if (rows.isEmpty) CommunityEmptyView(message: l10n.noComments, icon: Icons.chat_bubble_outline),
+          if (rows.isEmpty && !post.commentsOff)
+            CommunityEmptyView(message: l10n.noComments, icon: Icons.chat_bubble_outline),
         ];
 
         Widget row(int index) {

@@ -276,6 +276,7 @@ class _CommentTileState extends State<CommentTile> {
     final c = widget.comment;
     final l10n = context.communityL10n;
     final cubit = context.read<CommentThreadCubit>();
+    final canReply = context.select((CommentThreadCubit cubit) => cubit.state.post?.canComment ?? true);
     final author = c.author;
     final isMine = author != null && author.id == CommunityScope.of(context).currentUser?.id;
     final details = CommunityCommentDetails(
@@ -287,7 +288,7 @@ class _CommentTileState extends State<CommentTile> {
       hasVisibleReplies: widget.hasVisibleReplies,
       isLastSibling: widget.isLastSibling,
       onLike: c.isDeleted ? null : () => cubit.toggleLike(c),
-      onReply: c.isDeleted ? null : () => cubit.setReplyTo(c),
+      onReply: c.isDeleted || !canReply ? null : () => cubit.setReplyTo(c),
       onToggleCollapse: widget.showCollapse && c.replyCount > 0 ? () => cubit.toggleCollapse(c.id) : null,
       onOpenAuthor: author == null ? null : () => CommunityNavigator.openUser(context, author),
       onEdit: _canEdit(c, isMine, cubit) ? () => _edit(c, cubit) : null,

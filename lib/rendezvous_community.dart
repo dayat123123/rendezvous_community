@@ -50,6 +50,8 @@ export 'src/features/account/presentation/builders/community_settings_details.da
 export 'src/features/account/presentation/export_saver.dart' show CommunityExportSaver, saveCommunityDataExport;
 export 'src/features/account/presentation/widgets/community_account_settings.dart'
     show CommunityAccountSettings, openCommunityAccountSettings;
+export 'src/features/account/presentation/widgets/community_comment_audience_settings.dart'
+    show CommunityCommentAudienceSettings, communityCommentControlsAvailable;
 export 'src/features/analytics/domain/entities/analytics_event.dart'
     show AnalyticsEvent, AnalyticsResult, CommunityAnalyticsEvent;
 export 'src/features/analytics/domain/repositories/analytics_repository.dart';
@@ -131,6 +133,7 @@ export 'src/features/drafts/domain/repositories/post_draft_repository.dart';
 export 'src/features/drafts/domain/services/community_drafts.dart';
 export 'src/features/drafts/presentation/widgets/community_post_drafts.dart';
 export 'src/features/edit/domain/repositories/content_edit_repository.dart';
+export 'src/features/feed/domain/entities/comment_audience.dart';
 export 'src/features/feed/domain/entities/feed_filter.dart';
 export 'src/features/feed/domain/entities/feed_sort.dart';
 export 'src/features/feed/domain/entities/pinned_post.dart';
@@ -141,6 +144,15 @@ export 'src/features/feed/presentation/builders/community_feed_builders.dart'
     show CommunityFeedBuilders, CommunityFeedBuildersScope;
 export 'src/features/feed/presentation/builders/community_feed_details.dart';
 export 'src/features/feed/presentation/post_open_mode.dart';
+export 'src/features/feed/presentation/widgets/comment_controls.dart'
+    show
+        CommentRestrictionNotice,
+        CommunityCommentAudienceSheet,
+        CommunityComposeCommentAudience,
+        PostCommentAudienceSaver,
+        commentAudienceLabel,
+        commentRestrictionMessage,
+        showCommentAudienceSheet;
 export 'src/features/feed/presentation/widgets/community_feed_filter_tabs.dart'
     show CommunityFeedFilterTabs, CommunityFeedFilters;
 export 'src/features/feed/presentation/widgets/community_feed_list.dart' show CommunityFeedList;

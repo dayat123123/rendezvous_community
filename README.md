@@ -6,7 +6,7 @@
 
 Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · moderasi
 
-![Versi](https://img.shields.io/badge/versi-1.30.0-0f766e)
+![Versi](https://img.shields.io/badge/versi-1.31.0-0f766e)
 ![Flutter](https://img.shields.io/badge/Flutter-%E2%89%A5%203.44-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-%E2%89%A5%203.12-0175C2?logo=dart&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android-555)
@@ -37,7 +37,7 @@ Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · mod
 | | Fitur |
 |---|---|
 | 📰 **Feed** | Stream umum (Terbaru / Mengikuti), feed per saham, hashtag, trending, sentimen bullish/bearish, polling, bookmark, link preview, edit 15 menit, bagikan post ke chat |
-| 💬 **Komentar** | Thread berantai dengan indentasi per level, "Lanjutkan thread", collapse per cabang, mention `@user` (selalu disimpan huruf kecil) dan `$KODE` |
+| 💬 **Komentar** | Thread berantai dengan indentasi per level, "Lanjutkan thread", collapse per cabang, mention `@user` (selalu disimpan huruf kecil) dan `$KODE`, kontrol komentar ala Instagram (matikan atau batasi siapa yang boleh berkomentar, per akun dan per post) |
 | 🗨️ **Chat** | DM, grup, dan room saham realtime; centang ala WhatsApp; balas, reaksi, kartu saham; indikator mengetik; lazy load per 30 pesan; isi celah otomatis setelah koneksi putus |
 | 🎧 **Chat CS** | Room CS resmi disematkan paling atas, lampiran gambar + PDF, riwayat tiket, rating |
 | ❓ **Pusat Bantuan** | FAQ dua bahasa dari Hub: kategori, pencarian, "Apakah ini membantu?", saran artikel sebelum chat CS, tetap terbuka saat offline |
@@ -64,6 +64,7 @@ Rincian perilaku setiap fitur ada di [doc/features.md](doc/features.md).
 
 | Package | Server minimal | Catatan |
 |---|---|---|
+| **1.31.x** | migrasi `0169` | Kontrol komentar. Di server lama pilihan audiens tidak tampil dan semua post tetap bisa dikomentari |
 | **1.28.x** | migrasi `0164` | Berbagi Trade. Di server lama UI fitur ini tidak tampil (status gagal dimuat dianggap mati) |
 | **1.6.x** | migrasi `0107` | Ringkasan mengetik di room besar, presence hanya DM, pratinjau room saham live. Di server lama otomatis kembali ke perilaku 1.5 |
 | **1.5.x** | migrasi `0098` | Pesan realtime lewat Broadcast. **Wajib** untuk server dengan `0098`: klien 1.4.x tidak lagi menerima pesan realtime |
@@ -82,7 +83,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.30.0          # selalu pin ke tag rilis
+      ref: v1.31.0          # selalu pin ke tag rilis
 ```
 
 - **Laptop developer:** login GitHub sekali lewat Git Credential Manager (ikut terpasang bersama Git for Windows).

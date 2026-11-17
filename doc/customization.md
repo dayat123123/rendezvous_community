@@ -328,7 +328,7 @@ CommunityFeedBuilders(
 
 | Builder | `details` | Isi |
 |---|---|---|
-| `postMenu` | `CommunityPostDetails` | menu "lainnya" di kanan header post |
+| `postMenu` | `CommunityPostDetails` | menu "lainnya" di kanan header post. Sejak 1.31.0 pemilik post mendapat `onToggleCommentsOff` (Matikan/Nyalakan komentar, label mengikuti `commentsOff`) dan `onChangeCommentAudience` (membuka lembar audiens); keduanya null untuk orang lain atau server tanpa migrasi `0169`. `canComment`, `commentsOff`, dan `commentCountHidden` tersedia untuk `actionBar` kustom |
 | `feedTabs` | `CommunityFeedTabsDetails` | `tabs`, `labels`, `selected`; `onSelect(tab)` (tab Terbaru/Mengikuti di `CommunityStreamFeed`) |
 | `newPosts` | `CommunityNewPostsDetails` | `count`, `label`; `onTap` (muat ulang dan gulir ke atas) |
 | `composePrompt` | `CommunityComposePromptDetails` | `user`, `hintText`; `onCompose` (buka composer, post baru masuk ke feed); `quickActions` (`CommunityComposeQuickAction`: `label`, `icon`, `sentiment` atau `action`) dan `onComposeWith(sentiment:, action:)` untuk tombol Bullish/Bearish/Gambar/Polling/Saham (1.14.0) |
@@ -353,6 +353,9 @@ CommunityFeedBuilders(
 | `editDialog` | `CommunityEditDialogDetails` | `title`, `controller`, `field`, `maxLength`, `saveLabel`, `cancelLabel`; `onSave`, `onCancel`. Builder diambil dari context yang membuka dialog |
 | `inlineComments` | `CommunityInlineCommentsDetails` | `post`, `expanded`, `onToggle` (menutup), `child` (komentar bawaan `CommunityPostComments`). Wadah komentar inline di bawah kartu post (1.13.0) |
 | `commentSort` | `CommunityCommentSortDetails` | `title` ("Komentar"), `tooltip`, `selected`, `options` (`top`, `latest`), `labels` ("Disarankan", "Terbaru"), `selectedLabel`; `onSelect` (null saat memuat). Hanya tampil bila server mendukung urutan (migrasi `0142`) |
+| `composeCommentAudience` (1.31.0) | `CommunityComposeCommentAudienceDetails` | baris "Siapa yang bisa berkomentar" di composer: `title`, `audience` (pilihan sekarang, awalnya dari pengaturan akun), `label`, `options` (`CommunityCommentAudienceOption`: `audience`, `label`, `hint`), `enabled`; `onTap` (membuka lembar pilihan bawaan), `onChanged(audience)` (null saat mengirim). Hanya tampil bila server punya migrasi `0169` |
+| `commentAudienceSheet` (1.31.0) | `CommunityCommentAudienceSheetDetails` | isi lembar pilihan audiens (composer dan menu post): `title`, `selected`, `options`; `onSelect(audience)` menutup lembar dengan pilihan itu. Bawaan: `CommunityCommentAudienceSheet` |
+| `commentRestriction` (1.31.0) | `CommunityCommentRestrictionDetails` | teks pengganti kolom balasan saat `post.canComment` false: `post`, `isMine`, `commentsOff`, `restriction` (audiens yang membatasi, null bila diblokir), `message` ("Komentar dinonaktifkan", "Hanya pengikut @nama yang bisa berkomentar"). Dipakai di detail post dan komentar inline |
 | `topComment` | `CommunityPostDetails` | pratinjau komentar teratas di bawah tombol aksi kartu feed (1.14.0): `topComment`, `onOpenComments` (mode `navigate` membuka detail post, mode inline membuka komentar di bawah kartu), `post.commentCount`. Tidak tampil saat komentar inline sedang terbuka |
 
 #### Gambar post (1.15.2)
@@ -662,6 +665,7 @@ CommunityBuildersScope(
 | Slot | Details | Isi |
 |---|---|---|
 | `dmPolicy` | `CommunityDmPolicyDetails` | `policy`, `title`, `options` (`CommunitySettingsOption`: `value`, `label`, `hint`), `saving`; `onChanged` (null saat menyimpan) |
+| `commentAudience` (1.31.0) | `CommunityCommentAudienceSettingDetails` | "Izinkan komentar dari": `audience`, `title`, `hint`, `options` (empat pilihan, tanpa "Matikan komentar"), `saving`; `onChanged` (null saat menyimpan). Widget mandiri: `CommunityCommentAudienceSettings` |
 | `notificationType` | `CommunityNotificationTypeDetails` | satu baris jenis notifikasi: `preference`, `label`, `description`, `supportsInApp`, `inApp`, `push`, `locked`, `isOlt`; `onInAppChanged` (null bila tidak didukung/terkunci), `onPushChanged` |
 | `reportDialog` | `CommunityReportDetails` | `target`, `options`, `selected`, `controller`, `hintText`, `maxLength`, `submitting`, `errorMessage`; `onSelect`, `onSubmit`, `onCancel` |
 | `appealDialog` | `CommunityAppealDialogDetails` | `targetType`, `title`, `hint`, `controller`, `maxLength`, `canSubmit`, `submitting`, `errorMessage`; `onSubmit` (null bila alasan belum valid), `onCancel` |
@@ -671,7 +675,7 @@ CommunityBuildersScope(
 | `legalReader` | `CommunityLegalReaderDetails` | pembaca dokumen: `document`, `title` (null bila judul di app bar), `meta`, `changes`, `body`, `padding` |
 | `accountTile` | `CommunityAccountTileDetails` | baris aksi akun: `kind` (`appeals`/`exportData`/`deleteAccount`), `icon`, `title`, `subtitle`, `destructive`, `busy`; `onTap` |
 | `deleteAccountDialog` | `CommunityDeleteAccountDetails` | `consequences`, `controller`, `confirmWord`, `fieldLabel`, `canConfirm`, `deleting`, `errorMessage`, label; `onConfirm` (null sampai kata konfirmasi cocok), `onCancel` |
-| `loading` / `empty` / `error` | `CommunitySettingsLoadingDetails` / `CommunitySettingsEmptyDetails` / `CommunitySettingsErrorDetails` | status per bagian; `area` menyebut bagiannya (`appeals`, `sanctions`, `moderatedContent`, `myAppeals`, `legalDocuments`, `consent`, `dmPolicy`, `notificationPreferences`) |
+| `loading` / `empty` / `error` | `CommunitySettingsLoadingDetails` / `CommunitySettingsEmptyDetails` / `CommunitySettingsErrorDetails` | status per bagian; `area` menyebut bagiannya (`appeals`, `sanctions`, `moderatedContent`, `myAppeals`, `legalDocuments`, `consent`, `dmPolicy`, `notificationPreferences`, `commentAudience`) |
 
 Builder dialog mengembalikan isi dialog (mis. `AlertDialog`); library yang membuka dan menutup rutenya. Kunci `community-delete-confirmation` hanya ada di tampilan bawaan.
 

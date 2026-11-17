@@ -3,10 +3,14 @@ import 'dart:typed_data';
 
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
+import 'package:rendezvous_community/src/core/error/error_mapper.dart';
+import 'package:rendezvous_community/src/core/logging/community_logger.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/services/community_drafts.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
 import 'package:rendezvous_community/src/features/legal/domain/services/consent_gate.dart';
@@ -36,11 +40,18 @@ abstract class ComposeState with _$ComposeState {
     DraftSyncStatus? draftStatus,
     @Default(0) int draftNoticeId,
     String? restoredBody,
+    CommentAudience? commentAudience,
+    CommentAudience? defaultCommentAudience,
   }) = _ComposeState;
 
   const ComposeState._();
 
   bool get busy => submitting || uploading;
+
+  bool get canChooseCommentAudience => defaultCommentAudience != null;
+
+  CommentAudience get effectiveCommentAudience =>
+      commentAudience ?? defaultCommentAudience ?? CommentAudience.everyone;
 
   bool get canAddImage => poll == null && attachments.length < maxPostImages;
 
@@ -147,6 +158,26 @@ class ComposeCubit extends Cubit<ComposeState> {
 
   void setSentiment(Sentiment? sentiment) => emit(state.copyWith(sentiment: sentiment));
 
+  Future<void> loadCommentAudience() async {
+    final feed = _feed;
+    if (feed is! CommentControlRepository || state.defaultCommentAudience != null) return;
+    try {
+      final audience = await feed.getCommentAudience();
+      if (!isClosed) emit(state.copyWith(defaultCommentAudience: audience));
+    } catch (e) {
+      final mapped = mapError(e);
+      CommunityLoggers.feed.event(
+        Level.INFO,
+        'Comment controls are unavailable in the composer',
+        fields: {'kind': mapped.kind, 'code': mapped.code},
+      );
+    }
+  }
+
+  void setCommentAudience(CommentAudience audience) {
+    if (state.canChooseCommentAudience) emit(state.copyWith(commentAudience: audience));
+  }
+
   Future<void> addImage(Uint8List bytes, String mimeType) async {
     if (!state.canAddImage) {
       return _fail(const CommunityException(CommunityErrorKind.invalidInput, code: 'too_many_images'));
@@ -212,14 +243,25 @@ class ComposeCubit extends Cubit<ComposeState> {
     }
     emit(state.copyWith(submitting: true));
     try {
+      final feed = _feed;
+      final audience = state.canChooseCommentAudience ? state.commentAudience : null;
       final post = await _consent.guard(
-        () => _feed.createPost(
-          body: text,
-          sentiment: state.sentiment,
-          attachments: state.attachments,
-          poll: poll,
-          clientId: _clientId,
-        ),
+        () => feed is CommentControlRepository && audience != null
+            ? feed.createPost(
+                body: text,
+                sentiment: state.sentiment,
+                attachments: state.attachments,
+                poll: poll,
+                clientId: _clientId,
+                commentAudience: audience,
+              )
+            : feed.createPost(
+                body: text,
+                sentiment: state.sentiment,
+                attachments: state.attachments,
+                poll: poll,
+                clientId: _clientId,
+              ),
       );
       _draftTimer?.cancel();
       _draftDirty = false;
@@ -228,7 +270,7 @@ class ComposeCubit extends Cubit<ComposeState> {
       _body = '';
       _clientId = _uuid.v4();
       final held = {for (final a in state.attachments.where((a) => a.held)) a.path};
-      if (!isClosed) emit(const ComposeState());
+      if (!isClosed) emit(ComposeState(defaultCommentAudience: state.defaultCommentAudience));
       return held.isEmpty
           ? post
           : post.copyWith(

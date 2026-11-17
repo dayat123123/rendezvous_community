@@ -10,12 +10,14 @@ import 'package:rendezvous_community/src/core/paging/paged.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/bookmarks/domain/repositories/bookmark_repository.dart';
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_cache_repository.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/post_updates.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 
 part 'feed_cubit.freezed.dart';
@@ -276,6 +278,24 @@ class FeedCubit extends Cubit<FeedState> {
     }
   }
 
+  bool get canControlComments => _feed is CommentControlRepository;
+
+  Future<bool> setCommentAudience(Post post, CommentAudience audience) async {
+    final feed = _feed;
+    if (feed is! CommentControlRepository) return false;
+    try {
+      final updated = await feed.setPostCommentAudience(post.id, audience);
+      replacePost(updated.copyWith(cursor: _find(post).cursor));
+      if (updated.commentsOff && state.openComments.contains(post.id) && !isClosed) {
+        emit(state.copyWith(openComments: {...state.openComments}..remove(post.id)));
+      }
+      return true;
+    } catch (e) {
+      _actionError(e);
+      return false;
+    }
+  }
+
   void replacePost(Post post) => _replace(post);
 
   void toggleComments(String postId) {
@@ -355,13 +375,22 @@ class FeedCubit extends Cubit<FeedState> {
             );
           } else {
             final index = state.posts.indexWhere((p) => p.id == change.postId);
-            if (index >= 0) {
-              final p = state.posts[index];
-              _replace(p.copyWith(likeCount: change.likeCount, commentCount: change.commentCount));
-            }
+            if (index >= 0) _applyUpdate(state.posts[index], change);
           }
       }
     }, onError: (Object _) {});
+  }
+
+  void _applyUpdate(Post post, PostUpdated change) {
+    _replace(applyPostUpdate(post, change, currentUserId: currentUserId?.call()));
+    if (shouldReloadAfterUpdate(post, change)) unawaited(_reloadPost(post));
+  }
+
+  Future<void> _reloadPost(Post post) async {
+    try {
+      final fresh = await _feed.getPost(post.id);
+      if (fresh != null && !isClosed) replacePost(fresh.copyWith(cursor: _find(post).cursor));
+    } catch (_) {}
   }
 
   Future<void> _filteredInsert(PostInserted change) async {

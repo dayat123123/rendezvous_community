@@ -14,9 +14,11 @@ import 'package:rendezvous_community/src/features/compose/presentation/cubit/com
 import 'package:rendezvous_community/src/features/compose/presentation/widgets/poll_editor.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_consent_flow.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -188,6 +190,7 @@ class _ComposeViewState extends State<_ComposeView> {
   void initState() {
     super.initState();
     _controller.addListener(() => context.read<ComposeCubit>().bodyChanged(_controller.text));
+    context.read<ComposeCubit>().loadCommentAudience();
     final sentiment = widget.initialSentiment;
     if (sentiment != null) context.read<ComposeCubit>().setSentiment(sentiment);
     switch (widget.initialAction) {
@@ -386,6 +389,35 @@ class _ComposeViewState extends State<_ComposeView> {
                 sentiment,
                 _DefaultComposeSentiment(details: sentiment),
               ),
+              if (state.canChooseCommentAudience)
+                Builder(
+                  builder: (context) {
+                    final audience = state.effectiveCommentAudience;
+                    final onChanged = state.submitting ? null : cubit.setCommentAudience;
+                    final details = CommunityComposeCommentAudienceDetails(
+                      title: l10n.commentAudienceTitle,
+                      audience: audience,
+                      label: commentAudienceLabel(l10n, audience),
+                      options: commentAudienceOptions(l10n, CommentAudience.postOptions),
+                      onChanged: onChanged,
+                      onTap: onChanged == null
+                          ? null
+                          : () async {
+                              final picked = await showCommentAudienceSheet(context, selected: audience);
+                              if (picked != null) onChanged(picked);
+                            },
+                    );
+                    return Padding(
+                      padding: EdgeInsets.only(top: spacing.sm),
+                      child: buildFeedPart(
+                        (b) => b.composeCommentAudience,
+                        context,
+                        details,
+                        CommunityComposeCommentAudience(details: details),
+                      ),
+                    );
+                  },
+                ),
               if (state.attachments.isNotEmpty) ...[
                 SizedBox(height: spacing.md),
                 Wrap(

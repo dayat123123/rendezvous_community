@@ -5,11 +5,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
+import 'package:rendezvous_community/src/core/error/error_mapper.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/bookmarks/domain/repositories/bookmark_repository.dart';
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/post_updates.dart';
 import 'package:rendezvous_community/src/features/legal/domain/services/consent_gate.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/comment_sort.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
@@ -67,7 +70,8 @@ class CommentThreadCubit extends Cubit<ThreadState> {
     this.firstPageSize,
     this.fetchPost = true,
     this.onCommentCountChanged,
-  }) : super(ThreadState(sort: sort));
+    Post? initialPost,
+  }) : super(ThreadState(sort: sort, post: initialPost));
 
   final FeedRepository _feed;
   final CommentRepository _comments;
@@ -249,11 +253,54 @@ class CommentThreadCubit extends Cubit<ThreadState> {
       );
       return true;
     } catch (e) {
-      if (!isClosed) emit(state.copyWith(sending: false));
+      if (!isClosed) emit(state.copyWith(sending: false, post: _lockedPost(e) ?? state.post));
       _fail(e);
       return false;
     }
   }
+
+  Post? _lockedPost(Object error) {
+    final post = state.post;
+    if (post == null) return null;
+    return switch (mapError(error).code) {
+      'comments_off' => post.copyWith(canComment: false, commentRestriction: CommentAudience.off),
+      'comments_restricted' => post.copyWith(canComment: false),
+      _ => null,
+    };
+  }
+
+  bool get canControlComments => _feed is CommentControlRepository;
+
+  Future<bool> setCommentAudience(Post post, CommentAudience audience) async {
+    final feed = _feed;
+    if (feed is! CommentControlRepository) return false;
+    final wasOff = post.commentsOff;
+    try {
+      final updated = await feed.setPostCommentAudience(post.id, audience);
+      if (isClosed) return true;
+      if (updated.commentsOff) {
+        emit(_withoutComments(state.copyWith(post: updated)));
+      } else {
+        emit(state.copyWith(post: updated));
+        if (wasOff) unawaited(load());
+      }
+      return true;
+    } catch (e) {
+      _fail(e);
+      return false;
+    }
+  }
+
+  ThreadState _withoutComments(ThreadState s) => s.copyWith(
+    comments: const {},
+    children: const {},
+    collapsed: const {},
+    loadingBranches: const {},
+    topCursor: null,
+    topOffset: 0,
+    hasMoreTop: false,
+    replyTo: null,
+  );
 
   Future<void> toggleLike(ThreadComment comment) async {
     final current = state.comments[comment.id] ?? comment;
@@ -383,11 +430,10 @@ class CommentThreadCubit extends Cubit<ThreadState> {
     _postEvents ??= _feed.watchPosts(postId: postId).listen((change) {
       final post = state.post;
       if (isClosed || post == null || change is! PostUpdated) return;
-      emit(
-        state.copyWith(
-          post: post.copyWith(likeCount: change.likeCount, commentCount: change.commentCount),
-        ),
-      );
+      final updated = applyPostUpdate(post, change);
+      final next = state.copyWith(post: updated);
+      emit(updated.commentsOff && !post.commentsOff ? _withoutComments(next) : next);
+      if (shouldReloadAfterUpdate(post, change)) unawaited(load());
     }, onError: (Object _) {});
   }
 

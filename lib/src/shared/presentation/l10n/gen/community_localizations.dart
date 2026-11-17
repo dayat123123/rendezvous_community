@@ -5845,6 +5845,156 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Hanya trader yang bisa melihat pelanggan.'**
   String get errorTradeNotTrader;
+
+  /// No description provided for @commentAudienceTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Siapa yang bisa berkomentar'**
+  String get commentAudienceTitle;
+
+  /// No description provided for @commentAudienceAccountTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Izinkan komentar dari'**
+  String get commentAudienceAccountTitle;
+
+  /// No description provided for @commentAudienceAccountHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Menjadi pilihan awal untuk postingan baru. Postingan yang sudah terbit tidak berubah.'**
+  String get commentAudienceAccountHint;
+
+  /// No description provided for @commentAudienceSection.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar'**
+  String get commentAudienceSection;
+
+  /// No description provided for @commentAudienceEveryone.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua orang'**
+  String get commentAudienceEveryone;
+
+  /// No description provided for @commentAudienceFollowing.
+  ///
+  /// In id, this message translates to:
+  /// **'Orang yang saya ikuti'**
+  String get commentAudienceFollowing;
+
+  /// No description provided for @commentAudienceFollowers.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengikut saya'**
+  String get commentAudienceFollowers;
+
+  /// No description provided for @commentAudienceFollowingAndFollowers.
+  ///
+  /// In id, this message translates to:
+  /// **'Orang yang saya ikuti dan pengikut saya'**
+  String get commentAudienceFollowingAndFollowers;
+
+  /// No description provided for @commentAudienceOff.
+  ///
+  /// In id, this message translates to:
+  /// **'Matikan komentar'**
+  String get commentAudienceOff;
+
+  /// No description provided for @commentAudienceOffHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar lama disembunyikan dan muncul lagi saat komentar dinyalakan.'**
+  String get commentAudienceOffHint;
+
+  /// No description provided for @commentAudienceSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaturan komentar disimpan.'**
+  String get commentAudienceSaved;
+
+  /// No description provided for @commentsTurnOff.
+  ///
+  /// In id, this message translates to:
+  /// **'Matikan komentar'**
+  String get commentsTurnOff;
+
+  /// No description provided for @commentsTurnOn.
+  ///
+  /// In id, this message translates to:
+  /// **'Nyalakan komentar'**
+  String get commentsTurnOn;
+
+  /// No description provided for @commentsManage.
+  ///
+  /// In id, this message translates to:
+  /// **'Atur siapa yang bisa berkomentar'**
+  String get commentsManage;
+
+  /// No description provided for @commentsTurnedOff.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar dimatikan.'**
+  String get commentsTurnedOff;
+
+  /// No description provided for @commentsTurnedOn.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar dinyalakan.'**
+  String get commentsTurnedOn;
+
+  /// No description provided for @commentsDisabled.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar dinonaktifkan'**
+  String get commentsDisabled;
+
+  /// No description provided for @commentsDisabledOwner.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar dinonaktifkan. Nyalakan lagi dari menu postingan.'**
+  String get commentsDisabledOwner;
+
+  /// No description provided for @commentsOnlyFollowing.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya orang yang diikuti {name} yang bisa berkomentar'**
+  String commentsOnlyFollowing(String name);
+
+  /// No description provided for @commentsOnlyFollowers.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya pengikut {name} yang bisa berkomentar'**
+  String commentsOnlyFollowers(String name);
+
+  /// No description provided for @commentsOnlyFollowingAndFollowers.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya pengikut {name} dan orang yang diikutinya yang bisa berkomentar'**
+  String commentsOnlyFollowingAndFollowers(String name);
+
+  /// No description provided for @commentsUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda tidak bisa berkomentar di postingan ini'**
+  String get commentsUnavailable;
+
+  /// No description provided for @errorCommentsOff.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar untuk postingan ini sudah dinonaktifkan.'**
+  String get errorCommentsOff;
+
+  /// No description provided for @errorCommentsRestricted.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda tidak termasuk yang boleh berkomentar di postingan ini.'**
+  String get errorCommentsRestricted;
+
+  /// No description provided for @errorInvalidCommentAudience.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilihan siapa yang bisa berkomentar tidak valid.'**
+  String get errorInvalidCommentAudience;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

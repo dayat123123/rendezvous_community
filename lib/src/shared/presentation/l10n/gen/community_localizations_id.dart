@@ -3270,4 +3270,86 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorTradeNotTrader => 'Hanya trader yang bisa melihat pelanggan.';
+
+  @override
+  String get commentAudienceTitle => 'Siapa yang bisa berkomentar';
+
+  @override
+  String get commentAudienceAccountTitle => 'Izinkan komentar dari';
+
+  @override
+  String get commentAudienceAccountHint =>
+      'Menjadi pilihan awal untuk postingan baru. Postingan yang sudah terbit tidak berubah.';
+
+  @override
+  String get commentAudienceSection => 'Komentar';
+
+  @override
+  String get commentAudienceEveryone => 'Semua orang';
+
+  @override
+  String get commentAudienceFollowing => 'Orang yang saya ikuti';
+
+  @override
+  String get commentAudienceFollowers => 'Pengikut saya';
+
+  @override
+  String get commentAudienceFollowingAndFollowers => 'Orang yang saya ikuti dan pengikut saya';
+
+  @override
+  String get commentAudienceOff => 'Matikan komentar';
+
+  @override
+  String get commentAudienceOffHint => 'Komentar lama disembunyikan dan muncul lagi saat komentar dinyalakan.';
+
+  @override
+  String get commentAudienceSaved => 'Pengaturan komentar disimpan.';
+
+  @override
+  String get commentsTurnOff => 'Matikan komentar';
+
+  @override
+  String get commentsTurnOn => 'Nyalakan komentar';
+
+  @override
+  String get commentsManage => 'Atur siapa yang bisa berkomentar';
+
+  @override
+  String get commentsTurnedOff => 'Komentar dimatikan.';
+
+  @override
+  String get commentsTurnedOn => 'Komentar dinyalakan.';
+
+  @override
+  String get commentsDisabled => 'Komentar dinonaktifkan';
+
+  @override
+  String get commentsDisabledOwner => 'Komentar dinonaktifkan. Nyalakan lagi dari menu postingan.';
+
+  @override
+  String commentsOnlyFollowing(String name) {
+    return 'Hanya orang yang diikuti $name yang bisa berkomentar';
+  }
+
+  @override
+  String commentsOnlyFollowers(String name) {
+    return 'Hanya pengikut $name yang bisa berkomentar';
+  }
+
+  @override
+  String commentsOnlyFollowingAndFollowers(String name) {
+    return 'Hanya pengikut $name dan orang yang diikutinya yang bisa berkomentar';
+  }
+
+  @override
+  String get commentsUnavailable => 'Anda tidak bisa berkomentar di postingan ini';
+
+  @override
+  String get errorCommentsOff => 'Komentar untuk postingan ini sudah dinonaktifkan.';
+
+  @override
+  String get errorCommentsRestricted => 'Anda tidak termasuk yang boleh berkomentar di postingan ini.';
+
+  @override
+  String get errorInvalidCommentAudience => 'Pilihan siapa yang bisa berkomentar tidak valid.';
 }

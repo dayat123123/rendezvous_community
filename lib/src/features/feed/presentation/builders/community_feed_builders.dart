@@ -45,6 +45,9 @@ class CommunityFeedBuilders {
     this.feedFilterTabs,
     this.indexHeader,
     this.indexTile,
+    this.composeCommentAudience,
+    this.commentAudienceSheet,
+    this.commentRestriction,
   });
 
   final CommunityPartBuilder<CommunityPostDetails>? postCard;
@@ -87,6 +90,9 @@ class CommunityFeedBuilders {
   final CommunityPartBuilder<CommunityFeedFilterTabsDetails>? feedFilterTabs;
   final CommunityPartBuilder<CommunityIndexHeaderDetails>? indexHeader;
   final CommunityPartBuilder<CommunityIndexTileDetails>? indexTile;
+  final CommunityPartBuilder<CommunityComposeCommentAudienceDetails>? composeCommentAudience;
+  final CommunityPartBuilder<CommunityCommentAudienceSheetDetails>? commentAudienceSheet;
+  final CommunityPartBuilder<CommunityCommentRestrictionDetails>? commentRestriction;
 
   static CommunityFeedBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -138,6 +144,9 @@ class CommunityFeedBuilders {
       feedFilterTabs: other.feedFilterTabs ?? feedFilterTabs,
       indexHeader: other.indexHeader ?? indexHeader,
       indexTile: other.indexTile ?? indexTile,
+      composeCommentAudience: other.composeCommentAudience ?? composeCommentAudience,
+      commentAudienceSheet: other.commentAudienceSheet ?? commentAudienceSheet,
+      commentRestriction: other.commentRestriction ?? commentRestriction,
     );
   }
 }

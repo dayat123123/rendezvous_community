@@ -4,7 +4,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_consent_flow.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/comment_sort.dart';
 import 'package:rendezvous_community/src/features/post/presentation/cubit/comment_thread_cubit.dart';
@@ -31,9 +33,11 @@ class CommunityPostComments extends StatelessWidget {
     this.onOpenThread,
     this.onCommentCountChanged,
     this.builders,
+    this.post,
   });
 
   final String postId;
+  final Post? post;
   final int initialTopLevel;
   final CommunityCommentSort sort;
   final bool showComposer;
@@ -67,6 +71,7 @@ class CommunityPostComments extends StatelessWidget {
           bookmarks: features?.bookmarks,
           edits: features?.edits,
           onCommentCountChanged: onCommentCountChanged,
+          initialPost: post,
         )..load(),
         child: _PostCommentsView(
           postId: postId,
@@ -111,6 +116,11 @@ class _PostCommentsView extends StatelessWidget {
       listener: (context, state) => showCommunityError(context, state.actionError!),
       builder: (context, state) {
         final cubit = context.read<CommentThreadCubit>();
+        final post = state.post;
+        if (post != null && post.commentsOff) {
+          final notice = CommentRestrictionNotice(post: post);
+          return inline ? notice : ListView(children: [notice]);
+        }
         final rows = state.status == LoadStatus.ready
             ? buildThreadRows(state, maxLevels: maxLevels)
             : const <ThreadRow>[];

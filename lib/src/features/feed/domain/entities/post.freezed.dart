@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$Post {
 
- String get id; UserSummary get author; String get body; Sentiment? get sentiment; List<Attachment> get attachments; int get likeCount; int get commentCount; List<String> get stockCodes; bool get likedByMe; Poll? get poll; DateTime? get editedAt; DateTime get createdAt; String get cursor; bool get isBookmarked; List<String> get hashtags; bool get isBot; bool get authorIsOfficial; ModerationStatus? get moderationStatus; ThreadComment? get topComment;
+ String get id; UserSummary get author; String get body; Sentiment? get sentiment; List<Attachment> get attachments; int get likeCount; int get commentCount; List<String> get stockCodes; bool get likedByMe; Poll? get poll; DateTime? get editedAt; DateTime get createdAt; String get cursor; bool get isBookmarked; List<String> get hashtags; bool get isBot; bool get authorIsOfficial; ModerationStatus? get moderationStatus; ThreadComment? get topComment; bool get canComment; CommentAudience? get commentAudience; CommentAudience? get commentRestriction;
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $PostCopyWith<Post> get copyWith => _$PostCopyWithImpl<Post>(this as Post, _$ide
 @override
 bool operator ==(Object other) {
   final _this = this as Post;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is Post&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.author, _this.author) || other.author == _this.author)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.sentiment, _this.sentiment) || other.sentiment == _this.sentiment)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.likeCount, _this.likeCount) || other.likeCount == _this.likeCount)&&(identical(other.commentCount, _this.commentCount) || other.commentCount == _this.commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, _this.stockCodes)&&(identical(other.likedByMe, _this.likedByMe) || other.likedByMe == _this.likedByMe)&&(identical(other.poll, _this.poll) || other.poll == _this.poll)&&(identical(other.editedAt, _this.editedAt) || other.editedAt == _this.editedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&(identical(other.isBookmarked, _this.isBookmarked) || other.isBookmarked == _this.isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, _this.hashtags)&&(identical(other.isBot, _this.isBot) || other.isBot == _this.isBot)&&(identical(other.authorIsOfficial, _this.authorIsOfficial) || other.authorIsOfficial == _this.authorIsOfficial)&&(identical(other.moderationStatus, _this.moderationStatus) || other.moderationStatus == _this.moderationStatus)&&(identical(other.topComment, _this.topComment) || other.topComment == _this.topComment));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is Post&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.author, _this.author) || other.author == _this.author)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.sentiment, _this.sentiment) || other.sentiment == _this.sentiment)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments)&&(identical(other.likeCount, _this.likeCount) || other.likeCount == _this.likeCount)&&(identical(other.commentCount, _this.commentCount) || other.commentCount == _this.commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, _this.stockCodes)&&(identical(other.likedByMe, _this.likedByMe) || other.likedByMe == _this.likedByMe)&&(identical(other.poll, _this.poll) || other.poll == _this.poll)&&(identical(other.editedAt, _this.editedAt) || other.editedAt == _this.editedAt)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.cursor, _this.cursor) || other.cursor == _this.cursor)&&(identical(other.isBookmarked, _this.isBookmarked) || other.isBookmarked == _this.isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, _this.hashtags)&&(identical(other.isBot, _this.isBot) || other.isBot == _this.isBot)&&(identical(other.authorIsOfficial, _this.authorIsOfficial) || other.authorIsOfficial == _this.authorIsOfficial)&&(identical(other.moderationStatus, _this.moderationStatus) || other.moderationStatus == _this.moderationStatus)&&(identical(other.topComment, _this.topComment) || other.topComment == _this.topComment)&&(identical(other.canComment, _this.canComment) || other.canComment == _this.canComment)&&(identical(other.commentAudience, _this.commentAudience) || other.commentAudience == _this.commentAudience)&&(identical(other.commentRestriction, _this.commentRestriction) || other.commentRestriction == _this.commentRestriction));
 }
 
 
 @override
 int get hashCode {
   final _this = this as Post;
-  return Object.hashAll([runtimeType,_this.id,_this.author,_this.body,_this.sentiment,const DeepCollectionEquality().hash(_this.attachments),_this.likeCount,_this.commentCount,const DeepCollectionEquality().hash(_this.stockCodes),_this.likedByMe,_this.poll,_this.editedAt,_this.createdAt,_this.cursor,_this.isBookmarked,const DeepCollectionEquality().hash(_this.hashtags),_this.isBot,_this.authorIsOfficial,_this.moderationStatus,_this.topComment]);
+  return Object.hashAll([runtimeType,_this.id,_this.author,_this.body,_this.sentiment,const DeepCollectionEquality().hash(_this.attachments),_this.likeCount,_this.commentCount,const DeepCollectionEquality().hash(_this.stockCodes),_this.likedByMe,_this.poll,_this.editedAt,_this.createdAt,_this.cursor,_this.isBookmarked,const DeepCollectionEquality().hash(_this.hashtags),_this.isBot,_this.authorIsOfficial,_this.moderationStatus,_this.topComment,_this.canComment,_this.commentAudience,_this.commentRestriction]);
 }
 
 @override
 String toString() {
   final _this = this as Post;
-  return 'Post(id: ${_this.id}, author: ${_this.author}, body: ${_this.body}, sentiment: ${_this.sentiment}, attachments: ${_this.attachments}, likeCount: ${_this.likeCount}, commentCount: ${_this.commentCount}, stockCodes: ${_this.stockCodes}, likedByMe: ${_this.likedByMe}, poll: ${_this.poll}, editedAt: ${_this.editedAt}, createdAt: ${_this.createdAt}, cursor: ${_this.cursor}, isBookmarked: ${_this.isBookmarked}, hashtags: ${_this.hashtags}, isBot: ${_this.isBot}, authorIsOfficial: ${_this.authorIsOfficial}, moderationStatus: ${_this.moderationStatus}, topComment: ${_this.topComment})';
+  return 'Post(id: ${_this.id}, author: ${_this.author}, body: ${_this.body}, sentiment: ${_this.sentiment}, attachments: ${_this.attachments}, likeCount: ${_this.likeCount}, commentCount: ${_this.commentCount}, stockCodes: ${_this.stockCodes}, likedByMe: ${_this.likedByMe}, poll: ${_this.poll}, editedAt: ${_this.editedAt}, createdAt: ${_this.createdAt}, cursor: ${_this.cursor}, isBookmarked: ${_this.isBookmarked}, hashtags: ${_this.hashtags}, isBot: ${_this.isBot}, authorIsOfficial: ${_this.authorIsOfficial}, moderationStatus: ${_this.moderationStatus}, topComment: ${_this.topComment}, canComment: ${_this.canComment}, commentAudience: ${_this.commentAudience}, commentRestriction: ${_this.commentRestriction})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $PostCopyWith<$Res>  {
   factory $PostCopyWith(Post value, $Res Function(Post) _then) = _$PostCopyWithImpl;
 @useResult
 $Res call({
- String id, UserSummary author, String body, Sentiment? sentiment, List<Attachment> attachments, int likeCount, int commentCount, List<String> stockCodes, bool likedByMe, Poll? poll, DateTime? editedAt, DateTime createdAt, String cursor, bool isBookmarked, List<String> hashtags, bool isBot, bool authorIsOfficial, ModerationStatus? moderationStatus, ThreadComment? topComment
+ String id, UserSummary author, String body, Sentiment? sentiment, List<Attachment> attachments, int likeCount, int commentCount, List<String> stockCodes, bool likedByMe, Poll? poll, DateTime? editedAt, DateTime createdAt, String cursor, bool isBookmarked, List<String> hashtags, bool isBot, bool authorIsOfficial, ModerationStatus? moderationStatus, ThreadComment? topComment, bool canComment, CommentAudience? commentAudience, CommentAudience? commentRestriction
 });
 
 
@@ -68,7 +68,7 @@ class _$PostCopyWithImpl<$Res>
 
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = null,Object? hashtags = null,Object? isBot = null,Object? authorIsOfficial = null,Object? moderationStatus = freezed,Object? topComment = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? author = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = null,Object? hashtags = null,Object? isBot = null,Object? authorIsOfficial = null,Object? moderationStatus = freezed,Object? topComment = freezed,Object? canComment = null,Object? commentAudience = freezed,Object? commentRestriction = freezed,}) {
   return _then(Post(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -89,7 +89,10 @@ as List<String>,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nulla
 as bool,authorIsOfficial: null == authorIsOfficial ? _self.authorIsOfficial : authorIsOfficial // ignore: cast_nullable_to_non_nullable
 as bool,moderationStatus: freezed == moderationStatus ? _self.moderationStatus : moderationStatus // ignore: cast_nullable_to_non_nullable
 as ModerationStatus?,topComment: freezed == topComment ? _self.topComment : topComment // ignore: cast_nullable_to_non_nullable
-as ThreadComment?,
+as ThreadComment?,canComment: null == canComment ? _self.canComment : canComment // ignore: cast_nullable_to_non_nullable
+as bool,commentAudience: freezed == commentAudience ? _self.commentAudience : commentAudience // ignore: cast_nullable_to_non_nullable
+as CommentAudience?,commentRestriction: freezed == commentRestriction ? _self.commentRestriction : commentRestriction // ignore: cast_nullable_to_non_nullable
+as CommentAudience?,
   ));
 }
 /// Create a copy of Post
@@ -207,10 +210,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus,  ThreadComment? topComment)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus,  ThreadComment? topComment,  bool canComment,  CommentAudience? commentAudience,  CommentAudience? commentRestriction)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _Post() when $default != null:
-return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus,_that.topComment);case _:
+return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus,_that.topComment,_that.canComment,_that.commentAudience,_that.commentRestriction);case _:
   return orElse();
 
 }
@@ -228,10 +231,10 @@ return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachmen
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus,  ThreadComment? topComment)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus,  ThreadComment? topComment,  bool canComment,  CommentAudience? commentAudience,  CommentAudience? commentRestriction)  $default,) {final _that = this;
 switch (_that) {
 case _Post():
-return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus,_that.topComment);case _:
+return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus,_that.topComment,_that.canComment,_that.commentAudience,_that.commentRestriction);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -248,10 +251,10 @@ return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachmen
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus,  ThreadComment? topComment)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  UserSummary author,  String body,  Sentiment? sentiment,  List<Attachment> attachments,  int likeCount,  int commentCount,  List<String> stockCodes,  bool likedByMe,  Poll? poll,  DateTime? editedAt,  DateTime createdAt,  String cursor,  bool isBookmarked,  List<String> hashtags,  bool isBot,  bool authorIsOfficial,  ModerationStatus? moderationStatus,  ThreadComment? topComment,  bool canComment,  CommentAudience? commentAudience,  CommentAudience? commentRestriction)?  $default,) {final _that = this;
 switch (_that) {
 case _Post() when $default != null:
-return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus,_that.topComment);case _:
+return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachments,_that.likeCount,_that.commentCount,_that.stockCodes,_that.likedByMe,_that.poll,_that.editedAt,_that.createdAt,_that.cursor,_that.isBookmarked,_that.hashtags,_that.isBot,_that.authorIsOfficial,_that.moderationStatus,_that.topComment,_that.canComment,_that.commentAudience,_that.commentRestriction);case _:
   return null;
 
 }
@@ -263,7 +266,7 @@ return $default(_that.id,_that.author,_that.body,_that.sentiment,_that.attachmen
 
 
 class _Post extends Post {
-  const _Post({required this.id, required this.author, required this.body, this.sentiment,  List<Attachment> attachments = const <Attachment>[], this.likeCount = 0, this.commentCount = 0,  List<String> stockCodes = const <String>[], this.likedByMe = false, this.poll, this.editedAt, required this.createdAt, required this.cursor, this.isBookmarked = false,  List<String> hashtags = const <String>[], this.isBot = false, this.authorIsOfficial = false, this.moderationStatus, this.topComment}): _attachments = attachments,_stockCodes = stockCodes,_hashtags = hashtags,super._();
+  const _Post({required this.id, required this.author, required this.body, this.sentiment,  List<Attachment> attachments = const <Attachment>[], this.likeCount = 0, this.commentCount = 0,  List<String> stockCodes = const <String>[], this.likedByMe = false, this.poll, this.editedAt, required this.createdAt, required this.cursor, this.isBookmarked = false,  List<String> hashtags = const <String>[], this.isBot = false, this.authorIsOfficial = false, this.moderationStatus, this.topComment, this.canComment = true, this.commentAudience, this.commentRestriction}): _attachments = attachments,_stockCodes = stockCodes,_hashtags = hashtags,super._();
   
 
 @override final  String id;
@@ -303,6 +306,9 @@ class _Post extends Post {
 @override@JsonKey() final  bool authorIsOfficial;
 @override final  ModerationStatus? moderationStatus;
 @override final  ThreadComment? topComment;
+@override@JsonKey() final  bool canComment;
+@override final  CommentAudience? commentAudience;
+@override final  CommentAudience? commentRestriction;
 
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
@@ -314,18 +320,18 @@ _$PostCopyWith<_Post> get copyWith => __$PostCopyWithImpl<_Post>(this, _$identit
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Post&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, _stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, _hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&(identical(other.topComment, topComment) || other.topComment == topComment));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _Post&&(identical(other.id, id) || other.id == id)&&(identical(other.author, author) || other.author == author)&&(identical(other.body, body) || other.body == body)&&(identical(other.sentiment, sentiment) || other.sentiment == sentiment)&&const DeepCollectionEquality().equals(other.attachments, _attachments)&&(identical(other.likeCount, likeCount) || other.likeCount == likeCount)&&(identical(other.commentCount, commentCount) || other.commentCount == commentCount)&&const DeepCollectionEquality().equals(other.stockCodes, _stockCodes)&&(identical(other.likedByMe, likedByMe) || other.likedByMe == likedByMe)&&(identical(other.poll, poll) || other.poll == poll)&&(identical(other.editedAt, editedAt) || other.editedAt == editedAt)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.cursor, cursor) || other.cursor == cursor)&&(identical(other.isBookmarked, isBookmarked) || other.isBookmarked == isBookmarked)&&const DeepCollectionEquality().equals(other.hashtags, _hashtags)&&(identical(other.isBot, isBot) || other.isBot == isBot)&&(identical(other.authorIsOfficial, authorIsOfficial) || other.authorIsOfficial == authorIsOfficial)&&(identical(other.moderationStatus, moderationStatus) || other.moderationStatus == moderationStatus)&&(identical(other.topComment, topComment) || other.topComment == topComment)&&(identical(other.canComment, canComment) || other.canComment == canComment)&&(identical(other.commentAudience, commentAudience) || other.commentAudience == commentAudience)&&(identical(other.commentRestriction, commentRestriction) || other.commentRestriction == commentRestriction));
 }
 
 
 @override
 int get hashCode {
-    return Object.hashAll([runtimeType,id,author,body,sentiment,const DeepCollectionEquality().hash(_attachments),likeCount,commentCount,const DeepCollectionEquality().hash(_stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(_hashtags),isBot,authorIsOfficial,moderationStatus,topComment]);
+    return Object.hashAll([runtimeType,id,author,body,sentiment,const DeepCollectionEquality().hash(_attachments),likeCount,commentCount,const DeepCollectionEquality().hash(_stockCodes),likedByMe,poll,editedAt,createdAt,cursor,isBookmarked,const DeepCollectionEquality().hash(_hashtags),isBot,authorIsOfficial,moderationStatus,topComment,canComment,commentAudience,commentRestriction]);
 }
 
 @override
 String toString() {
-    return 'Post(id: $id, author: $author, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment)';
+    return 'Post(id: $id, author: $author, body: $body, sentiment: $sentiment, attachments: $attachments, likeCount: $likeCount, commentCount: $commentCount, stockCodes: $stockCodes, likedByMe: $likedByMe, poll: $poll, editedAt: $editedAt, createdAt: $createdAt, cursor: $cursor, isBookmarked: $isBookmarked, hashtags: $hashtags, isBot: $isBot, authorIsOfficial: $authorIsOfficial, moderationStatus: $moderationStatus, topComment: $topComment, canComment: $canComment, commentAudience: $commentAudience, commentRestriction: $commentRestriction)';
 }
 
 
@@ -336,7 +342,7 @@ abstract mixin class _$PostCopyWith<$Res> implements $PostCopyWith<$Res> {
   factory _$PostCopyWith(_Post value, $Res Function(_Post) _then) = __$PostCopyWithImpl;
 @override @useResult
 $Res call({
- String id, UserSummary author, String body, Sentiment? sentiment, List<Attachment> attachments, int likeCount, int commentCount, List<String> stockCodes, bool likedByMe, Poll? poll, DateTime? editedAt, DateTime createdAt, String cursor, bool isBookmarked, List<String> hashtags, bool isBot, bool authorIsOfficial, ModerationStatus? moderationStatus, ThreadComment? topComment
+ String id, UserSummary author, String body, Sentiment? sentiment, List<Attachment> attachments, int likeCount, int commentCount, List<String> stockCodes, bool likedByMe, Poll? poll, DateTime? editedAt, DateTime createdAt, String cursor, bool isBookmarked, List<String> hashtags, bool isBot, bool authorIsOfficial, ModerationStatus? moderationStatus, ThreadComment? topComment, bool canComment, CommentAudience? commentAudience, CommentAudience? commentRestriction
 });
 
 
@@ -353,7 +359,7 @@ class __$PostCopyWithImpl<$Res>
 
 /// Create a copy of Post
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = null,Object? hashtags = null,Object? isBot = null,Object? authorIsOfficial = null,Object? moderationStatus = freezed,Object? topComment = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? author = null,Object? body = null,Object? sentiment = freezed,Object? attachments = null,Object? likeCount = null,Object? commentCount = null,Object? stockCodes = null,Object? likedByMe = null,Object? poll = freezed,Object? editedAt = freezed,Object? createdAt = null,Object? cursor = null,Object? isBookmarked = null,Object? hashtags = null,Object? isBot = null,Object? authorIsOfficial = null,Object? moderationStatus = freezed,Object? topComment = freezed,Object? canComment = null,Object? commentAudience = freezed,Object? commentRestriction = freezed,}) {
   return _then(_Post(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,author: null == author ? _self.author : author // ignore: cast_nullable_to_non_nullable
@@ -374,7 +380,10 @@ as List<String>,isBot: null == isBot ? _self.isBot : isBot // ignore: cast_nulla
 as bool,authorIsOfficial: null == authorIsOfficial ? _self.authorIsOfficial : authorIsOfficial // ignore: cast_nullable_to_non_nullable
 as bool,moderationStatus: freezed == moderationStatus ? _self.moderationStatus : moderationStatus // ignore: cast_nullable_to_non_nullable
 as ModerationStatus?,topComment: freezed == topComment ? _self.topComment : topComment // ignore: cast_nullable_to_non_nullable
-as ThreadComment?,
+as ThreadComment?,canComment: null == canComment ? _self.canComment : canComment // ignore: cast_nullable_to_non_nullable
+as bool,commentAudience: freezed == commentAudience ? _self.commentAudience : commentAudience // ignore: cast_nullable_to_non_nullable
+as CommentAudience?,commentRestriction: freezed == commentRestriction ? _self.commentRestriction : commentRestriction // ignore: cast_nullable_to_non_nullable
+as CommentAudience?,
   ));
 }
 

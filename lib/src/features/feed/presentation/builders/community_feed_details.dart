@@ -1,6 +1,7 @@
 import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/features/compose/presentation/composer_action.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
@@ -40,6 +41,8 @@ class CommunityPostDetails {
     this.topComment,
     this.onOpenComments,
     this.onOpenImage,
+    this.onToggleCommentsOff,
+    this.onChangeCommentAudience,
   });
 
   final Post post;
@@ -66,10 +69,72 @@ class CommunityPostDetails {
   final ThreadComment? topComment;
   final VoidCallback? onOpenComments;
   final ValueChanged<int>? onOpenImage;
+  final VoidCallback? onToggleCommentsOff;
+  final VoidCallback? onChangeCommentAudience;
 
   bool get edited => post.editedAt != null;
 
   bool get canVote => !isMine;
+
+  bool get canComment => post.canComment;
+
+  bool get commentsOff => post.commentsOff;
+
+  bool get commentCountHidden => post.commentCountHidden;
+}
+
+class CommunityCommentAudienceOption {
+  const CommunityCommentAudienceOption({required this.audience, required this.label, this.hint});
+
+  final CommentAudience audience;
+  final String label;
+  final String? hint;
+}
+
+class CommunityComposeCommentAudienceDetails {
+  const CommunityComposeCommentAudienceDetails({
+    required this.title,
+    required this.audience,
+    required this.label,
+    required this.options,
+    this.onTap,
+    this.onChanged,
+  });
+
+  final String title;
+  final CommentAudience audience;
+  final String label;
+  final List<CommunityCommentAudienceOption> options;
+  final VoidCallback? onTap;
+  final ValueChanged<CommentAudience>? onChanged;
+
+  bool get enabled => onChanged != null;
+}
+
+class CommunityCommentAudienceSheetDetails {
+  const CommunityCommentAudienceSheetDetails({
+    required this.title,
+    required this.selected,
+    required this.options,
+    required this.onSelect,
+  });
+
+  final String title;
+  final CommentAudience selected;
+  final List<CommunityCommentAudienceOption> options;
+  final ValueChanged<CommentAudience> onSelect;
+}
+
+class CommunityCommentRestrictionDetails {
+  const CommunityCommentRestrictionDetails({required this.post, required this.isMine, required this.message});
+
+  final Post post;
+  final bool isMine;
+  final String message;
+
+  bool get commentsOff => post.commentsOff;
+
+  CommentAudience? get restriction => post.commentRestriction;
 }
 
 class CommunityPinnedMarkerDetails {
