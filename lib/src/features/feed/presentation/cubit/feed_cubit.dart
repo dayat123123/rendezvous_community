@@ -80,6 +80,7 @@ class FeedCubit extends Cubit<FeedState> {
   final CashtagResolver? resolveCashtag;
   FeedFilter? _filter;
   StreamSubscription<PostChange>? _changes;
+  StreamSubscription<CommentSettings>? _commentSettings;
 
   FeedFilter? get filterDef => _filter;
 
@@ -347,6 +348,9 @@ class FeedCubit extends Cubit<FeedState> {
   );
 
   void _listen() {
+    if (_feed case final CommentSettingsRepository settings) {
+      _commentSettings ??= settings.watchCommentSettings().listen(_onCommentSettings, onError: (Object _) {});
+    }
     _changes ??= _feed.watchPosts().listen((change) {
       if (isClosed) return;
       switch (change) {
@@ -379,6 +383,26 @@ class FeedCubit extends Cubit<FeedState> {
           }
       }
     }, onError: (Object _) {});
+  }
+
+  void _onCommentSettings(CommentSettings settings) {
+    if (isClosed) return;
+    final me = currentUserId?.call();
+    final own = [
+      for (final p in [...state.posts, for (final pin in state.pinned) pin.post])
+        if (isOwnPost(p, me)) p,
+    ];
+    if (settings.allOff) {
+      for (final p in own) {
+        if (!p.commentsOffByAccount) _replace(lockByAccount(p));
+      }
+      final open = {...state.openComments}..removeAll(own.map((p) => p.id));
+      if (open.length != state.openComments.length) emit(state.copyWith(openComments: open));
+      return;
+    }
+    for (final p in own) {
+      if (p.commentsOffByAccount) unawaited(_reloadPost(p));
+    }
   }
 
   void _applyUpdate(Post post, PostUpdated change) {
@@ -446,6 +470,7 @@ class FeedCubit extends Cubit<FeedState> {
   @override
   Future<void> close() async {
     await _changes?.cancel();
+    await _commentSettings?.cancel();
     await _onlineChanges?.cancel();
     return super.close();
   }

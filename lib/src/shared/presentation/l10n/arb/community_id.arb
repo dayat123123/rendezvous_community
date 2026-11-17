@@ -1154,5 +1154,13 @@
   "commentsUnavailable": "Anda tidak bisa berkomentar di postingan ini",
   "errorCommentsOff": "Komentar untuk postingan ini sudah dinonaktifkan.",
   "errorCommentsRestricted": "Anda tidak termasuk yang boleh berkomentar di postingan ini.",
-  "errorInvalidCommentAudience": "Pilihan siapa yang bisa berkomentar tidak valid."
+  "errorInvalidCommentAudience": "Pilihan siapa yang bisa berkomentar tidak valid.",
+  "commentsAllOffTitle": "Matikan komentar di semua postingan",
+  "commentsAllOffHint": "Berlaku untuk postingan lama dan baru. Komentar lama disembunyikan, tidak dihapus.",
+  "commentsAllOffNote": "Komentar sedang dimatikan di semua postingan. Saat dinyalakan lagi, setiap postingan kembali ke pengaturannya masing-masing.",
+  "commentsAllOffSaved": "Komentar dimatikan di semua postingan.",
+  "commentsAllOnSaved": "Komentar dinyalakan lagi. Setiap postingan kembali ke pengaturannya masing-masing.",
+  "commentsDisabledByAccount": "Komentar dimatikan untuk semua postingan Anda. Nyalakan lagi di pengaturan komunitas.",
+  "commentAudienceAllOffLabel": "Dimatikan di pengaturan",
+  "errorInvalidCommentSetting": "Pengaturan komentar tidak valid."
 }

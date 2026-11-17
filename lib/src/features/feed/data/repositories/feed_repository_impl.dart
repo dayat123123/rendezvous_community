@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:logging/logging.dart';
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/logging/community_logger.dart';
@@ -22,7 +24,12 @@ import 'package:uuid/uuid.dart';
 const _uuid = Uuid();
 
 class FeedRepositoryImpl
-    implements FeedRepository, FeedQueryRepository, FeedFilterRepository, CommentControlRepository {
+    implements
+        FeedRepository,
+        FeedQueryRepository,
+        FeedFilterRepository,
+        CommentControlRepository,
+        CommentSettingsRepository {
   FeedRepositoryImpl(this._api, [this._realtime, this._cache, DateTime Function()? clock])
     : _clock = clock ?? DateTime.now;
 
@@ -32,6 +39,7 @@ class FeedRepositoryImpl
   final RealtimeGateway? _realtime;
   final FeedLocalCache? _cache;
   final DateTime Function() _clock;
+  final _commentSettings = StreamController<CommentSettings>.broadcast();
   List<FeedFilter>? _filters;
   DateTime? _filtersAt;
   Future<List<FeedFilter>>? _filtersLoading;
@@ -256,12 +264,36 @@ class FeedRepositoryImpl
   }
 
   @override
-  Future<CommentAudience> getCommentAudience() async =>
-      _audienceOf(await _api.rpcValue('get_comment_settings', const {}));
+  Future<CommentAudience> getCommentAudience() async => (await getCommentSettings()).audience;
 
   @override
   Future<CommentAudience> setCommentAudience(CommentAudience audience) async =>
-      _audienceOf(await _api.rpcValue('set_comment_audience', {'p_audience': audience.wire}));
+      _publish(_settingsOf(await _api.rpcValue('set_comment_audience', {'p_audience': audience.wire}))).audience;
+
+  @override
+  Future<CommentSettings> getCommentSettings() async =>
+      _settingsOf(await _api.rpcValue('get_comment_settings', const {}));
+
+  @override
+  Future<CommentSettings> setAllCommentsOff(bool off) async =>
+      _publish(_settingsOf(await _api.rpcValue('set_all_comments_off', {'p_off': off})));
+
+  @override
+  Stream<CommentSettings> watchCommentSettings() => _commentSettings.stream;
+
+  CommentSettings _publish(CommentSettings settings) {
+    _commentSettings.add(settings);
+    return settings;
+  }
+
+  static CommentSettings _settingsOf(Object? value) => switch (value) {
+    final Map<String, dynamic> map => CommentSettings(
+      audience: CommentAudience.fromWire(map['audience']) ?? CommentAudience.everyone,
+      allOff: map['all_off'] == true,
+      allOffAvailable: map.containsKey('all_off'),
+    ),
+    _ => const CommentSettings(),
+  };
 
   @override
   Future<Post> setPostCommentAudience(String postId, CommentAudience audience) async {
@@ -269,11 +301,6 @@ class FeedRepositoryImpl
     if (rows.isEmpty) throw const CommunityException(CommunityErrorKind.notFound);
     return FeedPostModel.fromJson(rows.first).toEntity();
   }
-
-  static CommentAudience _audienceOf(Object? value) => switch (value) {
-    {'audience': final Object? audience} => CommentAudience.fromWire(audience) ?? CommentAudience.everyone,
-    _ => CommentAudience.everyone,
-  };
 
   @override
   Future<void> deletePost(String postId) => _api.rpcValue('delete_post', {'p_post_id': postId});

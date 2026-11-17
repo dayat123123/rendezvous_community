@@ -81,6 +81,8 @@ class CommunityPostDetails {
   bool get commentsOff => post.commentsOff;
 
   bool get commentCountHidden => post.commentCountHidden;
+
+  bool get commentsOffByAccount => post.commentsOffByAccount;
 }
 
 class CommunityCommentAudienceOption {
@@ -99,6 +101,7 @@ class CommunityComposeCommentAudienceDetails {
     required this.options,
     this.onTap,
     this.onChanged,
+    this.lockedByAccount = false,
   });
 
   final String title;
@@ -107,6 +110,7 @@ class CommunityComposeCommentAudienceDetails {
   final List<CommunityCommentAudienceOption> options;
   final VoidCallback? onTap;
   final ValueChanged<CommentAudience>? onChanged;
+  final bool lockedByAccount;
 
   bool get enabled => onChanged != null;
 }

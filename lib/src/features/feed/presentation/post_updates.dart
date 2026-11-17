@@ -15,4 +15,14 @@ Post applyPostUpdate(Post post, PostUpdated change, {String? currentUserId}) {
 }
 
 bool shouldReloadAfterUpdate(Post post, PostUpdated change) =>
-    post.commentsOff && change.commentsOff == false && post.commentAudience == null;
+    post.commentsOff && change.commentsOff == false && post.commentAudience == null && !post.commentsOffByAccount;
+
+bool isOwnPost(Post post, String? currentUserId) =>
+    post.commentAudience != null || (currentUserId != null && post.author.id == currentUserId);
+
+Post lockByAccount(Post post) => post.copyWith(
+  commentsOffByAccount: true,
+  canComment: false,
+  commentRestriction: CommentAudience.off,
+  topComment: null,
+);

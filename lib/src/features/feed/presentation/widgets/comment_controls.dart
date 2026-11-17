@@ -31,6 +31,7 @@ List<CommunityCommentAudienceOption> commentAudienceOptions(
 ];
 
 String commentRestrictionMessage(CommunityLocalizations l10n, Post post, {required bool isMine}) {
+  if (post.commentsOffByAccount && isMine) return l10n.commentsDisabledByAccount;
   if (post.commentsOff) return isMine ? l10n.commentsDisabledOwner : l10n.commentsDisabled;
   final name = post.author.handle;
   return switch (post.commentRestriction) {

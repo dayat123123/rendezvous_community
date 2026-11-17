@@ -3367,4 +3367,30 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorInvalidCommentAudience => 'That choice for who can comment isn\'t valid.';
+
+  @override
+  String get commentsAllOffTitle => 'Turn off comments on all posts';
+
+  @override
+  String get commentsAllOffHint => 'Applies to old and new posts. Existing comments are hidden, not deleted.';
+
+  @override
+  String get commentsAllOffNote =>
+      'Comments are off on all posts. When you turn them back on, each post goes back to its own setting.';
+
+  @override
+  String get commentsAllOffSaved => 'Comments turned off on all posts.';
+
+  @override
+  String get commentsAllOnSaved => 'Comments turned back on. Each post goes back to its own setting.';
+
+  @override
+  String get commentsDisabledByAccount =>
+      'Comments are off on all your posts. Turn them back on in community settings.';
+
+  @override
+  String get commentAudienceAllOffLabel => 'Off in settings';
+
+  @override
+  String get errorInvalidCommentSetting => 'That comment setting isn\'t valid.';
 }

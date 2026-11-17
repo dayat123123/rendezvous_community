@@ -79,6 +79,12 @@ class CommunityCommentAudienceSettingDetails {
     required this.options,
     required this.saving,
     this.onChanged,
+    this.allOff = false,
+    this.allOffSupported = false,
+    this.allOffTitle = '',
+    this.allOffHint = '',
+    this.allOffNote,
+    this.onAllOffChanged,
   });
 
   final CommentAudience audience;
@@ -87,6 +93,12 @@ class CommunityCommentAudienceSettingDetails {
   final List<CommunitySettingsOption<CommentAudience>> options;
   final bool saving;
   final ValueChanged<CommentAudience>? onChanged;
+  final bool allOff;
+  final bool allOffSupported;
+  final String allOffTitle;
+  final String allOffHint;
+  final String? allOffNote;
+  final ValueChanged<bool>? onAllOffChanged;
 }
 
 class CommunityNotificationTypeDetails {

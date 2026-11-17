@@ -97,6 +97,7 @@ class CommentThreadCubit extends Cubit<ThreadState> {
   bool _ordered(ThreadState s) => !_sortMissing && rootCommentId == null && s.sort != CommunityCommentSort.oldest;
 
   StreamSubscription<String>? _commentEvents;
+  StreamSubscription<CommentSettings>? _commentSettings;
   StreamSubscription<PostChange>? _postEvents;
 
   Future<void> load() async {
@@ -425,7 +426,20 @@ class CommentThreadCubit extends Cubit<ThreadState> {
     }
   }
 
+  void _onCommentSettings(CommentSettings settings) {
+    final post = state.post;
+    if (isClosed || post == null || !isOwnPost(post, null)) return;
+    if (settings.allOff && !post.commentsOffByAccount) {
+      emit(_withoutComments(state.copyWith(post: lockByAccount(post))));
+    } else if (!settings.allOff && post.commentsOffByAccount) {
+      unawaited(load());
+    }
+  }
+
   void _listen() {
+    if (_feed case final CommentSettingsRepository settings) {
+      _commentSettings ??= settings.watchCommentSettings().listen(_onCommentSettings, onError: (Object _) {});
+    }
     _commentEvents ??= _comments.watchComments(postId).listen(_onCommentEvent, onError: (Object _) {});
     _postEvents ??= _feed.watchPosts(postId: postId).listen((change) {
       final post = state.post;
@@ -545,6 +559,7 @@ class CommentThreadCubit extends Cubit<ThreadState> {
   @override
   Future<void> close() async {
     await _commentEvents?.cancel();
+    await _commentSettings?.cancel();
     await _postEvents?.cancel();
     return super.close();
   }

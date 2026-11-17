@@ -42,6 +42,7 @@ abstract class FeedPostModel with _$FeedPostModel {
     bool? canComment,
     String? commentAudience,
     String? commentRestriction,
+    bool? commentsOffByAccount,
   }) = _FeedPostModel;
 
   const FeedPostModel._();
@@ -77,6 +78,7 @@ abstract class FeedPostModel with _$FeedPostModel {
     canComment: canComment ?? true,
     commentAudience: CommentAudience.fromWire(commentAudience),
     commentRestriction: CommentAudience.fromWire(commentRestriction),
+    commentsOffByAccount: commentsOffByAccount ?? false,
   );
 
   ThreadComment? _parseTopComment() {

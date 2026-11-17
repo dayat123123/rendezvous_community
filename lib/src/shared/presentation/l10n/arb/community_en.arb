@@ -1033,5 +1033,13 @@
   "commentsUnavailable": "You can't comment on this post",
   "errorCommentsOff": "Comments on this post have been turned off.",
   "errorCommentsRestricted": "You're not among the people who can comment on this post.",
-  "errorInvalidCommentAudience": "That choice for who can comment isn't valid."
+  "errorInvalidCommentAudience": "That choice for who can comment isn't valid.",
+  "commentsAllOffTitle": "Turn off comments on all posts",
+  "commentsAllOffHint": "Applies to old and new posts. Existing comments are hidden, not deleted.",
+  "commentsAllOffNote": "Comments are off on all posts. When you turn them back on, each post goes back to its own setting.",
+  "commentsAllOffSaved": "Comments turned off on all posts.",
+  "commentsAllOnSaved": "Comments turned back on. Each post goes back to its own setting.",
+  "commentsDisabledByAccount": "Comments are off on all your posts. Turn them back on in community settings.",
+  "commentAudienceAllOffLabel": "Off in settings",
+  "errorInvalidCommentSetting": "That comment setting isn't valid."
 }

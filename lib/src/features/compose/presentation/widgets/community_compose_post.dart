@@ -392,12 +392,14 @@ class _ComposeViewState extends State<_ComposeView> {
               if (state.canChooseCommentAudience)
                 Builder(
                   builder: (context) {
-                    final audience = state.effectiveCommentAudience;
-                    final onChanged = state.submitting ? null : cubit.setCommentAudience;
+                    final locked = state.commentsAllOff;
+                    final audience = locked ? CommentAudience.off : state.effectiveCommentAudience;
+                    final onChanged = state.submitting || locked ? null : cubit.setCommentAudience;
                     final details = CommunityComposeCommentAudienceDetails(
                       title: l10n.commentAudienceTitle,
                       audience: audience,
-                      label: commentAudienceLabel(l10n, audience),
+                      label: locked ? l10n.commentAudienceAllOffLabel : commentAudienceLabel(l10n, audience),
+                      lockedByAccount: locked,
                       options: commentAudienceOptions(l10n, CommentAudience.postOptions),
                       onChanged: onChanged,
                       onTap: onChanged == null

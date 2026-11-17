@@ -3352,4 +3352,30 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorInvalidCommentAudience => 'Pilihan siapa yang bisa berkomentar tidak valid.';
+
+  @override
+  String get commentsAllOffTitle => 'Matikan komentar di semua postingan';
+
+  @override
+  String get commentsAllOffHint => 'Berlaku untuk postingan lama dan baru. Komentar lama disembunyikan, tidak dihapus.';
+
+  @override
+  String get commentsAllOffNote =>
+      'Komentar sedang dimatikan di semua postingan. Saat dinyalakan lagi, setiap postingan kembali ke pengaturannya masing-masing.';
+
+  @override
+  String get commentsAllOffSaved => 'Komentar dimatikan di semua postingan.';
+
+  @override
+  String get commentsAllOnSaved => 'Komentar dinyalakan lagi. Setiap postingan kembali ke pengaturannya masing-masing.';
+
+  @override
+  String get commentsDisabledByAccount =>
+      'Komentar dimatikan untuk semua postingan Anda. Nyalakan lagi di pengaturan komunitas.';
+
+  @override
+  String get commentAudienceAllOffLabel => 'Dimatikan di pengaturan';
+
+  @override
+  String get errorInvalidCommentSetting => 'Pengaturan komentar tidak valid.';
 }

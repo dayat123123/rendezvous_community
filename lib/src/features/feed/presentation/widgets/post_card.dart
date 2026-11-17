@@ -79,7 +79,7 @@ class PostCard extends StatelessWidget {
     final isMine = CommunityScope.of(context).currentUser?.id == post.author.id;
     final remove = onDelete;
     final current = post.commentAudience;
-    final saveAudience = isMine && current != null ? onCommentAudience : null;
+    final saveAudience = isMine && current != null && !post.commentsOffByAccount ? onCommentAudience : null;
     final details = CommunityPostDetails(
       post: post,
       isMine: isMine,

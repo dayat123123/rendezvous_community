@@ -35,11 +35,13 @@ abstract class Post with _$Post {
     @Default(true) bool canComment,
     CommentAudience? commentAudience,
     CommentAudience? commentRestriction,
+    @Default(false) bool commentsOffByAccount,
   }) = _Post;
 
   const Post._();
 
-  bool get commentsOff => commentAudience == CommentAudience.off || commentRestriction == CommentAudience.off;
+  bool get commentsOff =>
+      commentsOffByAccount || commentAudience == CommentAudience.off || commentRestriction == CommentAudience.off;
 
   bool get commentCountHidden => commentRestriction == CommentAudience.off && commentAudience == null;
 

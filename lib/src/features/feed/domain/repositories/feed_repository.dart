@@ -63,3 +63,11 @@ abstract interface class CommentControlRepository implements FeedRepository {
 
   Future<Post> setPostCommentAudience(String postId, CommentAudience audience);
 }
+
+abstract interface class CommentSettingsRepository {
+  Future<CommentSettings> getCommentSettings();
+
+  Future<CommentSettings> setAllCommentsOff(bool off);
+
+  Stream<CommentSettings> watchCommentSettings();
+}

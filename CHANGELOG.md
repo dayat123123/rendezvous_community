@@ -1,3 +1,13 @@
+## 1.33.0
+
+Butuh server migrasi `0170` untuk saklar baru. Di server yang baru punya `0169`, saklar tidak tampil dan fitur kontrol komentar lain tetap jalan. Tidak ada breaking change pada API publik.
+
+* **Matikan komentar di semua postingan:** saklar baru di bagian Komentar pada `CommunityAccountSettings` / `CommunityCommentAudienceSettings`, seperti di Instagram. Selama aktif, semua post milik pengguna (lama dan baru) tanpa komentar: komentar lama disembunyikan (tidak dihapus) dan jumlah komentar hanya terlihat pemilik. Pengaturan per post tidak diubah, jadi saat saklar dimatikan setiap post kembali ke pengaturannya sendiri.
+* Selama saklar aktif: "Izinkan komentar dari" terkunci, baris composer menampilkan "Dimatikan di pengaturan", menu titik tiga tidak punya aksi komentar, dan kolom balasan pemilik menyarankan menyalakan lagi dari pengaturan.
+* Feed dan detail milik pemilik langsung ikut berubah tanpa muat ulang lewat `CommentSettingsRepository.watchCommentSettings()`. Saat saklar dimatikan, post pemilik di layar dimuat ulang.
+* **API baru:** `CommentSettings` (`audience`, `allOff`, `allOffAvailable`), interface `CommentSettingsRepository` (`getCommentSettings`, `setAllCommentsOff`, `watchCommentSettings`; diimplementasikan `FeedRepositoryImpl`), `Post.commentsOffByAccount`, `CommunityPostDetails.commentsOffByAccount`, `CommunityComposeCommentAudienceDetails.lockedByAccount`, dan field `allOff`, `allOffSupported`, `allOffTitle`, `allOffHint`, `allOffNote`, `onAllOffChanged` di `CommunityCommentAudienceSettingDetails` (semua punya nilai bawaan).
+* Error `invalid_comment_setting` dipetakan di `CommunityErrorText.errorMessage`.
+
 ## 1.32.0
 
 Tidak butuh migrasi server. Tidak ada perubahan signature pada API publik, tetapi host yang mengisi builder `commentAudienceSheet` perlu menyesuaikan tampilannya (lihat di bawah).

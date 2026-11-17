@@ -4,7 +4,8 @@ import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/error/error_mapper.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
-import 'package:rendezvous_community/src/features/account/presentation/cubit/comment_audience_cubit.dart';
+import 'package:rendezvous_community/src/features/account/presentation/cubit/comment_audience_cubit.dart'
+    show CommentAudienceCubit, CommentAudienceState, CommentSettingSaved;
 import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
@@ -36,7 +37,11 @@ class _AudienceView extends StatelessWidget {
     final l10n = context.communityL10n;
     return BlocListener<CommentAudienceCubit, CommentAudienceState>(
       listenWhen: (a, b) => a.savedId != b.savedId,
-      listener: (context, _) => showCommunityMessage(context, l10n.commentAudienceSaved),
+      listener: (context, state) => showCommunityMessage(context, switch (state.saved) {
+        CommentSettingSaved.allOff => l10n.commentsAllOffSaved,
+        CommentSettingSaved.allOn => l10n.commentsAllOnSaved,
+        _ => l10n.commentAudienceSaved,
+      }),
       child: BlocConsumer<CommentAudienceCubit, CommentAudienceState>(
         listenWhen: (a, b) => a.actionErrorId != b.actionErrorId,
         listener: (context, state) => showCommunityError(context, state.actionError!),
@@ -70,7 +75,13 @@ class _AudienceView extends StatelessWidget {
           CommunitySettingsOption(value: option.audience, label: option.label, hint: option.hint),
       ],
       saving: state.saving,
-      onChanged: state.saving ? null : cubit.setAudience,
+      onChanged: state.saving || state.allOff ? null : cubit.setAudience,
+      allOff: state.allOff,
+      allOffSupported: state.allOffSupported,
+      allOffTitle: l10n.commentsAllOffTitle,
+      allOffHint: l10n.commentsAllOffHint,
+      allOffNote: state.allOff ? l10n.commentsAllOffNote : null,
+      onAllOffChanged: state.saving || !state.allOffSupported ? null : cubit.setAllOff,
     );
     return buildSettingsPart((b) => b.commentAudience, context, details, _DefaultCommentAudience(details: details));
   }
@@ -87,6 +98,8 @@ class _DefaultCommentAudience extends StatelessWidget {
     final spacing = style.spacing;
     final d = details;
     final onChanged = d.onChanged;
+    final onAllOff = d.onAllOffChanged;
+    final note = d.allOffNote;
     return RadioGroup<CommentAudience>(
       groupValue: d.audience,
       onChanged: (audience) {
@@ -96,18 +109,29 @@ class _DefaultCommentAudience extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisSize: MainAxisSize.min,
         children: [
+          if (d.allOffSupported)
+            SwitchListTile(
+              key: const ValueKey('account-comments-all-off'),
+              value: d.allOff,
+              onChanged: onAllOff,
+              activeThumbColor: style.accent,
+              contentPadding: EdgeInsets.symmetric(horizontal: spacing.lg),
+              title: Text(d.allOffTitle, style: style.typography.body),
+              subtitle: Text(d.allOffHint, style: style.typography.meta),
+            ),
           Padding(
             padding: EdgeInsets.fromLTRB(spacing.lg, spacing.md, spacing.lg, spacing.xxs),
             child: Text(d.title, style: style.typography.meta),
           ),
           Padding(
             padding: EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.xs),
-            child: Text(d.hint, style: style.typography.meta.copyWith(color: style.textTertiary)),
+            child: Text(note ?? d.hint, style: style.typography.meta.copyWith(color: style.textTertiary)),
           ),
           for (final option in d.options)
             RadioListTile<CommentAudience>(
               key: ValueKey('account-comment-audience-${option.value.wire}'),
               value: option.value,
+              enabled: !d.allOff,
               fillColor: WidgetStateProperty.resolveWith(
                 (states) => states.contains(WidgetState.selected) ? style.accent : style.textTertiary,
               ),

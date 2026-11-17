@@ -42,6 +42,7 @@ abstract class ComposeState with _$ComposeState {
     String? restoredBody,
     CommentAudience? commentAudience,
     CommentAudience? defaultCommentAudience,
+    @Default(false) bool commentsAllOff,
   }) = _ComposeState;
 
   const ComposeState._();
@@ -162,8 +163,12 @@ class ComposeCubit extends Cubit<ComposeState> {
     final feed = _feed;
     if (feed is! CommentControlRepository || state.defaultCommentAudience != null) return;
     try {
-      final audience = await feed.getCommentAudience();
-      if (!isClosed) emit(state.copyWith(defaultCommentAudience: audience));
+      final settings = feed is CommentSettingsRepository
+          ? await (feed as CommentSettingsRepository).getCommentSettings()
+          : CommentSettings(audience: await feed.getCommentAudience());
+      if (!isClosed) {
+        emit(state.copyWith(defaultCommentAudience: settings.audience, commentsAllOff: settings.allOff));
+      }
     } catch (e) {
       final mapped = mapError(e);
       CommunityLoggers.feed.event(
@@ -175,7 +180,7 @@ class ComposeCubit extends Cubit<ComposeState> {
   }
 
   void setCommentAudience(CommentAudience audience) {
-    if (state.canChooseCommentAudience) emit(state.copyWith(commentAudience: audience));
+    if (state.canChooseCommentAudience && !state.commentsAllOff) emit(state.copyWith(commentAudience: audience));
   }
 
   Future<void> addImage(Uint8List bytes, String mimeType) async {
@@ -244,7 +249,7 @@ class ComposeCubit extends Cubit<ComposeState> {
     emit(state.copyWith(submitting: true));
     try {
       final feed = _feed;
-      final audience = state.canChooseCommentAudience ? state.commentAudience : null;
+      final audience = state.canChooseCommentAudience && !state.commentsAllOff ? state.commentAudience : null;
       final post = await _consent.guard(
         () => feed is CommentControlRepository && audience != null
             ? feed.createPost(
@@ -270,7 +275,9 @@ class ComposeCubit extends Cubit<ComposeState> {
       _body = '';
       _clientId = _uuid.v4();
       final held = {for (final a in state.attachments.where((a) => a.held)) a.path};
-      if (!isClosed) emit(ComposeState(defaultCommentAudience: state.defaultCommentAudience));
+      if (!isClosed) {
+        emit(ComposeState(defaultCommentAudience: state.defaultCommentAudience, commentsAllOff: state.commentsAllOff));
+      }
       return held.isEmpty
           ? post
           : post.copyWith(

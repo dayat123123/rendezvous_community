@@ -35,6 +35,7 @@ extension CommunityErrorText on CommunityLocalizations {
       'comments_off' => errorCommentsOff,
       'comments_restricted' => errorCommentsRestricted,
       'invalid_comment_audience' => errorInvalidCommentAudience,
+      'invalid_comment_setting' => errorInvalidCommentSetting,
       'secret_request_blocked' => errorSecretRequestBlocked,
       'attachment_not_allowed' => errorAttachmentNotAllowed,
       'attachment_too_large' => errorAttachmentTooLarge,

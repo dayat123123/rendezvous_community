@@ -5995,6 +5995,54 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Pilihan siapa yang bisa berkomentar tidak valid.'**
   String get errorInvalidCommentAudience;
+
+  /// No description provided for @commentsAllOffTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Matikan komentar di semua postingan'**
+  String get commentsAllOffTitle;
+
+  /// No description provided for @commentsAllOffHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Berlaku untuk postingan lama dan baru. Komentar lama disembunyikan, tidak dihapus.'**
+  String get commentsAllOffHint;
+
+  /// No description provided for @commentsAllOffNote.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar sedang dimatikan di semua postingan. Saat dinyalakan lagi, setiap postingan kembali ke pengaturannya masing-masing.'**
+  String get commentsAllOffNote;
+
+  /// No description provided for @commentsAllOffSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar dimatikan di semua postingan.'**
+  String get commentsAllOffSaved;
+
+  /// No description provided for @commentsAllOnSaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar dinyalakan lagi. Setiap postingan kembali ke pengaturannya masing-masing.'**
+  String get commentsAllOnSaved;
+
+  /// No description provided for @commentsDisabledByAccount.
+  ///
+  /// In id, this message translates to:
+  /// **'Komentar dimatikan untuk semua postingan Anda. Nyalakan lagi di pengaturan komunitas.'**
+  String get commentsDisabledByAccount;
+
+  /// No description provided for @commentAudienceAllOffLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Dimatikan di pengaturan'**
+  String get commentAudienceAllOffLabel;
+
+  /// No description provided for @errorInvalidCommentSetting.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaturan komentar tidak valid.'**
+  String get errorInvalidCommentSetting;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

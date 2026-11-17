@@ -6,7 +6,7 @@
 
 Feed saham · komentar berantai · chat realtime · chat CS · notifikasi · moderasi
 
-![Versi](https://img.shields.io/badge/versi-1.32.0-0f766e)
+![Versi](https://img.shields.io/badge/versi-1.33.0-0f766e)
 ![Flutter](https://img.shields.io/badge/Flutter-%E2%89%A5%203.44-02569B?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-%E2%89%A5%203.12-0175C2?logo=dart&logoColor=white)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Android-555)
@@ -64,6 +64,7 @@ Rincian perilaku setiap fitur ada di [doc/features.md](doc/features.md).
 
 | Package | Server minimal | Catatan |
 |---|---|---|
+| **1.33.x** | migrasi `0170` | Saklar "Matikan komentar di semua postingan". Di server dengan `0169` saja saklar tidak tampil, fitur lain tetap jalan |
 | **1.31.x** | migrasi `0169` | Kontrol komentar. Di server lama pilihan audiens tidak tampil dan semua post tetap bisa dikomentari |
 | **1.28.x** | migrasi `0164` | Berbagi Trade. Di server lama UI fitur ini tidak tampil (status gagal dimuat dianggap mati) |
 | **1.6.x** | migrasi `0107` | Ringkasan mengetik di room besar, presence hanya DM, pratinjau room saham live. Di server lama otomatis kembali ke perilaku 1.5 |
@@ -83,7 +84,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.32.0          # selalu pin ke tag rilis
+      ref: v1.33.0          # selalu pin ke tag rilis
 ```
 
 - **Laptop developer:** login GitHub sekali lewat Git Credential Manager (ikut terpasang bersama Git for Windows).

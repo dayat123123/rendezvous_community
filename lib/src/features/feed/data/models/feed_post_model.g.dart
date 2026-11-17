@@ -46,6 +46,7 @@ _FeedPostModel _$FeedPostModelFromJson(Map<String, dynamic> json) =>
       canComment: json['can_comment'] as bool?,
       commentAudience: json['comment_audience'] as String?,
       commentRestriction: json['comment_restriction'] as String?,
+      commentsOffByAccount: json['comments_off_by_account'] as bool?,
     );
 
 Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) =>
@@ -76,6 +77,7 @@ Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) =>
       'can_comment': instance.canComment,
       'comment_audience': instance.commentAudience,
       'comment_restriction': instance.commentRestriction,
+      'comments_off_by_account': instance.commentsOffByAccount,
     };
 
 _PostRowModel _$PostRowModelFromJson(Map<String, dynamic> json) =>
