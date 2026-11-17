@@ -1,3 +1,11 @@
+## 1.32.0
+
+Tidak butuh migrasi server. Tidak ada perubahan signature pada API publik, tetapi host yang mengisi builder `commentAudienceSheet` perlu menyesuaikan tampilannya (lihat di bawah).
+
+* **Pilihan "Siapa yang bisa berkomentar" kini dialog, bukan bottom sheet:** menu titik tiga post ("Atur siapa yang bisa berkomentar") dan baris composer membuka `showCommentAudienceDialog`, sama seperti dialog edit dan laporan. Bawaannya `CommunityCommentAudienceDialog` (`AlertDialog` dengan pilihan radio dan tombol Batal).
+* Builder `commentAudienceSheet` tetap dipakai, tetapi kini mengembalikan seluruh dialog. Builder host yang dulu hanya mengisi isi lembar perlu membungkusnya dengan bingkai dialog sendiri.
+* `showCommentAudienceSheet` deprecated dan meneruskan ke `showCommentAudienceDialog`. `CommunityCommentAudienceSheet` tetap tersedia untuk host yang ingin menampilkannya sendiri.
+
 ## 1.31.0
 
 Butuh server migrasi `0169` untuk kontrol komentar. Di server lama pilihan audiens tidak tampil, menu pemilik tidak punya aksi komentar, dan semua post tetap bisa dikomentari. Tidak ada breaking change pada API publik, kecuali satu nilai enum baru `CommunitySettingsArea.commentAudience` (`switch` exhaustive milik host perlu satu cabang baru).

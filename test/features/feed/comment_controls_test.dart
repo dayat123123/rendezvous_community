@@ -264,7 +264,7 @@ void main() {
       expect(find.text('Komentar dimatikan.'), findsOneWidget);
     });
 
-    testWidgets('the owner picks an audience from the sheet', (tester) async {
+    testWidgets('the owner picks an audience from a dialog', (tester) async {
       final saved = <CommentAudience>[];
       final post = samplePost().copyWith(commentAudience: CommentAudience.everyone);
       await _pumpCard(
@@ -279,10 +279,33 @@ void main() {
       await tester.pumpAndSettle();
       await tester.tap(find.text('Atur siapa yang bisa berkomentar'));
       await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsOneWidget);
+      expect(find.byType(BottomSheet), findsNothing);
       await tester.tap(find.byKey(const ValueKey('comment-audience-followers')));
       await tester.pumpAndSettle();
       expect(saved, [CommentAudience.followers]);
       expect(find.text('Pengaturan komentar disimpan.'), findsOneWidget);
+    });
+
+    testWidgets('cancelling the audience dialog keeps the post as it is', (tester) async {
+      final saved = <CommentAudience>[];
+      final post = samplePost().copyWith(commentAudience: CommentAudience.everyone);
+      await _pumpCard(
+        tester,
+        post,
+        onCommentAudience: (_, audience) async {
+          saved.add(audience);
+          return true;
+        },
+      );
+      await tester.tap(find.byIcon(Icons.more_horiz));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Atur siapa yang bisa berkomentar'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Batal'));
+      await tester.pumpAndSettle();
+      expect(find.byType(AlertDialog), findsNothing);
+      expect(saved, isEmpty);
     });
 
     testWidgets('other people do not get the comment controls', (tester) async {

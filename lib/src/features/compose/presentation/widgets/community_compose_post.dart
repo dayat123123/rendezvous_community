@@ -403,7 +403,7 @@ class _ComposeViewState extends State<_ComposeView> {
                       onTap: onChanged == null
                           ? null
                           : () async {
-                              final picked = await showCommentAudienceSheet(context, selected: audience);
+                              final picked = await showCommentAudienceDialog(context, selected: audience);
                               if (picked != null) onChanged(picked);
                             },
                     );

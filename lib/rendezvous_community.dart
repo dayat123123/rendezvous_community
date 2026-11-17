@@ -147,11 +147,13 @@ export 'src/features/feed/presentation/post_open_mode.dart';
 export 'src/features/feed/presentation/widgets/comment_controls.dart'
     show
         CommentRestrictionNotice,
+        CommunityCommentAudienceDialog,
         CommunityCommentAudienceSheet,
         CommunityComposeCommentAudience,
         PostCommentAudienceSaver,
         commentAudienceLabel,
         commentRestrictionMessage,
+        showCommentAudienceDialog,
         showCommentAudienceSheet;
 export 'src/features/feed/presentation/widgets/community_feed_filter_tabs.dart'
     show CommunityFeedFilterTabs, CommunityFeedFilters;

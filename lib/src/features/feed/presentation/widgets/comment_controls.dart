@@ -41,7 +41,7 @@ String commentRestrictionMessage(CommunityLocalizations l10n, Post post, {requir
   };
 }
 
-Future<CommentAudience?> showCommentAudienceSheet(
+Future<CommentAudience?> showCommentAudienceDialog(
   BuildContext context, {
   required CommentAudience selected,
   List<CommentAudience> options = CommentAudience.postOptions,
@@ -50,12 +50,9 @@ Future<CommentAudience?> showCommentAudienceSheet(
   final l10n = context.communityL10n;
   final carry = carryCommunityBuilders(context);
   final feedBuilders = CommunityFeedBuilders.of(context, listen: false);
-  return showModalBottomSheet<CommentAudience>(
+  return showDialog<CommentAudience>(
     context: context,
-    showDragHandle: true,
-    isScrollControlled: true,
-    backgroundColor: CommunityStyle.of(context).surface,
-    builder: (sheetContext) => carry(
+    builder: (dialogContext) => carry(
       CommunityFeedBuildersScope(
         builders: feedBuilders,
         child: Builder(
@@ -64,19 +61,56 @@ Future<CommentAudience?> showCommentAudienceSheet(
               title: title ?? l10n.commentAudienceTitle,
               selected: selected,
               options: commentAudienceOptions(l10n, options),
-              onSelect: (audience) => Navigator.pop(sheetContext, audience),
+              onSelect: (audience) => Navigator.pop(dialogContext, audience),
             );
             return buildFeedPart(
               (b) => b.commentAudienceSheet,
               context,
               details,
-              CommunityCommentAudienceSheet(details: details),
+              CommunityCommentAudienceDialog(details: details),
             );
           },
         ),
       ),
     ),
   );
+}
+
+@Deprecated('Use showCommentAudienceDialog')
+Future<CommentAudience?> showCommentAudienceSheet(
+  BuildContext context, {
+  required CommentAudience selected,
+  List<CommentAudience> options = CommentAudience.postOptions,
+  String? title,
+}) => showCommentAudienceDialog(context, selected: selected, options: options, title: title);
+
+class CommunityCommentAudienceDialog extends StatelessWidget {
+  const CommunityCommentAudienceDialog({super.key, required this.details});
+
+  final CommunityCommentAudienceSheetDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    return AlertDialog(
+      backgroundColor: style.surface,
+      surfaceTintColor: style.surface,
+      title: Text(details.title, style: style.typography.title),
+      contentPadding: EdgeInsets.symmetric(vertical: spacing.sm),
+      content: SizedBox(
+        width: 420,
+        child: SingleChildScrollView(child: _AudienceRadios(details: details)),
+      ),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context),
+          style: TextButton.styleFrom(foregroundColor: style.textSecondary, textStyle: style.typography.label),
+          child: Text(context.communityL10n.cancel),
+        ),
+      ],
+    );
+  }
 }
 
 class CommunityCommentAudienceSheet extends StatelessWidget {
@@ -88,37 +122,56 @@ class CommunityCommentAudienceSheet extends StatelessWidget {
   Widget build(BuildContext context) {
     final style = CommunityStyle.of(context);
     final spacing = style.spacing;
-    final d = details;
     return SafeArea(
       child: SingleChildScrollView(
         padding: EdgeInsets.only(bottom: spacing.md),
-        child: RadioGroup<CommentAudience>(
-          groupValue: d.selected,
-          onChanged: (audience) {
-            if (audience != null) d.onSelect(audience);
-          },
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Padding(
-                padding: EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.sm),
-                child: Text(d.title, style: style.typography.title),
-              ),
-              for (final option in d.options)
-                RadioListTile<CommentAudience>(
-                  key: ValueKey('comment-audience-${option.audience.wire}'),
-                  value: option.audience,
-                  fillColor: WidgetStateProperty.resolveWith(
-                    (states) => states.contains(WidgetState.selected) ? style.accent : style.textTertiary,
-                  ),
-                  contentPadding: EdgeInsets.symmetric(horizontal: spacing.sm),
-                  title: Text(option.label, style: style.typography.body),
-                  subtitle: option.hint == null ? null : Text(option.hint!, style: style.typography.meta),
-                ),
-            ],
-          ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Padding(
+              padding: EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.sm),
+              child: Text(details.title, style: style.typography.title),
+            ),
+            _AudienceRadios(details: details),
+          ],
         ),
+      ),
+    );
+  }
+}
+
+class _AudienceRadios extends StatelessWidget {
+  const _AudienceRadios({required this.details});
+
+  final CommunityCommentAudienceSheetDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final spacing = style.spacing;
+    final d = details;
+    return RadioGroup<CommentAudience>(
+      groupValue: d.selected,
+      onChanged: (audience) {
+        if (audience != null) d.onSelect(audience);
+      },
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          for (final option in d.options)
+            RadioListTile<CommentAudience>(
+              key: ValueKey('comment-audience-${option.audience.wire}'),
+              value: option.audience,
+              fillColor: WidgetStateProperty.resolveWith(
+                (states) => states.contains(WidgetState.selected) ? style.accent : style.textTertiary,
+              ),
+              contentPadding: EdgeInsets.symmetric(horizontal: spacing.sm),
+              title: Text(option.label, style: style.typography.body),
+              subtitle: option.hint == null ? null : Text(option.hint!, style: style.typography.meta),
+            ),
+        ],
       ),
     );
   }

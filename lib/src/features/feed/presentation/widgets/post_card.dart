@@ -133,7 +133,7 @@ class PostCard extends StatelessWidget {
       onChangeCommentAudience: saveAudience == null || current == null
           ? null
           : () async {
-              final picked = await showCommentAudienceSheet(context, selected: current);
+              final picked = await showCommentAudienceDialog(context, selected: current);
               if (picked == null || picked == current || !context.mounted) return;
               if (await saveAudience(post, picked) && context.mounted) {
                 showCommunityMessage(
