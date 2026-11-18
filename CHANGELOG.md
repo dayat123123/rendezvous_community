@@ -1,3 +1,11 @@
+## 1.34.1
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Gambar post tidak lagi macet sebagai kotak kosong:** request gambar di `CommunityImageLoader` kini punya batas waktu (bawaan 30 detik) dan dicoba ulang sekali bila habis. Sebelumnya satu request yang macet membuat gambar di feed tampil sebagai placeholder kosong sampai app ditutup, walaupun viewer bisa membukanya.
+* `CommunityImageProvider` membuang gambar yang gagal dari image cache Flutter, seperti `NetworkImage`, sehingga gambar dimuat ulang saat post tampil lagi (misalnya setelah di-scroll keluar dan masuk) dan tidak tertahan di status gagal.
+* **API baru:** parameter `timeout` dan `attempts` di konstruktor `CommunityImageLoader` (bawaan 30 detik dan 2 percobaan).
+
 ## 1.34.0
 
 Tidak butuh migrasi server. Tidak ada perubahan API publik.

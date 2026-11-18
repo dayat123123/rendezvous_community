@@ -16,13 +16,19 @@ class CommunityImageLoadException implements Exception {
 }
 
 class CommunityImageLoader {
-  CommunityImageLoader({this._disk = const NoImageDiskCache(), http.Client? client})
-    : _client = client,
-      _ownsClient = client == null;
+  CommunityImageLoader({
+    this._disk = const NoImageDiskCache(),
+    http.Client? client,
+    this.timeout = const Duration(seconds: 30),
+    this.attempts = 2,
+  }) : _client = client,
+       _ownsClient = client == null;
 
   static final CommunityImageLoader fallback = CommunityImageLoader();
 
   final ImageDiskCache _disk;
+  final Duration timeout;
+  final int attempts;
   http.Client? _client;
   final bool _ownsClient;
   final _memoryKeys = <Object>{};
@@ -45,9 +51,7 @@ class CommunityImageLoader {
       final cached = await _disk.read(cacheKey).catchError((Object _) => null);
       if (cached != null) return cached;
     }
-    final target = await resolve();
-    final client = _client ??= http.Client();
-    final response = await client.get(Uri.parse(target.url), headers: target.headers);
+    final response = await _fetch(resolve);
     final bytes = response.bodyBytes;
     if (response.statusCode != 200 || bytes.isEmpty) throw CommunityImageLoadException(response.statusCode);
     if (persist && generation == _generation) {
@@ -56,6 +60,18 @@ class CommunityImageLoader {
       _writes.add(write);
     }
     return bytes;
+  }
+
+  Future<http.Response> _fetch(Future<AuthorizedImage> Function() resolve) async {
+    for (var attempt = 1; ; attempt++) {
+      final target = await resolve();
+      final client = _client ??= http.Client();
+      try {
+        return await client.get(Uri.parse(target.url), headers: target.headers).timeout(timeout);
+      } on TimeoutException {
+        if (attempt >= attempts) rethrow;
+      }
+    }
   }
 
   void evictMemory() {

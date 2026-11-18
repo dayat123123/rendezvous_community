@@ -892,5 +892,5 @@ await RendezvousCommunity.initialize(
 
 - **Privasi.** Cache gambar hanya aktif bila `offlineCache: true`, dan dihapus bersama database offline: `signOut()`, `deleteMyAccount()`, `clearLocalCache()`, saat sesi berganti ke user lain (folder user lain dihapus saat dibuka), dan cache memori gambar milik package ikut dibuang. **Lampiran chat CS tidak pernah ditulis ke disk** (bucket `cs-documents` dan semua gambar di `CommunitySupportChat` serta riwayat tiket), sama seperti riwayat chat CS yang tidak di-cache. Host bisa menandai layar lain dengan `CommunityImagePersistence(persist: false, child: ...)`.
 - **Web:** tanpa cache disk (cache HTTP browser yang berlaku); kunci stabil dan dekode seukuran tampilan tetap aktif.
-- **Untuk UI sendiri:** `CommunityNetworkImage(cacheKey: ..., source: ...)` atau `CommunityNetworkImage.url(url)`. Tes/host bisa memasang loader sendiri lewat `CommunityImageScope(loader: CommunityImageLoader(client: ...))`.
+- **Untuk UI sendiri:** `CommunityNetworkImage(cacheKey: ..., source: ...)` atau `CommunityNetworkImage.url(url)`. Tes/host bisa memasang loader sendiri lewat `CommunityImageScope(loader: CommunityImageLoader(client: ...))`. Request gambar dibatasi `timeout` (bawaan 30 detik) dan dicoba `attempts` kali (bawaan 2); gambar yang gagal dibuang dari image cache supaya dimuat ulang saat tampil lagi.
 

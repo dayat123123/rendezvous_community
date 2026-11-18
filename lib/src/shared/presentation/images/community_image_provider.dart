@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 
@@ -59,13 +60,18 @@ class CommunityImageProvider extends ImageProvider<CommunityImageProvider> {
   }
 
   Future<ui.Codec> _load(ImageDecoderCallback decode) async {
-    final bytes = await loader.load(cacheKey: cacheKey, resolve: source, persist: persist);
-    final buffer = await ui.ImmutableBuffer.fromUint8List(bytes);
-    return decode(
-      buffer,
-      getTargetSize: (width, height) =>
-          coverTargetSize(width, height, targetWidth: targetWidth, targetHeight: targetHeight),
-    );
+    try {
+      final bytes = await loader.load(cacheKey: cacheKey, resolve: source, persist: persist);
+      final buffer = await ui.ImmutableBuffer.fromUint8List(bytes);
+      return await decode(
+        buffer,
+        getTargetSize: (width, height) =>
+            coverTargetSize(width, height, targetWidth: targetWidth, targetHeight: targetHeight),
+      );
+    } catch (_) {
+      scheduleMicrotask(() => PaintingBinding.instance.imageCache.evict(this));
+      rethrow;
+    }
   }
 
   @override

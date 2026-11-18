@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:typed_data';
 
@@ -202,6 +203,45 @@ void main() {
         throwsA(isA<CommunityImageLoadException>()),
       );
       expect(disk.writes, isEmpty);
+    });
+
+    test('a stalled request is abandoned and retried', () async {
+      var calls = 0;
+      final loader = CommunityImageLoader(
+        timeout: const Duration(milliseconds: 50),
+        client: MockClient((request) {
+          calls++;
+          if (calls == 1) return Completer<http.Response>().future;
+          return Future.value(http.Response.bytes(_bytes(4), 200));
+        }),
+      );
+      final bytes = await loader.load(
+        cacheKey: 'k',
+        resolve: () async => const AuthorizedImage('http://api.test/a', {}),
+        persist: false,
+      );
+      expect(bytes, _bytes(4));
+      expect(calls, 2);
+    });
+
+    test('a request that keeps stalling fails instead of waiting forever', () async {
+      var calls = 0;
+      final loader = CommunityImageLoader(
+        timeout: const Duration(milliseconds: 50),
+        client: MockClient((request) {
+          calls++;
+          return Completer<http.Response>().future;
+        }),
+      );
+      await expectLater(
+        loader.load(
+          cacheKey: 'k',
+          resolve: () async => const AuthorizedImage('http://api.test/a', {}),
+          persist: false,
+        ),
+        throwsA(isA<TimeoutException>()),
+      );
+      expect(calls, 2);
     });
   });
 }
