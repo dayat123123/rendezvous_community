@@ -4,6 +4,7 @@ import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/core/storage/local_values.dart';
 import 'package:rendezvous_community/src/features/config/data/models/client_config_model.dart';
 import 'package:rendezvous_community/src/features/config/data/repositories/banner_dismissal_repository_impl.dart';
+import 'package:rendezvous_community/src/features/config/data/repositories/promo_popup_history_repository_impl.dart';
 import 'package:rendezvous_community/src/features/config/presentation/cubit/community_banners_cubit.dart';
 
 import '../../support/feature_fakes.dart';
@@ -215,6 +216,114 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Banner crit'), findsNothing);
+    });
+  });
+
+  group('strip frequency and stats', () {
+    CommunityStripViews views(
+      MemoryLocalValues values,
+      FakeBannerEventRepository events, {
+      required DateTime Function() clock,
+      String? user = 'u-1',
+    }) => CommunityStripViews(
+      events,
+      PromoPopupHistoryRepositoryImpl(values, prefix: 'banner_strips:'),
+      currentUserId: () => user,
+      clock: clock,
+    );
+
+    Future<List<String>> admitted(CommunityStripViews views, List<CommunityBanner> banners) async {
+      if (!views.ready) {
+        views.admit(banners, max: 3);
+        await Future<void>.delayed(Duration.zero);
+      }
+      return [for (final banner in views.admit(banners, max: 3)) banner.id];
+    }
+
+    test('once shows a strip for the first session only, daily again the next day, every open always', () async {
+      final values = MemoryLocalValues();
+      final events = FakeBannerEventRepository();
+      var now = DateTime(2026, 11, 18, 9);
+      final banners = [
+        const CommunityBanner(id: 'once', title: 'Sekali'),
+        const CommunityBanner(id: 'daily', title: 'Harian', frequency: CommunityBannerFrequency.daily),
+        const CommunityBanner(id: 'open', title: 'Selalu', frequency: CommunityBannerFrequency.everyOpen),
+      ];
+
+      final first = views(values, events, clock: () => now);
+      expect(await admitted(first, banners), ['once', 'daily', 'open']);
+      now = now.add(const Duration(hours: 3));
+      expect(await admitted(first, banners), ['once', 'daily', 'open']);
+
+      final sameDay = views(values, events, clock: () => now);
+      expect(await admitted(sameDay, banners), ['open']);
+
+      now = DateTime(2026, 11, 19, 8);
+      final nextDay = views(values, events, clock: () => now);
+      expect(await admitted(nextDay, banners), ['daily', 'open']);
+    });
+
+    test('hidden strips do not take a slot from the ones still due', () async {
+      final values = MemoryLocalValues();
+      final events = FakeBannerEventRepository();
+      final now = DateTime(2026, 11, 18, 9);
+      final banners = [
+        for (final id in ['a', 'b', 'c', 'd']) CommunityBanner(id: id, title: id),
+      ];
+      final first = views(values, events, clock: () => now);
+      expect(await admitted(first, banners.take(3).toList()), ['a', 'b', 'c']);
+      final second = views(values, events, clock: () => now);
+      expect(await admitted(second, banners), ['d']);
+    });
+
+    testWidgets('a strip counts one impression per session across hosts, plus clicks and closes', (tester) async {
+      final features = FakeFeatureDependencies(
+        config: loadedConfig().copyWith(
+          banners: [_banner('crit', level: CommunityBannerLevel.critical, link: 'https://olt.example/status')],
+        ),
+      );
+      addTearDown(features.dispose);
+      await pumpFeatureApp(
+        tester,
+        Column(
+          children: [
+            CommunityBannerHost(
+              key: const ValueKey('global'),
+              levels: const {CommunityBannerLevel.critical},
+              onBannerLink: (context, uri, banner) async => true,
+            ),
+            const CommunityBannerHost(key: ValueKey('feed')),
+          ],
+        ),
+        features: features,
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('Banner crit'), findsNWidgets(2));
+      expect(features.bannerEvents.events, [('crit', CommunityBannerEvent.impression)]);
+
+      await tester.tap(find.descendant(of: find.byKey(const ValueKey('global')), matching: find.text('Selengkapnya')));
+      await tester.pumpAndSettle();
+      await tester.tap(find.descendant(of: find.byKey(const ValueKey('feed')), matching: find.byTooltip('Tutup')));
+      await tester.pumpAndSettle();
+
+      expect(features.bannerEvents.events, [
+        ('crit', CommunityBannerEvent.impression),
+        ('crit', CommunityBannerEvent.click),
+        ('crit', CommunityBannerEvent.dismiss),
+      ]);
+      expect(find.text('Banner crit'), findsNothing);
+    });
+
+    test('guests see strips by frequency but send no stats', () async {
+      final events = FakeBannerEventRepository();
+      final guest = views(MemoryLocalValues(), events, clock: DateTime.now, user: null);
+      const banner = CommunityBanner(id: 'g', title: 'Tamu');
+      expect(await admitted(guest, [banner]), ['g']);
+      guest
+        ..viewed([banner])
+        ..record(banner, CommunityBannerEvent.click);
+      await Future<void>.delayed(Duration.zero);
+      expect(events.events, isEmpty);
     });
   });
 }

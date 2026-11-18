@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart' show setEquals;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
@@ -55,6 +57,7 @@ class CommunityBannerHost extends StatelessWidget {
         features.bannerDismissals,
         maxVisible: maxVisible,
         levels: levels,
+        views: context.communityStripViews,
       ),
       child: BlocBuilder<CommunityBannersCubit, List<CommunityBanner>>(
         builder: (context, banners) {
@@ -71,7 +74,10 @@ class CommunityBannerHost extends StatelessWidget {
                     builder: (context) {
                       final onOpen = banner.link == null
                           ? null
-                          : () => openCommunityBannerLink(context, banner, onBannerLink: onBannerLink);
+                          : () {
+                              cubit.opened(banner);
+                              unawaited(openCommunityBannerLink(context, banner, onBannerLink: onBannerLink));
+                            };
                       final onDismiss = banner.dismissible ? () => cubit.dismiss(banner) : null;
                       return builder?.call(context, banner, onOpen, onDismiss) ??
                           CommunityBannerCard(banner: banner, onOpen: onOpen, onDismiss: onDismiss);

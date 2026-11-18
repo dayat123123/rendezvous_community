@@ -8,6 +8,7 @@ import 'package:rendezvous_community/src/features/config/domain/entities/client_
 import 'package:rendezvous_community/src/features/config/domain/services/banner_dismissals.dart';
 import 'package:rendezvous_community/src/features/config/domain/services/client_config_service.dart';
 import 'package:rendezvous_community/src/features/config/domain/services/community_promo_popups.dart';
+import 'package:rendezvous_community/src/features/config/domain/services/community_strip_views.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/services/community_drafts.dart';
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
 import 'package:rendezvous_community/src/features/group/domain/repositories/group_repository.dart';
@@ -40,6 +41,10 @@ abstract interface class CommunityPromoPopupDependencies {
   CommunityPromoPopups get promoPopups;
 }
 
+abstract interface class CommunityStripViewDependencies {
+  CommunityStripViews get stripViews;
+}
+
 class CommunityFeatureScope extends InheritedWidget {
   const CommunityFeatureScope({super.key, required this.dependencies, required super.child});
 
@@ -62,6 +67,11 @@ extension CommunityFeatureContext on BuildContext {
 
   CommunityPromoPopups? get communityPromoPopups => switch (communityFeatures) {
     final CommunityPromoPopupDependencies features => features.promoPopups,
+    _ => null,
+  };
+
+  CommunityStripViews? get communityStripViews => switch (communityFeatures) {
+    final CommunityStripViewDependencies features => features.stripViews,
     _ => null,
   };
 

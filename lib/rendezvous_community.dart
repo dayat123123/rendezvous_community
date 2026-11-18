@@ -123,6 +123,7 @@ export 'src/features/config/domain/repositories/promo_popup_history_repository.d
 export 'src/features/config/domain/services/banner_dismissals.dart';
 export 'src/features/config/domain/services/client_config_service.dart';
 export 'src/features/config/domain/services/community_promo_popups.dart' show CommunityPromoPopups;
+export 'src/features/config/domain/services/community_strip_views.dart' show CommunityStripViews;
 export 'src/features/config/presentation/builders/community_system_builders.dart'
     show CommunitySystemBuilders, CommunitySystemBuildersScope;
 export 'src/features/config/presentation/builders/community_system_details.dart';

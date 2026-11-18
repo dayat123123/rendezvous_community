@@ -57,6 +57,7 @@ import 'package:rendezvous_community/src/features/config/domain/entities/client_
 import 'package:rendezvous_community/src/features/config/domain/services/banner_dismissals.dart';
 import 'package:rendezvous_community/src/features/config/domain/services/client_config_service.dart';
 import 'package:rendezvous_community/src/features/config/domain/services/community_promo_popups.dart';
+import 'package:rendezvous_community/src/features/config/domain/services/community_strip_views.dart';
 import 'package:rendezvous_community/src/features/drafts/data/repositories/post_draft_repository_impl.dart';
 import 'package:rendezvous_community/src/features/drafts/domain/services/community_drafts.dart';
 import 'package:rendezvous_community/src/features/edit/data/repositories/content_edit_repository_impl.dart';
@@ -136,6 +137,7 @@ class RendezvousCommunity
         CommunityAccountDependencies,
         CommunityFeatureDependencies,
         CommunityPromoPopupDependencies,
+        CommunityStripViewDependencies,
         CommunityOfflineDependencies,
         CommunityTradeShareDependencies,
         CommunityUserChanges {
@@ -174,6 +176,7 @@ class RendezvousCommunity
     required this.notificationReporter,
     required this.bannerDismissals,
     required this.promoPopups,
+    required this.stripViews,
     required this.drafts,
     required this.groups,
     required this.tradeShare,
@@ -429,6 +432,11 @@ class RendezvousCommunity
         PromoPopupHistoryRepositoryImpl(localValues),
         currentUserId: () => tokens.currentUserId,
       ),
+      stripViews: CommunityStripViews(
+        BannerEventRepositoryImpl(api),
+        PromoPopupHistoryRepositoryImpl(localValues, prefix: 'banner_strips:'),
+        currentUserId: () => tokens.currentUserId,
+      ),
       drafts: CommunityDrafts(PostDraftRepositoryImpl(api), PostDraftStoreImpl(localValues)),
       groups: GroupRepositoryImpl(api),
       tradeShare: CommunityTradeShare(TradeShareRepositoryImpl(api)),
@@ -464,6 +472,7 @@ class RendezvousCommunity
         social.notificationReporter.reset();
         social.bannerDismissals.reset();
         social.promoPopups.onUserChanged(userId);
+        social.stripViews.onUserChanged(userId);
         social.tradeShare.onUserChanged(userId);
         if (social._started && userId != null) unawaited(social.configService.refresh());
         if (session != null) unawaited(social._bindOffline(session.user));
@@ -526,6 +535,8 @@ class RendezvousCommunity
   final BannerDismissals bannerDismissals;
   @override
   final CommunityPromoPopups promoPopups;
+  @override
+  final CommunityStripViews stripViews;
   @override
   final CommunityDrafts drafts;
   @override
@@ -746,6 +757,7 @@ class RendezvousCommunity
     linkPreviews.dispose();
     await bannerDismissals.dispose();
     promoPopups.dispose();
+    stripViews.dispose();
     tradeShare.dispose();
     await configService.dispose();
     await _sessionSub?.cancel();

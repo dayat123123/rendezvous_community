@@ -1,3 +1,13 @@
+## 1.39.0
+
+Butuh server migrasi `0181` agar Hub bisa memilih frekuensi strip. Di server lama strip berfrekuensi "sekali per pengguna". Tidak ada breaking change pada API publik.
+
+* **Frekuensi banner strip:** strip kini mengikuti frekuensi dari Hub seperti popup: sekali per pengguna, sekali sehari, atau setiap buka aplikasi. Sekali muncul, strip tetap tampil di semua host sampai aplikasi ditutup; setelah itu mengikuti frekuensinya. Strip yang tidak lagi jatuh tempo tidak memakan jatah `maxVisible`. Riwayat disimpan per pengguna di perangkat (`banner_strips:`), terpisah dari popup.
+* **Statistik strip:** strip kini mencatat tayang (sekali per banner per sesi, walau tampil di beberapa `CommunityBannerHost`), klik tombol tautan, dan tutup ke `record_banner_event`. Sebelumnya hanya popup yang tercatat, jadi statistik tayang strip di Hub selalu 0. Pengunjung yang belum login tidak mengirim statistik.
+* Baru: `CommunityStripViews` (diekspor) dan `CommunityStripViewDependencies` untuk `CommunityFeatureScope`. `RendezvousCommunity` sudah menyediakannya; dependensi buatan sendiri tanpa interface ini tetap jalan seperti sebelumnya, tanpa frekuensi dan statistik strip.
+* `CommunityBannersCubit(views:)` opsional, `CommunityBannersCubit.opened(banner)` mencatat klik, dan `visibleBanners(max: null)` mengembalikan semua tanpa batas. Tanda tangan `CommunityBannerHost`, `CommunityBannerScope`, `CommunityBannerCard`, slot `system.banner`, dan `CommunityPromoPopupHost` tidak berubah.
+* `PromoPopupHistoryRepositoryImpl(prefix:)` opsional.
+
 ## 1.38.3
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

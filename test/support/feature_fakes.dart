@@ -313,7 +313,8 @@ class FakeGroupRepository implements GroupRepository {
       _record('settings $roomId $onlyAdminsSend $onlyAdminsEdit');
 }
 
-class FakeFeatureDependencies implements CommunityFeatureDependencies, CommunityPromoPopupDependencies {
+class FakeFeatureDependencies
+    implements CommunityFeatureDependencies, CommunityPromoPopupDependencies, CommunityStripViewDependencies {
   FakeFeatureDependencies({
     ClientConfig config = const ClientConfig(),
     FakeConfigRepository? configRepository,
@@ -372,6 +373,13 @@ class FakeFeatureDependencies implements CommunityFeatureDependencies, Community
   late final CommunityPromoPopups promoPopups = CommunityPromoPopups(
     bannerEvents,
     PromoPopupHistoryRepositoryImpl(localValues),
+    currentUserId: () => signedIn ? me.id : null,
+    clock: () => clock(),
+  );
+  @override
+  late final CommunityStripViews stripViews = CommunityStripViews(
+    bannerEvents,
+    PromoPopupHistoryRepositoryImpl(localValues, prefix: 'banner_strips:'),
     currentUserId: () => signedIn ? me.id : null,
     clock: () => clock(),
   );
