@@ -69,22 +69,32 @@ Future<void> _type(WidgetTester tester, String text) async {
 Finder _body(String text) => find.byWidgetPredicate((w) => w is RichText && w.text.toPlainText() == text);
 
 void main() {
-  for (final type in [RoomType.direct, RoomType.group]) {
-    testWidgets('${type.name} chat has no @ or \$ suggestions and shows tags as plain text', (tester) async {
-      final profiles = await _pumpRoom(tester, type);
+  testWidgets('direct chat has no @ or \$ suggestions and shows tags as plain text', (tester) async {
+    final profiles = await _pumpRoom(tester, RoomType.direct);
 
-      expect(_body('Cek @Budi soal \$BBCA'), findsOneWidget);
-      await tester.tapOnText(find.textRange.ofSubstring('@Budi'));
-      await tester.pumpAndSettle();
-      expect(find.byType(CommunityChatRoom), findsOneWidget);
+    expect(_body('Cek @Budi soal \$BBCA'), findsOneWidget);
+    await _type(tester, 'Halo @bu');
+    expect(find.text('Budi Santoso'), findsNothing);
+    await _type(tester, 'Beli \$BB');
+    expect(find.text('\$BBCA'), findsNothing);
+    expect(profiles.searches, 0);
+  });
 
-      await _type(tester, 'Halo @bu');
-      expect(find.text('Budi Santoso'), findsNothing);
-      await _type(tester, 'Beli \$BB');
-      expect(find.text('\$BBCA'), findsNothing);
-      expect(profiles.searches, 0);
-    });
-  }
+  testWidgets('group chat suggests only other group members for @, links mentions, and has no \$', (tester) async {
+    final profiles = await _pumpRoom(tester, RoomType.group);
+
+    expect(_body('Cek @budi soal \$BBCA'), findsOneWidget);
+    await _type(tester, 'Halo @bu');
+    expect(find.widgetWithText(ListTile, 'Budi Santoso'), findsNothing);
+    await _type(tester, 'Beli \$BB');
+    expect(find.widgetWithText(ListTile, '\$BBCA'), findsNothing);
+
+    await _type(tester, 'Halo @al');
+    await tester.tap(find.widgetWithText(ListTile, 'Alice'));
+    await tester.pump();
+    expect(tester.widget<TextField>(find.byType(TextField).last).controller!.text, 'Halo @alice ');
+    expect(profiles.searches, 0);
+  });
 
   testWidgets('stock rooms keep @ suggestions and linked tags', (tester) async {
     final profiles = await _pumpRoom(tester, RoomType.stock);

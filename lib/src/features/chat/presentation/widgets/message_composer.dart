@@ -7,6 +7,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/core/media/clipboard_image.dart';
 import 'package:rendezvous_community/src/core/media/pasted_image.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/outgoing_file.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
@@ -18,6 +19,7 @@ import 'package:rendezvous_community/src/features/media/domain/entities/attachme
 import 'package:rendezvous_community/src/features/media/domain/entities/document_type.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
@@ -178,6 +180,19 @@ class _MessageComposerState extends State<MessageComposer> {
     if (codes != null && codes.isNotEmpty) await cubit.sendStockCards(codes);
   }
 
+  Future<List<UserSummary>> _memberSuggestions(String query) async {
+    if (!mounted) return const [];
+    final state = context.read<ChatRoomCubit>().state;
+    final term = query.trim().toLowerCase();
+    final users = [
+      for (final member in state.members.values)
+        if (member.user.id != state.me?.id &&
+            (member.user.username.toLowerCase().startsWith(term) || member.user.name.toLowerCase().contains(term)))
+          member.user,
+    ]..sort((a, b) => a.name.toLowerCase().compareTo(b.name.toLowerCase()));
+    return users.take(6).toList();
+  }
+
   String _attachLabel(CommunityLocalizations l10n) {
     final policy = widget.policy;
     if (!widget.allowDocuments) return l10n.composeAddImage;
@@ -210,7 +225,7 @@ class _MessageComposerState extends State<MessageComposer> {
           a.uploading != b.uploading ||
           a.cooldownUntil != b.cooldownUntil ||
           a.mutedUntil() != b.mutedUntil() ||
-          a.isStockRoom != b.isStockRoom,
+          a.room?.type != b.room?.type,
       builder: (context, state) {
         final replyTo = state.replyTo;
         final replyName = replyTo == null
@@ -222,12 +237,15 @@ class _MessageComposerState extends State<MessageComposer> {
         _syncTicker(cooldown);
         final editing = state.editing;
         final cubit = context.read<ChatRoomCubit>();
+        final group = state.room?.type == RoomType.group;
         final details = CommunityComposerDetails(
           controller: _controller,
           focusNode: _focus,
           hintText: l10n.messageHint,
           maxLength: _maxLength,
-          enableAutocomplete: state.isStockRoom,
+          enableAutocomplete: state.isStockRoom || group,
+          enableStockSuggestions: state.isStockRoom,
+          userSuggestions: group ? _memberSuggestions : null,
           uploading: state.uploading,
           onSend: _send,
           replyTo: replyTo,
@@ -362,6 +380,8 @@ class DefaultMessageComposer extends StatelessWidget {
                               focusNode: d.focusNode,
                               enabled: d.enabled,
                               enableAutocomplete: d.enableAutocomplete,
+                              enableStockSuggestions: d.enableStockSuggestions,
+                              userSuggestions: d.userSuggestions,
                               hintText: d.hintText,
                               maxLength: d.maxLength,
                               maxLines: 5,

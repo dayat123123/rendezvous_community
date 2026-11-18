@@ -117,6 +117,8 @@ class CommunityComposerDetails {
     this.uploadingLabel,
     this.enabled = true,
     this.enableAutocomplete = true,
+    this.enableStockSuggestions = true,
+    this.userSuggestions,
     this.fieldKey,
     this.sendKey,
     this.editing,
@@ -149,6 +151,8 @@ class CommunityComposerDetails {
   final String? uploadingLabel;
   final bool enabled;
   final bool enableAutocomplete;
+  final bool enableStockSuggestions;
+  final Future<List<UserSummary>> Function(String query)? userSuggestions;
   final Key? fieldKey;
   final Key? sendKey;
   final ChatMessage? editing;

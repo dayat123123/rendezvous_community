@@ -17,6 +17,8 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 
+typedef CommunityUserSuggestions = Future<List<UserSummary>> Function(String query);
+
 class CommunityComposerField extends StatefulWidget {
   const CommunityComposerField({
     super.key,
@@ -31,6 +33,8 @@ class CommunityComposerField extends StatefulWidget {
     this.enabled = true,
     this.autofocus = false,
     this.enableAutocomplete = true,
+    this.enableStockSuggestions = true,
+    this.userSuggestions,
     this.decoration,
     this.style,
     this.onPaste,
@@ -48,6 +52,8 @@ class CommunityComposerField extends StatefulWidget {
   final bool enabled;
   final bool autofocus;
   final bool enableAutocomplete;
+  final bool enableStockSuggestions;
+  final CommunityUserSuggestions? userSuggestions;
   final InputDecoration? decoration;
   final TextStyle? style;
   final Future<bool> Function()? onPaste;
@@ -161,7 +167,7 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
     if (!widget.enableAutocomplete) return;
     final value = widget.controller.value;
     final token = value.selection.isCollapsed ? findActiveToken(value.text, value.selection.baseOffset) : null;
-    if (token == null || token.query.isEmpty) {
+    if (token == null || token.query.isEmpty || (token.trigger == r'$' && !widget.enableStockSuggestions)) {
       _clearSuggestions();
       return;
     }
@@ -177,7 +183,11 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
     try {
       final List<_Suggestion> results = token.trigger == r'$'
           ? [for (final s in await _stockSuggestions(token.query)) _StockSuggestion(s)]
-          : [for (final u in await _userSuggestions(deps.profiles, token.query)) _UserSuggestion(u)];
+          : [
+              for (final u
+                  in await (widget.userSuggestions?.call(token.query) ?? _userSuggestions(deps.profiles, token.query)))
+                _UserSuggestion(u),
+            ];
       if (!mounted || id != _requestId) return;
       setState(() {
         _suggestions = results;

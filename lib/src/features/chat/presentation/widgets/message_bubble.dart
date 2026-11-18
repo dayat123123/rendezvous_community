@@ -9,6 +9,7 @@ import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/appeals/domain/entities/appeal.dart';
 import 'package:rendezvous_community/src/features/appeals/presentation/widgets/community_appeals.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/message_extras.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_moderation.dart';
@@ -412,14 +413,14 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
         style: body.copyWith(fontStyle: FontStyle.italic, color: fg.withValues(alpha: 0.8)),
       );
     } else if (text.isNotEmpty) {
-      final tags = !support && context.read<ChatRoomCubit>().state.isStockRoom;
+      final roomType = context.read<ChatRoomCubit>().state.room?.type;
       final social = SocialText(
         text,
         style: body,
         source: support ? 'support' : 'chat',
         hashtags: !support,
-        cashtags: tags,
-        mentions: tags,
+        cashtags: !support && roomType == RoomType.stock,
+        mentions: !support && (roomType == RoomType.stock || roomType == RoomType.group),
       );
       message = line == t.link ? social : Theme(data: _bubbleLinkTheme(theme, t, line), child: social);
     }

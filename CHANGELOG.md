@@ -1,3 +1,11 @@
+## 1.36.0
+
+Notifikasi mention di grup butuh server migrasi `0173`. Tanpa itu, saran dan tautan mention di grup tetap jalan, tetapi orang yang disebut hanya mendapat notifikasi pesan biasa. Tidak ada breaking change pada API publik.
+
+* **Mention di grup:** chat grup kembali bisa memakai `@`, tetapi saran hanya berisi anggota grup itu sendiri (tanpa diri sendiri), diambil dari daftar anggota room tanpa memanggil server. `@nama` di bubble grup ditautkan seperti di room saham. Saran dan tautan `$KODE` di grup tetap mati.
+* Chat langsung dan chat CS tidak berubah dari 1.35.0: tanpa saran `@`/`$` dan tanpa tautan.
+* **API baru:** parameter `enableStockSuggestions` (bawaan true) dan `userSuggestions` (sumber saran `@` sendiri) di `CommunityComposerField`, typedef `CommunityUserSuggestions`, dan field yang sama di `CommunityComposerDetails` untuk composer chat buatan host.
+
 ## 1.35.0
 
 Butuh server migrasi `0172` untuk pengaturan mention. Di server lama bagian Mention tidak tampil dan saran `@` tetap seperti sebelumnya. Tidak ada breaking change pada API publik.
