@@ -81,7 +81,7 @@ class _GroupInfoView extends StatelessWidget {
         final membersLabel = l10n.members(state.members.length);
         final details = CommunityGroupInfoPageDetails(
           room: room,
-          title: roomTitle(room),
+          title: roomTitle(room, l10n),
           memberCount: state.members.length,
           membersLabel: membersLabel,
           description: room.description,

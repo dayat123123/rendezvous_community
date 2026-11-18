@@ -333,6 +333,9 @@
   "accountDeleteConfirm": "Hapus akun",
   "accountDeleteProgress": "Menghapus akun komunitas…",
   "accountDeleted": "Akun komunitas Anda sudah dihapus.",
+  "deletedAccount": "Akun terhapus",
+  "deletedAccountSubtitle": "Akun ini sudah dihapus",
+  "deletedAccountNotice": "Pengguna ini sudah menghapus akunnya. Riwayat chat tetap bisa dibaca.",
 
   "errorNewAccountImage": "Akun baru belum bisa melampirkan gambar. Coba lagi beberapa hari lagi.",
   "errorNewAccountLink": "Akun baru belum bisa membagikan tautan. Coba lagi beberapa hari lagi.",

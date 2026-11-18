@@ -40,10 +40,13 @@ class RoomHeader extends StatelessWidget {
         final typing = state.anyoneTyping;
         final otherUser = room.otherUser;
         final stockCode = room.stockCode;
+        final deleted = room.partnerDeleted;
         final details = CommunityRoomHeaderDetails(
           room: room,
-          title: roomTitle(room),
-          subtitle: typing
+          title: roomTitle(room, l10n),
+          subtitle: deleted
+              ? l10n.deletedAccountSubtitle
+              : typing
               ? typingText(l10n, state.typing.values, direct: room.type == RoomType.direct, others: state.typingOthers)
               : switch (room.type) {
                   RoomType.direct when state.otherOnline => l10n.online,
@@ -52,11 +55,13 @@ class RoomHeader extends StatelessWidget {
                   RoomType.stock => '${room.name ?? ''} · ${l10n.members(state.members.length)}',
                   RoomType.support => l10n.supportOfficialChannel,
                 },
-          highlightSubtitle: typing || (room.type == RoomType.direct && state.otherOnline),
+          highlightSubtitle: !deleted && (typing || (room.type == RoomType.direct && state.otherOnline)),
           online: state.otherOnline,
           typing: state.typing.values.toList(),
           memberCount: state.members.length,
-          onTap: room.type == RoomType.direct && otherUser != null
+          onTap: deleted
+              ? null
+              : room.type == RoomType.direct && otherUser != null
               ? () => CommunityNavigator.openUser(context, otherUser)
               : room.type == RoomType.stock && stockCode != null
               ? () => CommunityNavigator.openStock(context, stockCode)

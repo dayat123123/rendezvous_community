@@ -969,6 +969,15 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get accountDeleted => 'Your community account has been deleted.';
 
   @override
+  String get deletedAccount => 'Deleted account';
+
+  @override
+  String get deletedAccountSubtitle => 'This account has been deleted';
+
+  @override
+  String get deletedAccountNotice => 'This person deleted their account. You can still read your chat history.';
+
+  @override
   String get errorNewAccountImage => 'New accounts cannot attach images yet. Please try again in a few days.';
 
   @override

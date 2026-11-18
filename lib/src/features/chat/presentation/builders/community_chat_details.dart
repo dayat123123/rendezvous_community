@@ -641,7 +641,15 @@ class CommunityMessageInfoDetails {
   final VoidCallback? onRetry;
 }
 
-enum CommunityRoomNoticeKind { pinned, slowMode, dmRequestReceived, dmRequestLimit, dmRequestSent, dmRequestInfo }
+enum CommunityRoomNoticeKind {
+  pinned,
+  slowMode,
+  dmRequestReceived,
+  dmRequestLimit,
+  dmRequestSent,
+  dmRequestInfo,
+  accountDeleted,
+}
 
 class CommunityRoomNoticeDetails {
   const CommunityRoomNoticeDetails({

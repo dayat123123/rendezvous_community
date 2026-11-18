@@ -57,6 +57,15 @@ class DmRequestNotice extends StatelessWidget {
     final room = state.room;
     if (room == null || room.type != RoomType.direct) return const SizedBox.shrink();
     final l10n = context.communityL10n;
+    if (room.partnerDeleted) {
+      return RoomNotice(
+        details: CommunityRoomNoticeDetails(
+          kind: CommunityRoomNoticeKind.accountDeleted,
+          icon: Icons.person_off_outlined,
+          message: l10n.deletedAccountNotice,
+        ),
+      );
+    }
     final name = room.otherUser?.name ?? l10n.someone;
     final request = state.dmRequest;
     CommunityRoomNoticeDetails limit(int max) => CommunityRoomNoticeDetails(

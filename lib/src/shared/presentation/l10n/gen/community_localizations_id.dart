@@ -961,6 +961,15 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get accountDeleted => 'Akun komunitas Anda sudah dihapus.';
 
   @override
+  String get deletedAccount => 'Akun terhapus';
+
+  @override
+  String get deletedAccountSubtitle => 'Akun ini sudah dihapus';
+
+  @override
+  String get deletedAccountNotice => 'Pengguna ini sudah menghapus akunnya. Riwayat chat tetap bisa dibaca.';
+
+  @override
   String get errorNewAccountImage => 'Akun baru belum bisa melampirkan gambar. Coba lagi beberapa hari lagi.';
 
   @override

@@ -20,4 +20,8 @@ abstract class UserSummary with _$UserSummary {
   String get name => (displayName?.trim().isNotEmpty ?? false) ? displayName!.trim() : username;
 
   String get handle => communityHandle(username);
+
+  bool get isDeleted => username.trim().isEmpty || _deletedUsername.hasMatch(username);
 }
+
+final RegExp _deletedUsername = RegExp(r'^deleted_[0-9a-f]{12}$');

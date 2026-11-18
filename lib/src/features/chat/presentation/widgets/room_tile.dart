@@ -51,7 +51,7 @@ class RoomTile extends StatelessWidget {
     late final CommunityRoomTileDetails details;
     details = CommunityRoomTileDetails(
       room: room,
-      title: roomTitle(room),
+      title: roomTitle(room, l10n),
       timeLabel: l10n.relativeTime(room.sortTime),
       online: online,
       selected: selected,

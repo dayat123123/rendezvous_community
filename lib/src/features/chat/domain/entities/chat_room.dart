@@ -34,6 +34,8 @@ abstract class ChatRoom with _$ChatRoom {
 
   const ChatRoom._();
 
+  bool get partnerDeleted => type == RoomType.direct && (otherUser?.isDeleted ?? true);
+
   DateTime get sortTime => lastMessageAt ?? createdAt;
 
   bool get tracksReceipts => type != RoomType.stock;

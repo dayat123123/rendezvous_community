@@ -1,3 +1,11 @@
+## 1.37.0
+
+Tidak butuh migrasi server. Tambahan nilai enum `CommunityRoomNoticeKind.accountDeleted`: `switch` host yang lengkap tanpa cabang `_` perlu menambah cabang ini.
+
+* **Chat dengan akun yang sudah dihapus:** chat langsung yang lawan bicaranya sudah menghapus akun kini berjudul "Akun terhapus" (di header, daftar chat, sheet bagikan postingan, dan info grup), subjudul header "Akun ini sudah dihapus", dan avatar bawaan berikon orang dicoret. Sebelumnya judul kosong, avatar "?", dan subjudul hanya "@". Header tidak lagi membuka profil saat diketuk. Riwayat chat tetap bisa dibaca.
+* Strip baru di atas pesan menjelaskan bahwa pengguna sudah menghapus akunnya, lewat slot `roomNotice` dengan `kind` `accountDeleted`, sehingga host bisa mengganti tampilannya.
+* **API baru:** getter `UserSummary.isDeleted` (username kosong atau hasil penghapusan akun `deleted_` + 12 hex) dan `ChatRoom.partnerDeleted` (chat langsung dengan lawan bicara terhapus atau tidak ada), untuk builder host seperti `roomHeader`, `roomTile`, `roomAvatar`, dan `shareTarget`.
+
 ## 1.36.0
 
 Notifikasi mention di grup butuh server migrasi `0173`. Tanpa itu, saran dan tautan mention di grup tetap jalan, tetapi orang yang disebut hanya mendapat notifikasi pesan biasa. Tidak ada breaking change pada API publik.

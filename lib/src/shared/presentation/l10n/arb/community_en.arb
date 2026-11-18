@@ -290,6 +290,9 @@
   "accountDeleteConfirm": "Delete account",
   "accountDeleteProgress": "Deleting your community account…",
   "accountDeleted": "Your community account has been deleted.",
+  "deletedAccount": "Deleted account",
+  "deletedAccountSubtitle": "This account has been deleted",
+  "deletedAccountNotice": "This person deleted their account. You can still read your chat history.",
 
   "errorNewAccountImage": "New accounts cannot attach images yet. Please try again in a few days.",
   "errorNewAccountLink": "New accounts cannot share links yet. Please try again in a few days.",

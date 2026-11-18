@@ -129,7 +129,7 @@ class _SharePostSheetState extends State<_SharePostSheet> {
                         final room = state.rooms[i];
                         final details = CommunityShareTargetDetails(
                           room: room,
-                          title: roomTitle(room),
+                          title: roomTitle(room, l10n),
                           sending: state.sendingRoomId == room.id,
                           onShare: state.sendingRoomId == null ? () => _share(room) : null,
                         );

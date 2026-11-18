@@ -1742,6 +1742,24 @@ abstract class CommunityLocalizations {
   /// **'Akun komunitas Anda sudah dihapus.'**
   String get accountDeleted;
 
+  /// No description provided for @deletedAccount.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun terhapus'**
+  String get deletedAccount;
+
+  /// No description provided for @deletedAccountSubtitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun ini sudah dihapus'**
+  String get deletedAccountSubtitle;
+
+  /// No description provided for @deletedAccountNotice.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengguna ini sudah menghapus akunnya. Riwayat chat tetap bisa dibaca.'**
+  String get deletedAccountNotice;
+
   /// No description provided for @errorNewAccountImage.
   ///
   /// In id, this message translates to:

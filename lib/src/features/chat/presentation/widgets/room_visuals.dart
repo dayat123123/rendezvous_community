@@ -3,10 +3,12 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/chat_room
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
+import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 
-String roomTitle(ChatRoom room) => switch (room.type) {
+String roomTitle(ChatRoom room, CommunityLocalizations l10n) => switch (room.type) {
+  RoomType.direct when room.partnerDeleted => l10n.deletedAccount,
   RoomType.direct => room.otherUser?.name ?? '',
   RoomType.group || RoomType.support => room.name ?? '',
   RoomType.stock => '\$${room.stockCode}',
@@ -42,6 +44,16 @@ class _DefaultRoomAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
     final room = details.room;
     final radius = details.radius;
+    if (room.partnerDeleted) {
+      final style = CommunityStyle.of(context);
+      return SizedBox.square(
+        dimension: radius * 2,
+        child: DecoratedBox(
+          decoration: BoxDecoration(color: style.pill, shape: BoxShape.circle),
+          child: Icon(Icons.person_off_outlined, size: radius, color: style.textSecondary),
+        ),
+      );
+    }
     if (room.type == RoomType.direct) {
       return CommunityAvatar(user: room.otherUser, online: details.online, radius: radius);
     }
