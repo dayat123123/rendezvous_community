@@ -53,12 +53,28 @@ class CommunityErrorView extends StatelessWidget {
     final details = CommunityErrorViewDetails(
       error: error,
       message: l10n.errorMessage(error),
-      onRetry: locked ? null : onRetry,
+      onRetry: onRetry,
       onContactSupport: contact,
       contactSupportLabel: contact == null ? null : l10n.guestSupportTitle,
     );
     final retry = details.onRetry;
     final style = CommunityStyle.of(context);
+    final buttons = [
+      if (contact != null)
+        OutlinedButton.icon(
+          style: style.secondaryButtonStyle(),
+          onPressed: contact,
+          icon: const Icon(Icons.support_agent_outlined, size: 18),
+          label: Text(l10n.guestSupportTitle),
+        ),
+      if (retry != null)
+        OutlinedButton.icon(
+          style: style.secondaryButtonStyle(),
+          onPressed: retry,
+          icon: const Icon(Icons.refresh, size: 18),
+          label: Text(l10n.retry),
+        ),
+    ];
     return buildSharedPart(
       (b) => b.errorView,
       context,
@@ -67,21 +83,16 @@ class CommunityErrorView extends StatelessWidget {
         icon: locked ? Icons.no_accounts_outlined : Icons.cloud_off_outlined,
         message: details.message,
         error: true,
-        action: contact != null
-            ? OutlinedButton.icon(
-                style: style.secondaryButtonStyle(),
-                onPressed: contact,
-                icon: const Icon(Icons.support_agent_outlined, size: 18),
-                label: Text(l10n.guestSupportTitle),
-              )
-            : retry == null
-            ? null
-            : OutlinedButton.icon(
-                style: style.secondaryButtonStyle(),
-                onPressed: retry,
-                icon: const Icon(Icons.refresh, size: 18),
-                label: Text(l10n.retry),
-              ),
+        action: switch (buttons.length) {
+          0 => null,
+          1 => buttons.single,
+          _ => Wrap(
+            alignment: WrapAlignment.center,
+            spacing: style.spacing.sm,
+            runSpacing: style.spacing.sm,
+            children: buttons,
+          ),
+        },
       ),
     );
   }

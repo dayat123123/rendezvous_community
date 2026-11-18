@@ -65,7 +65,7 @@ void main() {
     );
   });
 
-  test('token manager remembers the cooldown per host login instead of calling auth-bridge again', () async {
+  test('token manager remembers the cooldown per host login for a few minutes only', () async {
     var now = _now;
     var calls = 0;
     var token = 'host-a';
@@ -85,10 +85,10 @@ void main() {
     addTearDown(tokens.dispose);
 
     await expectLater(tokens.refresh(), throwsA(isA<CommunityException>()));
-    now = now.add(const Duration(minutes: 30));
+    now = now.add(const Duration(minutes: 3));
     await expectLater(
       tokens.refresh(),
-      throwsA(isA<CommunityException>().having((e) => e.retryAfter, 'retryAfter', const Duration(minutes: 90))),
+      throwsA(isA<CommunityException>().having((e) => e.retryAfter, 'retryAfter', const Duration(minutes: 117))),
     );
     expect(calls, 1);
 
@@ -97,9 +97,41 @@ void main() {
     expect(calls, 2);
 
     token = 'host-a';
-    now = now.add(const Duration(hours: 2));
+    now = now.add(const Duration(minutes: 3));
     await expectLater(tokens.refresh(), throwsA(isA<CommunityException>()));
     expect(calls, 3);
+  });
+
+  test('a wait shortened in the Hub takes effect at the next recheck', () async {
+    var now = _now;
+    var cooldown = true;
+    final tokens = TokenManager(
+      bridge: AuthBridgeClient(
+        baseUrl: 'http://localhost/bridge/v1',
+        anonKey: 'anon',
+        httpClient: MockClient((_) async {
+          if (cooldown) return _cooldown(const Duration(hours: 72));
+          return http.Response(
+            jsonEncode({
+              'access_token': 'jwt',
+              'expires_at': now.add(const Duration(minutes: 15)).millisecondsSinceEpoch ~/ 1000,
+              'user': {'id': 'u-1', 'username': 'budi'},
+            }),
+            200,
+          );
+        }),
+        clock: () => _now,
+      ),
+      tokenProvider: () async => 'host-a',
+      clock: () => now,
+    );
+    addTearDown(tokens.dispose);
+
+    await expectLater(tokens.refresh(), throwsA(isA<CommunityException>()));
+    cooldown = false;
+    await expectLater(tokens.refresh(), throwsA(isA<CommunityException>()));
+    now = now.add(const Duration(minutes: 5));
+    expect((await tokens.refresh()).accessToken, 'jwt');
   });
 
   test('error text names the remaining wait in hours or days, and explains bans', () {
@@ -119,7 +151,7 @@ void main() {
     );
   });
 
-  testWidgets('a locked account offers Hubungi CS instead of retrying', (tester) async {
+  testWidgets('a locked account offers Hubungi CS next to retry', (tester) async {
     var retried = false;
     await _pumpError(
       tester,
@@ -132,8 +164,8 @@ void main() {
     );
     expect(find.textContaining('dalam 10 jam'), findsOneWidget);
     expect(find.widgetWithText(OutlinedButton, 'Hubungi CS'), findsOneWidget);
-    expect(find.text('Coba lagi'), findsNothing);
-    expect(retried, isFalse);
+    await tester.tap(find.widgetWithText(OutlinedButton, 'Coba lagi'));
+    expect(retried, isTrue);
   });
 
   testWidgets('without guest support the locked account shows only the message', (tester) async {

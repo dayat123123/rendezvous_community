@@ -16,6 +16,7 @@ class TokenManager implements SessionTokens {
     required this._tokenProvider,
     this.refreshMargin = const Duration(seconds: 60),
     this.retryDelay = const Duration(seconds: 15),
+    this.cooldownRecheck = const Duration(minutes: 5),
     DateTime Function()? clock,
   }) : _clock = clock ?? DateTime.now;
 
@@ -24,6 +25,7 @@ class TokenManager implements SessionTokens {
   final DateTime Function() _clock;
   final Duration refreshMargin;
   final Duration retryDelay;
+  final Duration cooldownRecheck;
 
   final _changes = StreamController<SocialSession?>.broadcast();
   SocialSession? _session;
@@ -31,7 +33,7 @@ class TokenManager implements SessionTokens {
   UserSummary? _replacedUser;
   String? _hostKey;
   Future<SocialSession>? _inflight;
-  ({String? hostKey, DateTime until, CommunityException error})? _rejected;
+  ({String? hostKey, DateTime recheckAt, DateTime retryAt, CommunityException error})? _rejected;
   Timer? _timer;
   bool _disposed = false;
 
@@ -92,12 +94,14 @@ class TokenManager implements SessionTokens {
     }
     final key = hostIdentityKey(token);
     final rejected = _rejected;
-    if (rejected != null && rejected.hostKey == key) {
-      final left = rejected.until.difference(_clock());
-      if (left > Duration.zero) {
-        final error = rejected.error;
-        throw CommunityException(error.kind, code: error.code, message: error.message, retryAfter: left);
-      }
+    if (rejected != null && rejected.hostKey == key && _clock().isBefore(rejected.recheckAt)) {
+      final error = rejected.error;
+      throw CommunityException(
+        error.kind,
+        code: error.code,
+        message: error.message,
+        retryAfter: rejected.retryAt.difference(_clock()),
+      );
     }
     final SocialSession issued;
     try {
@@ -105,7 +109,17 @@ class TokenManager implements SessionTokens {
     } on CommunityException catch (error) {
       final wait = error.retryAfter;
       if (error.code == 'account_rejoin_cooldown' && wait != null && wait > Duration.zero) {
-        _rejected = (hostKey: key, until: _clock().add(wait), error: error);
+        final now = _clock();
+        final retryAt = now.add(wait);
+        final recheckAt = now.add(cooldownRecheck);
+        _rejected = (
+          hostKey: key,
+          recheckAt: recheckAt.isBefore(retryAt) ? recheckAt : retryAt,
+          retryAt: retryAt,
+          error: error,
+        );
+      } else {
+        _rejected = null;
       }
       rethrow;
     }

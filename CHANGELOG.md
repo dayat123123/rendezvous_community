@@ -1,3 +1,10 @@
+## 1.38.1
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Perubahan jeda di Hub cepat terasa:** `TokenManager` kini mengingat penolakan `account_rejoin_cooldown` paling lama 5 menit (`cooldownRecheck`), lalu bertanya lagi ke server. Sebelumnya penolakan diingat sampai `retry_at`, jadi bila Kepatuhan memperpendek atau mematikan jeda, app yang sedang terbuka tetap menampilkan sisa waktu lama sampai ditutup. Sisa waktu yang tampil tetap dihitung dari `retry_at` server.
+* `CommunityErrorView` untuk akun dalam masa tunggu atau di-ban kini menampilkan **Coba lagi** di samping **Hubungi CS**.
+
 ## 1.38.0
 
 Butuh server migrasi `0175` dan auth-bridge terbaru untuk masa tunggu. Di server lama semuanya berjalan seperti sebelumnya. Tidak ada breaking change pada API publik.
