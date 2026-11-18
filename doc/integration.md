@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.38.2            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.38.3            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -358,7 +358,7 @@ Pusat notifikasi menampilkan item `trade_activity` dan `trade_share`, filter **S
 
 ### Banner & popup promo (1.7.0)
 
-Banner yang diterbitkan staf dari Hub datang lewat `get_client_config`. Banner strip tampil di `CommunityBannerHost` (feed sudah memasangnya sendiri); banner `display: "popup"` tampil sebagai kartu di tengah layar bila OLT memasang `CommunityPromoPopupHost` **sekali** di halaman utama, di bawah `Navigator`:
+Banner yang diterbitkan staf dari Hub datang lewat `get_client_config`. Banner strip tampil di `CommunityBannerHost` (feed sudah memasangnya sendiri); `CommunityBannerHost(levels: {CommunityBannerLevel.warning, CommunityBannerLevel.critical})` di bawah header OLT menampilkan peringatan dan gangguan di semua menu, dan `CommunityBannerScope(levels: {CommunityBannerLevel.info}, child: ...)` membatasi host di dalamnya (termasuk feed) agar banner yang sama tidak tampil dua kali; banner yang ditutup di satu host hilang dari host lain; banner `display: "popup"` tampil sebagai kartu di tengah layar bila OLT memasang `CommunityPromoPopupHost` **sekali** di halaman utama, di bawah `Navigator`:
 
 ```dart
 MaterialApp(

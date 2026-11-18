@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show setEquals;
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_dependencies.dart';
@@ -14,6 +15,18 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 typedef CommunityBannerBuilder =
     Widget Function(BuildContext context, CommunityBanner banner, VoidCallback? onOpen, VoidCallback? onDismiss);
 
+class CommunityBannerScope extends InheritedWidget {
+  const CommunityBannerScope({super.key, required this.levels, required super.child});
+
+  final Set<CommunityBannerLevel> levels;
+
+  static Set<CommunityBannerLevel>? maybeOf(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<CommunityBannerScope>()?.levels;
+
+  @override
+  bool updateShouldNotify(CommunityBannerScope oldWidget) => !setEquals(levels, oldWidget.levels);
+}
+
 class CommunityBannerHost extends StatelessWidget {
   const CommunityBannerHost({
     super.key,
@@ -21,19 +34,28 @@ class CommunityBannerHost extends StatelessWidget {
     this.padding = EdgeInsets.zero,
     this.builder,
     this.onBannerLink,
+    this.levels,
   });
 
   final int maxVisible;
   final EdgeInsetsGeometry padding;
   final CommunityBannerBuilder? builder;
   final CommunityBannerLinkCallback? onBannerLink;
+  final Set<CommunityBannerLevel>? levels;
 
   @override
   Widget build(BuildContext context) {
     final features = context.communityFeatures;
     if (features == null) return const SizedBox.shrink();
+    final levels = this.levels ?? CommunityBannerScope.maybeOf(context);
     return BlocProvider(
-      create: (_) => CommunityBannersCubit(features.configService, features.bannerDismissals, maxVisible: maxVisible),
+      key: ValueKey(levels == null ? '*' : ([for (final level in levels) level.name]..sort()).join(',')),
+      create: (_) => CommunityBannersCubit(
+        features.configService,
+        features.bannerDismissals,
+        maxVisible: maxVisible,
+        levels: levels,
+      ),
       child: BlocBuilder<CommunityBannersCubit, List<CommunityBanner>>(
         builder: (context, banners) {
           if (banners.isEmpty) return const SizedBox.shrink();
@@ -81,7 +103,7 @@ class CommunityBannerCard extends StatelessWidget {
         CommunityBannerLevel.warning => Icons.warning_amber,
         CommunityBannerLevel.critical => Icons.error_outline,
       },
-      openLabel: l10n.bannerOpen,
+      openLabel: banner.ctaLabel ?? l10n.bannerOpen,
       dismissLabel: l10n.bannerDismiss,
       onOpen: onOpen,
       onDismiss: onDismiss,

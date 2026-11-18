@@ -1,3 +1,11 @@
+## 1.38.3
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Label tombol banner strip:** tombol tautan di banner strip kini memakai label yang diisi di Hub (`cta_label`), sama seperti popup. Sebelumnya strip selalu berlabel "Selengkapnya"/"Learn more". Label kosong tetap memakai teks bawaan.
+* **Banner per level:** `CommunityBannerHost(levels:)` hanya menampilkan banner dengan level tertentu, disaring sebelum `maxVisible`. `CommunityBannerScope(levels:, child:)` memberi level bawaan untuk host di dalamnya, termasuk banner di feed; `levels` milik widget tetap didahulukan. Contoh: peringatan dan kritis di bawah header host untuk semua menu, info hanya di feed.
+* `visibleBanners` dan `CommunityBannersCubit` menerima `levels` opsional.
+
 ## 1.38.2
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

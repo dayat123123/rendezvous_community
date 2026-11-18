@@ -10,10 +10,12 @@ List<CommunityBanner> visibleBanners(
   required Set<String> dismissed,
   required DateTime now,
   int max = 3,
+  Set<CommunityBannerLevel>? levels,
 }) {
   final active = [
     for (final banner in banners)
       if (!banner.isPopup &&
+          (levels == null || levels.contains(banner.level)) &&
           !(banner.dismissible && dismissed.contains(banner.id)) &&
           (banner.endsAt == null || banner.endsAt!.isAfter(now)) &&
           (banner.startsAt == null || !banner.startsAt!.isAfter(now)))
@@ -28,7 +30,7 @@ List<CommunityBanner> visibleBanners(
 }
 
 class CommunityBannersCubit extends Cubit<List<CommunityBanner>> {
-  CommunityBannersCubit(this._config, this._dismissals, {this.maxVisible = 3}) : super(const []) {
+  CommunityBannersCubit(this._config, this._dismissals, {this.maxVisible = 3, this.levels}) : super(const []) {
     _configSub = _config.changes.listen((_) => _update());
     _dismissSub = _dismissals?.changes.listen((_) => _update());
     _update();
@@ -38,6 +40,7 @@ class CommunityBannersCubit extends Cubit<List<CommunityBanner>> {
   final ClientConfigService _config;
   final BannerDismissals? _dismissals;
   final int maxVisible;
+  final Set<CommunityBannerLevel>? levels;
   final _local = <String>{};
   late final StreamSubscription<ClientConfig> _configSub;
   StreamSubscription<Set<String>>? _dismissSub;
@@ -58,6 +61,7 @@ class CommunityBannersCubit extends Cubit<List<CommunityBanner>> {
         dismissed: {..._local, ...?_dismissals?.ids},
         now: config.serverNow(),
         max: maxVisible,
+        levels: levels,
       ),
     );
   }
