@@ -5,6 +5,7 @@ import 'package:rendezvous_community/src/features/legal/domain/entities/legal_do
 import 'package:rendezvous_community/src/features/message_requests/domain/entities/message_request.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/notification_preferences.dart';
+import 'package:rendezvous_community/src/features/profile/domain/entities/mention_policy.dart';
 
 class CommunitySettingsOption<T> {
   const CommunitySettingsOption({required this.value, required this.label, this.hint});
@@ -24,6 +25,7 @@ enum CommunitySettingsArea {
   dmPolicy,
   notificationPreferences,
   commentAudience,
+  mentionPolicy,
 }
 
 class CommunitySettingsLoadingDetails {
@@ -69,6 +71,24 @@ class CommunityDmPolicyDetails {
   final List<CommunitySettingsOption<DmPolicy>> options;
   final bool saving;
   final ValueChanged<DmPolicy>? onChanged;
+}
+
+class CommunityMentionPolicyDetails {
+  const CommunityMentionPolicyDetails({
+    required this.policy,
+    required this.title,
+    required this.hint,
+    required this.options,
+    required this.saving,
+    this.onChanged,
+  });
+
+  final MentionPolicy policy;
+  final String title;
+  final String hint;
+  final List<CommunitySettingsOption<MentionPolicy>> options;
+  final bool saving;
+  final ValueChanged<MentionPolicy>? onChanged;
 }
 
 class CommunityCommentAudienceSettingDetails {

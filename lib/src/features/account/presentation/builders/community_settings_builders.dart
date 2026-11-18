@@ -18,6 +18,7 @@ class CommunitySettingsBuilders {
     this.accountTile,
     this.deleteAccountDialog,
     this.commentAudience,
+    this.mentionPolicy,
   });
 
   final CommunityPartBuilder<CommunityDmPolicyDetails>? dmPolicy;
@@ -34,6 +35,7 @@ class CommunitySettingsBuilders {
   final CommunityPartBuilder<CommunityAccountTileDetails>? accountTile;
   final CommunityPartBuilder<CommunityDeleteAccountDetails>? deleteAccountDialog;
   final CommunityPartBuilder<CommunityCommentAudienceSettingDetails>? commentAudience;
+  final CommunityPartBuilder<CommunityMentionPolicyDetails>? mentionPolicy;
 
   static CommunitySettingsBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -59,6 +61,7 @@ class CommunitySettingsBuilders {
       accountTile: other.accountTile ?? accountTile,
       deleteAccountDialog: other.deleteAccountDialog ?? deleteAccountDialog,
       commentAudience: other.commentAudience ?? commentAudience,
+      mentionPolicy: other.mentionPolicy ?? mentionPolicy,
     );
   }
 }

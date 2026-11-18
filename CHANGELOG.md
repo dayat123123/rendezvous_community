@@ -1,3 +1,13 @@
+## 1.35.0
+
+Butuh server migrasi `0172` untuk pengaturan mention. Di server lama bagian Mention tidak tampil dan saran `@` tetap seperti sebelumnya. Tidak ada breaking change pada API publik.
+
+* **Siapa yang bisa menyebut saya:** bagian baru "Mention" di `CommunityAccountSettings` dengan pilihan Semua orang, Hanya yang saya ikuti, atau Tidak ada. Orang yang tidak diizinkan tetap bisa menulis `@nama`, tetapi pemilik akun tidak mendapat notifikasi dan namanya tidak muncul di saran `@`. Staf dan akun resmi selalu boleh menyebut. Aturannya ditegakkan di server.
+* **Saran `@` di kolom ketik** memakai `MentionPolicyRepository.searchMentionableUsers` bila repository profil mendukungnya, sehingga pengguna yang tidak bisa disebut tidak ditawarkan. Repository profil buatan host yang tidak mengimplementasikannya tetap memakai `searchUsers`.
+* **Chat langsung, grup, dan CS tanpa mention dan cashtag:** kolom ketik (termasuk saat mengedit pesan) tidak lagi menampilkan saran `@` dan `$`, dan `@nama` atau `$KODE` di bubble tampil sebagai teks biasa tanpa tautan. Room saham tidak berubah. Kartu saham tetap bisa dikirim lewat tombolnya.
+* **Bottom sheet komunitas di root navigator:** semua bottom sheet bawaan (aksi pesan, aksi room, bagikan postingan, info grup, bar profil Berbagi Trade) kini dibuka di root navigator dengan drag handle, sehingga barrier menutupi seluruh app host.
+* **API baru:** enum `MentionPolicy`, interface `MentionPolicyRepository` (`getMentionPolicy`, `setMentionPolicy`, `searchMentionableUsers`; diimplementasikan `ProfileRepositoryImpl`), widget `CommunityMentionPolicySettings`, `communityMentionPolicyAvailable`, slot `CommunitySettingsBuilders.mentionPolicy` dengan `CommunityMentionPolicyDetails` (`policy`, `title`, `hint`, `options`, `saving`, `onChanged`), dan `CommunitySettingsArea.mentionPolicy`.
+
 ## 1.34.1
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

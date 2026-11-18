@@ -57,9 +57,11 @@ void main() {
     expect(opened?.username.toLowerCase(), 'budisantoso');
   });
 
-  testWidgets('chat bubbles show mentions in lowercase', (tester) async {
+  testWidgets('stock room bubbles show mentions in lowercase', (tester) async {
     final chat = FakeChatRepository(
-      rooms: [directRoom()],
+      rooms: [
+        ChatRoom(id: 'dm', type: RoomType.stock, stockCode: 'BBCA', createdAt: chatStart, lastReadAt: chatStart),
+      ],
       members: directMembers(),
       messages: [
         ChatMessage(

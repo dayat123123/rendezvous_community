@@ -2072,6 +2072,48 @@ abstract class CommunityLocalizations {
   /// **'Pengaturan pesan disimpan.'**
   String get dmPolicySaved;
 
+  /// No description provided for @mentionPolicySection.
+  ///
+  /// In id, this message translates to:
+  /// **'Mention'**
+  String get mentionPolicySection;
+
+  /// No description provided for @mentionPolicyTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Siapa yang bisa menyebut saya'**
+  String get mentionPolicyTitle;
+
+  /// No description provided for @mentionPolicyHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Orang lain tetap bisa menulis @nama Anda, tetapi bila tidak diizinkan Anda tidak diberi tahu dan nama Anda tidak muncul di saran.'**
+  String get mentionPolicyHint;
+
+  /// No description provided for @mentionPolicyEveryone.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua orang'**
+  String get mentionPolicyEveryone;
+
+  /// No description provided for @mentionPolicyFollowing.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya yang saya ikuti'**
+  String get mentionPolicyFollowing;
+
+  /// No description provided for @mentionPolicyNone.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak ada'**
+  String get mentionPolicyNone;
+
+  /// No description provided for @mentionPolicySaved.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengaturan mention disimpan.'**
+  String get mentionPolicySaved;
+
   /// No description provided for @appealAction.
   ///
   /// In id, this message translates to:

@@ -11,6 +11,7 @@ import 'package:rendezvous_community/src/features/account/presentation/builders/
 import 'package:rendezvous_community/src/features/account/presentation/cubit/account_settings_cubit.dart';
 import 'package:rendezvous_community/src/features/account/presentation/export_saver.dart';
 import 'package:rendezvous_community/src/features/account/presentation/widgets/community_comment_audience_settings.dart';
+import 'package:rendezvous_community/src/features/account/presentation/widgets/community_mention_policy_settings.dart';
 import 'package:rendezvous_community/src/features/account/presentation/widgets/delete_account_dialog.dart';
 import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
 import 'package:rendezvous_community/src/features/appeals/presentation/widgets/community_appeals.dart';
@@ -179,6 +180,10 @@ class _AccountSettingsView extends StatelessWidget {
                       if (features != null && social && communityCommentControlsAvailable(context)) ...[
                         CommunitySectionHeader(title: l10n.commentAudienceSection),
                         const CommunitySettingsGroup(children: [CommunityCommentAudienceSettings()]),
+                      ],
+                      if (features != null && social && communityMentionPolicyAvailable(context)) ...[
+                        CommunitySectionHeader(title: l10n.mentionPolicySection),
+                        const CommunitySettingsGroup(children: [CommunityMentionPolicySettings()]),
                       ],
                       if (features != null && social && context.communityFeature(CommunityFlags.notificationPrefs)) ...[
                         CommunitySectionHeader(title: l10n.notificationSettings),

@@ -52,6 +52,8 @@ export 'src/features/account/presentation/widgets/community_account_settings.dar
     show CommunityAccountSettings, openCommunityAccountSettings;
 export 'src/features/account/presentation/widgets/community_comment_audience_settings.dart'
     show CommunityCommentAudienceSettings, communityCommentControlsAvailable;
+export 'src/features/account/presentation/widgets/community_mention_policy_settings.dart'
+    show CommunityMentionPolicySettings, communityMentionPolicyAvailable;
 export 'src/features/analytics/domain/entities/analytics_event.dart'
     show AnalyticsEvent, AnalyticsResult, CommunityAnalyticsEvent;
 export 'src/features/analytics/domain/repositories/analytics_repository.dart';
@@ -244,6 +246,7 @@ export 'src/features/post/domain/repositories/comment_repository.dart';
 export 'src/features/post/presentation/widgets/comment_tree.dart' show ThreadLinesPainter;
 export 'src/features/post/presentation/widgets/community_post_comments.dart';
 export 'src/features/post/presentation/widgets/community_post_detail.dart' show CommunityPostDetail;
+export 'src/features/profile/domain/entities/mention_policy.dart';
 export 'src/features/profile/domain/entities/user_profile.dart';
 export 'src/features/profile/domain/repositories/profile_repository.dart';
 export 'src/features/profile/presentation/builders/community_profile_builders.dart'

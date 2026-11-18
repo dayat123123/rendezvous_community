@@ -7,12 +7,14 @@ import 'package:rendezvous_community/src/core/media/image_mime.dart';
 import 'package:rendezvous_community/src/core/network/social_remote_data_source.dart';
 import 'package:rendezvous_community/src/core/paging/paged.dart';
 import 'package:rendezvous_community/src/features/profile/data/models/profile_model.dart';
+import 'package:rendezvous_community/src/features/profile/domain/entities/mention_policy.dart';
 import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
 import 'package:rendezvous_community/src/features/profile/domain/repositories/profile_repository.dart';
 import 'package:rendezvous_community/src/shared/data/models/user_summary_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
-class ProfileRepositoryImpl implements ProfileRepository, SuggestedUsersRepository, FollowListRepository {
+class ProfileRepositoryImpl
+    implements ProfileRepository, SuggestedUsersRepository, FollowListRepository, MentionPolicyRepository {
   ProfileRepositoryImpl(this._api, {this.onMyProfileChanged});
 
   final SocialRemoteDataSource _api;
@@ -137,5 +139,27 @@ class ProfileRepositoryImpl implements ProfileRepository, SuggestedUsersReposito
     if (query.trim().isEmpty) return const [];
     final rows = await _api.rpcRows('search_profiles', {'p_query': query, 'p_limit': limit});
     return [for (final row in rows) UserSummaryModel.fromJson(row).toEntity()];
+  }
+
+  @override
+  Future<MentionPolicy> getMentionPolicy() async => _mentionPolicy(await _api.rpcValue('get_mention_policy'));
+
+  @override
+  Future<MentionPolicy> setMentionPolicy(MentionPolicy policy) async =>
+      _mentionPolicy(await _api.rpcValue('set_mention_policy', {'p_policy': policy.name}));
+
+  @override
+  Future<List<UserSummary>> searchMentionableUsers(String query, {int limit = 8}) async {
+    if (query.trim().isEmpty) return const [];
+    final rows = await _api.rpcRows('search_profiles', {'p_query': query, 'p_limit': limit});
+    return [
+      for (final row in rows)
+        if (row['can_mention'] != false) UserSummaryModel.fromJson(row).toEntity(),
+    ];
+  }
+
+  MentionPolicy _mentionPolicy(Object? value) {
+    final json = value is Map ? value : const <String, Object?>{};
+    return MentionPolicy.values.asNameMap()[json['policy']] ?? MentionPolicy.everyone;
   }
 }

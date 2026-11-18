@@ -412,13 +412,14 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
         style: body.copyWith(fontStyle: FontStyle.italic, color: fg.withValues(alpha: 0.8)),
       );
     } else if (text.isNotEmpty) {
+      final tags = !support && context.read<ChatRoomCubit>().state.isStockRoom;
       final social = SocialText(
         text,
         style: body,
         source: support ? 'support' : 'chat',
         hashtags: !support,
-        cashtags: !support,
-        mentions: !support,
+        cashtags: tags,
+        mentions: tags,
       );
       message = line == t.link ? social : Theme(data: _bubbleLinkTheme(theme, t, line), child: social);
     }

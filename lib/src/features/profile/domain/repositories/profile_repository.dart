@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:rendezvous_community/src/core/paging/paged.dart';
+import 'package:rendezvous_community/src/features/profile/domain/entities/mention_policy.dart';
 import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
@@ -22,6 +23,14 @@ abstract interface class ProfileRepository {
   Future<List<UserSummary>> searchUsers(String query, {int limit = 8});
 
   Future<Set<String>> officialAccountIds();
+}
+
+abstract interface class MentionPolicyRepository {
+  Future<MentionPolicy> getMentionPolicy();
+
+  Future<MentionPolicy> setMentionPolicy(MentionPolicy policy);
+
+  Future<List<UserSummary>> searchMentionableUsers(String query, {int limit = 8});
 }
 
 abstract interface class SuggestedUsersRepository {

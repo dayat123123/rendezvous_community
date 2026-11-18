@@ -1141,6 +1141,28 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get dmPolicySaved => 'Pengaturan pesan disimpan.';
 
   @override
+  String get mentionPolicySection => 'Mention';
+
+  @override
+  String get mentionPolicyTitle => 'Siapa yang bisa menyebut saya';
+
+  @override
+  String get mentionPolicyHint =>
+      'Orang lain tetap bisa menulis @nama Anda, tetapi bila tidak diizinkan Anda tidak diberi tahu dan nama Anda tidak muncul di saran.';
+
+  @override
+  String get mentionPolicyEveryone => 'Semua orang';
+
+  @override
+  String get mentionPolicyFollowing => 'Hanya yang saya ikuti';
+
+  @override
+  String get mentionPolicyNone => 'Tidak ada';
+
+  @override
+  String get mentionPolicySaved => 'Pengaturan mention disimpan.';
+
+  @override
   String get appealAction => 'Ajukan banding';
 
   @override

@@ -1150,6 +1150,28 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get dmPolicySaved => 'Message settings saved.';
 
   @override
+  String get mentionPolicySection => 'Mentions';
+
+  @override
+  String get mentionPolicyTitle => 'Who can mention you';
+
+  @override
+  String get mentionPolicyHint =>
+      'Others can still type your @name, but if they aren\'t allowed you won\'t be notified and your name won\'t appear in suggestions.';
+
+  @override
+  String get mentionPolicyEveryone => 'Everyone';
+
+  @override
+  String get mentionPolicyFollowing => 'Only people I follow';
+
+  @override
+  String get mentionPolicyNone => 'No one';
+
+  @override
+  String get mentionPolicySaved => 'Mention settings saved.';
+
+  @override
   String get appealAction => 'Appeal';
 
   @override

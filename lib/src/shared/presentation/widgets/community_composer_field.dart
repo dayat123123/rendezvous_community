@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
 import 'package:rendezvous_community/src/features/instruments/domain/entities/market_instrument.dart';
 import 'package:rendezvous_community/src/features/instruments/presentation/community_instruments.dart';
+import 'package:rendezvous_community/src/features/profile/domain/repositories/profile_repository.dart';
 import 'package:rendezvous_community/src/features/stocks/domain/entities/stock_suggestion.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
@@ -176,7 +177,7 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
     try {
       final List<_Suggestion> results = token.trigger == r'$'
           ? [for (final s in await _stockSuggestions(token.query)) _StockSuggestion(s)]
-          : [for (final u in await deps.profiles.searchUsers(token.query, limit: 6)) _UserSuggestion(u)];
+          : [for (final u in await _userSuggestions(deps.profiles, token.query)) _UserSuggestion(u)];
       if (!mounted || id != _requestId) return;
       setState(() {
         _suggestions = results;
@@ -184,6 +185,11 @@ class _CommunityComposerFieldState extends State<CommunityComposerField> {
       });
     } catch (_) {}
   }
+
+  Future<List<UserSummary>> _userSuggestions(ProfileRepository profiles, String query) => switch (profiles) {
+    final MentionPolicyRepository mentions => mentions.searchMentionableUsers(query, limit: 6),
+    _ => profiles.searchUsers(query, limit: 6),
+  };
 
   Future<List<StockSuggestion>> _stockSuggestions(String query) async {
     final instruments = CommunityInstruments.maybeOf(context);

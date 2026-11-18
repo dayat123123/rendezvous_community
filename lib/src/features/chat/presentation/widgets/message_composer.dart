@@ -209,7 +209,8 @@ class _MessageComposerState extends State<MessageComposer> {
           a.replyTo != b.replyTo ||
           a.uploading != b.uploading ||
           a.cooldownUntil != b.cooldownUntil ||
-          a.mutedUntil() != b.mutedUntil(),
+          a.mutedUntil() != b.mutedUntil() ||
+          a.isStockRoom != b.isStockRoom,
       builder: (context, state) {
         final replyTo = state.replyTo;
         final replyName = replyTo == null
@@ -226,6 +227,7 @@ class _MessageComposerState extends State<MessageComposer> {
           focusNode: _focus,
           hintText: l10n.messageHint,
           maxLength: _maxLength,
+          enableAutocomplete: state.isStockRoom,
           uploading: state.uploading,
           onSend: _send,
           replyTo: replyTo,

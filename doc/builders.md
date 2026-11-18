@@ -190,6 +190,7 @@ Dialog, sheet, dan halaman yang didorong chat (aksi pesan, moderasi, kartu saham
 | `MessageRequestRoom`, `_RequestRoomView` | tidak | sudah (`chat.requestIntro`, `chat.requestActions`) | `CommunityRequestIntroDetails` (`request`, `message`, `imageNotice`); `CommunityRequestActionsDetails` (`request`, `busy`, `responding`; `onAccept`, `onDecline`, `onBlock` null saat sibuk) |
 | `_RequestBubble` | tidak | sudah (`chat.requestBubble`) | `CommunityMessageDetails` (tanpa handler; `isMine` selalu `false`) |
 | `CommunityDmPolicySettings`, `_PolicyView` | ya | sudah (`settings.dmPolicy`, `settings.loading`, `settings.error`) | `CommunityDmPolicyDetails` (`policy`, `title`, `options`: `CommunitySettingsOption<DmPolicy>` (`value`, `label`, `hint`), `saving`; `onChanged` null saat menyimpan) |
+| `CommunityMentionPolicySettings`, `_MentionPolicyView` | ya | sudah (`settings.mentionPolicy`, `settings.loading`, `settings.error`) | `CommunityMentionPolicyDetails` (`policy`, `title`, `hint`, `options`: `CommunitySettingsOption<MentionPolicy>`, `saving`; `onChanged` null saat menyimpan) |
 
 ### Chat CS (`features/support`) → set `support`
 
