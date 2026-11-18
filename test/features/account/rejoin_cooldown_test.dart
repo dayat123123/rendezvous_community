@@ -65,7 +65,7 @@ void main() {
     );
   });
 
-  test('token manager remembers the cooldown per host login for a few minutes only', () async {
+  test('token manager remembers the cooldown per host login for half a minute only', () async {
     var now = _now;
     var calls = 0;
     var token = 'host-a';
@@ -85,10 +85,16 @@ void main() {
     addTearDown(tokens.dispose);
 
     await expectLater(tokens.refresh(), throwsA(isA<CommunityException>()));
-    now = now.add(const Duration(minutes: 3));
+    now = now.add(const Duration(seconds: 20));
     await expectLater(
       tokens.refresh(),
-      throwsA(isA<CommunityException>().having((e) => e.retryAfter, 'retryAfter', const Duration(minutes: 117))),
+      throwsA(
+        isA<CommunityException>().having(
+          (e) => e.retryAfter,
+          'retryAfter',
+          const Duration(hours: 1, minutes: 59, seconds: 40),
+        ),
+      ),
     );
     expect(calls, 1);
 
@@ -97,12 +103,12 @@ void main() {
     expect(calls, 2);
 
     token = 'host-a';
-    now = now.add(const Duration(minutes: 3));
+    now = now.add(const Duration(seconds: 11));
     await expectLater(tokens.refresh(), throwsA(isA<CommunityException>()));
     expect(calls, 3);
   });
 
-  test('a wait shortened in the Hub takes effect at the next recheck', () async {
+  test('a wait shortened in the Hub takes effect when the user retries a minute later', () async {
     var now = _now;
     var cooldown = true;
     final tokens = TokenManager(
@@ -130,7 +136,7 @@ void main() {
     await expectLater(tokens.refresh(), throwsA(isA<CommunityException>()));
     cooldown = false;
     await expectLater(tokens.refresh(), throwsA(isA<CommunityException>()));
-    now = now.add(const Duration(minutes: 5));
+    now = now.add(const Duration(minutes: 1));
     expect((await tokens.refresh()).accessToken, 'jwt');
   });
 

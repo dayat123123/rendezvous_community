@@ -1,3 +1,9 @@
+## 1.38.2
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Coba lagi langsung bertanya ke server:** `TokenManager.cooldownRecheck` bawaannya kini 30 detik (sebelumnya 5 menit). Di 1.38.1, menekan Coba lagi dalam 5 menit setelah ditolak tetap memakai penolakan yang diingat, jadi jeda yang sudah dimatikan atau diperpendek di Hub baru terasa setelah app dibuka ulang. Ingatan 30 detik hanya mencegah banyak layar memanggil auth-bridge bersamaan.
+
 ## 1.38.1
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

@@ -16,7 +16,7 @@ class TokenManager implements SessionTokens {
     required this._tokenProvider,
     this.refreshMargin = const Duration(seconds: 60),
     this.retryDelay = const Duration(seconds: 15),
-    this.cooldownRecheck = const Duration(minutes: 5),
+    this.cooldownRecheck = const Duration(seconds: 30),
     DateTime Function()? clock,
   }) : _clock = clock ?? DateTime.now;
 
