@@ -952,6 +952,22 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get accountDeleteFresh => 'When you open the community again, a new empty community profile is created.';
 
   @override
+  String accountDeleteRejoin(String time) {
+    return 'After deletion, you can open the community again only after $time.';
+  }
+
+  @override
+  String get errorUserBanned => 'Your account is blocked from community features.';
+
+  @override
+  String errorRejoinCooldownIn(String time) {
+    return 'Your community account was recently deleted. You can join again in $time.';
+  }
+
+  @override
+  String get errorRejoinCooldown => 'Your community account was recently deleted. Please try again later.';
+
+  @override
   String accountDeleteTypeToConfirm(String word) {
     return 'Type $word to confirm';
   }

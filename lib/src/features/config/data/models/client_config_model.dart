@@ -94,6 +94,10 @@ abstract class ClientConfigModel with _$ClientConfigModel {
       notificationTypes: _strings(config['notification_types']),
       trendingWindows: windows.isEmpty ? const ClientConfig().trendingWindows : windows,
       notificationAggregateMinutes: (config['notification_aggregate_minutes'] as num?)?.toInt() ?? 60,
+      rejoinCooldown: switch (config['account_rejoin_cooldown_hours']) {
+        final num hours when hours >= 0 => Duration(minutes: (hours * 60).round()),
+        _ => null,
+      },
       clockSkew: serverTime == null ? Duration.zero : serverTime.toUtc().difference(received),
       fetchedAt: received,
       banners: banners,

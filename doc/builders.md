@@ -50,7 +50,7 @@ Keempat set baru sudah tersambung ke `CommunityBuilders` (`discovery`, `support`
 | `CommunitySkeleton` (statis), `CommunitySkeletonBox` (baru) | ya | ya (`shared.skeleton`, per item) | `CommunitySkeletonDetails` (`index`, `itemCount`, `custom`) |
 | `CommunityLoadingView` (baru) | ya | ya (`shared.loadingView`) | `CommunityLoadingViewDetails` (`message`) |
 | `CommunityEmptyView` | ya | ya (`shared.emptyView`) | `CommunityEmptyViewDetails` (`message`, `icon`, `action`, `title` opsional) |
-| `CommunityErrorView` | ya | ya (`shared.errorView`) | `CommunityErrorViewDetails` (`error`, `message`; `onRetry`) |
+| `CommunityErrorView` | ya | ya (`shared.errorView`) | `CommunityErrorViewDetails` (`error`, `message`; `onRetry`; sejak 1.38.0 `onContactSupport` dan `contactSupportLabel` untuk akun dalam masa tunggu atau di-ban, saat itu `onRetry` null) |
 | `CommunityDisclaimer` | ya | ya (`shared.disclaimer`) | `CommunityDisclaimerDetails` (`text`, `padding`) |
 | `ModerationNotice` (penuh & ringkas) | ya | ya (`shared.moderationNotice`) | `CommunityModerationNoticeDetails` (`status`, `held`, `label`, `hint`, `icon`, `color`, `compact`; `onAppeal`, null bila ditahan) |
 | `HeldAttachmentLabel` | ya | ya (`shared.heldLabel`) | `CommunityHeldLabelDetails` (`label`, `icon`, `foreground`, `background`) |

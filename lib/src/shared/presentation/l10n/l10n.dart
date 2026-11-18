@@ -112,6 +112,11 @@ extension CommunityErrorText on CommunityLocalizations {
       'room_moderator_suspended' => errorRoomModeratorSuspended,
       'protected_account' || 'moderator_target' || 'self_target' => errorRoomModTarget,
       'already_moderated' || 'already_muted' || 'already_escalated' => errorAlreadyModerated,
+      'user_banned' => errorUserBanned,
+      'account_rejoin_cooldown' => switch (mapped.retryAfter) {
+        final Duration wait when wait > Duration.zero => errorRejoinCooldownIn(waitDuration(wait)),
+        _ => errorRejoinCooldown,
+      },
       _ => switch (mapped.kind) {
         CommunityErrorKind.network => errorNetwork,
         CommunityErrorKind.unauthenticated => errorUnauthenticated,
@@ -124,6 +129,11 @@ extension CommunityErrorText on CommunityLocalizations {
         CommunityErrorKind.unknown => errorUnknown,
       },
     };
+  }
+
+  String waitDuration(Duration wait) {
+    final hours = (wait.inMinutes / 60).ceil().clamp(1, 1 << 20);
+    return hours >= 48 ? pollTimeDays((hours / 24).ceil()) : pollTimeHours(hours);
   }
 
   String relativeTime(DateTime time, {DateTime? now}) {

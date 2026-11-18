@@ -39,6 +39,7 @@ abstract class ClientConfig with _$ClientConfig {
     @Default(<String>[]) List<String> notificationTypes,
     @Default(<String>['24h', '7d']) List<String> trendingWindows,
     @Default(60) int notificationAggregateMinutes,
+    Duration? rejoinCooldown,
     @Default(Duration.zero) Duration clockSkew,
     @Default(<CommunityBanner>[]) List<CommunityBanner> banners,
     DateTime? fetchedAt,

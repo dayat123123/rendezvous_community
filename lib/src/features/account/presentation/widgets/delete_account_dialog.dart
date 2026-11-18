@@ -8,7 +8,9 @@ import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 class DeleteAccountDialog extends StatefulWidget {
-  const DeleteAccountDialog({super.key});
+  const DeleteAccountDialog({super.key, this.rejoinCooldown});
+
+  final Duration? rejoinCooldown;
 
   @override
   State<DeleteAccountDialog> createState() => _DeleteAccountDialogState();
@@ -48,6 +50,11 @@ class _DeleteAccountDialogState extends State<DeleteAccountDialog> {
                   CommunityDeleteConsequence(icon: Icons.support_agent_outlined, text: l10n.accountDeleteSupport),
                   CommunityDeleteConsequence(icon: Icons.account_balance_outlined, text: l10n.accountDeleteTrading),
                   CommunityDeleteConsequence(icon: Icons.person_add_alt_outlined, text: l10n.accountDeleteFresh),
+                  if (widget.rejoinCooldown case final Duration wait when wait > Duration.zero)
+                    CommunityDeleteConsequence(
+                      icon: Icons.schedule_outlined,
+                      text: l10n.accountDeleteRejoin(l10n.waitDuration(wait)),
+                    ),
                 ],
                 controller: _confirmation,
                 confirmWord: l10n.accountDeleteWord,

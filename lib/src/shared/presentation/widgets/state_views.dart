@@ -1,4 +1,9 @@
+import 'dart:async';
+
 import 'package:material_ui/material_ui.dart';
+import 'package:rendezvous_community/src/app/community_guest_support_scope.dart';
+import 'package:rendezvous_community/src/core/error/error_mapper.dart';
+import 'package:rendezvous_community/src/features/guest_support/presentation/widgets/community_guest_support.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
@@ -36,23 +41,43 @@ class CommunityErrorView extends StatelessWidget {
   final Object error;
   final VoidCallback? onRetry;
 
+  static const _accountLockedCodes = {'account_rejoin_cooldown', 'user_banned'};
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
-    final details = CommunityErrorViewDetails(error: error, message: l10n.errorMessage(error), onRetry: onRetry);
-    final retry = onRetry;
+    final locked = _accountLockedCodes.contains(mapError(error).code);
+    final contact = locked && CommunityGuestSupportScope.maybeOf(context) != null
+        ? () => unawaited(openCommunityGuestSupport(context))
+        : null;
+    final details = CommunityErrorViewDetails(
+      error: error,
+      message: l10n.errorMessage(error),
+      onRetry: locked ? null : onRetry,
+      onContactSupport: contact,
+      contactSupportLabel: contact == null ? null : l10n.guestSupportTitle,
+    );
+    final retry = details.onRetry;
+    final style = CommunityStyle.of(context);
     return buildSharedPart(
       (b) => b.errorView,
       context,
       details,
       _StateView(
-        icon: Icons.cloud_off_outlined,
+        icon: locked ? Icons.no_accounts_outlined : Icons.cloud_off_outlined,
         message: details.message,
         error: true,
-        action: retry == null
+        action: contact != null
+            ? OutlinedButton.icon(
+                style: style.secondaryButtonStyle(),
+                onPressed: contact,
+                icon: const Icon(Icons.support_agent_outlined, size: 18),
+                label: Text(l10n.guestSupportTitle),
+              )
+            : retry == null
             ? null
             : OutlinedButton.icon(
-                style: CommunityStyle.of(context).secondaryButtonStyle(),
+                style: style.secondaryButtonStyle(),
                 onPressed: retry,
                 icon: const Icon(Icons.refresh, size: 18),
                 label: Text(l10n.retry),

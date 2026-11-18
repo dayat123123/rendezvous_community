@@ -12,13 +12,16 @@ class AuthBridgeClient {
     required this._anonKey,
     http.Client? httpClient,
     this.timeout = const Duration(seconds: 15),
+    DateTime Function()? clock,
   }) : _exchangeUri = Uri.parse('${baseUrl.replaceAll(RegExp(r'/+$'), '')}/exchange'),
        _http = httpClient ?? http.Client(),
-       _ownsHttpClient = httpClient == null;
+       _ownsHttpClient = httpClient == null,
+       _clock = clock ?? DateTime.now;
 
   final Uri _exchangeUri;
   final String _anonKey;
   final http.Client _http;
+  final DateTime Function() _clock;
 
   final bool _ownsHttpClient;
   final Duration timeout;
@@ -52,12 +55,19 @@ class AuthBridgeClient {
       final message = body['message'] as String?;
       final kind = switch (res.statusCode) {
         401 => CommunityErrorKind.unauthenticated,
+        403 => CommunityErrorKind.forbidden,
         429 => CommunityErrorKind.rateLimited,
         400 => CommunityErrorKind.invalidInput,
         503 || 502 => CommunityErrorKind.unavailable,
         _ => CommunityErrorKind.unknown,
       };
-      throw CommunityException(kind, code: code, message: message);
+      final retryAt = DateTime.tryParse(body['retry_at'] as String? ?? '');
+      throw CommunityException(
+        kind,
+        code: code,
+        message: message,
+        retryAfter: retryAt?.difference(_clock()),
+      );
     }
 
     final user = body['user'] as Map<String, dynamic>;

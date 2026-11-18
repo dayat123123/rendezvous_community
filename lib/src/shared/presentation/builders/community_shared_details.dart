@@ -198,11 +198,19 @@ class CommunityEmptyViewDetails {
 }
 
 class CommunityErrorViewDetails {
-  const CommunityErrorViewDetails({required this.error, required this.message, this.onRetry});
+  const CommunityErrorViewDetails({
+    required this.error,
+    required this.message,
+    this.onRetry,
+    this.onContactSupport,
+    this.contactSupportLabel,
+  });
 
   final Object error;
   final String message;
   final VoidCallback? onRetry;
+  final VoidCallback? onContactSupport;
+  final String? contactSupportLabel;
 }
 
 class CommunityDisclaimerDetails {

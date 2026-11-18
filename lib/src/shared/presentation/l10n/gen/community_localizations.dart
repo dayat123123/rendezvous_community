@@ -1712,6 +1712,30 @@ abstract class CommunityLocalizations {
   /// **'Saat membuka komunitas lagi, profil komunitas baru yang kosong akan dibuat.'**
   String get accountDeleteFresh;
 
+  /// No description provided for @accountDeleteRejoin.
+  ///
+  /// In id, this message translates to:
+  /// **'Setelah dihapus, Anda baru bisa membuka komunitas lagi setelah {time}.'**
+  String accountDeleteRejoin(String time);
+
+  /// No description provided for @errorUserBanned.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun Anda diblokir dari fitur komunitas.'**
+  String get errorUserBanned;
+
+  /// No description provided for @errorRejoinCooldownIn.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun komunitas Anda baru saja dihapus. Anda bisa bergabung lagi dalam {time}.'**
+  String errorRejoinCooldownIn(String time);
+
+  /// No description provided for @errorRejoinCooldown.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun komunitas Anda baru saja dihapus. Silakan coba lagi nanti.'**
+  String get errorRejoinCooldown;
+
   /// No description provided for @accountDeleteTypeToConfirm.
   ///
   /// In id, this message translates to:

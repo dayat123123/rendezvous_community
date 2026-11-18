@@ -944,6 +944,22 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get accountDeleteFresh => 'Saat membuka komunitas lagi, profil komunitas baru yang kosong akan dibuat.';
 
   @override
+  String accountDeleteRejoin(String time) {
+    return 'Setelah dihapus, Anda baru bisa membuka komunitas lagi setelah $time.';
+  }
+
+  @override
+  String get errorUserBanned => 'Akun Anda diblokir dari fitur komunitas.';
+
+  @override
+  String errorRejoinCooldownIn(String time) {
+    return 'Akun komunitas Anda baru saja dihapus. Anda bisa bergabung lagi dalam $time.';
+  }
+
+  @override
+  String get errorRejoinCooldown => 'Akun komunitas Anda baru saja dihapus. Silakan coba lagi nanti.';
+
+  @override
   String accountDeleteTypeToConfirm(String word) {
     return 'Ketik $word untuk konfirmasi';
   }

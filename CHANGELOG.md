@@ -1,3 +1,14 @@
+## 1.38.0
+
+Butuh server migrasi `0175` dan auth-bridge terbaru untuk masa tunggu. Di server lama semuanya berjalan seperti sebelumnya. Tidak ada breaking change pada API publik.
+
+* **Masa tunggu setelah hapus akun:** login yang ditolak karena akun komunitas baru dihapus kini menampilkan "Akun komunitas Anda baru saja dihapus. Anda bisa bergabung lagi dalam 3 hari." (sisa waktu dalam jam, atau hari bila 48 jam atau lebih), bukan error umum. `CommunityErrorView` mengganti tombol "Coba lagi" dengan **Hubungi CS**, yang membuka pengaduan tamu (`openCommunityGuestSupport`) bila `CommunityGuestSupportScope` atau `RendezvousCommunity` tersedia.
+* **Akun yang di-ban** kini juga mendapat pesan jelas, "Akun Anda diblokir dari fitur komunitas.", dengan tombol Hubungi CS yang sama.
+* `TokenManager` mengingat penolakan masa tunggu per login host sampai waktunya habis, jadi layar dan refresh terjadwal tidak memanggil auth-bridge berulang kali.
+* **Dialog hapus akun** menyebut lama masa tunggu sebelum pengguna menekan Hapus, dari konfigurasi server.
+* Respons auth-bridge `403` kini dipetakan ke `CommunityErrorKind.forbidden` (sebelumnya `unknown`), dan `retry_at` menjadi `CommunityException.retryAfter`.
+* **API baru:** `ClientConfig.rejoinCooldown` (`Duration?`, null bila server belum mengirim `account_rejoin_cooldown_hours`), `CommunityErrorViewDetails.onContactSupport` dan `contactSupportLabel`, `DeleteAccountDialog.rejoinCooldown`, serta `CommunityErrorText.waitDuration`.
+
 ## 1.37.0
 
 Tidak butuh migrasi server. Tambahan nilai enum `CommunityRoomNoticeKind.accountDeleted`: `switch` host yang lengkap tanpa cabang `_` perlu menambah cabang ini.

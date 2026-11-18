@@ -31,6 +31,7 @@ class TokenManager implements SessionTokens {
   UserSummary? _replacedUser;
   String? _hostKey;
   Future<SocialSession>? _inflight;
+  ({String? hostKey, DateTime until, CommunityException error})? _rejected;
   Timer? _timer;
   bool _disposed = false;
 
@@ -89,9 +90,29 @@ class TokenManager implements SessionTokens {
         'Token provider returned no token because the user is not signed in to the host app',
       );
     }
-    final session = _keepEditedProfile(await _bridge.exchange(token));
+    final key = hostIdentityKey(token);
+    final rejected = _rejected;
+    if (rejected != null && rejected.hostKey == key) {
+      final left = rejected.until.difference(_clock());
+      if (left > Duration.zero) {
+        final error = rejected.error;
+        throw CommunityException(error.kind, code: error.code, message: error.message, retryAfter: left);
+      }
+    }
+    final SocialSession issued;
+    try {
+      issued = await _bridge.exchange(token);
+    } on CommunityException catch (error) {
+      final wait = error.retryAfter;
+      if (error.code == 'account_rejoin_cooldown' && wait != null && wait > Duration.zero) {
+        _rejected = (hostKey: key, until: _clock().add(wait), error: error);
+      }
+      rethrow;
+    }
+    _rejected = null;
+    final session = _keepEditedProfile(issued);
     if (_disposed) return session;
-    _hostKey = hostIdentityKey(token);
+    _hostKey = key;
     _session = session;
     _schedule(session.expiresAt.difference(_clock()) - refreshMargin);
     _changes.add(session);

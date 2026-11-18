@@ -106,10 +106,16 @@ class _AccountSettingsView extends StatelessWidget {
     final cubit = context.read<AccountSettingsCubit>();
     final l10n = context.communityL10n;
     final carry = carryCommunityBuilders(context);
+    final rejoinCooldown = context.communityConfig.rejoinCooldown;
     final deleted = await showDialog<bool>(
       context: context,
       barrierDismissible: false,
-      builder: (_) => carry(BlocProvider.value(value: cubit, child: const DeleteAccountDialog())),
+      builder: (_) => carry(
+        BlocProvider.value(
+          value: cubit,
+          child: DeleteAccountDialog(rejoinCooldown: rejoinCooldown),
+        ),
+      ),
     );
     if (deleted != true || !context.mounted) return;
     showCommunityMessage(context, l10n.accountDeleted);
