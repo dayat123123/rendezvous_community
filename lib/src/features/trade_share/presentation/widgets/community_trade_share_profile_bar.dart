@@ -10,6 +10,7 @@ import 'package:rendezvous_community/src/features/trade_share/presentation/widge
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_sheet.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 class CommunityTradeShareProfileBar extends StatelessWidget {
@@ -64,9 +65,8 @@ class _ProfileBarView extends StatelessWidget {
     final l10n = context.communityL10n;
     final style = CommunityStyle.of(context);
     final cubit = context.read<TradeShareProfileCubit>();
-    final action = await showModalBottomSheet<_BellAction>(
-      context: context,
-      showDragHandle: true,
+    final action = await showCommunitySheet<_BellAction>(
+      context,
       builder: (sheetContext) => SafeArea(
         child: Column(
           mainAxisSize: MainAxisSize.min,

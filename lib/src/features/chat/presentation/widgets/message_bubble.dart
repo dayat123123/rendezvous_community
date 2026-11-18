@@ -40,6 +40,7 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_the
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_sheet.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/moderation_notice.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/social_text.dart';
@@ -202,8 +203,8 @@ class _MessageBubbleState extends State<MessageBubble> {
     final onReact = details.onReact;
     final carry = carryCommunityBuilders(context);
     final mutedUntil = details.senderMutedUntil;
-    final action = await showModalBottomSheet<VoidCallback>(
-      context: context,
+    final action = await showCommunitySheet<VoidCallback>(
+      context,
       isScrollControlled: details.hasModeration,
       builder: (sheetContext) {
         CommunityMessageAction entry(VoidCallback handler, IconData icon, String label) =>

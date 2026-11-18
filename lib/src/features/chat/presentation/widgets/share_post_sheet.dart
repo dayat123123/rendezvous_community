@@ -14,6 +14,7 @@ import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_sheet.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -25,11 +26,9 @@ Future<bool> showSharePostToChat(BuildContext context, Post post) async {
   final accounts = CommunityOfficialScope.maybeOf(context)?..ensureLoaded();
   final me = deps.currentUser;
   final meOfficial = me != null && (me.isOfficial || (accounts?.isOfficial(me.id) ?? false));
-  final shared = await showModalBottomSheet<bool>(
-    context: context,
+  final shared = await showCommunitySheet<bool>(
+    context,
     isScrollControlled: true,
-    showDragHandle: true,
-    backgroundColor: CommunityStyle.of(context).surface,
     builder: (_) => carry(
       CommunityScope(
         dependencies: deps,

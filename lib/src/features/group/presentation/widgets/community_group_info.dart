@@ -21,6 +21,7 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_sheet.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
@@ -553,8 +554,8 @@ class _MemberTile extends StatelessWidget {
           },
         ),
     ];
-    final chosen = await showModalBottomSheet<Future<void> Function()>(
-      context: context,
+    final chosen = await showCommunitySheet<Future<void> Function()>(
+      context,
       builder: (_) => carry(
         CommunityScope(
           dependencies: deps,

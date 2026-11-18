@@ -13,6 +13,7 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_count_badge.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_sheet.dart';
 
 class RoomTile extends StatelessWidget {
   const RoomTile({
@@ -77,8 +78,8 @@ Future<void> showRoomActions(BuildContext context, CommunityRoomTileDetails room
   final l10n = context.communityL10n;
   final icons = CommunityStyle.of(context).icons;
   final carry = carryCommunityBuilders(context);
-  final action = await showModalBottomSheet<VoidCallback>(
-    context: context,
+  final action = await showCommunitySheet<VoidCallback>(
+    context,
     builder: (sheetContext) {
       CommunityRoomAction entry(
         CommunityRoomActionKind kind,
