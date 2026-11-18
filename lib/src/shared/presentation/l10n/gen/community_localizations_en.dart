@@ -3440,4 +3440,24 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorInvalidCommentSetting => 'That comment setting isn\'t valid.';
+
+  @override
+  String get noticeTitle => 'Information';
+
+  @override
+  String get noticeUnavailable => 'This information is no longer available.';
+
+  @override
+  String get noticeLevelInfo => 'Info';
+
+  @override
+  String get noticeLevelWarning => 'Warning';
+
+  @override
+  String get noticeLevelCritical => 'Important';
+
+  @override
+  String noticeSentAt(String day, String time) {
+    return '$day, $time';
+  }
 }

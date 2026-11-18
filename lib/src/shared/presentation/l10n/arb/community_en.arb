@@ -1055,5 +1055,11 @@
   "commentsAllOnSaved": "Comments turned back on. Each post goes back to its own setting.",
   "commentsDisabledByAccount": "Comments are off on all your posts. Turn them back on in community settings.",
   "commentAudienceAllOffLabel": "Off in settings",
-  "errorInvalidCommentSetting": "That comment setting isn't valid."
+  "errorInvalidCommentSetting": "That comment setting isn't valid.",
+  "noticeTitle": "Information",
+  "noticeUnavailable": "This information is no longer available.",
+  "noticeLevelInfo": "Info",
+  "noticeLevelWarning": "Warning",
+  "noticeLevelCritical": "Important",
+  "noticeSentAt": "{day}, {time}"
 }

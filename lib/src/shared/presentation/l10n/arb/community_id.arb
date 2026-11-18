@@ -1178,5 +1178,12 @@
   "commentsAllOnSaved": "Komentar dinyalakan lagi. Setiap postingan kembali ke pengaturannya masing-masing.",
   "commentsDisabledByAccount": "Komentar dimatikan untuk semua postingan Anda. Nyalakan lagi di pengaturan komunitas.",
   "commentAudienceAllOffLabel": "Dimatikan di pengaturan",
-  "errorInvalidCommentSetting": "Pengaturan komentar tidak valid."
+  "errorInvalidCommentSetting": "Pengaturan komentar tidak valid.",
+  "noticeTitle": "Informasi",
+  "noticeUnavailable": "Informasi ini tidak tersedia lagi.",
+  "noticeLevelInfo": "Info",
+  "noticeLevelWarning": "Peringatan",
+  "noticeLevelCritical": "Penting",
+  "noticeSentAt": "{day}, {time}",
+  "@noticeSentAt": {"placeholders": {"day": {"type": "String"}, "time": {"type": "String"}}}
 }

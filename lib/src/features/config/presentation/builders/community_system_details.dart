@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/config/presentation/widgets/community_social_gate.dart';
 import 'package:rendezvous_community/src/features/legal/domain/entities/legal_document.dart';
+import 'package:rendezvous_community/src/features/notices/domain/entities/community_notice.dart';
 
 class CommunityBannerDetails {
   const CommunityBannerDetails({
@@ -94,4 +95,32 @@ class CommunityPromoPopupDetails {
   bool get dismissible => banner.dismissible;
 
   bool get hasLink => onCta != null;
+}
+
+class CommunityNoticeDetails {
+  const CommunityNoticeDetails({
+    required this.notice,
+    required this.icon,
+    required this.levelLabel,
+    required this.openLabel,
+    this.timeLabel,
+    this.onOpen,
+  });
+
+  final CommunityNotice notice;
+  final IconData icon;
+  final String levelLabel;
+  final String openLabel;
+  final String? timeLabel;
+  final VoidCallback? onOpen;
+
+  String get title => notice.title;
+
+  String get body => notice.body;
+
+  String? get imageUrl => notice.imageUrl;
+
+  CommunityBannerLevel get level => notice.level;
+
+  bool get hasLink => onOpen != null;
 }

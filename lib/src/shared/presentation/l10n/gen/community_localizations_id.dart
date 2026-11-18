@@ -3425,4 +3425,24 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorInvalidCommentSetting => 'Pengaturan komentar tidak valid.';
+
+  @override
+  String get noticeTitle => 'Informasi';
+
+  @override
+  String get noticeUnavailable => 'Informasi ini tidak tersedia lagi.';
+
+  @override
+  String get noticeLevelInfo => 'Info';
+
+  @override
+  String get noticeLevelWarning => 'Peringatan';
+
+  @override
+  String get noticeLevelCritical => 'Penting';
+
+  @override
+  String noticeSentAt(String day, String time) {
+    return '$day, $time';
+  }
 }

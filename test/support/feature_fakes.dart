@@ -313,8 +313,28 @@ class FakeGroupRepository implements GroupRepository {
       _record('settings $roomId $onlyAdminsSend $onlyAdminsEdit');
 }
 
+class FakeNoticeRepository implements NoticeRepository {
+  final notices = <String, CommunityNotice>{};
+  final requested = <String>[];
+  Object? error;
+
+  @override
+  Future<CommunityNotice> get(String id) async {
+    requested.add(id);
+    final failure = error;
+    if (failure != null) throw failure;
+    final notice = notices[id];
+    if (notice == null) throw const CommunityException(CommunityErrorKind.notFound, code: 'notice_not_found');
+    return notice;
+  }
+}
+
 class FakeFeatureDependencies
-    implements CommunityFeatureDependencies, CommunityPromoPopupDependencies, CommunityStripViewDependencies {
+    implements
+        CommunityFeatureDependencies,
+        CommunityPromoPopupDependencies,
+        CommunityStripViewDependencies,
+        CommunityNoticeDependencies {
   FakeFeatureDependencies({
     ClientConfig config = const ClientConfig(),
     FakeConfigRepository? configRepository,
@@ -376,6 +396,8 @@ class FakeFeatureDependencies
     currentUserId: () => signedIn ? me.id : null,
     clock: () => clock(),
   );
+  @override
+  final FakeNoticeRepository notices = FakeNoticeRepository();
   @override
   late final CommunityStripViews stripViews = CommunityStripViews(
     bannerEvents,

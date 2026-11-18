@@ -2,8 +2,7 @@ import 'package:rendezvous_community/src/core/storage/local_values.dart';
 import 'package:rendezvous_community/src/features/config/domain/repositories/promo_popup_history_repository.dart';
 
 class PromoPopupHistoryRepositoryImpl implements PromoPopupHistoryRepository {
-  PromoPopupHistoryRepositoryImpl(this._values, {this.maxEntries = 100, String prefix = 'promo_popups:'})
-    : _prefix = prefix;
+  PromoPopupHistoryRepositoryImpl(this._values, {this.maxEntries = 100, this._prefix = 'promo_popups:'});
 
   final String _prefix;
 

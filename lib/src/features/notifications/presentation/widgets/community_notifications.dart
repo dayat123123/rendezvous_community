@@ -8,6 +8,8 @@ import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/appeals/presentation/widgets/community_appeals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_moderation.dart'
     show roomModerationTime;
+import 'package:rendezvous_community/src/features/notices/domain/entities/community_notice.dart';
+import 'package:rendezvous_community/src/features/notices/presentation/community_notice_page.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/app_notification.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/notification_event.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/notification_preferences.dart';
@@ -137,6 +139,16 @@ bool openCommunityNotification(BuildContext context, AppNotification n) {
     final callback = CommunityScope.of(context).callbacks.onOltNotificationTap;
     callback?.call(context, Map.unmodifiable({...n.payload, 'notification_id': n.id}));
     return callback != null;
+  }
+  final noticeId = n.noticeId;
+  if (noticeId != null) {
+    unawaited(
+      openCommunityNotice(
+        context,
+        notice: CommunityNotice.fromJson(n.payload, id: noticeId, notificationId: n.id, sentAt: n.createdAt),
+      ),
+    );
+    return true;
   }
   final postId = n.postId;
   final roomId = n.roomId;
@@ -550,6 +562,11 @@ class _NotificationTile extends StatelessWidget {
       NotificationType.like => Icons.favorite,
       NotificationType.follow => Icons.person_add_alt,
       NotificationType.message => Icons.chat_bubble,
+      NotificationType.announcement when n.isNotice => switch (n.payload['level']) {
+        'critical' => Icons.error_outline,
+        'warning' => Icons.warning_amber,
+        _ => Icons.info_outline,
+      },
       NotificationType.announcement => Icons.campaign,
       NotificationType.appeal => Icons.gavel_outlined,
       NotificationType.tradeActivity => icons.tradeShare,

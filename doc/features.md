@@ -213,6 +213,20 @@ await RendezvousCommunity.instance.reportNotificationTapped(pushData); // bila h
 - **Draf:** composer menyimpan otomatis ke perangkat dan server (`save_post_draft`). Bila draf diubah di perangkat lain dan lebih baru, versi itu dimuat dan pengguna diberi tahu; batas 20 draf atau offline → draf hanya di perangkat. Saat terbit, `client_draft_id` dipakai sebagai `client_id` sehingga server menghapus drafnya. `initialize(postDrafts: false)` mematikan draf; `clearPostDrafts()` menghapus semua draf user (1.15.2).
 - **Kartu saham:** tombol "Kirim kartu saham" di composer chat (DM, grup, room saham; tidak di chat CS), maksimal 3 kode. Harga tidak dikirim ke server; nama/harga di kartu berasal dari `stockInfo` host atau builder `CommunityChatBuilders(stockCard:)`. `initialize(chatStockCards: false)` menyembunyikan tombolnya; kartu yang sudah diterima tetap tampil (1.15.1).
 
+## Notifikasi info (1.40.0, migrasi `0182`)
+
+Banner & Popup di Hub bisa dikirim juga sebagai **notifikasi info** ke semua nasabah sasaran banner. Notifikasi ini tidak lewat Komunitas dan tidak tampil sebagai akun resmi.
+
+- **Kontrak server:**
+  - Notifikasi bertipe `announcement` dengan payload `notice_id`, `banner_id`, `title`, `body`, `level` (`info`/`warning`/`critical`), `link_url`, `cta_label`, `image_url`, dan `sent_at`.
+  - Push membawa `notice_id` di data. `get_app_notice(p_id)` mengembalikan isi yang sama, hanya untuk pengguna yang menerima notifikasinya; selain itu `404 notice_not_found`.
+- **Daftar notifikasi:** judul dan isi tampil seperti pengumuman, dengan ikon sesuai level. Ketuk membuka `CommunityNoticePage` di dalam aplikasi.
+- **Push:** `openCommunityPush` mengenali `notice_id` lalu membuka halaman yang sama dan memuat isinya dari server.
+- **Halaman info:**
+  - Isinya: label level, judul, waktu kirim, gambar (`http(s)` saja), dan isi (`SelectableText`).
+  - Tombol `cta_label` (atau "Selengkapnya") memanggil `onBannerLink` milik pemanggil atau `initialize(onBannerLink:)`. `https` yang tidak ditangani dibuka lewat konfirmasi tautan luar; skema lain diabaikan.
+- **Kustomisasi:** `CommunitySystemBuilders(notice: (context, d, fallback) => ...)` dengan `CommunityNoticeDetails`. Halaman bisa dibuka manual dengan `openCommunityNotice(context, notice: ..., noticeId: ...)`.
+
 ## Popup promo (1.7.0)
 
 Banner dari `get_client_config` dengan `display: "popup"` tampil sebagai kartu di tengah layar, bukan strip. Pasang `CommunityPromoPopupHost` sekali di halaman utama host (di bawah `Navigator`, mis. pembungkus `home`); `CommunityBannerHost` tidak pernah menampilkan banner popup.

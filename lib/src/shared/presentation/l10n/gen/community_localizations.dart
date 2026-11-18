@@ -6127,6 +6127,42 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Pengaturan komentar tidak valid.'**
   String get errorInvalidCommentSetting;
+
+  /// No description provided for @noticeTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Informasi'**
+  String get noticeTitle;
+
+  /// No description provided for @noticeUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Informasi ini tidak tersedia lagi.'**
+  String get noticeUnavailable;
+
+  /// No description provided for @noticeLevelInfo.
+  ///
+  /// In id, this message translates to:
+  /// **'Info'**
+  String get noticeLevelInfo;
+
+  /// No description provided for @noticeLevelWarning.
+  ///
+  /// In id, this message translates to:
+  /// **'Peringatan'**
+  String get noticeLevelWarning;
+
+  /// No description provided for @noticeLevelCritical.
+  ///
+  /// In id, this message translates to:
+  /// **'Penting'**
+  String get noticeLevelCritical;
+
+  /// No description provided for @noticeSentAt.
+  ///
+  /// In id, this message translates to:
+  /// **'{day}, {time}'**
+  String noticeSentAt(String day, String time);
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

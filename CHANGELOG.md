@@ -1,3 +1,16 @@
+## 1.40.0
+
+Butuh server migrasi `0182`. Di server lama tidak ada notifikasi info, dan semuanya berjalan seperti sebelumnya. Tidak ada breaking change pada API publik.
+
+* **Notifikasi info dari Banner & Popup:** banner yang dikirim juga sebagai notifikasi kini datang sebagai notifikasi info (`announcement` dengan `notice_id` di payload), bukan kampanye Komunitas. Di daftar notifikasi ikonnya mengikuti level (info, peringatan, penting). Diketuk dari daftar notifikasi maupun dari push, notifikasi ini membuka **halaman info di dalam aplikasi**: judul, waktu kirim, gambar (bila ada), isi yang bisa disalin, dan tombol tautan berlabel `cta_label`. Halaman ini tidak terhubung ke Stream.
+* **Tautan di halaman info** memakai `onBannerLink` yang sama dengan banner, jadi deep link seperti `olt://mock-trading` bisa ditangani aplikasi. Tautan `https` yang tidak ditangani dibuka lewat dialog konfirmasi seperti biasa.
+* **Builder:** slot opsional `CommunitySystemBuilders.notice` dengan `CommunityNoticeDetails` (`notice`, `icon`, `levelLabel`, `openLabel`, `timeLabel`, `onOpen`). Tanpa slot ini dipakai tampilan bawaan.
+* **Baru:**
+  * `CommunityNotice`, `NoticeRepository`, `CommunityNoticePage(notice:, noticeId:)`, `CommunityNoticeView`, dan `openCommunityNotice(context, notice:, noticeId:, onBannerLink:)`.
+  * `CommunityNoticeDependencies` untuk `CommunityFeatureScope`. `RendezvousCommunity` sudah menyediakannya.
+  * `AppNotification.noticeId` dan `isNotice`.
+* Push dengan `notice_id` diarahkan `openCommunityPush` ke halaman info: konten dimuat lewat `get_app_notice`, dengan pesan "Informasi ini tidak tersedia lagi." dan tombol Coba lagi bila gagal. Push OLT (`onOltNotificationTap`) tidak berubah.
+
 ## 1.39.0
 
 Butuh server migrasi `0181` agar Hub bisa memilih frekuensi strip. Di server lama strip berfrekuensi "sekali per pengguna". Tidak ada breaking change pada API publik.

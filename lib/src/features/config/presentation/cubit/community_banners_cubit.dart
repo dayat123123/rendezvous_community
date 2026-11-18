@@ -31,9 +31,8 @@ List<CommunityBanner> visibleBanners(
 }
 
 class CommunityBannersCubit extends Cubit<List<CommunityBanner>> {
-  CommunityBannersCubit(this._config, this._dismissals, {this.maxVisible = 3, this.levels, CommunityStripViews? views})
-    : _views = views,
-      _dismissalsReady = _dismissals == null,
+  CommunityBannersCubit(this._config, this._dismissals, {this.maxVisible = 3, this.levels, this._views})
+    : _dismissalsReady = _dismissals == null,
       super(const []) {
     _configSub = _config.changes.listen((_) => _update());
     _dismissSub = _dismissals?.changes.listen((_) => _update());

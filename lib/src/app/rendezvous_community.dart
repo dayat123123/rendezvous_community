@@ -84,6 +84,9 @@ import 'package:rendezvous_community/src/features/message_requests/data/reposito
 import 'package:rendezvous_community/src/features/message_requests/domain/repositories/message_request_repository.dart';
 import 'package:rendezvous_community/src/features/moderation/data/repositories/moderation_repository_impl.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/repositories/moderation_repository.dart';
+import 'package:rendezvous_community/src/features/notices/data/repositories/notice_repository_impl.dart';
+import 'package:rendezvous_community/src/features/notices/domain/repositories/notice_repository.dart';
+import 'package:rendezvous_community/src/features/notices/presentation/community_notice_page.dart';
 import 'package:rendezvous_community/src/features/notifications/data/repositories/notification_event_repository_impl.dart';
 import 'package:rendezvous_community/src/features/notifications/data/repositories/notification_preferences_repository_impl.dart';
 import 'package:rendezvous_community/src/features/notifications/data/repositories/notification_repository_impl.dart';
@@ -138,6 +141,7 @@ class RendezvousCommunity
         CommunityFeatureDependencies,
         CommunityPromoPopupDependencies,
         CommunityStripViewDependencies,
+        CommunityNoticeDependencies,
         CommunityOfflineDependencies,
         CommunityTradeShareDependencies,
         CommunityUserChanges {
@@ -177,6 +181,7 @@ class RendezvousCommunity
     required this.bannerDismissals,
     required this.promoPopups,
     required this.stripViews,
+    required this.notices,
     required this.drafts,
     required this.groups,
     required this.tradeShare,
@@ -432,6 +437,7 @@ class RendezvousCommunity
         PromoPopupHistoryRepositoryImpl(localValues),
         currentUserId: () => tokens.currentUserId,
       ),
+      notices: NoticeRepositoryImpl(api),
       stripViews: CommunityStripViews(
         BannerEventRepositoryImpl(api),
         PromoPopupHistoryRepositoryImpl(localValues, prefix: 'banner_strips:'),
@@ -537,6 +543,8 @@ class RendezvousCommunity
   final CommunityPromoPopups promoPopups;
   @override
   final CommunityStripViews stripViews;
+  @override
+  final NoticeRepository notices;
   @override
   final CommunityDrafts drafts;
   @override

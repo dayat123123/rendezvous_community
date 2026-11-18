@@ -61,6 +61,8 @@ abstract class AppNotification with _$AppNotification {
   String? get note => payload['note'] as String?;
   int get otherActors => actorCount > 1 ? actorCount - 1 : 0;
   bool get isOlt => payload['source'] == 'olt';
+  String? get noticeId => payload['notice_id'] is String ? payload['notice_id'] as String : null;
+  bool get isNotice => noticeId != null;
   String? get oltKind => payload['kind'] is String ? payload['kind'] as String : null;
   String? get oltCategory => payload['category'] is String ? payload['category'] as String : null;
   String? get stockCode => payload['stock_code'] is String ? payload['stock_code'] as String : null;

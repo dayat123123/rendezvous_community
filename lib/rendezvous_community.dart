@@ -223,6 +223,10 @@ export 'src/features/message_requests/presentation/widgets/community_message_req
     show CommunityMessageRequests, MessageRequestsEntry, openCommunityMessageRequests;
 export 'src/features/moderation/domain/entities/report.dart';
 export 'src/features/moderation/domain/repositories/moderation_repository.dart';
+export 'src/features/notices/domain/entities/community_notice.dart';
+export 'src/features/notices/domain/repositories/notice_repository.dart';
+export 'src/features/notices/presentation/community_notice_page.dart'
+    show CommunityNoticeDependencies, CommunityNoticePage, CommunityNoticeView, openCommunityNotice;
 export 'src/features/notifications/domain/entities/app_notification.dart';
 export 'src/features/notifications/domain/entities/notification_event.dart';
 export 'src/features/notifications/domain/entities/notification_preferences.dart';

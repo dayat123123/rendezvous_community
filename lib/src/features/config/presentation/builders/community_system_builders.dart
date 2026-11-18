@@ -3,13 +3,21 @@ import 'package:rendezvous_community/src/features/config/presentation/builders/c
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 
 class CommunitySystemBuilders {
-  const CommunitySystemBuilders({this.banner, this.unavailable, this.offlineBanner, this.consentBanner, this.popup});
+  const CommunitySystemBuilders({
+    this.banner,
+    this.unavailable,
+    this.offlineBanner,
+    this.consentBanner,
+    this.popup,
+    this.notice,
+  });
 
   final CommunityPartBuilder<CommunityBannerDetails>? banner;
   final CommunityPartBuilder<CommunityUnavailableDetails>? unavailable;
   final CommunityPartBuilder<CommunityOfflineDetails>? offlineBanner;
   final CommunityPartBuilder<CommunityConsentBannerDetails>? consentBanner;
   final CommunityPartBuilder<CommunityPromoPopupDetails>? popup;
+  final CommunityPartBuilder<CommunityNoticeDetails>? notice;
 
   static CommunitySystemBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -26,6 +34,7 @@ class CommunitySystemBuilders {
       offlineBanner: other.offlineBanner ?? offlineBanner,
       consentBanner: other.consentBanner ?? consentBanner,
       popup: other.popup ?? popup,
+      notice: other.notice ?? notice,
     );
   }
 }

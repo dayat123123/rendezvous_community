@@ -6,6 +6,7 @@ import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/app/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/appeals/presentation/widgets/community_appeals.dart';
+import 'package:rendezvous_community/src/features/notices/presentation/community_notice_page.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/notification_event.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:rendezvous_community/src/features/push/domain/entities/community_push_message.dart';
@@ -41,6 +42,12 @@ bool openCommunityPush(BuildContext context, Map<String, Object?> data) {
 bool _openMessage(BuildContext context, CommunityPushMessage message) {
   final notificationId = message.notificationId;
   if (notificationId != null) unawaited(_markRead(CommunityScope.of(context).notifications, notificationId));
+
+  final noticeId = message.data['notice_id'];
+  if (noticeId is String && noticeId.isNotEmpty) {
+    unawaited(openCommunityNotice(context, noticeId: noticeId));
+    return true;
+  }
 
   final postId = message.postId;
   final roomId = message.roomId;
