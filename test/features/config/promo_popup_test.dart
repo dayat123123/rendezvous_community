@@ -65,11 +65,14 @@ Future<void> _pumpHost(
   CommunityBuilders? builders,
   bool enabled = true,
   CommunityImageLoader? loader,
+  CommunityPromoPopupPresentation presentation = CommunityPromoPopupPresentation.dialog,
+  Widget? child,
 }) async {
   Widget home = CommunityPromoPopupHost(
     enabled: enabled,
     onBannerLink: onBannerLink,
-    child: const Scaffold(body: Text('Beranda host')),
+    presentation: presentation,
+    child: child ?? const Scaffold(body: Text('Beranda host')),
   );
   if (loader != null) home = CommunityImageScope(loader: loader, child: home);
   home = CommunityScope(
@@ -645,6 +648,153 @@ void main() {
         find.ancestor(of: find.text('Promo a'), matching: find.byType(FadeTransition)).first,
       );
       expect(fade.opacity.value, 1);
+    });
+  });
+
+  group('inline presentation', () {
+    const corner = Scaffold(
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          Text('Beranda host'),
+          Positioned(right: 16, bottom: 16, width: 340, child: CommunityPromoPopupSlot()),
+        ],
+      ),
+    );
+
+    Future<void> pumpInline(
+      WidgetTester tester,
+      FakeFeatureDependencies features, {
+      CommunityBannerLinkCallback? onBannerLink,
+      CommunityBuilders? builders,
+    }) => _pumpHost(
+      tester,
+      features,
+      onBannerLink: onBannerLink,
+      builders: builders,
+      presentation: CommunityPromoPopupPresentation.inline,
+      child: corner,
+    );
+
+    testWidgets('shows the popup in the slot, without a dialog or dark overlay', (tester) async {
+      final features = _features([_popup('a', cta: 'Ikut promo')]);
+      addTearDown(features.dispose);
+      await pumpInline(tester, features);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Promo a'), findsOneWidget);
+      expect(
+        ModalRoute.of(tester.element(find.text('Promo a'))),
+        same(ModalRoute.of(tester.element(find.text('Beranda host')))),
+      );
+      final card = tester.getRect(find.byType(CommunityPromoPopupCard));
+      expect(card.right, closeTo(800 - 16, 0.5));
+      expect(card.bottom, closeTo(600 - 16, 0.5));
+      expect(card.width, lessThanOrEqualTo(340));
+      expect(_events(features), [CommunityBannerEvent.impression]);
+    });
+
+    testWidgets('closing records dismiss and empties the slot', (tester) async {
+      final features = _features([_popup('a')]);
+      addTearDown(features.dispose);
+      await pumpInline(tester, features);
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.byTooltip('Tutup promo'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Promo a'), findsNothing);
+      expect(_events(features), [CommunityBannerEvent.impression, CommunityBannerEvent.dismiss]);
+    });
+
+    testWidgets('the primary button records click and opens the link', (tester) async {
+      final features = _features([_popup('a', link: 'olt://promo/akhir-tahun')]);
+      addTearDown(features.dispose);
+      final handled = <Uri>[];
+      await pumpInline(
+        tester,
+        features,
+        onBannerLink: (context, uri, banner) {
+          handled.add(uri);
+          return true;
+        },
+      );
+      await tester.pumpAndSettle();
+
+      await tester.tap(find.text('Lihat'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('Promo a'), findsNothing);
+      expect(handled, [Uri.parse('olt://promo/akhir-tahun')]);
+      expect(_events(features), [CommunityBannerEvent.impression, CommunityBannerEvent.click]);
+    });
+
+    testWidgets('system.popup builder is told the popup is inline', (tester) async {
+      final features = _features([_popup('a')]);
+      addTearDown(features.dispose);
+      CommunityPromoPopupDetails? seen;
+      await pumpInline(
+        tester,
+        features,
+        builders: CommunityBuilders(
+          system: CommunitySystemBuilders(
+            popup: (context, d, fallback) {
+              seen = d;
+              return fallback;
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(seen?.inline, isTrue);
+    });
+
+    testWidgets('dialog mode keeps the slot empty and reports inline false', (tester) async {
+      final features = _features([_popup('a')]);
+      addTearDown(features.dispose);
+      CommunityPromoPopupDetails? seen;
+      await _pumpHost(
+        tester,
+        features,
+        child: corner,
+        builders: CommunityBuilders(
+          system: CommunitySystemBuilders(
+            popup: (context, d, fallback) {
+              seen = d;
+              return fallback;
+            },
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.text('Promo a'), findsOneWidget);
+      expect(seen?.inline, isFalse);
+      expect(
+        ModalRoute.of(tester.element(find.text('Promo a'))),
+        isNot(same(ModalRoute.of(tester.element(find.text('Beranda host'))))),
+      );
+    });
+
+    testWidgets('switching to dialog while shown drops the inline popup quietly', (tester) async {
+      final features = _features([_popup('a')]);
+      addTearDown(features.dispose);
+      await pumpInline(tester, features);
+      await tester.pumpAndSettle();
+      expect(find.text('Promo a'), findsOneWidget);
+
+      await _pumpHost(tester, features, child: corner);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Promo a'), findsNothing);
+      expect(_events(features), [CommunityBannerEvent.impression]);
+    });
+
+    testWidgets('a slot outside any host renders nothing', (tester) async {
+      await tester.pumpWidget(const MaterialApp(home: Scaffold(body: CommunityPromoPopupSlot())));
+
+      expect(find.byType(CommunityPromoPopupCard), findsNothing);
     });
   });
 

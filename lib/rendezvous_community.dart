@@ -129,7 +129,12 @@ export 'src/features/config/presentation/builders/community_system_builders.dart
 export 'src/features/config/presentation/builders/community_system_details.dart';
 export 'src/features/config/presentation/widgets/community_banner_host.dart';
 export 'src/features/config/presentation/widgets/community_promo_popup_host.dart'
-    show CommunityPromoPopupCard, CommunityPromoPopupHost, showCommunityPromoPopup;
+    show
+        CommunityPromoPopupCard,
+        CommunityPromoPopupHost,
+        CommunityPromoPopupPresentation,
+        CommunityPromoPopupSlot,
+        showCommunityPromoPopup;
 export 'src/features/config/presentation/widgets/community_social_gate.dart';
 export 'src/features/drafts/domain/entities/post_draft.dart';
 export 'src/features/drafts/domain/repositories/post_draft_repository.dart';

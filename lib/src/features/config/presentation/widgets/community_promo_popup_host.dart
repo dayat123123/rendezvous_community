@@ -19,12 +19,21 @@ import 'package:rendezvous_community/src/shared/presentation/widgets/community_n
 const communityPromoPopupMinRatio = 4 / 5;
 const communityPromoPopupMaxRatio = 16 / 9;
 
+enum CommunityPromoPopupPresentation { dialog, inline }
+
 class CommunityPromoPopupHost extends StatefulWidget {
-  const CommunityPromoPopupHost({super.key, required this.child, this.enabled = true, this.onBannerLink});
+  const CommunityPromoPopupHost({
+    super.key,
+    required this.child,
+    this.enabled = true,
+    this.onBannerLink,
+    this.presentation = CommunityPromoPopupPresentation.dialog,
+  });
 
   final Widget child;
   final bool enabled;
   final CommunityBannerLinkCallback? onBannerLink;
+  final CommunityPromoPopupPresentation presentation;
 
   @override
   State<CommunityPromoPopupHost> createState() => _CommunityPromoPopupHostState();
@@ -36,6 +45,7 @@ class _CommunityPromoPopupHostState extends State<CommunityPromoPopupHost> {
   bool _routeCurrent = true;
   bool _scheduled = false;
   bool _busy = false;
+  final _inline = ValueNotifier<_InlinePromoPopup?>(null);
 
   @override
   void didChangeDependencies() {
@@ -48,6 +58,7 @@ class _CommunityPromoPopupHostState extends State<CommunityPromoPopupHost> {
   @override
   void didUpdateWidget(CommunityPromoPopupHost oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.presentation != oldWidget.presentation) _inline.value?.finish(null);
     if (widget.enabled != oldWidget.enabled) _schedule();
   }
 
@@ -100,23 +111,107 @@ class _CommunityPromoPopupHostState extends State<CommunityPromoPopupHost> {
       if (Navigator.maybeOf(context, rootNavigator: true) == null) return;
       if (_config?.current.updateRequired ?? true) return;
       if (!popups.claim(banner)) return;
-      await showCommunityPromoPopup(context, banner, onBannerLink: widget.onBannerLink, popups: popups);
+      if (widget.presentation == CommunityPromoPopupPresentation.inline) {
+        await _showInline(banner, popups);
+      } else {
+        await showCommunityPromoPopup(context, banner, onBannerLink: widget.onBannerLink, popups: popups);
+      }
     } finally {
       _busy = false;
     }
+  }
+
+  Future<void> _showInline(CommunityBanner banner, CommunityPromoPopups popups) async {
+    final active = _InlinePromoPopup(banner);
+    _inline.value = active;
+    final event = await active.done;
+    if (!mounted) return;
+    if (identical(_inline.value, active)) _inline.value = null;
+    if (event == null) return;
+    await _finishPromoPopup(context, banner, event, onBannerLink: widget.onBannerLink, popups: popups);
   }
 
   @override
   void dispose() {
     _config?.listenable.removeListener(_schedule);
     _popups?.removeListener(_schedule);
+    _inline.value?.finish(null);
+    _inline.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     if (_bind()) _schedule();
-    return widget.child;
+    return _InlinePromoScope(notifier: _inline, child: widget.child);
+  }
+}
+
+class _InlinePromoPopup {
+  _InlinePromoPopup(this.banner);
+
+  final CommunityBanner banner;
+  final _done = Completer<CommunityBannerEvent?>();
+
+  Future<CommunityBannerEvent?> get done => _done.future;
+
+  void finish(CommunityBannerEvent? event) {
+    if (!_done.isCompleted) _done.complete(event);
+  }
+}
+
+class _InlinePromoScope extends InheritedNotifier<ValueNotifier<_InlinePromoPopup?>> {
+  const _InlinePromoScope({required super.notifier, required super.child});
+}
+
+class CommunityPromoPopupSlot extends StatelessWidget {
+  const CommunityPromoPopupSlot({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    final active = context.dependOnInheritedWidgetOfExactType<_InlinePromoScope>()?.notifier?.value;
+    final still = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
+    return AnimatedSwitcher(
+      duration: still ? Duration.zero : const Duration(milliseconds: 200),
+      switchInCurve: Curves.easeOutCubic,
+      switchOutCurve: Curves.easeInCubic,
+      transitionBuilder: (child, animation) => FadeTransition(
+        opacity: animation,
+        child: SlideTransition(
+          position: Tween<Offset>(begin: const Offset(0, 0.08), end: Offset.zero).animate(animation),
+          child: child,
+        ),
+      ),
+      layoutBuilder: (current, previous) => Stack(
+        alignment: Alignment.bottomCenter,
+        fit: StackFit.passthrough,
+        children: [...previous, ?current],
+      ),
+      child: active == null
+          ? const SizedBox.shrink()
+          : KeyedSubtree(
+              key: ValueKey(active),
+              child: CommunityPromoPopupCard(
+                banner: active.banner,
+                inline: true,
+                onCta: active.banner.link == null ? null : () => active.finish(CommunityBannerEvent.click),
+                onClose: () => active.finish(CommunityBannerEvent.dismiss),
+              ),
+            ),
+    );
+  }
+}
+
+Future<void> _finishPromoPopup(
+  BuildContext context,
+  CommunityBanner banner,
+  CommunityBannerEvent event, {
+  CommunityBannerLinkCallback? onBannerLink,
+  CommunityPromoPopups? popups,
+}) async {
+  popups?.record(banner, event);
+  if (event == CommunityBannerEvent.click && context.mounted) {
+    await openCommunityBannerLink(context, banner, onBannerLink: onBannerLink);
   }
 }
 
@@ -163,19 +258,27 @@ Future<CommunityBannerEvent> showCommunityPromoPopup(
     },
   );
   final event = action ?? CommunityBannerEvent.dismiss;
-  popups?.record(banner, event);
-  if (event == CommunityBannerEvent.click && context.mounted) {
-    await openCommunityBannerLink(context, banner, onBannerLink: onBannerLink);
+  if (context.mounted) {
+    await _finishPromoPopup(context, banner, event, onBannerLink: onBannerLink, popups: popups);
+  } else {
+    popups?.record(banner, event);
   }
   return event;
 }
 
 class CommunityPromoPopupCard extends StatelessWidget {
-  const CommunityPromoPopupCard({super.key, required this.banner, required this.onClose, this.onCta});
+  const CommunityPromoPopupCard({
+    super.key,
+    required this.banner,
+    required this.onClose,
+    this.onCta,
+    this.inline = false,
+  });
 
   final CommunityBanner banner;
   final VoidCallback? onCta;
   final VoidCallback onClose;
+  final bool inline;
 
   @override
   Widget build(BuildContext context) {
@@ -188,6 +291,7 @@ class CommunityPromoPopupCard extends StatelessWidget {
       semanticLabel: l10n.promoPopupLabel,
       onCta: onCta,
       onClose: onClose,
+      inline: inline,
     );
     return buildSystemPart((b) => b.popup, context, details, _DefaultPromoPopup(details: details));
   }
@@ -209,111 +313,112 @@ class _DefaultPromoPopup extends StatelessWidget {
     final buttonShape = RoundedRectangleBorder(borderRadius: style.radii.controlRadius);
     final buttonText = style.typography.label.copyWith(fontSize: 15);
     final onCta = d.onCta;
-    return SafeArea(
-      child: Center(
-        child: Padding(
-          padding: EdgeInsets.all(spacing.xl),
-          child: ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 360),
-            child: Semantics(
-              scopesRoute: true,
-              namesRoute: true,
-              explicitChildNodes: true,
-              label: d.semanticLabel,
-              child: Material(
-                color: style.surface,
-                surfaceTintColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(style.radii.card + spacing.sm),
-                  side: Theme.of(context).brightness == Brightness.dark ? style.borderSide : BorderSide.none,
-                ),
-                clipBehavior: Clip.antiAlias,
-                child: Stack(
+    final card = ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 360),
+      child: Semantics(
+        scopesRoute: !d.inline,
+        namesRoute: !d.inline,
+        explicitChildNodes: true,
+        label: d.semanticLabel,
+        child: Material(
+          color: style.surface,
+          surfaceTintColor: Colors.transparent,
+          elevation: d.inline ? 8 : 0,
+          shadowColor: Colors.black,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(style.radii.card + spacing.sm),
+            side: Theme.of(context).brightness == Brightness.dark ? style.borderSide : BorderSide.none,
+          ),
+          clipBehavior: Clip.antiAlias,
+          child: Stack(
+            children: [
+              SingleChildScrollView(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
-                    SingleChildScrollView(
+                    if (hasImage) _PromoImage(url: imageUrl, aspectRatio: d.imageAspectRatio, onTap: onCta),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(spacing.lg, hasImage ? spacing.lg : spacing.xl, spacing.lg, 0),
                       child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (hasImage) _PromoImage(url: imageUrl, aspectRatio: d.imageAspectRatio, onTap: onCta),
                           Padding(
-                            padding: EdgeInsets.fromLTRB(spacing.lg, hasImage ? spacing.lg : spacing.xl, spacing.lg, 0),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(right: !hasImage && d.dismissible ? target - spacing.xs : 0),
-                                  child: Semantics(header: true, child: Text(d.title, style: style.typography.title)),
-                                ),
-                                if (d.body.isNotEmpty) ...[
-                                  SizedBox(height: spacing.sm),
-                                  Text(d.body, style: style.typography.body.copyWith(color: style.textSecondary)),
-                                ],
-                              ],
-                            ),
+                            padding: EdgeInsets.only(right: !hasImage && d.dismissible ? target - spacing.xs : 0),
+                            child: Semantics(header: true, child: Text(d.title, style: style.typography.title)),
                           ),
-                          Padding(
-                            padding: EdgeInsets.fromLTRB(
-                              spacing.lg,
-                              spacing.lg,
-                              spacing.lg,
-                              onCta == null ? spacing.lg : spacing.sm,
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.stretch,
-                              children: [
-                                FilledButton(
-                                  style: FilledButton.styleFrom(
-                                    backgroundColor: style.accent,
-                                    foregroundColor: style.onAccent,
-                                    minimumSize: Size.fromHeight(target),
-                                    shape: buttonShape,
-                                    textStyle: buttonText,
-                                  ),
-                                  onPressed: onCta ?? d.onClose,
-                                  child: Text(onCta == null ? d.laterLabel : d.ctaLabel),
-                                ),
-                                if (onCta != null) ...[
-                                  SizedBox(height: spacing.xs),
-                                  TextButton(
-                                    style: TextButton.styleFrom(
-                                      foregroundColor: style.textSecondary,
-                                      minimumSize: Size.fromHeight(target),
-                                      shape: buttonShape,
-                                      textStyle: buttonText,
-                                    ),
-                                    onPressed: d.onClose,
-                                    child: Text(d.laterLabel),
-                                  ),
-                                ],
-                              ],
-                            ),
-                          ),
+                          if (d.body.isNotEmpty) ...[
+                            SizedBox(height: spacing.sm),
+                            Text(d.body, style: style.typography.body.copyWith(color: style.textSecondary)),
+                          ],
                         ],
                       ),
                     ),
-                    if (d.dismissible)
-                      Positioned(
-                        top: spacing.sm,
-                        right: spacing.sm,
-                        child: IconButton(
-                          tooltip: d.closeLabel,
-                          onPressed: d.onClose,
-                          style: IconButton.styleFrom(
-                            minimumSize: const Size.square(36),
-                            tapTargetSize: MaterialTapTargetSize.padded,
-                            backgroundColor: hasImage ? Colors.black.withValues(alpha: 0.45) : null,
-                            foregroundColor: hasImage ? Colors.white : style.textSecondary,
-                          ),
-                          icon: const Icon(Icons.close, size: 20),
-                        ),
+                    Padding(
+                      padding: EdgeInsets.fromLTRB(
+                        spacing.lg,
+                        spacing.lg,
+                        spacing.lg,
+                        onCta == null ? spacing.lg : spacing.sm,
                       ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          FilledButton(
+                            style: FilledButton.styleFrom(
+                              backgroundColor: style.accent,
+                              foregroundColor: style.onAccent,
+                              minimumSize: Size.fromHeight(target),
+                              shape: buttonShape,
+                              textStyle: buttonText,
+                            ),
+                            onPressed: onCta ?? d.onClose,
+                            child: Text(onCta == null ? d.laterLabel : d.ctaLabel),
+                          ),
+                          if (onCta != null) ...[
+                            SizedBox(height: spacing.xs),
+                            TextButton(
+                              style: TextButton.styleFrom(
+                                foregroundColor: style.textSecondary,
+                                minimumSize: Size.fromHeight(target),
+                                shape: buttonShape,
+                                textStyle: buttonText,
+                              ),
+                              onPressed: d.onClose,
+                              child: Text(d.laterLabel),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ),
+              if (d.dismissible)
+                Positioned(
+                  top: spacing.sm,
+                  right: spacing.sm,
+                  child: IconButton(
+                    tooltip: d.closeLabel,
+                    onPressed: d.onClose,
+                    style: IconButton.styleFrom(
+                      minimumSize: const Size.square(36),
+                      tapTargetSize: MaterialTapTargetSize.padded,
+                      backgroundColor: hasImage ? Colors.black.withValues(alpha: 0.45) : null,
+                      foregroundColor: hasImage ? Colors.white : style.textSecondary,
+                    ),
+                    icon: const Icon(Icons.close, size: 20),
+                  ),
+                ),
+            ],
           ),
         ),
+      ),
+    );
+    if (d.inline) return card;
+    return SafeArea(
+      child: Center(
+        child: Padding(padding: EdgeInsets.all(spacing.xl), child: card),
       ),
     );
   }

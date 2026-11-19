@@ -754,6 +754,22 @@ system: CommunitySystemBuilders(
 ),
 ```
 
+Sejak 1.44.0 popup juga bisa tampil di dalam halaman tanpa dialog dan tanpa lapisan gelap, misalnya sebagai kartu di pojok kanan bawah aplikasi desktop. Pasang host dengan `presentation: CommunityPromoPopupPresentation.inline`, lalu taruh `CommunityPromoPopupSlot()` di bawah host, di tempat kartu harus muncul. Slot kosong selama tidak ada popup. Aturan frekuensi, satu popup per sesi, dan pencatatan event sama dengan mode dialog. Builder `system.popup` menerima `d.inline == true` sehingga bisa memilih tata letak kartu yang ringkas.
+
+```dart
+CommunityPromoPopupHost(
+  presentation: isDesktop ? CommunityPromoPopupPresentation.inline : CommunityPromoPopupPresentation.dialog,
+  child: Stack(
+    children: [
+      const OltHomePage(),
+      const Positioned(right: 16, bottom: 16, width: 340, child: CommunityPromoPopupSlot()),
+    ],
+  ),
+);
+```
+
+Bila `presentation` berubah saat popup inline masih tampil, popup itu ditutup tanpa event `dismiss`.
+
 `CommunityPromoPopupCard(banner:, onCta:, onClose:)` merender kartu bawaan (beserta slot) tanpa dialog, mis. untuk pratinjau; `showCommunityPromoPopup(context, banner)` menampilkan satu banner sebagai popup tanpa aturan frekuensi.
 
 ### Profil (1.4.0)

@@ -244,8 +244,8 @@ Dialog, sheet, dan halaman yang didorong chat (aksi pesan, moderasi, kartu saham
 | Widget | Pub | Builder | Usulan |
 |---|---|---|---|
 | `CommunityBannerHost` | ya | sudah (tiap item lewat `system.banner`; parameter `builder` host tetap didahulukan) | – |
-| `CommunityPromoPopupHost`, `showCommunityPromoPopup` | ya | sudah (isi kartu lewat `system.popup`; overlay, animasi, dan tombol kembali tetap milik paket) | – |
-| `CommunityPromoPopupCard` | ya | sudah (`system.popup`, 1.7.0) | `CommunityPromoPopupDetails` (`banner`, `imageUrl`, `title`, `body`, `dismissible`, `ctaLabel`, `laterLabel`, `closeLabel`, `semanticLabel`, `hasLink`; `onCta` null tanpa tautan, `onClose`) |
+| `CommunityPromoPopupHost`, `showCommunityPromoPopup` | ya | sudah (isi kartu lewat `system.popup`; overlay, animasi, dan tombol kembali tetap milik paket; `presentation: inline` + `CommunityPromoPopupSlot` sejak 1.44.0) | – |
+| `CommunityPromoPopupCard` | ya | sudah (`system.popup`, 1.7.0) | `CommunityPromoPopupDetails` (`banner`, `imageUrl`, `title`, `body`, `dismissible`, `ctaLabel`, `laterLabel`, `closeLabel`, `semanticLabel`, `hasLink`, `inline`; `onCta` null tanpa tautan, `onClose`) |
 | `CommunityBannerCard` | ya | sudah (`system.banner`) | `CommunityBannerDetails` (`banner`, `title`, `message`, `level`, `icon`, `openLabel`, `dismissLabel`; `onOpen` null tanpa tautan, `onDismiss` null bila tidak bisa ditutup) |
 | `CommunitySocialGate`, `CommunityUnavailableView` | ya | sudah (`system.unavailable`; `unavailableBuilder`/`CommunityAvailabilityScope` tetap didahulukan) | `CommunityUnavailableDetails` (`reason`: `socialDisabled`/`featureDisabled`, `icon`, `title` null untuk fitur mati, `message`, `socialDisabled`). "Perlu update" tidak punya tampilan bawaan: host menanganinya lewat `CommunityUpdateListener` |
 | `CommunityAvailabilityScope`, `CommunityUpdateListener` | ya | n/a (scope/listener) | – |

@@ -76,6 +76,7 @@ class CommunityPromoPopupDetails {
     required this.semanticLabel,
     required this.onClose,
     this.onCta,
+    this.inline = false,
   });
 
   final CommunityBanner banner;
@@ -85,6 +86,7 @@ class CommunityPromoPopupDetails {
   final String semanticLabel;
   final VoidCallback? onCta;
   final VoidCallback onClose;
+  final bool inline;
 
   String? get imageUrl => banner.imageUrl;
 
