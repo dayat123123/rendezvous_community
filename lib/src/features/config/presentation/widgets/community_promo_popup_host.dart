@@ -235,7 +235,7 @@ class _DefaultPromoPopup extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
-                          if (hasImage) _PromoImage(url: imageUrl, onTap: onCta),
+                          if (hasImage) _PromoImage(url: imageUrl, aspectRatio: d.imageAspectRatio, onTap: onCta),
                           Padding(
                             padding: EdgeInsets.fromLTRB(spacing.lg, hasImage ? spacing.lg : spacing.xl, spacing.lg, 0),
                             child: Column(
@@ -320,9 +320,10 @@ class _DefaultPromoPopup extends StatelessWidget {
 }
 
 class _PromoImage extends StatelessWidget {
-  const _PromoImage({required this.url, this.onTap});
+  const _PromoImage({required this.url, this.aspectRatio, this.onTap});
 
   final String url;
+  final double? aspectRatio;
   final VoidCallback? onTap;
 
   @override
@@ -332,6 +333,7 @@ class _PromoImage extends StatelessWidget {
       final image = _SizedPromoImage(
         provider: communityUrlImageProvider(context, url, width: width),
         width: width,
+        aspectRatio: aspectRatio,
       );
       final onTap = this.onTap;
       return ExcludeSemantics(
@@ -347,10 +349,11 @@ class _PromoImage extends StatelessWidget {
 }
 
 class _SizedPromoImage extends StatefulWidget {
-  const _SizedPromoImage({required this.provider, required this.width});
+  const _SizedPromoImage({required this.provider, required this.width, this.aspectRatio});
 
   final ImageProvider provider;
   final double width;
+  final double? aspectRatio;
 
   @override
   State<_SizedPromoImage> createState() => _SizedPromoImageState();
@@ -398,7 +401,9 @@ class _SizedPromoImageState extends State<_SizedPromoImage> {
   @override
   Widget build(BuildContext context) => SizedBox(
     width: widget.width,
-    height: widget.width / _ratio,
+    height:
+        widget.width /
+        (widget.aspectRatio ?? _ratio).clamp(communityPromoPopupMinRatio, communityPromoPopupMaxRatio).toDouble(),
     child: Image(
       image: widget.provider,
       fit: BoxFit.cover,

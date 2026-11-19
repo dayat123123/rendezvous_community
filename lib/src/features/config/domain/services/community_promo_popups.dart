@@ -9,10 +9,12 @@ import 'package:rendezvous_community/src/features/config/domain/repositories/ban
 import 'package:rendezvous_community/src/features/config/domain/repositories/promo_popup_history_repository.dart';
 
 bool promoPopupDue(CommunityBanner banner, DateTime? lastShown, DateTime today) {
-  if (lastShown == null) return true;
+  final seenAt = banner.seenAt;
+  final last = lastShown == null || (seenAt != null && seenAt.isAfter(lastShown)) ? seenAt : lastShown;
+  if (last == null) return true;
   return switch (banner.frequency) {
     CommunityBannerFrequency.once => false,
-    CommunityBannerFrequency.daily => !_sameLocalDay(lastShown, today),
+    CommunityBannerFrequency.daily => !_sameLocalDay(last, today),
     CommunityBannerFrequency.everyOpen => true,
   };
 }
@@ -79,7 +81,7 @@ class CommunityPromoPopups extends ChangeNotifier {
   Future<CommunityBanner?> candidate(ClientConfig config) async {
     _sync();
     final user = _sessionUser;
-    if (user == null || _shown || !config.loaded || config.updateRequired) return null;
+    if (user == null || _shown || !config.loaded || config.updateRequired || !config.isFor(user)) return null;
     if (!config.banners.any((banner) => banner.isPopup)) return null;
     final shown = await _historyFor(user);
     _sync();

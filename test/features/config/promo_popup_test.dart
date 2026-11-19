@@ -356,6 +356,43 @@ void main() {
       expect(tester.getSize(card).width, 360);
     });
 
+    test('the image ratio chosen in the Hub is read from the config', () {
+      final banners = ClientConfigModel.fromJson({
+        'banners': [
+          {'id': 'p', 'title': 'Potret', 'image_ratio': 'portrait'},
+          {'id': 's', 'title': 'Kotak', 'image_ratio': 'square'},
+          {'id': 'x', 'title': 'Lama'},
+          {'id': 'w', 'title': 'Asing', 'image_ratio': 'wide'},
+        ],
+      }).toEntity().banners;
+      expect([for (final banner in banners) banner.imageAspectRatio], [4 / 5, 1.0, null, null]);
+    });
+
+    for (final (ratio, height) in [(4 / 5, 450.0), (1.0, 360.0)]) {
+      testWidgets('the image box follows the Hub ratio $ratio before the picture loads', (tester) async {
+        tester.view.physicalSize = const Size(1200, 900);
+        tester.view.devicePixelRatio = 1;
+        addTearDown(tester.view.reset);
+        final features = _features([
+          _popup('a', image: 'https://cdn.olt.example/promo.jpg').copyWith(imageAspectRatio: ratio),
+        ]);
+        addTearDown(features.dispose);
+        await _pumpHost(tester, features);
+        await tester.pump();
+        await tester.pump(const Duration(milliseconds: 300));
+        expect(tester.getSize(find.byType(Image).first), Size(360, height));
+        final details = CommunityPromoPopupDetails(
+          banner: features.configService.current.banners.single,
+          ctaLabel: 'Lihat',
+          laterLabel: 'Nanti',
+          closeLabel: 'Tutup',
+          semanticLabel: 'Promo',
+          onClose: () {},
+        );
+        expect(details.imageAspectRatio, ratio);
+      });
+    }
+
     testWidgets('the primary button closes, records click and lets the host handle the link', (tester) async {
       final features = _features([_popup('a', link: 'olt://promo/akhir-tahun')]);
       addTearDown(features.dispose);

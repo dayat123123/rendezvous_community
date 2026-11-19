@@ -205,8 +205,8 @@ await showCommunityComposer(context, draft: draft);
 await RendezvousCommunity.instance.reportNotificationTapped(pushData); // bila host membuka tujuan push sendiri
 ```
 
-- **Banner:** maksimal 3 tampil (atur `maxVisible`), urut `priority`. Gaya per level `info`/`warning`/`critical`, tautan dibuka setelah dialog konfirmasi. Banner yang bisa ditutup dan sudah ditutup disimpan per user di perangkat (ikut terhapus saat logout); banner yang tidak bisa ditutup selalu tampil. Feed Terbaru/Mengikuti menampilkannya otomatis di atas daftar. Banner `display: "popup"` tidak tampil sebagai strip (lihat [Popup promo](#popup-promo-170)).
-- **Frekuensi strip (1.39.0):** strip mengikuti `frequency` seperti popup (`once` sekali per pengguna, `daily` sekali per hari kalender lokal, `every_open` setiap sesi). Sekali muncul, strip tetap tampil di semua `CommunityBannerHost` sampai sesi berakhir (aplikasi ditutup atau user berganti). Strip yang tidak jatuh tempo tidak memakan jatah `maxVisible`. Riwayat disimpan per user di perangkat (`banner_strips:`); pengunjung tanpa login memakai riwayat tamu.
+- **Banner:** maksimal 3 tampil (atur `maxVisible`), urut `priority`. Gaya per level `info`/`warning`/`critical`, tautan dibuka setelah dialog konfirmasi. Banner yang bisa ditutup dan sudah ditutup tidak tampil lagi untuk user itu: catatan perangkat dipakai selama sesi, dan sejak 1.41.0 (migrasi `0183`) server mengirim `dismissed_at` per user sehingga tetap tersembunyi setelah logout, instal ulang, atau di perangkat lain. Banner yang tidak bisa ditutup selalu tampil. Feed Terbaru/Mengikuti menampilkannya otomatis di atas daftar. Banner `display: "popup"` tidak tampil sebagai strip (lihat [Popup promo](#popup-promo-170)).
+- **Frekuensi strip (1.39.0):** strip mengikuti `frequency` seperti popup (`once` sekali per pengguna, `daily` sekali per hari kalender lokal, `every_open` setiap sesi). Sekali muncul, strip tetap tampil di semua `CommunityBannerHost` sampai sesi berakhir (aplikasi ditutup atau user berganti). Strip yang tidak jatuh tempo tidak memakan jatah `maxVisible`. Riwayat disimpan per user di perangkat (`banner_strips:`); pengunjung tanpa login memakai riwayat tamu. Sejak 1.41.0 riwayat server (`seen_at`) ikut dipakai, lihat [Riwayat banner per akun](#riwayat-banner-per-akun-1410-migrasi-0183).
 - **Statistik strip (1.39.0):** `record_banner_event` menerima `impression` sekali per banner per sesi (walau tampil di beberapa host), `click` saat tombol tautan ditekan, dan `dismiss` saat ditutup. Pengunjung tanpa login tidak mengirim event. Disediakan `CommunityStripViews` lewat `CommunityStripViewDependencies`; dependensi buatan sendiri tanpa interface ini tetap menampilkan strip tanpa frekuensi dan statistik.
 - **Statistik notifikasi:** membuka item kotak notifikasi atau push melapor `opened`, mengikuti tujuannya melapor `tapped` (`report_notification_event`; `notification_id`, lalu `campaign_id`/`broadcast_id`). Tidak pernah menahan UI; gagal karena jaringan diantrekan di memori sampai online. Push OLT yang diteruskan ke `onOltNotificationTap` dihitung `tapped`.
 - **Notifikasi baru:** `followed_post` → postingan, `watchlist_digest` → feed saham teratas (`onStockTap`), `moderation` → "Banding saya" dengan keterangan bisa/tidaknya banding, mention di room saham → room. Sakelar in-app jenis yang dikunci server (`moderation`) nonaktif. Keterangan `watchlist_digest` memakai jam kirim dari server (`NotificationPreferences.watchlistDigestTime`, diatur Super Admin di Hub; server tanpa migrasi `0147` = 17.05 WIB).
@@ -227,6 +227,20 @@ Banner & Popup di Hub bisa dikirim juga sebagai **notifikasi info** ke semua nas
   - Tombol `cta_label` (atau "Selengkapnya") memanggil `onBannerLink` milik pemanggil atau `initialize(onBannerLink:)`. `https` yang tidak ditangani dibuka lewat konfirmasi tautan luar; skema lain diabaikan.
 - **Kustomisasi:** `CommunitySystemBuilders(notice: (context, d, fallback) => ...)` dengan `CommunityNoticeDetails`. Halaman bisa dibuka manual dengan `openCommunityNotice(context, notice: ..., noticeId: ...)`.
 
+## Riwayat banner per akun (1.41.0, migrasi `0183`)
+
+Frekuensi strip dan popup ("sekali per pengguna", "sekali sehari") dan banner yang sudah ditutup kini berlaku per akun, tidak hanya per perangkat. Sebelumnya catatan itu hanya ada di database offline user, yang sengaja dihapus saat logout, sehingga banner "sekali per pengguna" muncul lagi setiap login.
+
+- **Kontrak server:**
+  - Setiap banner di `get_client_config` membawa `seen_at` (tayang terakhir user ini) dan `dismissed_at` (ditutup terakhir) bila ada, dari event `record_banner_event` milik user itu sendiri. Tamu tidak menerima keduanya.
+  - `config.viewer_id` menyebut user yang dipakai server untuk menyusun respons (`null` untuk tamu).
+- **Di library:**
+  - `CommunityBanner.seenAt` dan `dismissedAt`; frekuensi memakai yang terbaru antara catatan perangkat dan `seenAt`. Strip yang `dismissible` dan punya `dismissedAt` tidak tampil.
+  - `ClientConfig.viewerId`, `viewerKnown`, dan `isFor(userId)`. Setelah login, strip dan popup menunggu konfigurasi yang disusun untuk user itu, jadi konfigurasi tamu atau milik akun sebelumnya tidak memicu tayangan ulang.
+  - `ClientConfigService(currentUserId:)`: refresh setelah ganti user tidak menumpang permintaan user sebelumnya yang masih berjalan, dan hasil permintaan lama dibuang. `RendezvousCommunity` sudah mengisinya.
+- **Server lama** (tanpa `viewer_id`): perilaku sama seperti 1.40.0.
+- **Rasio gambar popup:** `image_ratio` (`portrait`/`square`) dibaca menjadi `CommunityBanner.imageAspectRatio` (0,8 atau 1,0) dan tersedia di `CommunityPromoPopupDetails.imageAspectRatio` untuk slot `system.popup`. Kotak gambar langsung memakai rasio ini, jadi bentuk popup sama dengan pilihan Hub sejak sebelum gambar selesai dimuat.
+
 ## Popup promo (1.7.0)
 
 Banner dari `get_client_config` dengan `display: "popup"` tampil sebagai kartu di tengah layar, bukan strip. Pasang `CommunityPromoPopupHost` sekali di halaman utama host (di bawah `Navigator`, mis. pembungkus `home`); `CommunityBannerHost` tidak pernah menampilkan banner popup.
@@ -246,12 +260,12 @@ MaterialApp(
 
 | Nilai | Tampil bila |
 |---|---|
-| `once` (bawaan) | belum pernah ditampilkan ke user ini di perangkat ini |
+| `once` (bawaan) | belum pernah ditampilkan ke user ini (perangkat ini, atau di mana pun bila server punya `seen_at`) |
 | `daily` | belum ditampilkan hari ini (tanggal lokal perangkat) |
 | `every_open` | setiap sesi/cold start (bukan setiap rebuild atau pindah halaman) |
 
-  Waktu tampil disimpan per user + banner di penyimpanan lokal paket yang sama dengan banner yang ditutup (database offline milik user, kunci `promo_popups:<user>`, maks 100 banner terakhir); ikut terhapus saat logout/ganti akun. Dengan `initialize(offlineCache: false)` catatan hanya di memori, jadi `once`/`daily` bisa muncul lagi setelah aplikasi dibuka ulang.
-- **Tampilan bawaan:** overlay hitam 60%, kartu lebar maks 360 radius 16 mengikuti `CommunityStyle` (terang/gelap, aksen host), gambar `image_url` di atas (rasio dari gambar, dibatasi 4:5–16:9, placeholder skeleton saat memuat), judul tebal, isi, tombol utama aksen penuh lebar (`cta_label`, bawaan "Lihat") bila ada `link_url`, tombol "Nanti", ikon ✕ bila `dismissible`. Animasi masuk fade + scale 200 ms sekali jalan, mati bila animasi dinonaktifkan sistem. Semantik dialog berlabel "Promo", fokus terkunci di popup, target sentuh ≥ 48. Ganti tampilannya lewat slot `system.popup` ([customization.md](customization.md#banner-kill-switch-dan-offline-170)).
+  Waktu tampil disimpan per user + banner di penyimpanan lokal paket yang sama dengan banner yang ditutup (database offline milik user, kunci `promo_popups:<user>`, maks 100 banner terakhir); catatan lokal ikut terhapus saat logout/ganti akun. Sejak 1.41.0 (migrasi `0183`) yang dipakai adalah waktu terbaru antara catatan lokal dan `seen_at` dari server, jadi frekuensi tetap berlaku setelah logout, instal ulang, `offlineCache: false`, atau di perangkat lain.
+- **Tampilan bawaan:** overlay hitam 60%, kartu lebar maks 360 radius 16 mengikuti `CommunityStyle` (terang/gelap, aksen host), gambar `image_url` di atas (rasio dari `image_ratio` yang dipilih di Hub: `portrait` 4:5 atau `square` 1:1, sejak 1.41.0/migrasi `0183`; banner lama tanpa `image_ratio` memakai rasio gambar setelah dimuat, dibatasi 4:5–16:9; placeholder skeleton saat memuat), judul tebal, isi, tombol utama aksen penuh lebar (`cta_label`, bawaan "Lihat") bila ada `link_url`, tombol "Nanti", ikon ✕ bila `dismissible`. Animasi masuk fade + scale 200 ms sekali jalan, mati bila animasi dinonaktifkan sistem. Semantik dialog berlabel "Promo", fokus terkunci di popup, target sentuh ≥ 48. Ganti tampilannya lewat slot `system.popup` ([customization.md](customization.md#banner-kill-switch-dan-offline-170)).
 - **Perilaku:**
 
 | Aksi pengguna | Hasil | Event |

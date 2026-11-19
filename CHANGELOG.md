@@ -1,3 +1,12 @@
+## 1.41.0
+
+Butuh server migrasi `0183` agar riwayat banner berlaku per akun. Di server lama perilakunya sama seperti 1.40.0. Tidak ada breaking change pada API publik.
+
+* **Perbaikan "sekali per pengguna" muncul lagi setiap login:** riwayat tayang strip dan popup serta banner yang ditutup sebelumnya hanya disimpan di database offline user, yang dihapus saat logout. Kini server mengirim `seen_at` dan `dismissed_at` per banner untuk user yang login, dan library memakai waktu terbaru antara catatan perangkat dan server. Frekuensi `once`/`daily` dan strip yang ditutup tetap berlaku setelah logout, instal ulang, `offlineCache: false`, maupun di perangkat lain.
+* **Menunggu konfigurasi milik user:** setelah login, strip dan popup menunggu konfigurasi yang disusun server untuk user itu (`config.viewer_id`), jadi konfigurasi tamu atau akun sebelumnya tidak lagi memicu tayangan ulang. `ClientConfigService.refresh()` setelah ganti user tidak menumpang permintaan lama yang masih berjalan. Konfigurasi kini juga dimuat ulang saat logout, jadi strip untuk tamu langsung tampil tanpa menunggu refresh berkala.
+* **Rasio gambar popup dari Hub:** pilihan **4:5** atau **1:1** di Hub kini dikirim server (`image_ratio`) dan dipakai langsung untuk kotak gambar popup. Sebelumnya rasio ditebak dari gambar setelah dimuat, sehingga sebelum gambar selesai dimuat kotaknya selalu 16:9 dan bentuk popup tidak mengikuti pilihan Hub. Banner lama tanpa `image_ratio` tetap memakai rasio gambar.
+* **Baru:** `CommunityBanner.imageAspectRatio`, `CommunityPromoPopupDetails.imageAspectRatio`, `CommunityBanner.seenAt`, `dismissedAt`, `dismissedByUser`; `ClientConfig.viewerId`, `viewerKnown`, `isFor(userId)`; `ClientConfigService(currentUserId:)`; `CommunityStripViews.readyFor(config)`.
+
 ## 1.40.0
 
 Butuh server migrasi `0182`. Di server lama tidak ada notifikasi info, dan semuanya berjalan seperti sebelumnya. Tidak ada breaking change pada API publik.

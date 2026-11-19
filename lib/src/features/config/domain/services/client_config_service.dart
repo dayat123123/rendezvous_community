@@ -16,6 +16,7 @@ class ClientConfigService {
     this.appVersion,
     this.onUpdateRequired,
     this.interval = const Duration(minutes: 5),
+    this.currentUserId,
     ClientConfig initial = const ClientConfig(),
   }) : _value = ValueNotifier(initial);
 
@@ -24,9 +25,11 @@ class ClientConfigService {
   final String? appVersion;
   final CommunityUpdateRequiredCallback? onUpdateRequired;
   final Duration interval;
+  final String? Function()? currentUserId;
   final ValueNotifier<ClientConfig> _value;
   final _changes = StreamController<ClientConfig>.broadcast();
   Future<ClientConfig>? _inflight;
+  String? _inflightUser;
   Timer? _timer;
   bool _disposed = false;
 
@@ -36,11 +39,18 @@ class ClientConfigService {
 
   Stream<ClientConfig> get changes => _changes.stream;
 
-  Future<ClientConfig> refresh() => _inflight ??= _fetch().whenComplete(() => _inflight = null);
+  Future<ClientConfig> refresh() {
+    final user = currentUserId?.call();
+    final inflight = _inflight;
+    if (inflight != null) return _inflightUser == user ? inflight : inflight.then((_) => refresh());
+    _inflightUser = user;
+    return _inflight = _fetch(user).whenComplete(() => _inflight = null);
+  }
 
-  Future<ClientConfig> _fetch() async {
+  Future<ClientConfig> _fetch(String? user) async {
     try {
       final next = await _repository.fetch(platform: platform, appVersion: appVersion);
+      if (currentUserId?.call() != user) return current;
       _set(next);
     } catch (e) {
       final mapped = mapError(e);

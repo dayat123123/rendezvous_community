@@ -18,6 +18,7 @@ List<CommunityBanner> visibleBanners(
       if (!banner.isPopup &&
           (levels == null || levels.contains(banner.level)) &&
           !(banner.dismissible && dismissed.contains(banner.id)) &&
+          !banner.dismissedByUser &&
           (banner.endsAt == null || banner.endsAt!.isAfter(now)) &&
           (banner.startsAt == null || !banner.startsAt!.isAfter(now)))
         banner,
@@ -71,6 +72,10 @@ class CommunityBannersCubit extends Cubit<List<CommunityBanner>> {
     final views = _views;
     if (views != null && !_dismissalsReady) return;
     final config = _config.current;
+    if (views != null && !views.readyFor(config)) {
+      emit(const []);
+      return;
+    }
     final candidates = visibleBanners(
       config.banners,
       dismissed: {..._local, ...?_dismissals?.ids},

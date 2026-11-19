@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ClientConfig {
 
- bool get socialEnabled; Map<String, bool> get flags; Map<String, String?> get minVersions; bool get updateRequired; Duration get editWindow; List<String> get messageReactions; int get searchMinLength; List<String> get notificationTypes; List<String> get trendingWindows; int get notificationAggregateMinutes; Duration? get rejoinCooldown; Duration get clockSkew; List<CommunityBanner> get banners; DateTime? get fetchedAt;
+ bool get socialEnabled; Map<String, bool> get flags; Map<String, String?> get minVersions; bool get updateRequired; Duration get editWindow; List<String> get messageReactions; int get searchMinLength; List<String> get notificationTypes; List<String> get trendingWindows; int get notificationAggregateMinutes; Duration? get rejoinCooldown; Duration get clockSkew; List<CommunityBanner> get banners; DateTime? get fetchedAt; bool get viewerKnown; String? get viewerId;
 /// Create a copy of ClientConfig
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $ClientConfigCopyWith<ClientConfig> get copyWith => _$ClientConfigCopyWithImpl<C
 @override
 bool operator ==(Object other) {
   final _this = this as ClientConfig;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientConfig&&(identical(other.socialEnabled, _this.socialEnabled) || other.socialEnabled == _this.socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _this.flags)&&const DeepCollectionEquality().equals(other.minVersions, _this.minVersions)&&(identical(other.updateRequired, _this.updateRequired) || other.updateRequired == _this.updateRequired)&&(identical(other.editWindow, _this.editWindow) || other.editWindow == _this.editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _this.messageReactions)&&(identical(other.searchMinLength, _this.searchMinLength) || other.searchMinLength == _this.searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _this.notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _this.trendingWindows)&&(identical(other.notificationAggregateMinutes, _this.notificationAggregateMinutes) || other.notificationAggregateMinutes == _this.notificationAggregateMinutes)&&(identical(other.rejoinCooldown, _this.rejoinCooldown) || other.rejoinCooldown == _this.rejoinCooldown)&&(identical(other.clockSkew, _this.clockSkew) || other.clockSkew == _this.clockSkew)&&const DeepCollectionEquality().equals(other.banners, _this.banners)&&(identical(other.fetchedAt, _this.fetchedAt) || other.fetchedAt == _this.fetchedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientConfig&&(identical(other.socialEnabled, _this.socialEnabled) || other.socialEnabled == _this.socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _this.flags)&&const DeepCollectionEquality().equals(other.minVersions, _this.minVersions)&&(identical(other.updateRequired, _this.updateRequired) || other.updateRequired == _this.updateRequired)&&(identical(other.editWindow, _this.editWindow) || other.editWindow == _this.editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _this.messageReactions)&&(identical(other.searchMinLength, _this.searchMinLength) || other.searchMinLength == _this.searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _this.notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _this.trendingWindows)&&(identical(other.notificationAggregateMinutes, _this.notificationAggregateMinutes) || other.notificationAggregateMinutes == _this.notificationAggregateMinutes)&&(identical(other.rejoinCooldown, _this.rejoinCooldown) || other.rejoinCooldown == _this.rejoinCooldown)&&(identical(other.clockSkew, _this.clockSkew) || other.clockSkew == _this.clockSkew)&&const DeepCollectionEquality().equals(other.banners, _this.banners)&&(identical(other.fetchedAt, _this.fetchedAt) || other.fetchedAt == _this.fetchedAt)&&(identical(other.viewerKnown, _this.viewerKnown) || other.viewerKnown == _this.viewerKnown)&&(identical(other.viewerId, _this.viewerId) || other.viewerId == _this.viewerId));
 }
 
 
 @override
 int get hashCode {
   final _this = this as ClientConfig;
-  return Object.hash(runtimeType,_this.socialEnabled,const DeepCollectionEquality().hash(_this.flags),const DeepCollectionEquality().hash(_this.minVersions),_this.updateRequired,_this.editWindow,const DeepCollectionEquality().hash(_this.messageReactions),_this.searchMinLength,const DeepCollectionEquality().hash(_this.notificationTypes),const DeepCollectionEquality().hash(_this.trendingWindows),_this.notificationAggregateMinutes,_this.rejoinCooldown,_this.clockSkew,const DeepCollectionEquality().hash(_this.banners),_this.fetchedAt);
+  return Object.hash(runtimeType,_this.socialEnabled,const DeepCollectionEquality().hash(_this.flags),const DeepCollectionEquality().hash(_this.minVersions),_this.updateRequired,_this.editWindow,const DeepCollectionEquality().hash(_this.messageReactions),_this.searchMinLength,const DeepCollectionEquality().hash(_this.notificationTypes),const DeepCollectionEquality().hash(_this.trendingWindows),_this.notificationAggregateMinutes,_this.rejoinCooldown,_this.clockSkew,const DeepCollectionEquality().hash(_this.banners),_this.fetchedAt,_this.viewerKnown,_this.viewerId);
 }
 
 @override
 String toString() {
   final _this = this as ClientConfig;
-  return 'ClientConfig(socialEnabled: ${_this.socialEnabled}, flags: ${_this.flags}, minVersions: ${_this.minVersions}, updateRequired: ${_this.updateRequired}, editWindow: ${_this.editWindow}, messageReactions: ${_this.messageReactions}, searchMinLength: ${_this.searchMinLength}, notificationTypes: ${_this.notificationTypes}, trendingWindows: ${_this.trendingWindows}, notificationAggregateMinutes: ${_this.notificationAggregateMinutes}, rejoinCooldown: ${_this.rejoinCooldown}, clockSkew: ${_this.clockSkew}, banners: ${_this.banners}, fetchedAt: ${_this.fetchedAt})';
+  return 'ClientConfig(socialEnabled: ${_this.socialEnabled}, flags: ${_this.flags}, minVersions: ${_this.minVersions}, updateRequired: ${_this.updateRequired}, editWindow: ${_this.editWindow}, messageReactions: ${_this.messageReactions}, searchMinLength: ${_this.searchMinLength}, notificationTypes: ${_this.notificationTypes}, trendingWindows: ${_this.trendingWindows}, notificationAggregateMinutes: ${_this.notificationAggregateMinutes}, rejoinCooldown: ${_this.rejoinCooldown}, clockSkew: ${_this.clockSkew}, banners: ${_this.banners}, fetchedAt: ${_this.fetchedAt}, viewerKnown: ${_this.viewerKnown}, viewerId: ${_this.viewerId})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $ClientConfigCopyWith<$Res>  {
   factory $ClientConfigCopyWith(ClientConfig value, $Res Function(ClientConfig) _then) = _$ClientConfigCopyWithImpl;
 @useResult
 $Res call({
- bool socialEnabled, Map<String, bool> flags, Map<String, String?> minVersions, bool updateRequired, Duration editWindow, List<String> messageReactions, int searchMinLength, List<String> notificationTypes, List<String> trendingWindows, int notificationAggregateMinutes, Duration? rejoinCooldown, Duration clockSkew, List<CommunityBanner> banners, DateTime? fetchedAt
+ bool socialEnabled, Map<String, bool> flags, Map<String, String?> minVersions, bool updateRequired, Duration editWindow, List<String> messageReactions, int searchMinLength, List<String> notificationTypes, List<String> trendingWindows, int notificationAggregateMinutes, Duration? rejoinCooldown, Duration clockSkew, List<CommunityBanner> banners, DateTime? fetchedAt, bool viewerKnown, String? viewerId
 });
 
 
@@ -68,7 +68,7 @@ class _$ClientConfigCopyWithImpl<$Res>
 
 /// Create a copy of ClientConfig
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersions = null,Object? updateRequired = null,Object? editWindow = null,Object? messageReactions = null,Object? searchMinLength = null,Object? notificationTypes = null,Object? trendingWindows = null,Object? notificationAggregateMinutes = null,Object? rejoinCooldown = freezed,Object? clockSkew = null,Object? banners = null,Object? fetchedAt = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersions = null,Object? updateRequired = null,Object? editWindow = null,Object? messageReactions = null,Object? searchMinLength = null,Object? notificationTypes = null,Object? trendingWindows = null,Object? notificationAggregateMinutes = null,Object? rejoinCooldown = freezed,Object? clockSkew = null,Object? banners = null,Object? fetchedAt = freezed,Object? viewerKnown = null,Object? viewerId = freezed,}) {
   return _then(ClientConfig(
 socialEnabled: null == socialEnabled ? _self.socialEnabled : socialEnabled // ignore: cast_nullable_to_non_nullable
 as bool,flags: null == flags ? _self.flags : flags // ignore: cast_nullable_to_non_nullable
@@ -84,7 +84,9 @@ as int,rejoinCooldown: freezed == rejoinCooldown ? _self.rejoinCooldown : rejoin
 as Duration?,clockSkew: null == clockSkew ? _self.clockSkew : clockSkew // ignore: cast_nullable_to_non_nullable
 as Duration,banners: null == banners ? _self.banners : banners // ignore: cast_nullable_to_non_nullable
 as List<CommunityBanner>,fetchedAt: freezed == fetchedAt ? _self.fetchedAt : fetchedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,viewerKnown: null == viewerKnown ? _self.viewerKnown : viewerKnown // ignore: cast_nullable_to_non_nullable
+as bool,viewerId: freezed == viewerId ? _self.viewerId : viewerId // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -169,10 +171,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt,  bool viewerKnown,  String? viewerId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ClientConfig() when $default != null:
-return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt);case _:
+return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt,_that.viewerKnown,_that.viewerId);case _:
   return orElse();
 
 }
@@ -190,10 +192,10 @@ return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt,  bool viewerKnown,  String? viewerId)  $default,) {final _that = this;
 switch (_that) {
 case _ClientConfig():
-return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt);case _:
+return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt,_that.viewerKnown,_that.viewerId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -210,10 +212,10 @@ return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt,  bool viewerKnown,  String? viewerId)?  $default,) {final _that = this;
 switch (_that) {
 case _ClientConfig() when $default != null:
-return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt);case _:
+return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt,_that.viewerKnown,_that.viewerId);case _:
   return null;
 
 }
@@ -225,7 +227,7 @@ return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRe
 
 
 class _ClientConfig extends ClientConfig {
-  const _ClientConfig({this.socialEnabled = true,  Map<String, bool> flags = const <String, bool>{},  Map<String, String?> minVersions = const <String, String?>{}, this.updateRequired = false, this.editWindow = const Duration(minutes: 15),  List<String> messageReactions = const <String>['👍', '❤️', '😂', '😮', '😢', '🔥'], this.searchMinLength = 2,  List<String> notificationTypes = const <String>[],  List<String> trendingWindows = const <String>['24h', '7d'], this.notificationAggregateMinutes = 60, this.rejoinCooldown, this.clockSkew = Duration.zero,  List<CommunityBanner> banners = const <CommunityBanner>[], this.fetchedAt}): _flags = flags,_minVersions = minVersions,_messageReactions = messageReactions,_notificationTypes = notificationTypes,_trendingWindows = trendingWindows,_banners = banners,super._();
+  const _ClientConfig({this.socialEnabled = true,  Map<String, bool> flags = const <String, bool>{},  Map<String, String?> minVersions = const <String, String?>{}, this.updateRequired = false, this.editWindow = const Duration(minutes: 15),  List<String> messageReactions = const <String>['👍', '❤️', '😂', '😮', '😢', '🔥'], this.searchMinLength = 2,  List<String> notificationTypes = const <String>[],  List<String> trendingWindows = const <String>['24h', '7d'], this.notificationAggregateMinutes = 60, this.rejoinCooldown, this.clockSkew = Duration.zero,  List<CommunityBanner> banners = const <CommunityBanner>[], this.fetchedAt, this.viewerKnown = false, this.viewerId}): _flags = flags,_minVersions = minVersions,_messageReactions = messageReactions,_notificationTypes = notificationTypes,_trendingWindows = trendingWindows,_banners = banners,super._();
   
 
 @override@JsonKey() final  bool socialEnabled;
@@ -278,6 +280,8 @@ class _ClientConfig extends ClientConfig {
 }
 
 @override final  DateTime? fetchedAt;
+@override@JsonKey() final  bool viewerKnown;
+@override final  String? viewerId;
 
 /// Create a copy of ClientConfig
 /// with the given fields replaced by the non-null parameter values.
@@ -289,18 +293,18 @@ _$ClientConfigCopyWith<_ClientConfig> get copyWith => __$ClientConfigCopyWithImp
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientConfig&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _flags)&&const DeepCollectionEquality().equals(other.minVersions, _minVersions)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&(identical(other.editWindow, editWindow) || other.editWindow == editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _messageReactions)&&(identical(other.searchMinLength, searchMinLength) || other.searchMinLength == searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _trendingWindows)&&(identical(other.notificationAggregateMinutes, notificationAggregateMinutes) || other.notificationAggregateMinutes == notificationAggregateMinutes)&&(identical(other.rejoinCooldown, rejoinCooldown) || other.rejoinCooldown == rejoinCooldown)&&(identical(other.clockSkew, clockSkew) || other.clockSkew == clockSkew)&&const DeepCollectionEquality().equals(other.banners, _banners)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientConfig&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _flags)&&const DeepCollectionEquality().equals(other.minVersions, _minVersions)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&(identical(other.editWindow, editWindow) || other.editWindow == editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _messageReactions)&&(identical(other.searchMinLength, searchMinLength) || other.searchMinLength == searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _trendingWindows)&&(identical(other.notificationAggregateMinutes, notificationAggregateMinutes) || other.notificationAggregateMinutes == notificationAggregateMinutes)&&(identical(other.rejoinCooldown, rejoinCooldown) || other.rejoinCooldown == rejoinCooldown)&&(identical(other.clockSkew, clockSkew) || other.clockSkew == clockSkew)&&const DeepCollectionEquality().equals(other.banners, _banners)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt)&&(identical(other.viewerKnown, viewerKnown) || other.viewerKnown == viewerKnown)&&(identical(other.viewerId, viewerId) || other.viewerId == viewerId));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(_flags),const DeepCollectionEquality().hash(_minVersions),updateRequired,editWindow,const DeepCollectionEquality().hash(_messageReactions),searchMinLength,const DeepCollectionEquality().hash(_notificationTypes),const DeepCollectionEquality().hash(_trendingWindows),notificationAggregateMinutes,rejoinCooldown,clockSkew,const DeepCollectionEquality().hash(_banners),fetchedAt);
+    return Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(_flags),const DeepCollectionEquality().hash(_minVersions),updateRequired,editWindow,const DeepCollectionEquality().hash(_messageReactions),searchMinLength,const DeepCollectionEquality().hash(_notificationTypes),const DeepCollectionEquality().hash(_trendingWindows),notificationAggregateMinutes,rejoinCooldown,clockSkew,const DeepCollectionEquality().hash(_banners),fetchedAt,viewerKnown,viewerId);
 }
 
 @override
 String toString() {
-    return 'ClientConfig(socialEnabled: $socialEnabled, flags: $flags, minVersions: $minVersions, updateRequired: $updateRequired, editWindow: $editWindow, messageReactions: $messageReactions, searchMinLength: $searchMinLength, notificationTypes: $notificationTypes, trendingWindows: $trendingWindows, notificationAggregateMinutes: $notificationAggregateMinutes, rejoinCooldown: $rejoinCooldown, clockSkew: $clockSkew, banners: $banners, fetchedAt: $fetchedAt)';
+    return 'ClientConfig(socialEnabled: $socialEnabled, flags: $flags, minVersions: $minVersions, updateRequired: $updateRequired, editWindow: $editWindow, messageReactions: $messageReactions, searchMinLength: $searchMinLength, notificationTypes: $notificationTypes, trendingWindows: $trendingWindows, notificationAggregateMinutes: $notificationAggregateMinutes, rejoinCooldown: $rejoinCooldown, clockSkew: $clockSkew, banners: $banners, fetchedAt: $fetchedAt, viewerKnown: $viewerKnown, viewerId: $viewerId)';
 }
 
 
@@ -311,7 +315,7 @@ abstract mixin class _$ClientConfigCopyWith<$Res> implements $ClientConfigCopyWi
   factory _$ClientConfigCopyWith(_ClientConfig value, $Res Function(_ClientConfig) _then) = __$ClientConfigCopyWithImpl;
 @override @useResult
 $Res call({
- bool socialEnabled, Map<String, bool> flags, Map<String, String?> minVersions, bool updateRequired, Duration editWindow, List<String> messageReactions, int searchMinLength, List<String> notificationTypes, List<String> trendingWindows, int notificationAggregateMinutes, Duration? rejoinCooldown, Duration clockSkew, List<CommunityBanner> banners, DateTime? fetchedAt
+ bool socialEnabled, Map<String, bool> flags, Map<String, String?> minVersions, bool updateRequired, Duration editWindow, List<String> messageReactions, int searchMinLength, List<String> notificationTypes, List<String> trendingWindows, int notificationAggregateMinutes, Duration? rejoinCooldown, Duration clockSkew, List<CommunityBanner> banners, DateTime? fetchedAt, bool viewerKnown, String? viewerId
 });
 
 
@@ -328,7 +332,7 @@ class __$ClientConfigCopyWithImpl<$Res>
 
 /// Create a copy of ClientConfig
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersions = null,Object? updateRequired = null,Object? editWindow = null,Object? messageReactions = null,Object? searchMinLength = null,Object? notificationTypes = null,Object? trendingWindows = null,Object? notificationAggregateMinutes = null,Object? rejoinCooldown = freezed,Object? clockSkew = null,Object? banners = null,Object? fetchedAt = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersions = null,Object? updateRequired = null,Object? editWindow = null,Object? messageReactions = null,Object? searchMinLength = null,Object? notificationTypes = null,Object? trendingWindows = null,Object? notificationAggregateMinutes = null,Object? rejoinCooldown = freezed,Object? clockSkew = null,Object? banners = null,Object? fetchedAt = freezed,Object? viewerKnown = null,Object? viewerId = freezed,}) {
   return _then(_ClientConfig(
 socialEnabled: null == socialEnabled ? _self.socialEnabled : socialEnabled // ignore: cast_nullable_to_non_nullable
 as bool,flags: null == flags ? _self._flags : flags // ignore: cast_nullable_to_non_nullable
@@ -344,7 +348,9 @@ as int,rejoinCooldown: freezed == rejoinCooldown ? _self.rejoinCooldown : rejoin
 as Duration?,clockSkew: null == clockSkew ? _self.clockSkew : clockSkew // ignore: cast_nullable_to_non_nullable
 as Duration,banners: null == banners ? _self._banners : banners // ignore: cast_nullable_to_non_nullable
 as List<CommunityBanner>,fetchedAt: freezed == fetchedAt ? _self.fetchedAt : fetchedAt // ignore: cast_nullable_to_non_nullable
-as DateTime?,
+as DateTime?,viewerKnown: null == viewerKnown ? _self.viewerKnown : viewerKnown // ignore: cast_nullable_to_non_nullable
+as bool,viewerId: freezed == viewerId ? _self.viewerId : viewerId // ignore: cast_nullable_to_non_nullable
+as String?,
   ));
 }
 
@@ -354,7 +360,7 @@ as DateTime?,
 /// @nodoc
 mixin _$CommunityBanner {
 
- String get id; String get title; String get body; String? get linkUrl; CommunityBannerLevel get level; bool get dismissible; int get priority; DateTime? get startsAt; DateTime? get endsAt; CommunityBannerDisplay get display; String? get imageUrl; String? get ctaLabel; CommunityBannerFrequency get frequency;
+ String get id; String get title; String get body; String? get linkUrl; CommunityBannerLevel get level; bool get dismissible; int get priority; DateTime? get startsAt; DateTime? get endsAt; CommunityBannerDisplay get display; String? get imageUrl; double? get imageAspectRatio; String? get ctaLabel; CommunityBannerFrequency get frequency; DateTime? get seenAt; DateTime? get dismissedAt;
 /// Create a copy of CommunityBanner
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -366,20 +372,20 @@ $CommunityBannerCopyWith<CommunityBanner> get copyWith => _$CommunityBannerCopyW
 @override
 bool operator ==(Object other) {
   final _this = this as CommunityBanner;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityBanner&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.linkUrl, _this.linkUrl) || other.linkUrl == _this.linkUrl)&&(identical(other.level, _this.level) || other.level == _this.level)&&(identical(other.dismissible, _this.dismissible) || other.dismissible == _this.dismissible)&&(identical(other.priority, _this.priority) || other.priority == _this.priority)&&(identical(other.startsAt, _this.startsAt) || other.startsAt == _this.startsAt)&&(identical(other.endsAt, _this.endsAt) || other.endsAt == _this.endsAt)&&(identical(other.display, _this.display) || other.display == _this.display)&&(identical(other.imageUrl, _this.imageUrl) || other.imageUrl == _this.imageUrl)&&(identical(other.ctaLabel, _this.ctaLabel) || other.ctaLabel == _this.ctaLabel)&&(identical(other.frequency, _this.frequency) || other.frequency == _this.frequency));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is CommunityBanner&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.title, _this.title) || other.title == _this.title)&&(identical(other.body, _this.body) || other.body == _this.body)&&(identical(other.linkUrl, _this.linkUrl) || other.linkUrl == _this.linkUrl)&&(identical(other.level, _this.level) || other.level == _this.level)&&(identical(other.dismissible, _this.dismissible) || other.dismissible == _this.dismissible)&&(identical(other.priority, _this.priority) || other.priority == _this.priority)&&(identical(other.startsAt, _this.startsAt) || other.startsAt == _this.startsAt)&&(identical(other.endsAt, _this.endsAt) || other.endsAt == _this.endsAt)&&(identical(other.display, _this.display) || other.display == _this.display)&&(identical(other.imageUrl, _this.imageUrl) || other.imageUrl == _this.imageUrl)&&(identical(other.imageAspectRatio, _this.imageAspectRatio) || other.imageAspectRatio == _this.imageAspectRatio)&&(identical(other.ctaLabel, _this.ctaLabel) || other.ctaLabel == _this.ctaLabel)&&(identical(other.frequency, _this.frequency) || other.frequency == _this.frequency)&&(identical(other.seenAt, _this.seenAt) || other.seenAt == _this.seenAt)&&(identical(other.dismissedAt, _this.dismissedAt) || other.dismissedAt == _this.dismissedAt));
 }
 
 
 @override
 int get hashCode {
   final _this = this as CommunityBanner;
-  return Object.hash(runtimeType,_this.id,_this.title,_this.body,_this.linkUrl,_this.level,_this.dismissible,_this.priority,_this.startsAt,_this.endsAt,_this.display,_this.imageUrl,_this.ctaLabel,_this.frequency);
+  return Object.hash(runtimeType,_this.id,_this.title,_this.body,_this.linkUrl,_this.level,_this.dismissible,_this.priority,_this.startsAt,_this.endsAt,_this.display,_this.imageUrl,_this.imageAspectRatio,_this.ctaLabel,_this.frequency,_this.seenAt,_this.dismissedAt);
 }
 
 @override
 String toString() {
   final _this = this as CommunityBanner;
-  return 'CommunityBanner(id: ${_this.id}, title: ${_this.title}, body: ${_this.body}, linkUrl: ${_this.linkUrl}, level: ${_this.level}, dismissible: ${_this.dismissible}, priority: ${_this.priority}, startsAt: ${_this.startsAt}, endsAt: ${_this.endsAt}, display: ${_this.display}, imageUrl: ${_this.imageUrl}, ctaLabel: ${_this.ctaLabel}, frequency: ${_this.frequency})';
+  return 'CommunityBanner(id: ${_this.id}, title: ${_this.title}, body: ${_this.body}, linkUrl: ${_this.linkUrl}, level: ${_this.level}, dismissible: ${_this.dismissible}, priority: ${_this.priority}, startsAt: ${_this.startsAt}, endsAt: ${_this.endsAt}, display: ${_this.display}, imageUrl: ${_this.imageUrl}, imageAspectRatio: ${_this.imageAspectRatio}, ctaLabel: ${_this.ctaLabel}, frequency: ${_this.frequency}, seenAt: ${_this.seenAt}, dismissedAt: ${_this.dismissedAt})';
 }
 
 
@@ -390,7 +396,7 @@ abstract mixin class $CommunityBannerCopyWith<$Res>  {
   factory $CommunityBannerCopyWith(CommunityBanner value, $Res Function(CommunityBanner) _then) = _$CommunityBannerCopyWithImpl;
 @useResult
 $Res call({
- String id, String title, String body, String? linkUrl, CommunityBannerLevel level, bool dismissible, int priority, DateTime? startsAt, DateTime? endsAt, CommunityBannerDisplay display, String? imageUrl, String? ctaLabel, CommunityBannerFrequency frequency
+ String id, String title, String body, String? linkUrl, CommunityBannerLevel level, bool dismissible, int priority, DateTime? startsAt, DateTime? endsAt, CommunityBannerDisplay display, String? imageUrl, double? imageAspectRatio, String? ctaLabel, CommunityBannerFrequency frequency, DateTime? seenAt, DateTime? dismissedAt
 });
 
 
@@ -407,7 +413,7 @@ class _$CommunityBannerCopyWithImpl<$Res>
 
 /// Create a copy of CommunityBanner
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? body = null,Object? linkUrl = freezed,Object? level = null,Object? dismissible = null,Object? priority = null,Object? startsAt = freezed,Object? endsAt = freezed,Object? display = null,Object? imageUrl = freezed,Object? ctaLabel = freezed,Object? frequency = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? title = null,Object? body = null,Object? linkUrl = freezed,Object? level = null,Object? dismissible = null,Object? priority = null,Object? startsAt = freezed,Object? endsAt = freezed,Object? display = null,Object? imageUrl = freezed,Object? imageAspectRatio = freezed,Object? ctaLabel = freezed,Object? frequency = null,Object? seenAt = freezed,Object? dismissedAt = freezed,}) {
   return _then(CommunityBanner(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -420,9 +426,12 @@ as int,startsAt: freezed == startsAt ? _self.startsAt : startsAt // ignore: cast
 as DateTime?,endsAt: freezed == endsAt ? _self.endsAt : endsAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,display: null == display ? _self.display : display // ignore: cast_nullable_to_non_nullable
 as CommunityBannerDisplay,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,ctaLabel: freezed == ctaLabel ? _self.ctaLabel : ctaLabel // ignore: cast_nullable_to_non_nullable
+as String?,imageAspectRatio: freezed == imageAspectRatio ? _self.imageAspectRatio : imageAspectRatio // ignore: cast_nullable_to_non_nullable
+as double?,ctaLabel: freezed == ctaLabel ? _self.ctaLabel : ctaLabel // ignore: cast_nullable_to_non_nullable
 as String?,frequency: null == frequency ? _self.frequency : frequency // ignore: cast_nullable_to_non_nullable
-as CommunityBannerFrequency,
+as CommunityBannerFrequency,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,dismissedAt: freezed == dismissedAt ? _self.dismissedAt : dismissedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 
@@ -507,10 +516,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt,  CommunityBannerDisplay display,  String? imageUrl,  String? ctaLabel,  CommunityBannerFrequency frequency)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt,  CommunityBannerDisplay display,  String? imageUrl,  double? imageAspectRatio,  String? ctaLabel,  CommunityBannerFrequency frequency,  DateTime? seenAt,  DateTime? dismissedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _CommunityBanner() when $default != null:
-return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt,_that.display,_that.imageUrl,_that.ctaLabel,_that.frequency);case _:
+return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt,_that.display,_that.imageUrl,_that.imageAspectRatio,_that.ctaLabel,_that.frequency,_that.seenAt,_that.dismissedAt);case _:
   return orElse();
 
 }
@@ -528,10 +537,10 @@ return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt,  CommunityBannerDisplay display,  String? imageUrl,  String? ctaLabel,  CommunityBannerFrequency frequency)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt,  CommunityBannerDisplay display,  String? imageUrl,  double? imageAspectRatio,  String? ctaLabel,  CommunityBannerFrequency frequency,  DateTime? seenAt,  DateTime? dismissedAt)  $default,) {final _that = this;
 switch (_that) {
 case _CommunityBanner():
-return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt,_that.display,_that.imageUrl,_that.ctaLabel,_that.frequency);case _:
+return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt,_that.display,_that.imageUrl,_that.imageAspectRatio,_that.ctaLabel,_that.frequency,_that.seenAt,_that.dismissedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -548,10 +557,10 @@ return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt,  CommunityBannerDisplay display,  String? imageUrl,  String? ctaLabel,  CommunityBannerFrequency frequency)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String title,  String body,  String? linkUrl,  CommunityBannerLevel level,  bool dismissible,  int priority,  DateTime? startsAt,  DateTime? endsAt,  CommunityBannerDisplay display,  String? imageUrl,  double? imageAspectRatio,  String? ctaLabel,  CommunityBannerFrequency frequency,  DateTime? seenAt,  DateTime? dismissedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _CommunityBanner() when $default != null:
-return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt,_that.display,_that.imageUrl,_that.ctaLabel,_that.frequency);case _:
+return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.dismissible,_that.priority,_that.startsAt,_that.endsAt,_that.display,_that.imageUrl,_that.imageAspectRatio,_that.ctaLabel,_that.frequency,_that.seenAt,_that.dismissedAt);case _:
   return null;
 
 }
@@ -563,7 +572,7 @@ return $default(_that.id,_that.title,_that.body,_that.linkUrl,_that.level,_that.
 
 
 class _CommunityBanner extends CommunityBanner {
-  const _CommunityBanner({required this.id, required this.title, this.body = '', this.linkUrl, this.level = CommunityBannerLevel.info, this.dismissible = true, this.priority = 0, this.startsAt, this.endsAt, this.display = CommunityBannerDisplay.strip, this.imageUrl, this.ctaLabel, this.frequency = CommunityBannerFrequency.once}): super._();
+  const _CommunityBanner({required this.id, required this.title, this.body = '', this.linkUrl, this.level = CommunityBannerLevel.info, this.dismissible = true, this.priority = 0, this.startsAt, this.endsAt, this.display = CommunityBannerDisplay.strip, this.imageUrl, this.imageAspectRatio, this.ctaLabel, this.frequency = CommunityBannerFrequency.once, this.seenAt, this.dismissedAt}): super._();
   
 
 @override final  String id;
@@ -577,8 +586,11 @@ class _CommunityBanner extends CommunityBanner {
 @override final  DateTime? endsAt;
 @override@JsonKey() final  CommunityBannerDisplay display;
 @override final  String? imageUrl;
+@override final  double? imageAspectRatio;
 @override final  String? ctaLabel;
 @override@JsonKey() final  CommunityBannerFrequency frequency;
+@override final  DateTime? seenAt;
+@override final  DateTime? dismissedAt;
 
 /// Create a copy of CommunityBanner
 /// with the given fields replaced by the non-null parameter values.
@@ -590,18 +602,18 @@ _$CommunityBannerCopyWith<_CommunityBanner> get copyWith => __$CommunityBannerCo
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.linkUrl, linkUrl) || other.linkUrl == linkUrl)&&(identical(other.level, level) || other.level == level)&&(identical(other.dismissible, dismissible) || other.dismissible == dismissible)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.display, display) || other.display == display)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.ctaLabel, ctaLabel) || other.ctaLabel == ctaLabel)&&(identical(other.frequency, frequency) || other.frequency == frequency));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _CommunityBanner&&(identical(other.id, id) || other.id == id)&&(identical(other.title, title) || other.title == title)&&(identical(other.body, body) || other.body == body)&&(identical(other.linkUrl, linkUrl) || other.linkUrl == linkUrl)&&(identical(other.level, level) || other.level == level)&&(identical(other.dismissible, dismissible) || other.dismissible == dismissible)&&(identical(other.priority, priority) || other.priority == priority)&&(identical(other.startsAt, startsAt) || other.startsAt == startsAt)&&(identical(other.endsAt, endsAt) || other.endsAt == endsAt)&&(identical(other.display, display) || other.display == display)&&(identical(other.imageUrl, imageUrl) || other.imageUrl == imageUrl)&&(identical(other.imageAspectRatio, imageAspectRatio) || other.imageAspectRatio == imageAspectRatio)&&(identical(other.ctaLabel, ctaLabel) || other.ctaLabel == ctaLabel)&&(identical(other.frequency, frequency) || other.frequency == frequency)&&(identical(other.seenAt, seenAt) || other.seenAt == seenAt)&&(identical(other.dismissedAt, dismissedAt) || other.dismissedAt == dismissedAt));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,title,body,linkUrl,level,dismissible,priority,startsAt,endsAt,display,imageUrl,ctaLabel,frequency);
+    return Object.hash(runtimeType,id,title,body,linkUrl,level,dismissible,priority,startsAt,endsAt,display,imageUrl,imageAspectRatio,ctaLabel,frequency,seenAt,dismissedAt);
 }
 
 @override
 String toString() {
-    return 'CommunityBanner(id: $id, title: $title, body: $body, linkUrl: $linkUrl, level: $level, dismissible: $dismissible, priority: $priority, startsAt: $startsAt, endsAt: $endsAt, display: $display, imageUrl: $imageUrl, ctaLabel: $ctaLabel, frequency: $frequency)';
+    return 'CommunityBanner(id: $id, title: $title, body: $body, linkUrl: $linkUrl, level: $level, dismissible: $dismissible, priority: $priority, startsAt: $startsAt, endsAt: $endsAt, display: $display, imageUrl: $imageUrl, imageAspectRatio: $imageAspectRatio, ctaLabel: $ctaLabel, frequency: $frequency, seenAt: $seenAt, dismissedAt: $dismissedAt)';
 }
 
 
@@ -612,7 +624,7 @@ abstract mixin class _$CommunityBannerCopyWith<$Res> implements $CommunityBanner
   factory _$CommunityBannerCopyWith(_CommunityBanner value, $Res Function(_CommunityBanner) _then) = __$CommunityBannerCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String title, String body, String? linkUrl, CommunityBannerLevel level, bool dismissible, int priority, DateTime? startsAt, DateTime? endsAt, CommunityBannerDisplay display, String? imageUrl, String? ctaLabel, CommunityBannerFrequency frequency
+ String id, String title, String body, String? linkUrl, CommunityBannerLevel level, bool dismissible, int priority, DateTime? startsAt, DateTime? endsAt, CommunityBannerDisplay display, String? imageUrl, double? imageAspectRatio, String? ctaLabel, CommunityBannerFrequency frequency, DateTime? seenAt, DateTime? dismissedAt
 });
 
 
@@ -629,7 +641,7 @@ class __$CommunityBannerCopyWithImpl<$Res>
 
 /// Create a copy of CommunityBanner
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? body = null,Object? linkUrl = freezed,Object? level = null,Object? dismissible = null,Object? priority = null,Object? startsAt = freezed,Object? endsAt = freezed,Object? display = null,Object? imageUrl = freezed,Object? ctaLabel = freezed,Object? frequency = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? title = null,Object? body = null,Object? linkUrl = freezed,Object? level = null,Object? dismissible = null,Object? priority = null,Object? startsAt = freezed,Object? endsAt = freezed,Object? display = null,Object? imageUrl = freezed,Object? imageAspectRatio = freezed,Object? ctaLabel = freezed,Object? frequency = null,Object? seenAt = freezed,Object? dismissedAt = freezed,}) {
   return _then(_CommunityBanner(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
@@ -642,9 +654,12 @@ as int,startsAt: freezed == startsAt ? _self.startsAt : startsAt // ignore: cast
 as DateTime?,endsAt: freezed == endsAt ? _self.endsAt : endsAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,display: null == display ? _self.display : display // ignore: cast_nullable_to_non_nullable
 as CommunityBannerDisplay,imageUrl: freezed == imageUrl ? _self.imageUrl : imageUrl // ignore: cast_nullable_to_non_nullable
-as String?,ctaLabel: freezed == ctaLabel ? _self.ctaLabel : ctaLabel // ignore: cast_nullable_to_non_nullable
+as String?,imageAspectRatio: freezed == imageAspectRatio ? _self.imageAspectRatio : imageAspectRatio // ignore: cast_nullable_to_non_nullable
+as double?,ctaLabel: freezed == ctaLabel ? _self.ctaLabel : ctaLabel // ignore: cast_nullable_to_non_nullable
 as String?,frequency: null == frequency ? _self.frequency : frequency // ignore: cast_nullable_to_non_nullable
-as CommunityBannerFrequency,
+as CommunityBannerFrequency,seenAt: freezed == seenAt ? _self.seenAt : seenAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,dismissedAt: freezed == dismissedAt ? _self.dismissedAt : dismissedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

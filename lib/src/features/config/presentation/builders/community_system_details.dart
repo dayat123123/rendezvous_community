@@ -88,6 +88,8 @@ class CommunityPromoPopupDetails {
 
   String? get imageUrl => banner.imageUrl;
 
+  double? get imageAspectRatio => banner.imageAspectRatio;
+
   String get title => banner.title;
 
   String get body => banner.body;

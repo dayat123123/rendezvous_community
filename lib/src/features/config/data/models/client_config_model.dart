@@ -40,18 +40,25 @@ List<CommunityBanner> bannersFromJson(Object? value) => [
           endsAt: DateTime.tryParse(item['ends_at'] as String? ?? ''),
           display: CommunityBannerDisplay.values.asNameMap()[item['display']] ?? CommunityBannerDisplay.strip,
           imageUrl: _imageUrl(item['image_url']),
+          imageAspectRatio: _imageRatios[item['image_ratio']],
           ctaLabel: item['cta_label'] is String && (item['cta_label'] as String).trim().isNotEmpty
               ? (item['cta_label'] as String).trim()
               : null,
           frequency: _frequencies[item['frequency']] ?? CommunityBannerFrequency.once,
+          seenAt: _time(item['seen_at']),
+          dismissedAt: _time(item['dismissed_at']),
         ),
 ];
+
+const _imageRatios = {'portrait': 4 / 5, 'square': 1.0};
 
 const _frequencies = {
   'once': CommunityBannerFrequency.once,
   'daily': CommunityBannerFrequency.daily,
   'every_open': CommunityBannerFrequency.everyOpen,
 };
+
+DateTime? _time(Object? value) => value is String ? DateTime.tryParse(value)?.toUtc() : null;
 
 String? _imageUrl(Object? value) {
   if (value is! String) return null;
@@ -101,6 +108,8 @@ abstract class ClientConfigModel with _$ClientConfigModel {
       clockSkew: serverTime == null ? Duration.zero : serverTime.toUtc().difference(received),
       fetchedAt: received,
       banners: banners,
+      viewerKnown: config.containsKey('viewer_id'),
+      viewerId: config['viewer_id'] is String ? config['viewer_id'] as String : null,
     );
   }
 }

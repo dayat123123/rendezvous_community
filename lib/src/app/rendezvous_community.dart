@@ -343,6 +343,7 @@ class RendezvousCommunity
       platform: platform?.name,
       appVersion: appVersion,
       onUpdateRequired: onUpdateRequired,
+      currentUserId: () => tokens.currentUserId,
     );
     api.errorListener = (error) {
       if (error.code == 'social_disabled') configService.markSocialDisabled();
@@ -480,7 +481,7 @@ class RendezvousCommunity
         social.promoPopups.onUserChanged(userId);
         social.stripViews.onUserChanged(userId);
         social.tradeShare.onUserChanged(userId);
-        if (social._started && userId != null) unawaited(social.configService.refresh());
+        if (social._started) unawaited(social.configService.refresh());
         if (session != null) unawaited(social._bindOffline(session.user));
       }
       if (session == null) {

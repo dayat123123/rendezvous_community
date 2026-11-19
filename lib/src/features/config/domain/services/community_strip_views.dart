@@ -41,6 +41,8 @@ class CommunityStripViews extends ChangeNotifier {
     _loading = null;
   }
 
+  bool readyFor(ClientConfig config) => config.loaded && config.isFor(_currentUserId());
+
   List<CommunityBanner> admit(Iterable<CommunityBanner> candidates, {required int max}) {
     _sync();
     final shown = _shown;

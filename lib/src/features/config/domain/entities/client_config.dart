@@ -43,6 +43,8 @@ abstract class ClientConfig with _$ClientConfig {
     @Default(Duration.zero) Duration clockSkew,
     @Default(<CommunityBanner>[]) List<CommunityBanner> banners,
     DateTime? fetchedAt,
+    @Default(false) bool viewerKnown,
+    String? viewerId,
   }) = _ClientConfig;
 
   const ClientConfig._();
@@ -52,6 +54,8 @@ abstract class ClientConfig with _$ClientConfig {
   bool flag(String key) => flags[key] ?? !loaded;
 
   bool feature(String key) => socialEnabled && flag(key);
+
+  bool isFor(String? userId) => !viewerKnown || viewerId == userId;
 
   DateTime serverNow([DateTime? local]) => (local ?? DateTime.now()).toUtc().add(clockSkew);
 
@@ -81,13 +85,18 @@ abstract class CommunityBanner with _$CommunityBanner {
     DateTime? endsAt,
     @Default(CommunityBannerDisplay.strip) CommunityBannerDisplay display,
     String? imageUrl,
+    double? imageAspectRatio,
     String? ctaLabel,
     @Default(CommunityBannerFrequency.once) CommunityBannerFrequency frequency,
+    DateTime? seenAt,
+    DateTime? dismissedAt,
   }) = _CommunityBanner;
 
   const CommunityBanner._();
 
   bool get isPopup => display == CommunityBannerDisplay.popup;
+
+  bool get dismissedByUser => dismissible && dismissedAt != null;
 
   Uri? get link {
     final uri = Uri.tryParse(linkUrl ?? '');
