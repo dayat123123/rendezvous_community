@@ -768,7 +768,7 @@ CommunityPromoPopupHost(
 );
 ```
 
-Bila `presentation` berubah saat popup inline masih tampil, popup itu ditutup tanpa event `dismiss`.
+Bila `presentation` berubah saat popup masih tampil, misalnya jendela dilebarkan dari ukuran mobile ke desktop, popup yang sama dipindahkan ke tampilan baru tanpa event baru (sejak 1.44.1).
 
 `CommunityPromoPopupCard(banner:, onCta:, onClose:)` merender kartu bawaan (beserta slot) tanpa dialog, mis. untuk pratinjau; `showCommunityPromoPopup(context, banner)` menampilkan satu banner sebagai popup tanpa aturan frekuensi.
 

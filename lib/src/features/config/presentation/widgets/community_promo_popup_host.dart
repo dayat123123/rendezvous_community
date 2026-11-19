@@ -46,6 +46,8 @@ class _CommunityPromoPopupHostState extends State<CommunityPromoPopupHost> {
   bool _scheduled = false;
   bool _busy = false;
   final _inline = ValueNotifier<_InlinePromoPopup?>(null);
+  Route<Object?>? _dialogRoute;
+  bool _moving = false;
 
   @override
   void didChangeDependencies() {
@@ -58,7 +60,7 @@ class _CommunityPromoPopupHostState extends State<CommunityPromoPopupHost> {
   @override
   void didUpdateWidget(CommunityPromoPopupHost oldWidget) {
     super.didUpdateWidget(oldWidget);
-    if (widget.presentation != oldWidget.presentation) _inline.value?.finish(null);
+    if (widget.presentation != oldWidget.presentation) _move();
     if (widget.enabled != oldWidget.enabled) _schedule();
   }
 
@@ -111,24 +113,56 @@ class _CommunityPromoPopupHostState extends State<CommunityPromoPopupHost> {
       if (Navigator.maybeOf(context, rootNavigator: true) == null) return;
       if (_config?.current.updateRequired ?? true) return;
       if (!popups.claim(banner)) return;
-      if (widget.presentation == CommunityPromoPopupPresentation.inline) {
-        await _showInline(banner, popups);
-      } else {
-        await showCommunityPromoPopup(context, banner, onBannerLink: widget.onBannerLink, popups: popups);
-      }
+      await _present(banner, popups);
     } finally {
       _busy = false;
     }
   }
 
-  Future<void> _showInline(CommunityBanner banner, CommunityPromoPopups popups) async {
+  Future<void> _present(CommunityBanner banner, CommunityPromoPopups popups) async {
+    while (mounted) {
+      _moving = false;
+      final inline = widget.presentation == CommunityPromoPopupPresentation.inline;
+      final raw = inline ? await _inlineEvent(banner) : await _dialogEvent(banner);
+      if (raw == null && _moving && mounted) continue;
+      if (raw == null && inline) return;
+      final event = raw ?? CommunityBannerEvent.dismiss;
+      if (!mounted) {
+        popups.record(banner, event);
+        return;
+      }
+      await _finishPromoPopup(context, banner, event, onBannerLink: widget.onBannerLink, popups: popups);
+      return;
+    }
+  }
+
+  Future<CommunityBannerEvent?> _inlineEvent(CommunityBanner banner) async {
     final active = _InlinePromoPopup(banner);
     _inline.value = active;
     final event = await active.done;
-    if (!mounted) return;
-    if (identical(_inline.value, active)) _inline.value = null;
-    if (event == null) return;
-    await _finishPromoPopup(context, banner, event, onBannerLink: widget.onBannerLink, popups: popups);
+    if (mounted && identical(_inline.value, active)) _inline.value = null;
+    return event;
+  }
+
+  Future<CommunityBannerEvent?> _dialogEvent(CommunityBanner banner) async {
+    final event = await _openPromoDialog(context, banner, onRoute: (route) => _dialogRoute = route);
+    _dialogRoute = null;
+    return event;
+  }
+
+  void _move() {
+    final inline = _inline.value;
+    if (inline != null) {
+      _moving = true;
+      inline.finish(null);
+      return;
+    }
+    final route = _dialogRoute;
+    if (route == null) return;
+    _moving = true;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (route.isActive) route.navigator?.removeRoute(route);
+    });
   }
 
   @override
@@ -221,34 +255,53 @@ Future<CommunityBannerEvent> showCommunityPromoPopup(
   CommunityBannerLinkCallback? onBannerLink,
   CommunityPromoPopups? popups,
 }) async {
+  final action = await _openPromoDialog(context, banner);
+  final event = action ?? CommunityBannerEvent.dismiss;
+  if (context.mounted) {
+    await _finishPromoPopup(context, banner, event, onBannerLink: onBannerLink, popups: popups);
+  } else {
+    popups?.record(banner, event);
+  }
+  return event;
+}
+
+Future<CommunityBannerEvent?> _openPromoDialog(
+  BuildContext context,
+  CommunityBanner banner, {
+  void Function(Route<Object?> route)? onRoute,
+}) {
   final l10n = context.communityL10n;
   final navigator = Navigator.of(context, rootNavigator: true);
   final themes = InheritedTheme.capture(from: context, to: navigator.context);
   final carry = carryCommunityBuilders(context);
   final loader = CommunityImageScope.of(context);
   final still = MediaQuery.maybeDisableAnimationsOf(context) ?? false;
-  final action = await showGeneralDialog<CommunityBannerEvent>(
+  return showGeneralDialog<CommunityBannerEvent>(
     context: context,
     useRootNavigator: true,
     barrierDismissible: banner.dismissible,
     barrierLabel: l10n.promoPopupClose,
     barrierColor: Colors.black.withValues(alpha: 0.6),
     transitionDuration: still ? Duration.zero : const Duration(milliseconds: 200),
-    pageBuilder: (dialogContext, _, _) => themes.wrap(
-      carry(
-        CommunityImageScope(
-          loader: loader,
-          child: PopScope(
-            canPop: banner.dismissible,
-            child: CommunityPromoPopupCard(
-              banner: banner,
-              onCta: banner.link == null ? null : () => Navigator.pop(dialogContext, CommunityBannerEvent.click),
-              onClose: () => Navigator.pop(dialogContext, CommunityBannerEvent.dismiss),
+    pageBuilder: (dialogContext, _, _) {
+      final route = ModalRoute.of(dialogContext);
+      if (route != null) onRoute?.call(route);
+      return themes.wrap(
+        carry(
+          CommunityImageScope(
+            loader: loader,
+            child: PopScope(
+              canPop: banner.dismissible,
+              child: CommunityPromoPopupCard(
+                banner: banner,
+                onCta: banner.link == null ? null : () => Navigator.pop(dialogContext, CommunityBannerEvent.click),
+                onClose: () => Navigator.pop(dialogContext, CommunityBannerEvent.dismiss),
+              ),
             ),
           ),
         ),
-      ),
-    ),
+      );
+    },
     transitionBuilder: (_, animation, _, child) {
       final curved = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
       return FadeTransition(
@@ -257,13 +310,6 @@ Future<CommunityBannerEvent> showCommunityPromoPopup(
       );
     },
   );
-  final event = action ?? CommunityBannerEvent.dismiss;
-  if (context.mounted) {
-    await _finishPromoPopup(context, banner, event, onBannerLink: onBannerLink, popups: popups);
-  } else {
-    popups?.record(banner, event);
-  }
-  return event;
 }
 
 class CommunityPromoPopupCard extends StatelessWidget {

@@ -777,7 +777,7 @@ void main() {
       );
     });
 
-    testWidgets('switching to dialog while shown drops the inline popup quietly', (tester) async {
+    testWidgets('switching to dialog while shown moves the popup into a dialog', (tester) async {
       final features = _features([_popup('a')]);
       addTearDown(features.dispose);
       await pumpInline(tester, features);
@@ -787,8 +787,44 @@ void main() {
       await _pumpHost(tester, features, child: corner);
       await tester.pumpAndSettle();
 
-      expect(find.text('Promo a'), findsNothing);
+      expect(find.text('Promo a'), findsOneWidget);
+      expect(
+        ModalRoute.of(tester.element(find.text('Promo a'))),
+        isNot(same(ModalRoute.of(tester.element(find.text('Beranda host'))))),
+      );
       expect(_events(features), [CommunityBannerEvent.impression]);
+
+      await tester.tap(find.byTooltip('Tutup promo'));
+      await tester.pumpAndSettle();
+      expect(find.text('Promo a'), findsNothing);
+      expect(_events(features), [CommunityBannerEvent.impression, CommunityBannerEvent.dismiss]);
+    });
+
+    testWidgets('widening to inline while a dialog is open moves the popup into the slot', (tester) async {
+      final features = _features([_popup('a')]);
+      addTearDown(features.dispose);
+      await _pumpHost(tester, features, child: corner);
+      await tester.pumpAndSettle();
+      expect(
+        ModalRoute.of(tester.element(find.text('Promo a'))),
+        isNot(same(ModalRoute.of(tester.element(find.text('Beranda host'))))),
+      );
+
+      await pumpInline(tester, features);
+      await tester.pumpAndSettle();
+
+      expect(find.text('Promo a'), findsOneWidget);
+      expect(
+        ModalRoute.of(tester.element(find.text('Promo a'))),
+        same(ModalRoute.of(tester.element(find.text('Beranda host')))),
+      );
+      expect(find.byType(CommunityPromoPopupCard), findsOneWidget);
+      expect(_events(features), [CommunityBannerEvent.impression]);
+
+      await tester.tap(find.text('Lihat'));
+      await tester.pumpAndSettle();
+      expect(find.text('Promo a'), findsNothing);
+      expect(_events(features), [CommunityBannerEvent.impression, CommunityBannerEvent.click]);
     });
 
     testWidgets('a slot outside any host renders nothing', (tester) async {

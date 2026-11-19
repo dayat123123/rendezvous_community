@@ -1,10 +1,15 @@
+## 1.44.1
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Perbaikan popup tetap di tengah setelah jendela dilebarkan:** bila `presentation` host berubah saat popup masih tampil, popup kini pindah ke tampilan yang baru. Dialog yang terbuka ditutup lalu kartu yang sama muncul di `CommunityPromoPopupSlot`, dan sebaliknya. Tidak ada event `impression` atau `dismiss` tambahan. Sebelumnya dialog tetap terbuka di tengah, dan popup inline hilang begitu saja.
+
 ## 1.44.0
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
 
 * **Popup promo tanpa dialog:** `CommunityPromoPopupHost(presentation: CommunityPromoPopupPresentation.inline)` menampilkan popup di `CommunityPromoPopupSlot` yang dipasang host di dalam halaman, misalnya sebagai kartu di pojok kanan bawah. Tidak ada lapisan gelap, dan halaman di belakangnya tetap bisa dipakai. Aturan frekuensi, satu popup per sesi, serta event `impression`/`click`/`dismiss` sama dengan mode dialog. Bawaannya tetap `dialog`.
 * **Baru:** `CommunityPromoPopupDetails.inline` dan `CommunityPromoPopupCard(inline:)`, agar slot `system.popup` bisa memakai tata letak ringkas. Kartu bawaan tampil tanpa `SafeArea`/`Center` dan dengan bayangan saat inline.
-* Bila `presentation` berubah saat popup inline masih tampil, popup itu ditutup tanpa event `dismiss`.
 
 ## 1.43.0
 
