@@ -115,6 +115,60 @@ void main() {
     expect(find.text('Server dipakai mock trading malam ini.'), findsNothing);
   });
 
+  group('system.noticeHeader', () {
+    Future<void> openPage(WidgetTester tester, {CommunityBuilders? builders}) async {
+      Widget opener = Builder(
+        builder: (context) => TextButton(
+          onPressed: () => openCommunityNotice(context, notice: CommunityNotice.fromJson(_payload)),
+          child: const Text('buka info'),
+        ),
+      );
+      if (builders != null) opener = CommunityBuildersScope(builders: builders, child: opener);
+      await pumpFeatureApp(tester, opener, features: FakeFeatureDependencies());
+      await tester.tap(find.text('buka info'));
+      await tester.pumpAndSettle();
+    }
+
+    testWidgets('without the slot the info page keeps its app bar', (tester) async {
+      await openPage(tester);
+      expect(find.byType(CommunityNoticePage), findsOneWidget);
+      expect(find.byType(AppBar), findsOneWidget);
+    });
+
+    testWidgets('replaces the app bar and can go back', (tester) async {
+      await openPage(
+        tester,
+        builders: CommunityBuilders(
+          system: CommunitySystemBuilders(
+            noticeHeader: (context, d, fallback) => Row(
+              children: [
+                Text('header ${d.title}'),
+                if (d.onBack != null) TextButton(onPressed: d.onBack, child: const Text('kembali')),
+              ],
+            ),
+          ),
+        ),
+      );
+
+      expect(find.byType(AppBar), findsNothing);
+      expect(find.text('header Informasi'), findsOneWidget);
+      expect(find.text('Server mock trading'), findsOneWidget);
+
+      await tester.tap(find.text('kembali'));
+      await tester.pumpAndSettle();
+      expect(find.byType(CommunityNoticePage), findsNothing);
+      expect(find.text('buka info'), findsOneWidget);
+    });
+
+    test('is kept and overridden by merge', () {
+      Widget first(BuildContext context, CommunityNoticeHeaderDetails d, Widget fallback) => fallback;
+      Widget second(BuildContext context, CommunityNoticeHeaderDetails d, Widget fallback) => const SizedBox();
+      final base = CommunitySystemBuilders(noticeHeader: first);
+      expect(base.merge(const CommunitySystemBuilders()).noticeHeader, same(first));
+      expect(base.merge(CommunitySystemBuilders(noticeHeader: second)).noticeHeader, same(second));
+    });
+  });
+
   testWidgets('tapping an info notification opens the in-app info page, not Stream', (tester) async {
     await pumpFeatureApp(
       tester,

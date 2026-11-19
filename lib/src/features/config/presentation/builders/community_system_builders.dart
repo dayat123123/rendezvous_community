@@ -10,6 +10,7 @@ class CommunitySystemBuilders {
     this.consentBanner,
     this.popup,
     this.notice,
+    this.noticeHeader,
   });
 
   final CommunityPartBuilder<CommunityBannerDetails>? banner;
@@ -18,6 +19,7 @@ class CommunitySystemBuilders {
   final CommunityPartBuilder<CommunityConsentBannerDetails>? consentBanner;
   final CommunityPartBuilder<CommunityPromoPopupDetails>? popup;
   final CommunityPartBuilder<CommunityNoticeDetails>? notice;
+  final CommunityPartBuilder<CommunityNoticeHeaderDetails>? noticeHeader;
 
   static CommunitySystemBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -35,6 +37,7 @@ class CommunitySystemBuilders {
       consentBanner: other.consentBanner ?? consentBanner,
       popup: other.popup ?? popup,
       notice: other.notice ?? notice,
+      noticeHeader: other.noticeHeader ?? noticeHeader,
     );
   }
 }

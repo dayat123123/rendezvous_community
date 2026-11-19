@@ -225,7 +225,7 @@ Banner & Popup di Hub bisa dikirim juga sebagai **notifikasi info** ke semua nas
 - **Halaman info:**
   - Isinya: label level, judul, waktu kirim, gambar (`http(s)` saja), dan isi (`SelectableText`).
   - Tombol `cta_label` (atau "Selengkapnya") memanggil `onBannerLink` milik pemanggil atau `initialize(onBannerLink:)`. `https` yang tidak ditangani dibuka lewat konfirmasi tautan luar; skema lain diabaikan.
-- **Kustomisasi:** `CommunitySystemBuilders(notice: (context, d, fallback) => ...)` dengan `CommunityNoticeDetails`. Halaman bisa dibuka manual dengan `openCommunityNotice(context, notice: ..., noticeId: ...)`.
+- **Kustomisasi:** `CommunitySystemBuilders(notice: (context, d, fallback) => ...)` dengan `CommunityNoticeDetails` untuk isi halaman, dan `noticeHeader:` dengan `CommunityNoticeHeaderDetails` (`title`, `onBack`) untuk mengganti `AppBar`. Halaman bisa dibuka manual dengan `openCommunityNotice(context, notice: ..., noticeId: ...)`.
 
 ## Riwayat banner per akun (1.41.0, migrasi `0183`)
 

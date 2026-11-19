@@ -126,3 +126,10 @@ class CommunityNoticeDetails {
 
   bool get hasLink => onOpen != null;
 }
+
+class CommunityNoticeHeaderDetails {
+  const CommunityNoticeHeaderDetails({required this.title, this.onBack});
+
+  final String title;
+  final VoidCallback? onBack;
+}

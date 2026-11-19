@@ -1,3 +1,9 @@
+## 1.42.0
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Header halaman info bisa diganti:** slot baru `CommunitySystemBuilders(noticeHeader: (context, d, fallback) => ...)` dengan `CommunityNoticeHeaderDetails` (`title`, `onBack`) menggantikan `AppBar` di `CommunityNoticePage`, misalnya agar halaman info yang dibuka di panel samping host memakai header panel sendiri. `onBack` berisi aksi kembali bila halaman bisa di-pop. Tanpa slot ini halaman tetap memakai `AppBar` seperti sebelumnya.
+
 ## 1.41.0
 
 Butuh server migrasi `0183` agar riwayat banner berlaku per akun. Di server lama perilakunya sama seperti 1.40.0. Tidak ada breaking change pada API publik.

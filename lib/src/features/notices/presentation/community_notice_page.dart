@@ -97,15 +97,32 @@ class _CommunityNoticePageState extends State<CommunityNoticePage> {
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
     final notice = _notice;
+    final title = l10n.noticeTitle;
+    final body = SafeArea(
+      top: false,
+      child: notice != null
+          ? CommunityNoticeView(notice: notice, onBannerLink: widget.onBannerLink)
+          : _failed
+          ? _NoticeUnavailable(onRetry: widget.noticeId == null ? null : _load)
+          : const Center(child: CircularProgressIndicator()),
+    );
+    final appBar = AppBar(title: Text(title));
+    if (CommunitySystemBuilders.of(context).noticeHeader == null) return Scaffold(appBar: appBar, body: body);
+    final navigator = Navigator.maybeOf(context);
+    final details = CommunityNoticeHeaderDetails(
+      title: title,
+      onBack: navigator != null && navigator.canPop() ? () => unawaited(navigator.maybePop()) : null,
+    );
     return Scaffold(
-      appBar: AppBar(title: Text(l10n.noticeTitle)),
       body: SafeArea(
-        top: false,
-        child: notice != null
-            ? CommunityNoticeView(notice: notice, onBannerLink: widget.onBannerLink)
-            : _failed
-            ? _NoticeUnavailable(onRetry: widget.noticeId == null ? null : _load)
-            : const Center(child: CircularProgressIndicator()),
+        bottom: false,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            buildSystemPart((b) => b.noticeHeader, context, details, appBar),
+            Expanded(child: body),
+          ],
+        ),
       ),
     );
   }
