@@ -72,8 +72,24 @@ class _CommunityNoticePageState extends State<CommunityNoticePage> {
   @override
   void initState() {
     super.initState();
-    _notice = widget.notice;
-    if (_notice == null) unawaited(_load());
+    final notice = _notice = widget.notice;
+    if (notice == null) {
+      unawaited(_load());
+    } else if (notice.bodyTruncated) {
+      unawaited(_loadFullBody(notice));
+    }
+  }
+
+  Future<void> _loadFullBody(CommunityNotice preview) async {
+    final repository = widget.repository ?? communityNoticeRepository(context);
+    final id = widget.noticeId ?? preview.id;
+    if (repository == null || id.isEmpty) return;
+    try {
+      final full = await repository.get(id);
+      if (mounted) setState(() => _notice = full);
+    } catch (error) {
+      mapError(error);
+    }
   }
 
   Future<void> _load() async {

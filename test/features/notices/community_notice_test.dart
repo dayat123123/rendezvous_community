@@ -231,4 +231,78 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Sudah ada'), findsOneWidget);
   });
+
+  group('long info text', () {
+    const preview = CommunityNotice(
+      id: 'nt-long',
+      title: 'Pemeliharaan',
+      body: 'Mulai pukul 22.00…',
+      bodyTruncated: true,
+    );
+    const full = CommunityNotice(id: 'nt-long', title: 'Pemeliharaan', body: 'Mulai pukul 22.00 sampai 02.00 WIB.');
+
+    test('the notification payload marks a shortened body', () {
+      expect(CommunityNotice.fromJson({..._payload, 'body_truncated': true}).bodyTruncated, isTrue);
+      expect(CommunityNotice.fromJson(_payload).bodyTruncated, isFalse);
+    });
+
+    testWidgets('a shortened body shows at once, then the full text from the server', (tester) async {
+      final features = FakeFeatureDependencies();
+      features.notices.notices['nt-long'] = full;
+      await pumpFeatureApp(
+        tester,
+        CommunityNoticePage(notice: preview, repository: features.notices),
+        features: features,
+      );
+      expect(find.text('Mulai pukul 22.00…'), findsOneWidget);
+      await tester.pumpAndSettle();
+      expect(features.notices.requested, ['nt-long']);
+      expect(find.text('Mulai pukul 22.00 sampai 02.00 WIB.'), findsOneWidget);
+    });
+
+    testWidgets('system.notice receives the full text once it loads', (tester) async {
+      final features = FakeFeatureDependencies();
+      features.notices.notices['nt-long'] = full;
+      await pumpFeatureApp(
+        tester,
+        CommunityBuildersScope(
+          builders: CommunityBuilders(
+            system: CommunitySystemBuilders(notice: (context, d, fallback) => Text('custom ${d.body}')),
+          ),
+          child: CommunityNoticePage(notice: preview, repository: features.notices),
+        ),
+        features: features,
+      );
+      await tester.pumpAndSettle();
+      expect(find.text('custom Mulai pukul 22.00 sampai 02.00 WIB.'), findsOneWidget);
+    });
+
+    testWidgets('a notice that is not shortened, such as one built from a banner, makes no request', (tester) async {
+      final features = FakeFeatureDependencies();
+      await pumpFeatureApp(
+        tester,
+        CommunityNoticePage(
+          notice: const CommunityNotice(id: 'banner-1', bannerId: 'banner-1', title: 'Strip', body: 'Isi strip'),
+          repository: features.notices,
+        ),
+        features: features,
+      );
+      await tester.pumpAndSettle();
+      expect(features.notices.requested, isEmpty);
+      expect(find.text('Isi strip'), findsOneWidget);
+    });
+
+    testWidgets('when the full text cannot load the preview stays readable', (tester) async {
+      final features = FakeFeatureDependencies();
+      await pumpFeatureApp(
+        tester,
+        CommunityNoticePage(notice: preview, repository: features.notices),
+        features: features,
+      );
+      await tester.pumpAndSettle();
+      expect(features.notices.requested, ['nt-long']);
+      expect(find.text('Mulai pukul 22.00…'), findsOneWidget);
+      expect(find.text('Informasi ini tidak tersedia lagi.'), findsNothing);
+    });
+  });
 }

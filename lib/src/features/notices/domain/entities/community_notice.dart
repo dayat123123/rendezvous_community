@@ -14,6 +14,7 @@ class CommunityNotice {
     this.sentAt,
     this.bannerId,
     this.notificationId,
+    this.bodyTruncated = false,
   });
 
   factory CommunityNotice.fromJson(Map<String, Object?> json, {String? id, String? notificationId, DateTime? sentAt}) =>
@@ -32,6 +33,7 @@ class CommunityNotice {
         sentAt: _time(json['sent_at']) ?? sentAt,
         bannerId: _text(json['banner_id']),
         notificationId: _text(json['notification_id']) ?? notificationId,
+        bodyTruncated: json['body_truncated'] == true,
       );
 
   final String id;
@@ -44,6 +46,7 @@ class CommunityNotice {
   final DateTime? sentAt;
   final String? bannerId;
   final String? notificationId;
+  final bool bodyTruncated;
 
   Uri? get link {
     final uri = Uri.tryParse(linkUrl ?? '');
@@ -72,11 +75,12 @@ class CommunityNotice {
       other.imageUrl == imageUrl &&
       other.sentAt == sentAt &&
       other.bannerId == bannerId &&
-      other.notificationId == notificationId;
+      other.notificationId == notificationId &&
+      other.bodyTruncated == bodyTruncated;
 
   @override
   int get hashCode =>
-      Object.hash(id, title, body, level, linkUrl, ctaLabel, imageUrl, sentAt, bannerId, notificationId);
+      Object.hash(id, title, body, level, linkUrl, ctaLabel, imageUrl, sentAt, bannerId, notificationId, bodyTruncated);
 
   static String? _text(Object? value) => value is String && value.trim().isNotEmpty ? value : null;
 

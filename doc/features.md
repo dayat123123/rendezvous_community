@@ -220,6 +220,7 @@ Banner & Popup di Hub bisa dikirim juga sebagai **notifikasi info** ke semua nas
 - **Kontrak server:**
   - Notifikasi bertipe `announcement` dengan payload `notice_id`, `banner_id`, `title`, `body`, `level` (`info`/`warning`/`critical`), `link_url`, `cta_label`, `image_url`, dan `sent_at`.
   - Push membawa `notice_id` di data. `get_app_notice(p_id)` mengembalikan isi yang sama, hanya untuk pengguna yang menerima notifikasinya; selain itu `404 notice_not_found`.
+  - Sejak migrasi `0184` judul sampai 120 karakter dan isi sampai 5.000 karakter. Payload notifikasi dan push hanya membawa cuplikan ±280 karakter dengan `body_truncated: true`; `get_app_notice` mengembalikan isi lengkap. Library 1.43.0 menampilkan cuplikan lalu memuat isi lengkap di halaman info.
 - **Daftar notifikasi:** judul dan isi tampil seperti pengumuman, dengan ikon sesuai level. Ketuk membuka `CommunityNoticePage` di dalam aplikasi.
 - **Push:** `openCommunityPush` mengenali `notice_id` lalu membuka halaman yang sama dan memuat isinya dari server.
 - **Halaman info:**

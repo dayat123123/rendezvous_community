@@ -1,3 +1,11 @@
+## 1.43.0
+
+Butuh server migrasi `0184` agar isi notifikasi info bisa sampai 5.000 karakter. Di server lama semuanya berjalan seperti sebelumnya. Tidak ada breaking change pada API publik.
+
+* **Isi notifikasi info panjang:** server kini hanya mengirim cuplikan ±280 karakter di daftar notifikasi dan push, ditandai `body_truncated: true`. Halaman info langsung menampilkan cuplikan itu, lalu memuat isi lengkapnya lewat `get_app_notice`. Slot `system.notice` menerima isi lengkap setelah dimuat. Bila gagal dimuat, cuplikan tetap terbaca dan tidak muncul pesan "tidak tersedia".
+* Notice tanpa `bodyTruncated`, misalnya yang dibuat host dari banner strip, ditampilkan apa adanya tanpa permintaan ke server.
+* **Baru:** `CommunityNotice.bodyTruncated` (opsional, bawaan `false`).
+
 ## 1.42.0
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
