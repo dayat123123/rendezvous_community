@@ -1,3 +1,9 @@
+## 1.46.1
+
+Tidak butuh migrasi server. Tidak ada perubahan kode.
+
+* **LICENSE dalam bahasa Inggris:** teks lisensi ditulis ulang dalam bahasa Inggris dengan format lisensi proprietary yang baku (hak cipta, batasan penggunaan, penafian garansi, dan dependensi pihak ketiga). Teks ini yang tampil di halaman lisensi open source aplikasi host.
+
 ## 1.46.0
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
