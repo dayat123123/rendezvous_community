@@ -404,6 +404,7 @@ await RendezvousCommunity.initialize(
   // ...
   offlineCache: true,          // false: perilaku lama, tanpa database lokal dan tanpa outbox
   offlineMessageLimit: 200,    // pesan terakhir yang disimpan per room
+  offlineCacheKey: readCacheKey, // opsional (1.45.0): kunci 64 hex, database dienkripsi
 );
 
 await RendezvousCommunity.instance.clearLocalCache();   // hapus cache & antrean user ini (sesi tetap)
@@ -419,6 +420,16 @@ const CommunityOfflineBanner();                          // banner "Anda sedang 
 | Outbox | pesan teks yang belum terkirim (`client_id`, isi, balasan) | sampai terkirim, dihapus user, atau logout |
 | Pusat Bantuan | respons `cs_api.faq` terakhir per bahasa (kategori dan artikel terbit, tanpa umpan balik) | satu salinan per bahasa, ditimpa tiap kali berhasil dimuat |
 
+- **Enkripsi (1.45.0):** isi `offlineCacheKey` dengan fungsi yang mengembalikan kunci 256-bit acak dalam 64 karakter hex, simpan kuncinya di penyimpanan aman host (misalnya `flutter_secure_storage`), lalu pilih SQLite3MultipleCiphers di `pubspec.yaml` aplikasi host:
+
+  ```yaml
+  hooks:
+    user_defines:
+      sqlite3:
+        source: sqlite3mc
+  ```
+
+  File lama yang polos atau tidak cocok dengan kunci dibuang lalu dibuat ulang. Bila kunci tidak valid atau file ternyata tetap polos (mesin enkripsi tidak dipilih), paket tidak menulis ke disk dan memakai cache memori. Cache gambar tetap berupa file biasa; di web cache selalu di memori.
 - **Sinkron:** baris server menimpa baris cache (edit, hapus, reaksi, `moderation_status`). Pesan yang tidak lagi dikembalikan server dalam rentang halaman yang sama dihapus dari cache. Saat koneksi kembali, layar yang masih menampilkan data tersimpan memuat ulang sendiri.
 - **Outbox:** pesan teks yang dikirim saat offline atau gagal karena jaringan tampil "Menunggu dikirim" lalu dikirim ulang otomatis (backoff 2 detik sampai 1 menit, langsung saat koneksi kembali, aplikasi kembali ke foreground, atau realtime tersambung). Urutan per room dijaga; `client_id` membuat server menolak duplikat. Penolakan server (`content_blocked`, `dm_request_limit`, persetujuan dokumen, `slow_mode` setelah 3 percobaan, dll.) membuat pesan "Gagal terkirim" dengan alasannya dan tombol **Coba lagi** / **Hapus**.
 - **Lampiran:** gambar, dokumen, dan video butuh media gateway, jadi tidak masuk antrean. Saat offline paket menolak dengan pesan "Gambar dan dokumen hanya bisa dikirim saat online."

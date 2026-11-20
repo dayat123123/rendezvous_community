@@ -1,3 +1,12 @@
+## 1.45.0
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Cache offline terenkripsi:** `RendezvousCommunity.initialize(offlineCacheKey: ...)` menerima fungsi yang mengembalikan kunci 256-bit (64 karakter hex). Bila diisi, database offline di `dart:io` dibuka dengan SQLite3MultipleCiphers (`PRAGMA hexkey`), sehingga daftar chat, pesan, feed, outbox, dan nilai lokal tidak terbaca dari file. Host wajib memilih mesin itu di `pubspec.yaml` aplikasinya (`hooks.user_defines.sqlite3.source: sqlite3mc`) dan menyimpan kuncinya di penyimpanan aman.
+* File lama yang belum terenkripsi, atau yang tidak bisa dibuka dengan kunci saat ini, dihapus lalu dibuat ulang. Isinya hanya salinan dari server.
+* Bila kunci tidak valid atau enkripsi ternyata tidak aktif (file masih berheader SQLite polos), paket tidak menulis ke disk dan cache disimpan di memori saja.
+* Tanpa `offlineCacheKey` perilakunya sama seperti sebelumnya. Cache gambar dan web tidak berubah.
+
 ## 1.44.1
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

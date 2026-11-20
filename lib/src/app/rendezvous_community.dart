@@ -238,6 +238,7 @@ class RendezvousCommunity
     bool trackDelivery = true,
     bool offlineCache = true,
     int offlineMessageLimit = 200,
+    Future<String> Function()? offlineCacheKey,
     CommunityImageCacheConfig imageCache = const CommunityImageCacheConfig(),
     CommunityScrollSettings scroll = CommunityScrollSettings.defaults,
     CommunityGuestSessionStore? guestSessionStore,
@@ -272,6 +273,7 @@ class RendezvousCommunity
       trackDelivery: trackDelivery,
       offlineCache: offlineCache,
       offlineMessageLimit: offlineMessageLimit,
+      offlineCacheKey: offlineCacheKey,
       imageCache: imageCache,
       scroll: scroll,
       guestSessionStore: guestSessionStore,
@@ -310,6 +312,7 @@ class RendezvousCommunity
     bool trackDelivery = true,
     bool offlineCache = true,
     int offlineMessageLimit = 200,
+    Future<String> Function()? offlineCacheKey,
     OfflineStoreFactory? offlineStores,
     CommunityImageCacheConfig imageCache = const CommunityImageCacheConfig(),
     ImageDiskCache? imageDiskCache,
@@ -352,7 +355,7 @@ class RendezvousCommunity
     api.reachabilityListener = connectivity.report;
     final offline = offlineCache
         ? OfflineCache(
-            offlineStores ?? platformOfflineStores(),
+            offlineStores ?? platformOfflineStores(encryptionKey: offlineCacheKey),
             currentUserId: () => tokens.currentUserId,
             resolveHostKey: tokens.resolveHostKey,
             messageLimit: offlineMessageLimit,
