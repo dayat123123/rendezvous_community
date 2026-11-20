@@ -99,7 +99,10 @@ class _DefaultSheetDialog extends StatelessWidget {
         constraints: BoxConstraints(maxWidth: CommunitySheetLayout.dialogMaxWidth, maxHeight: height * 0.85),
         child: Stack(
           children: [
-            Padding(padding: EdgeInsets.symmetric(vertical: style.spacing.md), child: details.child),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: style.spacing.md),
+              child: details.child,
+            ),
             Positioned(
               top: style.spacing.xs,
               right: style.spacing.xs,
