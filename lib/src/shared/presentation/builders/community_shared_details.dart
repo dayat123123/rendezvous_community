@@ -371,3 +371,10 @@ class CommunityImagePlaceholderDetails {
 
   final bool failed;
 }
+
+class CommunitySheetDialogDetails {
+  const CommunitySheetDialogDetails({required this.child, required this.onClose});
+
+  final Widget child;
+  final VoidCallback onClose;
+}

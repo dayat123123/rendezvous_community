@@ -1,3 +1,9 @@
+## 1.48.0
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Bingkai popup aksi bisa diganti dan punya tombol tutup:** slot baru `CommunitySharedBuilders.sheetDialog` (`CommunitySheetDialogDetails`: `child`, `onClose`) membungkus popup aksi yang tampil di layar lebar, sehingga host bisa memakai gaya dialognya sendiri. Bawaannya kini punya tombol tutup di kanan atas. `CommunitySheetPresentation.isDialog(context)` memberi tahu isi popup apakah sedang tampil sebagai dialog atau bottom sheet, misalnya untuk memberi ruang tombol tutup di header.
+
 ## 1.47.0
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

@@ -91,6 +91,7 @@ Slot `discovery`, `support`, `settings`, dan `system` diisi bertahap (lihat [bui
 | `linkDialog` | `CommunityLinkConfirmDetails` (`uri`, `domain`, `title`, `body`, `confirmLabel`, `cancelLabel`; `onConfirm`, `onCancel`) | dialog sebelum membuka tautan |
 | `contactActions` | `CommunityContactActionsDetails` (`uri` `mailto:`/`tel:`, `value`, `phone`, `openLabel`, `copyLabel`, `cancelLabel`; `onOpen`, `onCopy`, `onCancel`) | pilihan saat email atau nomor telepon di teks diketuk: kirim email/telepon atau salin |
 | `imagePlaceholder` | `CommunityImagePlaceholderDetails` (`failed`) | placeholder & gagal muat `CommunityNetworkImage` |
+| `sheetDialog` (1.48.0) | `CommunitySheetDialogDetails` (`child`, `onClose`) | bingkai popup aksi di layar lebar (aksi anggota grup, pesan, room, bagikan post, lonceng Trade Share). `child` sudah berisi isi popup; `onClose` menutupnya tanpa hasil. Isi popup bisa memanggil `CommunitySheetPresentation.isDialog(context)` untuk tahu sedang tampil sebagai dialog (true) atau bottom sheet (false). Bawaan: `Dialog` maksimal 440 dengan tombol tutup di kanan atas |
 
 Builder dialog mengembalikan widget dialog (mis. `AlertDialog`); `onConfirm`/`onCancel` sudah menutup dialog dengan hasilnya. Di dalam builder sebuah slot jangan memakai komponen yang memanggil slot yang sama (mis. `CommunityCard` di builder `card`); bungkus `fallback` atau gambar sendiri.
 

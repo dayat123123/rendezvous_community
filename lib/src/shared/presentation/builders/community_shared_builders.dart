@@ -27,6 +27,7 @@ class CommunitySharedBuilders {
     this.contactActions,
     this.imagePlaceholder,
     this.imageViewer,
+    this.sheetDialog,
   });
 
   final CommunityPartBuilder<CommunityAvatarDetails>? avatar;
@@ -52,6 +53,7 @@ class CommunitySharedBuilders {
   final CommunityPartBuilder<CommunityContactActionsDetails>? contactActions;
   final CommunityPartBuilder<CommunityImagePlaceholderDetails>? imagePlaceholder;
   final CommunityPartBuilder<CommunityImageViewerDetails>? imageViewer;
+  final CommunityPartBuilder<CommunitySheetDialogDetails>? sheetDialog;
 
   static CommunitySharedBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -86,6 +88,7 @@ class CommunitySharedBuilders {
       contactActions: other.contactActions ?? contactActions,
       imagePlaceholder: other.imagePlaceholder ?? imagePlaceholder,
       imageViewer: other.imageViewer ?? imageViewer,
+      sheetDialog: other.sheetDialog ?? sheetDialog,
     );
   }
 }

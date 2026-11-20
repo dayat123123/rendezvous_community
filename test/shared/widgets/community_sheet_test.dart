@@ -11,6 +11,8 @@ Future<void> _open(
   required TargetPlatform platform,
   double panelWidth = 420,
   ValueChanged<CommunityDependencies?>? onScope,
+  CommunitySharedBuilders shared = const CommunitySharedBuilders(),
+  ValueChanged<bool>? onPresentation,
 }) async {
   tester.view.physicalSize = window;
   tester.view.devicePixelRatio = 1;
@@ -28,20 +30,24 @@ Future<void> _open(
                 alignment: Alignment.centerRight,
                 child: SizedBox(
                   width: panelWidth,
-                  child: CommunityScope(
-                    dependencies: deps,
-                    child: Navigator(
-                      onGenerateRoute: (_) => MaterialPageRoute<void>(
-                        builder: (context) => Center(
-                          child: TextButton(
-                            onPressed: () => showCommunitySheet<void>(
-                              context,
-                              builder: (sheetContext) {
-                                onScope?.call(CommunityScope.maybeOf(sheetContext));
-                                return const SizedBox(key: ValueKey('sheet-body'), height: 120);
-                              },
+                  child: CommunityBuildersScope(
+                    builders: CommunityBuilders(shared: shared),
+                    child: CommunityScope(
+                      dependencies: deps,
+                      child: Navigator(
+                        onGenerateRoute: (_) => MaterialPageRoute<void>(
+                          builder: (context) => Center(
+                            child: TextButton(
+                              onPressed: () => showCommunitySheet<void>(
+                                context,
+                                builder: (sheetContext) {
+                                  onScope?.call(CommunityScope.maybeOf(sheetContext));
+                                  onPresentation?.call(CommunitySheetPresentation.isDialog(sheetContext));
+                                  return const SizedBox(key: ValueKey('sheet-body'), height: 120);
+                                },
+                              ),
+                              child: const Text('open'),
                             ),
-                            child: const Text('open'),
                           ),
                         ),
                       ),
@@ -129,5 +135,69 @@ void main() {
 
     expect(find.byType(BottomSheet), findsOneWidget);
     expect(find.byType(Dialog), findsNothing);
+  });
+  testWidgets('the default popup has a close button that dismisses it', (tester) async {
+    bool? dialog;
+    await _open(
+      tester,
+      window: const Size(1500, 900),
+      platform: TargetPlatform.windows,
+      onPresentation: (value) => dialog = value,
+    );
+
+    expect(dialog, isTrue);
+    final close = find.byKey(const ValueKey('community-sheet-close'));
+    expect(close, findsOneWidget);
+    await tester.tap(close);
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('sheet-body')), findsNothing);
+  });
+
+  testWidgets('a host sheetDialog builder frames the popup and can close it', (tester) async {
+    VoidCallback? close;
+    await _open(
+      tester,
+      window: const Size(1500, 900),
+      platform: TargetPlatform.windows,
+      shared: CommunitySharedBuilders(
+        sheetDialog: (context, details, fallback) {
+          close = details.onClose;
+          return Center(
+            child: Material(
+              key: const ValueKey('host-frame'),
+              child: SizedBox(width: 300, child: details.child),
+            ),
+          );
+        },
+      ),
+    );
+
+    expect(find.byKey(const ValueKey('host-frame')), findsOneWidget);
+    expect(
+      find.descendant(of: find.byKey(const ValueKey('host-frame')), matching: find.byKey(const ValueKey('sheet-body'))),
+      findsOneWidget,
+    );
+    expect(find.byKey(const ValueKey('community-sheet-close')), findsNothing);
+    close!();
+    await tester.pumpAndSettle();
+    expect(find.byKey(const ValueKey('sheet-body')), findsNothing);
+  });
+
+  testWidgets('a bottom sheet ignores the host frame and reports a sheet presentation', (tester) async {
+    bool? dialog;
+    await _open(
+      tester,
+      window: const Size(390, 844),
+      platform: TargetPlatform.android,
+      panelWidth: 390,
+      onPresentation: (value) => dialog = value,
+      shared: CommunitySharedBuilders(
+        sheetDialog: (context, details, fallback) => const SizedBox(key: ValueKey('host-frame')),
+      ),
+    );
+
+    expect(dialog, isFalse);
+    expect(find.byKey(const ValueKey('host-frame')), findsNothing);
+    expect(find.byType(BottomSheet), findsOneWidget);
   });
 }
