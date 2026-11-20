@@ -27,6 +27,7 @@ import 'package:rendezvous_community/src/core/storage/image_disk_cache.dart';
 import 'package:rendezvous_community/src/core/storage/local_values.dart';
 import 'package:rendezvous_community/src/core/storage/offline_cache.dart';
 import 'package:rendezvous_community/src/core/storage/offline_store.dart';
+import 'package:rendezvous_community/src/core/storage/platform_downloads.dart';
 import 'package:rendezvous_community/src/core/storage/platform_image_disk_cache.dart';
 import 'package:rendezvous_community/src/core/storage/platform_offline_stores.dart';
 import 'package:rendezvous_community/src/features/account/data/repositories/account_repository_impl.dart';
@@ -164,6 +165,7 @@ class RendezvousCommunity
     required this.guestSessions,
     required this.help,
     required this._push,
+    required this._clearDownloads,
     required this.consent,
     required this._account,
     required this.configService,
@@ -316,6 +318,7 @@ class RendezvousCommunity
     OfflineStoreFactory? offlineStores,
     CommunityImageCacheConfig imageCache = const CommunityImageCacheConfig(),
     ImageDiskCache? imageDiskCache,
+    Future<void> Function()? clearDownloads,
     CommunityScrollSettings scroll = CommunityScrollSettings.defaults,
     CommunityGuestSessionStore? guestSessionStore,
     http.Client? httpClient,
@@ -404,6 +407,7 @@ class RendezvousCommunity
       notifications: notifications,
       moderation: ModerationRepositoryImpl(api),
       media: MediaRepositoryImpl(api),
+      clearDownloads: clearDownloads ?? clearDownloadedFiles,
       support: support,
       supportChat: SupportChatRepository(
         cs,
@@ -475,7 +479,10 @@ class RendezvousCommunity
         final owner = social._imageOwner;
         if (userId != null) {
           social._imageOwner = userId;
-          if (owner != null && owner != userId) unawaited(social.images.wipe());
+          if (owner != null && owner != userId) {
+            unawaited(social.images.wipe());
+            unawaited(social._clearDownloads());
+          }
         }
         social.analytics.reset();
         social.linkPreviews.clear();
@@ -500,6 +507,7 @@ class RendezvousCommunity
       unawaited(social.outbox?.flush(force: true));
       unawaited(social.notificationReporter.flush());
     });
+    unawaited(social._clearDownloads());
     return social;
   }
 
@@ -565,6 +573,7 @@ class RendezvousCommunity
   final MessageOutbox? outbox;
 
   final CommunityImageLoader images;
+  final Future<void> Function() _clearDownloads;
 
   final CommunityScrollSettings scroll;
 
@@ -584,6 +593,7 @@ class RendezvousCommunity
   Future<void> clearLocalCache() async {
     outbox?.reset();
     await images.wipe();
+    await _clearDownloads();
     await _offline?.wipe();
     final session = _tokens.currentSession;
     if (session != null) await _offline?.remember(session.user, hostKey: _tokens.hostKey);
@@ -756,6 +766,7 @@ class RendezvousCommunity
     _tokens.clear();
     _imageOwner = null;
     await images.wipe();
+    await _clearDownloads();
     await _offline?.wipe();
     await client.removeAllChannels();
     await client.realtime.disconnect();

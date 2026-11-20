@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/app/community_image_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/features/appeals/domain/entities/appeal.dart';
 import 'package:rendezvous_community/src/features/appeals/presentation/widgets/community_appeals.dart';
@@ -499,19 +500,24 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
             padding: EdgeInsets.only(bottom: mediaOnly ? spacing.xs : spacing.xs + spacing.xxs),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(_bubbleRadius.x - inset),
-              child: AttachmentGrid(
-                attachments: images,
-                maxHeight: 220,
-                onOpen: (index) => unawaited(
-                  showCommunityImageViewer(
-                    context,
-                    images: images,
-                    initialIndex: index,
-                    sender: m.sender,
-                    sentAt: m.createdAt,
-                    onReply: d.onReply,
-                    reactionChoices: d.reactionChoices,
-                    onReact: d.onReact,
+              child: CommunityImagePersistence(
+                persist: false,
+                child: Builder(
+                  builder: (context) => AttachmentGrid(
+                    attachments: images,
+                    maxHeight: 220,
+                    onOpen: (index) => unawaited(
+                      showCommunityImageViewer(
+                        context,
+                        images: images,
+                        initialIndex: index,
+                        sender: m.sender,
+                        sentAt: m.createdAt,
+                        onReply: d.onReply,
+                        reactionChoices: d.reactionChoices,
+                        onReact: d.onReact,
+                      ),
+                    ),
                   ),
                 ),
               ),

@@ -367,16 +367,21 @@ class _MessagePreview extends StatelessWidget {
             if (images.isNotEmpty)
               ClipRRect(
                 borderRadius: BorderRadius.circular(12),
-                child: AttachmentGrid(
-                  attachments: images,
-                  maxHeight: 240,
-                  onOpen: (index) => unawaited(
-                    showCommunityImageViewer(
-                      context,
-                      images: images,
-                      initialIndex: index,
-                      sender: message.sender,
-                      sentAt: message.createdAt,
+                child: CommunityImagePersistence(
+                  persist: false,
+                  child: Builder(
+                    builder: (context) => AttachmentGrid(
+                      attachments: images,
+                      maxHeight: 240,
+                      onOpen: (index) => unawaited(
+                        showCommunityImageViewer(
+                          context,
+                          images: images,
+                          initialIndex: index,
+                          sender: message.sender,
+                          sentAt: message.createdAt,
+                        ),
+                      ),
                     ),
                   ),
                 ),

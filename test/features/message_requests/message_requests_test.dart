@@ -125,6 +125,7 @@ void main() {
     await tester.tap(find.text('Alice'));
     await tester.pumpAndSettle();
     expect(find.byType(ImageFiltered), findsOneWidget);
+    expect(CommunityImagePersistence.of(tester.element(find.byType(AttachmentGrid))), isFalse);
     expect(find.text('Terima'), findsOneWidget);
     expect(find.text('Tolak'), findsOneWidget);
     expect(find.text('Blokir & laporkan'), findsOneWidget);

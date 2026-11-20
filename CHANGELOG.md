@@ -1,3 +1,10 @@
+## 1.46.0
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Foto chat tidak lagi disimpan ke disk:** gambar lampiran di gelembung pesan DM dan grup, info pesan, permintaan pesan, serta viewer yang dibuka dari sana hanya ada di cache memori. Gambar feed, avatar, banner, dan link preview tetap memakai cache disk.
+* **Lampiran yang dibuka dibersihkan:** di desktop, dokumen dan video yang dibuka dari chat (termasuk chat CS) disimpan sementara di `<temp>/rendezvous_community/downloads` agar bisa dibuka aplikasi bawaan. Folder itu kini dikosongkan saat paket dimulai, `signOut()`, `deleteMyAccount()`, `clearLocalCache()`, dan saat user berganti. File yang masih terbuka di aplikasi lain dilewati dan dihapus pada kesempatan berikutnya.
+
 ## 1.45.0
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

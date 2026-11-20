@@ -2,6 +2,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
+import 'package:rendezvous_community/src/app/community_image_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/chat_message.dart';
@@ -570,7 +571,13 @@ class _DefaultRequestBubble extends StatelessWidget {
               )
             else ...[
               if (message.attachments.isNotEmpty)
-                AttachmentGrid(attachments: message.attachments, maxHeight: 200, blurred: true),
+                CommunityImagePersistence(
+                  persist: false,
+                  child: Builder(
+                    builder: (context) =>
+                        AttachmentGrid(attachments: message.attachments, maxHeight: 200, blurred: true),
+                  ),
+                ),
             ],
             Wrap(
               alignment: WrapAlignment.end,
