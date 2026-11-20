@@ -1,3 +1,9 @@
+## 1.47.0
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Popup aksi di desktop, bottom sheet hanya di ponsel:** menu aksi anggota grup, aksi pesan, aksi room, bagikan post ke chat, dan pengaturan lonceng Trade Share kini tampil sebagai dialog di tengah layar (lebar maksimal 440) bila jendela aplikasi lebar. Keputusan memakai ukuran jendela, bukan lebar panel, sehingga community yang dibuka di panel samping desktop tidak lagi memunculkan bottom sheet. Bottom sheet hanya dipakai bila lebar jendela di bawah 700, atau di Android/iOS (termasuk web di ponsel) saat sisi terpendek layar di bawah 600, misalnya ponsel dalam posisi landscape.
+
 ## 1.46.1
 
 Tidak butuh migrasi server. Tidak ada perubahan kode.
