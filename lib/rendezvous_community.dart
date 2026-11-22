@@ -190,6 +190,8 @@ export 'src/features/help/presentation/widgets/community_help_article.dart'
 export 'src/features/help/presentation/widgets/community_help_center.dart'
     show CommunityHelpCenter, openCommunityHelpCenter;
 export 'src/features/help/presentation/widgets/community_help_markdown.dart';
+export 'src/features/help/presentation/widgets/help_attachments.dart'
+    show CommunityHelpAttachmentOpener, openHelpAttachment;
 export 'src/features/instruments/domain/entities/market_instrument.dart';
 export 'src/features/instruments/domain/repositories/market_instrument_repository.dart';
 export 'src/features/instruments/domain/services/market_instrument_directory.dart';

@@ -20,7 +20,22 @@ class HelpRepositoryImpl implements HelpRepository {
 
   static String _language(String language) => language == 'en' ? 'en' : 'id';
 
-  HelpArticle _article(Object? json) => HelpArticleModel.fromJson(json! as Map<String, dynamic>).toEntity();
+  Uri? _fileUrl(String path) {
+    try {
+      return Uri.tryParse(_cs.publicUrl(helpFilesBucket, path));
+    } catch (e) {
+      CommunityLoggers.support.event(
+        Level.WARNING,
+        'Help attachment URL unavailable',
+        fields: {'errorType': e.runtimeType.toString()},
+        error: e,
+      );
+      return null;
+    }
+  }
+
+  HelpArticle _article(Object? json) =>
+      HelpArticleModel.fromJson(json! as Map<String, dynamic>).toEntity(fileUrl: _fileUrl);
 
   List<HelpArticle> _articles(Object? rows) => [
     for (final row in rows as List<Object?>? ?? const <Object?>[]) _article(row),
@@ -30,7 +45,7 @@ class HelpRepositoryImpl implements HelpRepository {
   Future<HelpCenterContent> helpCenter({String language = 'id'}) async {
     final lang = _language(language);
     final raw = (await _cs.rpcValue('faq', {'p_language': lang})) as Map<String, dynamic>? ?? const {};
-    final content = HelpCenterModel.fromJson(raw).toEntity();
+    final content = HelpCenterModel.fromJson(raw).toEntity(fileUrl: _fileUrl);
     try {
       await _cache.write(cacheKey(lang), {
         'version': cacheVersion,
@@ -56,7 +71,7 @@ class HelpRepositoryImpl implements HelpRepository {
       final data = stored['data'];
       if (data is! Map<String, dynamic>) return null;
       final savedAt = DateTime.tryParse(stored['saved_at'] as String? ?? '') ?? _clock().toUtc();
-      return HelpCenterModel.fromJson(data).toEntity(savedAt: savedAt);
+      return HelpCenterModel.fromJson(data).toEntity(savedAt: savedAt, fileUrl: _fileUrl);
     } catch (e) {
       CommunityLoggers.offline.event(
         Level.WARNING,

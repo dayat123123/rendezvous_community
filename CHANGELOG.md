@@ -1,3 +1,10 @@
+## 1.49.0
+
+Butuh migrasi server 0188 untuk menampilkan lampiran. Server lama tetap jalan (artikel tampil tanpa lampiran). Tidak ada breaking change pada API publik.
+
+* **Lampiran di artikel Pusat Bantuan:** artikel kini bisa membawa sampai 10 lampiran PDF, gambar (JPEG/PNG/WebP), atau video (MP4/WebM/MOV) yang dipasang staf Konten Layanan di Hub. Lampiran tampil di bawah jawaban dengan nama, jenis, dan ukuran; gambar punya thumbnail dan dibuka di layar penuh yang bisa di-zoom, video diputar di dalam aplikasi (Windows/Linux lewat pemutar sistem), PDF dibuka dengan aplikasi bawaan. Lampiran ikut tersimpan di cache offline Pusat Bantuan.
+* **API baru:** `HelpArticle.attachments` (`HelpAttachment`, `HelpAttachmentKind`), slot `CommunityHelpBuilders.attachment` (`CommunityHelpAttachmentDetails`), widget `attachments` di `CommunityHelpArticleDetails`, serta `onOpenAttachment` (`CommunityHelpAttachmentOpener`) di `openCommunityHelpArticle` dan `CommunityHelpArticleView`. `openHelpAttachment` diekspor sebagai perilaku bawaan. URL lampiran dibentuk dari bucket publik `faq-files` dengan path yang divalidasi; path lain diabaikan.
+
 ## 1.48.0
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

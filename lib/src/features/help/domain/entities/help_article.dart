@@ -7,6 +7,20 @@ abstract class HelpFeedback with _$HelpFeedback {
   const factory HelpFeedback({required bool helpful, String? comment}) = _HelpFeedback;
 }
 
+enum HelpAttachmentKind { document, image, video }
+
+@freezed
+abstract class HelpAttachment with _$HelpAttachment {
+  const factory HelpAttachment({
+    required String path,
+    required Uri url,
+    required String name,
+    required HelpAttachmentKind kind,
+    String? mime,
+    int? size,
+  }) = _HelpAttachment;
+}
+
 @freezed
 abstract class HelpArticle with _$HelpArticle {
   const factory HelpArticle({
@@ -17,6 +31,7 @@ abstract class HelpArticle with _$HelpArticle {
     String? topic,
     DateTime? updatedAt,
     HelpFeedback? feedback,
+    @Default(<HelpAttachment>[]) List<HelpAttachment> attachments,
   }) = _HelpArticle;
 }
 

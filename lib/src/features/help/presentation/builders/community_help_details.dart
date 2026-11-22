@@ -63,6 +63,7 @@ class CommunityHelpArticleDetails {
     required this.contact,
     this.updatedLabel,
     this.categoryName,
+    this.attachments,
     this.loading = false,
     this.offline = false,
   });
@@ -72,6 +73,7 @@ class CommunityHelpArticleDetails {
   final String? updatedLabel;
   final String? categoryName;
   final Widget body;
+  final Widget? attachments;
   final Widget feedback;
   final Widget contact;
   final bool loading;
@@ -80,6 +82,34 @@ class CommunityHelpArticleDetails {
   String get answer => article.answer;
 
   String? get topic => article.topic;
+}
+
+class CommunityHelpAttachmentDetails {
+  const CommunityHelpAttachmentDetails({
+    required this.attachment,
+    required this.index,
+    required this.name,
+    required this.kindLabel,
+    required this.sizeLabel,
+    required this.semanticLabel,
+    this.preview,
+    this.opening = false,
+    this.onOpen,
+  });
+
+  final HelpAttachment attachment;
+  final int index;
+  final String name;
+  final String kindLabel;
+  final String sizeLabel;
+  final String semanticLabel;
+  final Widget? preview;
+  final bool opening;
+  final VoidCallback? onOpen;
+
+  HelpAttachmentKind get kind => attachment.kind;
+
+  Uri get url => attachment.url;
 }
 
 class CommunityHelpFeedbackDetails {

@@ -280,9 +280,288 @@ as String?,
 }
 
 /// @nodoc
+mixin _$HelpAttachment {
+
+ String get path; Uri get url; String get name; HelpAttachmentKind get kind; String? get mime; int? get size;
+/// Create a copy of HelpAttachment
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$HelpAttachmentCopyWith<HelpAttachment> get copyWith => _$HelpAttachmentCopyWithImpl<HelpAttachment>(this as HelpAttachment, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  final _this = this as HelpAttachment;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpAttachment&&(identical(other.path, _this.path) || other.path == _this.path)&&(identical(other.url, _this.url) || other.url == _this.url)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.kind, _this.kind) || other.kind == _this.kind)&&(identical(other.mime, _this.mime) || other.mime == _this.mime)&&(identical(other.size, _this.size) || other.size == _this.size));
+}
+
+
+@override
+int get hashCode {
+  final _this = this as HelpAttachment;
+  return Object.hash(runtimeType,_this.path,_this.url,_this.name,_this.kind,_this.mime,_this.size);
+}
+
+@override
+String toString() {
+  final _this = this as HelpAttachment;
+  return 'HelpAttachment(path: ${_this.path}, url: ${_this.url}, name: ${_this.name}, kind: ${_this.kind}, mime: ${_this.mime}, size: ${_this.size})';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $HelpAttachmentCopyWith<$Res>  {
+  factory $HelpAttachmentCopyWith(HelpAttachment value, $Res Function(HelpAttachment) _then) = _$HelpAttachmentCopyWithImpl;
+@useResult
+$Res call({
+ String path, Uri url, String name, HelpAttachmentKind kind, String? mime, int? size
+});
+
+
+
+
+}
+/// @nodoc
+class _$HelpAttachmentCopyWithImpl<$Res>
+    implements $HelpAttachmentCopyWith<$Res> {
+  _$HelpAttachmentCopyWithImpl(this._self, this._then);
+
+  final HelpAttachment _self;
+  final $Res Function(HelpAttachment) _then;
+
+/// Create a copy of HelpAttachment
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? path = null,Object? url = null,Object? name = null,Object? kind = null,Object? mime = freezed,Object? size = freezed,}) {
+  return _then(HelpAttachment(
+path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
+as String,url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as Uri,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
+as HelpAttachmentKind,mime: freezed == mime ? _self.mime : mime // ignore: cast_nullable_to_non_nullable
+as String?,size: freezed == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [HelpAttachment].
+extension HelpAttachmentPatterns on HelpAttachment {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _HelpAttachment value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _HelpAttachment() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _HelpAttachment value)  $default,){
+final _that = this;
+switch (_that) {
+case _HelpAttachment():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _HelpAttachment value)?  $default,){
+final _that = this;
+switch (_that) {
+case _HelpAttachment() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String path,  Uri url,  String name,  HelpAttachmentKind kind,  String? mime,  int? size)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _HelpAttachment() when $default != null:
+return $default(_that.path,_that.url,_that.name,_that.kind,_that.mime,_that.size);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String path,  Uri url,  String name,  HelpAttachmentKind kind,  String? mime,  int? size)  $default,) {final _that = this;
+switch (_that) {
+case _HelpAttachment():
+return $default(_that.path,_that.url,_that.name,_that.kind,_that.mime,_that.size);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String path,  Uri url,  String name,  HelpAttachmentKind kind,  String? mime,  int? size)?  $default,) {final _that = this;
+switch (_that) {
+case _HelpAttachment() when $default != null:
+return $default(_that.path,_that.url,_that.name,_that.kind,_that.mime,_that.size);case _:
+  return null;
+
+}
+}
+
+}
+
+/// @nodoc
+
+
+class _HelpAttachment implements HelpAttachment {
+  const _HelpAttachment({required this.path, required this.url, required this.name, required this.kind, this.mime, this.size});
+  
+
+@override final  String path;
+@override final  Uri url;
+@override final  String name;
+@override final  HelpAttachmentKind kind;
+@override final  String? mime;
+@override final  int? size;
+
+/// Create a copy of HelpAttachment
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$HelpAttachmentCopyWith<_HelpAttachment> get copyWith => __$HelpAttachmentCopyWithImpl<_HelpAttachment>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpAttachment&&(identical(other.path, path) || other.path == path)&&(identical(other.url, url) || other.url == url)&&(identical(other.name, name) || other.name == name)&&(identical(other.kind, kind) || other.kind == kind)&&(identical(other.mime, mime) || other.mime == mime)&&(identical(other.size, size) || other.size == size));
+}
+
+
+@override
+int get hashCode {
+    return Object.hash(runtimeType,path,url,name,kind,mime,size);
+}
+
+@override
+String toString() {
+    return 'HelpAttachment(path: $path, url: $url, name: $name, kind: $kind, mime: $mime, size: $size)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class _$HelpAttachmentCopyWith<$Res> implements $HelpAttachmentCopyWith<$Res> {
+  factory _$HelpAttachmentCopyWith(_HelpAttachment value, $Res Function(_HelpAttachment) _then) = __$HelpAttachmentCopyWithImpl;
+@override @useResult
+$Res call({
+ String path, Uri url, String name, HelpAttachmentKind kind, String? mime, int? size
+});
+
+
+
+
+}
+/// @nodoc
+class __$HelpAttachmentCopyWithImpl<$Res>
+    implements _$HelpAttachmentCopyWith<$Res> {
+  __$HelpAttachmentCopyWithImpl(this._self, this._then);
+
+  final _HelpAttachment _self;
+  final $Res Function(_HelpAttachment) _then;
+
+/// Create a copy of HelpAttachment
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? path = null,Object? url = null,Object? name = null,Object? kind = null,Object? mime = freezed,Object? size = freezed,}) {
+  return _then(_HelpAttachment(
+path: null == path ? _self.path : path // ignore: cast_nullable_to_non_nullable
+as String,url: null == url ? _self.url : url // ignore: cast_nullable_to_non_nullable
+as Uri,name: null == name ? _self.name : name // ignore: cast_nullable_to_non_nullable
+as String,kind: null == kind ? _self.kind : kind // ignore: cast_nullable_to_non_nullable
+as HelpAttachmentKind,mime: freezed == mime ? _self.mime : mime // ignore: cast_nullable_to_non_nullable
+as String?,size: freezed == size ? _self.size : size // ignore: cast_nullable_to_non_nullable
+as int?,
+  ));
+}
+
+
+}
+
+/// @nodoc
 mixin _$HelpArticle {
 
- String get id; String get category; String get question; String get answer; String? get topic; DateTime? get updatedAt; HelpFeedback? get feedback;
+ String get id; String get category; String get question; String get answer; String? get topic; DateTime? get updatedAt; HelpFeedback? get feedback; List<HelpAttachment> get attachments;
 /// Create a copy of HelpArticle
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -294,20 +573,20 @@ $HelpArticleCopyWith<HelpArticle> get copyWith => _$HelpArticleCopyWithImpl<Help
 @override
 bool operator ==(Object other) {
   final _this = this as HelpArticle;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpArticle&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.question, _this.question) || other.question == _this.question)&&(identical(other.answer, _this.answer) || other.answer == _this.answer)&&(identical(other.topic, _this.topic) || other.topic == _this.topic)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.feedback, _this.feedback) || other.feedback == _this.feedback));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is HelpArticle&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.category, _this.category) || other.category == _this.category)&&(identical(other.question, _this.question) || other.question == _this.question)&&(identical(other.answer, _this.answer) || other.answer == _this.answer)&&(identical(other.topic, _this.topic) || other.topic == _this.topic)&&(identical(other.updatedAt, _this.updatedAt) || other.updatedAt == _this.updatedAt)&&(identical(other.feedback, _this.feedback) || other.feedback == _this.feedback)&&const DeepCollectionEquality().equals(other.attachments, _this.attachments));
 }
 
 
 @override
 int get hashCode {
   final _this = this as HelpArticle;
-  return Object.hash(runtimeType,_this.id,_this.category,_this.question,_this.answer,_this.topic,_this.updatedAt,_this.feedback);
+  return Object.hash(runtimeType,_this.id,_this.category,_this.question,_this.answer,_this.topic,_this.updatedAt,_this.feedback,const DeepCollectionEquality().hash(_this.attachments));
 }
 
 @override
 String toString() {
   final _this = this as HelpArticle;
-  return 'HelpArticle(id: ${_this.id}, category: ${_this.category}, question: ${_this.question}, answer: ${_this.answer}, topic: ${_this.topic}, updatedAt: ${_this.updatedAt}, feedback: ${_this.feedback})';
+  return 'HelpArticle(id: ${_this.id}, category: ${_this.category}, question: ${_this.question}, answer: ${_this.answer}, topic: ${_this.topic}, updatedAt: ${_this.updatedAt}, feedback: ${_this.feedback}, attachments: ${_this.attachments})';
 }
 
 
@@ -318,7 +597,7 @@ abstract mixin class $HelpArticleCopyWith<$Res>  {
   factory $HelpArticleCopyWith(HelpArticle value, $Res Function(HelpArticle) _then) = _$HelpArticleCopyWithImpl;
 @useResult
 $Res call({
- String id, String category, String question, String answer, String? topic, DateTime? updatedAt, HelpFeedback? feedback
+ String id, String category, String question, String answer, String? topic, DateTime? updatedAt, HelpFeedback? feedback, List<HelpAttachment> attachments
 });
 
 
@@ -335,7 +614,7 @@ class _$HelpArticleCopyWithImpl<$Res>
 
 /// Create a copy of HelpArticle
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? category = null,Object? question = null,Object? answer = null,Object? topic = freezed,Object? updatedAt = freezed,Object? feedback = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? category = null,Object? question = null,Object? answer = null,Object? topic = freezed,Object? updatedAt = freezed,Object? feedback = freezed,Object? attachments = null,}) {
   return _then(HelpArticle(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
@@ -344,7 +623,8 @@ as String,answer: null == answer ? _self.answer : answer // ignore: cast_nullabl
 as String,topic: freezed == topic ? _self.topic : topic // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,feedback: freezed == feedback ? _self.feedback : feedback // ignore: cast_nullable_to_non_nullable
-as HelpFeedback?,
+as HelpFeedback?,attachments: null == attachments ? _self.attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<HelpAttachment>,
   ));
 }
 /// Create a copy of HelpArticle
@@ -441,10 +721,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String category,  String question,  String answer,  String? topic,  DateTime? updatedAt,  HelpFeedback? feedback)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String category,  String question,  String answer,  String? topic,  DateTime? updatedAt,  HelpFeedback? feedback,  List<HelpAttachment> attachments)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _HelpArticle() when $default != null:
-return $default(_that.id,_that.category,_that.question,_that.answer,_that.topic,_that.updatedAt,_that.feedback);case _:
+return $default(_that.id,_that.category,_that.question,_that.answer,_that.topic,_that.updatedAt,_that.feedback,_that.attachments);case _:
   return orElse();
 
 }
@@ -462,10 +742,10 @@ return $default(_that.id,_that.category,_that.question,_that.answer,_that.topic,
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String category,  String question,  String answer,  String? topic,  DateTime? updatedAt,  HelpFeedback? feedback)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String category,  String question,  String answer,  String? topic,  DateTime? updatedAt,  HelpFeedback? feedback,  List<HelpAttachment> attachments)  $default,) {final _that = this;
 switch (_that) {
 case _HelpArticle():
-return $default(_that.id,_that.category,_that.question,_that.answer,_that.topic,_that.updatedAt,_that.feedback);case _:
+return $default(_that.id,_that.category,_that.question,_that.answer,_that.topic,_that.updatedAt,_that.feedback,_that.attachments);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -482,10 +762,10 @@ return $default(_that.id,_that.category,_that.question,_that.answer,_that.topic,
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String category,  String question,  String answer,  String? topic,  DateTime? updatedAt,  HelpFeedback? feedback)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String category,  String question,  String answer,  String? topic,  DateTime? updatedAt,  HelpFeedback? feedback,  List<HelpAttachment> attachments)?  $default,) {final _that = this;
 switch (_that) {
 case _HelpArticle() when $default != null:
-return $default(_that.id,_that.category,_that.question,_that.answer,_that.topic,_that.updatedAt,_that.feedback);case _:
+return $default(_that.id,_that.category,_that.question,_that.answer,_that.topic,_that.updatedAt,_that.feedback,_that.attachments);case _:
   return null;
 
 }
@@ -497,7 +777,7 @@ return $default(_that.id,_that.category,_that.question,_that.answer,_that.topic,
 
 
 class _HelpArticle implements HelpArticle {
-  const _HelpArticle({required this.id, required this.category, required this.question, required this.answer, this.topic, this.updatedAt, this.feedback});
+  const _HelpArticle({required this.id, required this.category, required this.question, required this.answer, this.topic, this.updatedAt, this.feedback,  List<HelpAttachment> attachments = const <HelpAttachment>[]}): _attachments = attachments;
   
 
 @override final  String id;
@@ -507,6 +787,13 @@ class _HelpArticle implements HelpArticle {
 @override final  String? topic;
 @override final  DateTime? updatedAt;
 @override final  HelpFeedback? feedback;
+ final  List<HelpAttachment> _attachments;
+@override@JsonKey() List<HelpAttachment> get attachments {
+  if (_attachments is EqualUnmodifiableListView) return _attachments;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_attachments);
+}
+
 
 /// Create a copy of HelpArticle
 /// with the given fields replaced by the non-null parameter values.
@@ -518,18 +805,18 @@ _$HelpArticleCopyWith<_HelpArticle> get copyWith => __$HelpArticleCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpArticle&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.question, question) || other.question == question)&&(identical(other.answer, answer) || other.answer == answer)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.feedback, feedback) || other.feedback == feedback));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _HelpArticle&&(identical(other.id, id) || other.id == id)&&(identical(other.category, category) || other.category == category)&&(identical(other.question, question) || other.question == question)&&(identical(other.answer, answer) || other.answer == answer)&&(identical(other.topic, topic) || other.topic == topic)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.feedback, feedback) || other.feedback == feedback)&&const DeepCollectionEquality().equals(other.attachments, _attachments));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,id,category,question,answer,topic,updatedAt,feedback);
+    return Object.hash(runtimeType,id,category,question,answer,topic,updatedAt,feedback,const DeepCollectionEquality().hash(_attachments));
 }
 
 @override
 String toString() {
-    return 'HelpArticle(id: $id, category: $category, question: $question, answer: $answer, topic: $topic, updatedAt: $updatedAt, feedback: $feedback)';
+    return 'HelpArticle(id: $id, category: $category, question: $question, answer: $answer, topic: $topic, updatedAt: $updatedAt, feedback: $feedback, attachments: $attachments)';
 }
 
 
@@ -540,7 +827,7 @@ abstract mixin class _$HelpArticleCopyWith<$Res> implements $HelpArticleCopyWith
   factory _$HelpArticleCopyWith(_HelpArticle value, $Res Function(_HelpArticle) _then) = __$HelpArticleCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String category, String question, String answer, String? topic, DateTime? updatedAt, HelpFeedback? feedback
+ String id, String category, String question, String answer, String? topic, DateTime? updatedAt, HelpFeedback? feedback, List<HelpAttachment> attachments
 });
 
 
@@ -557,7 +844,7 @@ class __$HelpArticleCopyWithImpl<$Res>
 
 /// Create a copy of HelpArticle
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? category = null,Object? question = null,Object? answer = null,Object? topic = freezed,Object? updatedAt = freezed,Object? feedback = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? category = null,Object? question = null,Object? answer = null,Object? topic = freezed,Object? updatedAt = freezed,Object? feedback = freezed,Object? attachments = null,}) {
   return _then(_HelpArticle(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,category: null == category ? _self.category : category // ignore: cast_nullable_to_non_nullable
@@ -566,7 +853,8 @@ as String,answer: null == answer ? _self.answer : answer // ignore: cast_nullabl
 as String,topic: freezed == topic ? _self.topic : topic // ignore: cast_nullable_to_non_nullable
 as String?,updatedAt: freezed == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
 as DateTime?,feedback: freezed == feedback ? _self.feedback : feedback // ignore: cast_nullable_to_non_nullable
-as HelpFeedback?,
+as HelpFeedback?,attachments: null == attachments ? _self._attachments : attachments // ignore: cast_nullable_to_non_nullable
+as List<HelpAttachment>,
   ));
 }
 

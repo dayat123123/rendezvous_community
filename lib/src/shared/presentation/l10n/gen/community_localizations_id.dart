@@ -1997,6 +1997,20 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get helpChatCs => 'Chat CS';
 
   @override
+  String get helpAttachments => 'Lampiran';
+
+  @override
+  String get helpAttachmentImage => 'Gambar';
+
+  @override
+  String helpAttachmentOpen(String name) {
+    return 'Buka lampiran $name';
+  }
+
+  @override
+  String get helpAttachmentOpenFailed => 'Lampiran tidak bisa dibuka. Coba lagi.';
+
+  @override
   String get helpSuggestionsTitle => 'Mungkin ini membantu';
 
   @override

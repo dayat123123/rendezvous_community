@@ -108,6 +108,92 @@ void main() {
     expect((await repo.articlesForTopic('account')).map((a) => a.id), ['a-1', 'a-2']);
   });
 
+  test('attachments become public faq-files URLs and unknown paths are dropped', () async {
+    when(
+      () => cs.publicUrl('faq-files', any()),
+    ).thenAnswer((call) => 'https://api.olt.test/storage/v1/object/public/faq-files/${call.positionalArguments[1]}');
+    when(() => cs.rpcValue('faq_article', {'p_id': 'a-1', 'p_language': 'id'})).thenAnswer(
+      (_) async => {
+        ...articleJson('a-1'),
+        'attachments': [
+          {
+            'path': '0b6c1a52-3f4e-4c1d-9a7e-2f1b3c4d5e01.pdf',
+            'name': '  Formulir  ',
+            'kind': 'image',
+            'mime': 'application/pdf',
+            'size': 204800,
+          },
+          {'path': '0b6c1a52-3f4e-4c1d-9a7e-2f1b3c4d5e03.mov', 'name': '', 'size': -1},
+          {'path': '../../etc/passwd.pdf', 'name': 'jahat'},
+          {'path': '0b6c1a52-3f4e-4c1d-9a7e-2f1b3c4d5e04.exe', 'name': 'program'},
+        ],
+      },
+    );
+
+    final article = await repo.article('a-1');
+
+    expect(article.attachments, hasLength(2));
+    final pdf = article.attachments.first;
+    expect(pdf.kind, HelpAttachmentKind.document);
+    expect(pdf.name, 'Formulir');
+    expect(pdf.size, 204800);
+    expect(
+      pdf.url.toString(),
+      'https://api.olt.test/storage/v1/object/public/faq-files/0b6c1a52-3f4e-4c1d-9a7e-2f1b3c4d5e01.pdf',
+    );
+    final video = article.attachments.last;
+    expect(video.kind, HelpAttachmentKind.video);
+    expect(video.name, '0b6c1a52-3f4e-4c1d-9a7e-2f1b3c4d5e03.mov');
+    expect(video.size, isNull);
+  });
+
+  test('the cached help center keeps attachments for offline reading', () async {
+    when(
+      () => cs.publicUrl('faq-files', any()),
+    ).thenAnswer((call) => 'https://cdn.test/${call.positionalArguments[1]}');
+    when(() => cs.rpcValue('faq', {'p_language': 'id'})).thenAnswer(
+      (_) async => {
+        'categories': [
+          {
+            'code': 'account',
+            'name': 'Akun',
+            'articles': [
+              {
+                ...articleJson('a-1'),
+                'attachments': [
+                  {'path': '0b6c1a52-3f4e-4c1d-9a7e-2f1b3c4d5e02.png', 'name': 'Contoh'},
+                ],
+              },
+            ],
+          },
+        ],
+      },
+    );
+
+    await repo.helpCenter();
+    final cached = await repo.cachedHelpCenter();
+
+    final attachment = cached!.articles.single.attachments.single;
+    expect(attachment.kind, HelpAttachmentKind.image);
+    expect(attachment.url, Uri.parse('https://cdn.test/0b6c1a52-3f4e-4c1d-9a7e-2f1b3c4d5e02.png'));
+  });
+
+  test('attachments are skipped when the storage URL cannot be built', () async {
+    when(() => cs.publicUrl(any(), any())).thenThrow(StateError('no storage'));
+    when(() => cs.rpcValue('faq_article', any())).thenAnswer(
+      (_) async => {
+        ...articleJson('a-1'),
+        'attachments': [
+          {'path': '0b6c1a52-3f4e-4c1d-9a7e-2f1b3c4d5e01.pdf', 'name': 'Formulir'},
+        ],
+      },
+    );
+
+    final article = await repo.article('a-1');
+    expect(article.attachments, isEmpty);
+    expect(article.question, 'Pertanyaan a-1');
+  });
+
   test('feedback trims the comment and sends null for an empty one', () async {
     when(() => cs.rpcValue('faq_feedback', any())).thenAnswer((_) async => {'helpful': true, 'comment': 'Jelas'});
 

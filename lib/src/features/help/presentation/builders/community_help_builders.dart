@@ -12,6 +12,7 @@ class CommunityHelpBuilders {
     this.categoryTile,
     this.articleTile,
     this.articleDetail,
+    this.attachment,
     this.feedback,
     this.contact,
     this.offlineNotice,
@@ -25,6 +26,7 @@ class CommunityHelpBuilders {
   final CommunityPartBuilder<CommunityHelpCategoryDetails>? categoryTile;
   final CommunityPartBuilder<CommunityHelpArticleTileDetails>? articleTile;
   final CommunityPartBuilder<CommunityHelpArticleDetails>? articleDetail;
+  final CommunityPartBuilder<CommunityHelpAttachmentDetails>? attachment;
   final CommunityPartBuilder<CommunityHelpFeedbackDetails>? feedback;
   final CommunityPartBuilder<CommunityHelpContactDetails>? contact;
   final CommunityPartBuilder<CommunityHelpOfflineDetails>? offlineNotice;
@@ -47,6 +49,7 @@ class CommunityHelpBuilders {
       categoryTile: other.categoryTile ?? categoryTile,
       articleTile: other.articleTile ?? articleTile,
       articleDetail: other.articleDetail ?? articleDetail,
+      attachment: other.attachment ?? attachment,
       feedback: other.feedback ?? feedback,
       contact: other.contact ?? contact,
       offlineNotice: other.offlineNotice ?? offlineNotice,

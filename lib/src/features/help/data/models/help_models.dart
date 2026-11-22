@@ -4,6 +4,24 @@ import 'package:rendezvous_community/src/features/help/domain/entities/help_arti
 part 'help_models.freezed.dart';
 part 'help_models.g.dart';
 
+typedef HelpFileUrl = Uri? Function(String path);
+
+const helpFilesBucket = 'faq-files';
+
+final _helpFilePath = RegExp(
+  r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.(pdf|jpg|png|webp|mp4|webm|mov)$',
+);
+
+const _kindByExtension = {
+  'pdf': HelpAttachmentKind.document,
+  'jpg': HelpAttachmentKind.image,
+  'png': HelpAttachmentKind.image,
+  'webp': HelpAttachmentKind.image,
+  'mp4': HelpAttachmentKind.video,
+  'webm': HelpAttachmentKind.video,
+  'mov': HelpAttachmentKind.video,
+};
+
 @freezed
 abstract class HelpFeedbackModel with _$HelpFeedbackModel {
   const factory HelpFeedbackModel({required bool helpful, String? comment}) = _HelpFeedbackModel;
@@ -19,6 +37,32 @@ abstract class HelpFeedbackModel with _$HelpFeedbackModel {
 }
 
 @freezed
+abstract class HelpAttachmentModel with _$HelpAttachmentModel {
+  const factory HelpAttachmentModel({@Default('') String path, @Default('') String name, String? mime, int? size}) =
+      _HelpAttachmentModel;
+
+  const HelpAttachmentModel._();
+
+  factory HelpAttachmentModel.fromJson(Map<String, dynamic> json) => _$HelpAttachmentModelFromJson(json);
+
+  HelpAttachment? toEntity(HelpFileUrl fileUrl) {
+    final match = _helpFilePath.firstMatch(path);
+    if (match == null) return null;
+    final url = fileUrl(path);
+    if (url == null) return null;
+    final label = name.trim();
+    return HelpAttachment(
+      path: path,
+      url: url,
+      name: label.isEmpty ? path : label,
+      kind: _kindByExtension[match.group(1)]!,
+      mime: mime,
+      size: size == null || size! < 0 ? null : size,
+    );
+  }
+}
+
+@freezed
 abstract class HelpArticleModel with _$HelpArticleModel {
   const factory HelpArticleModel({
     required String id,
@@ -28,13 +72,14 @@ abstract class HelpArticleModel with _$HelpArticleModel {
     String? topic,
     DateTime? updatedAt,
     HelpFeedbackModel? feedback,
+    @Default(<HelpAttachmentModel>[]) List<HelpAttachmentModel> attachments,
   }) = _HelpArticleModel;
 
   const HelpArticleModel._();
 
   factory HelpArticleModel.fromJson(Map<String, dynamic> json) => _$HelpArticleModelFromJson(json);
 
-  HelpArticle toEntity() => HelpArticle(
+  HelpArticle toEntity({HelpFileUrl? fileUrl}) => HelpArticle(
     id: id,
     category: category,
     question: question,
@@ -42,6 +87,12 @@ abstract class HelpArticleModel with _$HelpArticleModel {
     topic: topic == null || topic!.isEmpty ? null : topic,
     updatedAt: updatedAt,
     feedback: feedback?.toEntity(),
+    attachments: fileUrl == null
+        ? const []
+        : [
+            for (final attachment in attachments.take(10))
+              if (attachment.toEntity(fileUrl) case final HelpAttachment entity) entity,
+          ],
   );
 }
 
@@ -58,8 +109,12 @@ abstract class HelpCategoryModel with _$HelpCategoryModel {
 
   factory HelpCategoryModel.fromJson(Map<String, dynamic> json) => _$HelpCategoryModelFromJson(json);
 
-  HelpCategory toEntity() =>
-      HelpCategory(code: code, name: name, icon: icon, articles: [for (final a in articles) a.toEntity()]);
+  HelpCategory toEntity({HelpFileUrl? fileUrl}) => HelpCategory(
+    code: code,
+    name: name,
+    icon: icon,
+    articles: [for (final a in articles) a.toEntity(fileUrl: fileUrl)],
+  );
 }
 
 @freezed
@@ -73,10 +128,10 @@ abstract class HelpCenterModel with _$HelpCenterModel {
 
   factory HelpCenterModel.fromJson(Map<String, dynamic> json) => _$HelpCenterModelFromJson(json);
 
-  HelpCenterContent toEntity({DateTime? savedAt}) => HelpCenterContent(
+  HelpCenterContent toEntity({DateTime? savedAt, HelpFileUrl? fileUrl}) => HelpCenterContent(
     categories: [
       for (final category in categories)
-        if (category.articles.isNotEmpty) category.toEntity(),
+        if (category.articles.isNotEmpty) category.toEntity(fileUrl: fileUrl),
     ],
     updatedAt: updatedAt,
     savedAt: savedAt,

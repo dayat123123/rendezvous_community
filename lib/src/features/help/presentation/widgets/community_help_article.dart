@@ -12,6 +12,7 @@ import 'package:rendezvous_community/src/features/help/presentation/builders/com
 import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_details.dart';
 import 'package:rendezvous_community/src/features/help/presentation/cubit/help_article_cubit.dart';
 import 'package:rendezvous_community/src/features/help/presentation/widgets/community_help_markdown.dart';
+import 'package:rendezvous_community/src/features/help/presentation/widgets/help_attachments.dart';
 import 'package:rendezvous_community/src/features/help/presentation/widgets/help_parts.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/community_support_chat.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_list_state_details.dart';
@@ -69,6 +70,7 @@ Future<void> openCommunityHelpArticle(
   BuildContext context,
   HelpArticle article, {
   CommunityHelpContactCallback? onContactSupport,
+  CommunityHelpAttachmentOpener? onOpenAttachment,
   String? categoryName,
   HelpRepository? repository,
 }) {
@@ -81,6 +83,7 @@ Future<void> openCommunityHelpArticle(
       article: article,
       categoryName: categoryName,
       onContactSupport: onContactSupport,
+      onOpenAttachment: onOpenAttachment,
       repository: help,
     ),
   );
@@ -91,11 +94,13 @@ Future<void> openCommunityHelpArticleById(
   String id, {
   String? title,
   CommunityHelpContactCallback? onContactSupport,
+  CommunityHelpAttachmentOpener? onOpenAttachment,
   HelpRepository? repository,
 }) => openCommunityHelpArticle(
   context,
   HelpArticle(id: id, category: '', question: title ?? '', answer: ''),
   onContactSupport: onContactSupport,
+  onOpenAttachment: onOpenAttachment,
   repository: repository,
 );
 
@@ -105,12 +110,14 @@ class CommunityHelpArticleView extends StatelessWidget {
     required this.article,
     this.categoryName,
     this.onContactSupport,
+    this.onOpenAttachment,
     this.repository,
   });
 
   final HelpArticle article;
   final String? categoryName;
   final CommunityHelpContactCallback? onContactSupport;
+  final CommunityHelpAttachmentOpener? onOpenAttachment;
   final HelpRepository? repository;
 
   @override
@@ -118,16 +125,21 @@ class CommunityHelpArticleView extends StatelessWidget {
     final help = repository ?? CommunityHelpScope.of(context).help;
     return BlocProvider(
       create: (_) => HelpArticleCubit(help: help, article: article, language: helpLanguage(context))..load(),
-      child: _ArticleView(categoryName: categoryName, onContactSupport: onContactSupport ?? openSupportFromHelp),
+      child: _ArticleView(
+        categoryName: categoryName,
+        onContactSupport: onContactSupport ?? openSupportFromHelp,
+        onOpenAttachment: onOpenAttachment,
+      ),
     );
   }
 }
 
 class _ArticleView extends StatelessWidget {
-  const _ArticleView({required this.categoryName, required this.onContactSupport});
+  const _ArticleView({required this.categoryName, required this.onContactSupport, this.onOpenAttachment});
 
   final String? categoryName;
   final CommunityHelpContactCallback onContactSupport;
+  final CommunityHelpAttachmentOpener? onOpenAttachment;
 
   @override
   Widget build(BuildContext context) {
@@ -156,6 +168,9 @@ class _ArticleView extends StatelessWidget {
               ? null
               : l10n.helpUpdated(DateFormat.yMMMMd(l10n.localeName).format(updatedAt.toLocal())),
           body: CommunityHelpMarkdown(article.answer),
+          attachments: article.attachments.isEmpty
+              ? null
+              : HelpAttachments(attachments: article.attachments, onOpen: onOpenAttachment),
           feedback: const HelpFeedbackBlock(),
           contact: HelpContactCard(
             details: CommunityHelpContactDetails(
@@ -186,6 +201,7 @@ class _DefaultArticle extends StatelessWidget {
     final spacing = style.spacing;
     final category = d.categoryName;
     final updated = d.updatedLabel;
+    final attachments = d.attachments;
     return ColoredBox(
       color: style.background,
       child: Align(
@@ -204,6 +220,7 @@ class _DefaultArticle extends StatelessWidget {
                 if (updated != null) ...[SizedBox(height: spacing.xs), Text(updated, style: style.typography.meta)],
                 SizedBox(height: spacing.lg),
                 d.body,
+                if (attachments != null) ...[SizedBox(height: spacing.lg), attachments],
                 SizedBox(height: spacing.xl),
                 const CommunityDivider(),
                 SizedBox(height: spacing.xl),

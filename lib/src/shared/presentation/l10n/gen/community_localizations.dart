@@ -3602,6 +3602,30 @@ abstract class CommunityLocalizations {
   /// **'Chat CS'**
   String get helpChatCs;
 
+  /// No description provided for @helpAttachments.
+  ///
+  /// In id, this message translates to:
+  /// **'Lampiran'**
+  String get helpAttachments;
+
+  /// No description provided for @helpAttachmentImage.
+  ///
+  /// In id, this message translates to:
+  /// **'Gambar'**
+  String get helpAttachmentImage;
+
+  /// No description provided for @helpAttachmentOpen.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka lampiran {name}'**
+  String helpAttachmentOpen(String name);
+
+  /// No description provided for @helpAttachmentOpenFailed.
+  ///
+  /// In id, this message translates to:
+  /// **'Lampiran tidak bisa dibuka. Coba lagi.'**
+  String get helpAttachmentOpenFailed;
+
   /// No description provided for @helpSuggestionsTitle.
   ///
   /// In id, this message translates to:

@@ -2011,6 +2011,20 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get helpChatCs => 'Chat with CS';
 
   @override
+  String get helpAttachments => 'Attachments';
+
+  @override
+  String get helpAttachmentImage => 'Image';
+
+  @override
+  String helpAttachmentOpen(String name) {
+    return 'Open attachment $name';
+  }
+
+  @override
+  String get helpAttachmentOpenFailed => 'The attachment could not be opened. Try again.';
+
+  @override
   String get helpSuggestionsTitle => 'This might help';
 
   @override
