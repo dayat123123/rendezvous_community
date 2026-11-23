@@ -663,6 +663,7 @@ class _NavButton extends StatelessWidget {
         disabledForegroundColor: _onSurface.withValues(alpha: 0.4),
         hoverColor: Colors.white.withValues(alpha: 0.1),
         fixedSize: const Size.square(40),
+        padding: EdgeInsets.zero,
         shape: const CircleBorder(),
       ),
       iconSize: 26,

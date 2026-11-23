@@ -108,6 +108,26 @@ void main() {
     expect(find.byTooltip('Unduh'), findsNothing);
   });
 
+  testWidgets('the previous and next arrows sit in the centre of their round buttons', (tester) async {
+    await _pump(
+      tester,
+      FakeChatRepository(rooms: [directRoom()], members: directMembers(), messages: [_photoMessage()]),
+    );
+
+    await tester.tap(_photoTiles().first);
+    await _settle(tester);
+    for (final tooltip in ['Gambar sebelumnya', 'Gambar berikutnya']) {
+      final button = find.ancestor(of: find.byTooltip(tooltip), matching: find.byType(IconButton)).first;
+      final icon = find.descendant(of: button, matching: find.byType(Icon));
+      final buttonCenter = tester.getCenter(button);
+      final iconCenter = tester.getCenter(icon);
+      expect((iconCenter.dx - buttonCenter.dx).abs(), lessThan(0.5), reason: tooltip);
+      expect((iconCenter.dy - buttonCenter.dy).abs(), lessThan(0.5), reason: tooltip);
+      final size = tester.widget<IconButton>(button).iconSize!;
+      expect(tester.getSize(icon), Size.square(size), reason: '$tooltip arrow is squeezed and drawn off centre');
+    }
+  });
+
   testWidgets('tapping the dark area around the photo closes the viewer, tapping the photo does not', (tester) async {
     await _pump(tester, FakeChatRepository(rooms: [directRoom()], members: directMembers()));
     final context = tester.element(find.byType(CommunityChatRoom));

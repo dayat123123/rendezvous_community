@@ -1,3 +1,9 @@
+## 1.49.2
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Panah penampil gambar tepat di tengah:** tombol gambar sebelumnya dan berikutnya di penampil gambar kini menampilkan panah utuh tepat di tengah lingkarannya. Sebelumnya panah sedikit dimampatkan dan bergeser ke kanan.
+
 ## 1.49.1
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
