@@ -1,3 +1,9 @@
+## 1.49.1
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Tombol tutup penampil seragam di kanan:** halaman gambar lampiran Pusat Bantuan dan pemutar video kini menaruh tombol tutup di kanan atas, sama seperti penampil gambar. Di pemutar video, tombol "Buka di pemutar video" berada tepat di kiri tombol tutup. Judul di kedua halaman kini berwarna putih sehingga terbaca di latar hitam.
+
 ## 1.49.0
 
 Butuh migrasi server 0188 untuk menampilkan lampiran. Server lama tetap jalan (artikel tampil tanpa lampiran). Tidak ada breaking change pada API publik.

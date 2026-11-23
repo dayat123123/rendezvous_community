@@ -103,15 +103,22 @@ class _CommunityVideoPlayerPageState extends State<CommunityVideoPlayerPage> {
       appBar: AppBar(
         backgroundColor: Colors.black,
         foregroundColor: Colors.white,
-        title: Text(widget.title, maxLines: 1, overflow: TextOverflow.ellipsis),
-        leading: IconButton(
-          tooltip: l10n.close,
-          icon: const Icon(Icons.close),
-          onPressed: () => Navigator.of(context).maybePop(),
+        automaticallyImplyLeading: false,
+        title: Text(
+          widget.title,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(color: Colors.white),
         ),
         actions: [
           if (widget.onOpenExternal != null)
             IconButton(tooltip: l10n.videoOpenExternal, icon: const Icon(Icons.open_in_new), onPressed: _openExternal),
+          IconButton(
+            tooltip: l10n.close,
+            icon: const Icon(Icons.close_rounded),
+            onPressed: () => Navigator.of(context).maybePop(),
+          ),
+          const SizedBox(width: 4),
         ],
       ),
       body: SafeArea(

@@ -220,7 +220,21 @@ class HelpImagePage extends StatelessWidget {
     appBar: AppBar(
       backgroundColor: Colors.black,
       foregroundColor: Colors.white,
-      title: Text(attachment.name, maxLines: 1, overflow: TextOverflow.ellipsis),
+      automaticallyImplyLeading: false,
+      title: Text(
+        attachment.name,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+        style: const TextStyle(color: Colors.white),
+      ),
+      actions: [
+        IconButton(
+          tooltip: context.communityL10n.close,
+          icon: const Icon(Icons.close_rounded),
+          onPressed: () => Navigator.of(context).maybePop(),
+        ),
+        const SizedBox(width: 4),
+      ],
     ),
     body: SafeArea(
       child: InteractiveViewer(
