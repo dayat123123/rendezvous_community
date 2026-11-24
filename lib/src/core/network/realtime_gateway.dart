@@ -10,6 +10,7 @@ class RealtimeGateway {
 
   final SupabaseClient _client;
   int _seq = 0;
+  final _topics = <String, _SharedTopic>{};
 
   Stream<PostgresChangePayload> tableChanges({
     required String table,
@@ -57,36 +58,79 @@ class RealtimeGateway {
     required String event,
     void Function(RealtimeStatus status)? onStatus,
   }) {
-    RealtimeChannel? channel;
+    late final _BroadcastListener listener;
     late final StreamController<Map<String, dynamic>> controller;
     controller = StreamController<Map<String, dynamic>>(
-      onListen: () {
-        onStatus?.call(RealtimeStatus.connecting);
-        final created = privateChannel(topic);
-        channel = created;
-        created
-          ..onBroadcast(
-            event: event,
-            callback: (payload) {
-              if (!controller.isClosed) controller.add(broadcastPayload(payload));
-            },
-          )
-          ..subscribe((status, error) {
-            _logChannelStatus(topic, status, error);
-            onStatus?.call(mapSubscribeStatus(status));
-          });
-      },
+      onListen: () => _join(topic, listener),
       onCancel: () async {
-        final ch = channel;
-        channel = null;
-        if (ch != null) await remove(ch);
+        await _leave(topic, listener);
         await controller.close();
       },
     );
+    listener = _BroadcastListener(event, controller, onStatus);
     return controller.stream;
   }
 
+  void _join(String topic, _BroadcastListener listener) {
+    listener.onStatus?.call(RealtimeStatus.connecting);
+    final shared = _topics[topic];
+    if (shared != null) {
+      shared.listeners.add(listener);
+      final status = shared.status;
+      if (status != null) listener.onStatus?.call(status);
+      return;
+    }
+    final channel = privateChannel(topic);
+    final created = _SharedTopic(channel)..listeners.add(listener);
+    _topics[topic] = created;
+    channel
+      ..onBroadcast(
+        event: '*',
+        callback: (payload) {
+          if (!identical(_topics[topic], created)) return;
+          final event = payload['event'];
+          final data = broadcastPayload(payload);
+          for (final l in [...created.listeners]) {
+            if (l.event == event && !l.controller.isClosed) l.controller.add(data);
+          }
+        },
+      )
+      ..subscribe((status, error) {
+        _logChannelStatus(topic, status, error);
+        if (!identical(_topics[topic], created)) return;
+        final mapped = mapSubscribeStatus(status);
+        created.status = mapped;
+        for (final l in [...created.listeners]) {
+          l.onStatus?.call(mapped);
+        }
+      });
+  }
+
+  Future<void> _leave(String topic, _BroadcastListener listener) async {
+    final shared = _topics[topic];
+    if (shared != null && shared.listeners.remove(listener) && shared.listeners.isEmpty) {
+      _topics.remove(topic);
+      await remove(shared.channel);
+    }
+  }
+
   Future<void> remove(RealtimeChannel channel) => _client.removeChannel(channel);
+}
+
+class _SharedTopic {
+  _SharedTopic(this.channel);
+
+  final RealtimeChannel channel;
+  final listeners = <_BroadcastListener>[];
+  RealtimeStatus? status;
+}
+
+class _BroadcastListener {
+  _BroadcastListener(this.event, this.controller, this.onStatus);
+
+  final String event;
+  final StreamController<Map<String, dynamic>> controller;
+  final void Function(RealtimeStatus status)? onStatus;
 }
 
 void _logChannelStatus(String channel, RealtimeSubscribeStatus status, Object? error) {

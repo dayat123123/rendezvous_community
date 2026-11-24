@@ -1,3 +1,10 @@
+## 1.50.4
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Daftar chat kembali ter-update secara realtime:** sinyal aktivitas room (`room_activity`) dan penghapusan room (`room_removed`) kini memakai satu channel bersama untuk topik `user:<id>`. Sebelumnya keduanya membuka channel terpisah pada topik yang sama, sehingga server menutup join pertama dan daftar chat tidak menerima pesan baru sampai panel dibuka ulang.
+* **Internal:** `RealtimeGateway.serverBroadcasts` berbagi satu channel per topik dan membagikan event ke setiap pendengar sesuai nama event-nya.
+
 ## 1.50.3
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik. Menggantikan tag 1.50.2 yang terbit tanpa kenaikan versi di pubspec; isinya sama.
