@@ -1,3 +1,11 @@
+## 1.50.3
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik. Menggantikan tag 1.50.2 yang terbit tanpa kenaikan versi di pubspec; isinya sama.
+
+* **Thumbnail notifikasi tidak lagi tampil rusak:** gambar di notifikasi baru muncul setelah benar-benar berhasil dimuat. Bila alamat gambar mati, tidak bisa dijangkau, atau ternyata bukan gambar, thumbnail disembunyikan tanpa menyisakan kotak kosong.
+* **Penanda belum dibaca di kiri gambar:** pada baris bawaan, titik belum dibaca kini berada di kiri thumbnail.
+* **API:** `CommunityNotificationThumbnail` mendapat parameter `margin` yang hanya dipakai saat gambar tampil.
+
 ## 1.50.1
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
