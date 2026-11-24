@@ -296,6 +296,7 @@ class _NotificationFilterState extends State<_NotificationFilter> {
 }
 
 const _leadingSize = 44.0;
+const _thumbnailMargin = EdgeInsetsDirectional.only(start: 12);
 
 class _NotificationRows extends StatelessWidget {
   const _NotificationRows({required this.items, required this.itemBuilder});
@@ -500,11 +501,6 @@ class _NotificationRow extends StatelessWidget {
                   ],
                 ),
               ),
-              if (trailing case final trailing?)
-                Padding(
-                  padding: EdgeInsets.only(left: spacing.md),
-                  child: trailing,
-                ),
               if (unread)
                 Padding(
                   padding: EdgeInsets.only(left: spacing.md, top: (_leadingSize - 10) / 2),
@@ -515,6 +511,7 @@ class _NotificationRow extends StatelessWidget {
                     ),
                   ),
                 ),
+              ?trailing,
             ],
           ),
         ),
@@ -635,7 +632,9 @@ class _NotificationTile extends StatelessWidget {
             ),
           ],
         ),
-        trailing: n.hasImage ? CommunityNotificationThumbnail(notification: n, size: _leadingSize) : null,
+        trailing: n.hasImage
+            ? CommunityNotificationThumbnail(notification: n, size: _leadingSize, margin: _thumbnailMargin)
+            : null,
       ),
     );
     if (activity == null) return row;
@@ -724,7 +723,9 @@ class _OltNotificationTile extends StatelessWidget {
             size: _leadingSize,
           ),
         ),
-        trailing: n.hasImage ? CommunityNotificationThumbnail(notification: n, size: _leadingSize) : null,
+        trailing: n.hasImage
+            ? CommunityNotificationThumbnail(notification: n, size: _leadingSize, margin: _thumbnailMargin)
+            : null,
       ),
     );
   }

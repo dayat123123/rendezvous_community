@@ -58,42 +58,107 @@ class CommunityNotificationAvatars extends StatelessWidget {
   }
 }
 
-class CommunityNotificationThumbnail extends StatelessWidget {
-  const CommunityNotificationThumbnail({super.key, required this.notification, this.size = 44, this.radius = 6});
+class CommunityNotificationThumbnail extends StatefulWidget {
+  const CommunityNotificationThumbnail({
+    super.key,
+    required this.notification,
+    this.size = 44,
+    this.radius = 6,
+    this.margin = EdgeInsetsDirectional.zero,
+  });
 
   final AppNotification notification;
   final double size;
   final double radius;
+  final EdgeInsetsGeometry margin;
 
   @override
-  Widget build(BuildContext context) {
-    final attachment = notification.postAttachment;
-    final url = notification.imageUrl;
-    if (attachment == null && url == null) return const SizedBox.shrink();
-    final style = CommunityStyle.of(context);
-    final placeholder = ColoredBox(color: style.skeleton);
-    final error = ColoredBox(
-      color: style.skeleton,
-      child: Center(
-        child: Icon(Icons.image_outlined, size: size * 0.4, color: style.textTertiary),
-      ),
-    );
-    final Widget image;
+  State<CommunityNotificationThumbnail> createState() => _CommunityNotificationThumbnailState();
+}
+
+class _CommunityNotificationThumbnailState extends State<CommunityNotificationThumbnail> {
+  ImageProvider? _provider;
+  ImageStream? _stream;
+  ImageStreamListener? _listener;
+  bool _ready = false;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _resolve();
+  }
+
+  @override
+  void didUpdateWidget(CommunityNotificationThumbnail oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _resolve();
+  }
+
+  ImageProvider? _providerFor(BuildContext context) {
+    final attachment = widget.notification.postAttachment;
     if (attachment != null) {
       final media = CommunityScope.of(context).media;
       final bucket = attachment.bucket ?? attachmentBucket;
-      image = CommunityNetworkImage(
+      return communityImageProvider(
+        context,
         cacheKey: imageCacheKeyForObject(bucket, attachment.path),
         source: () => media.attachmentImage(attachment),
-        placeholder: placeholder,
-        error: error,
+        width: widget.size,
+        height: widget.size,
       );
-    } else {
-      image = CommunityNetworkImage.url(url!, placeholder: placeholder, error: error);
     }
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
-      child: SizedBox.square(dimension: size, child: image),
+    final url = widget.notification.imageUrl;
+    if (url == null) return null;
+    return communityUrlImageProvider(context, url, width: widget.size, height: widget.size);
+  }
+
+  void _resolve() {
+    final provider = _providerFor(context);
+    if (provider == _provider) return;
+    _stop();
+    _provider = provider;
+    _ready = false;
+    if (provider == null) return;
+    final listener = ImageStreamListener(
+      (_, _) {
+        if (mounted && !_ready) setState(() => _ready = true);
+      },
+      onError: (_, _) {
+        if (mounted && _ready) setState(() => _ready = false);
+      },
+    );
+    final stream = provider.resolve(createLocalImageConfiguration(context));
+    stream.addListener(listener);
+    _stream = stream;
+    _listener = listener;
+  }
+
+  void _stop() {
+    final listener = _listener;
+    if (listener != null) _stream?.removeListener(listener);
+    _stream = null;
+    _listener = null;
+  }
+
+  @override
+  void dispose() {
+    _stop();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final provider = _provider;
+    if (!_ready || provider == null) return const SizedBox.shrink();
+    return Padding(
+      padding: widget.margin,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(widget.radius),
+        child: SizedBox.square(
+          dimension: widget.size,
+          child: Image(image: provider, fit: BoxFit.cover, gaplessPlayback: true),
+        ),
+      ),
     );
   }
 }

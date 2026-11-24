@@ -124,10 +124,6 @@ void main() {
       _n('n-2', NotificationType.follow, actors: [bob]),
     ]);
     expect(find.byType(CommunityNotificationThumbnail), findsOneWidget);
-    expect(
-      find.descendant(of: find.byType(CommunityNotificationThumbnail), matching: find.byType(CommunityNetworkImage)),
-      findsOneWidget,
-    );
     await repo.dispose();
   });
 
@@ -176,10 +172,6 @@ void main() {
       _n('n-2', NotificationType.announcement, payload: const {'notice_id': 'nt-2', 'title': 'Tanpa gambar'}),
     ]);
     expect(find.byType(CommunityNotificationThumbnail), findsOneWidget);
-    expect(
-      find.descendant(of: find.byType(CommunityNotificationThumbnail), matching: find.byType(CommunityNetworkImage)),
-      findsOneWidget,
-    );
     await repo.dispose();
   });
 
