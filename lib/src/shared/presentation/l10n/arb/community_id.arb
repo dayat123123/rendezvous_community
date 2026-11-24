@@ -1190,5 +1190,21 @@
   "noticeLevelWarning": "Peringatan",
   "noticeLevelCritical": "Penting",
   "noticeSentAt": "{day}, {time}",
-  "@noticeSentAt": {"placeholders": {"day": {"type": "String"}, "time": {"type": "String"}}}
+  "@noticeSentAt": {"placeholders": {"day": {"type": "String"}, "time": {"type": "String"}}},
+  "notifNamesTwo": "{first} dan {second}",
+  "@notifNamesTwo": { "placeholders": { "first": { "type": "String" }, "second": { "type": "String" } } },
+  "notifNamesMany": "{first}, {second}, dan {others} lainnya",
+  "@notifNamesMany": { "placeholders": { "first": { "type": "String" }, "second": { "type": "String" }, "others": { "type": "int" } } },
+  "notifNamesMore": "{first} dan {others} lainnya",
+  "@notifNamesMore": { "placeholders": { "first": { "type": "String" }, "others": { "type": "int" } } },
+  "notifLikedPost": "{names} menyukai postingan Anda",
+  "@notifLikedPost": { "placeholders": { "names": { "type": "String" } } },
+  "notifLikedComment": "{names} menyukai komentar Anda",
+  "@notifLikedComment": { "placeholders": { "names": { "type": "String" } } },
+  "notifCommentedPost": "{names} mengomentari postingan Anda",
+  "@notifCommentedPost": { "placeholders": { "names": { "type": "String" } } },
+  "notifRepliedComment": "{names} membalas komentar Anda",
+  "@notifRepliedComment": { "placeholders": { "names": { "type": "String" } } },
+  "notifFollowedYou": "{names} mulai mengikuti Anda",
+  "@notifFollowedYou": { "placeholders": { "names": { "type": "String" } } }
 }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
 part 'app_notification.freezed.dart';
@@ -80,8 +81,24 @@ abstract class AppNotification with _$AppNotification {
   String? get tradeAction => payload['action'] is String ? payload['action'] as String : null;
   String? get tradeReason => payload['reason'] is String ? payload['reason'] as String : null;
   String? get tradeTraderId => payload['trader_id'] is String ? payload['trader_id'] as String : null;
+  String? get replyScope => payload['scope'] is String ? payload['scope'] as String : null;
+  List<UserSummary> get knownActors => actors.isNotEmpty ? actors : [?actor];
+  int get totalActors => actorCount > knownActors.length ? actorCount : knownActors.length;
+  Attachment? get postAttachment => _attachment(payload['post_attachment']);
   String? localizedTitle(String languageCode) => _localizedText(payload['title'], languageCode);
   String? localizedBody(String languageCode) => _localizedText(payload['body'], languageCode);
+}
+
+Attachment? _attachment(Object? value) {
+  if (value is! Map || value['path'] is! String) return null;
+  return Attachment(
+    path: value['path'] as String,
+    bucket: value['bucket'] is String ? value['bucket'] as String : null,
+    mime: value['mime'] is String ? value['mime'] as String : null,
+    width: (value['width'] as num?)?.toInt(),
+    height: (value['height'] as num?)?.toInt(),
+    thumbnail: value['thumbnail'] is String ? value['thumbnail'] as String : null,
+  );
 }
 
 List<String> _strings(Object? value) {

@@ -1,3 +1,12 @@
+## 1.50.0
+
+Pengelompokan penuh butuh migrasi server pengelompokan notifikasi (0191). Server lama tetap jalan: notifikasi tampil seperti sebelumnya, hanya tanpa thumbnail dan nama kedua. Tidak ada breaking change pada API publik.
+
+* **Notifikasi dikelompokkan ala Instagram:** like, follow, komentar di post, dan balasan ke komentar kini menyebut dua pelaku terbaru beserta sisanya, misalnya "Alice, Bob, dan 98 lainnya menyukai postingan Anda" atau "Alice dan Bob mulai mengikuti Anda". Like membedakan postingan dan komentar, bukan lagi "konten". Nama pelaku ditebalkan.
+* **Avatar bertumpuk dan thumbnail post:** baris dengan lebih dari satu pelaku menampilkan dua foto profil bertumpuk, dan baris tentang sebuah post menampilkan gambar pertama post di kanan.
+* **Tidak ada baris ganda saat menggulir:** notifikasi grup yang naik ke atas tidak muncul dua kali saat halaman berikutnya dimuat.
+* **API baru:** widget `CommunityNotificationAvatars` dan `CommunityNotificationThumbnail`, getter `AppNotification.postAttachment`, `replyScope`, `knownActors`, `totalActors`, serta `CommunityNotificationDetails.highlight` (bagian judul yang ditebalkan).
+
 ## 1.49.2
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

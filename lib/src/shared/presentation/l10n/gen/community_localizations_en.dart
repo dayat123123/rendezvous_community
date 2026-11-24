@@ -3474,4 +3474,56 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String noticeSentAt(String day, String time) {
     return '$day, $time';
   }
+
+  @override
+  String notifNamesTwo(String first, String second) {
+    return '$first and $second';
+  }
+
+  @override
+  String notifNamesMany(String first, String second, int others) {
+    String _temp0 = intl.Intl.pluralLogic(
+      others,
+      locale: localeName,
+      other: '$first, $second and $others others',
+      one: '$first, $second and 1 other',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifNamesMore(String first, int others) {
+    String _temp0 = intl.Intl.pluralLogic(
+      others,
+      locale: localeName,
+      other: '$first and $others others',
+      one: '$first and 1 other',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String notifLikedPost(String names) {
+    return '$names liked your post';
+  }
+
+  @override
+  String notifLikedComment(String names) {
+    return '$names liked your comment';
+  }
+
+  @override
+  String notifCommentedPost(String names) {
+    return '$names commented on your post';
+  }
+
+  @override
+  String notifRepliedComment(String names) {
+    return '$names replied to your comment';
+  }
+
+  @override
+  String notifFollowedYou(String names) {
+    return '$names started following you';
+  }
 }

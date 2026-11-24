@@ -17,6 +17,7 @@ import 'package:rendezvous_community/src/features/notifications/presentation/bui
 import 'package:rendezvous_community/src/features/notifications/presentation/builders/community_notification_details.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/widgets/community_notification_settings.dart';
+import 'package:rendezvous_community/src/features/notifications/presentation/widgets/notification_visuals.dart';
 import 'package:rendezvous_community/src/features/trade_share/domain/entities/trade_activity.dart';
 import 'package:rendezvous_community/src/features/trade_share/presentation/builders/community_trade_share_details.dart';
 import 'package:rendezvous_community/src/features/trade_share/presentation/trade_share_navigation.dart';
@@ -29,7 +30,6 @@ import 'package:rendezvous_community/src/shared/presentation/builders/community_
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
-import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_count_badge.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
@@ -441,10 +441,11 @@ class _DefaultNotificationIcon extends StatelessWidget {
 }
 
 class _NotificationRow extends StatelessWidget {
-  const _NotificationRow({required this.details, required this.leading});
+  const _NotificationRow({required this.details, required this.leading, this.trailing});
 
   final CommunityNotificationDetails details;
   final Widget leading;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -453,7 +454,7 @@ class _NotificationRow extends StatelessWidget {
     final spacing = style.spacing;
     final unread = !d.isRead;
     final snippet = d.snippet;
-    final name = d.notification.actor?.name;
+    final name = d.highlight ?? d.notification.actor?.name;
     final title = d.title;
     final at = name == null || name.isEmpty ? -1 : title.indexOf(name);
     final base = style.typography.body.copyWith(fontSize: 14, height: 1.4, fontWeight: FontWeight.w400);
@@ -499,6 +500,11 @@ class _NotificationRow extends StatelessWidget {
                   ],
                 ),
               ),
+              if (trailing case final trailing?)
+                Padding(
+                  padding: EdgeInsets.only(left: spacing.md),
+                  child: trailing,
+                ),
               if (unread)
                 Padding(
                   padding: EdgeInsets.only(left: spacing.md, top: (_leadingSize - 10) / 2),
@@ -530,19 +536,30 @@ class _NotificationTile extends StatelessWidget {
     final l10n = context.communityL10n;
     final icons = CommunityStyle.of(context).icons;
     final name = n.actor?.name ?? l10n.someone;
+    final names = notificationActorNames(l10n, n) ?? name;
+    final grouped = switch (n.type) {
+      NotificationType.reply => n.replyScope == 'post' || n.replyScope == 'comment',
+      NotificationType.like => n.targetType == 'post' || n.targetType == 'comment',
+      NotificationType.follow => true,
+      _ => false,
+    };
     final activity = n.type == NotificationType.tradeActivity
         ? TradeActivity.fromPayload(n.payload, trader: n.actor)
         : null;
     final activityText = activity == null ? null : l10n.tradeActivityText(activity);
     final title = switch (n.type) {
+      NotificationType.reply when n.replyScope == 'post' => l10n.notifCommentedPost(names),
+      NotificationType.reply when n.replyScope == 'comment' => l10n.notifRepliedComment(names),
       NotificationType.reply => l10n.notifReply(name),
       NotificationType.mention when n.isRoomMention => l10n.notifMentionRoom(
         name,
         n.stockCode == null ? (n.payload['room_name'] as String? ?? '') : '\$${n.stockCode}',
       ),
       NotificationType.mention => l10n.notifMention(name),
+      NotificationType.like when n.targetType == 'post' => l10n.notifLikedPost(names),
+      NotificationType.like when n.targetType == 'comment' => l10n.notifLikedComment(names),
       NotificationType.like => l10n.notifLike(name, n.actorCount < 1 ? 1 : n.actorCount, n.otherActors),
-      NotificationType.follow => n.otherActors > 0 ? l10n.notifFollowMany(name, n.otherActors) : l10n.notifFollow(name),
+      NotificationType.follow => l10n.notifFollowedYou(names),
       NotificationType.message => l10n.notifMessage(name, n.eventCount),
       NotificationType.announcement => n.title ?? l10n.notifAnnouncement(name),
       NotificationType.appeal => n.appealStatus == 'accepted' ? l10n.notifAppealAccepted : l10n.notifAppealRejected,
@@ -592,7 +609,9 @@ class _NotificationTile extends StatelessWidget {
       icon: icon,
       timeLabel: l10n.relativeTime(n.createdAt),
       onTap: onTap,
+      highlight: grouped ? names : null,
     );
+    final style = CommunityStyle.of(context);
     final row = buildCommunityPart(
       CommunityNotificationBuilders.of(context).item,
       context,
@@ -602,7 +621,11 @@ class _NotificationTile extends StatelessWidget {
         leading: Stack(
           clipBehavior: Clip.none,
           children: [
-            CommunityAvatar(user: n.actor, radius: _leadingSize / 2),
+            CommunityNotificationAvatars(
+              notification: n,
+              size: _leadingSize,
+              ringColor: n.isRead ? style.surface : _unreadTint(style),
+            ),
             Positioned(
               right: -3,
               bottom: -3,
@@ -612,6 +635,7 @@ class _NotificationTile extends StatelessWidget {
             ),
           ],
         ),
+        trailing: n.postAttachment == null ? null : CommunityNotificationThumbnail(notification: n, size: _leadingSize),
       ),
     );
     if (activity == null) return row;

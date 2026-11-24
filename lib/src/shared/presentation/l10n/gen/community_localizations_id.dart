@@ -3459,4 +3459,44 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String noticeSentAt(String day, String time) {
     return '$day, $time';
   }
+
+  @override
+  String notifNamesTwo(String first, String second) {
+    return '$first dan $second';
+  }
+
+  @override
+  String notifNamesMany(String first, String second, int others) {
+    return '$first, $second, dan $others lainnya';
+  }
+
+  @override
+  String notifNamesMore(String first, int others) {
+    return '$first dan $others lainnya';
+  }
+
+  @override
+  String notifLikedPost(String names) {
+    return '$names menyukai postingan Anda';
+  }
+
+  @override
+  String notifLikedComment(String names) {
+    return '$names menyukai komentar Anda';
+  }
+
+  @override
+  String notifCommentedPost(String names) {
+    return '$names mengomentari postingan Anda';
+  }
+
+  @override
+  String notifRepliedComment(String names) {
+    return '$names membalas komentar Anda';
+  }
+
+  @override
+  String notifFollowedYou(String names) {
+    return '$names mulai mengikuti Anda';
+  }
 }

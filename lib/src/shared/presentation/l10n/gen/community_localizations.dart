@@ -6187,6 +6187,54 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'{day}, {time}'**
   String noticeSentAt(String day, String time);
+
+  /// No description provided for @notifNamesTwo.
+  ///
+  /// In id, this message translates to:
+  /// **'{first} dan {second}'**
+  String notifNamesTwo(String first, String second);
+
+  /// No description provided for @notifNamesMany.
+  ///
+  /// In id, this message translates to:
+  /// **'{first}, {second}, dan {others} lainnya'**
+  String notifNamesMany(String first, String second, int others);
+
+  /// No description provided for @notifNamesMore.
+  ///
+  /// In id, this message translates to:
+  /// **'{first} dan {others} lainnya'**
+  String notifNamesMore(String first, int others);
+
+  /// No description provided for @notifLikedPost.
+  ///
+  /// In id, this message translates to:
+  /// **'{names} menyukai postingan Anda'**
+  String notifLikedPost(String names);
+
+  /// No description provided for @notifLikedComment.
+  ///
+  /// In id, this message translates to:
+  /// **'{names} menyukai komentar Anda'**
+  String notifLikedComment(String names);
+
+  /// No description provided for @notifCommentedPost.
+  ///
+  /// In id, this message translates to:
+  /// **'{names} mengomentari postingan Anda'**
+  String notifCommentedPost(String names);
+
+  /// No description provided for @notifRepliedComment.
+  ///
+  /// In id, this message translates to:
+  /// **'{names} membalas komentar Anda'**
+  String notifRepliedComment(String names);
+
+  /// No description provided for @notifFollowedYou.
+  ///
+  /// In id, this message translates to:
+  /// **'{names} mulai mengikuti Anda'**
+  String notifFollowedYou(String names);
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

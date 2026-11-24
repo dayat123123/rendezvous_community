@@ -10,10 +10,12 @@ class CommunityNotificationDetails {
     required this.onTap,
     this.snippet,
     this.important = false,
+    this.highlight,
   });
 
   final AppNotification notification;
   final String title;
+  final String? highlight;
   final String? snippet;
   final IconData icon;
   final String timeLabel;

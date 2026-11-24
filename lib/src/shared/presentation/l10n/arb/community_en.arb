@@ -1066,5 +1066,13 @@
   "noticeLevelInfo": "Info",
   "noticeLevelWarning": "Warning",
   "noticeLevelCritical": "Important",
-  "noticeSentAt": "{day}, {time}"
+  "noticeSentAt": "{day}, {time}",
+  "notifNamesTwo": "{first} and {second}",
+  "notifNamesMany": "{others, plural, =1{{first}, {second} and 1 other} other{{first}, {second} and {others} others}}",
+  "notifNamesMore": "{others, plural, =1{{first} and 1 other} other{{first} and {others} others}}",
+  "notifLikedPost": "{names} liked your post",
+  "notifLikedComment": "{names} liked your comment",
+  "notifCommentedPost": "{names} commented on your post",
+  "notifRepliedComment": "{names} replied to your comment",
+  "notifFollowedYou": "{names} started following you"
 }

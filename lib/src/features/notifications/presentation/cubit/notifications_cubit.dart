@@ -62,7 +62,14 @@ class NotificationsCubit extends Cubit<NotificationsState> {
     try {
       final page = await _repo.getNotifications(cursor: cursor);
       if (!isClosed) {
-        emit(state.copyWith(items: [...state.items, ...page.items], nextCursor: page.nextCursor, loadingMore: false));
+        final seen = {for (final i in state.items) i.id};
+        emit(
+          state.copyWith(
+            items: [...state.items, ...page.items.where((i) => !seen.contains(i.id))],
+            nextCursor: page.nextCursor,
+            loadingMore: false,
+          ),
+        );
       }
     } catch (_) {
       if (!isClosed) emit(state.copyWith(loadingMore: false));

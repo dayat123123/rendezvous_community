@@ -248,6 +248,8 @@ export 'src/features/notifications/presentation/widgets/community_notification_s
     show CommunityNotificationSettings, openCommunityNotificationSettings;
 export 'src/features/notifications/presentation/widgets/community_notifications.dart'
     show CommunityNotificationBadge, CommunityNotificationList, openCommunityNotification;
+export 'src/features/notifications/presentation/widgets/notification_visuals.dart'
+    show CommunityNotificationAvatars, CommunityNotificationThumbnail;
 export 'src/features/offline/presentation/widgets/community_offline_banner.dart';
 export 'src/features/poll/domain/entities/poll.dart';
 export 'src/features/poll/domain/repositories/poll_repository.dart';
