@@ -1209,5 +1209,6 @@
   "notifRepliedComment": "{names} membalas komentar Anda",
   "@notifRepliedComment": { "placeholders": { "names": { "type": "String" } } },
   "notifFollowedYou": "{names} mulai mengikuti Anda",
-  "@notifFollowedYou": { "placeholders": { "names": { "type": "String" } } }
+  "@notifFollowedYou": { "placeholders": { "names": { "type": "String" } } },
+  "dropFilesHere": "Lepas file di sini untuk dikirim"
 }

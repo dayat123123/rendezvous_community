@@ -11,6 +11,7 @@ import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_builders.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/chat_file_drop.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_composer.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/message_list.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_banners.dart';
@@ -163,26 +164,28 @@ class _ChatRoomView extends StatelessWidget {
           LoadStatus.ready => _gate(
             state,
             _RoomSurface(
-              child: Column(
-                children: [
-                  Expanded(
-                    child: CommunitySelectable(
-                      child: Column(
-                        children: [
-                          if (header != null) header! else if (showHeader) const RoomHeader(),
-                          const _ReconnectBanner(),
-                          const StockRoomBanner(),
-                          const RoomModerationBanner(),
-                          const DmRequestNotice(),
-                          const Expanded(child: MessageList()),
-                        ],
+              child: ChatFileDropZone(
+                child: Column(
+                  children: [
+                    Expanded(
+                      child: CommunitySelectable(
+                        child: Column(
+                          children: [
+                            if (header != null) header! else if (showHeader) const RoomHeader(),
+                            const _ReconnectBanner(),
+                            const StockRoomBanner(),
+                            const RoomModerationBanner(),
+                            const DmRequestNotice(),
+                            const Expanded(child: MessageList()),
+                          ],
+                        ),
                       ),
                     ),
-                  ),
-                  const _TypingIndicator(),
-                  const CommunityDivider(),
-                  _GroupGate(child: _OfficialGate(child: composer ?? const MessageComposer())),
-                ],
+                    const _TypingIndicator(),
+                    const CommunityDivider(),
+                    _GroupGate(child: _OfficialGate(child: composer ?? const MessageComposer())),
+                  ],
+                ),
               ),
             ),
           ),

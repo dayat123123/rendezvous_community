@@ -13,6 +13,7 @@ import 'package:rendezvous_community/src/features/chat/presentation/builders/com
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/chat_room_cubit.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/attachment_picker.dart';
+import 'package:rendezvous_community/src/features/chat/presentation/widgets/chat_file_drop.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/stock_cards.dart';
 import 'package:rendezvous_community/src/features/media/domain/entities/attachment_policy.dart';
@@ -69,6 +70,16 @@ class _MessageComposerState extends State<MessageComposer> {
   final _focus = FocusNode();
   final _files = <ChatOutgoingFile>[];
   Timer? _ticker;
+  ChatFileDropSlot? _dropSlot;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final slot = ChatFileDropZone.maybeOf(context);
+    if (identical(slot, _dropSlot)) return;
+    _dropSlot?.detach(_receiveDrop);
+    _dropSlot = slot?..attach(_receiveDrop);
+  }
 
   void _syncTicker(Duration cooldown) {
     if (cooldown > Duration.zero) {
@@ -98,6 +109,7 @@ class _MessageComposerState extends State<MessageComposer> {
 
   @override
   void dispose() {
+    _dropSlot?.detach(_receiveDrop);
     _ticker?.cancel();
     _controller.dispose();
     _focus.dispose();
@@ -149,12 +161,22 @@ class _MessageComposerState extends State<MessageComposer> {
     if (groups.isEmpty) return;
     final picked = await widget.openFilesPicker(acceptedTypeGroups: groups);
     if (picked.isEmpty || !mounted) return;
-    final result = await prepareAttachments(picked.take(_maxFiles + 1).toList(), policy, l10n);
+    await _stagePicked(picked);
+  }
+
+  Future<void> _stagePicked(List<XFile> picked) async {
+    final result = await prepareAttachments(picked.take(_maxFiles + 1).toList(), widget.policy, context.communityL10n);
     if (!mounted) return;
     for (final error in result.errors) {
       showCommunityMessage(context, error);
     }
     _addFiles(result.files);
+  }
+
+  void _receiveDrop(List<XFile> files) {
+    final state = context.read<ChatRoomCubit>().state;
+    if (state.uploading || state.editing != null) return;
+    unawaited(_stagePicked(files));
   }
 
   Future<bool> _pasteImage() async {

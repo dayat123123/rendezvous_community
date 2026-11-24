@@ -4,7 +4,7 @@ description: >-
   follows, stock watchlists, realtime chat, customer support chat, and
   moderation for the Rendezvous OLT app. Backend: self-hosted Supabase and
   auth-bridge.
-version: 1.51.0
+version: 1.52.0
 publish_to: none
 
 environment:
@@ -14,6 +14,7 @@ environment:
 dependencies:
   bloc: ^9.2.1
   crypto: ^3.0.8
+  desktop_drop: ^0.8.4
   drift: ^2.34.4
   file_selector: ^1.1.0
   flutter:

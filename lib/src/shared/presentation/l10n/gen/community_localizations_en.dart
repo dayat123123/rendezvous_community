@@ -3535,4 +3535,7 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String notifFollowedYou(String names) {
     return '$names started following you';
   }
+
+  @override
+  String get dropFilesHere => 'Drop files here to send';
 }

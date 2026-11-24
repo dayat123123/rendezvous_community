@@ -1,3 +1,9 @@
+## 1.52.0
+
+* **Seret file ke chat:** file dari Explorer/Finder atau browser bisa diseret ke room chat. Saat file melayang di atas room, muncul petunjuk "Lepas file di sini untuk dikirim"; setelah dilepas, file masuk ke antrean lampiran composer dan diperiksa dengan aturan yang sama seperti tombol lampiran (format, ukuran, maksimal 4 file). Folder diabaikan, dan drop diabaikan saat sedang mengedit pesan atau mengunggah.
+* **Dependensi baru:** `desktop_drop` ^0.8.4 (plugin native untuk Windows, macOS, Linux, dan web). Aplikasi perlu build ulang penuh, bukan hanya hot reload.
+* **String baru:** `dropFilesHere`.
+
 ## 1.51.0
 
 Butuh migrasi server 0193 (`set_room_pinned`, kolom `pinned_at` pada ringkasan room, event `room_pinned`). Tanpa migrasi itu, daftar chat tetap berjalan seperti biasa, tetapi menyematkan chat akan gagal.

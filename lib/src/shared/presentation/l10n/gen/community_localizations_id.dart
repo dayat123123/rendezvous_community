@@ -3508,4 +3508,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String notifFollowedYou(String names) {
     return '$names mulai mengikuti Anda';
   }
+
+  @override
+  String get dropFilesHere => 'Lepas file di sini untuk dikirim';
 }

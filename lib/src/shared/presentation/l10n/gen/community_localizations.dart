@@ -6253,6 +6253,12 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'{names} mulai mengikuti Anda'**
   String notifFollowedYou(String names);
+
+  /// No description provided for @dropFilesHere.
+  ///
+  /// In id, this message translates to:
+  /// **'Lepas file di sini untuk dikirim'**
+  String get dropFilesHere;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {
