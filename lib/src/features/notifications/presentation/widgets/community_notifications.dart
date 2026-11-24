@@ -635,7 +635,7 @@ class _NotificationTile extends StatelessWidget {
             ),
           ],
         ),
-        trailing: n.postAttachment == null ? null : CommunityNotificationThumbnail(notification: n, size: _leadingSize),
+        trailing: n.hasImage ? CommunityNotificationThumbnail(notification: n, size: _leadingSize) : null,
       ),
     );
     if (activity == null) return row;
@@ -724,6 +724,7 @@ class _OltNotificationTile extends StatelessWidget {
             size: _leadingSize,
           ),
         ),
+        trailing: n.hasImage ? CommunityNotificationThumbnail(notification: n, size: _leadingSize) : null,
       ),
     );
   }

@@ -68,26 +68,32 @@ class CommunityNotificationThumbnail extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final attachment = notification.postAttachment;
-    if (attachment == null) return const SizedBox.shrink();
+    final url = notification.imageUrl;
+    if (attachment == null && url == null) return const SizedBox.shrink();
     final style = CommunityStyle.of(context);
-    final media = CommunityScope.of(context).media;
-    final bucket = attachment.bucket ?? attachmentBucket;
+    final placeholder = ColoredBox(color: style.skeleton);
+    final error = ColoredBox(
+      color: style.skeleton,
+      child: Center(
+        child: Icon(Icons.image_outlined, size: size * 0.4, color: style.textTertiary),
+      ),
+    );
+    final Widget image;
+    if (attachment != null) {
+      final media = CommunityScope.of(context).media;
+      final bucket = attachment.bucket ?? attachmentBucket;
+      image = CommunityNetworkImage(
+        cacheKey: imageCacheKeyForObject(bucket, attachment.path),
+        source: () => media.attachmentImage(attachment),
+        placeholder: placeholder,
+        error: error,
+      );
+    } else {
+      image = CommunityNetworkImage.url(url!, placeholder: placeholder, error: error);
+    }
     return ClipRRect(
       borderRadius: BorderRadius.circular(radius),
-      child: SizedBox.square(
-        dimension: size,
-        child: CommunityNetworkImage(
-          cacheKey: imageCacheKeyForObject(bucket, attachment.path),
-          source: () => media.attachmentImage(attachment),
-          placeholder: ColoredBox(color: style.skeleton),
-          error: ColoredBox(
-            color: style.skeleton,
-            child: Center(
-              child: Icon(Icons.image_outlined, size: size * 0.4, color: style.textTertiary),
-            ),
-          ),
-        ),
-      ),
+      child: SizedBox.square(dimension: size, child: image),
     );
   }
 }

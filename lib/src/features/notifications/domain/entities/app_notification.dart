@@ -85,8 +85,17 @@ abstract class AppNotification with _$AppNotification {
   List<UserSummary> get knownActors => actors.isNotEmpty ? actors : [?actor];
   int get totalActors => actorCount > knownActors.length ? actorCount : knownActors.length;
   Attachment? get postAttachment => _attachment(payload['post_attachment']);
+  String? get imageUrl => _webUrl(payload['image_url']);
+  bool get hasImage => postAttachment != null || imageUrl != null;
   String? localizedTitle(String languageCode) => _localizedText(payload['title'], languageCode);
   String? localizedBody(String languageCode) => _localizedText(payload['body'], languageCode);
+}
+
+String? _webUrl(Object? value) {
+  if (value is! String) return null;
+  final uri = Uri.tryParse(value);
+  if (uri == null || !uri.hasAuthority || (uri.scheme != 'https' && uri.scheme != 'http')) return null;
+  return value;
 }
 
 Attachment? _attachment(Object? value) {

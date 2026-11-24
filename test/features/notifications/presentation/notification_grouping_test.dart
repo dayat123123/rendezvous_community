@@ -161,4 +161,35 @@ void main() {
     await cubit.close();
     await repo.dispose();
   });
+
+  testWidgets('a notice with a picture shows it on the right', (tester) async {
+    final repo = await _pump(tester, [
+      _n(
+        'n-1',
+        NotificationType.announcement,
+        payload: const {
+          'notice_id': 'nt-1',
+          'title': 'Uji coba DRC',
+          'image_url': 'https://cdn.example.com/app-banners/drc.png',
+        },
+      ),
+      _n('n-2', NotificationType.announcement, payload: const {'notice_id': 'nt-2', 'title': 'Tanpa gambar'}),
+    ]);
+    expect(find.byType(CommunityNotificationThumbnail), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(CommunityNotificationThumbnail), matching: find.byType(CommunityNetworkImage)),
+      findsOneWidget,
+    );
+    await repo.dispose();
+  });
+
+  test('image url is read only when it is a web address', () {
+    expect(
+      _n('n-1', NotificationType.announcement, payload: const {'image_url': 'https://cdn.example.com/a.png'}).imageUrl,
+      'https://cdn.example.com/a.png',
+    );
+    expect(_n('n-2', NotificationType.announcement, payload: const {'image_url': 'file:///etc/x'}).imageUrl, isNull);
+    expect(_n('n-3', NotificationType.announcement, payload: const {'image_url': ''}).imageUrl, isNull);
+    expect(_n('n-4', NotificationType.announcement).hasImage, isFalse);
+  });
 }

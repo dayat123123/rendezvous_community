@@ -1,3 +1,10 @@
+## 1.50.1
+
+Tidak butuh migrasi server. Tidak ada breaking change pada API publik.
+
+* **Gambar di notifikasi pengumuman:** notifikasi yang membawa gambar, misalnya pengumuman Hub bergambar, kini menampilkan gambarnya di kanan seperti notifikasi postingan. Notifikasi transaksi OLT yang membawa `image_url` ikut menampilkannya.
+* **API baru:** getter `AppNotification.imageUrl` (hanya alamat http/https) dan `AppNotification.hasImage`. `CommunityNotificationThumbnail` memakai gambar post bila ada, lalu `imageUrl`.
+
 ## 1.50.0
 
 Pengelompokan penuh butuh migrasi server pengelompokan notifikasi (0191). Server lama tetap jalan: notifikasi tampil seperti sebelumnya, hanya tanpa thumbnail dan nama kedua. Tidak ada breaking change pada API publik.
