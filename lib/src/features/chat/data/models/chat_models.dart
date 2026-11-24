@@ -252,6 +252,7 @@ abstract class RoomSummaryModel with _$RoomSummaryModel {
     String? avatarUrl,
     bool? onlyAdminsSend,
     bool? onlyAdminsEdit,
+    DateTime? pinnedAt,
   }) = _RoomSummaryModel;
 
   const RoomSummaryModel._();
@@ -286,6 +287,7 @@ abstract class RoomSummaryModel with _$RoomSummaryModel {
     avatarUrl: avatarUrl,
     onlyAdminsSend: onlyAdminsSend ?? false,
     onlyAdminsEdit: onlyAdminsEdit ?? true,
+    pinnedAt: pinnedAt?.toUtc(),
   );
 }
 
@@ -408,6 +410,12 @@ RoomActivity? parseRoomActivity(Map<String, dynamic> json) {
     preview: json['preview'] as String? ?? '',
     createdAt: createdAt.toUtc(),
   );
+}
+
+RoomPinChange? parseRoomPinChange(Map<String, dynamic> json) {
+  final roomId = json['room_id'];
+  if (roomId is! String) return null;
+  return RoomPinChange(roomId: roomId, pinnedAt: DateTime.tryParse(json['pinned_at'] as String? ?? '')?.toUtc());
 }
 
 RoomRemoval? parseRoomRemoval(Map<String, dynamic> json) {

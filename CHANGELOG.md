@@ -1,3 +1,13 @@
+## 1.51.0
+
+Butuh migrasi server 0193 (`set_room_pinned`, kolom `pinned_at` pada ringkasan room, event `room_pinned`). Tanpa migrasi itu, daftar chat tetap berjalan seperti biasa, tetapi menyematkan chat akan gagal.
+
+* **Sematkan chat ala WhatsApp:** menu chat (tekan lama atau klik kanan) kini punya "Sematkan chat" dan "Lepas sematan". Chat yang disematkan tampil tepat di bawah CS, yang terakhir disematkan paling atas, dan tidak bergeser walau ada pesan baru. Chat lain tetap naik ke atas saat ada pesan baru. Batas jumlah sematan ditentukan server (bawaan 3) dengan pesan `errorPinLimit`.
+* **Sinkron antarperangkat:** perubahan sematan dari perangkat lain diterima lewat event `room_pinned` dan langsung mengurutkan ulang daftar.
+* **Ikon pin:** baris chat bawaan menampilkan ikon pin untuk CS dan chat yang disematkan.
+* **API:** `ChatRoom.pinnedAt`, `ChatRoom.canPin`, `RoomPinRepository` (`setRoomPinned`, `watchRoomPins`), `RoomPinChange`, `ChatListCubit.setPinned`, `RoomTile.onPin`/`onUnpin`, `CommunityRoomTileDetails.onPin`/`onUnpin`, serta string `pinChat`, `unpinChat`, `errorPinLimit`.
+* **Perhatian:** `CommunityRoomActionKind` mendapat nilai `pin` dan `unpin`. `switch` yang exhaustive atas enum ini di aplikasi perlu ditambah kedua kasus tersebut.
+
 ## 1.50.4
 
 Tidak butuh migrasi server. Tidak ada breaking change pada API publik.

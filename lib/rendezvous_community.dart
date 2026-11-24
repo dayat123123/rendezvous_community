@@ -81,6 +81,7 @@ export 'src/features/chat/domain/repositories/chat_extras_repository.dart';
 export 'src/features/chat/domain/repositories/chat_repository.dart';
 export 'src/features/chat/domain/repositories/message_index_repository.dart';
 export 'src/features/chat/domain/repositories/message_info_repository.dart';
+export 'src/features/chat/domain/repositories/room_pin_repository.dart';
 export 'src/features/chat/domain/repositories/room_preview_repository.dart';
 export 'src/features/chat/domain/services/message_outbox.dart'
     show

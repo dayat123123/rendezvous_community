@@ -441,6 +441,8 @@ class CommunityRoomTileDetails {
     this.onLeave,
     this.onDeleteGroup,
     this.onShowActions,
+    this.onPin,
+    this.onUnpin,
   });
 
   final ChatRoom room;
@@ -457,11 +459,13 @@ class CommunityRoomTileDetails {
   final VoidCallback? onLeave;
   final VoidCallback? onDeleteGroup;
   final VoidCallback? onShowActions;
+  final VoidCallback? onPin;
+  final VoidCallback? onUnpin;
 
-  bool get hasActions => onHide != null || onLeave != null || onDeleteGroup != null;
+  bool get hasActions => onHide != null || onLeave != null || onDeleteGroup != null || onPin != null || onUnpin != null;
 }
 
-enum CommunityRoomActionKind { hide, leave, deleteGroup }
+enum CommunityRoomActionKind { hide, leave, deleteGroup, pin, unpin }
 
 class CommunityRoomAction {
   const CommunityRoomAction({

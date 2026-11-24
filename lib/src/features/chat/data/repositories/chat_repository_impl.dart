@@ -18,6 +18,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/room_prev
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/message_index_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/message_info_repository.dart';
+import 'package:rendezvous_community/src/features/chat/domain/repositories/room_pin_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/room_preview_repository.dart';
 import 'package:rendezvous_community/src/shared/data/models/attachment_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
@@ -25,7 +26,7 @@ import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ChatRepositoryImpl
-    implements ChatRepository, MessageIndexRepository, RoomPreviewRepository, MessageInfoRepository {
+    implements ChatRepository, MessageIndexRepository, RoomPreviewRepository, MessageInfoRepository, RoomPinRepository {
   ChatRepositoryImpl(this._api, [this._realtime, this._cache]);
 
   final SocialRemoteDataSource _api;
@@ -43,6 +44,7 @@ class ChatRepositoryImpl
         );
   late final SharedStream<RoomActivity> _activity = SharedStream(_createActivityStream);
   late final SharedStream<RoomRemoval> _removals = SharedStream(_createRemovalStream);
+  late final SharedStream<RoomPinChange> _pins = SharedStream(_createPinStream);
   late final SharedStream<RoomMuteNotice> _muteNotices = SharedStream(_createMuteNoticeStream);
   final _unreadChanges = StreamController<void>.broadcast();
   final _localRemovals = StreamController<RoomRemoval>.broadcast();
@@ -254,6 +256,15 @@ class ChatRepositoryImpl
   }
 
   @override
+  Future<DateTime?> setRoomPinned(String roomId, {required bool pinned}) async {
+    final value = await _api.rpcValue('set_room_pinned', {'p_room_id': roomId, 'p_pinned': pinned});
+    return value is String ? DateTime.tryParse(value)?.toUtc() : null;
+  }
+
+  @override
+  Stream<RoomPinChange> watchRoomPins() => _realtime == null ? const Stream.empty() : _pins.stream;
+
+  @override
   Stream<RoomActivity> watchRoomActivity() => _realtime == null ? const Stream.empty() : _activity.stream;
 
   @override
@@ -275,6 +286,7 @@ class ChatRepositoryImpl
   Future<void> dispose() async {
     await _activity.close();
     await _removals.close();
+    await _pins.close();
     await _localRemovals.close();
     await _muteNotices.close();
     await _unreadChanges.close();
@@ -287,6 +299,15 @@ class ChatRepositoryImpl
         .map(parseRoomActivity)
         .where((activity) => activity != null)
         .cast<RoomActivity>();
+  }
+
+  Stream<RoomPinChange> _createPinStream() async* {
+    final me = await _api.requireUserId();
+    yield* _realtime!
+        .serverBroadcasts('user:$me', event: 'room_pinned')
+        .map(parseRoomPinChange)
+        .where((change) => change != null)
+        .cast<RoomPinChange>();
   }
 
   Stream<RoomRemoval> _createRemovalStream() async* {

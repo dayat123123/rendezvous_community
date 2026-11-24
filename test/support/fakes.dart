@@ -164,12 +164,7 @@ class FakeChatRepository extends Fake implements ChatRepository {
   @override
   Future<ChatRoom?> getRoom(String roomId) async => rooms.where((r) => r.id == roomId).firstOrNull;
 
-  static int _listOrder(ChatRoom a, ChatRoom b) {
-    final pinned = (b.type == RoomType.support ? 1 : 0) - (a.type == RoomType.support ? 1 : 0);
-    if (pinned != 0) return pinned;
-    final time = (b.lastMessageAt ?? b.createdAt).compareTo(a.lastMessageAt ?? a.createdAt);
-    return time != 0 ? time : b.id.compareTo(a.id);
-  }
+  static int _listOrder(ChatRoom a, ChatRoom b) => a.compareListOrder(b);
 
   @override
   Future<int> unreadChatCount() async {

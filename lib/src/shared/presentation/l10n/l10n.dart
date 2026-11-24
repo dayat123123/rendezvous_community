@@ -78,6 +78,7 @@ extension CommunityErrorText on CommunityLocalizations {
       },
       'dm_not_allowed' => errorDmNotAllowed,
       'dm_request_limit' => errorDmRequestLimit,
+      'pin_limit' => errorPinLimit,
       'official_no_dm' => errorOfficialNoDm,
       'group_admins_only' => errorGroupAdminsOnly,
       'group_admins_only_edit' => errorGroupAdminsOnlyEdit,

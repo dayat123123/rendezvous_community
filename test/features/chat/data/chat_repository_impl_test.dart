@@ -256,4 +256,14 @@ void main() {
     expect(params['p_room_ids'], hasLength(50));
     expect(page.pollInterval, isNull);
   });
+
+  test('pinning a room calls the pin RPC and reads the pin time', () async {
+    when(
+      () => api.rpcValue('set_room_pinned', {'p_room_id': 'r-1', 'p_pinned': true}),
+    ).thenAnswer((_) async => '2026-11-24T10:00:00+00:00');
+    when(() => api.rpcValue('set_room_pinned', {'p_room_id': 'r-1', 'p_pinned': false})).thenAnswer((_) async => null);
+    final repo = ChatRepositoryImpl(api);
+    expect(await repo.setRoomPinned('r-1', pinned: true), DateTime.utc(2026, 11, 24, 10));
+    expect(await repo.setRoomPinned('r-1', pinned: false), isNull);
+  });
 }

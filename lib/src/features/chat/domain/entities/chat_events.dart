@@ -172,6 +172,13 @@ class RoomRemoval {
   final String? actorName;
 }
 
+class RoomPinChange {
+  const RoomPinChange({required this.roomId, this.pinnedAt});
+
+  final String roomId;
+  final DateTime? pinnedAt;
+}
+
 class RoomActivity {
   const RoomActivity({required this.roomId, required this.senderId, required this.preview, required this.createdAt});
 

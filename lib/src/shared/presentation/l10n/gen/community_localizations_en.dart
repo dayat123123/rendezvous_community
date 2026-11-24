@@ -2755,6 +2755,15 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get errorFeedFilter => 'This feed tab is not available right now.';
 
   @override
+  String get pinChat => 'Pin chat';
+
+  @override
+  String get unpinChat => 'Unpin chat';
+
+  @override
+  String get errorPinLimit => 'You have reached the pinned chat limit. Unpin another chat first.';
+
+  @override
   String get hideChat => 'Delete chat';
 
   @override

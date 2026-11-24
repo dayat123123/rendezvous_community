@@ -2741,6 +2741,15 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get errorFeedFilter => 'Tab feed ini sedang tidak tersedia.';
 
   @override
+  String get pinChat => 'Sematkan chat';
+
+  @override
+  String get unpinChat => 'Lepas sematan';
+
+  @override
+  String get errorPinLimit => 'Batas chat yang disematkan sudah tercapai. Lepas sematan chat lain terlebih dahulu.';
+
+  @override
   String get hideChat => 'Hapus chat';
 
   @override

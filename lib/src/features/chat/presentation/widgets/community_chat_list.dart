@@ -317,6 +317,8 @@ class _RoomListState extends State<_RoomList> {
               selected: room.id == widget.selectedRoomId,
               onTap: () => widget.onOpen(room),
               onHide: () => _hide(context, cubit, room),
+              onPin: () => cubit.setPinned(room, pinned: true),
+              onUnpin: () => cubit.setPinned(room, pinned: false),
               onLeave: () => _leave(context, cubit, room),
               onDeleteGroup: () => _deleteGroup(context, cubit, room),
             );

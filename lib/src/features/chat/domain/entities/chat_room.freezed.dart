@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ChatRoom {
 
- String get id; RoomType get type; String? get name; String? get stockCode; DateTime? get lastMessageAt; String? get lastMessagePreview; String? get lastMessageSenderId; ReceiptStatus? get lastMessageStatus; DateTime get createdAt; MemberRole get myRole; bool get muted; DateTime get lastReadAt; int get unreadCount; int get memberCount; UserSummary? get otherUser; String? get description; String? get avatarUrl; bool get onlyAdminsSend; bool get onlyAdminsEdit;
+ String get id; RoomType get type; String? get name; String? get stockCode; DateTime? get lastMessageAt; String? get lastMessagePreview; String? get lastMessageSenderId; ReceiptStatus? get lastMessageStatus; DateTime get createdAt; MemberRole get myRole; bool get muted; DateTime get lastReadAt; int get unreadCount; int get memberCount; UserSummary? get otherUser; String? get description; String? get avatarUrl; bool get onlyAdminsSend; bool get onlyAdminsEdit; DateTime? get pinnedAt;
 /// Create a copy of ChatRoom
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $ChatRoomCopyWith<ChatRoom> get copyWith => _$ChatRoomCopyWithImpl<ChatRoom>(thi
 @override
 bool operator ==(Object other) {
   final _this = this as ChatRoom;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatRoom&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.stockCode, _this.stockCode) || other.stockCode == _this.stockCode)&&(identical(other.lastMessageAt, _this.lastMessageAt) || other.lastMessageAt == _this.lastMessageAt)&&(identical(other.lastMessagePreview, _this.lastMessagePreview) || other.lastMessagePreview == _this.lastMessagePreview)&&(identical(other.lastMessageSenderId, _this.lastMessageSenderId) || other.lastMessageSenderId == _this.lastMessageSenderId)&&(identical(other.lastMessageStatus, _this.lastMessageStatus) || other.lastMessageStatus == _this.lastMessageStatus)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.myRole, _this.myRole) || other.myRole == _this.myRole)&&(identical(other.muted, _this.muted) || other.muted == _this.muted)&&(identical(other.lastReadAt, _this.lastReadAt) || other.lastReadAt == _this.lastReadAt)&&(identical(other.unreadCount, _this.unreadCount) || other.unreadCount == _this.unreadCount)&&(identical(other.memberCount, _this.memberCount) || other.memberCount == _this.memberCount)&&(identical(other.otherUser, _this.otherUser) || other.otherUser == _this.otherUser)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl)&&(identical(other.onlyAdminsSend, _this.onlyAdminsSend) || other.onlyAdminsSend == _this.onlyAdminsSend)&&(identical(other.onlyAdminsEdit, _this.onlyAdminsEdit) || other.onlyAdminsEdit == _this.onlyAdminsEdit));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ChatRoom&&(identical(other.id, _this.id) || other.id == _this.id)&&(identical(other.type, _this.type) || other.type == _this.type)&&(identical(other.name, _this.name) || other.name == _this.name)&&(identical(other.stockCode, _this.stockCode) || other.stockCode == _this.stockCode)&&(identical(other.lastMessageAt, _this.lastMessageAt) || other.lastMessageAt == _this.lastMessageAt)&&(identical(other.lastMessagePreview, _this.lastMessagePreview) || other.lastMessagePreview == _this.lastMessagePreview)&&(identical(other.lastMessageSenderId, _this.lastMessageSenderId) || other.lastMessageSenderId == _this.lastMessageSenderId)&&(identical(other.lastMessageStatus, _this.lastMessageStatus) || other.lastMessageStatus == _this.lastMessageStatus)&&(identical(other.createdAt, _this.createdAt) || other.createdAt == _this.createdAt)&&(identical(other.myRole, _this.myRole) || other.myRole == _this.myRole)&&(identical(other.muted, _this.muted) || other.muted == _this.muted)&&(identical(other.lastReadAt, _this.lastReadAt) || other.lastReadAt == _this.lastReadAt)&&(identical(other.unreadCount, _this.unreadCount) || other.unreadCount == _this.unreadCount)&&(identical(other.memberCount, _this.memberCount) || other.memberCount == _this.memberCount)&&(identical(other.otherUser, _this.otherUser) || other.otherUser == _this.otherUser)&&(identical(other.description, _this.description) || other.description == _this.description)&&(identical(other.avatarUrl, _this.avatarUrl) || other.avatarUrl == _this.avatarUrl)&&(identical(other.onlyAdminsSend, _this.onlyAdminsSend) || other.onlyAdminsSend == _this.onlyAdminsSend)&&(identical(other.onlyAdminsEdit, _this.onlyAdminsEdit) || other.onlyAdminsEdit == _this.onlyAdminsEdit)&&(identical(other.pinnedAt, _this.pinnedAt) || other.pinnedAt == _this.pinnedAt));
 }
 
 
 @override
 int get hashCode {
   final _this = this as ChatRoom;
-  return Object.hashAll([runtimeType,_this.id,_this.type,_this.name,_this.stockCode,_this.lastMessageAt,_this.lastMessagePreview,_this.lastMessageSenderId,_this.lastMessageStatus,_this.createdAt,_this.myRole,_this.muted,_this.lastReadAt,_this.unreadCount,_this.memberCount,_this.otherUser,_this.description,_this.avatarUrl,_this.onlyAdminsSend,_this.onlyAdminsEdit]);
+  return Object.hashAll([runtimeType,_this.id,_this.type,_this.name,_this.stockCode,_this.lastMessageAt,_this.lastMessagePreview,_this.lastMessageSenderId,_this.lastMessageStatus,_this.createdAt,_this.myRole,_this.muted,_this.lastReadAt,_this.unreadCount,_this.memberCount,_this.otherUser,_this.description,_this.avatarUrl,_this.onlyAdminsSend,_this.onlyAdminsEdit,_this.pinnedAt]);
 }
 
 @override
 String toString() {
   final _this = this as ChatRoom;
-  return 'ChatRoom(id: ${_this.id}, type: ${_this.type}, name: ${_this.name}, stockCode: ${_this.stockCode}, lastMessageAt: ${_this.lastMessageAt}, lastMessagePreview: ${_this.lastMessagePreview}, lastMessageSenderId: ${_this.lastMessageSenderId}, lastMessageStatus: ${_this.lastMessageStatus}, createdAt: ${_this.createdAt}, myRole: ${_this.myRole}, muted: ${_this.muted}, lastReadAt: ${_this.lastReadAt}, unreadCount: ${_this.unreadCount}, memberCount: ${_this.memberCount}, otherUser: ${_this.otherUser}, description: ${_this.description}, avatarUrl: ${_this.avatarUrl}, onlyAdminsSend: ${_this.onlyAdminsSend}, onlyAdminsEdit: ${_this.onlyAdminsEdit})';
+  return 'ChatRoom(id: ${_this.id}, type: ${_this.type}, name: ${_this.name}, stockCode: ${_this.stockCode}, lastMessageAt: ${_this.lastMessageAt}, lastMessagePreview: ${_this.lastMessagePreview}, lastMessageSenderId: ${_this.lastMessageSenderId}, lastMessageStatus: ${_this.lastMessageStatus}, createdAt: ${_this.createdAt}, myRole: ${_this.myRole}, muted: ${_this.muted}, lastReadAt: ${_this.lastReadAt}, unreadCount: ${_this.unreadCount}, memberCount: ${_this.memberCount}, otherUser: ${_this.otherUser}, description: ${_this.description}, avatarUrl: ${_this.avatarUrl}, onlyAdminsSend: ${_this.onlyAdminsSend}, onlyAdminsEdit: ${_this.onlyAdminsEdit}, pinnedAt: ${_this.pinnedAt})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $ChatRoomCopyWith<$Res>  {
   factory $ChatRoomCopyWith(ChatRoom value, $Res Function(ChatRoom) _then) = _$ChatRoomCopyWithImpl;
 @useResult
 $Res call({
- String id, RoomType type, String? name, String? stockCode, DateTime? lastMessageAt, String? lastMessagePreview, String? lastMessageSenderId, ReceiptStatus? lastMessageStatus, DateTime createdAt, MemberRole myRole, bool muted, DateTime lastReadAt, int unreadCount, int memberCount, UserSummary? otherUser, String? description, String? avatarUrl, bool onlyAdminsSend, bool onlyAdminsEdit
+ String id, RoomType type, String? name, String? stockCode, DateTime? lastMessageAt, String? lastMessagePreview, String? lastMessageSenderId, ReceiptStatus? lastMessageStatus, DateTime createdAt, MemberRole myRole, bool muted, DateTime lastReadAt, int unreadCount, int memberCount, UserSummary? otherUser, String? description, String? avatarUrl, bool onlyAdminsSend, bool onlyAdminsEdit, DateTime? pinnedAt
 });
 
 
@@ -68,7 +68,7 @@ class _$ChatRoomCopyWithImpl<$Res>
 
 /// Create a copy of ChatRoom
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? name = freezed,Object? stockCode = freezed,Object? lastMessageAt = freezed,Object? lastMessagePreview = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageStatus = freezed,Object? createdAt = null,Object? myRole = null,Object? muted = null,Object? lastReadAt = null,Object? unreadCount = null,Object? memberCount = null,Object? otherUser = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? onlyAdminsSend = null,Object? onlyAdminsEdit = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? type = null,Object? name = freezed,Object? stockCode = freezed,Object? lastMessageAt = freezed,Object? lastMessagePreview = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageStatus = freezed,Object? createdAt = null,Object? myRole = null,Object? muted = null,Object? lastReadAt = null,Object? unreadCount = null,Object? memberCount = null,Object? otherUser = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? onlyAdminsSend = null,Object? onlyAdminsEdit = null,Object? pinnedAt = freezed,}) {
   return _then(ChatRoom(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -89,7 +89,8 @@ as UserSummary?,description: freezed == description ? _self.description : descri
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,onlyAdminsSend: null == onlyAdminsSend ? _self.onlyAdminsSend : onlyAdminsSend // ignore: cast_nullable_to_non_nullable
 as bool,onlyAdminsEdit: null == onlyAdminsEdit ? _self.onlyAdminsEdit : onlyAdminsEdit // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,pinnedAt: freezed == pinnedAt ? _self.pinnedAt : pinnedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 /// Create a copy of ChatRoom
@@ -186,10 +187,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  RoomType type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  ReceiptStatus? lastMessageStatus,  DateTime createdAt,  MemberRole myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  UserSummary? otherUser,  String? description,  String? avatarUrl,  bool onlyAdminsSend,  bool onlyAdminsEdit)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  RoomType type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  ReceiptStatus? lastMessageStatus,  DateTime createdAt,  MemberRole myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  UserSummary? otherUser,  String? description,  String? avatarUrl,  bool onlyAdminsSend,  bool onlyAdminsEdit,  DateTime? pinnedAt)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ChatRoom() when $default != null:
-return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUser,_that.description,_that.avatarUrl,_that.onlyAdminsSend,_that.onlyAdminsEdit);case _:
+return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUser,_that.description,_that.avatarUrl,_that.onlyAdminsSend,_that.onlyAdminsEdit,_that.pinnedAt);case _:
   return orElse();
 
 }
@@ -207,10 +208,10 @@ return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessage
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  RoomType type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  ReceiptStatus? lastMessageStatus,  DateTime createdAt,  MemberRole myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  UserSummary? otherUser,  String? description,  String? avatarUrl,  bool onlyAdminsSend,  bool onlyAdminsEdit)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  RoomType type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  ReceiptStatus? lastMessageStatus,  DateTime createdAt,  MemberRole myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  UserSummary? otherUser,  String? description,  String? avatarUrl,  bool onlyAdminsSend,  bool onlyAdminsEdit,  DateTime? pinnedAt)  $default,) {final _that = this;
 switch (_that) {
 case _ChatRoom():
-return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUser,_that.description,_that.avatarUrl,_that.onlyAdminsSend,_that.onlyAdminsEdit);case _:
+return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUser,_that.description,_that.avatarUrl,_that.onlyAdminsSend,_that.onlyAdminsEdit,_that.pinnedAt);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -227,10 +228,10 @@ return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessage
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  RoomType type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  ReceiptStatus? lastMessageStatus,  DateTime createdAt,  MemberRole myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  UserSummary? otherUser,  String? description,  String? avatarUrl,  bool onlyAdminsSend,  bool onlyAdminsEdit)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  RoomType type,  String? name,  String? stockCode,  DateTime? lastMessageAt,  String? lastMessagePreview,  String? lastMessageSenderId,  ReceiptStatus? lastMessageStatus,  DateTime createdAt,  MemberRole myRole,  bool muted,  DateTime lastReadAt,  int unreadCount,  int memberCount,  UserSummary? otherUser,  String? description,  String? avatarUrl,  bool onlyAdminsSend,  bool onlyAdminsEdit,  DateTime? pinnedAt)?  $default,) {final _that = this;
 switch (_that) {
 case _ChatRoom() when $default != null:
-return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUser,_that.description,_that.avatarUrl,_that.onlyAdminsSend,_that.onlyAdminsEdit);case _:
+return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessageAt,_that.lastMessagePreview,_that.lastMessageSenderId,_that.lastMessageStatus,_that.createdAt,_that.myRole,_that.muted,_that.lastReadAt,_that.unreadCount,_that.memberCount,_that.otherUser,_that.description,_that.avatarUrl,_that.onlyAdminsSend,_that.onlyAdminsEdit,_that.pinnedAt);case _:
   return null;
 
 }
@@ -242,7 +243,7 @@ return $default(_that.id,_that.type,_that.name,_that.stockCode,_that.lastMessage
 
 
 class _ChatRoom extends ChatRoom {
-  const _ChatRoom({required this.id, required this.type, this.name, this.stockCode, this.lastMessageAt, this.lastMessagePreview, this.lastMessageSenderId, this.lastMessageStatus, required this.createdAt, this.myRole = MemberRole.member, this.muted = false, required this.lastReadAt, this.unreadCount = 0, this.memberCount = 0, this.otherUser, this.description, this.avatarUrl, this.onlyAdminsSend = false, this.onlyAdminsEdit = true}): super._();
+  const _ChatRoom({required this.id, required this.type, this.name, this.stockCode, this.lastMessageAt, this.lastMessagePreview, this.lastMessageSenderId, this.lastMessageStatus, required this.createdAt, this.myRole = MemberRole.member, this.muted = false, required this.lastReadAt, this.unreadCount = 0, this.memberCount = 0, this.otherUser, this.description, this.avatarUrl, this.onlyAdminsSend = false, this.onlyAdminsEdit = true, this.pinnedAt}): super._();
   
 
 @override final  String id;
@@ -264,6 +265,7 @@ class _ChatRoom extends ChatRoom {
 @override final  String? avatarUrl;
 @override@JsonKey() final  bool onlyAdminsSend;
 @override@JsonKey() final  bool onlyAdminsEdit;
+@override final  DateTime? pinnedAt;
 
 /// Create a copy of ChatRoom
 /// with the given fields replaced by the non-null parameter values.
@@ -275,18 +277,18 @@ _$ChatRoomCopyWith<_ChatRoom> get copyWith => __$ChatRoomCopyWithImpl<_ChatRoom>
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatRoom&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.name, name) || other.name == name)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageSenderId, lastMessageSenderId) || other.lastMessageSenderId == lastMessageSenderId)&&(identical(other.lastMessageStatus, lastMessageStatus) || other.lastMessageStatus == lastMessageStatus)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.myRole, myRole) || other.myRole == myRole)&&(identical(other.muted, muted) || other.muted == muted)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.otherUser, otherUser) || other.otherUser == otherUser)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.onlyAdminsSend, onlyAdminsSend) || other.onlyAdminsSend == onlyAdminsSend)&&(identical(other.onlyAdminsEdit, onlyAdminsEdit) || other.onlyAdminsEdit == onlyAdminsEdit));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ChatRoom&&(identical(other.id, id) || other.id == id)&&(identical(other.type, type) || other.type == type)&&(identical(other.name, name) || other.name == name)&&(identical(other.stockCode, stockCode) || other.stockCode == stockCode)&&(identical(other.lastMessageAt, lastMessageAt) || other.lastMessageAt == lastMessageAt)&&(identical(other.lastMessagePreview, lastMessagePreview) || other.lastMessagePreview == lastMessagePreview)&&(identical(other.lastMessageSenderId, lastMessageSenderId) || other.lastMessageSenderId == lastMessageSenderId)&&(identical(other.lastMessageStatus, lastMessageStatus) || other.lastMessageStatus == lastMessageStatus)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.myRole, myRole) || other.myRole == myRole)&&(identical(other.muted, muted) || other.muted == muted)&&(identical(other.lastReadAt, lastReadAt) || other.lastReadAt == lastReadAt)&&(identical(other.unreadCount, unreadCount) || other.unreadCount == unreadCount)&&(identical(other.memberCount, memberCount) || other.memberCount == memberCount)&&(identical(other.otherUser, otherUser) || other.otherUser == otherUser)&&(identical(other.description, description) || other.description == description)&&(identical(other.avatarUrl, avatarUrl) || other.avatarUrl == avatarUrl)&&(identical(other.onlyAdminsSend, onlyAdminsSend) || other.onlyAdminsSend == onlyAdminsSend)&&(identical(other.onlyAdminsEdit, onlyAdminsEdit) || other.onlyAdminsEdit == onlyAdminsEdit)&&(identical(other.pinnedAt, pinnedAt) || other.pinnedAt == pinnedAt));
 }
 
 
 @override
 int get hashCode {
-    return Object.hashAll([runtimeType,id,type,name,stockCode,lastMessageAt,lastMessagePreview,lastMessageSenderId,lastMessageStatus,createdAt,myRole,muted,lastReadAt,unreadCount,memberCount,otherUser,description,avatarUrl,onlyAdminsSend,onlyAdminsEdit]);
+    return Object.hashAll([runtimeType,id,type,name,stockCode,lastMessageAt,lastMessagePreview,lastMessageSenderId,lastMessageStatus,createdAt,myRole,muted,lastReadAt,unreadCount,memberCount,otherUser,description,avatarUrl,onlyAdminsSend,onlyAdminsEdit,pinnedAt]);
 }
 
 @override
 String toString() {
-    return 'ChatRoom(id: $id, type: $type, name: $name, stockCode: $stockCode, lastMessageAt: $lastMessageAt, lastMessagePreview: $lastMessagePreview, lastMessageSenderId: $lastMessageSenderId, lastMessageStatus: $lastMessageStatus, createdAt: $createdAt, myRole: $myRole, muted: $muted, lastReadAt: $lastReadAt, unreadCount: $unreadCount, memberCount: $memberCount, otherUser: $otherUser, description: $description, avatarUrl: $avatarUrl, onlyAdminsSend: $onlyAdminsSend, onlyAdminsEdit: $onlyAdminsEdit)';
+    return 'ChatRoom(id: $id, type: $type, name: $name, stockCode: $stockCode, lastMessageAt: $lastMessageAt, lastMessagePreview: $lastMessagePreview, lastMessageSenderId: $lastMessageSenderId, lastMessageStatus: $lastMessageStatus, createdAt: $createdAt, myRole: $myRole, muted: $muted, lastReadAt: $lastReadAt, unreadCount: $unreadCount, memberCount: $memberCount, otherUser: $otherUser, description: $description, avatarUrl: $avatarUrl, onlyAdminsSend: $onlyAdminsSend, onlyAdminsEdit: $onlyAdminsEdit, pinnedAt: $pinnedAt)';
 }
 
 
@@ -297,7 +299,7 @@ abstract mixin class _$ChatRoomCopyWith<$Res> implements $ChatRoomCopyWith<$Res>
   factory _$ChatRoomCopyWith(_ChatRoom value, $Res Function(_ChatRoom) _then) = __$ChatRoomCopyWithImpl;
 @override @useResult
 $Res call({
- String id, RoomType type, String? name, String? stockCode, DateTime? lastMessageAt, String? lastMessagePreview, String? lastMessageSenderId, ReceiptStatus? lastMessageStatus, DateTime createdAt, MemberRole myRole, bool muted, DateTime lastReadAt, int unreadCount, int memberCount, UserSummary? otherUser, String? description, String? avatarUrl, bool onlyAdminsSend, bool onlyAdminsEdit
+ String id, RoomType type, String? name, String? stockCode, DateTime? lastMessageAt, String? lastMessagePreview, String? lastMessageSenderId, ReceiptStatus? lastMessageStatus, DateTime createdAt, MemberRole myRole, bool muted, DateTime lastReadAt, int unreadCount, int memberCount, UserSummary? otherUser, String? description, String? avatarUrl, bool onlyAdminsSend, bool onlyAdminsEdit, DateTime? pinnedAt
 });
 
 
@@ -314,7 +316,7 @@ class __$ChatRoomCopyWithImpl<$Res>
 
 /// Create a copy of ChatRoom
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? name = freezed,Object? stockCode = freezed,Object? lastMessageAt = freezed,Object? lastMessagePreview = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageStatus = freezed,Object? createdAt = null,Object? myRole = null,Object? muted = null,Object? lastReadAt = null,Object? unreadCount = null,Object? memberCount = null,Object? otherUser = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? onlyAdminsSend = null,Object? onlyAdminsEdit = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? type = null,Object? name = freezed,Object? stockCode = freezed,Object? lastMessageAt = freezed,Object? lastMessagePreview = freezed,Object? lastMessageSenderId = freezed,Object? lastMessageStatus = freezed,Object? createdAt = null,Object? myRole = null,Object? muted = null,Object? lastReadAt = null,Object? unreadCount = null,Object? memberCount = null,Object? otherUser = freezed,Object? description = freezed,Object? avatarUrl = freezed,Object? onlyAdminsSend = null,Object? onlyAdminsEdit = null,Object? pinnedAt = freezed,}) {
   return _then(_ChatRoom(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,type: null == type ? _self.type : type // ignore: cast_nullable_to_non_nullable
@@ -335,7 +337,8 @@ as UserSummary?,description: freezed == description ? _self.description : descri
 as String?,avatarUrl: freezed == avatarUrl ? _self.avatarUrl : avatarUrl // ignore: cast_nullable_to_non_nullable
 as String?,onlyAdminsSend: null == onlyAdminsSend ? _self.onlyAdminsSend : onlyAdminsSend // ignore: cast_nullable_to_non_nullable
 as bool,onlyAdminsEdit: null == onlyAdminsEdit ? _self.onlyAdminsEdit : onlyAdminsEdit // ignore: cast_nullable_to_non_nullable
-as bool,
+as bool,pinnedAt: freezed == pinnedAt ? _self.pinnedAt : pinnedAt // ignore: cast_nullable_to_non_nullable
+as DateTime?,
   ));
 }
 

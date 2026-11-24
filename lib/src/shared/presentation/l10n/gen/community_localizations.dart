@@ -4862,6 +4862,24 @@ abstract class CommunityLocalizations {
   /// **'Tab feed ini sedang tidak tersedia.'**
   String get errorFeedFilter;
 
+  /// No description provided for @pinChat.
+  ///
+  /// In id, this message translates to:
+  /// **'Sematkan chat'**
+  String get pinChat;
+
+  /// No description provided for @unpinChat.
+  ///
+  /// In id, this message translates to:
+  /// **'Lepas sematan'**
+  String get unpinChat;
+
+  /// No description provided for @errorPinLimit.
+  ///
+  /// In id, this message translates to:
+  /// **'Batas chat yang disematkan sudah tercapai. Lepas sematan chat lain terlebih dahulu.'**
+  String get errorPinLimit;
+
   /// No description provided for @hideChat.
   ///
   /// In id, this message translates to:

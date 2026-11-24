@@ -14,6 +14,7 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/receipt.d
 import 'package:rendezvous_community/src/features/chat/domain/entities/room_preview.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_cache_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_repository.dart';
+import 'package:rendezvous_community/src/features/chat/domain/repositories/room_pin_repository.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/room_preview_repository.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/stock_preview_schedule.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
@@ -85,6 +86,7 @@ class ChatListCubit extends Cubit<ChatListState> {
   bool _previewsUnsupported = false;
   StreamSubscription<RoomActivity>? _activity;
   StreamSubscription<RoomRemoval>? _removals;
+  StreamSubscription<RoomPinChange>? _pinChanges;
   StreamSubscription<RoomSignal>? _signals;
   Set<String> _watched = const {};
   final _channels = <String, RealtimeStatus>{};
@@ -111,6 +113,7 @@ class ChatListCubit extends Cubit<ChatListState> {
       );
       _activity ??= _chat.watchRoomActivity().listen(_onActivity, onError: (Object _) {});
       _removals ??= _chat.watchRoomRemovals().listen((r) => _dropRoom(r.roomId), onError: (Object _) {});
+      _pinChanges ??= _pins?.watchRoomPins().listen((c) => _applyPin(c.roomId, c.pinnedAt), onError: (Object _) {});
       _watchRooms();
     } catch (e) {
       if (isClosed || (state.status == LoadStatus.ready && state.stale)) return;
@@ -175,6 +178,38 @@ class ChatListCubit extends Cubit<ChatListState> {
 
   void markOpened(String roomId) =>
       emit(state.copyWith(rooms: [for (final r in state.rooms) r.id == roomId ? r.copyWith(unreadCount: 0) : r]));
+
+  RoomPinRepository? get _pins => switch (_chat) {
+    final RoomPinRepository pins => pins,
+    _ => null,
+  };
+
+  Future<bool> setPinned(ChatRoom room, {required bool pinned}) async {
+    final pins = _pins;
+    final current = state.rooms.where((r) => r.id == room.id).firstOrNull;
+    if (pins == null || current == null || !current.canPin) return false;
+    final previous = current.pinnedAt;
+    if ((previous != null) == pinned) return true;
+    _applyPin(room.id, pinned ? (_clock?.call() ?? DateTime.now()).toUtc() : null);
+    try {
+      final pinnedAt = await pins.setRoomPinned(room.id, pinned: pinned);
+      if (isClosed) return true;
+      _applyPin(room.id, pinned ? pinnedAt ?? state.rooms.where((r) => r.id == room.id).firstOrNull?.pinnedAt : null);
+      return true;
+    } catch (e) {
+      if (isClosed) return false;
+      _applyPin(room.id, previous);
+      emit(state.copyWith(actionError: e, actionErrorId: state.actionErrorId + 1));
+      return false;
+    }
+  }
+
+  void _applyPin(String roomId, DateTime? pinnedAt) {
+    if (isClosed || !state.rooms.any((r) => r.id == roomId && r.canPin && r.pinnedAt != pinnedAt)) return;
+    final rooms = [for (final r in state.rooms) r.id == roomId ? r.copyWith(pinnedAt: pinnedAt) : r]
+      ..sort((a, b) => a.compareListOrder(b));
+    emit(state.copyWith(rooms: rooms));
+  }
 
   Future<bool> hideRoom(ChatRoom room) async {
     if (!room.canHide) return false;
@@ -385,6 +420,7 @@ class ChatListCubit extends Cubit<ChatListState> {
     }
     await _activity?.cancel();
     await _removals?.cancel();
+    await _pinChanges?.cancel();
     await _signals?.cancel();
     await _onlineChanges?.cancel();
     return super.close();

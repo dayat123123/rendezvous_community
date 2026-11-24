@@ -213,6 +213,9 @@ _RoomSummaryModel _$RoomSummaryModelFromJson(Map<String, dynamic> json) =>
       avatarUrl: json['avatar_url'] as String?,
       onlyAdminsSend: json['only_admins_send'] as bool?,
       onlyAdminsEdit: json['only_admins_edit'] as bool?,
+      pinnedAt: json['pinned_at'] == null
+          ? null
+          : DateTime.parse(json['pinned_at'] as String),
     );
 
 Map<String, dynamic> _$RoomSummaryModelToJson(_RoomSummaryModel instance) =>
@@ -241,6 +244,7 @@ Map<String, dynamic> _$RoomSummaryModelToJson(_RoomSummaryModel instance) =>
       'avatar_url': instance.avatarUrl,
       'only_admins_send': instance.onlyAdminsSend,
       'only_admins_edit': instance.onlyAdminsEdit,
+      'pinned_at': instance.pinnedAt?.toIso8601String(),
     };
 
 _RoomMemberModel _$RoomMemberModelFromJson(Map<String, dynamic> json) =>

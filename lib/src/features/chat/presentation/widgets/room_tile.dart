@@ -27,6 +27,8 @@ class RoomTile extends StatelessWidget {
     this.onHide,
     this.onLeave,
     this.onDeleteGroup,
+    this.onPin,
+    this.onUnpin,
   });
 
   final ChatRoom room;
@@ -38,6 +40,8 @@ class RoomTile extends StatelessWidget {
   final VoidCallback? onHide;
   final VoidCallback? onLeave;
   final VoidCallback? onDeleteGroup;
+  final VoidCallback? onPin;
+  final VoidCallback? onUnpin;
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +51,9 @@ class RoomTile extends StatelessWidget {
     final hide = room.canHide ? onHide : null;
     final leave = room.canLeave ? onLeave : null;
     final deleteGroup = room.canDeleteGroup ? onDeleteGroup : null;
-    final actionable = hide != null || leave != null || deleteGroup != null;
+    final pin = room.canPin && room.pinnedAt == null ? onPin : null;
+    final unpin = room.canPin && room.pinnedAt != null ? onUnpin : null;
+    final actionable = hide != null || leave != null || deleteGroup != null || pin != null || unpin != null;
     late final CommunityRoomTileDetails details;
     details = CommunityRoomTileDetails(
       room: room,
@@ -63,6 +69,8 @@ class RoomTile extends StatelessWidget {
       onHide: hide,
       onLeave: leave,
       onDeleteGroup: deleteGroup,
+      onPin: pin,
+      onUnpin: unpin,
       onShowActions: actionable ? () => showRoomActions(context, details) : null,
     );
     return buildChatPart(
@@ -97,9 +105,13 @@ Future<void> showRoomActions(BuildContext context, CommunityRoomTileDetails room
       final hide = room.onHide;
       final leave = room.onLeave;
       final deleteGroup = room.onDeleteGroup;
+      final pin = room.onPin;
+      final unpin = room.onUnpin;
       final details = CommunityRoomActionsDetails(
         room: room,
         actions: [
+          if (pin != null) entry(CommunityRoomActionKind.pin, pin, icons.pin, l10n.pinChat),
+          if (unpin != null) entry(CommunityRoomActionKind.unpin, unpin, icons.unpin, l10n.unpinChat),
           if (hide != null) entry(CommunityRoomActionKind.hide, hide, icons.delete, l10n.hideChat),
           if (leave != null) entry(CommunityRoomActionKind.leave, leave, icons.leave, l10n.leaveRoom),
           if (deleteGroup != null)
@@ -211,9 +223,8 @@ class _DefaultRoomTile extends StatelessWidget {
                           Row(
                             children: [
                               Flexible(child: title),
-                              if (support) ...[
-                                SizedBox(width: spacing.xs + spacing.xxs),
-                                OfficialBadge(color: t.link),
+                              if (support) ...[SizedBox(width: spacing.xs + spacing.xxs), OfficialBadge(color: t.link)],
+                              if (room.pinned) ...[
                                 SizedBox(width: spacing.xs),
                                 Icon(Icons.push_pin, size: 14, color: style.textTertiary),
                               ],
