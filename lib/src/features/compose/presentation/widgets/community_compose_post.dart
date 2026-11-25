@@ -198,6 +198,10 @@ class _ComposeViewState extends State<_ComposeView> {
         context.read<ComposeCubit>().addPoll();
       case CommunityComposerAction.cashtag:
         final text = _controller.text;
+        if (RegExp(r'\$[A-Za-z]').hasMatch(text)) {
+          _controller.selection = TextSelection.collapsed(offset: text.length);
+          break;
+        }
         final prefix = text.isEmpty || text.endsWith(' ') ? text : '$text ';
         _controller.value = TextEditingValue(
           text: '$prefix\$',

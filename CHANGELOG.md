@@ -1,3 +1,7 @@
+## 1.54.2
+
+* **Tombol `$` di composer:** bila postingan sudah berisi cashtag (misalnya `$AADI` dari halaman saham), composer tidak lagi menambah `$` kedua; kursor langsung ditaruh di akhir teks.
+
 ## 1.54.1
 
 * **Daftar reaksi:** judul "Reaksi" kini punya jarak dari tepi atas dan dari tombol tutup.

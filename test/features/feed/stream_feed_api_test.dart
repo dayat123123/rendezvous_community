@@ -269,12 +269,20 @@ void main() {
       expect(find.byType(PollEditor), findsOneWidget);
     });
 
-    testWidgets('initialAction cashtag starts a stock tag after the initial stock', (tester) async {
+    testWidgets('initialAction cashtag keeps the initial stock without a second tag', (tester) async {
       await _openComposer(tester, initialStock: 'bbca', action: CommunityComposerAction.cashtag);
 
       final field = tester.widget<TextField>(find.byType(TextField).first);
-      expect(field.controller!.text, r'$BBCA $');
-      expect(field.controller!.selection.baseOffset, 7);
+      expect(field.controller!.text, r'$BBCA ');
+      expect(field.controller!.selection.baseOffset, 6);
+    });
+
+    testWidgets('initialAction cashtag starts a stock tag in an empty post', (tester) async {
+      await _openComposer(tester, action: CommunityComposerAction.cashtag);
+
+      final field = tester.widget<TextField>(find.byType(TextField).first);
+      expect(field.controller!.text, r'$');
+      expect(field.controller!.selection.baseOffset, 1);
     });
 
     testWidgets('initialAction image opens the image picker', (tester) async {
