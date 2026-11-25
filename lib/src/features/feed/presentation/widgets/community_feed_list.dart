@@ -369,7 +369,14 @@ class FeedPostCard extends StatelessWidget {
       readMoreInPlace: inline,
       onCommentAudience: cubit.canControlComments ? cubit.setCommentAudience : null,
     );
-    if (!expanded) return card;
+    if (!inline) return card;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [card, if (expanded) _inlineComments(context, toggle)],
+    );
+  }
+
+  Widget _inlineComments(BuildContext context, VoidCallback toggle) {
     final focus = cubit.state.focusComments == post.id;
     if (focus) WidgetsBinding.instance.addPostFrameCallback((_) => cubit.commentsFocused(post.id));
     final details = CommunityInlineCommentsDetails(
@@ -384,13 +391,7 @@ class FeedPostCard extends StatelessWidget {
         onCommentCountChanged: (delta) => cubit.adjustCommentCount(post.id, delta),
       ),
     );
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        card,
-        buildFeedPart((b) => b.inlineComments, context, details, _DefaultInlineComments(details: details)),
-      ],
-    );
+    return buildFeedPart((b) => b.inlineComments, context, details, _DefaultInlineComments(details: details));
   }
 }
 

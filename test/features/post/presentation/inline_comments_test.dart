@@ -2,6 +2,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
 import 'package:rendezvous_community/src/features/post/presentation/cubit/comment_thread_cubit.dart';
 
 import '../../../support/fakes.dart';
@@ -120,6 +121,19 @@ void main() {
     await tester.tap(find.byTooltip('Komentar'));
     await tester.pumpAndSettle();
     expect(find.byType(CommunityPostComments), findsNothing);
+  });
+
+  testWidgets('opening and closing the comments keeps the post card mounted', (tester) async {
+    await _pump(tester, _Comments());
+    final card = tester.element(find.byType(PostCard));
+
+    await _openComments(tester);
+    expect(find.byType(CommunityPostComments), findsOneWidget);
+    expect(identical(tester.element(find.byType(PostCard)), card), isTrue);
+
+    await _openComments(tester);
+    expect(find.byType(CommunityPostComments), findsNothing);
+    expect(identical(tester.element(find.byType(PostCard)), card), isTrue);
   });
 
   testWidgets('"View more comments" loads the next page inline', (tester) async {

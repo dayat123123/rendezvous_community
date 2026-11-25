@@ -1,3 +1,7 @@
+## 1.55.1
+
+* **Kartu post tidak lagi berkedip saat komentar inline dibuka/ditutup:** sebelumnya bentuk widget berubah dari kartu polos menjadi kartu yang dibungkus `Column`, sehingga seluruh kartu dibuat ulang (state kartu saham, gambar, dan poll hilang lalu dimuat ulang). Sekarang kartu selalu berada di posisi yang sama dan hanya bagian komentar di bawahnya yang ditambah atau dilepas.
+
 ## 1.55.0
 
 * **`CommunityWindowControls` (baru):** host app bisa menandai area tombol jendela di pojok kiri atas (misalnya tombol merah-kuning-hijau macOS saat title bar disembunyikan) dengan membungkus `MaterialApp` memakai `CommunityWindowControls(size: Size(80, 30), child: ...)`. Default-nya `Size.zero`, jadi tanpa pembungkus tampilan tidak berubah.
