@@ -1,3 +1,8 @@
+## 1.53.0
+
+* **Gambar di chat ala WhatsApp:** foto di bubble chat (chat komunitas, CS, dan chat tamu) kini menempel penuh sampai tepi bubble tanpa padding, dengan sudut mengikuti lengkung bubble. Teks pesan tampil di bawah foto. Foto tanpa teks menampilkan jam dan status baca di pojok kanan bawah foto, di atas latar gelap transparan. Nama pengirim dan kutipan balasan tetap di atas foto.
+* Pemberitahuan moderasi pada pesan sendiri hanya memakan ruang saat pesan memang ditahan atau disembunyikan.
+
 ## 1.52.0
 
 * **Seret file ke chat:** file dari Explorer/Finder atau browser bisa diseret ke room chat. Saat file melayang di atas room, muncul petunjuk "Lepas file di sini untuk dikirim"; setelah dilepas, file masuk ke antrean lampiran composer dan diperiksa dengan aturan yang sama seperti tombol lampiran (format, ukuran, maksimal 4 file). Folder diabaikan, dan drop diabaikan saat sedang mengedit pesan atau mengunggah.

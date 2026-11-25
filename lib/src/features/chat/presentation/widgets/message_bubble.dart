@@ -35,6 +35,7 @@ import 'package:rendezvous_community/src/features/media/presentation/widgets/vid
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/moderation/presentation/widgets/moderation_actions.dart';
 import 'package:rendezvous_community/src/features/support/presentation/widgets/support_message_parts.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/moderation_status.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -309,6 +310,8 @@ const _tailRadius = Radius.circular(4);
 const _reactionHeight = 24.0;
 const _reactionOverlap = 8.0;
 const _actionSize = 36.0;
+const _imageMaxHeight = 320.0;
+const _photoMetaRadius = 10.0;
 
 final _linkThemes = Expando<(Color, ThemeData)>();
 
@@ -387,25 +390,20 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
         m.replyToId == null &&
         !(d.showSender && m.sender != null) &&
         !extras;
-    final inset = mediaOnly ? spacing.xs : spacing.md;
+    final hasImages = !m.isDeleted && images.isNotEmpty;
 
-    final metaRow = Row(
+    Widget metaRowOf(Color color, TextStyle textStyle, {Color? readColor}) => Row(
       mainAxisSize: MainAxisSize.min,
       children: [
-        if (d.edited) Text('${d.editedLabel ?? l10n.edited} ', style: meta),
-        Text(d.timeLabel, style: meta),
+        if (d.edited) Text('${d.editedLabel ?? l10n.edited} ', style: textStyle),
+        Text(d.timeLabel, style: textStyle),
         if (d.isMine) ...[
           SizedBox(width: spacing.xxs + 1),
-          ReceiptIcon(
-            receipt: d.receipt,
-            sendStatus: m.status,
-            color: metaColor,
-            size: 15,
-            readColor: chatReadableOn(t.readReceipt, bg, minimum: 3) ? null : fg,
-          ),
+          ReceiptIcon(receipt: d.receipt, sendStatus: m.status, color: color, size: 15, readColor: readColor),
         ],
       ],
     );
+    final metaRow = metaRowOf(metaColor, meta, readColor: chatReadableOn(t.readReceipt, bg, minimum: 3) ? null : fg);
 
     Widget? message;
     if (m.isDeleted) {
@@ -427,7 +425,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
     }
 
     final sender = m.sender;
-    final content = <Widget>[
+    final header = <Widget>[
       if (d.showSender && sender != null)
         Padding(
           padding: EdgeInsets.only(bottom: spacing.xxs),
@@ -494,35 +492,34 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
             ),
           ),
         ),
-      if (!m.isDeleted) ...[
-        if (images.isNotEmpty)
-          Padding(
-            padding: EdgeInsets.only(bottom: mediaOnly ? spacing.xs : spacing.xs + spacing.xxs),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(_bubbleRadius.x - inset),
-              child: CommunityImagePersistence(
-                persist: false,
-                child: Builder(
-                  builder: (context) => AttachmentGrid(
-                    attachments: images,
-                    maxHeight: 220,
-                    onOpen: (index) => unawaited(
-                      showCommunityImageViewer(
-                        context,
-                        images: images,
-                        initialIndex: index,
-                        sender: m.sender,
-                        sentAt: m.createdAt,
-                        onReply: d.onReply,
-                        reactionChoices: d.reactionChoices,
-                        onReact: d.onReact,
-                      ),
-                    ),
+    ];
+    final imageGrid = !hasImages
+        ? null
+        : CommunityImagePersistence(
+            persist: false,
+            child: Builder(
+              builder: (context) => AttachmentGrid(
+                attachments: images,
+                maxHeight: _imageMaxHeight,
+                edgeToEdge: true,
+                onOpen: (index) => unawaited(
+                  showCommunityImageViewer(
+                    context,
+                    images: images,
+                    initialIndex: index,
+                    sender: m.sender,
+                    sentAt: m.createdAt,
+                    onReply: d.onReply,
+                    reactionChoices: d.reactionChoices,
+                    onReact: d.onReact,
                   ),
                 ),
               ),
             ),
-          ),
+          );
+    final content = <Widget>[
+      if (imageGrid == null) ...header,
+      if (!m.isDeleted) ...[
         if (videos.isNotEmpty) VideoAttachments(attachments: videos, color: fg),
         if (documents.isNotEmpty) DocumentAttachments(attachments: documents, color: fg),
         if (m.sharedPostId != null)
@@ -561,11 +558,82 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
     final overlayReactions = d.reactions.isNotEmpty && reactionsDefault;
     final minWidth = overlayReactions ? d.reactions.length * 52.0 + spacing.xl : 0.0;
 
+    final flagged = m.moderationStatus != null && m.moderationStatus != ModerationStatus.visible;
+    final moderation = d.isMine && !m.isDeleted && flagged
+        ? ModerationNotice(status: m.moderationStatus, compact: true, color: fg, onAppeal: d.onAppeal)
+        : null;
+    final bodyPadding = EdgeInsets.fromLTRB(spacing.md, spacing.sm, spacing.md, spacing.xs + spacing.xxs);
+    final bodyColumn = Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: content),
+        if (!inline)
+          Padding(
+            padding: EdgeInsets.only(top: spacing.xxs),
+            child: metaRow,
+          ),
+        ?moderation,
+      ],
+    );
+    final Widget inner;
+    if (imageGrid == null) {
+      inner = Padding(padding: bodyPadding, child: bodyColumn);
+    } else {
+      const onPhoto = Colors.white;
+      final photoMeta = style.typography.meta.copyWith(fontSize: 11, height: 1.2, color: onPhoto);
+      inner = Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (header.isNotEmpty)
+            Padding(
+              padding: EdgeInsets.fromLTRB(spacing.md, spacing.sm, spacing.md, spacing.xs),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: header,
+              ),
+            ),
+          if (mediaOnly)
+            Stack(
+              children: [
+                imageGrid,
+                Positioned(
+                  right: spacing.sm,
+                  bottom: spacing.sm,
+                  child: IgnorePointer(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        color: Colors.black.withValues(alpha: 0.45),
+                        borderRadius: BorderRadius.circular(_photoMetaRadius),
+                      ),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: spacing.xs + spacing.xxs, vertical: spacing.xxs),
+                        child: metaRowOf(onPhoto, photoMeta),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            )
+          else
+            imageGrid,
+          if (!mediaOnly)
+            Padding(padding: bodyPadding, child: bodyColumn)
+          else if (moderation != null)
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.xs),
+              child: moderation,
+            ),
+        ],
+      );
+    }
+
     final bubble = Container(
+      key: ValueKey('chat-bubble-${m.id}'),
       constraints: BoxConstraints(maxWidth: maxWidth, minWidth: minWidth > maxWidth ? maxWidth : minWidth),
-      padding: mediaOnly
-          ? EdgeInsets.all(inset)
-          : EdgeInsets.fromLTRB(spacing.md, spacing.sm, spacing.md, spacing.xs + spacing.xxs),
+      clipBehavior: imageGrid == null ? Clip.none : Clip.antiAlias,
       decoration: BoxDecoration(
         color: bg,
         borderRadius: BorderRadius.only(
@@ -575,20 +643,7 @@ class _DefaultBubbleState extends State<_DefaultBubble> {
           bottomRight: d.isMine ? bottom : _bubbleRadius,
         ),
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.end,
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Column(crossAxisAlignment: CrossAxisAlignment.start, mainAxisSize: MainAxisSize.min, children: content),
-          if (!inline)
-            Padding(
-              padding: EdgeInsets.only(top: spacing.xxs, right: mediaOnly ? spacing.xs : 0),
-              child: metaRow,
-            ),
-          if (d.isMine && !m.isDeleted)
-            ModerationNotice(status: m.moderationStatus, compact: true, color: fg, onAppeal: d.onAppeal),
-        ],
-      ),
+      child: inner,
     );
 
     final reactionInset = _reactionHeight - _reactionOverlap;
