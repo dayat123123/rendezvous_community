@@ -48,19 +48,22 @@ ChatMessage _photoMessage() => ChatMessage(
 
 CommunityImageLoader _loader() => CommunityImageLoader(client: MockClient((_) async => http.Response.bytes(_png, 200)));
 
-Future<void> _pump(WidgetTester tester, ChatRepository chat) async {
+Future<void> _pump(WidgetTester tester, ChatRepository chat, {Size windowControls = Size.zero}) async {
   useScreen(tester, const Size(900, 900));
   await tester.pumpWidget(
-    MaterialApp(
-      locale: const Locale('id'),
-      localizationsDelegates: communityLocalizationsDelegates,
-      supportedLocales: CommunityLocalizations.supportedLocales,
-      home: Scaffold(
-        body: CommunityImageScope(
-          loader: _loader(),
-          child: CommunityScope(
-            dependencies: FakeDependencies(chat: chat, mediaRepository: _Media()),
-            child: const CommunityChatRoom(roomId: 'dm'),
+    CommunityWindowControls(
+      size: windowControls,
+      child: MaterialApp(
+        locale: const Locale('id'),
+        localizationsDelegates: communityLocalizationsDelegates,
+        supportedLocales: CommunityLocalizations.supportedLocales,
+        home: Scaffold(
+          body: CommunityImageScope(
+            loader: _loader(),
+            child: CommunityScope(
+              dependencies: FakeDependencies(chat: chat, mediaRepository: _Media()),
+              child: const CommunityChatRoom(roomId: 'dm'),
+            ),
           ),
         ),
       ),
@@ -195,6 +198,22 @@ void main() {
     await _settle(tester);
     expect(find.text('2 dari 2'), findsOneWidget);
   });
+
+  for (final (controls, minLeft, maxLeft) in [(Size.zero, 16.0, 30.0), (const Size(80, 30), 80.0, 94.0)]) {
+    testWidgets('the viewer header keeps clear of ${controls.width} px window controls', (tester) async {
+      await _pump(
+        tester,
+        FakeChatRepository(rooms: [directRoom()], members: directMembers()),
+        windowControls: controls,
+      );
+      final context = tester.element(find.byType(CommunityChatRoom));
+      unawaited(showCommunityImageViewer(context, images: _photos, sender: me, sentAt: DateTime.now()));
+      await _settle(tester);
+
+      final avatar = tester.getRect(find.byType(CommunityAvatar).last);
+      expect(avatar.left, inInclusiveRange(minLeft, maxLeft));
+    });
+  }
 
   testWidgets('the viewer shows the sender and time, zooms, copies, and replies', (tester) async {
     await _pump(

@@ -1,3 +1,8 @@
+## 1.55.0
+
+* **`CommunityWindowControls` (baru):** host app bisa menandai area tombol jendela di pojok kiri atas (misalnya tombol merah-kuning-hijau macOS saat title bar disembunyikan) dengan membungkus `MaterialApp` memakai `CommunityWindowControls(size: Size(80, 30), child: ...)`. Default-nya `Size.zero`, jadi tanpa pembungkus tampilan tidak berubah.
+* **Tampilan layar penuh menghindari tombol jendela:** header viewer gambar bergeser ke kanan sebesar lebar area itu, sedangkan halaman gambar bantuan dan pemutar video menurunkan app bar-nya di bawah area itu.
+
 ## 1.54.2
 
 * **Tombol `$` di composer:** bila postingan sudah berisi cashtag (misalnya `$AADI` dari halaman saham), composer tidak lagi menambah `$` kedua; kursor langsung ditaruh di akhir teks.

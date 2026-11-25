@@ -8,6 +8,7 @@ import 'package:rendezvous_community/src/features/media/presentation/widgets/doc
 import 'package:rendezvous_community/src/features/media/presentation/widgets/video_player_page.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_window_controls.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
 typedef CommunityHelpAttachmentOpener = Future<bool> Function(BuildContext context, HelpAttachment attachment);
@@ -215,7 +216,9 @@ class HelpImagePage extends StatelessWidget {
   final HelpAttachment attachment;
 
   @override
-  Widget build(BuildContext context) => Scaffold(
+  Widget build(BuildContext context) => CommunityWindowControls.below(context, _page(context));
+
+  Widget _page(BuildContext context) => Scaffold(
     backgroundColor: Colors.black,
     appBar: AppBar(
       backgroundColor: Colors.black,

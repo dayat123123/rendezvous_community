@@ -377,6 +377,7 @@ export 'src/shared/presentation/widgets/community_network_image.dart' show Commu
 export 'src/shared/presentation/widgets/community_section_header.dart';
 export 'src/shared/presentation/widgets/community_sheet.dart' show CommunitySheetPresentation;
 export 'src/shared/presentation/widgets/community_tag.dart';
+export 'src/shared/presentation/widgets/community_window_controls.dart';
 export 'src/shared/presentation/widgets/link_opener.dart' show openCommunityLink, showCommunityContactActions;
 export 'src/shared/presentation/widgets/moderation_notice.dart';
 export 'src/shared/presentation/widgets/social_text.dart';

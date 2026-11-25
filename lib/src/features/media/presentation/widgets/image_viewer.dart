@@ -22,6 +22,7 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_menu.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_network_image.dart';
+import 'package:rendezvous_community/src/shared/presentation/widgets/community_window_controls.dart';
 import 'package:share_plus/share_plus.dart' show ShareParams, SharePlus, ShareResultStatus;
 
 typedef CommunityImageSaver =
@@ -344,6 +345,7 @@ class _DefaultImageViewerState extends State<_DefaultImageViewer> {
     final onReply = d.onReply;
     final onReact = d.onReact;
     final icons = CommunityStyle.of(context).icons;
+    final controls = CommunityWindowControls.sizeOf(context).width;
     return CallbackShortcuts(
       bindings: {
         const SingleActivator(LogicalKeyboardKey.arrowLeft): () => _go(-1),
@@ -367,7 +369,7 @@ class _DefaultImageViewerState extends State<_DefaultImageViewer> {
                   height: 60,
                   child: Row(
                     children: [
-                      const SizedBox(width: 16),
+                      SizedBox(width: controls > 16 ? controls : 16),
                       Expanded(
                         child: _SenderLabel(sender: d.sender, timeLabel: d.timeLabel),
                       ),
