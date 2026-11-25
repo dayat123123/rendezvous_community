@@ -1,3 +1,8 @@
+## 1.54.1
+
+* **Daftar reaksi:** judul "Reaksi" kini punya jarak dari tepi atas dan dari tombol tutup.
+* **Buka profil dari daftar reaksi:** mengetuk pengguna menutup dialog lebih dulu, lalu membuka profil dari postingan asalnya, sehingga host app memakai alur profilnya sendiri (misalnya navigator Stream) dan bukan halaman baru di atas dialog.
+
 ## 1.54.0
 
 Butuh migrasi server 0196 (`set_post_reaction`, `post_reactors`, kolom `my_reaction` dan `reaction_summary` pada postingan, kunci config `post_reactions`). Tanpa migrasi itu, 👍 tetap berjalan lewat like lama dan emoji lain menampilkan pesan "reaksi belum tersedia".

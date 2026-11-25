@@ -12,6 +12,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart
 import 'package:rendezvous_community/src/features/feed/domain/entities/post_reaction.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
@@ -309,8 +310,13 @@ Future<void> showCommunityPostReactors(BuildContext context, Post post) {
   return showCommunitySheet<void>(
     context,
     isScrollControlled: true,
-    builder: (_) => _PostReactorsView(
+    builder: (sheetContext) => _PostReactorsView(
+      key: const ValueKey('post-reactors'),
       post: post,
+      onOpenUser: (user) {
+        Navigator.of(sheetContext).pop();
+        if (context.mounted) CommunityNavigator.openUser(context, user);
+      },
       repository: switch (feed) {
         final PostReactionRepository reactions => reactions,
         _ => null,
@@ -320,10 +326,11 @@ Future<void> showCommunityPostReactors(BuildContext context, Post post) {
 }
 
 class _PostReactorsView extends StatelessWidget {
-  const _PostReactorsView({required this.post, required this.repository});
+  const _PostReactorsView({super.key, required this.post, required this.repository, required this.onOpenUser});
 
   final Post post;
   final PostReactionRepository? repository;
+  final ValueChanged<UserSummary> onOpenUser;
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +346,7 @@ class _PostReactorsView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: style.spacing.lg),
+              padding: EdgeInsets.fromLTRB(style.spacing.lg, style.spacing.lg, style.spacing.xl * 2, style.spacing.xxs),
               child: Text(l10n.reactionsTitle, style: style.typography.title),
             ),
             SizedBox(height: style.spacing.xs),
@@ -358,8 +365,9 @@ class _PostReactorsView extends StatelessWidget {
             Expanded(
               child: TabBarView(
                 children: [
-                  _ReactorsList(postId: post.id, repository: repository),
-                  for (final r in summary) _ReactorsList(postId: post.id, repository: repository, emoji: r.emoji),
+                  _ReactorsList(postId: post.id, repository: repository, onOpenUser: onOpenUser),
+                  for (final r in summary)
+                    _ReactorsList(postId: post.id, repository: repository, emoji: r.emoji, onOpenUser: onOpenUser),
                 ],
               ),
             ),
@@ -371,7 +379,9 @@ class _PostReactorsView extends StatelessWidget {
 }
 
 class _ReactorsList extends StatefulWidget {
-  const _ReactorsList({required this.postId, required this.repository, this.emoji});
+  const _ReactorsList({required this.postId, required this.repository, required this.onOpenUser, this.emoji});
+
+  final ValueChanged<UserSummary> onOpenUser;
 
   final String postId;
   final PostReactionRepository? repository;
@@ -493,7 +503,7 @@ class _ReactorsListState extends State<_ReactorsList> with AutomaticKeepAliveCli
           final reactor = _items[index];
           return KeyedSubtree(
             key: ValueKey(reactor.user.id),
-            child: _ReactorRow(reactor: reactor),
+            child: _ReactorRow(reactor: reactor, onOpen: widget.onOpenUser),
           );
         },
       ),
@@ -502,9 +512,10 @@ class _ReactorsListState extends State<_ReactorsList> with AutomaticKeepAliveCli
 }
 
 class _ReactorRow extends StatelessWidget {
-  const _ReactorRow({required this.reactor});
+  const _ReactorRow({required this.reactor, required this.onOpen});
 
   final PostReactor reactor;
+  final ValueChanged<UserSummary> onOpen;
 
   @override
   Widget build(BuildContext context) {
@@ -513,7 +524,7 @@ class _ReactorRow extends StatelessWidget {
     final spacing = style.spacing;
     final user = reactor.user;
     return InkWell(
-      onTap: user.isDeleted ? null : () => CommunityNavigator.openUser(context, user),
+      onTap: user.isDeleted ? null : () => onOpen(user),
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.sm),
         child: Row(

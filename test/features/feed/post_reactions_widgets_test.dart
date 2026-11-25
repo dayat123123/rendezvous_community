@@ -36,6 +36,7 @@ Future<void> _pump(
   Widget child, {
   FakeFeedRepository? feed,
   Locale locale = const Locale('id'),
+  CommunityCallbacks callbacks = const CommunityCallbacks(),
 }) async {
   tester.view.physicalSize = const Size(900, 1600);
   tester.view.devicePixelRatio = 1;
@@ -47,7 +48,7 @@ Future<void> _pump(
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: Scaffold(
         body: CommunityScope(
-          dependencies: FakeDependencies(feed: feed),
+          dependencies: FakeDependencies(feed: feed, callbacks: callbacks),
           child: Center(child: child),
         ),
       ),
@@ -301,6 +302,56 @@ void main() {
       await tester.pumpAndSettle();
       expect(feed.reactorRequests.last.emoji, '🔥');
       expect(feed.reactorRequests.last.cursor, isNull);
+    });
+
+    testWidgets('the title sits clear of the sheet edge and the close button', (tester) async {
+      final feed = FakeReactionFeedRepository()..onReactors = (emoji, cursor) => const PostReactorsPage([]);
+      await _pump(
+        tester,
+        Builder(
+          builder: (context) =>
+              TextButton(onPressed: () => showCommunityPostReactors(context, post), child: const Text('buka')),
+        ),
+        feed: feed,
+      );
+      await tester.tap(find.text('buka'));
+      await tester.pumpAndSettle();
+      final view = tester.getRect(find.byKey(const ValueKey('post-reactors')));
+      final title = tester.getRect(find.text('Reaksi'));
+      expect(title.top - view.top, greaterThanOrEqualTo(16));
+      expect(title.left - view.left, greaterThanOrEqualTo(16));
+    });
+
+    testWidgets('opening a reactor closes the sheet and opens the profile from the post', (tester) async {
+      final feed = FakeReactionFeedRepository()
+        ..onReactors = (emoji, cursor) => PostReactorsPage([_reactor('u-2', '👍')]);
+      BuildContext? caller;
+      BuildContext? opened;
+      UserSummary? user;
+      await _pump(
+        tester,
+        Builder(
+          builder: (context) {
+            caller = context;
+            return TextButton(onPressed: () => showCommunityPostReactors(context, post), child: const Text('buka'));
+          },
+        ),
+        feed: feed,
+        callbacks: CommunityCallbacks(
+          onUserTap: (context, tapped) {
+            opened = context;
+            user = tapped;
+          },
+        ),
+      );
+      await tester.tap(find.text('buka'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Nama u-2'));
+      await tester.pumpAndSettle();
+
+      expect(find.byKey(const ValueKey('post-reactors')), findsNothing);
+      expect(user?.id, 'u-2');
+      expect(identical(opened, caller), isTrue);
     });
 
     testWidgets('shows an empty state and a friendly error', (tester) async {
