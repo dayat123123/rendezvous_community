@@ -4,6 +4,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filt
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_reaction.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 
@@ -29,6 +30,12 @@ abstract interface class FeedRepository {
   Future<void> unlikePost(String postId);
 
   Stream<PostChange> watchPosts({String? postId});
+}
+
+abstract interface class PostReactionRepository {
+  Future<Post?> setPostReaction(String postId, String? emoji);
+
+  Future<PostReactorsPage> postReactors(String postId, {String? emoji, int limit = 30, String? cursor});
 }
 
 abstract interface class FeedQueryRepository {

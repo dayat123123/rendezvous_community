@@ -98,6 +98,7 @@ extension CommunityErrorText on CommunityLocalizations {
       'article_not_found' => errorHelpArticleNotFound,
       'share_not_allowed' => errorShareNotAllowed,
       'reactions_not_supported' => featureUnavailable,
+      'post_reactions_unavailable' => errorPostReactionsUnavailable,
       'request_not_found' => errorRequestNotFound,
       'invalid_quiet_hours' => errorInvalidQuietHours,
       'attachment_offline' => errorAttachmentOffline,

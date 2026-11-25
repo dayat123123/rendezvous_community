@@ -21,6 +21,7 @@ class CommunityActionPill extends StatelessWidget {
     this.tooltip,
     this.onPressed,
     this.activeColor,
+    this.emoji,
   });
 
   final IconData icon;
@@ -31,6 +32,7 @@ class CommunityActionPill extends StatelessWidget {
   final String? tooltip;
   final VoidCallback? onPressed;
   final Color? activeColor;
+  final String? emoji;
 
   @override
   Widget build(BuildContext context) {
@@ -45,6 +47,7 @@ class CommunityActionPill extends StatelessWidget {
       tooltip: tooltip,
       onPressed: onPressed,
       activeColor: activeColor,
+      emoji: emoji,
     );
     return buildSharedPart((b) => b.actionPill, context, details, _DefaultActionPill(details: details));
   }
@@ -75,7 +78,13 @@ class _DefaultActionPill extends StatelessWidget {
       tapTargetSize: MaterialTapTargetSize.padded,
       visualDensity: VisualDensity.standard,
     );
-    final icon = CommunityBump(active: active, child: Icon(details.effectiveIcon, size: 18));
+    final emoji = details.emoji;
+    final icon = CommunityBump(
+      active: active,
+      child: emoji == null
+          ? Icon(details.effectiveIcon, size: 18)
+          : Text(emoji, style: const TextStyle(fontSize: 16, height: 1)),
+    );
     final Widget button = text == null
         ? TextButton(onPressed: details.onPressed, style: buttonStyle, child: icon)
         : TextButton.icon(onPressed: details.onPressed, style: buttonStyle, icon: icon, label: Text(text));

@@ -35,6 +35,7 @@ abstract class ClientConfig with _$ClientConfig {
     @Default(false) bool updateRequired,
     @Default(Duration(minutes: 15)) Duration editWindow,
     @Default(<String>['👍', '❤️', '😂', '😮', '😢', '🔥']) List<String> messageReactions,
+    @Default(<String>['👍', '❤️', '😂', '😮', '😢', '🔥']) List<String> postReactions,
     @Default(2) int searchMinLength,
     @Default(<String>[]) List<String> notificationTypes,
     @Default(<String>['24h', '7d']) List<String> trendingWindows,

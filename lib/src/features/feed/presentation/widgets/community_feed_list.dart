@@ -240,6 +240,7 @@ class _FeedPostListState extends State<FeedPostList> {
                             PinnedPostCard(
                               pinned: pin,
                               onLike: () => cubit.toggleLike(pin.post),
+                              onReact: (emoji) => cubit.react(pin.post, emoji),
                               onOpen: () => CommunityNavigator.openPost(context, pin.post.id),
                               onToggleBookmark: cubit.canBookmark ? () => cubit.toggleBookmark(pin.post) : null,
                             ),
@@ -355,6 +356,7 @@ class FeedPostCard extends StatelessWidget {
       post: post,
       source: source,
       onLike: () => cubit.toggleLike(post),
+      onReact: (emoji) => cubit.react(post, emoji),
       onOpen: inline ? null : () => CommunityNavigator.openPost(context, post.id),
       onDelete: () => cubit.delete(post),
       onAuthorBlocked: () => cubit.hideAuthor(post.author.id),

@@ -15,7 +15,7 @@ T _$identity<T>(T value) => value;
 /// @nodoc
 mixin _$ClientConfig {
 
- bool get socialEnabled; Map<String, bool> get flags; Map<String, String?> get minVersions; bool get updateRequired; Duration get editWindow; List<String> get messageReactions; int get searchMinLength; List<String> get notificationTypes; List<String> get trendingWindows; int get notificationAggregateMinutes; Duration? get rejoinCooldown; Duration get clockSkew; List<CommunityBanner> get banners; DateTime? get fetchedAt; bool get viewerKnown; String? get viewerId;
+ bool get socialEnabled; Map<String, bool> get flags; Map<String, String?> get minVersions; bool get updateRequired; Duration get editWindow; List<String> get messageReactions; List<String> get postReactions; int get searchMinLength; List<String> get notificationTypes; List<String> get trendingWindows; int get notificationAggregateMinutes; Duration? get rejoinCooldown; Duration get clockSkew; List<CommunityBanner> get banners; DateTime? get fetchedAt; bool get viewerKnown; String? get viewerId;
 /// Create a copy of ClientConfig
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -27,20 +27,20 @@ $ClientConfigCopyWith<ClientConfig> get copyWith => _$ClientConfigCopyWithImpl<C
 @override
 bool operator ==(Object other) {
   final _this = this as ClientConfig;
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientConfig&&(identical(other.socialEnabled, _this.socialEnabled) || other.socialEnabled == _this.socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _this.flags)&&const DeepCollectionEquality().equals(other.minVersions, _this.minVersions)&&(identical(other.updateRequired, _this.updateRequired) || other.updateRequired == _this.updateRequired)&&(identical(other.editWindow, _this.editWindow) || other.editWindow == _this.editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _this.messageReactions)&&(identical(other.searchMinLength, _this.searchMinLength) || other.searchMinLength == _this.searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _this.notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _this.trendingWindows)&&(identical(other.notificationAggregateMinutes, _this.notificationAggregateMinutes) || other.notificationAggregateMinutes == _this.notificationAggregateMinutes)&&(identical(other.rejoinCooldown, _this.rejoinCooldown) || other.rejoinCooldown == _this.rejoinCooldown)&&(identical(other.clockSkew, _this.clockSkew) || other.clockSkew == _this.clockSkew)&&const DeepCollectionEquality().equals(other.banners, _this.banners)&&(identical(other.fetchedAt, _this.fetchedAt) || other.fetchedAt == _this.fetchedAt)&&(identical(other.viewerKnown, _this.viewerKnown) || other.viewerKnown == _this.viewerKnown)&&(identical(other.viewerId, _this.viewerId) || other.viewerId == _this.viewerId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ClientConfig&&(identical(other.socialEnabled, _this.socialEnabled) || other.socialEnabled == _this.socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _this.flags)&&const DeepCollectionEquality().equals(other.minVersions, _this.minVersions)&&(identical(other.updateRequired, _this.updateRequired) || other.updateRequired == _this.updateRequired)&&(identical(other.editWindow, _this.editWindow) || other.editWindow == _this.editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _this.messageReactions)&&const DeepCollectionEquality().equals(other.postReactions, _this.postReactions)&&(identical(other.searchMinLength, _this.searchMinLength) || other.searchMinLength == _this.searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _this.notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _this.trendingWindows)&&(identical(other.notificationAggregateMinutes, _this.notificationAggregateMinutes) || other.notificationAggregateMinutes == _this.notificationAggregateMinutes)&&(identical(other.rejoinCooldown, _this.rejoinCooldown) || other.rejoinCooldown == _this.rejoinCooldown)&&(identical(other.clockSkew, _this.clockSkew) || other.clockSkew == _this.clockSkew)&&const DeepCollectionEquality().equals(other.banners, _this.banners)&&(identical(other.fetchedAt, _this.fetchedAt) || other.fetchedAt == _this.fetchedAt)&&(identical(other.viewerKnown, _this.viewerKnown) || other.viewerKnown == _this.viewerKnown)&&(identical(other.viewerId, _this.viewerId) || other.viewerId == _this.viewerId));
 }
 
 
 @override
 int get hashCode {
   final _this = this as ClientConfig;
-  return Object.hash(runtimeType,_this.socialEnabled,const DeepCollectionEquality().hash(_this.flags),const DeepCollectionEquality().hash(_this.minVersions),_this.updateRequired,_this.editWindow,const DeepCollectionEquality().hash(_this.messageReactions),_this.searchMinLength,const DeepCollectionEquality().hash(_this.notificationTypes),const DeepCollectionEquality().hash(_this.trendingWindows),_this.notificationAggregateMinutes,_this.rejoinCooldown,_this.clockSkew,const DeepCollectionEquality().hash(_this.banners),_this.fetchedAt,_this.viewerKnown,_this.viewerId);
+  return Object.hash(runtimeType,_this.socialEnabled,const DeepCollectionEquality().hash(_this.flags),const DeepCollectionEquality().hash(_this.minVersions),_this.updateRequired,_this.editWindow,const DeepCollectionEquality().hash(_this.messageReactions),const DeepCollectionEquality().hash(_this.postReactions),_this.searchMinLength,const DeepCollectionEquality().hash(_this.notificationTypes),const DeepCollectionEquality().hash(_this.trendingWindows),_this.notificationAggregateMinutes,_this.rejoinCooldown,_this.clockSkew,const DeepCollectionEquality().hash(_this.banners),_this.fetchedAt,_this.viewerKnown,_this.viewerId);
 }
 
 @override
 String toString() {
   final _this = this as ClientConfig;
-  return 'ClientConfig(socialEnabled: ${_this.socialEnabled}, flags: ${_this.flags}, minVersions: ${_this.minVersions}, updateRequired: ${_this.updateRequired}, editWindow: ${_this.editWindow}, messageReactions: ${_this.messageReactions}, searchMinLength: ${_this.searchMinLength}, notificationTypes: ${_this.notificationTypes}, trendingWindows: ${_this.trendingWindows}, notificationAggregateMinutes: ${_this.notificationAggregateMinutes}, rejoinCooldown: ${_this.rejoinCooldown}, clockSkew: ${_this.clockSkew}, banners: ${_this.banners}, fetchedAt: ${_this.fetchedAt}, viewerKnown: ${_this.viewerKnown}, viewerId: ${_this.viewerId})';
+  return 'ClientConfig(socialEnabled: ${_this.socialEnabled}, flags: ${_this.flags}, minVersions: ${_this.minVersions}, updateRequired: ${_this.updateRequired}, editWindow: ${_this.editWindow}, messageReactions: ${_this.messageReactions}, postReactions: ${_this.postReactions}, searchMinLength: ${_this.searchMinLength}, notificationTypes: ${_this.notificationTypes}, trendingWindows: ${_this.trendingWindows}, notificationAggregateMinutes: ${_this.notificationAggregateMinutes}, rejoinCooldown: ${_this.rejoinCooldown}, clockSkew: ${_this.clockSkew}, banners: ${_this.banners}, fetchedAt: ${_this.fetchedAt}, viewerKnown: ${_this.viewerKnown}, viewerId: ${_this.viewerId})';
 }
 
 
@@ -51,7 +51,7 @@ abstract mixin class $ClientConfigCopyWith<$Res>  {
   factory $ClientConfigCopyWith(ClientConfig value, $Res Function(ClientConfig) _then) = _$ClientConfigCopyWithImpl;
 @useResult
 $Res call({
- bool socialEnabled, Map<String, bool> flags, Map<String, String?> minVersions, bool updateRequired, Duration editWindow, List<String> messageReactions, int searchMinLength, List<String> notificationTypes, List<String> trendingWindows, int notificationAggregateMinutes, Duration? rejoinCooldown, Duration clockSkew, List<CommunityBanner> banners, DateTime? fetchedAt, bool viewerKnown, String? viewerId
+ bool socialEnabled, Map<String, bool> flags, Map<String, String?> minVersions, bool updateRequired, Duration editWindow, List<String> messageReactions, List<String> postReactions, int searchMinLength, List<String> notificationTypes, List<String> trendingWindows, int notificationAggregateMinutes, Duration? rejoinCooldown, Duration clockSkew, List<CommunityBanner> banners, DateTime? fetchedAt, bool viewerKnown, String? viewerId
 });
 
 
@@ -68,7 +68,7 @@ class _$ClientConfigCopyWithImpl<$Res>
 
 /// Create a copy of ClientConfig
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersions = null,Object? updateRequired = null,Object? editWindow = null,Object? messageReactions = null,Object? searchMinLength = null,Object? notificationTypes = null,Object? trendingWindows = null,Object? notificationAggregateMinutes = null,Object? rejoinCooldown = freezed,Object? clockSkew = null,Object? banners = null,Object? fetchedAt = freezed,Object? viewerKnown = null,Object? viewerId = freezed,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersions = null,Object? updateRequired = null,Object? editWindow = null,Object? messageReactions = null,Object? postReactions = null,Object? searchMinLength = null,Object? notificationTypes = null,Object? trendingWindows = null,Object? notificationAggregateMinutes = null,Object? rejoinCooldown = freezed,Object? clockSkew = null,Object? banners = null,Object? fetchedAt = freezed,Object? viewerKnown = null,Object? viewerId = freezed,}) {
   return _then(ClientConfig(
 socialEnabled: null == socialEnabled ? _self.socialEnabled : socialEnabled // ignore: cast_nullable_to_non_nullable
 as bool,flags: null == flags ? _self.flags : flags // ignore: cast_nullable_to_non_nullable
@@ -76,6 +76,7 @@ as Map<String, bool>,minVersions: null == minVersions ? _self.minVersions : minV
 as Map<String, String?>,updateRequired: null == updateRequired ? _self.updateRequired : updateRequired // ignore: cast_nullable_to_non_nullable
 as bool,editWindow: null == editWindow ? _self.editWindow : editWindow // ignore: cast_nullable_to_non_nullable
 as Duration,messageReactions: null == messageReactions ? _self.messageReactions : messageReactions // ignore: cast_nullable_to_non_nullable
+as List<String>,postReactions: null == postReactions ? _self.postReactions : postReactions // ignore: cast_nullable_to_non_nullable
 as List<String>,searchMinLength: null == searchMinLength ? _self.searchMinLength : searchMinLength // ignore: cast_nullable_to_non_nullable
 as int,notificationTypes: null == notificationTypes ? _self.notificationTypes : notificationTypes // ignore: cast_nullable_to_non_nullable
 as List<String>,trendingWindows: null == trendingWindows ? _self.trendingWindows : trendingWindows // ignore: cast_nullable_to_non_nullable
@@ -171,10 +172,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt,  bool viewerKnown,  String? viewerId)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  List<String> postReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt,  bool viewerKnown,  String? viewerId)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _ClientConfig() when $default != null:
-return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt,_that.viewerKnown,_that.viewerId);case _:
+return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.postReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt,_that.viewerKnown,_that.viewerId);case _:
   return orElse();
 
 }
@@ -192,10 +193,10 @@ return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRe
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt,  bool viewerKnown,  String? viewerId)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  List<String> postReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt,  bool viewerKnown,  String? viewerId)  $default,) {final _that = this;
 switch (_that) {
 case _ClientConfig():
-return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt,_that.viewerKnown,_that.viewerId);case _:
+return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.postReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt,_that.viewerKnown,_that.viewerId);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -212,10 +213,10 @@ return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRe
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt,  bool viewerKnown,  String? viewerId)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( bool socialEnabled,  Map<String, bool> flags,  Map<String, String?> minVersions,  bool updateRequired,  Duration editWindow,  List<String> messageReactions,  List<String> postReactions,  int searchMinLength,  List<String> notificationTypes,  List<String> trendingWindows,  int notificationAggregateMinutes,  Duration? rejoinCooldown,  Duration clockSkew,  List<CommunityBanner> banners,  DateTime? fetchedAt,  bool viewerKnown,  String? viewerId)?  $default,) {final _that = this;
 switch (_that) {
 case _ClientConfig() when $default != null:
-return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt,_that.viewerKnown,_that.viewerId);case _:
+return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRequired,_that.editWindow,_that.messageReactions,_that.postReactions,_that.searchMinLength,_that.notificationTypes,_that.trendingWindows,_that.notificationAggregateMinutes,_that.rejoinCooldown,_that.clockSkew,_that.banners,_that.fetchedAt,_that.viewerKnown,_that.viewerId);case _:
   return null;
 
 }
@@ -227,7 +228,7 @@ return $default(_that.socialEnabled,_that.flags,_that.minVersions,_that.updateRe
 
 
 class _ClientConfig extends ClientConfig {
-  const _ClientConfig({this.socialEnabled = true,  Map<String, bool> flags = const <String, bool>{},  Map<String, String?> minVersions = const <String, String?>{}, this.updateRequired = false, this.editWindow = const Duration(minutes: 15),  List<String> messageReactions = const <String>['👍', '❤️', '😂', '😮', '😢', '🔥'], this.searchMinLength = 2,  List<String> notificationTypes = const <String>[],  List<String> trendingWindows = const <String>['24h', '7d'], this.notificationAggregateMinutes = 60, this.rejoinCooldown, this.clockSkew = Duration.zero,  List<CommunityBanner> banners = const <CommunityBanner>[], this.fetchedAt, this.viewerKnown = false, this.viewerId}): _flags = flags,_minVersions = minVersions,_messageReactions = messageReactions,_notificationTypes = notificationTypes,_trendingWindows = trendingWindows,_banners = banners,super._();
+  const _ClientConfig({this.socialEnabled = true,  Map<String, bool> flags = const <String, bool>{},  Map<String, String?> minVersions = const <String, String?>{}, this.updateRequired = false, this.editWindow = const Duration(minutes: 15),  List<String> messageReactions = const <String>['👍', '❤️', '😂', '😮', '😢', '🔥'],  List<String> postReactions = const <String>['👍', '❤️', '😂', '😮', '😢', '🔥'], this.searchMinLength = 2,  List<String> notificationTypes = const <String>[],  List<String> trendingWindows = const <String>['24h', '7d'], this.notificationAggregateMinutes = 60, this.rejoinCooldown, this.clockSkew = Duration.zero,  List<CommunityBanner> banners = const <CommunityBanner>[], this.fetchedAt, this.viewerKnown = false, this.viewerId}): _flags = flags,_minVersions = minVersions,_messageReactions = messageReactions,_postReactions = postReactions,_notificationTypes = notificationTypes,_trendingWindows = trendingWindows,_banners = banners,super._();
   
 
 @override@JsonKey() final  bool socialEnabled;
@@ -252,6 +253,13 @@ class _ClientConfig extends ClientConfig {
   if (_messageReactions is EqualUnmodifiableListView) return _messageReactions;
   // ignore: implicit_dynamic_type
   return EqualUnmodifiableListView(_messageReactions);
+}
+
+ final  List<String> _postReactions;
+@override@JsonKey() List<String> get postReactions {
+  if (_postReactions is EqualUnmodifiableListView) return _postReactions;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_postReactions);
 }
 
 @override@JsonKey() final  int searchMinLength;
@@ -293,18 +301,18 @@ _$ClientConfigCopyWith<_ClientConfig> get copyWith => __$ClientConfigCopyWithImp
 
 @override
 bool operator ==(Object other) {
-    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientConfig&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _flags)&&const DeepCollectionEquality().equals(other.minVersions, _minVersions)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&(identical(other.editWindow, editWindow) || other.editWindow == editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _messageReactions)&&(identical(other.searchMinLength, searchMinLength) || other.searchMinLength == searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _trendingWindows)&&(identical(other.notificationAggregateMinutes, notificationAggregateMinutes) || other.notificationAggregateMinutes == notificationAggregateMinutes)&&(identical(other.rejoinCooldown, rejoinCooldown) || other.rejoinCooldown == rejoinCooldown)&&(identical(other.clockSkew, clockSkew) || other.clockSkew == clockSkew)&&const DeepCollectionEquality().equals(other.banners, _banners)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt)&&(identical(other.viewerKnown, viewerKnown) || other.viewerKnown == viewerKnown)&&(identical(other.viewerId, viewerId) || other.viewerId == viewerId));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ClientConfig&&(identical(other.socialEnabled, socialEnabled) || other.socialEnabled == socialEnabled)&&const DeepCollectionEquality().equals(other.flags, _flags)&&const DeepCollectionEquality().equals(other.minVersions, _minVersions)&&(identical(other.updateRequired, updateRequired) || other.updateRequired == updateRequired)&&(identical(other.editWindow, editWindow) || other.editWindow == editWindow)&&const DeepCollectionEquality().equals(other.messageReactions, _messageReactions)&&const DeepCollectionEquality().equals(other.postReactions, _postReactions)&&(identical(other.searchMinLength, searchMinLength) || other.searchMinLength == searchMinLength)&&const DeepCollectionEquality().equals(other.notificationTypes, _notificationTypes)&&const DeepCollectionEquality().equals(other.trendingWindows, _trendingWindows)&&(identical(other.notificationAggregateMinutes, notificationAggregateMinutes) || other.notificationAggregateMinutes == notificationAggregateMinutes)&&(identical(other.rejoinCooldown, rejoinCooldown) || other.rejoinCooldown == rejoinCooldown)&&(identical(other.clockSkew, clockSkew) || other.clockSkew == clockSkew)&&const DeepCollectionEquality().equals(other.banners, _banners)&&(identical(other.fetchedAt, fetchedAt) || other.fetchedAt == fetchedAt)&&(identical(other.viewerKnown, viewerKnown) || other.viewerKnown == viewerKnown)&&(identical(other.viewerId, viewerId) || other.viewerId == viewerId));
 }
 
 
 @override
 int get hashCode {
-    return Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(_flags),const DeepCollectionEquality().hash(_minVersions),updateRequired,editWindow,const DeepCollectionEquality().hash(_messageReactions),searchMinLength,const DeepCollectionEquality().hash(_notificationTypes),const DeepCollectionEquality().hash(_trendingWindows),notificationAggregateMinutes,rejoinCooldown,clockSkew,const DeepCollectionEquality().hash(_banners),fetchedAt,viewerKnown,viewerId);
+    return Object.hash(runtimeType,socialEnabled,const DeepCollectionEquality().hash(_flags),const DeepCollectionEquality().hash(_minVersions),updateRequired,editWindow,const DeepCollectionEquality().hash(_messageReactions),const DeepCollectionEquality().hash(_postReactions),searchMinLength,const DeepCollectionEquality().hash(_notificationTypes),const DeepCollectionEquality().hash(_trendingWindows),notificationAggregateMinutes,rejoinCooldown,clockSkew,const DeepCollectionEquality().hash(_banners),fetchedAt,viewerKnown,viewerId);
 }
 
 @override
 String toString() {
-    return 'ClientConfig(socialEnabled: $socialEnabled, flags: $flags, minVersions: $minVersions, updateRequired: $updateRequired, editWindow: $editWindow, messageReactions: $messageReactions, searchMinLength: $searchMinLength, notificationTypes: $notificationTypes, trendingWindows: $trendingWindows, notificationAggregateMinutes: $notificationAggregateMinutes, rejoinCooldown: $rejoinCooldown, clockSkew: $clockSkew, banners: $banners, fetchedAt: $fetchedAt, viewerKnown: $viewerKnown, viewerId: $viewerId)';
+    return 'ClientConfig(socialEnabled: $socialEnabled, flags: $flags, minVersions: $minVersions, updateRequired: $updateRequired, editWindow: $editWindow, messageReactions: $messageReactions, postReactions: $postReactions, searchMinLength: $searchMinLength, notificationTypes: $notificationTypes, trendingWindows: $trendingWindows, notificationAggregateMinutes: $notificationAggregateMinutes, rejoinCooldown: $rejoinCooldown, clockSkew: $clockSkew, banners: $banners, fetchedAt: $fetchedAt, viewerKnown: $viewerKnown, viewerId: $viewerId)';
 }
 
 
@@ -315,7 +323,7 @@ abstract mixin class _$ClientConfigCopyWith<$Res> implements $ClientConfigCopyWi
   factory _$ClientConfigCopyWith(_ClientConfig value, $Res Function(_ClientConfig) _then) = __$ClientConfigCopyWithImpl;
 @override @useResult
 $Res call({
- bool socialEnabled, Map<String, bool> flags, Map<String, String?> minVersions, bool updateRequired, Duration editWindow, List<String> messageReactions, int searchMinLength, List<String> notificationTypes, List<String> trendingWindows, int notificationAggregateMinutes, Duration? rejoinCooldown, Duration clockSkew, List<CommunityBanner> banners, DateTime? fetchedAt, bool viewerKnown, String? viewerId
+ bool socialEnabled, Map<String, bool> flags, Map<String, String?> minVersions, bool updateRequired, Duration editWindow, List<String> messageReactions, List<String> postReactions, int searchMinLength, List<String> notificationTypes, List<String> trendingWindows, int notificationAggregateMinutes, Duration? rejoinCooldown, Duration clockSkew, List<CommunityBanner> banners, DateTime? fetchedAt, bool viewerKnown, String? viewerId
 });
 
 
@@ -332,7 +340,7 @@ class __$ClientConfigCopyWithImpl<$Res>
 
 /// Create a copy of ClientConfig
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersions = null,Object? updateRequired = null,Object? editWindow = null,Object? messageReactions = null,Object? searchMinLength = null,Object? notificationTypes = null,Object? trendingWindows = null,Object? notificationAggregateMinutes = null,Object? rejoinCooldown = freezed,Object? clockSkew = null,Object? banners = null,Object? fetchedAt = freezed,Object? viewerKnown = null,Object? viewerId = freezed,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? socialEnabled = null,Object? flags = null,Object? minVersions = null,Object? updateRequired = null,Object? editWindow = null,Object? messageReactions = null,Object? postReactions = null,Object? searchMinLength = null,Object? notificationTypes = null,Object? trendingWindows = null,Object? notificationAggregateMinutes = null,Object? rejoinCooldown = freezed,Object? clockSkew = null,Object? banners = null,Object? fetchedAt = freezed,Object? viewerKnown = null,Object? viewerId = freezed,}) {
   return _then(_ClientConfig(
 socialEnabled: null == socialEnabled ? _self.socialEnabled : socialEnabled // ignore: cast_nullable_to_non_nullable
 as bool,flags: null == flags ? _self._flags : flags // ignore: cast_nullable_to_non_nullable
@@ -340,6 +348,7 @@ as Map<String, bool>,minVersions: null == minVersions ? _self._minVersions : min
 as Map<String, String?>,updateRequired: null == updateRequired ? _self.updateRequired : updateRequired // ignore: cast_nullable_to_non_nullable
 as bool,editWindow: null == editWindow ? _self.editWindow : editWindow // ignore: cast_nullable_to_non_nullable
 as Duration,messageReactions: null == messageReactions ? _self._messageReactions : messageReactions // ignore: cast_nullable_to_non_nullable
+as List<String>,postReactions: null == postReactions ? _self._postReactions : postReactions // ignore: cast_nullable_to_non_nullable
 as List<String>,searchMinLength: null == searchMinLength ? _self.searchMinLength : searchMinLength // ignore: cast_nullable_to_non_nullable
 as int,notificationTypes: null == notificationTypes ? _self._notificationTypes : notificationTypes // ignore: cast_nullable_to_non_nullable
 as List<String>,trendingWindows: null == trendingWindows ? _self._trendingWindows : trendingWindows // ignore: cast_nullable_to_non_nullable

@@ -90,6 +90,7 @@ class CommunityActionPillDetails {
     this.tooltip,
     this.onPressed,
     this.activeColor,
+    this.emoji,
   });
 
   final IconData icon;
@@ -101,6 +102,7 @@ class CommunityActionPillDetails {
   final String? tooltip;
   final VoidCallback? onPressed;
   final Color? activeColor;
+  final String? emoji;
 
   IconData get effectiveIcon => active ? activeIcon ?? icon : icon;
 

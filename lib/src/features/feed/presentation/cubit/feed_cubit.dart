@@ -15,6 +15,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filt
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_reaction.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_cache_repository.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/post_updates.dart';
@@ -201,15 +202,16 @@ class FeedCubit extends Cubit<FeedState> {
     }
   }
 
-  Future<void> toggleLike(Post post) async {
-    final current = state.posts.firstWhere(
-      (p) => p.id == post.id,
-      orElse: () => state.pinned.map((pin) => pin.post).firstWhere((p) => p.id == post.id, orElse: () => post),
-    );
-    final liked = !current.likedByMe;
-    _replace(current.copyWith(likedByMe: liked, likeCount: current.likeCount + (liked ? 1 : -1)));
+  Future<void> toggleLike(Post post) => react(post, toggledLikeReaction(_find(post)));
+
+  Future<void> react(Post post, String? emoji) async {
+    final current = _find(post);
+    final next = applyPostReaction(current, emoji);
+    if (identical(next, current)) return;
+    _replace(next);
     try {
-      liked ? await _feed.likePost(post.id) : await _feed.unlikePost(post.id);
+      final saved = await sendPostReaction(_feed, post.id, next.myReaction);
+      if (saved != null) _replace(saved.copyWith(cursor: current.cursor));
     } catch (e) {
       _replace(current);
       _actionError(e);

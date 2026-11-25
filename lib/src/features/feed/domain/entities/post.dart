@@ -10,6 +10,15 @@ part 'post.freezed.dart';
 
 enum Sentiment { bullish, bearish, neutral }
 
+const postLikeReaction = '👍';
+
+const defaultPostReactions = <String>['👍', '❤️', '😂', '😮', '😢', '🔥'];
+
+@freezed
+abstract class PostReactionCount with _$PostReactionCount {
+  const factory PostReactionCount({required String emoji, required int count}) = _PostReactionCount;
+}
+
 @freezed
 abstract class Post with _$Post {
   const factory Post({
@@ -36,6 +45,8 @@ abstract class Post with _$Post {
     CommentAudience? commentAudience,
     CommentAudience? commentRestriction,
     @Default(false) bool commentsOffByAccount,
+    String? myReaction,
+    @Default(<PostReactionCount>[]) List<PostReactionCount> reactionSummary,
   }) = _Post;
 
   const Post._();
@@ -48,6 +59,12 @@ abstract class Post with _$Post {
   bool get isHeld => moderationStatus == ModerationStatus.held;
 
   bool get isHidden => moderationStatus == ModerationStatus.hidden;
+
+  String? get effectiveReaction => myReaction ?? (likedByMe ? postLikeReaction : null);
+
+  List<PostReactionCount> get effectiveReactionSummary => reactionSummary.isNotEmpty || likeCount <= 0
+      ? reactionSummary
+      : [PostReactionCount(emoji: postLikeReaction, count: likeCount)];
 }
 
 @freezed
@@ -93,9 +110,11 @@ class PostUpdated extends PostChange {
     required this.commentCount,
     required this.deleted,
     this.commentsOff,
+    this.reactionSummary,
   });
   final int likeCount;
   final int commentCount;
   final bool deleted;
   final bool? commentsOff;
+  final List<PostReactionCount>? reactionSummary;
 }

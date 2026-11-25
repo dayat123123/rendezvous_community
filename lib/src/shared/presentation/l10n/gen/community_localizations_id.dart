@@ -3511,4 +3511,37 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get dropFilesHere => 'Lepas file di sini untuk dikirim';
+
+  @override
+  String get reactionYou => 'Kamu';
+
+  @override
+  String reactionYouAndOthers(int count) {
+    return 'Kamu dan $count lainnya';
+  }
+
+  @override
+  String get reactionPick => 'Pilih reaksi';
+
+  @override
+  String get reactionsTitle => 'Reaksi';
+
+  @override
+  String reactorsAll(int count) {
+    return 'Semua ($count)';
+  }
+
+  @override
+  String get reactorsEmpty => 'Belum ada reaksi';
+
+  @override
+  String get reactorsShow => 'Lihat yang memberi reaksi';
+
+  @override
+  String get errorPostReactionsUnavailable => 'Reaksi belum tersedia';
+
+  @override
+  String notifReactedPost(String names, String emoji) {
+    return '$names memberi reaksi $emoji pada postingan Anda';
+  }
 }

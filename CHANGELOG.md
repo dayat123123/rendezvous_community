@@ -1,3 +1,13 @@
+## 1.54.0
+
+Butuh migrasi server 0196 (`set_post_reaction`, `post_reactors`, kolom `my_reaction` dan `reaction_summary` pada postingan, kunci config `post_reactions`). Tanpa migrasi itu, 👍 tetap berjalan lewat like lama dan emoji lain menampilkan pesan "reaksi belum tersedia".
+
+* **Reaksi emoji di postingan:** satu reaksi per orang per postingan dengan emoji 👍 ❤️ 😂 😮 😢 🔥 (daftar dari config server). Tombol suka tetap memberi 👍; tahan, klik kanan, atau arahkan kursor sebentar untuk memilih emoji lain. Memilih emoji yang sama mencabut reaksi.
+* **Ringkasan reaksi:** emoji teratas dan teks "Kamu dan N lainnya" tampil di postingan, sinkron realtime antarperangkat.
+* **Daftar yang bereaksi:** sheet dengan tab "Semua" dan tab per emoji, bergulir dengan cursor.
+* **Notifikasi:** reaksi selain 👍 tampil sebagai "... memberi reaksi ❤️ pada postingan Anda".
+* **API baru untuk host app:** `CommunityReactionPicker`, `CommunityPostReactionSummary`, `showCommunityPostReactors`, `PostReactionRepository`, field `myReaction`/`reactionSummary`/`reactionChoices`/`onReact`/`onShowReactors` pada detail action bar, dan `react(post, emoji)` di cubit feed, detail, pencarian, dan trending.
+
 ## 1.53.0
 
 * **Gambar di chat ala WhatsApp:** foto di bubble chat (chat komunitas, CS, dan chat tamu) kini menempel penuh sampai tepi bubble tanpa padding, dengan sudut mengikuti lengkung bubble. Teks pesan tampil di bawah foto. Foto tanpa teks menampilkan jam dan status baca di pojok kanan bawah foto, di atas latar gelap transparan. Nama pengirim dan kutipan balasan tetap di atas foto.

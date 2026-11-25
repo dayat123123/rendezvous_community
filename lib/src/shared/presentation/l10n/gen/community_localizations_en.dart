@@ -3538,4 +3538,43 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get dropFilesHere => 'Drop files here to send';
+
+  @override
+  String get reactionYou => 'You';
+
+  @override
+  String reactionYouAndOthers(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'You and $count others',
+      one: 'You and 1 other',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get reactionPick => 'Choose a reaction';
+
+  @override
+  String get reactionsTitle => 'Reactions';
+
+  @override
+  String reactorsAll(int count) {
+    return 'All ($count)';
+  }
+
+  @override
+  String get reactorsEmpty => 'No reactions yet';
+
+  @override
+  String get reactorsShow => 'See who reacted';
+
+  @override
+  String get errorPostReactionsUnavailable => 'Reactions are not available yet';
+
+  @override
+  String notifReactedPost(String names, String emoji) {
+    return '$names reacted $emoji to your post';
+  }
 }

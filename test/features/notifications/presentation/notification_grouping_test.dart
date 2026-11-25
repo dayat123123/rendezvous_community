@@ -184,4 +184,27 @@ void main() {
     expect(_n('n-3', NotificationType.announcement, payload: const {'image_url': ''}).imageUrl, isNull);
     expect(_n('n-4', NotificationType.announcement).hasImage, isFalse);
   });
+
+  testWidgets('post reactions show the emoji unless it is the thumbs up', (tester) async {
+    final repo = await _pump(tester, [
+      _n(
+        'n-1',
+        NotificationType.like,
+        actors: [alice],
+        payload: const {'target_type': 'post', 'post_id': 'p-1', 'emoji': '🔥'},
+      ),
+      _n(
+        'n-2',
+        NotificationType.like,
+        actors: [bob],
+        payload: const {'target_type': 'post', 'post_id': 'p-2', 'emoji': '👍'},
+      ),
+    ]);
+    expect(find.text('Alice memberi reaksi 🔥 pada postingan Anda'), findsOneWidget);
+    expect(_boldText(tester, 'Alice memberi reaksi 🔥 pada postingan Anda'), 'Alice');
+    expect(find.text('Bob menyukai postingan Anda'), findsOneWidget);
+    expect(_n('n-3', NotificationType.like, payload: const {'emoji': 'like'}).reactionEmoji, '👍');
+    expect(_n('n-4', NotificationType.like).reactionEmoji, isNull);
+    await repo.dispose();
+  });
 }

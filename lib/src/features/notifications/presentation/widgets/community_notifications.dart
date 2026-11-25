@@ -8,6 +8,7 @@ import 'package:rendezvous_community/src/app/community_scroll.dart';
 import 'package:rendezvous_community/src/features/appeals/presentation/widgets/community_appeals.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_moderation.dart'
     show roomModerationTime;
+import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/notices/domain/entities/community_notice.dart';
 import 'package:rendezvous_community/src/features/notices/presentation/community_notice_page.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/app_notification.dart';
@@ -553,7 +554,10 @@ class _NotificationTile extends StatelessWidget {
         n.stockCode == null ? (n.payload['room_name'] as String? ?? '') : '\$${n.stockCode}',
       ),
       NotificationType.mention => l10n.notifMention(name),
-      NotificationType.like when n.targetType == 'post' => l10n.notifLikedPost(names),
+      NotificationType.like when n.targetType == 'post' => switch (n.reactionEmoji) {
+        final String emoji when emoji != postLikeReaction => l10n.notifReactedPost(names, emoji),
+        _ => l10n.notifLikedPost(names),
+      },
       NotificationType.like when n.targetType == 'comment' => l10n.notifLikedComment(names),
       NotificationType.like => l10n.notifLike(name, n.actorCount < 1 ? 1 : n.actorCount, n.otherActors),
       NotificationType.follow => l10n.notifFollowedYou(names),

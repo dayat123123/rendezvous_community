@@ -89,6 +89,7 @@ abstract class ClientConfigModel with _$ClientConfigModel {
     final received = (receivedAt ?? DateTime.now()).toUtc();
     final serverTime = DateTime.tryParse(config['server_time'] as String? ?? '');
     final reactions = _strings(config['message_reactions']);
+    final postReactions = _strings(config['post_reactions']);
     final windows = _strings(config['trending_windows']);
     return ClientConfig(
       socialEnabled: socialEnabled,
@@ -97,6 +98,7 @@ abstract class ClientConfigModel with _$ClientConfigModel {
       updateRequired: updateRequired,
       editWindow: Duration(minutes: (config['edit_minutes'] as num?)?.toInt() ?? 15),
       messageReactions: reactions.isEmpty ? const ClientConfig().messageReactions : reactions,
+      postReactions: postReactions.isEmpty ? const ClientConfig().postReactions : postReactions,
       searchMinLength: (config['search_min_length'] as num?)?.toInt() ?? 2,
       notificationTypes: _strings(config['notification_types']),
       trendingWindows: windows.isEmpty ? const ClientConfig().trendingWindows : windows,

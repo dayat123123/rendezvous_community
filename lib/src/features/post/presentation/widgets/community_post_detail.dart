@@ -104,6 +104,7 @@ class _PostDetailView extends StatelessWidget {
           onShare: sharePostAction(context, post),
           onAppeal: appealPostAction(context, post),
           onLike: cubit.togglePostLike,
+          onReact: (emoji) => cubit.react(post, emoji),
           onCommentAudience: cubit.canControlComments ? cubit.setCommentAudience : null,
           onDelete: () async {
             if (await cubit.deletePost() && context.mounted) {

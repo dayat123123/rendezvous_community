@@ -1078,5 +1078,17 @@
   "notifCommentedPost": "{names} commented on your post",
   "notifRepliedComment": "{names} replied to your comment",
   "notifFollowedYou": "{names} started following you",
-  "dropFilesHere": "Drop files here to send"
+  "dropFilesHere": "Drop files here to send",
+  "reactionYou": "You",
+  "reactionYouAndOthers": "{count, plural, =1{You and 1 other} other{You and {count} others}}",
+  "@reactionYouAndOthers": { "placeholders": { "count": { "type": "int" } } },
+  "reactionPick": "Choose a reaction",
+  "reactionsTitle": "Reactions",
+  "reactorsAll": "All ({count})",
+  "@reactorsAll": { "placeholders": { "count": { "type": "int" } } },
+  "reactorsEmpty": "No reactions yet",
+  "reactorsShow": "See who reacted",
+  "errorPostReactionsUnavailable": "Reactions are not available yet",
+  "notifReactedPost": "{names} reacted {emoji} to your post",
+  "@notifReactedPost": { "placeholders": { "names": { "type": "String" }, "emoji": { "type": "String" } } }
 }

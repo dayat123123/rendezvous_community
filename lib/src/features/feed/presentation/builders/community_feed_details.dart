@@ -43,6 +43,9 @@ class CommunityPostDetails {
     this.onOpenImage,
     this.onToggleCommentsOff,
     this.onChangeCommentAudience,
+    this.reactionChoices = defaultPostReactions,
+    this.onReact,
+    this.onShowReactors,
   });
 
   final Post post;
@@ -71,6 +74,13 @@ class CommunityPostDetails {
   final ValueChanged<int>? onOpenImage;
   final VoidCallback? onToggleCommentsOff;
   final VoidCallback? onChangeCommentAudience;
+  final List<String> reactionChoices;
+  final ValueChanged<String?>? onReact;
+  final VoidCallback? onShowReactors;
+
+  String? get myReaction => post.effectiveReaction;
+
+  List<PostReactionCount> get reactionSummary => post.effectiveReactionSummary;
 
   bool get edited => post.editedAt != null;
 

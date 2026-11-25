@@ -1,6 +1,9 @@
+import 'dart:convert';
+
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_reaction.dart';
 import 'package:rendezvous_community/src/features/poll/data/models/poll_model.dart';
 import 'package:rendezvous_community/src/features/post/data/models/thread_comment_model.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
@@ -12,6 +15,31 @@ part 'feed_post_model.freezed.dart';
 part 'feed_post_model.g.dart';
 
 Sentiment? parseSentiment(String? value) => value == null ? null : Sentiment.values.asNameMap()[value];
+
+List<PostReactionCount>? parsePostReactionSummary(Object? value) {
+  final raw = switch (value) {
+    final String text when text.trim().startsWith('[') => _decodeList(text),
+    _ => value,
+  };
+  if (raw is! List) return null;
+  final counts = <String, int>{};
+  for (final item in raw) {
+    if (item is! Map) continue;
+    final emoji = normalizePostReaction(item['emoji'] is String ? item['emoji'] as String : null);
+    final count = item['count'] is num ? (item['count'] as num).toInt() : 0;
+    if (emoji == null || count <= 0) continue;
+    counts[emoji] = (counts[emoji] ?? 0) + count;
+  }
+  return [for (final MapEntry(:key, :value) in counts.entries) PostReactionCount(emoji: key, count: value)];
+}
+
+Object? _decodeList(String text) {
+  try {
+    return jsonDecode(text);
+  } on FormatException {
+    return null;
+  }
+}
 
 @freezed
 abstract class FeedPostModel with _$FeedPostModel {
@@ -43,6 +71,8 @@ abstract class FeedPostModel with _$FeedPostModel {
     String? commentAudience,
     String? commentRestriction,
     bool? commentsOffByAccount,
+    String? myReaction,
+    Object? reactionSummary,
   }) = _FeedPostModel;
 
   const FeedPostModel._();
@@ -79,6 +109,10 @@ abstract class FeedPostModel with _$FeedPostModel {
     commentAudience: CommentAudience.fromWire(commentAudience),
     commentRestriction: CommentAudience.fromWire(commentRestriction),
     commentsOffByAccount: commentsOffByAccount ?? false,
+    myReaction: normalizePostReaction(myReaction) ?? (likedByMe ? postLikeReaction : null),
+    reactionSummary:
+        parsePostReactionSummary(reactionSummary) ??
+        [if (likeCount > 0) PostReactionCount(emoji: postLikeReaction, count: likeCount)],
   );
 
   ThreadComment? _parseTopComment() {
@@ -104,6 +138,7 @@ abstract class PostRowModel with _$PostRowModel {
     required DateTime createdAt,
     @Default(<Object?>[]) List<Object?> attachments,
     String? commentAudience,
+    Object? reactionSummary,
   }) = _PostRowModel;
 
   factory PostRowModel.fromJson(Map<String, dynamic> json) => _$PostRowModelFromJson(json);

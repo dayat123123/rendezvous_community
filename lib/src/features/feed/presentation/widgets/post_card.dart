@@ -1,4 +1,3 @@
-import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
@@ -9,6 +8,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_reactions.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/sentiment_badge.dart';
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
@@ -19,7 +19,6 @@ import 'package:rendezvous_community/src/features/poll/presentation/widgets/comm
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
-import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_actions.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_divider.dart';
@@ -50,10 +49,12 @@ class PostCard extends StatelessWidget {
     this.onToggleComments,
     this.readMoreInPlace = false,
     this.onCommentAudience,
+    this.onReact,
   });
 
   final Post post;
   final VoidCallback onLike;
+  final ValueChanged<String?>? onReact;
   final PostCommentAudienceSaver? onCommentAudience;
   final bool commentsExpanded;
   final VoidCallback? onToggleComments;
@@ -88,6 +89,9 @@ class PostCard extends StatelessWidget {
       source: source,
       pinned: pinned,
       onLike: onLike,
+      onReact: onReact,
+      reactionChoices: context.communityConfig.postReactions,
+      onShowReactors: () => showCommunityPostReactors(context, post),
       onOpen: onOpen,
       onComment: onToggleComments ?? onOpen,
       commentsExpanded: commentsExpanded,
@@ -655,22 +659,9 @@ class PostActionBar extends StatelessWidget {
     final post = details.post;
     final bookmark = details.onToggleBookmark;
     final share = details.onShare;
-    final like = details.onLike;
-    return CommunityActionBar(
+    final bar = CommunityActionBar(
       leading: [
-        CommunityActionPill(
-          icon: Icons.favorite_border_rounded,
-          activeIcon: Icons.favorite_rounded,
-          activeColor: CommunityTheme.of(context).like,
-          label: l10n.like,
-          count: post.likeCount,
-          active: post.likedByMe,
-          tooltip: post.likedByMe ? l10n.unlike : l10n.like,
-          onPressed: () {
-            HapticFeedback.selectionClick();
-            like();
-          },
-        ),
+        PostReactionButton(details: details),
         CommunityActionButton(
           icon: details.commentsOff ? Icons.comments_disabled_outlined : Icons.mode_comment_outlined,
           activeIcon: Icons.mode_comment,
@@ -691,6 +682,15 @@ class PostActionBar extends StatelessWidget {
             tooltip: post.isBookmarked ? l10n.bookmarkRemove : l10n.bookmarkAdd,
             onPressed: bookmark,
           ),
+      ],
+    );
+    if (post.likeCount <= 0 && details.reactionSummary.isEmpty) return bar;
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CommunityPostReactionSummary(post: post, onTap: details.onShowReactors),
+        bar,
       ],
     );
   }

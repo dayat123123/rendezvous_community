@@ -14,9 +14,11 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filt
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_sort.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_reaction.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
 import 'package:rendezvous_community/src/shared/data/models/attachment_model.dart';
+import 'package:rendezvous_community/src/shared/data/models/user_summary_model.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -29,7 +31,8 @@ class FeedRepositoryImpl
         FeedQueryRepository,
         FeedFilterRepository,
         CommentControlRepository,
-        CommentSettingsRepository {
+        CommentSettingsRepository,
+        PostReactionRepository {
   FeedRepositoryImpl(this._api, [this._realtime, this._cache, DateTime Function()? clock])
     : _clock = clock ?? DateTime.now;
 
@@ -322,6 +325,70 @@ class FeedRepositoryImpl
     await _api.delete('reactions', {'user_id': userId, 'target_type': 'post', 'target_id': postId});
   }
 
+  static bool _missingRpc(CommunityException e) => e.code == 'PGRST202' || e.code == '42883';
+
+  static const _reactionsUnavailable = CommunityException(
+    CommunityErrorKind.unavailable,
+    code: postReactionsUnavailableCode,
+  );
+
+  @override
+  Future<Post?> setPostReaction(String postId, String? emoji) async {
+    final value = normalizePostReaction(emoji);
+    try {
+      final rows = await _api.rpcRows('set_post_reaction', {'p_post_id': postId, 'p_emoji': value});
+      return rows.isEmpty ? null : FeedPostModel.fromJson(rows.first).toEntity();
+    } on CommunityException catch (e) {
+      if (!_missingRpc(e)) rethrow;
+      final like = value == null || value == postLikeReaction;
+      CommunityLoggers.feed.event(
+        Level.INFO,
+        like
+            ? 'Server has no post reactions yet, using the like row'
+            : 'Server has no post reactions yet, emoji reaction is unavailable',
+        fields: {'code': e.code, 'remove': value == null},
+      );
+      if (!like) throw _reactionsUnavailable;
+      value == null ? await unlikePost(postId) : await likePost(postId);
+      return null;
+    }
+  }
+
+  @override
+  Future<PostReactorsPage> postReactors(String postId, {String? emoji, int limit = 30, String? cursor}) async {
+    final size = limit.clamp(1, 50);
+    List<Map<String, dynamic>> rows;
+    try {
+      rows = await _api.rpcRows('post_reactors', {
+        'p_post_id': postId,
+        'p_emoji': normalizePostReaction(emoji),
+        'p_limit': size,
+        'p_cursor': cursor,
+      });
+    } on CommunityException catch (e) {
+      if (!_missingRpc(e)) rethrow;
+      CommunityLoggers.feed.event(Level.INFO, 'Server has no post reactors list yet', fields: {'code': e.code});
+      throw _reactionsUnavailable;
+    }
+    final items = [for (final row in rows) ?_reactorFromRow(row)];
+    return PostReactorsPage(items, nextCursor: rows.length < size ? null : items.lastOrNull?.cursor);
+  }
+
+  static PostReactor? _reactorFromRow(Map<String, dynamic> row) {
+    try {
+      return PostReactor(
+        user: UserSummaryModel.fromJson(row).toEntity(),
+        emoji: normalizePostReaction(row['emoji'] as String?) ?? postLikeReaction,
+        reactedAt: DateTime.tryParse(row['reacted_at'] as String? ?? '')?.toUtc(),
+        isMe: row['is_me'] == true,
+        isFollowing: row['is_following'] == true,
+        cursor: row['cursor'] as String?,
+      );
+    } on Object {
+      return null;
+    }
+  }
+
   @override
   Stream<PostChange> watchPosts({String? postId}) {
     final realtime = _realtime;
@@ -358,6 +425,7 @@ class FeedRepositoryImpl
           commentCount: row.commentCount,
           deleted: row.deletedAt != null,
           commentsOff: row.commentAudience == null ? null : row.commentAudience == CommentAudience.off.wire,
+          reactionSummary: parsePostReactionSummary(row.reactionSummary),
         );
       case PostgresChangeEvent.delete:
         final id = payload.oldRecord['id'] as String?;

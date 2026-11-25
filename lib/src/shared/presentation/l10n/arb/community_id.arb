@@ -1210,5 +1210,17 @@
   "@notifRepliedComment": { "placeholders": { "names": { "type": "String" } } },
   "notifFollowedYou": "{names} mulai mengikuti Anda",
   "@notifFollowedYou": { "placeholders": { "names": { "type": "String" } } },
-  "dropFilesHere": "Lepas file di sini untuk dikirim"
+  "dropFilesHere": "Lepas file di sini untuk dikirim",
+  "reactionYou": "Kamu",
+  "reactionYouAndOthers": "Kamu dan {count} lainnya",
+  "@reactionYouAndOthers": { "placeholders": { "count": { "type": "int" } } },
+  "reactionPick": "Pilih reaksi",
+  "reactionsTitle": "Reaksi",
+  "reactorsAll": "Semua ({count})",
+  "@reactorsAll": { "placeholders": { "count": { "type": "int" } } },
+  "reactorsEmpty": "Belum ada reaksi",
+  "reactorsShow": "Lihat yang memberi reaksi",
+  "errorPostReactionsUnavailable": "Reaksi belum tersedia",
+  "notifReactedPost": "{names} memberi reaksi {emoji} pada postingan Anda",
+  "@notifReactedPost": { "placeholders": { "names": { "type": "String" }, "emoji": { "type": "String" } } }
 }

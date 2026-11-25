@@ -6259,6 +6259,60 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Lepas file di sini untuk dikirim'**
   String get dropFilesHere;
+
+  /// No description provided for @reactionYou.
+  ///
+  /// In id, this message translates to:
+  /// **'Kamu'**
+  String get reactionYou;
+
+  /// No description provided for @reactionYouAndOthers.
+  ///
+  /// In id, this message translates to:
+  /// **'Kamu dan {count} lainnya'**
+  String reactionYouAndOthers(int count);
+
+  /// No description provided for @reactionPick.
+  ///
+  /// In id, this message translates to:
+  /// **'Pilih reaksi'**
+  String get reactionPick;
+
+  /// No description provided for @reactionsTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Reaksi'**
+  String get reactionsTitle;
+
+  /// No description provided for @reactorsAll.
+  ///
+  /// In id, this message translates to:
+  /// **'Semua ({count})'**
+  String reactorsAll(int count);
+
+  /// No description provided for @reactorsEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada reaksi'**
+  String get reactorsEmpty;
+
+  /// No description provided for @reactorsShow.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat yang memberi reaksi'**
+  String get reactorsShow;
+
+  /// No description provided for @errorPostReactionsUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Reaksi belum tersedia'**
+  String get errorPostReactionsUnavailable;
+
+  /// No description provided for @notifReactedPost.
+  ///
+  /// In id, this message translates to:
+  /// **'{names} memberi reaksi {emoji} pada postingan Anda'**
+  String notifReactedPost(String names, String emoji);
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

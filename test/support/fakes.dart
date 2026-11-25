@@ -55,6 +55,38 @@ class FakeFeedRepository extends Fake implements FeedRepository {
 
   @override
   Future<void> likePost(String postId) async => likes.add(postId);
+
+  final unlikes = <String>[];
+
+  @override
+  Future<void> unlikePost(String postId) async => unlikes.add(postId);
+}
+
+class FakeReactionFeedRepository extends FakeFeedRepository implements PostReactionRepository {
+  final reactions = <(String, String?)>[];
+  final reactorRequests = <({String postId, String? emoji, String? cursor, int limit})>[];
+  Object? reactionError;
+  Object? reactorsError;
+  Completer<void>? reactionGate;
+  Post? Function(String postId, String? emoji)? onReact;
+  PostReactorsPage Function(String? emoji, String? cursor)? onReactors;
+
+  @override
+  Future<Post?> setPostReaction(String postId, String? emoji) async {
+    reactions.add((postId, emoji));
+    await reactionGate?.future;
+    final failure = reactionError;
+    if (failure != null) throw failure;
+    return onReact?.call(postId, emoji);
+  }
+
+  @override
+  Future<PostReactorsPage> postReactors(String postId, {String? emoji, int limit = 30, String? cursor}) async {
+    reactorRequests.add((postId: postId, emoji: emoji, cursor: cursor, limit: limit));
+    final failure = reactorsError;
+    if (failure != null) throw failure;
+    return onReactors?.call(emoji, cursor) ?? const PostReactorsPage([]);
+  }
 }
 
 class FakeCommentRepository extends Fake implements CommentRepository {

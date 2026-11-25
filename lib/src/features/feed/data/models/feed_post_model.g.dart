@@ -47,6 +47,8 @@ _FeedPostModel _$FeedPostModelFromJson(Map<String, dynamic> json) =>
       commentAudience: json['comment_audience'] as String?,
       commentRestriction: json['comment_restriction'] as String?,
       commentsOffByAccount: json['comments_off_by_account'] as bool?,
+      myReaction: json['my_reaction'] as String?,
+      reactionSummary: json['reaction_summary'],
     );
 
 Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) =>
@@ -78,6 +80,8 @@ Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) =>
       'comment_audience': instance.commentAudience,
       'comment_restriction': instance.commentRestriction,
       'comments_off_by_account': instance.commentsOffByAccount,
+      'my_reaction': instance.myReaction,
+      'reaction_summary': instance.reactionSummary,
     };
 
 _PostRowModel _$PostRowModelFromJson(Map<String, dynamic> json) =>
@@ -93,6 +97,7 @@ _PostRowModel _$PostRowModelFromJson(Map<String, dynamic> json) =>
       createdAt: DateTime.parse(json['created_at'] as String),
       attachments: json['attachments'] as List<dynamic>? ?? const <Object?>[],
       commentAudience: json['comment_audience'] as String?,
+      reactionSummary: json['reaction_summary'],
     );
 
 Map<String, dynamic> _$PostRowModelToJson(_PostRowModel instance) =>
@@ -106,4 +111,5 @@ Map<String, dynamic> _$PostRowModelToJson(_PostRowModel instance) =>
       'created_at': instance.createdAt.toIso8601String(),
       'attachments': instance.attachments,
       'comment_audience': instance.commentAudience,
+      'reaction_summary': instance.reactionSummary,
     };

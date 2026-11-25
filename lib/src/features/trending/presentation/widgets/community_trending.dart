@@ -170,6 +170,7 @@ class _TrendingViewState extends State<_TrendingView> {
                     post: post,
                     source: 'trending',
                     onLike: () => cubit.toggleLike(post),
+                    onReact: (emoji) => cubit.react(post, emoji),
                     onOpen: () => CommunityNavigator.openPost(context, post.id),
                     onShare: sharePostAction(context, post),
                   ),

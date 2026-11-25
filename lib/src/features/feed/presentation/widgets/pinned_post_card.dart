@@ -9,10 +9,18 @@ import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 
 class PinnedPostCard extends StatelessWidget {
-  const PinnedPostCard({super.key, required this.pinned, required this.onLike, this.onOpen, this.onToggleBookmark});
+  const PinnedPostCard({
+    super.key,
+    required this.pinned,
+    required this.onLike,
+    this.onOpen,
+    this.onToggleBookmark,
+    this.onReact,
+  });
 
   final PinnedPost pinned;
   final VoidCallback onLike;
+  final ValueChanged<String?>? onReact;
   final VoidCallback? onOpen;
   final VoidCallback? onToggleBookmark;
 
@@ -40,6 +48,7 @@ class PinnedPostCard extends StatelessWidget {
             post: pinned.post,
             pinned: pinned,
             onLike: onLike,
+            onReact: onReact,
             onOpen: onOpen,
             onToggleBookmark: bookmarkPostAction(context, onToggleBookmark),
             onShare: sharePostAction(context, pinned.post),

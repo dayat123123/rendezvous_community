@@ -11,6 +11,7 @@ import 'package:rendezvous_community/src/features/bookmarks/domain/repositories/
 import 'package:rendezvous_community/src/features/edit/domain/repositories/content_edit_repository.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_reaction.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/post_updates.dart';
 import 'package:rendezvous_community/src/features/legal/domain/services/consent_gate.dart';
@@ -348,16 +349,20 @@ class CommentThreadCubit extends Cubit<ThreadState> {
   Future<void> togglePostLike() async {
     final post = state.post;
     if (post == null) return;
-    final liked = !post.likedByMe;
-    emit(
-      state.copyWith(
-        post: post.copyWith(likedByMe: liked, likeCount: post.likeCount + (liked ? 1 : -1)),
-      ),
-    );
+    await react(post, toggledLikeReaction(post));
+  }
+
+  Future<void> react(Post post, String? emoji) async {
+    final current = state.post;
+    if (current == null || current.id != post.id) return;
+    final next = applyPostReaction(current, emoji);
+    if (identical(next, current)) return;
+    emit(state.copyWith(post: next));
     try {
-      liked ? await _feed.likePost(post.id) : await _feed.unlikePost(post.id);
+      final saved = await sendPostReaction(_feed, current.id, next.myReaction);
+      if (saved != null && !isClosed) emit(state.copyWith(post: saved));
     } catch (e) {
-      if (!isClosed) emit(state.copyWith(post: post));
+      if (!isClosed) emit(state.copyWith(post: current));
       _fail(e);
     }
   }

@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_reaction.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/post_updates.dart';
 import 'package:rendezvous_community/src/features/trending/domain/entities/trending.dart';
 import 'package:rendezvous_community/src/features/trending/domain/repositories/trending_repository.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
@@ -38,18 +40,25 @@ class TrendingCubit extends Cubit<TrendingState> {
     }
   }
 
-  Future<void> toggleLike(Post post) async {
+  Future<void> toggleLike(Post post) => react(post, toggledLikeReaction(_find(post)));
+
+  Future<void> react(Post post, String? emoji) async {
     final feed = _feed;
     if (feed == null) return;
-    final liked = !post.likedByMe;
-    _replace(post.copyWith(likedByMe: liked, likeCount: post.likeCount + (liked ? 1 : -1)));
+    final current = _find(post);
+    final next = applyPostReaction(current, emoji);
+    if (identical(next, current)) return;
+    _replace(next);
     try {
-      liked ? await feed.likePost(post.id) : await feed.unlikePost(post.id);
+      final saved = await sendPostReaction(feed, post.id, next.myReaction);
+      if (saved != null) _replace(saved.copyWith(cursor: current.cursor));
     } catch (e) {
-      _replace(post);
+      _replace(current);
       if (!isClosed) emit(state.copyWith(actionError: e, actionErrorId: state.actionErrorId + 1));
     }
   }
+
+  Post _find(Post post) => state.snapshot?.posts.where((p) => p.id == post.id).firstOrNull ?? post;
 
   void _replace(Post post) {
     final snapshot = state.snapshot;
