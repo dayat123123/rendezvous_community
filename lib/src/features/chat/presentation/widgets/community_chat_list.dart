@@ -269,6 +269,7 @@ class _RoomListState extends State<_RoomList> {
             for (final r in state.rooms)
               if (r.type == RoomType.support) r,
           ];
+    final positions = {for (final (i, room) in rooms.indexed) 'room-${room.id}': i};
     final Widget body = switch (state.status) {
       LoadStatus.initial || LoadStatus.loading => buildChatPart(
         builders.loading,
@@ -296,6 +297,7 @@ class _RoomListState extends State<_RoomList> {
           controller: _scroll,
           physics: const AlwaysScrollableScrollPhysics(),
           itemCount: rooms.length + (state.loadingMore && social ? 1 : 0) + (social ? 0 : 1),
+          findChildIndexCallback: (key) => key is ValueKey<String> ? positions[key.value] : null,
           itemBuilder: (context, i) {
             if (!social && i == rooms.length) {
               return const SizedBox(height: 280, child: CommunityUnavailableView());
@@ -310,6 +312,7 @@ class _RoomListState extends State<_RoomList> {
             }
             final room = rooms[i];
             return RoomTile(
+              key: ValueKey('room-${room.id}'),
               room: room,
               me: state.me,
               online: state.isOnline(room),

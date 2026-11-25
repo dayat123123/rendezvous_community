@@ -317,31 +317,40 @@ class _NotificationRows extends StatelessWidget {
         section: kind,
         title: kind == CommunityNotificationSection.newer ? l10n.notifGroupNew : l10n.notifGroupEarlier,
       );
-      return buildCommunityPart(
-        CommunityNotificationBuilders.of(context).section,
-        context,
-        details,
-        _NotificationSectionHeader(details: details),
+      return KeyedSubtree(
+        key: ValueKey('section-${kind.name}'),
+        child: buildCommunityPart(
+          CommunityNotificationBuilders.of(context).section,
+          context,
+          details,
+          _NotificationSectionHeader(details: details),
+        ),
       );
     }
 
+    final rows = <String, int>{
+      if (grouped) 'section-${CommunityNotificationSection.newer.name}': 0,
+      if (earlier) 'section-${CommunityNotificationSection.earlier.name}': split + 1,
+      for (final (index, n) in items.indexed)
+        'row-${n.id}': index + (grouped ? 1 : 0) + (earlier && index >= split ? 1 : 0),
+    };
     return CommunityScrollArea(
       child: ListView.builder(
         addAutomaticKeepAlives: false,
         itemCount: items.length + headers,
+        findChildIndexCallback: (key) => key is ValueKey<String> ? rows[key.value] : null,
         itemBuilder: (context, row) {
           if (grouped && row == 0) return section(CommunityNotificationSection.newer);
           if (earlier && row == split + 1) return section(CommunityNotificationSection.earlier);
           final index = row - (grouped ? 1 : 0) - (earlier && row > split ? 1 : 0);
           final last = index == items.length - 1 || (earlier && index == split - 1);
-          final tile = itemBuilder(context, items[index]);
-          if (last) return tile;
           return Column(
+            key: ValueKey('row-${items[index].id}'),
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              tile,
-              _NotificationSeparator(unread: !items[index].isRead && !items[index + 1].isRead),
+              itemBuilder(context, items[index]),
+              if (!last) _NotificationSeparator(unread: !items[index].isRead && !items[index + 1].isRead),
             ],
           );
         },

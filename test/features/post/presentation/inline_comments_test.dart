@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
 import 'package:rendezvous_community/src/features/post/presentation/cubit/comment_thread_cubit.dart';
+import 'package:rendezvous_community/src/features/post/presentation/widgets/comment_tree.dart';
 
 import '../../../support/fakes.dart';
 import '../../../support/legal_fakes.dart';
@@ -148,6 +149,22 @@ void main() {
     expect(find.text('Komentar ke-5'), findsOneWidget);
     expect(find.textContaining('komentar lainnya'), findsNothing);
     expect(find.byType(CommunityPostDetail), findsNothing);
+  });
+
+  testWidgets('a new comment at the top keeps the comments below mounted', (tester) async {
+    final comments = _Comments();
+    await _pump(tester, comments);
+    await _openComments(tester);
+    Element tile() => tester.element(find.ancestor(of: find.text('Komentar ke-1'), matching: find.byType(CommentTile)));
+    final before = tile();
+
+    final field = find.descendant(of: find.byType(CommunityPostComments), matching: find.byType(TextField));
+    await tester.enterText(field, 'Setuju, target 10.500');
+    await tester.tap(find.byTooltip('Balas'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Setuju, target 10.500'), findsOneWidget);
+    expect(identical(tile(), before), isTrue);
   });
 
   testWidgets('a sent comment shows at once and bumps the count on the card', (tester) async {

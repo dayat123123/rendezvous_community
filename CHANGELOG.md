@@ -1,3 +1,13 @@
+## 1.55.2
+
+Item list tidak lagi dibuat ulang dari nol saat ada item baru di atas atau urutan berubah. Sebelumnya semua item yang terlihat dibuang lalu dibuat ulang, sehingga gambar dan harga live sempat kosong (berkedip) dan state per item bisa hilang.
+
+* **Feed:** post baru hasil refresh tidak membuat ulang kartu post di bawahnya.
+* **Pesan chat dan chat support tamu:** pesan masuk tidak membuat ulang bubble yang sudah tampil. Baris pesan kini selalu memakai pembungkus yang sama, dengan pemisah tanggal sebagai bagian opsional.
+* **Daftar chat:** room yang naik ke atas karena pesan baru ikut berpindah bersama tile-nya; avatar tidak dimuat ulang.
+* **Notifikasi:** notifikasi baru tidak membuat ulang baris di bawahnya, dan baris terakhir tidak lagi berganti pembungkus saat halaman berikutnya dimuat.
+* **Komentar:** setiap baris komentar punya key sendiri, sehingga state per komentar tidak bergeser ke komentar lain saat komentar baru masuk di atas.
+
 ## 1.55.1
 
 * **Kartu post tidak lagi berkedip saat komentar inline dibuka/ditutup:** sebelumnya bentuk widget berubah dari kartu polos menjadi kartu yang dibungkus `Column`, sehingga seluruh kartu dibuat ulang (state kartu saham, gambar, dan poll hilang lalu dimuat ulang). Sekarang kartu selalu berada di posisi yang sama dan hanya bagian komentar di bawahnya yang ditambah atau dilepas.

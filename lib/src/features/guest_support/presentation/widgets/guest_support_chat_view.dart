@@ -176,12 +176,14 @@ class _GuestMessageList extends StatelessWidget {
   Widget build(BuildContext context) {
     final spacing = CommunityStyle.of(context).spacing;
     final items = messages.reversed.toList();
+    final rows = {for (final (i, message) in items.indexed) message.clientId ?? message.id: i};
     return CommunityScrollArea(
       child: ListView.builder(
         reverse: true,
         addAutomaticKeepAlives: false,
         padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.md),
         itemCount: items.length + 1,
+        findChildIndexCallback: (key) => key is ValueKey<String> ? rows[key.value] : null,
         itemBuilder: (context, index) {
           if (index == items.length) {
             return Padding(

@@ -340,6 +340,7 @@ class _MessageListState extends State<MessageList> {
     CommunityLocalizations l10n,
     CommunitySpacing spacing,
   ) {
+    final rows = {for (final (i, message) in state.messages.indexed) 'row-${message.clientId ?? message.id}': i};
     return CommunityScrollArea(
       child: ListView.builder(
         addAutomaticKeepAlives: false,
@@ -347,6 +348,7 @@ class _MessageListState extends State<MessageList> {
         reverse: true,
         padding: EdgeInsets.symmetric(horizontal: spacing.md, vertical: spacing.sm),
         itemCount: state.messages.length + (state.loadingOlder ? 1 : 0),
+        findChildIndexCallback: (key) => key is ValueKey<String> ? rows[key.value] : null,
         itemBuilder: (context, i) {
           if (i == state.messages.length) {
             return buildChatPart(
@@ -382,17 +384,19 @@ class _MessageListState extends State<MessageList> {
             highlighted: _highlight,
             child: bubble,
           );
-          if (!newDay) return anchored;
-          final divider = buildChatPart(
-            builders.dayDivider,
-            context,
-            CommunityDayDetails(day: message.createdAt, label: l10n.dayLabel(message.createdAt)),
-            _DayDivider(time: message.createdAt),
-          );
           return Column(
-            key: ValueKey('day-${message.clientId ?? message.id}'),
+            key: ValueKey('row-${message.clientId ?? message.id}'),
             crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [divider, anchored],
+            children: [
+              if (newDay)
+                buildChatPart(
+                  builders.dayDivider,
+                  context,
+                  CommunityDayDetails(day: message.createdAt, label: l10n.dayLabel(message.createdAt)),
+                  _DayDivider(time: message.createdAt),
+                ),
+              anchored,
+            ],
           );
         },
       ),

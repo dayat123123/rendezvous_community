@@ -199,6 +199,7 @@ class _FeedPostListState extends State<FeedPostList> {
           for (final post in state.posts)
             if (!pinnedIds.contains(post.id)) post,
         ];
+        final positions = {for (final (i, post) in posts.indexed) post.id: i + 1};
         final builders = CommunityFeedBuilders.of(context);
         final empty = CommunityListEmptyDetails(message: widget.emptyMessage);
         final Widget body = switch (state.status) {
@@ -229,6 +230,7 @@ class _FeedPostListState extends State<FeedPostList> {
                   physics: const AlwaysScrollableScrollPhysics(),
                   padding: EdgeInsets.fromLTRB(side, style.sectionGap, side, 0),
                   itemCount: posts.length + 2,
+                  findChildIndexCallback: (key) => key is ValueKey<String> ? positions[key.value] : null,
                   itemBuilder: (context, index) {
                     if (index == 0) {
                       return Column(

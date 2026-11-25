@@ -153,6 +153,7 @@ class _PostCommentsView extends StatelessWidget {
             LoadStatus.ready => [
               for (final row in rows)
                 Padding(
+                  key: ValueKey(_rowKey(row)),
                   padding: EdgeInsetsDirectional.only(end: spacing.sm),
                   child: ThreadRowView(
                     row: row,
@@ -211,3 +212,10 @@ class _InlineError extends StatelessWidget {
     );
   }
 }
+
+String _rowKey(ThreadRow row) => switch (row) {
+  CommentRow(:final comment) => 'comment-${comment.id}',
+  MoreRepliesRow(:final parentId) => 'more-$parentId',
+  ContinueThreadRow(:final comment) => 'continue-${comment.id}',
+  MoreTopLevelRow() => 'more-top',
+};
