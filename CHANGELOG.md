@@ -1,3 +1,7 @@
+## 1.55.3
+
+* **Feed hanya me-rebuild kartu yang berubah:** like, reaksi, bookmark, edit, jumlah komentar, serta buka/tutup komentar inline kini hanya me-rebuild kartu post yang bersangkutan. List feed sendiri hanya di-rebuild bila susunannya berubah (urutan atau jumlah post, pin, status muat, banner post baru, dan sejenisnya). Setiap kartu memilih datanya sendiri dari `FeedState` lewat `BlocSelector`.
+
 ## 1.55.2
 
 Item list tidak lagi dibuat ulang dari nol saat ada item baru di atas atau urutan berubah. Sebelumnya semua item yang terlihat dibuang lalu dibuat ulang, sehingga gambar dan harga live sempat kosong (berkedip) dan state per item bisa hilang.

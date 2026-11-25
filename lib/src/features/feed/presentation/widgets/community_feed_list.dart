@@ -191,6 +191,7 @@ class _FeedPostListState extends State<FeedPostList> {
     final spacing = style.spacing;
     return BlocConsumer<FeedCubit, FeedState>(
       listenWhen: (a, b) => a.actionErrorId != b.actionErrorId,
+      buildWhen: (a, b) => !_sameLayout(a, b),
       listener: (context, state) => showCommunityError(context, state.actionError!),
       builder: (context, state) {
         final cubit = context.read<FeedCubit>();
@@ -270,7 +271,7 @@ class _FeedPostListState extends State<FeedPostList> {
                     return Padding(
                       key: ValueKey(post.id),
                       padding: EdgeInsets.only(bottom: style.sectionGap),
-                      child: FeedPostCard(
+                      child: _FeedPostItem(
                         post: post,
                         cubit: cubit,
                         source: widget.source,
@@ -333,6 +334,39 @@ class _FeedPostListState extends State<FeedPostList> {
       },
     );
   }
+}
+
+bool _sameLayout(FeedState a, FeedState b) {
+  if (a.posts.length != b.posts.length) return false;
+  for (var i = 0; i < a.posts.length; i++) {
+    if (a.posts[i].id != b.posts[i].id) return false;
+  }
+  FeedState layout(FeedState s) => s.copyWith(posts: const [], openComments: const {}, focusComments: null);
+  return layout(a) == layout(b);
+}
+
+Post? _postIn(FeedState state, String id) {
+  for (final post in state.posts) {
+    if (post.id == id) return post;
+  }
+  return null;
+}
+
+class _FeedPostItem extends StatelessWidget {
+  const _FeedPostItem({required this.post, required this.cubit, required this.source, required this.openMode});
+
+  final Post post;
+  final FeedCubit cubit;
+  final String source;
+  final CommunityPostOpenMode openMode;
+
+  @override
+  Widget build(BuildContext context) => BlocSelector<FeedCubit, FeedState, (Post, bool, bool)>(
+    bloc: cubit,
+    selector: (state) =>
+        (_postIn(state, post.id) ?? post, state.openComments.contains(post.id), state.focusComments == post.id),
+    builder: (context, selected) => FeedPostCard(post: selected.$1, cubit: cubit, source: source, openMode: openMode),
+  );
 }
 
 class FeedPostCard extends StatelessWidget {
