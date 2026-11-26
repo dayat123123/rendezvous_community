@@ -58,7 +58,8 @@ class CommunityFollowList extends StatelessWidget {
                 labelColor: style.textPrimary,
                 unselectedLabelColor: style.textSecondary,
                 indicatorColor: style.accent,
-                labelStyle: style.typography.label,
+                labelStyle: style.typography.label.copyWith(fontWeight: FontWeight.w700),
+                unselectedLabelStyle: style.typography.label.copyWith(fontWeight: FontWeight.w500),
                 tabs: [
                   for (final kind in shown)
                     Tab(

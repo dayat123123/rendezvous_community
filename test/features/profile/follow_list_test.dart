@@ -399,6 +399,15 @@ void main() {
 
       expect(find.byType(Tab), findsNWidgets(2));
     });
+
+    testWidgets('unselected tabs keep the same text size, only lighter', (tester) async {
+      await _pump(tester, const CommunityFollowList(userId: 'u-a'), profiles: _Profiles());
+
+      final bar = tester.widget<TabBar>(find.byType(TabBar));
+      expect(bar.unselectedLabelStyle, isNotNull);
+      expect(bar.unselectedLabelStyle!.fontSize, bar.labelStyle!.fontSize);
+      expect(bar.unselectedLabelStyle!.fontWeight!.value, lessThan(bar.labelStyle!.fontWeight!.value));
+    });
   });
 
   group('official accounts', () {

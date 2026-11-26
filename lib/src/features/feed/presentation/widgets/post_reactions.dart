@@ -356,7 +356,8 @@ class _PostReactorsView extends StatelessWidget {
               labelColor: style.textPrimary,
               unselectedLabelColor: style.textSecondary,
               indicatorColor: style.accent,
-              labelStyle: style.typography.label,
+              labelStyle: style.typography.label.copyWith(fontWeight: FontWeight.w700),
+              unselectedLabelStyle: style.typography.label.copyWith(fontWeight: FontWeight.w500),
               tabs: [
                 Tab(text: l10n.reactorsAll(_totalReactions(post))),
                 for (final r in summary) Tab(text: '${r.emoji} ${r.count}'),

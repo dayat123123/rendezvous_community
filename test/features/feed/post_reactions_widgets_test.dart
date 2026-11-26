@@ -304,6 +304,24 @@ void main() {
       expect(feed.reactorRequests.last.cursor, isNull);
     });
 
+    testWidgets('unselected tabs keep the same text size, only lighter', (tester) async {
+      final feed = FakeReactionFeedRepository()..onReactors = (emoji, cursor) => const PostReactorsPage([]);
+      await _pump(
+        tester,
+        Builder(
+          builder: (context) =>
+              TextButton(onPressed: () => showCommunityPostReactors(context, post), child: const Text('buka')),
+        ),
+        feed: feed,
+      );
+      await tester.tap(find.text('buka'));
+      await tester.pumpAndSettle();
+      final bar = tester.widget<TabBar>(find.byType(TabBar));
+      expect(bar.unselectedLabelStyle, isNotNull);
+      expect(bar.unselectedLabelStyle!.fontSize, bar.labelStyle!.fontSize);
+      expect(bar.unselectedLabelStyle!.fontWeight!.value, lessThan(bar.labelStyle!.fontWeight!.value));
+    });
+
     testWidgets('the title sits clear of the sheet edge and the close button', (tester) async {
       final feed = FakeReactionFeedRepository()..onReactors = (emoji, cursor) => const PostReactorsPage([]);
       await _pump(

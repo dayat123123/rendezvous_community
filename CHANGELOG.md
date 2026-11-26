@@ -1,3 +1,7 @@
+## 1.63.1
+
+* **Tab yang tidak dipilih tidak lagi lebih besar.** Tab di sheet Reaksi dan daftar Follower/Following kini memakai `unselectedLabelStyle` sendiri: ukuran huruf sama dengan tab aktif, hanya lebih tipis (aktif w700, tidak aktif w500). Sebelumnya tab tidak aktif ikut `TabBarTheme.unselectedLabelStyle` dari app sehingga hurufnya lebih besar.
+
 ## 1.63.0
 
 * **Badge kartu riset mengikuti bahasa app.** Kartu dengan `source: "research"` kini selalu menampilkan label terjemahan `infoCardAutoSummary` ("Ringkasan otomatis" / "Auto summary"), bukan teks `badge` dari server. Kartu manual tetap menampilkan `badge` persis seperti yang ditulis staf.
