@@ -49,6 +49,7 @@ _FeedPostModel _$FeedPostModelFromJson(Map<String, dynamic> json) =>
       commentsOffByAccount: json['comments_off_by_account'] as bool?,
       myReaction: json['my_reaction'] as String?,
       reactionSummary: json['reaction_summary'],
+      research: researchFromAttachments(readPostAttachments(json, 'research')),
     );
 
 Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) =>

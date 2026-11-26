@@ -1,3 +1,13 @@
+## 1.59.0
+
+* **Kartu research di post** (butuh migrasi server 0199). Post resmi dari layanan research (misalnya @olt_research) membawa elemen lampiran `{"type": "research", ...}` berisi dokumen layout-as-data. Library kini menampilkannya sebagai kartu, **menggantikan** isi teks polos post. Teks polos tetap dikirim server untuk app lama, pencarian, dan notifikasi.
+  * Entity `PostResearch` → `ResearchDocument` (badge, judul, subjudul, headline, blok, disclaimer). Bloknya `ResearchParagraph`, `ResearchList` (bernomor atau berpoin), `ResearchCallout`, dan `ResearchMetrics` (`ResearchMetric` dengan `ResearchTrend` naik/turun/datar). Field baru `Post.research` di-parse dari lampiran post.
+  * Blok yang tidak dikenal dan field tambahan dilewati. Dokumen yang `version`-nya bukan 1 diabaikan, sehingga post kembali menampilkan teks polos. Maksimal 20 blok dipakai, dan teks ditampilkan apa adanya.
+  * Widget `CommunityResearchCard`:
+    * kotak kode saham di samping judul sumber, badge, headline tebal, paragraf, chip metrik berwarna sesuai tren, daftar bernomor dengan kotak angka, kotak "Poin utama", dan disclaimer kecil;
+    * bisa dibuka/ditutup: tertutup di feed, terbuka di detail post.
+  * Slot builder baru `CommunityFeedBuilders.researchCard` (`CommunityResearchDetails`: post, research, `initiallyExpanded`). App yang punya kartu post sendiri cukup menaruh `CommunityPostResearch(details: d)` di tempat isi post.
+
 ## 1.58.0
 
 * **Bagikan post ke beberapa tujuan sekaligus** (butuh migrasi server 0198). Interface baru `MultiShareRepository`, diimplementasikan `ChatExtrasRepositoryImpl`:

@@ -1,5 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_research.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
@@ -47,6 +48,7 @@ abstract class Post with _$Post {
     @Default(false) bool commentsOffByAccount,
     String? myReaction,
     @Default(<PostReactionCount>[]) List<PostReactionCount> reactionSummary,
+    PostResearch? research,
   }) = _Post;
 
   const Post._();

@@ -8,6 +8,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_research_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_reactions.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/sentiment_badge.dart';
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
@@ -250,25 +251,31 @@ class _DefaultPostCard extends StatelessWidget {
             child: ModerationNotice(status: post.moderationStatus, onAppeal: d.onAppeal),
           ),
         if (!expanded) ?titleView,
-        Padding(
-          padding: side.copyWith(top: spacing.xs + spacing.xxs),
-          child: buildCommunityPart(
-            builders.postBody,
-            context,
-            d,
-            readMoreInPlace && !expanded
-                ? _InPlaceReadMore(text: body, validStockCodes: codes, style: bodyStyle, source: d.source)
-                : expanded || d.onOpen == null
-                ? SocialText(body, validStockCodes: codes, style: bodyStyle, source: d.source)
-                : PostReadMore(
-                    text: body,
-                    validStockCodes: codes,
-                    style: bodyStyle,
-                    source: d.source,
-                    onOpen: d.onOpen!,
-                  ),
+        if (post.research != null)
+          Padding(
+            padding: side.copyWith(top: spacing.sm),
+            child: CommunityPostResearch(details: d),
+          )
+        else
+          Padding(
+            padding: side.copyWith(top: spacing.xs + spacing.xxs),
+            child: buildCommunityPart(
+              builders.postBody,
+              context,
+              d,
+              readMoreInPlace && !expanded
+                  ? _InPlaceReadMore(text: body, validStockCodes: codes, style: bodyStyle, source: d.source)
+                  : expanded || d.onOpen == null
+                  ? SocialText(body, validStockCodes: codes, style: bodyStyle, source: d.source)
+                  : PostReadMore(
+                      text: body,
+                      validStockCodes: codes,
+                      style: bodyStyle,
+                      source: d.source,
+                      onOpen: d.onOpen!,
+                    ),
+            ),
           ),
-        ),
         if (!expanded) buildCommunityPart(builders.stockTags, context, d, const SizedBox.shrink()),
         Padding(
           padding: side,

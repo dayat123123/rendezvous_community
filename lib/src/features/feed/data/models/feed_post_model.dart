@@ -1,9 +1,11 @@
 import 'dart:convert';
 
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:rendezvous_community/src/features/feed/data/models/post_research_model.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post_reaction.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_research.dart';
 import 'package:rendezvous_community/src/features/poll/data/models/poll_model.dart';
 import 'package:rendezvous_community/src/features/post/data/models/thread_comment_model.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
@@ -73,6 +75,8 @@ abstract class FeedPostModel with _$FeedPostModel {
     bool? commentsOffByAccount,
     String? myReaction,
     Object? reactionSummary,
+    @JsonKey(readValue: readPostAttachments, fromJson: researchFromAttachments, includeToJson: false)
+    PostResearch? research,
   }) = _FeedPostModel;
 
   const FeedPostModel._();
@@ -113,6 +117,7 @@ abstract class FeedPostModel with _$FeedPostModel {
     reactionSummary:
         parsePostReactionSummary(reactionSummary) ??
         [if (likeCount > 0) PostReactionCount(emoji: postLikeReaction, count: likeCount)],
+    research: research,
   );
 
   ThreadComment? _parseTopComment() {

@@ -55,10 +55,7 @@ class ChatExtrasRepositoryImpl implements ChatExtrasRepository, MultiShareReposi
     final q = query.trim();
     if (q.isEmpty) return const [];
     final rows = await _api.rpcRows('search_share_targets', {'p_query': q, 'p_limit': limit});
-    return [
-      for (final row in rows)
-        if (_shareTarget(row) case final target?) target,
-    ];
+    return [for (final row in rows) ?_shareTarget(row)];
   }
 
   ShareTarget? _shareTarget(Map<String, dynamic> row) {

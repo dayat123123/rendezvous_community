@@ -5,6 +5,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/comment_a
 import 'package:rendezvous_community/src/features/feed/domain/entities/feed_filter.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_research.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_stream_feed.dart';
 import 'package:rendezvous_community/src/features/instruments/domain/entities/market_instrument.dart';
 import 'package:rendezvous_community/src/features/link_preview/domain/entities/link_preview.dart';
@@ -749,4 +750,12 @@ class CommunityIndexTileDetails {
   final int? postsToday;
   final int? bullishPct;
   final String? statsLabel;
+}
+
+class CommunityResearchDetails {
+  const CommunityResearchDetails({required this.post, required this.research, this.initiallyExpanded = false});
+
+  final Post post;
+  final PostResearch research;
+  final bool initiallyExpanded;
 }
