@@ -1,4 +1,5 @@
 import 'package:rendezvous_community/src/features/feed/domain/entities/post_info_card.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 
 Object? readPostAttachments(Map<dynamic, dynamic> json, String key) => json['attachments'];
 
@@ -101,4 +102,30 @@ String? _text(Object? value) {
   if (value is! String) return null;
   final text = value.trim();
   return text.isEmpty ? null : text;
+}
+
+const int maxPostFiles = 5;
+
+List<Attachment> postFilesFromAttachments(Object? value) {
+  if (value is! List) return const [];
+  final files = <Attachment>[];
+  for (final item in value) {
+    if (files.length >= maxPostFiles) break;
+    if (item is! Map || item['type'] != 'file') continue;
+    final file = item['file'];
+    if (file is! Map) continue;
+    final path = _text(file['path']);
+    if (path == null) continue;
+    final size = file['size'];
+    files.add(
+      Attachment(
+        path: path,
+        bucket: _text(file['bucket']),
+        name: _text(file['name']),
+        mime: _text(file['mime']),
+        size: size is num ? size.toInt() : null,
+      ),
+    );
+  }
+  return files;
 }

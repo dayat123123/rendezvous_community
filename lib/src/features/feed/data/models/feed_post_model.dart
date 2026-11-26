@@ -10,6 +10,7 @@ import 'package:rendezvous_community/src/features/poll/data/models/poll_model.da
 import 'package:rendezvous_community/src/features/post/data/models/thread_comment_model.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
 import 'package:rendezvous_community/src/shared/data/models/attachment_model.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/moderation_status.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
@@ -77,6 +78,9 @@ abstract class FeedPostModel with _$FeedPostModel {
     Object? reactionSummary,
     @JsonKey(readValue: readPostAttachments, fromJson: infoCardFromAttachments, includeToJson: false)
     PostInfoCard? card,
+    @JsonKey(readValue: readPostAttachments, fromJson: postFilesFromAttachments, includeToJson: false)
+    @Default(<Attachment>[])
+    List<Attachment> files,
   }) = _FeedPostModel;
 
   const FeedPostModel._();
@@ -118,6 +122,7 @@ abstract class FeedPostModel with _$FeedPostModel {
         parsePostReactionSummary(reactionSummary) ??
         [if (likeCount > 0) PostReactionCount(emoji: postLikeReaction, count: likeCount)],
     card: card,
+    files: files,
   );
 
   ThreadComment? _parseTopComment() {

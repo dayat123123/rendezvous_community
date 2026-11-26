@@ -171,6 +171,7 @@ export 'src/features/feed/presentation/widgets/community_feed_filter_tabs.dart'
     show CommunityFeedFilterTabs, CommunityFeedFilters;
 export 'src/features/feed/presentation/widgets/community_feed_list.dart' show CommunityFeedList;
 export 'src/features/feed/presentation/widgets/community_info_card.dart' show CommunityPostInfoCard, CommunityInfoCard;
+export 'src/features/feed/presentation/widgets/community_post_files.dart' show CommunityPostFiles;
 export 'src/features/feed/presentation/widgets/community_stream_feed.dart' show CommunityFeedTab, CommunityStreamFeed;
 export 'src/features/feed/presentation/widgets/compose_prompt_card.dart' show CommunityComposePromptCard;
 export 'src/features/feed/presentation/widgets/post_reactions.dart'

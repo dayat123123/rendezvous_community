@@ -1,3 +1,10 @@
+## 1.61.0
+
+* **Lampiran dokumen di post** (butuh migrasi server 0200). Post resmi bisa membawa maksimal 5 dokumen (PDF, XLSX, CSV, DOCX, PPTX) sebagai elemen `{"type": "file", "file": {bucket, path, name, mime, size}}`.
+  * Field baru `Post.files` (`List<Attachment>`), terpisah dari `Post.attachments`, sehingga dokumen tidak pernah dianggap gambar. Elemen tanpa `path` dilewati, field lain diabaikan, dan maksimal 5 dokumen dipakai.
+  * Widget `CommunityPostFiles` menampilkan dokumen di bawah isi atau kartu info, baik di feed maupun di detail post. Isinya ikon tipe, nama, label tipe, dan ukuran, memakai `DocumentAttachments` yang sama dengan dokumen chat CS. Tap membuka dokumen lewat signed URL dari bucket dokumen itu (`post-files`).
+  * Slot builder baru `CommunityFeedBuilders.postFiles` (`CommunityPostDetails`) untuk mengganti tampilan seluruh daftar. Tampilan tiap dokumen tetap bisa diganti lewat slot `document`.
+
 ## 1.60.0
 
 * **Kartu post jadi generik (`type: "card"`)** mengikuti format final migrasi server 0199, sebelum 0199 dirilis. Satu tipe kartu kini melayani dua sumber: `source: "research"` (layanan research, dengan `research_id` dan `kind`) dan `source: "manual"` (dibuat staf di Hub, badge boleh kosong). Format `document` tidak berubah. Lampiran `type: "research"` dari 1.59.0 tidak lagi dibaca, dan memang belum pernah dipakai di server mana pun.

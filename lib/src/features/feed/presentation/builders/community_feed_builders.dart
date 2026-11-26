@@ -49,6 +49,7 @@ class CommunityFeedBuilders {
     this.commentAudienceSheet,
     this.commentRestriction,
     this.infoCard,
+    this.postFiles,
   });
 
   final CommunityPartBuilder<CommunityPostDetails>? postCard;
@@ -58,6 +59,7 @@ class CommunityFeedBuilders {
   final CommunityPartBuilder<CommunityPostDetails>? attachments;
   final CommunityPartBuilder<CommunityLinkPreviewDetails>? linkPreview;
   final CommunityPartBuilder<CommunityInfoCardDetails>? infoCard;
+  final CommunityPartBuilder<CommunityPostDetails>? postFiles;
   final CommunityPartBuilder<CommunityPostDetails>? stockTags;
   final CommunityPartBuilder<CommunityPostDetails>? actionBar;
   final CommunityPartBuilder<CommunityPollDetails>? poll;
@@ -150,6 +152,7 @@ class CommunityFeedBuilders {
       commentAudienceSheet: other.commentAudienceSheet ?? commentAudienceSheet,
       commentRestriction: other.commentRestriction ?? commentRestriction,
       infoCard: other.infoCard ?? infoCard,
+      postFiles: other.postFiles ?? postFiles,
     );
   }
 }

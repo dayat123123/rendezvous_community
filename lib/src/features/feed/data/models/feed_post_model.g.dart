@@ -37,6 +37,9 @@ _FeedPostModel _$FeedPostModelFromJson(Map<String, dynamic> json) => _FeedPostMo
   myReaction: json['my_reaction'] as String?,
   reactionSummary: json['reaction_summary'],
   card: infoCardFromAttachments(readPostAttachments(json, 'card')),
+  files: readPostAttachments(json, 'files') == null
+      ? const <Attachment>[]
+      : postFilesFromAttachments(readPostAttachments(json, 'files')),
 );
 
 Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) => <String, dynamic>{

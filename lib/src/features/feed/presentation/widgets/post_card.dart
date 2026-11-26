@@ -9,6 +9,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/builders/com
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_info_card.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_post_files.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_reactions.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/sentiment_badge.dart';
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
@@ -276,6 +277,10 @@ class _DefaultPostCard extends StatelessWidget {
                     ),
             ),
           ),
+        Padding(
+          padding: side,
+          child: CommunityPostFiles(details: d),
+        ),
         if (!expanded) buildCommunityPart(builders.stockTags, context, d, const SizedBox.shrink()),
         Padding(
           padding: side,

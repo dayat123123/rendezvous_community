@@ -49,6 +49,7 @@ abstract class Post with _$Post {
     String? myReaction,
     @Default(<PostReactionCount>[]) List<PostReactionCount> reactionSummary,
     PostInfoCard? card,
+    @Default(<Attachment>[]) List<Attachment> files,
   }) = _Post;
 
   const Post._();
