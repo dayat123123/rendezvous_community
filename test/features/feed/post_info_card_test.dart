@@ -4,6 +4,7 @@ import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/feed/data/models/feed_post_model.dart';
 import 'package:rendezvous_community/src/features/feed/data/models/post_info_card_model.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
+import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart' show lookupCommunityLocalizations;
 
 import '../../support/fakes.dart';
 
@@ -72,13 +73,13 @@ Post _post({PostInfoCard? card}) => Post(
   cursor: 'c',
 );
 
-Future<void> _pump(WidgetTester tester, Widget child) async {
+Future<void> _pump(WidgetTester tester, Widget child, {Locale locale = const Locale('id')}) async {
   tester.view.physicalSize = const Size(900, 2400);
   tester.view.devicePixelRatio = 1;
   addTearDown(tester.view.reset);
   await tester.pumpWidget(
     MaterialApp(
-      locale: const Locale('id'),
+      locale: locale,
       localizationsDelegates: communityLocalizationsDelegates,
       supportedLocales: CommunityLocalizations.supportedLocales,
       home: Scaffold(
@@ -233,6 +234,45 @@ void main() {
       expect(find.byIcon(Icons.auto_awesome), findsNothing);
       expect(find.text('Laba bersih kuartal III naik 9,0% YoY'), findsOneWidget);
       expect(find.textContaining('teks polos'), findsNothing);
+    });
+
+    testWidgets('the research badge follows the app language', (tester) async {
+      await _pump(
+        tester,
+        PostCard(
+          post: _post(card: research),
+          onLike: () {},
+          expanded: true,
+        ),
+        locale: const Locale('en'),
+      );
+
+      expect(find.text('Auto summary'), findsOneWidget);
+      expect(find.text('Ringkasan otomatis'), findsNothing);
+    });
+
+    testWidgets('a manual badge is shown as written', (tester) async {
+      final pinned = infoCardFromAttachments([_manual(document: _document(badge: 'Pengumuman resmi'))])!;
+      await _pump(
+        tester,
+        PostCard(
+          post: _post(card: pinned),
+          onLike: () {},
+          expanded: true,
+        ),
+        locale: const Locale('en'),
+      );
+
+      expect(find.text('Pengumuman resmi'), findsOneWidget);
+      expect(find.text('Auto summary'), findsNothing);
+    });
+
+    test('the badge label comes from the localizations for research cards', () {
+      final en = lookupCommunityLocalizations(const Locale('en'));
+      final id = lookupCommunityLocalizations(const Locale('id'));
+      expect(en.infoCardBadge(research), 'Auto summary');
+      expect(id.infoCardBadge(research), 'Ringkasan otomatis');
+      expect(en.infoCardBadge(manual), isNull);
     });
 
     testWidgets('posts without a card keep their body', (tester) async {

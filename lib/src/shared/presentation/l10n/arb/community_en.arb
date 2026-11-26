@@ -1107,5 +1107,6 @@
   "reactorsShow": "See who reacted",
   "errorPostReactionsUnavailable": "Reactions are not available yet",
   "notifReactedPost": "{names} reacted {emoji} to your post",
-  "@notifReactedPost": { "placeholders": { "names": { "type": "String" }, "emoji": { "type": "String" } } }
+  "@notifReactedPost": { "placeholders": { "names": { "type": "String" }, "emoji": { "type": "String" } } },
+  "infoCardAutoSummary": "Auto summary"
 }

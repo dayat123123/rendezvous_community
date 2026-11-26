@@ -1,3 +1,8 @@
+## 1.63.0
+
+* **Badge kartu riset mengikuti bahasa app.** Kartu dengan `source: "research"` kini selalu menampilkan label terjemahan `infoCardAutoSummary` ("Ringkasan otomatis" / "Auto summary"), bukan teks `badge` dari server. Kartu manual tetap menampilkan `badge` persis seperti yang ditulis staf.
+  * Extension baru `CommunityInfoCardText.infoCardBadge(PostInfoCard)` pada `CommunityLocalizations` (diekspor), supaya builder slot `infoCard` di app memakai label yang sama.
+
 ## 1.62.0
 
 * **Dokumen di post kini tampil seperti lampiran Help Center.** Tiap dokumen punya ikon tipe dalam kotak 40px berlatar `pill`, garis tepi `divider`, nama tebal (maksimal 2 baris), label tipe dan ukuran, serta ikon buka. Dokumen di chat tetap memakai tampilan ringkas.

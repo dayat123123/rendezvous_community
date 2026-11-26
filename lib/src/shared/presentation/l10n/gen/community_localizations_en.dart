@@ -3632,4 +3632,7 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String notifReactedPost(String names, String emoji) {
     return '$names reacted $emoji to your post';
   }
+
+  @override
+  String get infoCardAutoSummary => 'Auto summary';
 }

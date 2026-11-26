@@ -4,6 +4,7 @@ import 'package:material_ui/material_ui.dart' show GlobalMaterialLocalizations;
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/error/error_mapper.dart';
 import 'package:rendezvous_community/src/features/chat/domain/entities/share_target.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_info_card.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/gen/community_localizations.dart';
 
 export 'gen/community_localizations.dart';
@@ -26,6 +27,11 @@ extension CommunityShareTargetText on CommunityLocalizations {
     ShareTargetReason.roomDisabled => shareReasonRoomDisabled,
     ShareTargetReason.messageRequest => shareReasonMessageRequest,
   };
+}
+
+extension CommunityInfoCardText on CommunityLocalizations {
+  String? infoCardBadge(PostInfoCard card) =>
+      card.source == InfoCardSource.research ? infoCardAutoSummary : card.document.badge;
 }
 
 extension CommunityErrorText on CommunityLocalizations {

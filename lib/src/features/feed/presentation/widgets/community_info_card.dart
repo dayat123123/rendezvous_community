@@ -49,7 +49,7 @@ class _CommunityInfoCardState extends State<CommunityInfoCard> {
     final code = card.stockCode;
     final headline = doc.headline;
     final subtitle = doc.subtitle;
-    final badge = doc.badge;
+    final badge = l10n.infoCardBadge(card);
     final disclaimer = doc.disclaimer;
     return DecoratedBox(
       decoration: BoxDecoration(

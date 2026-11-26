@@ -3599,4 +3599,7 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String notifReactedPost(String names, String emoji) {
     return '$names memberi reaksi $emoji pada postingan Anda';
   }
+
+  @override
+  String get infoCardAutoSummary => 'Ringkasan otomatis';
 }

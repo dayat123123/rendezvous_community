@@ -6415,6 +6415,12 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'{names} memberi reaksi {emoji} pada postingan Anda'**
   String notifReactedPost(String names, String emoji);
+
+  /// No description provided for @infoCardAutoSummary.
+  ///
+  /// In id, this message translates to:
+  /// **'Ringkasan otomatis'**
+  String get infoCardAutoSummary;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

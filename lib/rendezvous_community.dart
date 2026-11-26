@@ -367,6 +367,7 @@ export 'src/shared/presentation/images/community_image_provider.dart' show Commu
 export 'src/shared/presentation/l10n/l10n.dart'
     show
         CommunityErrorText,
+        CommunityInfoCardText,
         CommunityL10nContext,
         CommunityLocalizations,
         CommunityShareTargetText,

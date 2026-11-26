@@ -1241,5 +1241,6 @@
   "reactorsShow": "Lihat yang memberi reaksi",
   "errorPostReactionsUnavailable": "Reaksi belum tersedia",
   "notifReactedPost": "{names} memberi reaksi {emoji} pada postingan Anda",
-  "@notifReactedPost": { "placeholders": { "names": { "type": "String" }, "emoji": { "type": "String" } } }
+  "@notifReactedPost": { "placeholders": { "names": { "type": "String" }, "emoji": { "type": "String" } } },
+  "infoCardAutoSummary": "Ringkasan otomatis"
 }
