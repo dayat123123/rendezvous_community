@@ -63,7 +63,7 @@ InfoCardBlock? _block(Map<dynamic, dynamic> json) {
       return text == null ? null : InfoCardParagraph(text);
     case 'list':
       final items = [
-        if (json['items'] case final List list)
+        if (json['items'] case final List<Object?> list)
           for (final item in list) ?_text(item),
       ];
       return items.isEmpty ? null : InfoCardList(numbered: json['style'] == 'numbered', items: items);
@@ -72,7 +72,7 @@ InfoCardBlock? _block(Map<dynamic, dynamic> json) {
       return text == null ? null : InfoCardCallout(title: _text(json['title']), text: text);
     case 'metrics':
       final metrics = [
-        if (json['metrics'] case final List list)
+        if (json['metrics'] case final List<Object?> list)
           for (final item in list)
             if (item is Map) ?_metric(item),
       ];

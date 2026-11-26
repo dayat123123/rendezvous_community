@@ -603,6 +603,7 @@ class CommunityDocumentDetails {
     this.onOpen,
     this.type = CommunityDocumentType.pdf,
     this.typeLabel = 'PDF',
+    this.card = false,
   });
 
   final Attachment attachment;
@@ -614,6 +615,7 @@ class CommunityDocumentDetails {
   final VoidCallback? onOpen;
   final CommunityDocumentType type;
   final String typeLabel;
+  final bool card;
 }
 
 class CommunityDraftDetails {

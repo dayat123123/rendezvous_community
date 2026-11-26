@@ -4,6 +4,7 @@ import 'package:rendezvous_community/src/features/feed/presentation/builders/com
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/media/domain/entities/document_type.dart';
 import 'package:rendezvous_community/src/features/media/presentation/file_opener.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/community_file_tile.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -41,32 +42,43 @@ String documentSize(int? bytes) {
 }
 
 class DocumentAttachments extends StatelessWidget {
-  const DocumentAttachments({super.key, required this.attachments, required this.color, this.onOpen});
+  const DocumentAttachments({
+    super.key,
+    required this.attachments,
+    required this.color,
+    this.onOpen,
+    this.card = false,
+  });
 
   final List<Attachment> attachments;
   final Color color;
   final DocumentOpener? onOpen;
+  final bool card;
 
   @override
-  Widget build(BuildContext context) => Column(
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      for (final a in attachments)
-        Padding(
-          padding: const EdgeInsets.only(bottom: 4),
-          child: _DocumentTile(attachment: a, color: color, onOpen: onOpen),
-        ),
-    ],
-  );
+  Widget build(BuildContext context) {
+    final gap = card ? CommunityStyle.of(context).spacing.xs : 4.0;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (var i = 0; i < attachments.length; i++)
+          Padding(
+            padding: card ? EdgeInsets.only(top: i == 0 ? 0 : gap) : EdgeInsets.only(bottom: gap),
+            child: _DocumentTile(attachment: attachments[i], color: color, onOpen: onOpen, card: card),
+          ),
+      ],
+    );
+  }
 }
 
 class _DocumentTile extends StatefulWidget {
-  const _DocumentTile({required this.attachment, required this.color, this.onOpen});
+  const _DocumentTile({required this.attachment, required this.color, this.onOpen, this.card = false});
 
   final Attachment attachment;
   final Color color;
   final DocumentOpener? onOpen;
+  final bool card;
 
   @override
   State<_DocumentTile> createState() => _DocumentTileState();
@@ -124,8 +136,19 @@ class _DocumentTileState extends State<_DocumentTile> {
       opening: _opening,
       semanticLabel: l10n.openDocument(name),
       onOpen: _opening ? null : _open,
+      card: widget.card,
     );
-    return buildFeedPart((b) => b.document, context, details, _DefaultDocumentTile(details: details));
+    final fallback = details.card
+        ? CommunityFileTile(
+            name: details.name,
+            meta: details.sizeLabel,
+            semanticLabel: details.semanticLabel,
+            icon: documentTypeIcon(details.type),
+            opening: details.opening,
+            onOpen: details.onOpen,
+          )
+        : _DefaultDocumentTile(details: details);
+    return buildFeedPart((b) => b.document, context, details, fallback);
   }
 }
 

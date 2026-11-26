@@ -4,6 +4,7 @@ import 'package:rendezvous_community/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/feed/data/models/feed_post_model.dart';
 import 'package:rendezvous_community/src/features/feed/data/models/post_info_card_model.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_card.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
 
 import '../../support/fakes.dart';
 
@@ -11,7 +12,7 @@ Map<String, Object?> _file(String name, {String mime = 'application/pdf', int? s
   'type': 'file',
   'file': {
     'bucket': 'post-files',
-    'path': ?path ?? 'acc/u-1/$name',
+    'path': path ?? 'acc/u-1/$name',
     'name': name,
     'mime': mime,
     'size': ?size,
@@ -114,6 +115,25 @@ void main() {
       expect(find.text('Data.xlsx'), findsOneWidget);
       expect(find.textContaining('2.3 MB'), findsOneWidget);
       expect(find.textContaining('Laporan tahunan sudah terbit.'), findsOneWidget);
+    });
+
+    testWidgets('post files use the same tile as help center attachments', (tester) async {
+      await _pump(tester, PostCard(post: _post(files), onLike: () {}, expanded: true));
+
+      final tiles = find.byType(CommunityFileTile);
+      expect(tiles, findsNWidgets(2));
+      final pdf = tester.widget<CommunityFileTile>(tiles.first);
+      expect(pdf.name, 'Laporan Tahunan 2025.pdf');
+      expect(pdf.meta, 'PDF · 117 KB');
+      expect(pdf.icon, Icons.picture_as_pdf_outlined);
+      expect(tester.widget<CommunityFileTile>(tiles.last).icon, Icons.table_chart_outlined);
+    });
+
+    testWidgets('chat documents keep the compact tile', (tester) async {
+      await _pump(tester, DocumentAttachments(attachments: files, color: Colors.black));
+
+      expect(find.byType(CommunityFileTile), findsNothing);
+      expect(find.text('Laporan Tahunan 2025.pdf'), findsOneWidget);
     });
 
     testWidgets('a file opens through a signed url from its own bucket', (tester) async {

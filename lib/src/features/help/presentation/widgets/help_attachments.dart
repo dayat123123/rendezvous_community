@@ -4,6 +4,7 @@ import 'package:rendezvous_community/src/features/help/presentation/builders/com
 import 'package:rendezvous_community/src/features/help/presentation/builders/community_help_details.dart';
 import 'package:rendezvous_community/src/features/help/presentation/widgets/community_help_markdown.dart';
 import 'package:rendezvous_community/src/features/media/presentation/file_opener.dart';
+import 'package:rendezvous_community/src/features/media/presentation/widgets/community_file_tile.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/document_attachments.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/video_player_page.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
@@ -145,69 +146,19 @@ class _DefaultAttachmentTile extends StatelessWidget {
   final CommunityHelpAttachmentDetails details;
 
   @override
-  Widget build(BuildContext context) {
-    final style = CommunityStyle.of(context);
-    final spacing = style.spacing;
-    final meta = details.sizeLabel.isEmpty ? details.kindLabel : '${details.kindLabel} · ${details.sizeLabel}';
-    final preview = details.preview;
-    return Semantics(
-      container: true,
-      button: true,
-      label: details.semanticLabel,
-      excludeSemantics: true,
-      child: InkWell(
-        onTap: details.onOpen,
-        borderRadius: style.radii.controlRadius,
-        child: Container(
-          constraints: BoxConstraints(minHeight: style.minTouchTarget),
-          padding: EdgeInsets.symmetric(horizontal: spacing.sm + spacing.xxs, vertical: spacing.sm),
-          decoration: BoxDecoration(
-            borderRadius: style.radii.controlRadius,
-            border: Border.all(color: style.divider, width: style.borderWidth),
-          ),
-          child: Row(
-            children: [
-              SizedBox.square(
-                dimension: 40,
-                child: preview != null
-                    ? ClipRRect(borderRadius: style.radii.controlRadius, child: preview)
-                    : DecoratedBox(
-                        decoration: BoxDecoration(color: style.pill, borderRadius: style.radii.controlRadius),
-                        child: Icon(switch (details.kind) {
-                          HelpAttachmentKind.document => Icons.picture_as_pdf_outlined,
-                          HelpAttachmentKind.video => Icons.play_circle_outline,
-                          HelpAttachmentKind.image => Icons.image_outlined,
-                        }, color: style.accent),
-                      ),
-              ),
-              SizedBox(width: spacing.sm + spacing.xxs),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      details.name,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: style.typography.author.copyWith(fontWeight: FontWeight.w600),
-                    ),
-                    Text(meta, style: style.typography.meta),
-                  ],
-                ),
-              ),
-              SizedBox(width: spacing.sm),
-              details.opening
-                  ? SizedBox.square(
-                      dimension: 16,
-                      child: CircularProgressIndicator(strokeWidth: 2, color: style.accent),
-                    )
-                  : Icon(Icons.open_in_new, size: 18, color: style.textSecondary),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  Widget build(BuildContext context) => CommunityFileTile(
+    name: details.name,
+    meta: details.sizeLabel.isEmpty ? details.kindLabel : '${details.kindLabel} · ${details.sizeLabel}',
+    semanticLabel: details.semanticLabel,
+    icon: switch (details.kind) {
+      HelpAttachmentKind.document => Icons.picture_as_pdf_outlined,
+      HelpAttachmentKind.video => Icons.play_circle_outline,
+      HelpAttachmentKind.image => Icons.image_outlined,
+    },
+    preview: details.preview,
+    opening: details.opening,
+    onOpen: details.onOpen,
+  );
 }
 
 class HelpImagePage extends StatelessWidget {

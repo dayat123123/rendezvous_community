@@ -21,7 +21,7 @@ class CommunityPostFiles extends StatelessWidget {
       details,
       Padding(
         padding: EdgeInsets.only(top: style.spacing.md),
-        child: DocumentAttachments(attachments: files, color: style.textPrimary),
+        child: DocumentAttachments(attachments: files, color: style.textPrimary, card: true),
       ),
     );
   }

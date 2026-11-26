@@ -1,3 +1,11 @@
+## 1.62.0
+
+* **Dokumen di post kini tampil seperti lampiran Help Center.** Tiap dokumen punya ikon tipe dalam kotak 40px berlatar `pill`, garis tepi `divider`, nama tebal (maksimal 2 baris), label tipe dan ukuran, serta ikon buka. Dokumen di chat tetap memakai tampilan ringkas.
+  * Widget publik baru `CommunityFileTile` (`name`, `meta`, `semanticLabel`, `icon`, `preview`, `opening`, `onOpen`). Dipakai bersama oleh lampiran Help Center dan dokumen post, jadi tampilan keduanya selalu sama.
+  * `DocumentAttachments` dapat parameter `card` (default `false`). `CommunityPostFiles` memakai `card: true`.
+  * `CommunityDocumentDetails.card` memberi tahu builder slot `document` varian mana yang sedang dirender.
+* Perbaikan kecil: tipe `List` eksplisit di parser kartu info (lint `strict_raw_type`).
+
 ## 1.61.0
 
 * **Lampiran dokumen di post** (butuh migrasi server 0200). Post resmi bisa membawa maksimal 5 dokumen (PDF, XLSX, CSV, DOCX, PPTX) sebagai elemen `{"type": "file", "file": {bucket, path, name, mime, size}}`.

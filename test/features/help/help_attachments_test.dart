@@ -91,6 +91,7 @@ void main() {
     expect(find.text('Video · 20 MB'), findsOneWidget);
     expect(find.byIcon(Icons.picture_as_pdf_outlined), findsOneWidget);
     expect(find.byIcon(Icons.play_circle_outline), findsOneWidget);
+    expect(find.byType(CommunityFileTile), findsNWidgets(3));
     expect(
       tester.getTopLeft(find.text('Lampiran')).dy,
       greaterThan(tester.getTopLeft(find.textContaining('Unduh formulir', findRichText: true)).dy),
