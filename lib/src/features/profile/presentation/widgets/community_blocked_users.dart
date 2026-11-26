@@ -4,6 +4,8 @@ import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_dependencies.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_builders.dart';
+import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
 import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
 import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
 import 'package:rendezvous_community/src/features/profile/domain/repositories/profile_repository.dart';
@@ -12,7 +14,6 @@ import 'package:rendezvous_community/src/shared/presentation/theme/community_sty
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_avatar.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/community_user_name.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
-import 'package:rendezvous_community/src/shared/presentation/widgets/state_views.dart';
 
 bool communityBlockedUsersAvailable(BuildContext context) =>
     CommunityScope.maybeOf(context)?.profiles is BlockListRepository;
@@ -27,14 +28,18 @@ Future<void> Function()? communityBlockedUsersOpener(BuildContext context) {
   if (navigator == null) return null;
   final theme = Theme.of(context);
   final carry = carryCommunityBuilders(context);
+  final settings = CommunitySettingsBuilders.of(context, listen: false);
   return () async {
     if (!navigator.mounted) return;
     await showDialog<void>(
       context: navigator.context,
       builder: (_) => carry(
-        Theme(
-          data: theme,
-          child: CommunityScope(dependencies: dependencies, child: const _BlockedUsersDialog()),
+        CommunitySettingsBuildersScope(
+          builders: settings,
+          child: Theme(
+            data: theme,
+            child: CommunityScope(dependencies: dependencies, child: const _BlockedUsersDialog()),
+          ),
         ),
       ),
     );
@@ -46,27 +51,44 @@ class _BlockedUsersDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final style = CommunityStyle.of(context);
     final l10n = context.communityL10n;
-    final spacing = style.spacing;
+    final details = CommunityBlockedUsersDialogDetails(
+      title: l10n.blockedUsersTitle,
+      closeLabel: l10n.close,
+      onClose: () => Navigator.pop(context),
+      body: const CommunityBlockedUsers(scrollable: false),
+    );
+    return buildSettingsPart((b) => b.blockedUsersDialog, context, details, _DefaultBlockedUsersDialog(details));
+  }
+}
+
+class _DefaultBlockedUsersDialog extends StatelessWidget {
+  const _DefaultBlockedUsersDialog(this.details);
+
+  final CommunityBlockedUsersDialogDetails details;
+
+  @override
+  Widget build(BuildContext context) {
+    final style = CommunityStyle.of(context);
+    final d = details;
     return AlertDialog(
       backgroundColor: style.surface,
       surfaceTintColor: style.surface,
       shape: communityDialogShape(style),
-      title: Text(l10n.blockedUsersTitle, style: style.typography.title),
-      contentPadding: EdgeInsets.symmetric(vertical: spacing.sm),
+      title: Text(d.title, style: style.typography.title),
+      contentPadding: EdgeInsets.symmetric(vertical: style.spacing.sm),
       content: SizedBox(
         width: 440,
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxHeight: 480),
-          child: const CommunityBlockedUsers(shrinkWrap: true),
+          child: SingleChildScrollView(child: d.body),
         ),
       ),
       actions: [
         TextButton(
           style: TextButton.styleFrom(foregroundColor: style.textSecondary, textStyle: style.typography.label),
-          onPressed: () => Navigator.pop(context),
-          child: Text(l10n.close),
+          onPressed: d.onClose,
+          child: Text(d.closeLabel),
         ),
       ],
     );
@@ -74,8 +96,9 @@ class _BlockedUsersDialog extends StatelessWidget {
 }
 
 class CommunityBlockedUsers extends StatefulWidget {
-  const CommunityBlockedUsers({super.key, this.shrinkWrap = false});
+  const CommunityBlockedUsers({super.key, this.scrollable = true, this.shrinkWrap = false});
 
+  final bool scrollable;
   final bool shrinkWrap;
 
   @override
@@ -139,6 +162,21 @@ class _CommunityBlockedUsersState extends State<CommunityBlockedUsers> {
     }
   }
 
+  Widget _row(BuildContext context, BlockedUser entry) {
+    final pending = _pending.contains(entry.user.id);
+    final details = CommunityBlockedUserTileDetails(
+      user: entry.user,
+      blockedAt: entry.blockedAt,
+      unblockLabel: context.communityL10n.unblock,
+      pending: pending,
+      onUnblock: pending ? null : () => _unblock(entry),
+    );
+    return KeyedSubtree(
+      key: ValueKey('blocked-${entry.user.id}'),
+      child: buildSettingsPart((b) => b.blockedUserTile, context, details, _DefaultBlockedUserRow(details: details)),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final l10n = context.communityL10n;
@@ -147,21 +185,17 @@ class _CommunityBlockedUsersState extends State<CommunityBlockedUsers> {
     final items = _items;
     if (_lists == null) return const SizedBox.shrink();
     if (error != null) {
-      return Padding(
-        padding: EdgeInsets.all(spacing.md),
-        child: CommunityErrorView(error: error, onRetry: _load),
-      );
+      return CommunitySettingsError(area: CommunitySettingsArea.blockedUsers, error: error, onRetry: _load);
     }
-    if (items == null) {
-      return Padding(
-        padding: EdgeInsets.all(spacing.xl),
-        child: const Center(child: CircularProgressIndicator.adaptive()),
-      );
-    }
+    if (items == null) return const CommunitySettingsLoading(area: CommunitySettingsArea.blockedUsers);
     if (items.isEmpty) {
-      return Padding(
-        padding: EdgeInsets.all(spacing.md),
-        child: CommunityEmptyView(message: l10n.blockedUsersEmpty, icon: Icons.block_outlined),
+      return CommunitySettingsEmpty(area: CommunitySettingsArea.blockedUsers, message: l10n.blockedUsersEmpty);
+    }
+    if (!widget.scrollable) {
+      return Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [for (final entry in items) _row(context, entry)],
       );
     }
     return ListView.builder(
@@ -169,31 +203,21 @@ class _CommunityBlockedUsersState extends State<CommunityBlockedUsers> {
       shrinkWrap: widget.shrinkWrap,
       padding: EdgeInsets.symmetric(vertical: spacing.xs),
       itemCount: items.length,
-      itemBuilder: (context, index) {
-        final entry = items[index];
-        return _BlockedUserRow(
-          key: ValueKey('blocked-${entry.user.id}'),
-          entry: entry,
-          pending: _pending.contains(entry.user.id),
-          onUnblock: () => _unblock(entry),
-        );
-      },
+      itemBuilder: (context, index) => _row(context, items[index]),
     );
   }
 }
 
-class _BlockedUserRow extends StatelessWidget {
-  const _BlockedUserRow({super.key, required this.entry, required this.pending, required this.onUnblock});
+class _DefaultBlockedUserRow extends StatelessWidget {
+  const _DefaultBlockedUserRow({required this.details});
 
-  final BlockedUser entry;
-  final bool pending;
-  final VoidCallback onUnblock;
+  final CommunityBlockedUserTileDetails details;
 
   @override
   Widget build(BuildContext context) {
     final style = CommunityStyle.of(context);
     final spacing = style.spacing;
-    final user = entry.user;
+    final user = details.user;
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: spacing.lg, vertical: spacing.sm),
       child: Row(
@@ -219,8 +243,8 @@ class _BlockedUserRow extends StatelessWidget {
           OutlinedButton(
             key: ValueKey('unblock-${user.id}'),
             style: style.secondaryButtonStyle(),
-            onPressed: pending ? null : onUnblock,
-            child: Text(context.communityL10n.unblock),
+            onPressed: details.onUnblock,
+            child: Text(details.unblockLabel),
           ),
         ],
       ),

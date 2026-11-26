@@ -1,3 +1,9 @@
+## 1.57.0
+
+* **Dialog dan baris daftar blokir bisa diseragamkan dengan app:** `CommunitySettingsBuilders` punya slot baru `blockedUsersDialog` (`CommunityBlockedUsersDialogDetails`: judul, label tutup, `onClose`, dan `body` berisi daftar) dan `blockedUserTile` (`CommunityBlockedUserTileDetails`: user, waktu blokir, label, status `pending`, `onUnblock`). Dialog dari pengaturan maupun dari tombol "Kelola" sama-sama memakai slot ini.
+* Status muat, kosong, dan gagal di daftar blokir kini memakai komponen pengaturan (`loading`, `empty`, `error`) dengan area baru `CommunitySettingsArea.blockedUsers`, sehingga ikut tampilan yang sudah diatur app.
+* `CommunityBlockedUsers(scrollable: false)` menyusun baris dalam `Column` biasa, untuk ditaruh di dalam dialog yang sudah punya scroll sendiri.
+
 ## 1.56.0
 
 * **Daftar akun yang diblokir:** akun yang sudah diblokir tidak muncul lagi di pencarian, feed, maupun pesan, sehingga sebelumnya tidak ada jalan untuk membuka blokirnya. Sekarang tersedia daftar "Akun yang diblokir" (terbaru di atas) dengan tombol "Buka blokir" plus konfirmasi di tiap baris.

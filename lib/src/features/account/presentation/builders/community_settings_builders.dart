@@ -19,6 +19,8 @@ class CommunitySettingsBuilders {
     this.deleteAccountDialog,
     this.commentAudience,
     this.mentionPolicy,
+    this.blockedUsersDialog,
+    this.blockedUserTile,
   });
 
   final CommunityPartBuilder<CommunityDmPolicyDetails>? dmPolicy;
@@ -36,6 +38,8 @@ class CommunitySettingsBuilders {
   final CommunityPartBuilder<CommunityDeleteAccountDetails>? deleteAccountDialog;
   final CommunityPartBuilder<CommunityCommentAudienceSettingDetails>? commentAudience;
   final CommunityPartBuilder<CommunityMentionPolicyDetails>? mentionPolicy;
+  final CommunityPartBuilder<CommunityBlockedUsersDialogDetails>? blockedUsersDialog;
+  final CommunityPartBuilder<CommunityBlockedUserTileDetails>? blockedUserTile;
 
   static CommunitySettingsBuilders of(BuildContext context, {bool listen = true}) {
     final scope = listen
@@ -62,6 +66,8 @@ class CommunitySettingsBuilders {
       deleteAccountDialog: other.deleteAccountDialog ?? deleteAccountDialog,
       commentAudience: other.commentAudience ?? commentAudience,
       mentionPolicy: other.mentionPolicy ?? mentionPolicy,
+      blockedUsersDialog: other.blockedUsersDialog ?? blockedUsersDialog,
+      blockedUserTile: other.blockedUserTile ?? blockedUserTile,
     );
   }
 }

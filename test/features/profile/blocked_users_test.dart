@@ -277,6 +277,88 @@ void main() {
       expect(without, isFalse);
     });
   });
+
+  group('builders', () {
+    testWidgets('the dialog and the rows can be replaced through the settings builders', (tester) async {
+      final profiles = _Profiles([BlockedUser(user: _dodi, blockedAt: DateTime.utc(2026, 11, 20))]);
+      CommunityBlockedUserTileDetails? tile;
+      await _pump(
+        tester,
+        CommunitySettingsBuildersScope(
+          builders: CommunitySettingsBuilders(
+            blockedUsersDialog: (context, d, fallback) => Dialog(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text('custom ${d.title}'),
+                  d.body,
+                  TextButton(onPressed: d.onClose, child: Text(d.closeLabel)),
+                ],
+              ),
+            ),
+            blockedUserTile: (context, d, fallback) {
+              tile = d;
+              return TextButton(onPressed: d.onUnblock, child: Text('row ${d.user.username} ${d.unblockLabel}'));
+            },
+          ),
+          child: Builder(
+            builder: (context) =>
+                TextButton(onPressed: () => showCommunityBlockedUsers(context), child: const Text('open')),
+          ),
+        ),
+        profiles: profiles,
+      );
+
+      await tester.tap(find.text('open'));
+      await tester.pumpAndSettle();
+
+      expect(find.text('custom Akun yang diblokir'), findsOneWidget);
+      expect(find.text('row dodi Buka blokir'), findsOneWidget);
+      expect(tile?.blockedAt, DateTime.utc(2026, 11, 20));
+      expect(tile?.pending, isFalse);
+      expect(find.descendant(of: find.byType(CommunityBlockedUsers), matching: find.byType(Scrollable)), findsNothing);
+
+      await tester.tap(find.text('row dodi Buka blokir'));
+      await tester.pumpAndSettle();
+      await tester.tap(find.widgetWithText(FilledButton, 'Buka blokir'));
+      await tester.pumpAndSettle();
+      expect(profiles.unblocked, ['u-d']);
+      expect(find.text('Belum ada akun yang Anda blokir.'), findsOneWidget);
+
+      await tester.tap(find.text('Tutup'));
+      await tester.pumpAndSettle();
+      expect(find.text('custom Akun yang diblokir'), findsNothing);
+    });
+
+    testWidgets('loading, empty and error use the settings parts for the blocked users area', (tester) async {
+      final areas = <String>[];
+      final profiles = _Profiles([])..listError = Exception('down');
+      await _pump(
+        tester,
+        CommunitySettingsBuildersScope(
+          builders: CommunitySettingsBuilders(
+            empty: (context, d, fallback) {
+              areas.add('empty:${d.area.name}');
+              return Text(d.message);
+            },
+            error: (context, d, fallback) {
+              areas.add('error:${d.area.name}');
+              return TextButton(onPressed: d.onRetry, child: Text(d.retryLabel));
+            },
+          ),
+          child: const CommunityBlockedUsers(),
+        ),
+        profiles: profiles,
+      );
+
+      expect(areas, contains('error:blockedUsers'));
+      profiles.listError = null;
+      await tester.tap(find.text('Coba lagi'));
+      await tester.pumpAndSettle();
+      expect(areas, contains('empty:blockedUsers'));
+      expect(find.text('Belum ada akun yang Anda blokir.'), findsOneWidget);
+    });
+  });
 }
 
 class _PlainProfiles extends Fake implements ProfileRepository {

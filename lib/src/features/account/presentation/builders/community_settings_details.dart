@@ -6,6 +6,7 @@ import 'package:rendezvous_community/src/features/message_requests/domain/entiti
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/notification_preferences.dart';
 import 'package:rendezvous_community/src/features/profile/domain/entities/mention_policy.dart';
+import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
 class CommunitySettingsOption<T> {
   const CommunitySettingsOption({required this.value, required this.label, this.hint});
@@ -26,6 +27,7 @@ enum CommunitySettingsArea {
   notificationPreferences,
   commentAudience,
   mentionPolicy,
+  blockedUsers,
 }
 
 class CommunitySettingsLoadingDetails {
@@ -334,6 +336,36 @@ class CommunityLegalReaderDetails {
 }
 
 enum CommunityAccountTileKind { appeals, blockedUsers, exportData, deleteAccount }
+
+class CommunityBlockedUsersDialogDetails {
+  const CommunityBlockedUsersDialogDetails({
+    required this.title,
+    required this.closeLabel,
+    required this.onClose,
+    required this.body,
+  });
+
+  final String title;
+  final String closeLabel;
+  final VoidCallback onClose;
+  final Widget body;
+}
+
+class CommunityBlockedUserTileDetails {
+  const CommunityBlockedUserTileDetails({
+    required this.user,
+    required this.unblockLabel,
+    this.blockedAt,
+    this.pending = false,
+    this.onUnblock,
+  });
+
+  final UserSummary user;
+  final String unblockLabel;
+  final DateTime? blockedAt;
+  final bool pending;
+  final VoidCallback? onUnblock;
+}
 
 class CommunityAccountTileDetails {
   const CommunityAccountTileDetails({
