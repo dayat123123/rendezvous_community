@@ -1,5 +1,5 @@
 import 'package:material_ui/material_ui.dart';
-import 'package:rendezvous_community/src/features/feed/domain/entities/post_research.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post_info_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_part_builder.dart';
@@ -7,40 +7,36 @@ import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_theme.dart';
 
-class CommunityPostResearch extends StatelessWidget {
-  const CommunityPostResearch({super.key, required this.details});
+class CommunityPostInfoCard extends StatelessWidget {
+  const CommunityPostInfoCard({super.key, required this.details});
 
   final CommunityPostDetails details;
 
   @override
   Widget build(BuildContext context) {
-    final research = details.post.research;
-    if (research == null) return const SizedBox.shrink();
-    final part = CommunityResearchDetails(post: details.post, research: research, initiallyExpanded: details.expanded);
+    final card = details.post.card;
+    if (card == null) return const SizedBox.shrink();
+    final part = CommunityInfoCardDetails(post: details.post, card: card, initiallyExpanded: details.expanded);
     return buildCommunityPart(
-      CommunityFeedBuilders.of(context).researchCard,
+      CommunityFeedBuilders.of(context).infoCard,
       context,
       part,
-      CommunityResearchCard(
-        key: ValueKey('research-${research.id}'),
-        research: research,
-        initiallyExpanded: details.expanded,
-      ),
+      CommunityInfoCard(key: ValueKey('info-card-${details.post.id}'), card: card, initiallyExpanded: details.expanded),
     );
   }
 }
 
-class CommunityResearchCard extends StatefulWidget {
-  const CommunityResearchCard({super.key, required this.research, this.initiallyExpanded = false});
+class CommunityInfoCard extends StatefulWidget {
+  const CommunityInfoCard({super.key, required this.card, this.initiallyExpanded = false});
 
-  final PostResearch research;
+  final PostInfoCard card;
   final bool initiallyExpanded;
 
   @override
-  State<CommunityResearchCard> createState() => _CommunityResearchCardState();
+  State<CommunityInfoCard> createState() => _CommunityInfoCardState();
 }
 
-class _CommunityResearchCardState extends State<CommunityResearchCard> {
+class _CommunityInfoCardState extends State<CommunityInfoCard> {
   late bool _expanded = widget.initiallyExpanded;
 
   @override
@@ -48,9 +44,9 @@ class _CommunityResearchCardState extends State<CommunityResearchCard> {
     final style = CommunityStyle.of(context);
     final spacing = style.spacing;
     final l10n = context.communityL10n;
-    final research = widget.research;
-    final doc = research.document;
-    final code = research.stockCode;
+    final card = widget.card;
+    final doc = card.document;
+    final code = card.stockCode;
     final headline = doc.headline;
     final subtitle = doc.subtitle;
     final badge = doc.badge;
@@ -101,7 +97,7 @@ class _CommunityResearchCardState extends State<CommunityResearchCard> {
                   ),
                 const Spacer(),
                 IconButton(
-                  key: const ValueKey('research-toggle'),
+                  key: const ValueKey('info-card-toggle'),
                   tooltip: _expanded ? l10n.collapse : l10n.expand,
                   visualDensity: VisualDensity.compact,
                   color: style.textSecondary,
@@ -115,7 +111,7 @@ class _CommunityResearchCardState extends State<CommunityResearchCard> {
               Text(headline, style: style.typography.title.copyWith(color: style.textPrimary)),
             ],
             if (_expanded) ...[
-              for (final block in doc.blocks) ...[SizedBox(height: spacing.md), _ResearchBlockView(block: block)],
+              for (final block in doc.blocks) ...[SizedBox(height: spacing.md), _InfoCardBlockView(block: block)],
               if (disclaimer != null) ...[
                 SizedBox(height: spacing.md),
                 Text(disclaimer, style: style.typography.meta.copyWith(color: style.textTertiary)),
@@ -149,23 +145,23 @@ class _StockTile extends StatelessWidget {
   }
 }
 
-class _ResearchBlockView extends StatelessWidget {
-  const _ResearchBlockView({required this.block});
+class _InfoCardBlockView extends StatelessWidget {
+  const _InfoCardBlockView({required this.block});
 
-  final ResearchBlock block;
+  final InfoCardBlock block;
 
   @override
   Widget build(BuildContext context) {
     final style = CommunityStyle.of(context);
     final body = style.typography.body.copyWith(color: style.textPrimary);
     return switch (block) {
-      ResearchParagraph(:final text) => Text(text, style: body),
-      ResearchMetrics(:final metrics) => Wrap(
+      InfoCardParagraph(:final text) => Text(text, style: body),
+      InfoCardMetrics(:final metrics) => Wrap(
         spacing: style.spacing.sm,
         runSpacing: style.spacing.sm,
         children: [for (final metric in metrics) _MetricChip(metric: metric)],
       ),
-      ResearchList(:final numbered, :final items) => Column(
+      InfoCardList(:final numbered, :final items) => Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           for (var i = 0; i < items.length; i++)
@@ -182,7 +178,7 @@ class _ResearchBlockView extends StatelessWidget {
             ),
         ],
       ),
-      ResearchCallout(:final title, :final text) => DecoratedBox(
+      InfoCardCallout(:final title, :final text) => DecoratedBox(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(style.radii.card),
           border: Border.all(color: style.accent, width: style.borderWidth),
@@ -208,16 +204,16 @@ class _ResearchBlockView extends StatelessWidget {
 class _MetricChip extends StatelessWidget {
   const _MetricChip({required this.metric});
 
-  final ResearchMetric metric;
+  final InfoCardMetric metric;
 
   @override
   Widget build(BuildContext context) {
     final style = CommunityStyle.of(context);
     final theme = CommunityTheme.of(context);
     final (background, foreground) = switch (metric.trend) {
-      ResearchTrend.up => (theme.bullish, theme.onBullish),
-      ResearchTrend.down => (theme.bearish, theme.onBearish),
-      ResearchTrend.flat || null => (theme.neutral, theme.onNeutral),
+      InfoCardTrend.up => (theme.bullish, theme.onBullish),
+      InfoCardTrend.down => (theme.bearish, theme.onBearish),
+      InfoCardTrend.flat || null => (theme.neutral, theme.onNeutral),
     };
     final change = metric.change;
     return ConstrainedBox(
@@ -242,9 +238,9 @@ class _MetricChip extends StatelessWidget {
                     if (metric.trend case final trend?)
                       Icon(
                         switch (trend) {
-                          ResearchTrend.up => Icons.arrow_drop_up,
-                          ResearchTrend.down => Icons.arrow_drop_down,
-                          ResearchTrend.flat => Icons.remove,
+                          InfoCardTrend.up => Icons.arrow_drop_up,
+                          InfoCardTrend.down => Icons.arrow_drop_down,
+                          InfoCardTrend.flat => Icons.remove,
                         },
                         size: 16,
                         color: foreground,

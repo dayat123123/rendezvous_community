@@ -1,3 +1,15 @@
+## 1.60.0
+
+* **Kartu post jadi generik (`type: "card"`)** mengikuti format final migrasi server 0199, sebelum 0199 dirilis. Satu tipe kartu kini melayani dua sumber: `source: "research"` (layanan research, dengan `research_id` dan `kind`) dan `source: "manual"` (dibuat staf di Hub, badge boleh kosong). Format `document` tidak berubah. Lampiran `type: "research"` dari 1.59.0 tidak lagi dibaca, dan memang belum pernah dipakai di server mana pun.
+* Nama diganti (**breaking** terhadap 1.59.0):
+  * `Post.research` → `Post.card`;
+  * `PostResearch` → `PostInfoCard`, dengan field baru `source` (`InfoCardSource`), sedangkan `researchId` dan `kind` kini opsional;
+  * `ResearchDocument`/`ResearchBlock`/`ResearchParagraph`/`ResearchList`/`ResearchCallout`/`ResearchMetrics`/`ResearchMetric`/`ResearchTrend` → awalan `InfoCard…`;
+  * `CommunityResearchCard` → `CommunityInfoCard`, dan `CommunityPostResearch` → `CommunityPostInfoCard`;
+  * slot `CommunityFeedBuilders.researchCard` → `infoCard`, dengan `CommunityInfoCardDetails.card`.
+
+  Nama `CommunityCard` tidak dipakai karena sudah ada untuk komponen lain.
+
 ## 1.59.0
 
 * **Kartu research di post** (butuh migrasi server 0199). Post resmi dari layanan research (misalnya @olt_research) membawa elemen lampiran `{"type": "research", ...}` berisi dokumen layout-as-data. Library kini menampilkannya sebagai kartu, **menggantikan** isi teks polos post. Teks polos tetap dikirim server untuk app lama, pencarian, dan notifikasi.

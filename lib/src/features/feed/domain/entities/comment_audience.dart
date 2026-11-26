@@ -22,11 +22,7 @@ enum CommentAudience {
 }
 
 class CommentSettings {
-  const CommentSettings({
-    this.audience = CommentAudience.everyone,
-    this.allOff = false,
-    this.allOffAvailable = true,
-  });
+  const CommentSettings({this.audience = CommentAudience.everyone, this.allOff = false, this.allOffAvailable = true});
 
   final CommentAudience audience;
   final bool allOff;

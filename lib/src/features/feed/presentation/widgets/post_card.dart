@@ -8,7 +8,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
-import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_research_card.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_info_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_reactions.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/sentiment_badge.dart';
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
@@ -251,10 +251,10 @@ class _DefaultPostCard extends StatelessWidget {
             child: ModerationNotice(status: post.moderationStatus, onAppeal: d.onAppeal),
           ),
         if (!expanded) ?titleView,
-        if (post.research != null)
+        if (post.card != null)
           Padding(
             padding: side.copyWith(top: spacing.sm),
-            child: CommunityPostResearch(details: d),
+            child: CommunityPostInfoCard(details: d),
           )
         else
           Padding(

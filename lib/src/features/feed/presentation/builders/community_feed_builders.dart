@@ -48,7 +48,7 @@ class CommunityFeedBuilders {
     this.composeCommentAudience,
     this.commentAudienceSheet,
     this.commentRestriction,
-    this.researchCard,
+    this.infoCard,
   });
 
   final CommunityPartBuilder<CommunityPostDetails>? postCard;
@@ -57,7 +57,7 @@ class CommunityFeedBuilders {
   final CommunityPartBuilder<CommunityPostDetails>? postBody;
   final CommunityPartBuilder<CommunityPostDetails>? attachments;
   final CommunityPartBuilder<CommunityLinkPreviewDetails>? linkPreview;
-  final CommunityPartBuilder<CommunityResearchDetails>? researchCard;
+  final CommunityPartBuilder<CommunityInfoCardDetails>? infoCard;
   final CommunityPartBuilder<CommunityPostDetails>? stockTags;
   final CommunityPartBuilder<CommunityPostDetails>? actionBar;
   final CommunityPartBuilder<CommunityPollDetails>? poll;
@@ -149,7 +149,7 @@ class CommunityFeedBuilders {
       composeCommentAudience: other.composeCommentAudience ?? composeCommentAudience,
       commentAudienceSheet: other.commentAudienceSheet ?? commentAudienceSheet,
       commentRestriction: other.commentRestriction ?? commentRestriction,
-      researchCard: other.researchCard ?? researchCard,
+      infoCard: other.infoCard ?? infoCard,
     );
   }
 }
