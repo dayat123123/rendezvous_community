@@ -1,3 +1,11 @@
+## 1.58.0
+
+* **Bagikan post ke beberapa tujuan sekaligus** (butuh migrasi server 0198). Interface baru `MultiShareRepository`, diimplementasikan `ChatExtrasRepositoryImpl`:
+  * `shareLimits()` membaca `get_share_limits`: `ShareLimits(maxTargets, perHour)`. Batas ditentukan server, tidak bisa diubah dari Hub.
+  * `searchShareTargets(query)` membaca `search_share_targets`: orang, grup, dan room saham, termasuk yang belum punya chat dengan kita. Hasilnya `ShareTarget` dengan `canSend` dan `reason` (`ShareTargetReason`). Query kosong tidak memanggil server.
+  * `sharePostToTargets(postId, targets, body:)` memanggil `share_post_to_targets` dengan `ShareTargetRequest(ShareTargetRef.room/user/stock, clientId:)`. Hasilnya satu `ShareDelivery` per tujuan (terkirim atau gagal beserta `CommunityException`), sehingga satu tujuan yang gagal tidak menggagalkan yang lain. Kirim ulang dengan `clientId` yang sama tidak membuat pesan dobel.
+* Teks baru untuk kode error `too_many_targets`, `duplicate_target`, `blocked`, `not_member`, `user_not_found`, dan `invalid_target`, serta `CommunityShareTargetText.shareTargetReason(...)` untuk menampilkan alasan sebuah tujuan tidak bisa atau akan menjadi permintaan pesan.
+
 ## 1.57.0
 
 * **Dialog dan baris daftar blokir bisa diseragamkan dengan app:** `CommunitySettingsBuilders` punya slot baru `blockedUsersDialog` (`CommunityBlockedUsersDialogDetails`: judul, label tutup, `onClose`, dan `body` berisi daftar) dan `blockedUserTile` (`CommunityBlockedUserTileDetails`: user, waktu blokir, label, status `pending`, `onUnblock`). Dialog dari pengaturan maupun dari tombol "Kelola" sama-sama memakai slot ini.

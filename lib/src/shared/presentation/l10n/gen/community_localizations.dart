@@ -1958,6 +1958,72 @@ abstract class CommunityLocalizations {
   /// **'Post tidak bisa dibagikan ke chat ini.'**
   String get errorShareNotAllowed;
 
+  /// No description provided for @errorTooManyTargets.
+  ///
+  /// In id, this message translates to:
+  /// **'Terlalu banyak tujuan untuk sekali kirim.'**
+  String get errorTooManyTargets;
+
+  /// No description provided for @errorDuplicateTarget.
+  ///
+  /// In id, this message translates to:
+  /// **'Tujuan ini sudah ada di daftar kirim.'**
+  String get errorDuplicateTarget;
+
+  /// No description provided for @errorBlockedTarget.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak bisa mengirim ke akun ini.'**
+  String get errorBlockedTarget;
+
+  /// No description provided for @errorNotMember.
+  ///
+  /// In id, this message translates to:
+  /// **'Anda bukan anggota chat ini.'**
+  String get errorNotMember;
+
+  /// No description provided for @errorUserNotFound.
+  ///
+  /// In id, this message translates to:
+  /// **'Pengguna tidak ditemukan.'**
+  String get errorUserNotFound;
+
+  /// No description provided for @errorInvalidTarget.
+  ///
+  /// In id, this message translates to:
+  /// **'Tujuan kirim tidak valid.'**
+  String get errorInvalidTarget;
+
+  /// No description provided for @shareReasonDmNotAllowed.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak menerima pesan'**
+  String get shareReasonDmNotAllowed;
+
+  /// No description provided for @shareReasonCannotSend.
+  ///
+  /// In id, this message translates to:
+  /// **'Tidak bisa dikirimi'**
+  String get shareReasonCannotSend;
+
+  /// No description provided for @shareReasonAdminsOnly.
+  ///
+  /// In id, this message translates to:
+  /// **'Hanya admin yang bisa mengirim'**
+  String get shareReasonAdminsOnly;
+
+  /// No description provided for @shareReasonRoomDisabled.
+  ///
+  /// In id, this message translates to:
+  /// **'Room sedang ditutup'**
+  String get shareReasonRoomDisabled;
+
+  /// No description provided for @shareReasonMessageRequest.
+  ///
+  /// In id, this message translates to:
+  /// **'Dikirim sebagai permintaan pesan'**
+  String get shareReasonMessageRequest;
+
   /// No description provided for @errorRequestNotFound.
   ///
   /// In id, this message translates to:

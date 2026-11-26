@@ -1089,6 +1089,39 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get errorShareNotAllowed => 'The post cannot be shared to this chat.';
 
   @override
+  String get errorTooManyTargets => 'Too many recipients for one send.';
+
+  @override
+  String get errorDuplicateTarget => 'This recipient is already on the list.';
+
+  @override
+  String get errorBlockedTarget => 'You can\'t send to this account.';
+
+  @override
+  String get errorNotMember => 'You\'re not a member of this chat.';
+
+  @override
+  String get errorUserNotFound => 'User not found.';
+
+  @override
+  String get errorInvalidTarget => 'That recipient isn\'t valid.';
+
+  @override
+  String get shareReasonDmNotAllowed => 'Not accepting messages';
+
+  @override
+  String get shareReasonCannotSend => 'Can\'t be messaged';
+
+  @override
+  String get shareReasonAdminsOnly => 'Only admins can post';
+
+  @override
+  String get shareReasonRoomDisabled => 'Room is closed';
+
+  @override
+  String get shareReasonMessageRequest => 'Sent as a message request';
+
+  @override
   String get errorRequestNotFound => 'The message request no longer exists.';
 
   @override

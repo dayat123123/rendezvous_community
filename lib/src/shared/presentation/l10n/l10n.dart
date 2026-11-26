@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:material_ui/material_ui.dart' show GlobalMaterialLocalizations;
 import 'package:rendezvous_community/src/core/error/community_exception.dart';
 import 'package:rendezvous_community/src/core/error/error_mapper.dart';
+import 'package:rendezvous_community/src/features/chat/domain/entities/share_target.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/gen/community_localizations.dart';
 
 export 'gen/community_localizations.dart';
@@ -15,6 +16,16 @@ const List<LocalizationsDelegate<dynamic>> communityLocalizationsDelegates = [
 extension CommunityL10nContext on BuildContext {
   CommunityLocalizations get communityL10n =>
       CommunityLocalizations.of(this) ?? lookupCommunityLocalizations(const Locale('id'));
+}
+
+extension CommunityShareTargetText on CommunityLocalizations {
+  String shareTargetReason(ShareTargetReason reason) => switch (reason) {
+    ShareTargetReason.dmNotAllowed => shareReasonDmNotAllowed,
+    ShareTargetReason.cannotSend || ShareTargetReason.other => shareReasonCannotSend,
+    ShareTargetReason.groupAdminsOnly => shareReasonAdminsOnly,
+    ShareTargetReason.roomDisabled => shareReasonRoomDisabled,
+    ShareTargetReason.messageRequest => shareReasonMessageRequest,
+  };
 }
 
 extension CommunityErrorText on CommunityLocalizations {
@@ -97,6 +108,12 @@ extension CommunityErrorText on CommunityLocalizations {
       'invalid_query' => errorHelpQuery,
       'article_not_found' => errorHelpArticleNotFound,
       'share_not_allowed' => errorShareNotAllowed,
+      'too_many_targets' => errorTooManyTargets,
+      'duplicate_target' => errorDuplicateTarget,
+      'blocked' => errorBlockedTarget,
+      'not_member' => errorNotMember,
+      'user_not_found' => errorUserNotFound,
+      'invalid_target' => errorInvalidTarget,
       'reactions_not_supported' => featureUnavailable,
       'post_reactions_unavailable' => errorPostReactionsUnavailable,
       'request_not_found' => errorRequestNotFound,

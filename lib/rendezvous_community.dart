@@ -73,6 +73,7 @@ export 'src/features/chat/domain/entities/outbox_message.dart';
 export 'src/features/chat/domain/entities/receipt.dart';
 export 'src/features/chat/domain/entities/room_moderation.dart';
 export 'src/features/chat/domain/entities/room_preview.dart';
+export 'src/features/chat/domain/entities/share_target.dart';
 export 'src/features/chat/domain/entities/stock_card.dart'
     show maxStockCards, normalizeStockCardCode, normalizeStockCardCodes;
 export 'src/features/chat/domain/entities/stock_room_state.dart';
@@ -360,7 +361,12 @@ export 'src/shared/presentation/images/community_image_loader.dart'
     show CommunityImageLoadException, CommunityImageLoader;
 export 'src/shared/presentation/images/community_image_provider.dart' show CommunityImageProvider;
 export 'src/shared/presentation/l10n/l10n.dart'
-    show CommunityErrorText, CommunityL10nContext, CommunityLocalizations, communityLocalizationsDelegates;
+    show
+        CommunityErrorText,
+        CommunityL10nContext,
+        CommunityLocalizations,
+        CommunityShareTargetText,
+        communityLocalizationsDelegates;
 export 'src/shared/presentation/load_status.dart';
 export 'src/shared/presentation/theme/community_icons.dart';
 export 'src/shared/presentation/theme/community_style.dart';

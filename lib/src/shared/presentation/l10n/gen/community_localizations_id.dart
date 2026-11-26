@@ -1080,6 +1080,39 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get errorShareNotAllowed => 'Post tidak bisa dibagikan ke chat ini.';
 
   @override
+  String get errorTooManyTargets => 'Terlalu banyak tujuan untuk sekali kirim.';
+
+  @override
+  String get errorDuplicateTarget => 'Tujuan ini sudah ada di daftar kirim.';
+
+  @override
+  String get errorBlockedTarget => 'Tidak bisa mengirim ke akun ini.';
+
+  @override
+  String get errorNotMember => 'Anda bukan anggota chat ini.';
+
+  @override
+  String get errorUserNotFound => 'Pengguna tidak ditemukan.';
+
+  @override
+  String get errorInvalidTarget => 'Tujuan kirim tidak valid.';
+
+  @override
+  String get shareReasonDmNotAllowed => 'Tidak menerima pesan';
+
+  @override
+  String get shareReasonCannotSend => 'Tidak bisa dikirimi';
+
+  @override
+  String get shareReasonAdminsOnly => 'Hanya admin yang bisa mengirim';
+
+  @override
+  String get shareReasonRoomDisabled => 'Room sedang ditutup';
+
+  @override
+  String get shareReasonMessageRequest => 'Dikirim sebagai permintaan pesan';
+
+  @override
   String get errorRequestNotFound => 'Permintaan pesan sudah tidak ada.';
 
   @override
