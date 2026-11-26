@@ -14,7 +14,12 @@ import 'package:rendezvous_community/src/shared/data/models/user_summary_model.d
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 
 class ProfileRepositoryImpl
-    implements ProfileRepository, SuggestedUsersRepository, FollowListRepository, MentionPolicyRepository {
+    implements
+        ProfileRepository,
+        SuggestedUsersRepository,
+        FollowListRepository,
+        BlockListRepository,
+        MentionPolicyRepository {
   ProfileRepositoryImpl(this._api, {this.onMyProfileChanged});
 
   final SocialRemoteDataSource _api;
@@ -91,6 +96,27 @@ class ProfileRepositoryImpl
   Future<void> unblock(String userId) async {
     final me = await _api.requireUserId();
     await _api.delete('blocks', {'blocker_id': me, 'blocked_id': userId});
+  }
+
+  @override
+  Future<List<BlockedUser>> blockedUsers() async {
+    final me = await _api.requireUserId();
+    final rows = await _api.select(
+      'blocks',
+      columns: 'created_at, blocked:profiles!blocked_id(id, username, display_name, avatar_url, is_verified)',
+      match: {'blocker_id': me},
+    );
+    final items = [
+      for (final row in rows)
+        if (row['blocked'] case final Map<String, dynamic> profile)
+          BlockedUser(
+            user: UserSummaryModel.fromJson(profile).toEntity(),
+            blockedAt: DateTime.tryParse(row['created_at'] as String? ?? '')?.toUtc(),
+          ),
+    ];
+    final epoch = DateTime.utc(1970);
+    items.sort((a, b) => (b.blockedAt ?? epoch).compareTo(a.blockedAt ?? epoch));
+    return items;
   }
 
   @override

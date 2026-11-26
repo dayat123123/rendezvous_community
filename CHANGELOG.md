@@ -1,3 +1,12 @@
+## 1.56.0
+
+* **Daftar akun yang diblokir:** akun yang sudah diblokir tidak muncul lagi di pencarian, feed, maupun pesan, sehingga sebelumnya tidak ada jalan untuk membuka blokirnya. Sekarang tersedia daftar "Akun yang diblokir" (terbaru di atas) dengan tombol "Buka blokir" plus konfirmasi di tiap baris.
+  * `BlockListRepository.blockedUsers()` dan entity `BlockedUser` (user + waktu blokir). `ProfileRepositoryImpl` membacanya langsung dari tabel `blocks` milik user sendiri beserta profil yang diblokir; tidak perlu migrasi server.
+  * Widget `CommunityBlockedUsers`, dialog `showCommunityBlockedUsers(context)`, dan `communityBlockedUsersAvailable(context)` untuk mengecek apakah repository mendukung daftar ini.
+  * `CommunityAccountSettings` punya bagian baru "Akun yang diblokir" (`CommunityAccountTileKind.blockedUsers`).
+* **Tombol "Kelola" setelah memblokir:** pesan "{nama} diblokir" kini punya aksi "Kelola" yang langsung membuka daftar blokir, tetap berfungsi walau kartu post atau komentar asalnya sudah hilang dari layar.
+* `showCommunityMessage` menerima `actionLabel` dan `onAction` opsional.
+
 ## 1.55.3
 
 * **Feed hanya me-rebuild kartu yang berubah:** like, reaksi, bookmark, edit, jumlah komentar, serta buka/tutup komentar inline kini hanya me-rebuild kartu post yang bersangkutan. List feed sendiri hanya di-rebuild bila susunannya berubah (urutan atau jumlah post, pin, status muat, banner post baru, dan sejenisnya). Setiap kartu memilih datanya sendiri dari `FeedState` lewat `BlocSelector`.

@@ -329,6 +329,28 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   }
 
   @override
+  String unblockConfirm(String name) {
+    return 'Buka blokir $name? Anda akan kembali bisa saling melihat post, komentar, dan pesan.';
+  }
+
+  @override
+  String unblocked(String name) {
+    return '$name tidak lagi diblokir';
+  }
+
+  @override
+  String get blockedUsersTitle => 'Akun yang diblokir';
+
+  @override
+  String get blockedUsersHint => 'Lihat dan buka blokir akun yang Anda blokir.';
+
+  @override
+  String get blockedUsersEmpty => 'Belum ada akun yang Anda blokir.';
+
+  @override
+  String get blockedUsersManage => 'Kelola';
+
+  @override
   String get follow => 'Ikuti';
 
   @override

@@ -21,6 +21,7 @@ import 'package:rendezvous_community/src/features/legal/presentation/widgets/com
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_legal_document_reader.dart';
 import 'package:rendezvous_community/src/features/message_requests/presentation/widgets/community_dm_policy_settings.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/widgets/community_notification_settings.dart';
+import 'package:rendezvous_community/src/features/profile/presentation/widgets/community_blocked_users.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -191,6 +192,22 @@ class _AccountSettingsView extends StatelessWidget {
                         CommunitySectionHeader(title: l10n.mentionPolicySection),
                         const CommunitySettingsGroup(children: [CommunityMentionPolicySettings()]),
                       ],
+                      if (social && communityBlockedUsersAvailable(context)) ...[
+                        CommunitySectionHeader(title: l10n.blockedUsersTitle),
+                        CommunitySettingsGroup(
+                          children: [
+                            _AccountTile(
+                              details: CommunityAccountTileDetails(
+                                kind: CommunityAccountTileKind.blockedUsers,
+                                icon: Icons.block_outlined,
+                                title: l10n.blockedUsersTitle,
+                                subtitle: l10n.blockedUsersHint,
+                                onTap: () => showCommunityBlockedUsers(context),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                       if (features != null && social && context.communityFeature(CommunityFlags.notificationPrefs)) ...[
                         CommunitySectionHeader(title: l10n.notificationSettings),
                         const CommunitySettingsGroup(children: [CommunityNotificationSettings()]),
@@ -276,7 +293,7 @@ class _DefaultAccountTile extends StatelessWidget {
       subtitle: Text(d.subtitle),
       trailing: d.busy && d.kind == CommunityAccountTileKind.exportData
           ? SizedBox.square(dimension: 20, child: CircularProgressIndicator(strokeWidth: 2, color: style.accent))
-          : d.kind == CommunityAccountTileKind.appeals
+          : d.kind == CommunityAccountTileKind.appeals || d.kind == CommunityAccountTileKind.blockedUsers
           ? Icon(Icons.chevron_right, color: style.textTertiary)
           : null,
       enabled: d.enabled,

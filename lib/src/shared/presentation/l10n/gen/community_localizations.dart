@@ -638,6 +638,42 @@ abstract class CommunityLocalizations {
   /// **'{name} diblokir'**
   String blocked(String name);
 
+  /// No description provided for @unblockConfirm.
+  ///
+  /// In id, this message translates to:
+  /// **'Buka blokir {name}? Anda akan kembali bisa saling melihat post, komentar, dan pesan.'**
+  String unblockConfirm(String name);
+
+  /// No description provided for @unblocked.
+  ///
+  /// In id, this message translates to:
+  /// **'{name} tidak lagi diblokir'**
+  String unblocked(String name);
+
+  /// No description provided for @blockedUsersTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Akun yang diblokir'**
+  String get blockedUsersTitle;
+
+  /// No description provided for @blockedUsersHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Lihat dan buka blokir akun yang Anda blokir.'**
+  String get blockedUsersHint;
+
+  /// No description provided for @blockedUsersEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada akun yang Anda blokir.'**
+  String get blockedUsersEmpty;
+
+  /// No description provided for @blockedUsersManage.
+  ///
+  /// In id, this message translates to:
+  /// **'Kelola'**
+  String get blockedUsersManage;
+
   /// No description provided for @follow.
   ///
   /// In id, this message translates to:

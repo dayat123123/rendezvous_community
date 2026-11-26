@@ -333,7 +333,7 @@ class CommunityLegalReaderDetails {
   String? get changes => document.changeSummary;
 }
 
-enum CommunityAccountTileKind { appeals, exportData, deleteAccount }
+enum CommunityAccountTileKind { appeals, blockedUsers, exportData, deleteAccount }
 
 class CommunityAccountTileDetails {
   const CommunityAccountTileDetails({

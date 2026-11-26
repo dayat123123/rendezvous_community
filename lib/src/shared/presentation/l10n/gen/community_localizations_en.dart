@@ -328,6 +328,28 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   }
 
   @override
+  String unblockConfirm(String name) {
+    return 'Unblock $name? You\'ll be able to see each other\'s posts, comments, and messages again.';
+  }
+
+  @override
+  String unblocked(String name) {
+    return '$name unblocked';
+  }
+
+  @override
+  String get blockedUsersTitle => 'Blocked accounts';
+
+  @override
+  String get blockedUsersHint => 'See and unblock accounts you\'ve blocked.';
+
+  @override
+  String get blockedUsersEmpty => 'You haven\'t blocked anyone.';
+
+  @override
+  String get blockedUsersManage => 'Manage';
+
+  @override
   String get follow => 'Follow';
 
   @override

@@ -31,6 +31,13 @@ abstract class SuggestedUser with _$SuggestedUser {
 
 enum FollowListKind { followers, following }
 
+class BlockedUser {
+  const BlockedUser({required this.user, this.blockedAt});
+
+  final UserSummary user;
+  final DateTime? blockedAt;
+}
+
 @freezed
 abstract class FollowListEntry with _$FollowListEntry {
   const factory FollowListEntry({

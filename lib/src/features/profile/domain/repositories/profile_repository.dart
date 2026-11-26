@@ -37,6 +37,10 @@ abstract interface class SuggestedUsersRepository {
   Future<List<SuggestedUser>> suggestedUsers({int limit = 5});
 }
 
+abstract interface class BlockListRepository {
+  Future<List<BlockedUser>> blockedUsers();
+}
+
 abstract interface class FollowListRepository {
   Future<Paged<FollowListEntry>> followList(String userId, FollowListKind kind, {String? cursor, int limit = 30});
 }

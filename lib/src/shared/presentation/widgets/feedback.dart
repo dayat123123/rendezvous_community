@@ -9,10 +9,17 @@ void showCommunityError(BuildContext context, Object error) {
     ..showSnackBar(SnackBar(content: Text(context.communityL10n.errorMessage(error))));
 }
 
-void showCommunityMessage(BuildContext context, String message) {
+void showCommunityMessage(BuildContext context, String message, {String? actionLabel, VoidCallback? onAction}) {
   ScaffoldMessenger.maybeOf(context)
     ?..hideCurrentSnackBar()
-    ..showSnackBar(SnackBar(content: Text(message)));
+    ..showSnackBar(
+      SnackBar(
+        content: Text(message),
+        action: actionLabel != null && onAction != null
+            ? SnackBarAction(label: actionLabel, onPressed: onAction)
+            : null,
+      ),
+    );
 }
 
 Future<bool> confirmCommunityAction(BuildContext context, String message, {String? confirmLabel}) async {

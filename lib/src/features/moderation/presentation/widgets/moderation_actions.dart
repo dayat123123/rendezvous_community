@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_builders.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
@@ -5,6 +7,7 @@ import 'package:rendezvous_community/src/features/account/presentation/builders/
 import 'package:rendezvous_community/src/features/account/presentation/builders/community_settings_details.dart';
 import 'package:rendezvous_community/src/features/account/presentation/widgets/settings_visuals.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
+import 'package:rendezvous_community/src/features/profile/presentation/widgets/community_blocked_users.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -189,9 +192,17 @@ Future<bool> blockUserWithConfirm(BuildContext context, UserSummary user) async 
   final l10n = context.communityL10n;
   if (!await confirmCommunityAction(context, l10n.blockConfirm(user.name), confirmLabel: l10n.block)) return false;
   if (!context.mounted) return false;
+  final manage = communityBlockedUsersOpener(context);
   try {
     await CommunityScope.of(context).profiles.block(user.id);
-    if (context.mounted) showCommunityMessage(context, l10n.blocked(user.name));
+    if (context.mounted) {
+      showCommunityMessage(
+        context,
+        l10n.blocked(user.name),
+        actionLabel: manage == null ? null : l10n.blockedUsersManage,
+        onAction: manage == null ? null : () => unawaited(manage()),
+      );
+    }
     return true;
   } catch (e) {
     if (context.mounted) showCommunityError(context, e);

@@ -97,6 +97,12 @@
   "unblock": "Unblock",
   "blockConfirm": "Block {name}? You won't see each other's posts, comments, or messages.",
   "blocked": "{name} blocked",
+  "unblockConfirm": "Unblock {name}? You'll be able to see each other's posts, comments, and messages again.",
+  "unblocked": "{name} unblocked",
+  "blockedUsersTitle": "Blocked accounts",
+  "blockedUsersHint": "See and unblock accounts you've blocked.",
+  "blockedUsersEmpty": "You haven't blocked anyone.",
+  "blockedUsersManage": "Manage",
 
   "follow": "Follow",
   "followingLabel": "Following",
