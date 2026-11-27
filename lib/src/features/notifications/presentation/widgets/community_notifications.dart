@@ -19,6 +19,7 @@ import 'package:rendezvous_community/src/features/notifications/presentation/bui
 import 'package:rendezvous_community/src/features/notifications/presentation/cubit/notifications_cubit.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/widgets/community_notification_settings.dart';
 import 'package:rendezvous_community/src/features/notifications/presentation/widgets/notification_visuals.dart';
+import 'package:rendezvous_community/src/features/profile/domain/entities/user_profile.dart';
 import 'package:rendezvous_community/src/features/trade_share/domain/entities/trade_activity.dart';
 import 'package:rendezvous_community/src/features/trade_share/presentation/builders/community_trade_share_details.dart';
 import 'package:rendezvous_community/src/features/trade_share/presentation/trade_share_navigation.dart';
@@ -153,6 +154,7 @@ bool openCommunityNotification(BuildContext context, AppNotification n) {
   }
   final postId = n.postId;
   final roomId = n.roomId;
+  final me = CommunityScope.of(context).currentUser;
   final url = Uri.tryParse(n.url ?? '');
   if (n.isRoomMute && roomId != null) {
     CommunityNavigator.openRoom(context, roomId);
@@ -166,8 +168,12 @@ bool openCommunityNotification(BuildContext context, AppNotification n) {
     unawaited(launchUrl(url, mode: LaunchMode.externalApplication));
   } else if ((n.type == NotificationType.message || n.isRoomMention) && roomId != null) {
     CommunityNavigator.openRoom(context, roomId);
+  } else if (n.type == NotificationType.follow && n.totalActors > 1 && me != null) {
+    CommunityNavigator.openFollowList(context, me, FollowListKind.followers, kinds: const [FollowListKind.followers]);
+  } else if (n.type == NotificationType.followedPost && n.eventCount > 1 && n.actor != null) {
+    CommunityNavigator.openUser(context, n.actor!);
   } else if (postId != null) {
-    CommunityNavigator.openPost(context, postId);
+    CommunityNavigator.openPost(context, postId, rootCommentId: n.commentRoot);
   } else if (n.actor != null) {
     CommunityNavigator.openUser(context, n.actor!);
   } else {

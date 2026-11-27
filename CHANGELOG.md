@@ -1,3 +1,12 @@
+## 1.65.0
+
+* **Klik notifikasi kini membuka tujuan yang paling tepat.** Berlaku untuk daftar notifikasi dan push.
+  * Balasan ke komentar saya, komentar di post saya, like di komentar saya, dan mention di komentar kini membuka thread komentar itu (`openPost(..., rootCommentId:)`, diteruskan ke `onThreadTap` bila diisi). Sebelumnya hanya membuka post dari atas.
+  * Beberapa komentar yang digabung di post saya tetap membuka post-nya.
+  * "X membuat N postingan baru" (lebih dari satu post) kini membuka profil X, bukan hanya post terakhir.
+  * Beberapa follower baru yang digabung kini membuka daftar follower saya. Satu follower tetap membuka profilnya.
+  * Fungsi baru `notificationCommentRoot(type, payload, {eventCount})` dan getter `AppNotification.commentRoot`.
+
 ## 1.64.0
 
 * **Notifikasi "Ringkasan pantauan" kini membuka postingannya.** Klik notifikasi digest (di daftar notifikasi maupun dari push) membuka halaman feed berisi postingan tentang saham-saham di digest itu, dengan judul "Ringkasan pantauan". Sebelumnya klik memanggil `onStockTap` untuk saham teratas, sehingga di app hanya mengganti saham yang dipilih.

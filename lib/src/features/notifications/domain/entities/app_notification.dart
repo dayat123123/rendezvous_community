@@ -29,6 +29,21 @@ const notificationTypeKeys = {
   NotificationType.tradeShare: 'trade_share',
 };
 
+String? notificationCommentRoot(String type, Map<String, Object?> payload, {int eventCount = 1}) {
+  String? text(String key) {
+    final value = payload[key];
+    return value is String && value.isNotEmpty ? value : null;
+  }
+
+  final answered = text('parent_id') ?? text('comment_id');
+  return switch (type) {
+    'like' => text('target_type') == 'comment' ? text('target_id') : null,
+    'reply' => eventCount > 1 && text('scope') != 'comment' ? null : answered,
+    'mention' => answered,
+    _ => null,
+  };
+}
+
 NotificationType? notificationTypeFromKey(String key) =>
     NotificationType.values.where((t) => (notificationTypeKeys[t] ?? t.name) == key).firstOrNull;
 
@@ -84,6 +99,8 @@ abstract class AppNotification with _$AppNotification {
   String? get tradeReason => payload['reason'] is String ? payload['reason'] as String : null;
   String? get tradeTraderId => payload['trader_id'] is String ? payload['trader_id'] as String : null;
   String? get replyScope => payload['scope'] is String ? payload['scope'] as String : null;
+  String? get commentRoot =>
+      notificationCommentRoot(notificationTypeKeys[type] ?? type.name, payload, eventCount: eventCount);
   List<UserSummary> get knownActors => actors.isNotEmpty ? actors : [?actor];
   int get totalActors => actorCount > knownActors.length ? actorCount : knownActors.length;
   Attachment? get postAttachment => _attachment(payload['post_attachment']);

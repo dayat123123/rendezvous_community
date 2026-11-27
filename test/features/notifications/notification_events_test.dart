@@ -82,7 +82,7 @@ void main() {
       final notifications = _Notifications([digest, moderation, roomMention, followed]);
       final stocks = <String>[];
       final rooms = <String>[];
-      final posts = <String>[];
+      final users = <String>[];
       final features = FakeFeatureDependencies(config: loadedConfig());
       addTearDown(features.dispose);
       await pumpFeatureApp(
@@ -93,7 +93,7 @@ void main() {
           callbacks: CommunityCallbacks(
             onStockTap: (_, code) => stocks.add(code),
             onRoomTap: (_, id) => rooms.add(id),
-            onPostTap: (_, id) => posts.add(id),
+            onUserTap: (_, user) => users.add(user.id),
           ),
         ),
         features: features,
@@ -114,7 +114,7 @@ void main() {
 
       expect(stocks, isEmpty);
       expect(rooms, ['room-bbca']);
-      expect(posts, ['p-9']);
+      expect(users, [alice.id]);
       final feed = tester.widget<CommunityFeedList>(find.byType(CommunityFeedList));
       expect(feed.scope, const FeedScope.stocks(['BBCA', 'TLKM', 'ASII']));
       final events = [

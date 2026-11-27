@@ -7,6 +7,7 @@ import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/app/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/appeals/presentation/widgets/community_appeals.dart';
 import 'package:rendezvous_community/src/features/notices/presentation/community_notice_page.dart';
+import 'package:rendezvous_community/src/features/notifications/domain/entities/app_notification.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/entities/notification_event.dart';
 import 'package:rendezvous_community/src/features/notifications/domain/repositories/notification_repository.dart';
 import 'package:rendezvous_community/src/features/push/domain/entities/community_push_message.dart';
@@ -68,7 +69,7 @@ bool _openMessage(BuildContext context, CommunityPushMessage message) {
   } else if (message.type == 'follow' && actorId != null) {
     CommunityNavigator.openUser(context, UserSummary(id: actorId, username: message.actorUsername ?? ''));
   } else if (postId != null) {
-    CommunityNavigator.openPost(context, postId);
+    CommunityNavigator.openPost(context, postId, rootCommentId: notificationCommentRoot(message.type, message.data));
   } else if (link != null) {
     unawaited(launchUrl(link, mode: LaunchMode.externalApplication));
   } else {
