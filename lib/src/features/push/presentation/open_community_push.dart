@@ -13,6 +13,7 @@ import 'package:rendezvous_community/src/features/push/domain/entities/community
 import 'package:rendezvous_community/src/features/support/presentation/widgets/community_support_chat.dart';
 import 'package:rendezvous_community/src/features/trade_share/presentation/trade_share_navigation.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
+import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 bool isCommunityPush(Map<String, Object?> data) => CommunityPushMessage.tryParse(data) != null;
@@ -53,7 +54,6 @@ bool _openMessage(BuildContext context, CommunityPushMessage message) {
   final roomId = message.roomId;
   final actorId = message.actorId;
   final link = message.link;
-  final topStock = message.stocks.firstOrNull;
   if (message.isTrade) return _openTradePush(context, message);
   if (message.isSupport) {
     unawaited(openCommunitySupport(context));
@@ -61,8 +61,8 @@ bool _openMessage(BuildContext context, CommunityPushMessage message) {
     CommunityNavigator.openRoom(context, roomId);
   } else if ((message.type == 'appeal' || message.type == 'moderation') && context.communityFeatures != null) {
     unawaited(openCommunityAppeals(context));
-  } else if (message.type == 'watchlist_digest' && topStock != null) {
-    CommunityNavigator.openStock(context, topStock, source: 'notification');
+  } else if (message.type == 'watchlist_digest' && message.stocks.isNotEmpty) {
+    CommunityNavigator.openStocks(context, message.stocks, title: context.communityL10n.notifWatchlistDigest);
   } else if ((message.type == 'message' || (message.type == 'mention' && postId == null)) && roomId != null) {
     CommunityNavigator.openRoom(context, roomId);
   } else if (message.type == 'follow' && actorId != null) {

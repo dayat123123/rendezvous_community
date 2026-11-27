@@ -1,3 +1,9 @@
+## 1.64.0
+
+* **Notifikasi "Ringkasan pantauan" kini membuka postingannya.** Klik notifikasi digest (di daftar notifikasi maupun dari push) membuka halaman feed berisi postingan tentang saham-saham di digest itu, dengan judul "Ringkasan pantauan". Sebelumnya klik memanggil `onStockTap` untuk saham teratas, sehingga di app hanya mengganti saham yang dipilih.
+  * Method baru `CommunityNavigator.openStocks(context, codes, {title})` membuka `CommunityFeedList` dengan `FeedScope.stocks(codes)` di navigator terdekat. Kode saham dinormalisasi ke huruf besar.
+  * Digest tanpa daftar saham tidak membuka apa-apa.
+
 ## 1.63.1
 
 * **Tab yang tidak dipilih tidak lagi lebih besar.** Tab di sheet Reaksi dan daftar Follower/Following kini memakai `unselectedLabelStyle` sendiri: ukuran huruf sama dengan tab aktif, hanya lebih tipis (aktif w700, tidak aktif w500). Sebelumnya tab tidak aktif ikut `TabBarTheme.unselectedLabelStyle` dari app sehingga hurufnya lebih besar.

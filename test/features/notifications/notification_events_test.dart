@@ -107,18 +107,69 @@ void main() {
       expect(find.text(r'Alice menyebut Anda di $BBCA'), findsOneWidget);
       expect(find.text('Alice membuat 3 postingan baru'), findsOneWidget);
 
-      await tester.tap(find.text('Ringkasan pantauan'));
       await tester.tap(find.text(r'Alice menyebut Anda di $BBCA'));
       await tester.tap(find.text('Alice membuat 3 postingan baru'));
+      await tester.tap(find.text('Ringkasan pantauan'));
       await tester.pumpAndSettle();
 
-      expect(stocks, ['BBCA']);
+      expect(stocks, isEmpty);
       expect(rooms, ['room-bbca']);
       expect(posts, ['p-9']);
+      final feed = tester.widget<CommunityFeedList>(find.byType(CommunityFeedList));
+      expect(feed.scope, const FeedScope.stocks(['BBCA', 'TLKM', 'ASII']));
       final events = [
         for (final (event, source) in features.notificationEvents.reported) '${event.name}:${source.key}',
       ];
-      expect(events, ['opened:n:n-d', 'tapped:n:n-d', 'opened:n:n-r', 'tapped:n:n-r', 'opened:n:n-f', 'tapped:n:n-f']);
+      expect(events, ['opened:n:n-r', 'tapped:n:n-r', 'opened:n:n-f', 'tapped:n:n-f', 'opened:n:n-d', 'tapped:n:n-d']);
+    });
+
+    testWidgets('a digest without stocks stays on the list', (tester) async {
+      final empty = _notification('watchlist_digest', {'post_count': 2, 'stocks': <String>[]}, id: 'n-e');
+      final features = FakeFeatureDependencies(config: loadedConfig());
+      addTearDown(features.dispose);
+      await pumpFeatureApp(
+        tester,
+        const CommunityNotificationList(),
+        dependencies: FakeDependencies(notifications: _Notifications([empty])),
+        features: features,
+      );
+      await tester.pumpAndSettle();
+      await tester.tap(find.text('Ringkasan pantauan'));
+      await tester.pumpAndSettle();
+
+      expect(find.byType(CommunityFeedList), findsNothing);
+    });
+
+    testWidgets('a digest push opens the posts about its stocks', (tester) async {
+      final stocks = <String>[];
+      final features = FakeFeatureDependencies(config: loadedConfig());
+      addTearDown(features.dispose);
+      await pumpFeatureApp(
+        tester,
+        Builder(
+          builder: (context) => TextButton(
+            onPressed: () => openCommunityPush(context, {
+              'source': 'rendezvous_community',
+              'type': 'watchlist_digest',
+              'notification_id': 'n-8',
+              'stocks': '["bbca","TLKM"]',
+            }),
+            child: const Text('push'),
+          ),
+        ),
+        dependencies: FakeDependencies(
+          notifications: _Notifications(const []),
+          callbacks: CommunityCallbacks(onStockTap: (_, code) => stocks.add(code)),
+        ),
+        features: features,
+      );
+      await tester.tap(find.text('push'));
+      await tester.pumpAndSettle();
+
+      expect(stocks, isEmpty);
+      final feed = tester.widget<CommunityFeedList>(find.byType(CommunityFeedList));
+      expect(feed.scope, const FeedScope.stocks(['BBCA', 'TLKM']));
+      expect(find.text('Ringkasan pantauan'), findsOneWidget);
     });
 
     testWidgets('room mute notices name the stock room, skip the appeal hint, and open the room', (tester) async {

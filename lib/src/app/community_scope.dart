@@ -8,6 +8,8 @@ import 'package:rendezvous_community/src/app/community_trade_share_scope.dart';
 import 'package:rendezvous_community/src/app/rendezvous_community.dart';
 import 'package:rendezvous_community/src/features/analytics/domain/entities/analytics_event.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/community_chat_room.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_feed_list.dart';
 import 'package:rendezvous_community/src/features/group/presentation/widgets/community_group_info.dart';
 import 'package:rendezvous_community/src/features/instruments/presentation/community_instruments.dart';
 import 'package:rendezvous_community/src/features/instruments/presentation/widgets/community_index_feed.dart';
@@ -56,6 +58,15 @@ abstract final class CommunityNavigator {
     final callback = callbacks.onIndexTap ?? callbacks.onStockTap;
     if (callback != null) return callback(context, canonical);
     _push(context, '\$$canonical', CommunityIndexFeed(indexCode: canonical));
+  }
+
+  static void openStocks(BuildContext context, List<String> codes, {String? title}) {
+    final upper = [for (final code in codes) code.trim().toUpperCase()];
+    _push<void>(
+      context,
+      title,
+      CommunityFeedList(scope: FeedScope.stocks(upper), emptyMessage: context.communityL10n.userFeedEmpty),
+    );
   }
 
   static void openUser(BuildContext context, UserSummary user) {

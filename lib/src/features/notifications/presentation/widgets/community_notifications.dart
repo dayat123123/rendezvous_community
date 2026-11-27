@@ -154,15 +154,14 @@ bool openCommunityNotification(BuildContext context, AppNotification n) {
   final postId = n.postId;
   final roomId = n.roomId;
   final url = Uri.tryParse(n.url ?? '');
-  final topStock = n.stocks.firstOrNull;
   if (n.isRoomMute && roomId != null) {
     CommunityNavigator.openRoom(context, roomId);
   } else if (n.type == NotificationType.appeal || n.type == NotificationType.moderation) {
     if (context.communityFeatures == null) return false;
     unawaited(openCommunityAppeals(context));
   } else if (n.type == NotificationType.watchlistDigest) {
-    if (topStock == null) return false;
-    CommunityNavigator.openStock(context, topStock, source: 'notification');
+    if (n.stocks.isEmpty) return false;
+    CommunityNavigator.openStocks(context, n.stocks, title: context.communityL10n.notifWatchlistDigest);
   } else if (n.type == NotificationType.announcement && postId == null && url != null && url.scheme == 'https') {
     unawaited(launchUrl(url, mode: LaunchMode.externalApplication));
   } else if ((n.type == NotificationType.message || n.isRoomMention) && roomId != null) {
