@@ -65,6 +65,7 @@ class CommunityNotificationSettings extends StatelessWidget {
 String notificationTypeLabel(CommunityLocalizations l10n, String type) => switch (type) {
   'reply' => l10n.notifTypeReply,
   'mention' => l10n.notifTypeMention,
+  'quote' => l10n.notifTypeQuote,
   'like' => l10n.notifTypeLike,
   'follow' => l10n.notifTypeFollow,
   'message' => l10n.notifTypeMessage,

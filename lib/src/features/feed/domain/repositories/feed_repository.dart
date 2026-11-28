@@ -32,6 +32,19 @@ abstract interface class FeedRepository {
   Stream<PostChange> watchPosts({String? postId});
 }
 
+abstract interface class QuoteRepository {
+  Future<Post> createQuote({
+    required String quotedPostId,
+    required String body,
+    Sentiment? sentiment,
+    List<Attachment> attachments = const [],
+    String? clientId,
+    CommentAudience? commentAudience,
+  });
+
+  Future<Paged<Post>> postQuotes(String postId, {String? cursor, int limit = 20});
+}
+
 abstract interface class PostReactionRepository {
   Future<Post?> setPostReaction(String postId, String? emoji);
 

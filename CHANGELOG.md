@@ -1,3 +1,14 @@
+## 1.67.0
+
+* **Kutip post.** Butuh server `0214`.
+  * Tombol **Kutip** di bar aksi post, dengan jumlah kutipan. Menu ⋮ juga punya **Kutip** dan **Lihat N kutipan**. Tombol hanya muncul bila server mengirim `can_quote` (mengikuti kontrol komentar pemilik post) dan repository mengimplementasikan `QuoteRepository`.
+  * Composer kutipan menampilkan kartu post yang dikutip. Polling dimatikan dan draf tidak disimpan untuk kutipan.
+  * Post yang mengutip menampilkan kartu kutipan yang bisa diketuk untuk membuka post asli. Post asli yang dihapus, disembunyikan, atau diblokir tampil sebagai "Postingan ini tidak tersedia."
+  * Halaman daftar kutipan (`showCommunityPostQuotes`, `CommunityPostQuotes`).
+  * Notifikasi baru `NotificationType.quote` dan jenis **Kutipan** di pengaturan notifikasi.
+  * API baru: `QuotedPost`, `QuoteRepository` (diimplementasikan `FeedRepositoryImpl`), `Post.quotedPost` / `quoteCount` / `canQuote`, parameter `quoted:` di `showCommunityComposer` dan `CommunityComposePost`, `QuotedPostCard`, slot `CommunityFeedBuilders.quotedPost`, callback `CommunityPostDetails.onQuote` / `onShowQuotes` / `onOpenQuoted`.
+  * Kode error `quoted_post_not_found` dan `quote_not_allowed` punya teks sendiri.
+
 ## 1.66.0
 
 * **Tautan berbagi post.** Butuh server `0207` + layanan `share-link`, diaktifkan Super Admin di Hub (Pengaturan → Tautan berbagi). Bila aktif, flag baru `post_links` (`CommunityFlags.postLinks`) menyala.

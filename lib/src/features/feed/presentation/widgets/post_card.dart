@@ -1,16 +1,23 @@
+import 'dart:async';
+
 import 'package:material_ui/material_ui.dart';
 import 'package:rendezvous_community/src/app/community_feature_scope.dart';
 import 'package:rendezvous_community/src/app/community_scope.dart';
+import 'package:rendezvous_community/src/features/compose/presentation/widgets/community_compose_post.dart';
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/pinned_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/quoted_post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_info_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/community_post_files.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_quotes_page.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/post_reactions.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/quoted_post_card.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/sentiment_badge.dart';
 import 'package:rendezvous_community/src/features/link_preview/presentation/widgets/link_preview_card.dart';
 import 'package:rendezvous_community/src/features/media/presentation/widgets/attachment_grid.dart';
@@ -83,6 +90,7 @@ class PostCard extends StatelessWidget {
     final remove = onDelete;
     final current = post.commentAudience;
     final saveAudience = isMine && current != null && !post.commentsOffByAccount ? onCommentAudience : null;
+    final quotes = CommunityScope.of(context).feed is QuoteRepository;
     final details = CommunityPostDetails(
       post: post,
       isMine: isMine,
@@ -127,6 +135,11 @@ class PostCard extends StatelessWidget {
               if (await blockUserWithConfirm(context, post.author)) onAuthorBlocked?.call();
             },
       onAppeal: onAppeal,
+      onQuote: post.canQuote && quotes
+          ? () => unawaited(showCommunityComposer(context, quoted: QuotedPost.fromPost(post)))
+          : null,
+      onShowQuotes: post.quoteCount > 0 && quotes ? () => unawaited(showCommunityPostQuotes(context, post)) : null,
+      onOpenQuoted: post.quotedPost == null ? null : () => CommunityNavigator.openPost(context, post.quotedPost!.id),
       onToggleCommentsOff: saveAudience == null
           ? null
           : () async {
@@ -281,6 +294,16 @@ class _DefaultPostCard extends StatelessWidget {
           padding: side,
           child: CommunityPostFiles(details: d),
         ),
+        if (post.quotedPost != null)
+          Padding(
+            padding: side.copyWith(top: spacing.sm),
+            child: buildCommunityPart(
+              builders.quotedPost,
+              context,
+              d,
+              QuotedPostCard(quoted: post.quotedPost!, source: d.source, onTap: d.onOpenQuoted),
+            ),
+          ),
         if (!expanded) buildCommunityPart(builders.stockTags, context, d, const SizedBox.shrink()),
         Padding(
           padding: side,
@@ -682,6 +705,13 @@ class PostActionBar extends StatelessWidget {
           count: details.commentCountHidden ? null : post.commentCount,
           onPressed: details.commentsOff ? null : details.onComment,
         ),
+        if (details.onQuote != null || post.quoteCount > 0)
+          CommunityActionButton(
+            icon: Icons.format_quote_outlined,
+            tooltip: l10n.quoteAction,
+            count: post.quoteCount,
+            onPressed: details.onQuote ?? details.onShowQuotes,
+          ),
         if (share != null)
           CommunityActionButton(icon: Icons.send_outlined, tooltip: l10n.shareToChat, onPressed: share),
       ],
@@ -708,7 +738,7 @@ class PostActionBar extends StatelessWidget {
   }
 }
 
-enum _PostAction { edit, toggleComments, commentAudience, bookmark, share, delete, report, block }
+enum _PostAction { edit, toggleComments, commentAudience, bookmark, quote, quotes, share, delete, report, block }
 
 class _PostMenu extends StatelessWidget {
   const _PostMenu({required this.details});
@@ -729,6 +759,8 @@ class _PostMenu extends StatelessWidget {
         _PostAction.toggleComments => d.onToggleCommentsOff?.call(),
         _PostAction.commentAudience => d.onChangeCommentAudience?.call(),
         _PostAction.bookmark => d.onToggleBookmark?.call(),
+        _PostAction.quote => d.onQuote?.call(),
+        _PostAction.quotes => d.onShowQuotes?.call(),
         _PostAction.share => d.onShare?.call(),
         _PostAction.delete => d.onDelete?.call(),
         _PostAction.report => d.onReport?.call(),
@@ -757,6 +789,20 @@ class _PostMenu extends StatelessWidget {
             value: _PostAction.bookmark,
             icon: bookmarked ? icons.unbookmark : icons.bookmark,
             label: bookmarked ? l10n.bookmarkRemove : l10n.bookmarkAdd,
+          ),
+        if (d.onQuote != null)
+          communityMenuItem(
+            menuContext,
+            value: _PostAction.quote,
+            icon: Icons.format_quote_outlined,
+            label: l10n.quoteAction,
+          ),
+        if (d.onShowQuotes != null)
+          communityMenuItem(
+            menuContext,
+            value: _PostAction.quotes,
+            icon: Icons.format_list_bulleted,
+            label: l10n.quotesShow(d.post.quoteCount),
           ),
         if (d.onShare != null)
           communityMenuItem(menuContext, value: _PostAction.share, icon: icons.share, label: l10n.shareToChat),

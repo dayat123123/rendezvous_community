@@ -47,6 +47,9 @@ class CommunityPostDetails {
     this.reactionChoices = defaultPostReactions,
     this.onReact,
     this.onShowReactors,
+    this.onQuote,
+    this.onShowQuotes,
+    this.onOpenQuoted,
   });
 
   final Post post;
@@ -78,6 +81,9 @@ class CommunityPostDetails {
   final List<String> reactionChoices;
   final ValueChanged<String?>? onReact;
   final VoidCallback? onShowReactors;
+  final VoidCallback? onQuote;
+  final VoidCallback? onShowQuotes;
+  final VoidCallback? onOpenQuoted;
 
   String? get myReaction => post.effectiveReaction;
 

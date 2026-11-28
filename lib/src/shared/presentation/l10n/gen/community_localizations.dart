@@ -6451,6 +6451,90 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Ringkasan otomatis'**
   String get infoCardAutoSummary;
+
+  /// No description provided for @quoteAction.
+  ///
+  /// In id, this message translates to:
+  /// **'Kutip'**
+  String get quoteAction;
+
+  /// No description provided for @quoteComposeTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kutip post'**
+  String get quoteComposeTitle;
+
+  /// No description provided for @quoteHint.
+  ///
+  /// In id, this message translates to:
+  /// **'Tambahkan pendapat Anda'**
+  String get quoteHint;
+
+  /// No description provided for @quotedPostUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Postingan ini tidak tersedia.'**
+  String get quotedPostUnavailable;
+
+  /// No description provided for @quotedPostLabel.
+  ///
+  /// In id, this message translates to:
+  /// **'Postingan yang dikutip'**
+  String get quotedPostLabel;
+
+  /// No description provided for @quotesTitle.
+  ///
+  /// In id, this message translates to:
+  /// **'Kutipan'**
+  String get quotesTitle;
+
+  /// No description provided for @quotesEmpty.
+  ///
+  /// In id, this message translates to:
+  /// **'Belum ada yang mengutip postingan ini.'**
+  String get quotesEmpty;
+
+  /// No description provided for @quotesLoadMore.
+  ///
+  /// In id, this message translates to:
+  /// **'Muat lagi'**
+  String get quotesLoadMore;
+
+  /// No description provided for @quotesShow.
+  ///
+  /// In id, this message translates to:
+  /// **'{count, plural, =1{Lihat 1 kutipan} other{Lihat {count} kutipan}}'**
+  String quotesShow(int count);
+
+  /// No description provided for @notifTypeQuote.
+  ///
+  /// In id, this message translates to:
+  /// **'Kutipan'**
+  String get notifTypeQuote;
+
+  /// No description provided for @notifQuotedPost.
+  ///
+  /// In id, this message translates to:
+  /// **'{names} mengutip postingan Anda'**
+  String notifQuotedPost(String names);
+
+  /// No description provided for @errorQuotedPostNotFound.
+  ///
+  /// In id, this message translates to:
+  /// **'Postingan yang dikutip sudah tidak tersedia.'**
+  String get errorQuotedPostNotFound;
+
+  /// No description provided for @errorQuoteNotAllowed.
+  ///
+  /// In id, this message translates to:
+  /// **'Pemilik postingan membatasi siapa yang bisa membalas, jadi postingan ini tidak bisa dikutip.'**
+  String get errorQuoteNotAllowed;
+
+  /// No description provided for @errorQuoteUnsupported.
+  ///
+  /// In id, this message translates to:
+  /// **'Server belum mendukung kutipan post.'**
+  String get errorQuoteUnsupported;
 }
 
 class _CommunityLocalizationsDelegate extends LocalizationsDelegate<CommunityLocalizations> {

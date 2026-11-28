@@ -6,6 +6,7 @@ import 'package:rendezvous_community/src/features/feed/domain/entities/comment_a
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post_info_card.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post_reaction.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/quoted_post.dart';
 import 'package:rendezvous_community/src/features/poll/data/models/poll_model.dart';
 import 'package:rendezvous_community/src/features/post/data/models/thread_comment_model.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
@@ -42,6 +43,36 @@ Object? _decodeList(String text) {
   } on FormatException {
     return null;
   }
+}
+
+QuotedPost? parseQuotedPost(Map<String, dynamic>? json) {
+  final id = json?['id'];
+  if (json == null || id is! String || id.isEmpty) return null;
+  if (json['available'] != true) return QuotedPost(id: id, available: false);
+  final authorId = json['author_id'];
+  final username = json['username'];
+  return QuotedPost(
+    id: id,
+    author: authorId is String && username is String
+        ? UserSummary(
+            id: authorId,
+            username: username,
+            displayName: json['display_name'] as String?,
+            avatarUrl: json['avatar_url'] as String?,
+            isVerified: json['is_verified'] == true,
+          )
+        : null,
+    authorIsOfficial: json['is_official'] == true,
+    body: json['body'] is String ? json['body'] as String : '',
+    sentiment: parseSentiment(json['sentiment'] as String?),
+    attachments: [for (final a in attachmentsFromJson(json['attachments'])) a.toEntity()],
+    stockCodes: [
+      if (json['stocks'] is List)
+        for (final code in json['stocks'] as List)
+          if (code is String) code,
+    ],
+    createdAt: DateTime.tryParse(json['created_at'] as String? ?? ''),
+  );
 }
 
 @freezed
@@ -81,6 +112,9 @@ abstract class FeedPostModel with _$FeedPostModel {
     @JsonKey(readValue: readPostAttachments, fromJson: postFilesFromAttachments, includeToJson: false)
     @Default(<Attachment>[])
     List<Attachment> files,
+    Map<String, dynamic>? quotedPost,
+    int? quoteCount,
+    bool? canQuote,
   }) = _FeedPostModel;
 
   const FeedPostModel._();
@@ -123,6 +157,9 @@ abstract class FeedPostModel with _$FeedPostModel {
         [if (likeCount > 0) PostReactionCount(emoji: postLikeReaction, count: likeCount)],
     card: card,
     files: files,
+    quotedPost: parseQuotedPost(quotedPost),
+    quoteCount: quoteCount ?? 0,
+    canQuote: canQuote ?? false,
   );
 
   ThreadComment? _parseTopComment() {

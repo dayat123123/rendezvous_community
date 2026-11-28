@@ -172,6 +172,8 @@ bool openCommunityNotification(BuildContext context, AppNotification n) {
     CommunityNavigator.openFollowList(context, me, FollowListKind.followers, kinds: const [FollowListKind.followers]);
   } else if (n.type == NotificationType.followedPost && n.eventCount > 1 && n.actor != null) {
     CommunityNavigator.openUser(context, n.actor!);
+  } else if (n.type == NotificationType.quote && n.eventCount <= 1 && n.quotePostId != null) {
+    CommunityNavigator.openPost(context, n.quotePostId!);
   } else if (postId != null) {
     CommunityNavigator.openPost(context, postId, rootCommentId: n.commentRoot);
   } else if (n.actor != null) {
@@ -553,6 +555,7 @@ class _NotificationTile extends StatelessWidget {
       NotificationType.reply => n.replyScope == 'post' || n.replyScope == 'comment',
       NotificationType.like => n.targetType == 'post' || n.targetType == 'comment',
       NotificationType.follow => true,
+      NotificationType.quote => true,
       _ => false,
     };
     final activity = n.type == NotificationType.tradeActivity
@@ -568,6 +571,7 @@ class _NotificationTile extends StatelessWidget {
         n.stockCode == null ? (n.payload['room_name'] as String? ?? '') : '\$${n.stockCode}',
       ),
       NotificationType.mention => l10n.notifMention(name),
+      NotificationType.quote => l10n.notifQuotedPost(names),
       NotificationType.like when n.targetType == 'post' => switch (n.reactionEmoji) {
         final String emoji when emoji != postLikeReaction => l10n.notifReactedPost(names, emoji),
         _ => l10n.notifLikedPost(names),
@@ -591,6 +595,7 @@ class _NotificationTile extends StatelessWidget {
       NotificationType.moderation => Icons.shield_outlined,
       NotificationType.reply => Icons.reply,
       NotificationType.mention => Icons.alternate_email,
+      NotificationType.quote => Icons.format_quote,
       NotificationType.like => Icons.favorite,
       NotificationType.follow => Icons.person_add_alt,
       NotificationType.message => Icons.chat_bubble,

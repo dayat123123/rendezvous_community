@@ -1247,5 +1247,21 @@
   "errorPostReactionsUnavailable": "Reaksi belum tersedia",
   "notifReactedPost": "{names} memberi reaksi {emoji} pada postingan Anda",
   "@notifReactedPost": { "placeholders": { "names": { "type": "String" }, "emoji": { "type": "String" } } },
-  "infoCardAutoSummary": "Ringkasan otomatis"
+  "infoCardAutoSummary": "Ringkasan otomatis",
+  "quoteAction": "Kutip",
+  "quoteComposeTitle": "Kutip post",
+  "quoteHint": "Tambahkan pendapat Anda",
+  "quotedPostUnavailable": "Postingan ini tidak tersedia.",
+  "quotedPostLabel": "Postingan yang dikutip",
+  "quotesTitle": "Kutipan",
+  "quotesEmpty": "Belum ada yang mengutip postingan ini.",
+  "quotesLoadMore": "Muat lagi",
+  "quotesShow": "{count, plural, =1{Lihat 1 kutipan} other{Lihat {count} kutipan}}",
+  "@quotesShow": { "placeholders": { "count": { "type": "int" } } },
+  "notifTypeQuote": "Kutipan",
+  "notifQuotedPost": "{names} mengutip postingan Anda",
+  "@notifQuotedPost": { "placeholders": { "names": { "type": "String" } } },
+  "errorQuotedPostNotFound": "Postingan yang dikutip sudah tidak tersedia.",
+  "errorQuoteNotAllowed": "Pemilik postingan membatasi siapa yang bisa membalas, jadi postingan ini tidak bisa dikutip.",
+  "errorQuoteUnsupported": "Server belum mendukung kutipan post."
 }
