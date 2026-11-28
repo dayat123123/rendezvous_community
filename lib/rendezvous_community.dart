@@ -150,6 +150,7 @@ export 'src/features/feed/domain/entities/pinned_post.dart';
 export 'src/features/feed/domain/entities/post.dart';
 export 'src/features/feed/domain/entities/post_info_card.dart';
 export 'src/features/feed/domain/entities/post_reaction.dart';
+export 'src/features/feed/domain/entities/quoted_post.dart';
 export 'src/features/feed/domain/repositories/feed_cache_repository.dart' show FeedCacheRepository;
 export 'src/features/feed/domain/repositories/feed_repository.dart';
 export 'src/features/feed/presentation/builders/community_feed_builders.dart'
@@ -174,8 +175,10 @@ export 'src/features/feed/presentation/widgets/community_info_card.dart' show Co
 export 'src/features/feed/presentation/widgets/community_post_files.dart' show CommunityPostFiles;
 export 'src/features/feed/presentation/widgets/community_stream_feed.dart' show CommunityFeedTab, CommunityStreamFeed;
 export 'src/features/feed/presentation/widgets/compose_prompt_card.dart' show CommunityComposePromptCard;
+export 'src/features/feed/presentation/widgets/post_quotes_page.dart' show CommunityPostQuotes, showCommunityPostQuotes;
 export 'src/features/feed/presentation/widgets/post_reactions.dart'
     show CommunityPostReactionSummary, CommunityReactionPicker, communityReactionSummaryText, showCommunityPostReactors;
+export 'src/features/feed/presentation/widgets/quoted_post_card.dart' show QuotedPostCard;
 export 'src/features/feed/presentation/widgets/sentiment_badge.dart';
 export 'src/features/group/domain/entities/group_event.dart';
 export 'src/features/group/domain/repositories/group_repository.dart';

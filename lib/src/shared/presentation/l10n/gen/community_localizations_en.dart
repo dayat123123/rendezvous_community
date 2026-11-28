@@ -3650,4 +3650,51 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get infoCardAutoSummary => 'Auto summary';
+
+  @override
+  String get quoteAction => 'Quote';
+
+  @override
+  String get quoteComposeTitle => 'Quote post';
+
+  @override
+  String get quoteHint => 'Add your take';
+
+  @override
+  String get quotedPostUnavailable => 'This post is unavailable.';
+
+  @override
+  String get quotedPostLabel => 'Quoted post';
+
+  @override
+  String get quotesTitle => 'Quotes';
+
+  @override
+  String get quotesEmpty => 'Nobody has quoted this post yet.';
+
+  @override
+  String get quotesLoadMore => 'Load more';
+
+  @override
+  String quotesShow(int count) {
+    String _temp0 = intl.Intl.pluralLogic(count, locale: localeName, other: 'View $count quotes', one: 'View 1 quote');
+    return '$_temp0';
+  }
+
+  @override
+  String get notifTypeQuote => 'Quotes';
+
+  @override
+  String notifQuotedPost(String names) {
+    return '$names quoted your post';
+  }
+
+  @override
+  String get errorQuotedPostNotFound => 'The quoted post is no longer available.';
+
+  @override
+  String get errorQuoteNotAllowed => 'The author limits who can reply, so this post can\'t be quoted.';
+
+  @override
+  String get errorQuoteUnsupported => 'The server doesn\'t support quoting posts yet.';
 }

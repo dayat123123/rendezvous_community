@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.66.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.67.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -393,6 +393,20 @@ await RendezvousCommunity.initialize(
 ```
 
 Popup ditutup dan event `click` dicatat sebelum callback dipanggil, jadi `context` adalah halaman host (aman untuk `Navigator.push`). Tampilan kartu bisa diganti lewat slot `system.popup` ([customization.md](customization.md#popup-promo)).
+
+### Kutip post (1.67.0)
+
+Butuh server dengan migrasi `0214`. Tidak ada pengaturan di Hub dan tidak ada flag: tombol muncul sendiri bila server mengirim `can_quote` dan repository mengimplementasikan `QuoteRepository` (`FeedRepositoryImpl` sudah).
+
+**Yang otomatis.**
+- Bar aksi post mendapat tombol **Kutip** dengan jumlah kutipan. Menu ⋮ juga punya **Kutip** dan **Lihat N kutipan**.
+- **Kutip** membuka composer dengan kartu post yang dikutip di bawah kolom teks. Polling dimatikan dan draf tidak disimpan untuk kutipan.
+- Post yang mengutip menampilkan kartu kutipan (penulis, cuplikan 4 baris, gambar pertama). Ketuk kartu untuk membuka post aslinya. Bila post asli dihapus, disembunyikan, atau penulisnya memblokir pembaca, kartu hanya menampilkan "Postingan ini tidak tersedia."
+- Notifikasi baru `quote` ("Ani mengutip postingan Anda"): satu kutipan membuka post kutipannya, beberapa kutipan yang digabung membuka post asli. Jenis **Kutipan** ikut di pengaturan notifikasi.
+
+**Aturan dari server.** Tombol Kutip tidak muncul bila pemilik post membatasi siapa yang bisa membalas dan pengguna tidak termasuk (mengikuti kontrol komentar). Error `quoted_post_not_found` dan `quote_not_allowed` punya teks sendiri.
+
+**API.** `QuotedPost`, `Post.quotedPost` / `quoteCount` / `canQuote`, `QuoteRepository.createQuote(...)` / `postQuotes(...)`, `showCommunityComposer(context, quoted: QuotedPost.fromPost(post))`, `showCommunityPostQuotes(context, post)`, `CommunityPostQuotes`, `QuotedPostCard`, slot `CommunityFeedBuilders.quotedPost`, dan callback `CommunityPostDetails.onQuote` / `onShowQuotes` / `onOpenQuoted` untuk kartu post kustom.
 
 ### Tautan berbagi post (1.66.0)
 

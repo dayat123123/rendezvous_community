@@ -20,6 +20,7 @@ enum NotificationType {
   moderation,
   tradeActivity,
   tradeShare,
+  quote,
 }
 
 const notificationTypeKeys = {
@@ -98,6 +99,7 @@ abstract class AppNotification with _$AppNotification {
   String? get tradeAction => payload['action'] is String ? payload['action'] as String : null;
   String? get tradeReason => payload['reason'] is String ? payload['reason'] as String : null;
   String? get tradeTraderId => payload['trader_id'] is String ? payload['trader_id'] as String : null;
+  String? get quotePostId => payload['quote_post_id'] is String ? payload['quote_post_id'] as String : null;
   String? get replyScope => payload['scope'] is String ? payload['scope'] as String : null;
   String? get commentRoot =>
       notificationCommentRoot(notificationTypeKeys[type] ?? type.name, payload, eventCount: eventCount);

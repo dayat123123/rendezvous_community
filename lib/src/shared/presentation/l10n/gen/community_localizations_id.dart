@@ -3617,4 +3617,57 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get infoCardAutoSummary => 'Ringkasan otomatis';
+
+  @override
+  String get quoteAction => 'Kutip';
+
+  @override
+  String get quoteComposeTitle => 'Kutip post';
+
+  @override
+  String get quoteHint => 'Tambahkan pendapat Anda';
+
+  @override
+  String get quotedPostUnavailable => 'Postingan ini tidak tersedia.';
+
+  @override
+  String get quotedPostLabel => 'Postingan yang dikutip';
+
+  @override
+  String get quotesTitle => 'Kutipan';
+
+  @override
+  String get quotesEmpty => 'Belum ada yang mengutip postingan ini.';
+
+  @override
+  String get quotesLoadMore => 'Muat lagi';
+
+  @override
+  String quotesShow(int count) {
+    String _temp0 = intl.Intl.pluralLogic(
+      count,
+      locale: localeName,
+      other: 'Lihat $count kutipan',
+      one: 'Lihat 1 kutipan',
+    );
+    return '$_temp0';
+  }
+
+  @override
+  String get notifTypeQuote => 'Kutipan';
+
+  @override
+  String notifQuotedPost(String names) {
+    return '$names mengutip postingan Anda';
+  }
+
+  @override
+  String get errorQuotedPostNotFound => 'Postingan yang dikutip sudah tidak tersedia.';
+
+  @override
+  String get errorQuoteNotAllowed =>
+      'Pemilik postingan membatasi siapa yang bisa membalas, jadi postingan ini tidak bisa dikutip.';
+
+  @override
+  String get errorQuoteUnsupported => 'Server belum mendukung kutipan post.';
 }

@@ -1113,5 +1113,19 @@
   "errorPostReactionsUnavailable": "Reactions are not available yet",
   "notifReactedPost": "{names} reacted {emoji} to your post",
   "@notifReactedPost": { "placeholders": { "names": { "type": "String" }, "emoji": { "type": "String" } } },
-  "infoCardAutoSummary": "Auto summary"
+  "infoCardAutoSummary": "Auto summary",
+  "quoteAction": "Quote",
+  "quoteComposeTitle": "Quote post",
+  "quoteHint": "Add your take",
+  "quotedPostUnavailable": "This post is unavailable.",
+  "quotedPostLabel": "Quoted post",
+  "quotesTitle": "Quotes",
+  "quotesEmpty": "Nobody has quoted this post yet.",
+  "quotesLoadMore": "Load more",
+  "quotesShow": "{count, plural, =1{View 1 quote} other{View {count} quotes}}",
+  "notifTypeQuote": "Quotes",
+  "notifQuotedPost": "{names} quoted your post",
+  "errorQuotedPostNotFound": "The quoted post is no longer available.",
+  "errorQuoteNotAllowed": "The author limits who can reply, so this post can't be quoted.",
+  "errorQuoteUnsupported": "The server doesn't support quoting posts yet."
 }

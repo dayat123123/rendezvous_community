@@ -16,9 +16,11 @@ import 'package:rendezvous_community/src/features/config/presentation/widgets/co
 import 'package:rendezvous_community/src/features/drafts/domain/entities/post_draft.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/quoted_post.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_builders.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/builders/community_feed_details.dart';
 import 'package:rendezvous_community/src/features/feed/presentation/widgets/comment_controls.dart';
+import 'package:rendezvous_community/src/features/feed/presentation/widgets/quoted_post_card.dart';
 import 'package:rendezvous_community/src/features/legal/presentation/widgets/community_consent_flow.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -47,6 +49,7 @@ Future<Post?> showCommunityComposer(
   Sentiment? initialSentiment,
   CommunityComposerAction? initialAction,
   String? hintText,
+  QuotedPost? quoted,
 }) {
   final deps = CommunityScope.of(context);
   final features = context.getInheritedWidgetOfExactType<CommunityFeatureScope>()?.dependencies;
@@ -70,6 +73,7 @@ Future<Post?> showCommunityComposer(
               initialSentiment: initialSentiment,
               initialAction: initialAction,
               hintText: hintText,
+              quoted: quoted,
               autofocus: true,
               onPosted: (post) => Navigator.pop(dialogContext, post),
             ),
@@ -83,7 +87,7 @@ Future<Post?> showCommunityComposer(
       fullscreenDialog: true,
       builder: (pageContext) => scoped(
         Scaffold(
-          appBar: AppBar(title: Text(l10n.composeTitle)),
+          appBar: AppBar(title: Text(quoted == null ? l10n.composeTitle : l10n.quoteComposeTitle)),
           body: SafeArea(
             child: CommunityComposePost(
               initialStock: initialStock,
@@ -92,6 +96,7 @@ Future<Post?> showCommunityComposer(
               initialSentiment: initialSentiment,
               initialAction: initialAction,
               hintText: hintText,
+              quoted: quoted,
               autofocus: true,
               onPosted: (post) => Navigator.pop(pageContext, post),
             ),
@@ -113,6 +118,7 @@ class CommunityComposePost extends StatelessWidget {
     this.initialSentiment,
     this.initialAction,
     this.hintText,
+    this.quoted,
   });
 
   final String? initialStock;
@@ -123,12 +129,13 @@ class CommunityComposePost extends StatelessWidget {
   final Sentiment? initialSentiment;
   final CommunityComposerAction? initialAction;
   final String? hintText;
+  final QuotedPost? quoted;
 
   @override
   Widget build(BuildContext context) {
     final deps = CommunityScope.of(context);
     final drafts = deps.callbacks.postDrafts ? context.communityFeatures?.drafts : null;
-    final resumed = drafts == null ? null : draft;
+    final resumed = drafts == null || quoted != null ? null : draft;
     return CommunitySocialGate(
       child: BlocProvider(
         create: (_) => ComposeCubit(
@@ -137,6 +144,7 @@ class CommunityComposePost extends StatelessWidget {
           consent: communityConsentGate(context),
           drafts: drafts,
           draft: resumed,
+          quoted: quoted,
         ),
         child: _ComposeView(
           initialStock: initialStock,
@@ -146,7 +154,7 @@ class CommunityComposePost extends StatelessWidget {
           draft: resumed,
           initialSentiment: initialSentiment,
           initialAction: initialAction,
-          hintText: hintText,
+          hintText: quoted == null ? hintText : hintText ?? context.communityL10n.quoteHint,
         ),
       ),
     );
@@ -386,6 +394,10 @@ class _ComposeViewState extends State<_ComposeView> {
               ),
               buildFeedPart((b) => b.composeField, context, field, field.field),
               if (poll != null) ...[SizedBox(height: spacing.md), PollEditor(poll: poll, enabled: !state.submitting)],
+              if (state.quoted != null) ...[
+                SizedBox(height: spacing.md),
+                QuotedPostCard(quoted: state.quoted!, source: 'compose', maxLines: 3),
+              ],
               SizedBox(height: spacing.md),
               buildFeedPart(
                 (b) => b.composeSentiment,

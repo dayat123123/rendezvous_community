@@ -10,6 +10,7 @@ class CommunityFeedBuilders {
     this.postHeader,
     this.postBody,
     this.attachments,
+    this.quotedPost,
     this.linkPreview,
     this.stockTags,
     this.actionBar,
@@ -57,6 +58,7 @@ class CommunityFeedBuilders {
   final CommunityPartBuilder<CommunityPostDetails>? postHeader;
   final CommunityPartBuilder<CommunityPostDetails>? postBody;
   final CommunityPartBuilder<CommunityPostDetails>? attachments;
+  final CommunityPartBuilder<CommunityPostDetails>? quotedPost;
   final CommunityPartBuilder<CommunityLinkPreviewDetails>? linkPreview;
   final CommunityPartBuilder<CommunityInfoCardDetails>? infoCard;
   final CommunityPartBuilder<CommunityPostDetails>? postFiles;
@@ -113,6 +115,7 @@ class CommunityFeedBuilders {
       postHeader: other.postHeader ?? postHeader,
       postBody: other.postBody ?? postBody,
       attachments: other.attachments ?? attachments,
+      quotedPost: other.quotedPost ?? quotedPost,
       linkPreview: other.linkPreview ?? linkPreview,
       stockTags: other.stockTags ?? stockTags,
       actionBar: other.actionBar ?? actionBar,

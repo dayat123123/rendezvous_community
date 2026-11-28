@@ -1,6 +1,7 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post_info_card.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/quoted_post.dart';
 import 'package:rendezvous_community/src/features/poll/domain/entities/poll.dart';
 import 'package:rendezvous_community/src/features/post/domain/entities/thread_comment.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/attachment.dart';
@@ -50,6 +51,9 @@ abstract class Post with _$Post {
     @Default(<PostReactionCount>[]) List<PostReactionCount> reactionSummary,
     PostInfoCard? card,
     @Default(<Attachment>[]) List<Attachment> files,
+    QuotedPost? quotedPost,
+    @Default(0) int quoteCount,
+    @Default(false) bool canQuote,
   }) = _Post;
 
   const Post._();

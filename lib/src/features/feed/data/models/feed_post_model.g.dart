@@ -40,6 +40,9 @@ _FeedPostModel _$FeedPostModelFromJson(Map<String, dynamic> json) => _FeedPostMo
   files: readPostAttachments(json, 'files') == null
       ? const <Attachment>[]
       : postFilesFromAttachments(readPostAttachments(json, 'files')),
+  quotedPost: json['quoted_post'] as Map<String, dynamic>?,
+  quoteCount: (json['quote_count'] as num?)?.toInt(),
+  canQuote: json['can_quote'] as bool?,
 );
 
 Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) => <String, dynamic>{
@@ -72,6 +75,9 @@ Map<String, dynamic> _$FeedPostModelToJson(_FeedPostModel instance) => <String, 
   'comments_off_by_account': instance.commentsOffByAccount,
   'my_reaction': instance.myReaction,
   'reaction_summary': instance.reactionSummary,
+  'quoted_post': instance.quotedPost,
+  'quote_count': instance.quoteCount,
+  'can_quote': instance.canQuote,
 };
 
 _PostRowModel _$PostRowModelFromJson(Map<String, dynamic> json) => _PostRowModel(

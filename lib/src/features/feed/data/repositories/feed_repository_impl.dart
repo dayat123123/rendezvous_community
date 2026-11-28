@@ -32,7 +32,8 @@ class FeedRepositoryImpl
         FeedFilterRepository,
         CommentControlRepository,
         CommentSettingsRepository,
-        PostReactionRepository {
+        PostReactionRepository,
+        QuoteRepository {
   FeedRepositoryImpl(this._api, [this._realtime, this._cache, DateTime Function()? clock])
     : _clock = clock ?? DateTime.now;
 
@@ -264,6 +265,34 @@ class FeedRepositoryImpl
     }
     if (rows.isEmpty) throw const CommunityException(CommunityErrorKind.notFound);
     return FeedPostModel.fromJson(rows.first).toEntity();
+  }
+
+  @override
+  Future<Post> createQuote({
+    required String quotedPostId,
+    required String body,
+    Sentiment? sentiment,
+    List<Attachment> attachments = const [],
+    String? clientId,
+    CommentAudience? commentAudience,
+  }) async {
+    final rows = await _api.rpcRows('create_post', {
+      'p_body': lowercaseMentions(body),
+      'p_sentiment': sentiment?.name,
+      'p_attachments': [for (final a in attachments) AttachmentModel.fromEntity(a).toJson()],
+      'p_client_id': clientId ?? _uuid.v4(),
+      'p_quoted_post_id': quotedPostId,
+      if (commentAudience != null) 'p_comment_audience': commentAudience.wire,
+    });
+    if (rows.isEmpty) throw const CommunityException(CommunityErrorKind.notFound);
+    return FeedPostModel.fromJson(rows.first).toEntity();
+  }
+
+  @override
+  Future<Paged<Post>> postQuotes(String postId, {String? cursor, int limit = 20}) async {
+    final rows = await _api.rpcRows('post_quotes', {'p_post_id': postId, 'p_cursor': cursor, 'p_limit': limit});
+    final posts = [for (final row in rows) FeedPostModel.fromJson(row).toEntity()];
+    return Paged(posts, nextCursor: posts.length < limit ? null : posts.last.cursor);
   }
 
   @override

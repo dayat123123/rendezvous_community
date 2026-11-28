@@ -12,6 +12,7 @@ import 'package:rendezvous_community/src/features/drafts/domain/entities/post_dr
 import 'package:rendezvous_community/src/features/drafts/domain/services/community_drafts.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/comment_audience.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/feed/domain/entities/quoted_post.dart';
 import 'package:rendezvous_community/src/features/feed/domain/repositories/feed_repository.dart';
 import 'package:rendezvous_community/src/features/legal/domain/services/consent_gate.dart';
 import 'package:rendezvous_community/src/features/media/domain/repositories/media_repository.dart';
@@ -43,6 +44,7 @@ abstract class ComposeState with _$ComposeState {
     CommentAudience? commentAudience,
     CommentAudience? defaultCommentAudience,
     @Default(false) bool commentsAllOff,
+    QuotedPost? quoted,
   }) = _ComposeState;
 
   const ComposeState._();
@@ -51,12 +53,11 @@ abstract class ComposeState with _$ComposeState {
 
   bool get canChooseCommentAudience => defaultCommentAudience != null;
 
-  CommentAudience get effectiveCommentAudience =>
-      commentAudience ?? defaultCommentAudience ?? CommentAudience.everyone;
+  CommentAudience get effectiveCommentAudience => commentAudience ?? defaultCommentAudience ?? CommentAudience.everyone;
 
   bool get canAddImage => poll == null && attachments.length < maxPostImages;
 
-  bool get canAddPoll => poll == null && attachments.isEmpty;
+  bool get canAddPoll => quoted == null && poll == null && attachments.isEmpty;
 }
 
 class ComposeCubit extends Cubit<ComposeState> {
@@ -66,11 +67,16 @@ class ComposeCubit extends Cubit<ComposeState> {
     this._consent,
     this._drafts,
     PostDraft? draft,
+    QuotedPost? quoted,
     this.draftDelay = const Duration(milliseconds: 1500),
-  }) : _clientId = draft?.clientDraftId ?? _uuid.v4(),
-       _body = draft?.body ?? '',
-       _draft = draft,
-       super(ComposeState(sentiment: draft?.sentiment, attachments: draft?.attachments ?? const [], poll: draft?.poll));
+  }) : _clientId = quoted == null ? draft?.clientDraftId ?? _uuid.v4() : _uuid.v4(),
+       _body = quoted == null ? draft?.body ?? '' : '',
+       _draft = quoted == null ? draft : null,
+       super(
+         quoted == null
+             ? ComposeState(sentiment: draft?.sentiment, attachments: draft?.attachments ?? const [], poll: draft?.poll)
+             : ComposeState(quoted: quoted),
+       );
 
   final FeedRepository _feed;
   final MediaRepository _media;
@@ -105,7 +111,7 @@ class ComposeCubit extends Cubit<ComposeState> {
   }
 
   void _scheduleDraft() {
-    if (_drafts == null) return;
+    if (_drafts == null || state.quoted != null) return;
     _draftDirty = true;
     _draftTimer?.cancel();
     _draftTimer = Timer(draftDelay, () => unawaited(saveDraft()));
@@ -114,7 +120,7 @@ class ComposeCubit extends Cubit<ComposeState> {
   Future<void> saveDraft() async {
     final drafts = _drafts;
     _draftTimer?.cancel();
-    if (drafts == null || !_draftDirty) return;
+    if (drafts == null || !_draftDirty || state.quoted != null) return;
     _draftDirty = false;
     final draft = PostDraft(
       clientDraftId: _clientId,
@@ -250,8 +256,21 @@ class ComposeCubit extends Cubit<ComposeState> {
     try {
       final feed = _feed;
       final audience = state.canChooseCommentAudience && !state.commentsAllOff ? state.commentAudience : null;
+      final quoted = state.quoted;
+      if (quoted != null && feed is! QuoteRepository) {
+        throw const CommunityException(CommunityErrorKind.invalidInput, code: 'quote_unsupported');
+      }
       final post = await _consent.guard(
-        () => feed is CommentControlRepository && audience != null
+        () => quoted != null
+            ? (feed as QuoteRepository).createQuote(
+                quotedPostId: quoted.id,
+                body: text,
+                sentiment: state.sentiment,
+                attachments: state.attachments,
+                clientId: _clientId,
+                commentAudience: audience,
+              )
+            : feed is CommentControlRepository && audience != null
             ? feed.createPost(
                 body: text,
                 sentiment: state.sentiment,
@@ -276,7 +295,13 @@ class ComposeCubit extends Cubit<ComposeState> {
       _clientId = _uuid.v4();
       final held = {for (final a in state.attachments.where((a) => a.held)) a.path};
       if (!isClosed) {
-        emit(ComposeState(defaultCommentAudience: state.defaultCommentAudience, commentsAllOff: state.commentsAllOff));
+        emit(
+          ComposeState(
+            defaultCommentAudience: state.defaultCommentAudience,
+            commentsAllOff: state.commentsAllOff,
+            quoted: state.quoted,
+          ),
+        );
       }
       return held.isEmpty
           ? post
