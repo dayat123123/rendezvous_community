@@ -418,7 +418,7 @@ Fungsi ini mengembalikan `false` bila `uri` bukan tautan post (biarkan OLT menan
 | Android | `intent-filter` `android:autoVerify="true"` untuk `https`, host domain tautan, `pathPrefix="/p/"`, plus `intent-filter` kedua untuk skema `olt` dengan host `p`. Masukkan package name dan fingerprint SHA-256 sertifikat penandatangan (Play Console → Integritas aplikasi → App signing) di Hub, supaya `/.well-known/assetlinks.json` cocok |
 | iOS | Capability Associated Domains `applinks:<domain>` dan URL Type dengan skema `olt`. Masukkan `TEAMID.bundle.id` di Hub (`/.well-known/apple-app-site-association`) |
 | Windows | Installer mendaftarkan skema `olt` di `HKCU\Software\Classes\olt`: nilai `URL Protocol` kosong, dan `shell\open\command` = `"C:\…\olt.exe" "%1"`. Tautan `olt://p/<kode>` lalu datang sebagai argumen pertama `main(args)`. App harus **satu instance**: instance kedua meneruskan argumennya ke instance yang sudah berjalan (mis. lewat named pipe), menampilkan jendelanya, lalu keluar |
-| macOS | URL Type `olt`. Universal Links juga bisa dipakai bila app memasang Associated Domains |
+| macOS | URL Type `olt` (`CFBundleURLTypes`). Tautan masuk lewat event URL Apple (mis. `app_links`), bukan argumen `main`. Universal Links juga jalan bila app memasang Associated Domains `applinks:<domain>` dan `TEAMID.bundle.id` app Mac diisi di Hub di kolom iOS & Mac. Isi juga tautan unduh Mac di Hub |
 
 Contoh registry di Inno Setup:
 
@@ -429,7 +429,7 @@ Root: HKCU; Subkey: "Software\Classes\olt"; ValueType: string; ValueName: "URL P
 Root: HKCU; Subkey: "Software\Classes\olt\shell\open\command"; ValueType: string; ValueData: """{app}\olt.exe"" ""%1"""
 ```
 
-Di Windows, link `https` selalu dibuka browser dulu. Halaman pratinjau langsung mencoba `olt://p/<kode>`, lalu browser menanyakan "Buka OLT?" (dengan pilihan "Selalu izinkan"). Di LAN (http) App Links dan Universal Links tidak bisa diverifikasi. Uji lewat halaman pratinjau, tombol **Buka di aplikasi**, atau `adb shell am start -a android.intent.action.VIEW -d "olt://p/<kode>"`.
+Di Windows dan Mac, link `https` dibuka browser dulu (kecuali di Mac dengan Universal Links). Halaman pratinjau langsung mencoba `olt://p/<kode>` (di Safari Mac lewat tombol **Buka di aplikasi**), lalu browser menanyakan "Buka OLT?" (dengan pilihan "Selalu izinkan"). Di LAN (http) App Links dan Universal Links tidak bisa diverifikasi. Uji lewat halaman pratinjau, tombol **Buka di aplikasi**, atau `adb shell am start -a android.intent.action.VIEW -d "olt://p/<kode>"`.
 
 API tanpa UI: `PostLinkRepository` (diimplementasikan repository `chatExtras` bawaan), `postLink(postId)` → `PostLink(code, url, appUrl)`, `resolvePostLink(code)` → id post atau `null`, `communityPostLinkCode(uri)`, dan `communityPostLinks(context)` (repository bila flag menyala).
 
