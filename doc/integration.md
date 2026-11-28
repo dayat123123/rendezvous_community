@@ -396,7 +396,7 @@ Popup ditutup dan event `click` dicatat sebelum callback dipanggil, jadi `contex
 
 ### Tautan berbagi post (1.66.0)
 
-Butuh server dengan migrasi `0207` dan layanan `share-link`. Super Admin mengaktifkannya di Hub **Pengaturan → Tautan berbagi**: domain tautan, skema aplikasi (mis. `olt`), identitas Android/iOS, dan tautan unduh. Bila tautan aktif dan domain sudah diisi, `get_client_config` menyalakan flag `post_links` (`CommunityFlags.postLinks`).
+Butuh server dengan migrasi `0207` dan layanan `share-link`. Super Admin mengaktifkannya di Hub **Pengaturan → Tautan berbagi** (aktif, domain, pratinjau). Skema aplikasi (skema pertama, mis. `olt`), identitas Android/iOS/Mac, dan tautan unduh diatur di **Pengaturan → Integrasi aplikasi** (server `0209`). Bila tautan aktif dan domain sudah diisi, `get_client_config` menyalakan flag `post_links` (`CommunityFlags.postLinks`).
 
 **Yang otomatis.** Tombol bagikan di post membuka sheet dengan **Salin tautan** dan, di Android/iOS/macOS, **Bagikan ke aplikasi lain** (share sheet sistem lewat `share_plus`). Bila *Kirim ke chat* juga aktif, daftar chat tampil di bawahnya. Bentuk tautannya `https://<domain>/p/<kode>`. Halaman itu menampilkan pratinjau post dengan tombol **Buka di aplikasi** (`<skema>://p/<kode>`) dan tombol unduh. Tautan post yang diklik di dalam aplikasi (teks post, chat, kartu pratinjau link) langsung membuka post tanpa dialog "buka tautan luar".
 
