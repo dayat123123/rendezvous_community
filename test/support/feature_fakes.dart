@@ -92,7 +92,27 @@ class FakeEditRepository extends Fake implements ContentEditRepository {
   }
 }
 
-class FakeChatExtrasRepository extends Fake implements ChatExtrasRepository {
+class FakeChatExtrasRepository extends Fake implements ChatExtrasRepository, PostLinkRepository {
+  PostLink? link;
+  Object? linkError;
+  final resolvedLinks = <String, String>{};
+  final linkRequests = <String>[];
+  final resolveRequests = <String>[];
+
+  @override
+  Future<PostLink> postLink(String postId) async {
+    linkRequests.add(postId);
+    final failure = linkError;
+    if (failure != null) throw failure;
+    return link ?? PostLink(code: 'Ab12Cd34Ef', url: Uri.parse('https://share.olt.test/p/Ab12Cd34Ef'));
+  }
+
+  @override
+  Future<String?> resolvePostLink(String code) async {
+    resolveRequests.add(code);
+    return resolvedLinks[code];
+  }
+
   final reactions = <(String, String?)>[];
   List<MessageReaction>? answer;
   Object? reactError;

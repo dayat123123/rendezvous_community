@@ -50,6 +50,7 @@ extension CommunityErrorText on CommunityLocalizations {
       'duplicate_content' => errorDuplicateContent,
       'user_muted' => errorUserMuted,
       'comments_off' => errorCommentsOff,
+      'share_links_disabled' => errorShareLinksDisabled,
       'comments_restricted' => errorCommentsRestricted,
       'invalid_comment_audience' => errorInvalidCommentAudience,
       'invalid_comment_setting' => errorInvalidCommentSetting,

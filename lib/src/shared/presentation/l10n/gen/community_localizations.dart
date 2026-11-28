@@ -2852,6 +2852,30 @@ abstract class CommunityLocalizations {
   /// **'Belum ada chat. Mulai percakapan dulu.'**
   String get shareNoRooms;
 
+  /// No description provided for @postLinkCopy.
+  ///
+  /// In id, this message translates to:
+  /// **'Salin tautan'**
+  String get postLinkCopy;
+
+  /// No description provided for @postLinkShare.
+  ///
+  /// In id, this message translates to:
+  /// **'Bagikan ke aplikasi lain'**
+  String get postLinkShare;
+
+  /// No description provided for @postLinkCopied.
+  ///
+  /// In id, this message translates to:
+  /// **'Tautan disalin.'**
+  String get postLinkCopied;
+
+  /// No description provided for @postLinkUnavailable.
+  ///
+  /// In id, this message translates to:
+  /// **'Postingan dari tautan ini tidak tersedia.'**
+  String get postLinkUnavailable;
+
   /// No description provided for @sharedPostUnavailable.
   ///
   /// In id, this message translates to:
@@ -6211,6 +6235,12 @@ abstract class CommunityLocalizations {
   /// In id, this message translates to:
   /// **'Komentar untuk postingan ini sudah dinonaktifkan.'**
   String get errorCommentsOff;
+
+  /// No description provided for @errorShareLinksDisabled.
+  ///
+  /// In id, this message translates to:
+  /// **'Tautan berbagi belum diaktifkan.'**
+  String get errorShareLinksDisabled;
 
   /// No description provided for @errorCommentsRestricted.
   ///

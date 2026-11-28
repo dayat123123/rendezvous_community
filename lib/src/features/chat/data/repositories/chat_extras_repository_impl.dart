@@ -10,12 +10,13 @@ import 'package:rendezvous_community/src/features/chat/domain/entities/share_tar
 import 'package:rendezvous_community/src/features/chat/domain/entities/stock_room_state.dart';
 import 'package:rendezvous_community/src/features/chat/domain/repositories/chat_extras_repository.dart';
 import 'package:rendezvous_community/src/features/moderation/domain/entities/report.dart';
+import 'package:rendezvous_community/src/features/post_links/domain/post_link.dart';
 import 'package:rendezvous_community/src/shared/domain/entities/user.dart';
 import 'package:uuid/uuid.dart';
 
 const _uuid = Uuid();
 
-class ChatExtrasRepositoryImpl implements ChatExtrasRepository, MultiShareRepository {
+class ChatExtrasRepositoryImpl implements ChatExtrasRepository, MultiShareRepository, PostLinkRepository {
   ChatExtrasRepositoryImpl(this._api);
 
   final SocialRemoteDataSource _api;
@@ -39,6 +40,24 @@ class ChatExtrasRepositoryImpl implements ChatExtrasRepository, MultiShareReposi
       throw const CommunityException(CommunityErrorKind.unknown, message: 'share_post_to_chat returned no rows');
     }
     return ChatMessageModel.fromJson(rows.first).toEntity();
+  }
+
+  @override
+  Future<PostLink> postLink(String postId) async {
+    final json = jsonMap(await _api.rpcValue('post_share_link', {'p_post_id': postId}));
+    final code = json['code'];
+    final url = Uri.tryParse(json['url'] as String? ?? '');
+    if (code is! String || url == null || !url.hasScheme) {
+      throw const CommunityException(CommunityErrorKind.unknown, message: 'post_share_link returned no link');
+    }
+    final app = json['app_url'];
+    return PostLink(code: code, url: url, appUrl: app is String ? Uri.tryParse(app) : null);
+  }
+
+  @override
+  Future<String?> resolvePostLink(String code) async {
+    final id = await _api.rpcValue('resolve_post_share', {'p_code': code});
+    return id is String && id.isNotEmpty ? id : null;
   }
 
   @override

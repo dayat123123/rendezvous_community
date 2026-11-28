@@ -9,7 +9,10 @@ import 'package:rendezvous_community/src/features/chat/presentation/builders/com
 import 'package:rendezvous_community/src/features/chat/presentation/builders/community_chat_details.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/cubit/share_post_cubit.dart';
 import 'package:rendezvous_community/src/features/chat/presentation/widgets/room_visuals.dart';
+import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/post_links/domain/post_link.dart';
+import 'package:rendezvous_community/src/features/post_links/presentation/post_link_actions.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/load_status.dart';
 import 'package:rendezvous_community/src/shared/presentation/theme/community_style.dart';
@@ -21,8 +24,21 @@ import 'package:rendezvous_community/src/shared/presentation/widgets/state_views
 Future<bool> showSharePostToChat(BuildContext context, Post post) async {
   final features = CommunityFeatureScope.maybeOf(context);
   if (features == null) return false;
-  final deps = CommunityScope.of(context);
+  final links = communityPostLinks(context);
   final carry = carryCommunityBuilders(context);
+  if (!context.communityFeature(CommunityFlags.sharePostToChat)) {
+    if (links == null) return false;
+    await showCommunitySheet<void>(
+      context,
+      builder: (_) => carry(
+        SafeArea(
+          child: _PostLinkTiles(links: links, postId: post.id),
+        ),
+      ),
+    );
+    return false;
+  }
+  final deps = CommunityScope.of(context);
   final accounts = CommunityOfficialScope.maybeOf(context)?..ensureLoaded();
   final me = deps.currentUser;
   final meOfficial = me != null && (me.isOfficial || (accounts?.isOfficial(me.id) ?? false));
@@ -39,7 +55,7 @@ Future<bool> showSharePostToChat(BuildContext context, Post post) async {
             postId: post.id,
             isOfficial: meOfficial ? null : (user) => user.isOfficial || (accounts?.isOfficial(user.id) ?? false),
           )..load(),
-          child: const _SharePostSheet(),
+          child: _SharePostSheet(links: links, postId: post.id),
         ),
       ),
     ),
@@ -49,7 +65,10 @@ Future<bool> showSharePostToChat(BuildContext context, Post post) async {
 }
 
 class _SharePostSheet extends StatefulWidget {
-  const _SharePostSheet();
+  const _SharePostSheet({required this.links, required this.postId});
+
+  final PostLinkRepository? links;
+  final String postId;
 
   @override
   State<_SharePostSheet> createState() => _SharePostSheetState();
@@ -89,6 +108,11 @@ class _SharePostSheetState extends State<_SharePostSheet> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                if (widget.links case final links?) ...[
+                  _PostLinkTiles(links: links, postId: widget.postId),
+                  const CommunityDivider(),
+                  SizedBox(height: spacing.md),
+                ],
                 Padding(
                   padding: EdgeInsets.fromLTRB(spacing.lg, 0, spacing.lg, spacing.md),
                   child: Text(l10n.sharePickRoom, style: style.typography.title),
@@ -175,6 +199,45 @@ class _DefaultShareTarget extends StatelessWidget {
           onTap: details.onShare,
         ),
         CommunityDivider(indent: spacing.lg + 40 + spacing.lg),
+      ],
+    );
+  }
+}
+
+class _PostLinkTiles extends StatelessWidget {
+  const _PostLinkTiles({required this.links, required this.postId});
+
+  final PostLinkRepository links;
+  final String postId;
+
+  Future<void> _run(BuildContext context, Future<bool> Function(BuildContext) action) async {
+    if (await action(context) && context.mounted) await Navigator.maybePop(context);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.communityL10n;
+    final style = CommunityStyle.of(context);
+    final padding = EdgeInsets.symmetric(horizontal: style.spacing.lg);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        ListTile(
+          contentPadding: padding,
+          leading: Icon(Icons.link, color: style.textSecondary),
+          title: Text(l10n.postLinkCopy, style: style.typography.author.copyWith(fontSize: 15)),
+          onTap: () => _run(context, (c) => copyCommunityPostLink(c, links, postId)),
+        ),
+        if (communityCanShareToApps)
+          Builder(
+            builder: (tile) => ListTile(
+              contentPadding: padding,
+              leading: Icon(Icons.share_outlined, color: style.textSecondary),
+              title: Text(l10n.postLinkShare, style: style.typography.author.copyWith(fontSize: 15)),
+              onTap: () => _run(tile, (c) => shareCommunityPostLink(c, links, postId)),
+            ),
+          ),
       ],
     );
   }

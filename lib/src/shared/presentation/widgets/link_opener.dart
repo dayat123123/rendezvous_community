@@ -1,6 +1,8 @@
 import 'package:flutter/services.dart';
 import 'package:material_ui/material_ui.dart';
+import 'package:rendezvous_community/src/app/community_scope.dart';
 import 'package:rendezvous_community/src/core/text/social_text_parser.dart';
+import 'package:rendezvous_community/src/features/post_links/presentation/post_link_actions.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_builders.dart';
 import 'package:rendezvous_community/src/shared/presentation/builders/community_shared_details.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
@@ -17,6 +19,12 @@ String linkDisplayDomain(Uri uri) => uri.host.startsWith('www.') ? uri.host.subs
 Future<bool> openCommunityLink(BuildContext context, Uri uri, {CommunityLinkLauncher? launcher}) async {
   final safe = safeLinkUri(uri.toString());
   if (safe == null) return false;
+  final postId = await resolveCommunityPostLink(context, safe);
+  if (!context.mounted) return false;
+  if (postId != null) {
+    CommunityNavigator.openPost(context, postId);
+    return true;
+  }
   final l10n = context.communityL10n;
   final builder = CommunitySharedBuilders.of(context, listen: false).linkDialog;
   final confirmed = await showDialog<bool>(

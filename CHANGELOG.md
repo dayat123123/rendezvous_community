@@ -1,3 +1,12 @@
+## 1.66.0
+
+* **Tautan berbagi post.** Butuh server `0207` + layanan `share-link`, diaktifkan Super Admin di Hub (Pengaturan → Tautan berbagi). Bila aktif, flag baru `post_links` (`CommunityFlags.postLinks`) menyala.
+  * Sheet bagikan post kini berisi **Salin tautan** dan, di Android/iOS/macOS, **Bagikan ke aplikasi lain** (share sheet sistem). Bila *Kirim ke chat* mati tetapi tautan aktif, tombol bagikan tetap muncul dengan sheet ringkas berisi dua aksi itu.
+  * Fungsi baru `openCommunityPostLink(context, uri)` untuk tautan masuk dari OS (`https://<domain>/p/<kode>` dan `<skema>://p/<kode>`). Mengembalikan `false` bila bukan tautan post. Post yang tidak tersedia menampilkan pesan, bukan halaman kosong.
+  * Tautan post yang diklik di dalam app (teks, chat, kartu pratinjau link) langsung membuka post tanpa dialog tautan luar. Tautan `/p/...` dari situs lain tetap lewat dialog.
+  * API baru: `PostLink`, `PostLinkRepository` (diimplementasikan `ChatExtrasRepositoryImpl`), `communityPostLinkCode(uri)`, `communityPostLinks(context)`. Kode error `share_links_disabled` punya teks sendiri.
+  * Pengaturan Android/iOS/Windows (App Links, Universal Links, registrasi skema `olt`, satu instance) ada di `doc/integration.md`.
+
 ## 1.65.0
 
 * **Klik notifikasi kini membuka tujuan yang paling tepat.** Berlaku untuk daftar notifikasi dan push.

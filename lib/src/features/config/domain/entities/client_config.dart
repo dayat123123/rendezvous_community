@@ -13,6 +13,7 @@ abstract final class CommunityFlags {
   static const sharePostToChat = 'share_post_to_chat';
   static const notificationPrefs = 'notification_prefs';
   static const analytics = 'analytics';
+  static const postLinks = 'post_links';
 
   static const all = [
     search,

@@ -1564,6 +1564,18 @@ class CommunityLocalizationsId extends CommunityLocalizations {
   String get shareNoRooms => 'Belum ada chat. Mulai percakapan dulu.';
 
   @override
+  String get postLinkCopy => 'Salin tautan';
+
+  @override
+  String get postLinkShare => 'Bagikan ke aplikasi lain';
+
+  @override
+  String get postLinkCopied => 'Tautan disalin.';
+
+  @override
+  String get postLinkUnavailable => 'Postingan dari tautan ini tidak tersedia.';
+
+  @override
   String get sharedPostUnavailable => 'Post tidak tersedia';
 
   @override
@@ -3471,6 +3483,9 @@ class CommunityLocalizationsId extends CommunityLocalizations {
 
   @override
   String get errorCommentsOff => 'Komentar untuk postingan ini sudah dinonaktifkan.';
+
+  @override
+  String get errorShareLinksDisabled => 'Tautan berbagi belum diaktifkan.';
 
   @override
   String get errorCommentsRestricted => 'Anda tidak termasuk yang boleh berkomentar di postingan ini.';

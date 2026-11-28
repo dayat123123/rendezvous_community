@@ -1573,6 +1573,18 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
   String get shareNoRooms => 'No chats yet. Start a conversation first.';
 
   @override
+  String get postLinkCopy => 'Copy link';
+
+  @override
+  String get postLinkShare => 'Share to other apps';
+
+  @override
+  String get postLinkCopied => 'Link copied.';
+
+  @override
+  String get postLinkUnavailable => 'The post from this link is not available.';
+
+  @override
   String get sharedPostUnavailable => 'Post unavailable';
 
   @override
@@ -3486,6 +3498,9 @@ class CommunityLocalizationsEn extends CommunityLocalizations {
 
   @override
   String get errorCommentsOff => 'Comments on this post have been turned off.';
+
+  @override
+  String get errorShareLinksDisabled => 'Share links are not enabled yet.';
 
   @override
   String get errorCommentsRestricted => 'You\'re not among the people who can comment on this post.';

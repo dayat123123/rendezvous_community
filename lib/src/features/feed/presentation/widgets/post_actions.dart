@@ -8,6 +8,7 @@ import 'package:rendezvous_community/src/features/compose/presentation/cubit/com
 import 'package:rendezvous_community/src/features/config/domain/entities/client_config.dart';
 import 'package:rendezvous_community/src/features/edit/presentation/widgets/edit_content_dialog.dart';
 import 'package:rendezvous_community/src/features/feed/domain/entities/post.dart';
+import 'package:rendezvous_community/src/features/post_links/presentation/post_link_actions.dart';
 import 'package:rendezvous_community/src/shared/presentation/l10n/l10n.dart';
 import 'package:rendezvous_community/src/shared/presentation/widgets/feedback.dart';
 
@@ -40,7 +41,9 @@ VoidCallback? bookmarkPostAction(BuildContext context, VoidCallback? toggle) =>
     toggle != null && context.communityFeature(CommunityFlags.bookmarks) ? toggle : null;
 
 VoidCallback? sharePostAction(BuildContext context, Post post) =>
-    context.communityFeature(CommunityFlags.sharePostToChat) && !post.isHeld && !post.isHidden
+    (context.communityFeature(CommunityFlags.sharePostToChat) || communityPostLinks(context) != null) &&
+        !post.isHeld &&
+        !post.isHidden
     ? () => showSharePostToChat(context, post)
     : null;
 

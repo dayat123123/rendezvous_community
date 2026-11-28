@@ -14,7 +14,7 @@ dependencies:
   rendezvous_community:
     git:
       url: https://github.com/dayat123123/rendezvous_community.git
-      ref: v1.65.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
+      ref: v1.66.0            # pin tag rilis; server dengan migrasi 0098 butuh >= 1.5.0
   flutter_localizations:
     sdk: flutter
 ```
@@ -393,6 +393,45 @@ await RendezvousCommunity.initialize(
 ```
 
 Popup ditutup dan event `click` dicatat sebelum callback dipanggil, jadi `context` adalah halaman host (aman untuk `Navigator.push`). Tampilan kartu bisa diganti lewat slot `system.popup` ([customization.md](customization.md#popup-promo)).
+
+### Tautan berbagi post (1.66.0)
+
+Butuh server dengan migrasi `0207` dan layanan `share-link`. Super Admin mengaktifkannya di Hub **Pengaturan → Tautan berbagi**: domain tautan, skema aplikasi (mis. `olt`), identitas Android/iOS, dan tautan unduh. Bila tautan aktif dan domain sudah diisi, `get_client_config` menyalakan flag `post_links` (`CommunityFlags.postLinks`).
+
+**Yang otomatis.** Tombol bagikan di post membuka sheet dengan **Salin tautan** dan, di Android/iOS/macOS, **Bagikan ke aplikasi lain** (share sheet sistem lewat `share_plus`). Bila *Kirim ke chat* juga aktif, daftar chat tampil di bawahnya. Bentuk tautannya `https://<domain>/p/<kode>`. Halaman itu menampilkan pratinjau post dengan tombol **Buka di aplikasi** (`<skema>://p/<kode>`) dan tombol unduh. Tautan post yang diklik di dalam aplikasi (teks post, chat, kartu pratinjau link) langsung membuka post tanpa dialog "buka tautan luar".
+
+**Yang dikerjakan OLT: meneruskan tautan masuk ke paket.** Saat sistem operasi membuka app lewat tautan, panggil `openCommunityPostLink` dengan `context` yang berada di bawah `CommunityScope` dan `Navigator`:
+
+```dart
+Future<void> onIncomingLink(BuildContext context, Uri uri) async {
+  if (await openCommunityPostLink(context, uri)) return;   // https://<domain>/p/<kode> atau olt://p/<kode>
+  // tautan OLT lain ditangani router OLT
+}
+```
+
+Fungsi ini mengembalikan `false` bila `uri` bukan tautan post (biarkan OLT menanganinya). Selain itu ia membuka post lewat `CommunityNavigator.openPost` (memakai `onPostTap` bila diisi), atau menampilkan "Postingan dari tautan ini tidak tersedia" bila post sudah dihapus atau disembunyikan. Pengguna harus sudah login komunitas; tautan yang datang sebelum login disimpan dulu, lalu diteruskan setelah `initialize(...)` selesai. Paket tidak menambah dependency untuk menerima tautan, jadi OLT memakai cara yang sudah ada di app (mis. package `app_links`, atau argumen `main` di Windows).
+
+**Pengaturan platform di app OLT**
+
+| Platform | Yang dipasang |
+|---|---|
+| Android | `intent-filter` `android:autoVerify="true"` untuk `https`, host domain tautan, `pathPrefix="/p/"`, plus `intent-filter` kedua untuk skema `olt` dengan host `p`. Masukkan package name dan fingerprint SHA-256 sertifikat penandatangan (Play Console → Integritas aplikasi → App signing) di Hub, supaya `/.well-known/assetlinks.json` cocok |
+| iOS | Capability Associated Domains `applinks:<domain>` dan URL Type dengan skema `olt`. Masukkan `TEAMID.bundle.id` di Hub (`/.well-known/apple-app-site-association`) |
+| Windows | Installer mendaftarkan skema `olt` di `HKCU\Software\Classes\olt`: nilai `URL Protocol` kosong, dan `shell\open\command` = `"C:\…\olt.exe" "%1"`. Tautan `olt://p/<kode>` lalu datang sebagai argumen pertama `main(args)`. App harus **satu instance**: instance kedua meneruskan argumennya ke instance yang sudah berjalan (mis. lewat named pipe), menampilkan jendelanya, lalu keluar |
+| macOS | URL Type `olt`. Universal Links juga bisa dipakai bila app memasang Associated Domains |
+
+Contoh registry di Inno Setup:
+
+```
+[Registry]
+Root: HKCU; Subkey: "Software\Classes\olt"; ValueType: string; ValueData: "URL:OLT"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\olt"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
+Root: HKCU; Subkey: "Software\Classes\olt\shell\open\command"; ValueType: string; ValueData: """{app}\olt.exe"" ""%1"""
+```
+
+Di Windows, link `https` selalu dibuka browser dulu. Halaman pratinjau langsung mencoba `olt://p/<kode>`, lalu browser menanyakan "Buka OLT?" (dengan pilihan "Selalu izinkan"). Di LAN (http) App Links dan Universal Links tidak bisa diverifikasi. Uji lewat halaman pratinjau, tombol **Buka di aplikasi**, atau `adb shell am start -a android.intent.action.VIEW -d "olt://p/<kode>"`.
+
+API tanpa UI: `PostLinkRepository` (diimplementasikan repository `chatExtras` bawaan), `postLink(postId)` → `PostLink(code, url, appUrl)`, `resolvePostLink(code)` → id post atau `null`, `communityPostLinkCode(uri)`, dan `communityPostLinks(context)` (repository bila flag menyala).
 
 ### Chat CS (modul `support`)
 

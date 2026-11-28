@@ -269,6 +269,8 @@ export 'src/features/post/domain/repositories/comment_repository.dart';
 export 'src/features/post/presentation/widgets/comment_tree.dart' show ThreadLinesPainter;
 export 'src/features/post/presentation/widgets/community_post_comments.dart';
 export 'src/features/post/presentation/widgets/community_post_detail.dart' show CommunityPostDetail;
+export 'src/features/post_links/domain/post_link.dart';
+export 'src/features/post_links/presentation/post_link_actions.dart' show communityPostLinks, openCommunityPostLink;
 export 'src/features/profile/domain/entities/mention_policy.dart';
 export 'src/features/profile/domain/entities/user_profile.dart';
 export 'src/features/profile/domain/repositories/profile_repository.dart';
