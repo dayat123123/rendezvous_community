@@ -372,7 +372,7 @@ MaterialApp(
 
 Popup tampil maksimal sekali per sesi aplikasi setelah konfigurasi termuat dan user komunitas masuk, menunggu bila ada dialog/route lain di atas halaman itu, dan tidak tampil saat `update_required`. Aturan frekuensi (`once`/`daily`/`every_open`) dan tabel perilaku tombol ada di [features.md](features.md#popup-promo-170).
 
-**Tautan promo ke halaman OLT.** `link_url` boleh `https://…` atau deep link aplikasi (mis. `olt://promo/akhir-tahun`). Pasang `onBannerLink` sekali di `initialize(...)` (berlaku untuk popup dan banner strip) atau per widget (`CommunityPromoPopupHost(onBannerLink:)`, `CommunityBannerHost(onBannerLink:)`, yang per widget didahulukan). Kembalikan `true` bila OLT sudah menanganinya; `false` membiarkan paket membuka tautan `https`/`http` lewat dialog konfirmasi, sedangkan skema lain diabaikan.
+**Tautan promo ke halaman OLT.** `link_url` boleh `https://…` atau deep link aplikasi (mis. `rendezvous-olt://promo/akhir-tahun`). Pasang `onBannerLink` sekali di `initialize(...)` (berlaku untuk popup dan banner strip) atau per widget (`CommunityPromoPopupHost(onBannerLink:)`, `CommunityBannerHost(onBannerLink:)`, yang per widget didahulukan). Kembalikan `true` bila OLT sudah menanganinya; `false` membiarkan paket membuka tautan `https`/`http` lewat dialog konfirmasi, sedangkan skema lain diabaikan.
 
 ```dart
 await RendezvousCommunity.initialize(
@@ -396,7 +396,7 @@ Popup ditutup dan event `click` dicatat sebelum callback dipanggil, jadi `contex
 
 ### Tautan berbagi post (1.66.0)
 
-Butuh server dengan migrasi `0207` dan layanan `share-link`. Super Admin mengaktifkannya di Hub **Pengaturan → Tautan berbagi** (aktif, domain, pratinjau). Skema aplikasi (skema pertama, mis. `olt`), identitas Android/iOS/Mac, dan tautan unduh diatur di **Pengaturan → Integrasi aplikasi** (server `0209`). Bila tautan aktif dan domain sudah diisi, `get_client_config` menyalakan flag `post_links` (`CommunityFlags.postLinks`).
+Butuh server dengan migrasi `0207` dan layanan `share-link`. Super Admin mengaktifkannya di Hub **Pengaturan → Tautan berbagi** (aktif, domain, pratinjau). Skema aplikasi (skema pertama; bawaan `rendezvous-olt` sejak server `0210`), identitas Android/iOS/Mac, dan tautan unduh diatur di **Pengaturan → Integrasi aplikasi** (server `0209`). Bila tautan aktif dan domain sudah diisi, `get_client_config` menyalakan flag `post_links` (`CommunityFlags.postLinks`).
 
 **Yang otomatis.** Tombol bagikan di post membuka sheet dengan **Salin tautan** dan, di Android/iOS/macOS, **Bagikan ke aplikasi lain** (share sheet sistem lewat `share_plus`). Bila *Kirim ke chat* juga aktif, daftar chat tampil di bawahnya. Bentuk tautannya `https://<domain>/p/<kode>`. Halaman itu menampilkan pratinjau post dengan tombol **Buka di aplikasi** (`<skema>://p/<kode>`) dan tombol unduh. Tautan post yang diklik di dalam aplikasi (teks post, chat, kartu pratinjau link) langsung membuka post tanpa dialog "buka tautan luar".
 
@@ -404,7 +404,7 @@ Butuh server dengan migrasi `0207` dan layanan `share-link`. Super Admin mengakt
 
 ```dart
 Future<void> onIncomingLink(BuildContext context, Uri uri) async {
-  if (await openCommunityPostLink(context, uri)) return;   // https://<domain>/p/<kode> atau olt://p/<kode>
+  if (await openCommunityPostLink(context, uri)) return;   // https://<domain>/p/<kode> atau rendezvous-olt://p/<kode>
   // tautan OLT lain ditangani router OLT
 }
 ```
@@ -415,21 +415,23 @@ Fungsi ini mengembalikan `false` bila `uri` bukan tautan post (biarkan OLT menan
 
 | Platform | Yang dipasang |
 |---|---|
-| Android | `intent-filter` `android:autoVerify="true"` untuk `https`, host domain tautan, `pathPrefix="/p/"`, plus `intent-filter` kedua untuk skema `olt` dengan host `p`. Masukkan package name dan fingerprint SHA-256 sertifikat penandatangan (Play Console → Integritas aplikasi → App signing) di Hub, supaya `/.well-known/assetlinks.json` cocok |
-| iOS | Capability Associated Domains `applinks:<domain>` dan URL Type dengan skema `olt`. Masukkan `TEAMID.bundle.id` di Hub (`/.well-known/apple-app-site-association`) |
-| Windows | Installer mendaftarkan skema `olt` di `HKCU\Software\Classes\olt`: nilai `URL Protocol` kosong, dan `shell\open\command` = `"C:\…\olt.exe" "%1"`. Tautan `olt://p/<kode>` lalu datang sebagai argumen pertama `main(args)`. App harus **satu instance**: instance kedua meneruskan argumennya ke instance yang sudah berjalan (mis. lewat named pipe), menampilkan jendelanya, lalu keluar |
-| macOS | URL Type `olt` (`CFBundleURLTypes`). Tautan masuk lewat event URL Apple (mis. `app_links`), bukan argumen `main`. Universal Links juga jalan bila app memasang Associated Domains `applinks:<domain>` dan `TEAMID.bundle.id` app Mac diisi di Hub di kolom iOS & Mac. Isi juga tautan unduh Mac di Hub |
+| Android | `intent-filter` `android:autoVerify="true"` untuk `https`, host domain tautan, `pathPrefix="/p/"`, plus `intent-filter` kedua untuk skema `rendezvous-olt` dengan host `p`. Masukkan package name dan fingerprint SHA-256 sertifikat penandatangan (Play Console → Integritas aplikasi → App signing) di Hub, supaya `/.well-known/assetlinks.json` cocok |
+| iOS | Capability Associated Domains `applinks:<domain>` dan URL Type dengan skema `rendezvous-olt`. Masukkan `TEAMID.bundle.id` di Hub (`/.well-known/apple-app-site-association`) |
+| Windows | Installer mendaftarkan skema `rendezvous-olt` di `HKCU\Software\Classes\rendezvous-olt`: nilai `URL Protocol` kosong, dan `shell\open\command` = `"C:\…\rendezvous_olt.exe" "%1"`. Tautan `rendezvous-olt://p/<kode>` lalu datang sebagai argumen pertama `main(args)`. App harus **satu instance**: instance kedua meneruskan argumennya ke instance yang sudah berjalan (mis. lewat named pipe), menampilkan jendelanya, lalu keluar |
+| macOS | URL Type `rendezvous-olt` (`CFBundleURLTypes`). Tautan masuk lewat event URL Apple (mis. `app_links`), bukan argumen `main`. Universal Links juga jalan bila app memasang Associated Domains `applinks:<domain>` dan `TEAMID.bundle.id` app Mac diisi di Hub di kolom iOS & Mac. Isi juga tautan unduh Mac di Hub |
+
+Pakai skema yang unik seperti `rendezvous-olt`. Skema pendek seperti `olt` bisa bentrok dengan aplikasi lain (mis. alat jaringan fiber), karena skema URL tidak punya pendaftaran pusat: di Windows pendaftar terakhir yang menang, di macOS sistem memilih salah satu.
 
 Contoh registry di Inno Setup:
 
 ```
 [Registry]
-Root: HKCU; Subkey: "Software\Classes\olt"; ValueType: string; ValueData: "URL:OLT"; Flags: uninsdeletekey
-Root: HKCU; Subkey: "Software\Classes\olt"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
-Root: HKCU; Subkey: "Software\Classes\olt\shell\open\command"; ValueType: string; ValueData: """{app}\olt.exe"" ""%1"""
+Root: HKCU; Subkey: "Software\Classes\rendezvous-olt"; ValueType: string; ValueData: "URL:Rendezvous OLT"; Flags: uninsdeletekey
+Root: HKCU; Subkey: "Software\Classes\rendezvous-olt"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""
+Root: HKCU; Subkey: "Software\Classes\rendezvous-olt\shell\open\command"; ValueType: string; ValueData: """{app}\rendezvous_olt.exe"" ""%1"""
 ```
 
-Di Windows dan Mac, link `https` dibuka browser dulu (kecuali di Mac dengan Universal Links). Halaman pratinjau langsung mencoba `olt://p/<kode>` (di Safari Mac lewat tombol **Buka di aplikasi**), lalu browser menanyakan "Buka OLT?" (dengan pilihan "Selalu izinkan"). Di LAN (http) App Links dan Universal Links tidak bisa diverifikasi. Uji lewat halaman pratinjau, tombol **Buka di aplikasi**, atau `adb shell am start -a android.intent.action.VIEW -d "olt://p/<kode>"`.
+Di Windows dan Mac, link `https` dibuka browser dulu (kecuali di Mac dengan Universal Links). Halaman pratinjau langsung mencoba `rendezvous-olt://p/<kode>` (di Safari Mac lewat tombol **Buka di aplikasi**), lalu browser menanyakan "Buka OLT?" (dengan pilihan "Selalu izinkan"). Di LAN (http) App Links dan Universal Links tidak bisa diverifikasi. Uji lewat halaman pratinjau, tombol **Buka di aplikasi**, atau `adb shell am start -a android.intent.action.VIEW -d "rendezvous-olt://p/<kode>"`.
 
 API tanpa UI: `PostLinkRepository` (diimplementasikan repository `chatExtras` bawaan), `postLink(postId)` → `PostLink(code, url, appUrl)`, `resolvePostLink(code)` → id post atau `null`, `communityPostLinkCode(uri)`, dan `communityPostLinks(context)` (repository bila flag menyala).
 
